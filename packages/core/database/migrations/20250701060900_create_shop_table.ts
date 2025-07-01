@@ -22,7 +22,7 @@ export async function up(knex: Knex): Promise<void> {
       .notNullable()
       .defaultTo(knex.raw(`(current_setting('app.current_owner_id'))::uuid`))
       .references('id')
-      .inTable('user');
+      .inTable('users');
 
     table.index(['owner_id']);
   });

@@ -1,7 +1,8 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLSchema } from 'graphql';
-import { createYoga, YogaServerInstance } from 'graphql-yoga';
+import { createYoga, Plugin, YogaInitialContext, YogaServerInstance } from 'graphql-yoga';
+import { GraphqlContext } from './context/types';
 
 /**
  * @description
@@ -19,22 +20,27 @@ export class GraphqlApi {
     this.resolvers = this.genResolvers();
     this.schema = this.genSchema();
 
-    this.handler = this.genHandler();
+    this.handler = this.genHandler(this.config.context);
   }
 
-  private genHandler() {
-    return createYoga({ schema: this.schema });
+  private genHandler(context: GraphqlApiConfig['context']) {
+    return createYoga({
+      graphqlEndpoint: this.config.endpoint,
+      context,
+      schema: this.schema,
+      plugins: this.config.plugins
+    });
   }
 
   private genSchema() {
     return makeExecutableSchema({
       typeDefs: this.typeDefs,
-      resolvers: {},
+      resolvers: this.resolvers
     });
   }
 
   private genTypeDefs() {
-    return this.config.typePaths.flatMap((typePath) => {
+    return this.config.typePaths.flatMap(typePath => {
       return loadFilesSync(typePath);
     });
   }
@@ -42,19 +48,19 @@ export class GraphqlApi {
   private genResolvers() {
     let _resolvers: GraphqlApiResolver = {
       Query: {},
-      Mutation: {},
+      Mutation: {}
     };
 
-    this.config.resolvers.forEach((r) => {
+    this.config.resolvers.forEach(r => {
       _resolvers = {
         Query: {
           ..._resolvers.Query,
-          ...r.Query,
+          ...r.Query
         },
         Mutation: {
           ..._resolvers.Mutation,
-          ...r.Mutation,
-        },
+          ...r.Mutation
+        }
       };
     });
 
@@ -65,6 +71,9 @@ export class GraphqlApi {
 type GraphqlApiConfig = {
   typePaths: string[];
   resolvers: GraphqlApiResolver[];
+  endpoint: string;
+  context: (initialContext: YogaInitialContext) => Promise<GraphqlContext>;
+  plugins: (object | Plugin | Plugin<object & YogaInitialContext>)[] | undefined;
 };
 
 type GraphqlApiResolver = {
