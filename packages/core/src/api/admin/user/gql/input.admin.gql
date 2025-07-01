@@ -1,0 +1,13 @@
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+}
+
+input GenerateUserAccessTokenInput {
+  email: String!
+  password: String!
+}

@@ -1,0 +1,22 @@
+type ShopList implements List {
+  items: [Shop!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type ShopResult {
+  shop: Shop
+  apiErrors: [ShopErrorResult!]!
+}
+
+type ShopErrorResult {
+  code: ShopErrorCode!
+  message: String!
+}
+
+enum ShopErrorCode {
+  """
+  Error thrown when the emails provided for a shop already exists
+  """
+  EMAIL_ALREADY_EXISTS
+}

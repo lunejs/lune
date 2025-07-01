@@ -1,0 +1,50 @@
+"""
+A vendyx shop
+"""
+type Shop implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The shop's name
+  """
+  name: String!
+  """
+  The shop's slug
+  """
+  slug: String!
+  """
+  Api key for other stores to connect to this store
+  """
+  shopApiKey: String!
+  """
+  Contact email for the shop
+  """
+  email: String!
+  """
+  Contact phone number for the shop
+  """
+  phoneNumber: String!
+  """
+  The shop's logo
+  """
+  logo: String
+  """
+  The shop's storefront url
+  """
+  storefrontUrl: String
+  """
+  The shop's socials
+  """
+  socials: ShopSocials
+  """
+  The shop's owner
+  """
+  owner: User!
+}
+
+type ShopSocials {
+  facebook: String
+  twitter: String
+  instagram: String
+}

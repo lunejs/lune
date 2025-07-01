@@ -1,0 +1,21 @@
+type Query {
+  """
+  Get shop by slug
+  """
+  shop(slug: String!): Shop
+  """
+  Get a list of shops
+  """
+  shops(input: ListInput): ShopList!
+}
+
+type Mutation {
+  """
+  Create a new shop
+  """
+  createShop(input: CreateShopInput!): ShopResult!
+  """
+  Update an existing shop details
+  """
+  updateShop(shopSlug: String!, input: UpdateShopInput!): ShopResult!
+}

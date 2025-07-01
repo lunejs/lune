@@ -1,0 +1,28 @@
+type Query {
+  """
+  Get user in session
+  """
+  whoami: User
+  """
+  Validate current token of the user in session
+  """
+  validateAccessToken: Boolean
+}
+
+type Mutation {
+  """
+  Create a new user
+  """
+  createUser(input: CreateUserInput!): UserResult!
+  """
+  Update an existing user
+  """
+  updateUser(id: ID!, input: UpdateUserInput!): UserResult!
+  """
+  Generate an access token for a user
+  This token can be used to access user-specific resources
+  """
+  generateUserAccessToken(
+    input: GenerateUserAccessTokenInput!
+  ): UserAccessTokenResult!
+}
