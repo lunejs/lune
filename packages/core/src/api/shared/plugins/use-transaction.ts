@@ -3,7 +3,7 @@ import { GraphqlContext } from '../context/types';
 
 export function useTransaction(): Plugin {
   return {
-    onExecutionResult: (p) => {
+    onExecutionResult: p => {
       if (isAsyncIterable(p.result)) {
         return;
       }
@@ -16,6 +16,6 @@ export function useTransaction(): Plugin {
       }
 
       context.trx.commit();
-    },
+    }
   };
 }

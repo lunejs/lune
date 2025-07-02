@@ -76,7 +76,7 @@ type GraphqlApiConfig = {
   plugins: (object | Plugin | Plugin<object & YogaInitialContext>)[] | undefined;
 };
 
-type GraphqlApiResolver = {
+export type GraphqlApiResolver = {
   Query?: Record<string, any>;
   Mutation?: Record<string, any>;
 };
