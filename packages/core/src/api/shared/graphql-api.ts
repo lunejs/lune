@@ -28,7 +28,8 @@ export class GraphqlApi {
       graphqlEndpoint: this.config.endpoint,
       context,
       schema: this.schema,
-      plugins: this.config.plugins
+      plugins: this.config.plugins,
+      logging: false
     });
   }
 

@@ -1,3 +1,5 @@
+import { Logger } from '@/logger';
+
 /**
  * @description
  * Serializer for conversions between entity and table representations.
@@ -24,6 +26,20 @@ export class Serializer<Entity, Table> {
   /**
    * @description
    * Deserialize a row from the database table into an entity.
+   *
+   * @example
+   * ```typescript
+   * const serializer = new Serializer<User, UserTable>([
+   *  ['id', 'id'],
+   *  ['created_at', 'createdAt'],
+   *  ['updated_at', 'updatedAt'],
+   * ]);
+   *
+   * const row = { id: 1, created_at: '2023-01-01', updated_at: '2023-01-02' };
+   * const user = serializer.deserialize(row);
+   * console.log(user);
+   * // Output: { id: 1, createdAt: '2023-01-01', updatedAt: '2023-01-02' }
+   * ```
    */
   deserialize(row: Partial<Table>): Partial<Entity> {
     try {
@@ -44,6 +60,20 @@ export class Serializer<Entity, Table> {
   /**
    * @description
    * Serialize an entity into a row for the database table.
+   *
+   * @example
+   * ```typescript
+   * const serializer = new Serializer<User, UserTable>([
+   *   ['id', 'id'],
+   *   ['created_at', 'createdAt'],
+   *   ['updated_at', 'updatedAt'],
+   * ]);
+   *
+   * const user = { id: 1, createdAt: '2023-01-01', updatedAt: '2023-01-02' };
+   * const serializedUsed = serializer.serialize(user);
+   * console.log(serializedUsed);
+   * // Output: { id: 1, created_at: '2023-01-01', updated_at: '2023-01-02' }
+   * ```
    */
   serialize(data: Partial<Entity>): Partial<Table> {
     try {
@@ -64,6 +94,20 @@ export class Serializer<Entity, Table> {
   /**
    * @description
    * Serialize an array of fields from the entity to the table representation.
+   *
+   * @example
+   * ```typescript
+   * const serializer = new Serializer<User, UserTable>([
+   *  ['id', 'id'],
+   *  ['created_at', 'createdAt'],
+   *  ['updated_at', 'updatedAt'],
+   * ]);
+   *
+   * const fields = ['id', 'createdAt', 'updatedAt'];
+   * const serializedFields = serializer.serializeFields(fields);
+   * console.log(serializedFields);
+   * // Output: ['id', 'created_at', 'updated_at']
+   * ```
    */
   serializeFields(fields: (keyof Entity)[]): (keyof Table | string)[] {
     try {
@@ -91,10 +135,7 @@ export class SerializeError extends Error {
     this.name = 'SerializeError';
 
     if (process.env.NODE_ENV !== 'test') {
-      console.error({
-        message,
-        error
-      });
+      Logger.error('Serializer', message, error);
     }
   }
 }

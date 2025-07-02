@@ -27,7 +27,6 @@ export class UserService {
     }
 
     const user = await this.repository.create({ email: input.email, password: input.password });
-    console.log({ user });
 
     return user;
   }

@@ -1,19 +1,16 @@
+import { Logger } from '@/logger';
+
 /**
  * This type is returned when an error has occurred in the service layer.
  */
 export class ErrorResult<T> {
   constructor(
+    readonly ctx: string,
     readonly code: T,
     readonly message: string,
     readonly metadata?: any
   ) {
-    if (process.env.NODE_ENV !== 'test') {
-      console.error({
-        code,
-        message,
-        metadata
-      });
-    }
+    Logger.error(ctx, `${code}: ${message}`, metadata);
   }
 }
 
