@@ -7,11 +7,13 @@ export class ErrorResult<T> {
     readonly message: string,
     readonly metadata?: any
   ) {
-    console.error({
-      code,
-      message,
-      metadata
-    });
+    if (process.env.NODE_ENV !== 'test') {
+      console.error({
+        code,
+        message,
+        metadata
+      });
+    }
   }
 }
 

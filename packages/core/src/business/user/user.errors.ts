@@ -1,5 +1,5 @@
 import { UserErrorCode } from '@/api/shared/types/graphql';
-import { ErrorResult } from '@/utils/error-result.utils';
+import { ErrorResult } from '@/utils/error-result';
 
 /**
  * Error thrown when the email provided already exists in the system

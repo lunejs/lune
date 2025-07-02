@@ -2,7 +2,7 @@ import { Transaction } from '../connection';
 import { User } from '../entities/user';
 import { Repository } from './repository';
 import { TABLES } from '../tables';
-import { UserSerializer } from '../serializers/user.serializer';
+import { UserSerializer } from '../serializers/user';
 
 export class UserRepository extends Repository<User> {
   constructor(trx: Transaction) {

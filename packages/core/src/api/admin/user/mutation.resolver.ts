@@ -1,7 +1,7 @@
 import { GraphqlContext } from '@/api/shared/context/types';
 import { MutationCreateUserArgs } from '@/api/shared/types/graphql';
 import { UserService } from '@/business/user/user.service';
-import { isErrorResult } from '@/utils/error-result.utils';
+import { isErrorResult } from '@/utils/error-result';
 
 async function createUser(_, { input }: MutationCreateUserArgs, ctx: GraphqlContext) {
   const userService = new UserService(ctx);
