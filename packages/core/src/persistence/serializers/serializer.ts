@@ -1,4 +1,4 @@
-import { Logger } from '@/logger';
+import { VendyxError } from '@/errors/vendyx.error';
 
 /**
  * @description
@@ -53,7 +53,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Failed to deserialize row', error);
+      throw new SerializeError('Serializer.deserialize', error);
     }
   }
 
@@ -87,7 +87,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Failed to serialize data', error);
+      throw new SerializeError('Serializer.serialize', error);
     }
   }
 
@@ -124,18 +124,15 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Failed to serialize fields', error);
+      throw new SerializeError('Serializer.serializeFields', error);
     }
   }
 }
 
-export class SerializeError extends Error {
-  constructor(message: string, error: unknown) {
-    super(message);
-    this.name = 'SerializeError';
+export class SerializeError extends VendyxError {
+  constructor(ctx: string, error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown serialization error';
 
-    if (process.env.NODE_ENV !== 'test') {
-      Logger.error('Serializer', message, error);
-    }
+    super(ctx, message, error);
   }
 }

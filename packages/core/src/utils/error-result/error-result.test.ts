@@ -3,7 +3,7 @@ import { ErrorResult, isErrorResult } from './error-result';
 describe('isErrorResult', () => {
   test('returns true when is an instance of ErrorResult', () => {
     class CustomError extends ErrorResult<string> {}
-    const errorInstance = new CustomError('ERROR_CODE', 'An error occurred');
+    const errorInstance = new CustomError('Test', 'ERROR_CODE', 'An error occurred');
 
     expect(isErrorResult(errorInstance)).toBe(true);
   });

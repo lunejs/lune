@@ -41,6 +41,8 @@ export class Logger {
    * @param metadata - Optional metadata, typically an Error or object.
    */
   static error(module: string, message: string, metadata?: unknown) {
+    if (!this.canLog()) return;
+
     console.error(this.common(), red('✖'), gray(`[${module}]`), red(message));
 
     if (metadata) {
@@ -65,6 +67,8 @@ export class Logger {
    * @param version - Version string (e.g., "0.1.0")
    */
   static banner(version: string) {
+    if (!this.canLog()) return;
+
     console.log(white(`${this.common()} ⬢ Starting ${version}`));
   }
 

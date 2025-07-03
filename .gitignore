@@ -9,14 +9,14 @@ node_modules
 .env
 .env.local
 .env.development.local
-.env.testing.local
+.env.test
 .env.production.local
 
 # Migration env files
 .env.migration
 .env.migration.local
 .env.migration.development
-.env.migration.testing
+.env.migration.test
 .env.migration.production
 
 # Testing
