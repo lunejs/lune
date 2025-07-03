@@ -14,7 +14,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/tests/*": ["./tests/*"]
     },
     "types": ["@types/jest"]
   }

@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["tests", "database", "scripts", "**/*.test.ts"],
+  "include": ["src", "src/**/*.gql"]
+
+}

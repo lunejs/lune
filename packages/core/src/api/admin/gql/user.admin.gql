@@ -1,0 +1,100 @@
+"""
+A vendyx customer
+"""
+type User implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The user's email (unique)
+  """
+  email: String!
+  """
+  The user's shops
+  """
+  shops: ShopList!
+}
+
+type UserList implements List {
+  items: [User!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  """
+  Get user in session
+  """
+  whoami: User
+  """
+  Validate current token of the user in session
+  """
+  validateAccessToken: Boolean
+}
+
+type Mutation {
+  """
+  Create a new user
+  """
+  createUser(input: CreateUserInput!): UserResult!
+  """
+  Update an existing user
+  """
+  updateUser(id: ID!, input: UpdateUserInput!): UserResult!
+  """
+  Generate an access token for a user
+  This token can be used to access user-specific resources
+  """
+  generateUserAccessToken(input: GenerateUserAccessTokenInput!): UserAccessTokenResult!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+}
+
+input GenerateUserAccessTokenInput {
+  email: String!
+  password: String!
+}
+
+type UserAccessTokenResult {
+  apiErrors: [UserErrorResult!]!
+  """
+  The access token for the user, needed to access user-specific resources
+  """
+  accessToken: String
+}
+
+type UserResult {
+  user: User
+  apiErrors: [UserErrorResult!]!
+}
+
+type UserErrorResult {
+  code: UserErrorCode!
+  message: String!
+}
+
+enum UserErrorCode {
+  """
+  Error thrown when the provided credentials are invalid
+  """
+  INVALID_CREDENTIALS
+  """
+  Error thrown when the email provided already exists in the system
+  """
+  EMAIL_ALREADY_EXISTS
+  """
+  Error thrown when the password provided is invalid, e.g., too short or does not meet complexity requirements
+  """
+  INVALID_PASSWORD
+  """
+  Error thrown when the provided email is not valid or does not conform to the expected format
+  """
+  INVALID_EMAIL
+}

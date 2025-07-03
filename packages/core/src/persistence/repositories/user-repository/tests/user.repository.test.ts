@@ -1,17 +1,19 @@
 import { Transaction } from '@/persistence/connection';
-import { setupTestDb } from '../../../../../tests/setup-db';
 import { UserRepository } from '../user.repository';
 import { TABLES } from '@/persistence/tables';
 import { userRepositoryMock } from './user.repository.mock';
 import { RepositoryError } from '../../repository.error';
+import { TestHelper } from '@/tests/utils/test-helper';
 
 describe('UserRepository', () => {
-  const database = setupTestDb();
   let trx: Transaction;
   let repository: UserRepository;
 
+  const testHelper = new TestHelper();
+  const q = testHelper.getQueryBuilder();
+
   beforeEach(async () => {
-    trx = await database.transaction();
+    trx = await q.transaction();
 
     repository = new UserRepository(trx);
   });
@@ -21,7 +23,7 @@ describe('UserRepository', () => {
   });
 
   afterAll(async () => {
-    await database.destroy();
+    await testHelper.destroyDatabase();
   });
 
   describe('emailExists', () => {

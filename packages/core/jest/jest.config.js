@@ -9,7 +9,8 @@ module.exports = {
   },
   rootDir: path.resolve(__dirname, '..'),
   moduleNameMapper: {
+    '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1'
   },
-  testMatch: ['<rootDir>/src/**/*.test.ts?(x)']
+  testMatch: ['<rootDir>/src/**/*.test.ts?(x)', '<rootDir>/tests/**/*.test.ts?(x)']
 };

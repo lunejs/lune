@@ -1,34 +1,36 @@
 import { Transaction } from '@/persistence/connection';
-import { setupTestDb } from '../../../../../tests/setup-db';
 import { recordsMock, TestEntity, TestRepository } from './repository.mock';
 import { RepositoryError } from '../../repository.error';
+import { TestHelper } from '@/tests/utils/test-helper';
 
 const TEST_TABLE_NAME = 'test_table';
 
 describe('Repository', () => {
-  const database = setupTestDb();
   let trx: Transaction;
   let repository: TestRepository;
 
+  const testHelper = new TestHelper();
+  const q = testHelper.getQueryBuilder();
+
   beforeAll(async () => {
-    await database.schema.createTable(TEST_TABLE_NAME, table => {
+    await q.schema.createTable(TEST_TABLE_NAME, table => {
       table.uuid('id').primary();
       table.string('email').notNullable();
       table.string('password').notNullable();
       table.boolean('is_active').notNullable();
-      table.timestamp('created_at').defaultTo(database.fn.now());
-      table.timestamp('updated_at').defaultTo(database.fn.now());
+      table.timestamp('created_at').defaultTo(q.fn.now());
+      table.timestamp('updated_at').defaultTo(q.fn.now());
       table.timestamp('deleted_at').nullable();
     });
   });
 
   afterAll(async () => {
-    await database.schema.dropTableIfExists(TEST_TABLE_NAME);
-    await database.destroy();
+    await q.schema.dropTableIfExists(TEST_TABLE_NAME);
+    await testHelper.destroyDatabase();
   });
 
   beforeEach(async () => {
-    trx = await database.transaction();
+    trx = await q.transaction();
 
     await trx(TEST_TABLE_NAME).insert(recordsMock);
 

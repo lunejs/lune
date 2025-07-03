@@ -2,10 +2,11 @@
   "name": "@vendyx/core",
   "version": "0.0.1",
   "scripts": {
-    "build": "rimraf dist && webpack --mode=production",
+    "build": "rimraf dist && tsc --build build.tsconfig.json",
     "start:dev": "nodemon",
-    "test": "NODE_ENV=test dotenv -e .env.test bash ./scripts/it-tests.sh",
-    "migrate:local": "knex migrate:latest --env local --knexfile ./database/knexfile.ts"
+    "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
+    "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
+    "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",

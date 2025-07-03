@@ -11,6 +11,8 @@ async function createUser(_, { input }: MutationCreateUserArgs, ctx: GraphqlCont
   return isErrorResult(result) ? { apiErrors: [result] } : { user: result, apiErrors: [] };
 }
 
-export const userMutationResolver = {
-  createUser
+export const userResolver = {
+  Mutation: {
+    createUser
+  }
 };

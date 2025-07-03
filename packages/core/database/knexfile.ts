@@ -1,14 +1,4 @@
 import type { Knex } from 'knex';
-import dotenv from 'dotenv';
-
-const env = process.env.NODE_ENV || 'local';
-
-const envPaths = {
-  ['local']: '.env.migration.local',
-  ['test']: '.env.migration.test'
-};
-
-dotenv.config({ path: `${envPaths[env]}` });
 
 const config: Record<string, Knex.Config> = {
   local: {
@@ -17,7 +7,7 @@ const config: Record<string, Knex.Config> = {
   },
   test: {
     client: 'pg',
-    connection: process.env.DATABASE_URL
+    connection: process.env.ADMIN_DATABASE_URL
   }
 };
 
