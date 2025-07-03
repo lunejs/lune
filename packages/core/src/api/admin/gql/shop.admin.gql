@@ -1,3 +1,6 @@
+"""
+A vendyx shop
+"""
 type Shop implements Node {
   id: ID!
   createdAt: Date!

@@ -2,11 +2,13 @@
   "name": "@vendyx/core",
   "version": "0.0.1",
   "scripts": {
-    "build": "rimraf dist && tsc --build build.tsconfig.json",
-    "start:dev": "nodemon",
+    "build": "rimraf dist && tsc --build build.tsconfig.json && yarn script:post-build",
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
+    "start:dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
-    "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts"
+    "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts",
+    "gen:types": "graphql-codegen --config ./scripts/gen-types.ts",
+    "script:post-build": "gulp -f ./scripts/post-build.ts postBuild"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",
@@ -14,6 +16,7 @@
     "express": "^5.1.0",
     "graphql": "^16.11.0",
     "graphql-yoga": "^5.13.5",
+    "gulp": "^5.0.1",
     "knex": "^3.1.0",
     "pg": "^8.16.3",
     "rimraf": "^6.0.1",
@@ -24,6 +27,7 @@
     "@graphql-codegen/cli": "5.0.3",
     "@graphql-codegen/typescript-resolvers": "^4.5.1",
     "@types/express": "^5.0.3",
+    "@types/gulp": "^4.0.17",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
     "@types/supertest": "^6.0.3",

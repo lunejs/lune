@@ -265,7 +265,6 @@ export type UserErrorResult = {
   message: Scalars['String']['output'];
 };
 
-/** A list of users */
 export type UserList = List & {
   __typename?: 'UserList';
   count: Scalars['Int']['output'];
