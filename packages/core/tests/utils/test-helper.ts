@@ -1,5 +1,7 @@
 import knex from 'knex';
+import * as bcrypt from 'bcrypt';
 import { Database } from '@/persistence/connection';
+import { Fixture } from './fixtures';
 
 export class TestHelper {
   private db: Database;
@@ -35,6 +37,26 @@ export class TestHelper {
 
   getQueryBuilder() {
     return this.db;
+  }
+
+  async loadFixtures(fixtures: Fixture[]) {
+    if (!this.db) {
+      throw new Error('Database connection is not initialized.');
+    }
+
+    for (const { table, fixtures: data } of fixtures) {
+      if (!data.length) return;
+
+      await this.db(table).insert(data);
+    }
+  }
+
+  static async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, bcrypt.genSaltSync());
+  }
+
+  static async comparePassword(password: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(password, hash);
   }
 
   static generateUUID() {

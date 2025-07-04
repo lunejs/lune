@@ -1,17 +1,20 @@
 import { VendyxServer } from '@/server';
 import * as bcrypt from 'bcrypt';
 import request from 'supertest';
-import { CREATE_USER_MUTATION, createUserMock } from './create-user.mock';
 import { TABLES } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
+import { buildUserFixtures, UserConstants } from './fixtures/user.fixtures';
 
 describe('createUser - Mutation', () => {
-  // const testDatabase = new TestDatabase();
   const testHelper = new TestHelper();
   const q = testHelper.getQueryBuilder();
 
   const vendyxServer = new VendyxServer();
   const app = vendyxServer.getApp();
+
+  beforeEach(async () => {
+    await testHelper.loadFixtures([await buildUserFixtures()]);
+  });
 
   afterEach(async () => {
     await testHelper.resetDatabase();
@@ -28,14 +31,14 @@ describe('createUser - Mutation', () => {
       .send({
         query: CREATE_USER_MUTATION,
         variables: {
-          input: { email: 'admin@gmail.com', password: '12345678' }
+          input: { email: 'newemail@gmail.com', password: '12345678' }
         }
       });
 
     const { apiErrors, user } = res.body.data.createUser;
 
     expect(apiErrors).toEqual([]);
-    expect(user.email).toBe('admin@gmail.com');
+    expect(user.email).toBe('newemail@gmail.com');
     expect(user.id).toMatch(TestHelper.Regex.UUID);
   });
 
@@ -45,7 +48,7 @@ describe('createUser - Mutation', () => {
       .send({
         query: CREATE_USER_MUTATION,
         variables: {
-          input: { email: 'admin@gmail.com', password: '12345678' }
+          input: { email: 'newemail@gmail.com', password: '12345678' }
         }
       });
 
@@ -79,7 +82,7 @@ describe('createUser - Mutation', () => {
       .send({
         query: CREATE_USER_MUTATION,
         variables: {
-          input: { email: 'email@gmail.com', password: '123' }
+          input: { email: 'newemail@gmail.com', password: '123' }
         }
       });
 
@@ -90,14 +93,12 @@ describe('createUser - Mutation', () => {
   });
 
   test('returns EMAIL_ALREADY_EXISTS when email already exists', async () => {
-    await q(TABLES.USERS).insert(createUserMock.userAlreadyCreated);
-
     const res = await request(app)
       .post('/admin-api')
       .send({
         query: CREATE_USER_MUTATION,
         variables: {
-          input: createUserMock.userAlreadyCreated
+          input: { email: UserConstants.ExistingEmail, password: '12345678' }
         }
       });
 
@@ -107,3 +108,18 @@ describe('createUser - Mutation', () => {
     expect(user).toBeNull();
   });
 });
+
+export const CREATE_USER_MUTATION = /* GraphQL */ `
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
