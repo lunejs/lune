@@ -1,0 +1,78 @@
+import { VendyxServer } from '@/server';
+import request from 'supertest';
+import * as bcrypt from 'bcrypt';
+import { TABLES } from '@/persistence/tables';
+import { TestHelper } from '@/tests/utils/test-helper';
+import { GENERATE_USER_ACCESS_TOKEN_MUTATION } from './generate-user-access-token.mock';
+
+describe('generateUserAccessToken - Mutation', () => {
+  const testHelper = new TestHelper();
+  const q = testHelper.getQueryBuilder();
+
+  const vendyxServer = new VendyxServer();
+  const app = vendyxServer.getApp();
+
+  beforeEach(async () => {
+    await q(TABLES.USERS).insert({
+      email: 'sam@gmail.com',
+      password: await bcrypt.hash('12345678', 10)
+    });
+  });
+
+  afterEach(async () => {
+    await testHelper.resetDatabase();
+  });
+
+  afterAll(async () => {
+    await testHelper.destroyDatabase();
+    await vendyxServer.teardown();
+  });
+
+  test('generates user access token with valid input', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .send({
+        query: GENERATE_USER_ACCESS_TOKEN_MUTATION,
+        variables: {
+          input: { email: 'sam@gmail.com', password: '12345678' }
+        }
+      });
+
+    const { apiErrors, accessToken } = res.body.data.generateUserAccessToken;
+
+    expect(apiErrors).toEqual([]);
+    expect(accessToken).toMatch(TestHelper.Regex.JWT);
+  });
+
+  test('returns INVALID_CREDENTIALS when email is incorrect', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .send({
+        query: GENERATE_USER_ACCESS_TOKEN_MUTATION,
+        variables: {
+          input: { email: 'nonexisting.email@gmail.com', password: '12345678' }
+        }
+      });
+
+    const { apiErrors, accessToken } = res.body.data.generateUserAccessToken;
+
+    expect(apiErrors[0].code).toBe('INVALID_CREDENTIALS');
+    expect(accessToken).toBeNull();
+  });
+
+  test('returns INVALID_CREDENTIALS when password is incorrect', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .send({
+        query: GENERATE_USER_ACCESS_TOKEN_MUTATION,
+        variables: {
+          input: { email: 'sam@gmail.com', password: 'incorrect-password' }
+        }
+      });
+
+    const { apiErrors, accessToken } = res.body.data.generateUserAccessToken;
+
+    expect(apiErrors[0].code).toBe('INVALID_CREDENTIALS');
+    expect(accessToken).toBeNull();
+  });
+});

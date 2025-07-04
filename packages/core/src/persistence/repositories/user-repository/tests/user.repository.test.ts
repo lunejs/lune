@@ -26,9 +26,9 @@ describe('UserRepository', () => {
     await testHelper.destroyDatabase();
   });
 
-  describe('emailExists', () => {
+  describe('findByEmail', () => {
     test('returns undefined when email does not exist', async () => {
-      const result = await repository.emailExists('non.existing@email.com');
+      const result = await repository.findByEmail('non.existing@email.com');
 
       expect(result).toBeUndefined();
     });
@@ -38,7 +38,7 @@ describe('UserRepository', () => {
 
       await trx(TABLES.USERS).insert(user);
 
-      const result = await repository.emailExists(user.email as string);
+      const result = await repository.findByEmail(user.email as string);
 
       expect(result?.email).toBe(user.email);
     });
@@ -48,7 +48,7 @@ describe('UserRepository', () => {
         throw new Error();
       });
 
-      await expect(repository.emailExists('email')).rejects.toThrow(RepositoryError);
+      await expect(repository.findByEmail('email')).rejects.toThrow(RepositoryError);
     });
   });
 });

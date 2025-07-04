@@ -13,7 +13,7 @@ describe('createUser - Mutation', () => {
   const vendyxServer = new VendyxServer();
   const app = vendyxServer.getApp();
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await testHelper.resetDatabase();
   });
 

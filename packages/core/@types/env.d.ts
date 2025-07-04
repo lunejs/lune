@@ -7,6 +7,7 @@ declare global {
       DATABASE_URL: string;
       ADMIN_DATABASE_URL: string;
       PORT: string;
+      JWT_SECRET: string;
     }
   }
 }

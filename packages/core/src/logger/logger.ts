@@ -1,4 +1,4 @@
-import { white, gray, green, yellow, blue, red } from 'kleur';
+import { white, gray, green, yellow, blue, red, magenta } from 'kleur';
 
 /**
  * @description
@@ -51,21 +51,18 @@ export class Logger {
     }
   }
 
-  /**
-   * @description
-   * Logs a success or "ready" message. Used on startup or for success states.
-   * @param message - The message to log.
-   */
+  static graphql(message: string) {
+    if (!this.canLog()) return;
+
+    console.log(this.common(), magenta('◆'), gray(`[GraphqlRequest]`), magenta(message));
+  }
+
   static ready(message: string) {
     if (!this.canLog()) return;
 
     console.log(this.common(), green('✔'), white(message));
   }
 
-  /**
-   * @description Logs the initial startup banner (Next.js style).
-   * @param version - Version string (e.g., "0.1.0")
-   */
   static banner(version: string) {
     if (!this.canLog()) return;
 

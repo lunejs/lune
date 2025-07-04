@@ -16,7 +16,6 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/tests/*": ["./tests/*"]
-    },
-    "types": ["@types/jest", "node"]
+    }
   }
 }

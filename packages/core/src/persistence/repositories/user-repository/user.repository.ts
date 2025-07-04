@@ -10,7 +10,7 @@ export class UserRepository extends Repository<User> {
     super(TABLES.USERS, trx, new UserSerializer());
   }
 
-  async emailExists(email: string) {
+  async findByEmail(email: string) {
     try {
       return await this.findOne({ where: { email } });
     } catch (error) {

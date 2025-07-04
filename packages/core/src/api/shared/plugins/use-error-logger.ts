@@ -16,6 +16,8 @@ export function useErrorLogger(): Plugin {
 
             if (original instanceof VendyxError) {
               Logger.error(original.ctx, original.message, original.metadata);
+            } else if (original instanceof Error) {
+              Logger.error('Application', original.message, original);
             }
           }
         }
