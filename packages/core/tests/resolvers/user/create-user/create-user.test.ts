@@ -1,4 +1,5 @@
 import { VendyxServer } from '@/server';
+import * as bcrypt from 'bcrypt';
 import request from 'supertest';
 import { CREATE_USER_MUTATION, createUserMock } from './create-user.mock';
 import { TABLES } from '@/persistence/tables';
@@ -12,7 +13,7 @@ describe('createUser - Mutation', () => {
   const vendyxServer = new VendyxServer();
   const app = vendyxServer.getApp();
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await testHelper.resetDatabase();
   });
 
@@ -21,7 +22,7 @@ describe('createUser - Mutation', () => {
     await vendyxServer.teardown();
   });
 
-  test('created user with valid input', async () => {
+  test('creates user with valid input', async () => {
     const res = await request(app)
       .post('/admin-api')
       .send({
@@ -34,10 +35,26 @@ describe('createUser - Mutation', () => {
     const { apiErrors, user } = res.body.data.createUser;
 
     expect(apiErrors).toEqual([]);
-    expect(user).toBeDefined();
-
     expect(user.email).toBe('admin@gmail.com');
     expect(user.id).toMatch(TestHelper.Regex.UUID);
+  });
+
+  test('creates user with hashed password', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .send({
+        query: CREATE_USER_MUTATION,
+        variables: {
+          input: { email: 'admin@gmail.com', password: '12345678' }
+        }
+      });
+
+    const { apiErrors, user } = res.body.data.createUser;
+
+    expect(apiErrors).toEqual([]);
+
+    const userInDb = await q(TABLES.USERS).select('password').where({ id: user.id }).first();
+    expect(await bcrypt.compare('12345678', userInDb.password)).toBe(true);
   });
 
   test('returns INVALID_EMAIL when email provided is invalid', async () => {

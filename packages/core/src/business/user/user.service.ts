@@ -3,9 +3,11 @@ import { CreateUserInput } from '@/api/shared/types/graphql';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
 import { EmailAlreadyExistsError, InvalidEmailError, InvalidPasswordError } from './user.errors';
 import { UserRepository } from '@/persistence/repositories/user-repository';
+import { PasswordService } from '@/security/password.service';
 
 export class UserService {
   private repository: UserRepository;
+  private passwordService = new PasswordService();
 
   constructor(ctx: GraphqlContext) {
     this.repository = new UserRepository(ctx.trx);
@@ -26,7 +28,9 @@ export class UserService {
       return new EmailAlreadyExistsError();
     }
 
-    const user = await this.repository.create({ email: input.email, password: input.password });
+    const hashedPassword = await this.passwordService.hash(input.password);
+
+    const user = await this.repository.create({ email: input.email, password: hashedPassword });
 
     return user;
   }
