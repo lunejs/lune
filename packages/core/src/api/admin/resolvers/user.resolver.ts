@@ -1,4 +1,4 @@
-import { CurrentUser, GraphqlContext } from '@/api/shared/context/types';
+import { CurrentUser, ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import {
   MutationCreateUserArgs,
@@ -7,7 +7,7 @@ import {
 import { UserService } from '@/business/user/user.service';
 import { isErrorResult } from '@/utils/error-result';
 
-async function whoami(_, __, ctx: GraphqlContext) {
+async function whoami(_, __, ctx: ExecutionContext) {
   const currentUser = ctx.currentUser as CurrentUser;
   const userService = new UserService(ctx);
 
@@ -16,7 +16,7 @@ async function whoami(_, __, ctx: GraphqlContext) {
   return user;
 }
 
-async function createUser(_, { input }: MutationCreateUserArgs, ctx: GraphqlContext) {
+async function createUser(_, { input }: MutationCreateUserArgs, ctx: ExecutionContext) {
   const userService = new UserService(ctx);
 
   const result = await userService.create(input);
@@ -27,7 +27,7 @@ async function createUser(_, { input }: MutationCreateUserArgs, ctx: GraphqlCont
 async function generateUserAccessToken(
   _,
   { input }: MutationGenerateUserAccessTokenArgs,
-  ctx: GraphqlContext
+  ctx: ExecutionContext
 ) {
   const userService = new UserService(ctx);
 

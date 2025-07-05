@@ -18,15 +18,15 @@ type Shop implements Node {
   """
   shopApiKey: String!
   """
-  Contact email for the shop
+  Contact email for the shop, used to show as contact information in emails
   """
   email: String!
   """
-  Contact phone number for the shop
+  Contact phone number for the shop, used to show as contact information in emails
   """
   phoneNumber: String!
   """
-  The shop's logo
+  The shop's logo, used for emails and branding in admin and storefront
   """
   logo: String
   """
@@ -34,7 +34,7 @@ type Shop implements Node {
   """
   storefrontUrl: String
   """
-  The shop's socials
+  The shop's socials, used for branding and social media links in emails and storefront
   """
   socials: ShopSocials
   """

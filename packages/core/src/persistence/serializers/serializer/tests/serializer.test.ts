@@ -1,14 +1,13 @@
 import { User } from '@/persistence/entities/user';
-import { UserSerializer } from '../user.serializer';
-import { userSerializerMock } from './user.serializer.mock';
-import { SerializeError } from '../../serializer';
+import { TestSerializerMock, TestSerializer } from './serializer.mock';
+import { SerializeError } from '../serializer';
 
 describe('User Serializer', () => {
   describe('deserialize', () => {
     test('returns a correct deserialized user object', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
-      const deserialized = serializer.deserialize(userSerializerMock.mockedUserRow);
+      const deserialized = serializer.deserialize(TestSerializerMock.MockedTestRow);
 
       expect(deserialized).toEqual({
         id: '123',
@@ -20,7 +19,7 @@ describe('User Serializer', () => {
     });
 
     test('returns and empty object when no row is provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       const deserialized = serializer.deserialize({});
 
@@ -28,7 +27,7 @@ describe('User Serializer', () => {
     });
 
     test('returns an empty object when null or undefined is provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       expect(() => {
         serializer.deserialize(null as unknown as object);
@@ -39,9 +38,9 @@ describe('User Serializer', () => {
     });
 
     test('returns partial user object when some fields are missing', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
-      const deserialized = serializer.deserialize(userSerializerMock.mockedPartialUserRow);
+      const deserialized = serializer.deserialize(TestSerializerMock.MockedPartialTestRow);
 
       expect(deserialized).toEqual({
         id: '123',
@@ -53,9 +52,9 @@ describe('User Serializer', () => {
 
   describe('serialize', () => {
     test('returns a correct serialized user object', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
-      const serialized = serializer.serialize(userSerializerMock.mockedUserEntity);
+      const serialized = serializer.serialize(TestSerializerMock.MockedTestEntity);
 
       expect(serialized).toEqual({
         id: '123',
@@ -67,7 +66,7 @@ describe('User Serializer', () => {
     });
 
     test('returns an empty object when no user is provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       const serialized = serializer.serialize({});
 
@@ -75,7 +74,7 @@ describe('User Serializer', () => {
     });
 
     test('returns an empty object when null or undefined is provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       expect(() => {
         serializer.serialize(null as unknown as object);
@@ -86,9 +85,9 @@ describe('User Serializer', () => {
     });
 
     test('returns partial user object when some fields are missing', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
-      const deserialized = serializer.serialize(userSerializerMock.mockedPartialUserEntity);
+      const deserialized = serializer.serialize(TestSerializerMock.MockedPartialTestEntity);
 
       expect(deserialized).toEqual({
         id: '123',
@@ -100,7 +99,7 @@ describe('User Serializer', () => {
 
   describe('serializeFields', () => {
     test('returns correct serialized fields', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       const fields = serializer.serializeFields(['id', 'createdAt', 'email']);
 
@@ -108,7 +107,7 @@ describe('User Serializer', () => {
     });
 
     test('returns empty array when no fields are provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       const fields = serializer.serializeFields([]);
 
@@ -116,7 +115,7 @@ describe('User Serializer', () => {
     });
 
     test('returns empty array when null or undefined is provided', () => {
-      const serializer = new UserSerializer();
+      const serializer = new TestSerializer();
 
       expect(() => {
         serializer.serializeFields(null as unknown as (keyof User)[]);

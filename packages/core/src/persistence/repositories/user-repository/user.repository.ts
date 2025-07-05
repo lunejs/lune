@@ -2,9 +2,9 @@ import { Transaction } from '../../connection';
 import { User } from '../../entities/user';
 import { Repository } from '../repository';
 import { Tables } from '../../tables';
-import { UserSerializer } from '../../serializers/user';
 import { RepositoryError } from '../repository.error';
 import { ID } from '@/persistence/entities/entity';
+import { UserSerializer } from '@/persistence/serializers/user.serializer';
 
 export class UserRepository extends Repository<User> {
   constructor(trx: Transaction) {

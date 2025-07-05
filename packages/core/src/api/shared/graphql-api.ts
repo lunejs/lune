@@ -2,7 +2,7 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLSchema } from 'graphql';
 import { createYoga, Plugin, YogaInitialContext, YogaServerInstance } from 'graphql-yoga';
-import { GraphqlContext } from './context/types';
+import { ExecutionContext } from './context/types';
 
 /**
  * @description
@@ -73,7 +73,7 @@ type GraphqlApiConfig = {
   typePaths: string[];
   resolvers: GraphqlApiResolver[];
   endpoint: string;
-  context: (initialContext: YogaInitialContext) => Promise<GraphqlContext>;
+  context: (initialContext: YogaInitialContext) => Promise<ExecutionContext>;
   plugins: (object | Plugin | Plugin<object & YogaInitialContext>)[] | undefined;
 };
 
@@ -85,7 +85,7 @@ export type GraphqlApiResolver = {
 export type GraphQLFieldResolver = (
   parent: unknown,
   args: unknown,
-  context: GraphqlContext,
+  context: ExecutionContext,
   info: unknown
 ) => unknown;
 

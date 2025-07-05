@@ -198,6 +198,30 @@ describe('Repository', () => {
     });
   });
 
+  describe('count', () => {
+    test('returns the total number of records', async () => {
+      const count = await repository.count({ where: {} });
+
+      expect(count).toBe(recordsMock.length);
+    });
+
+    test('returns the count of records that match the provided filters', async () => {
+      const count = await repository.count({ where: { isActive: true } });
+
+      expect(count).toBe(2);
+    });
+
+    test('returns 0 when no records match the provided filters', async () => {
+      const count = await repository.count({ where: { email: 'nonexisting@gmail.com' } });
+
+      expect(count).toBe(0);
+    });
+
+    test('throws RepositoryError when query fails', async () => {
+      await expect(repository.count(undefined as unknown as any)).rejects.toThrow(RepositoryError);
+    });
+  });
+
   describe('create', () => {
     test('creates a new record and returns it', async () => {
       const input: TestEntity = {

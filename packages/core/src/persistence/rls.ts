@@ -1,6 +1,6 @@
-import { GraphqlContext } from '@/api/shared/context/types';
+import { ExecutionContext } from '@/api/shared/context/types';
 
-export async function disableRLS({ trx }: GraphqlContext) {
+export async function disableRLS({ trx }: ExecutionContext) {
   await trx.raw(`
     SELECT set_config('app.current_shop_id', '00000000-0000-0000-0000-000000000000', TRUE)
   `);
@@ -12,6 +12,6 @@ export async function disableRLS({ trx }: GraphqlContext) {
   `);
 }
 
-export async function enableRLS({ trx, shopId }: GraphqlContext) {
+export async function enableRLS({ trx, shopId }: ExecutionContext) {
   await trx.raw(`SELECT set_config('app.current_shop_id', '${shopId}', TRUE)`);
 }

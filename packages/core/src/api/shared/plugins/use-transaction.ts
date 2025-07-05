@@ -1,5 +1,5 @@
 import { isAsyncIterable, Plugin } from 'graphql-yoga';
-import { GraphqlContext } from '../context/types';
+import { ExecutionContext } from '../context/types';
 
 export function useTransaction(): Plugin {
   return {
@@ -8,7 +8,7 @@ export function useTransaction(): Plugin {
         return;
       }
 
-      const context = p.context as unknown as GraphqlContext;
+      const context = p.context as unknown as ExecutionContext;
 
       if (p.result?.errors) {
         context.trx.rollback();

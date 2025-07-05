@@ -1,23 +1,27 @@
 /* eslint-disable */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { GraphqlContext } from '../context/types';
+import { ExecutionContext } from '../context/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
-  JSON: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
+  JSON: { input: any; output: any };
 };
 
 export type BooleanFilter = {
@@ -75,27 +79,22 @@ export type Mutation = {
   updateUser: UserResult;
 };
 
-
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
 };
-
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
 
-
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
-
 
 export type MutationUpdateShopArgs = {
   input: UpdateShopInput;
   shopSlug: Scalars['String']['input'];
 };
-
 
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
@@ -136,11 +135,9 @@ export type Query = {
   whoami?: Maybe<User>;
 };
 
-
 export type QueryShopArgs = {
   slug: Scalars['String']['input'];
 };
-
 
 export type QueryShopsArgs = {
   input?: InputMaybe<ListInput>;
@@ -278,15 +275,14 @@ export type UserResult = {
   user?: Maybe<User>;
 };
 
-
-
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -309,7 +305,13 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
   subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
   resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
@@ -323,7 +325,13 @@ export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, 
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
   | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
@@ -333,7 +341,11 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -345,11 +357,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( ShopList ) | ( UserList );
-  Node: ( Shop ) | ( User );
+  List: ShopList | UserList;
+  Node: Shop | User;
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -433,41 +444,89 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'JSON';
 }
 
-export type ListResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
+export type ListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']
+> = {
   __resolveType: TypeResolveFn<'ShopList' | 'UserList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
-  createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
-  updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
-  updateUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id' | 'input'>>;
+export type MutationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  createShop?: Resolver<
+    ResolversTypes['ShopResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateShopArgs, 'input'>
+  >;
+  createUser?: Resolver<
+    ResolversTypes['UserResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'input'>
+  >;
+  generateUserAccessToken?: Resolver<
+    ResolversTypes['UserAccessTokenResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>
+  >;
+  updateShop?: Resolver<
+    ResolversTypes['ShopResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['UserResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'id' | 'input'>
+  >;
 };
 
-export type NodeResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
+export type NodeResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']
+> = {
   __resolveType: TypeResolveFn<'Shop' | 'User', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
 };
 
-export type PageInfoResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+export type PageInfoResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+> = {
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'slug'>>;
+export type QueryResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = {
+  shop?: Resolver<
+    Maybe<ResolversTypes['Shop']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryShopArgs, 'slug'>
+  >;
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
   validateAccessToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   whoami?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
-export type ShopResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = {
+export type ShopResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -483,33 +542,49 @@ export type ShopResolvers<ContextType = GraphqlContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopErrorResultResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['ShopErrorResult'] = ResolversParentTypes['ShopErrorResult']> = {
+export type ShopErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends
+    ResolversParentTypes['ShopErrorResult'] = ResolversParentTypes['ShopErrorResult']
+> = {
   code?: Resolver<ResolversTypes['ShopErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopListResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['ShopList'] = ResolversParentTypes['ShopList']> = {
+export type ShopListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopList'] = ResolversParentTypes['ShopList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Shop']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopResultResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['ShopResult'] = ResolversParentTypes['ShopResult']> = {
+export type ShopResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopResult'] = ResolversParentTypes['ShopResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['ShopErrorResult']>, ParentType, ContextType>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopSocialsResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['ShopSocials'] = ResolversParentTypes['ShopSocials']> = {
+export type ShopSocialsResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopSocials'] = ResolversParentTypes['ShopSocials']
+> = {
   facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   instagram?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -518,32 +593,46 @@ export type UserResolvers<ContextType = GraphqlContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserAccessTokenResultResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['UserAccessTokenResult'] = ResolversParentTypes['UserAccessTokenResult']> = {
+export type UserAccessTokenResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends
+    ResolversParentTypes['UserAccessTokenResult'] = ResolversParentTypes['UserAccessTokenResult']
+> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['UserErrorResult']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserErrorResultResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['UserErrorResult'] = ResolversParentTypes['UserErrorResult']> = {
+export type UserErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends
+    ResolversParentTypes['UserErrorResult'] = ResolversParentTypes['UserErrorResult']
+> = {
   code?: Resolver<ResolversTypes['UserErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserListResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['UserList'] = ResolversParentTypes['UserList']> = {
+export type UserListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserList'] = ResolversParentTypes['UserList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResultResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['UserResult'] = ResolversParentTypes['UserResult']> = {
+export type UserResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserResult'] = ResolversParentTypes['UserResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['UserErrorResult']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = GraphqlContext> = {
+export type Resolvers<ContextType = ExecutionContext> = {
   Date?: GraphQLScalarType;
   JSON?: GraphQLScalarType;
   List?: ListResolvers<ContextType>;
@@ -562,4 +651,3 @@ export type Resolvers<ContextType = GraphqlContext> = {
   UserList?: UserListResolvers<ContextType>;
   UserResult?: UserResultResolvers<ContextType>;
 };
-

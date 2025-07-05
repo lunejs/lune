@@ -2,7 +2,7 @@ import { JwtService } from '@/libs/jwt';
 import { Transaction } from '@/persistence/connection';
 import { Repositories } from '@/persistence/repositories/build-repositories';
 
-export type GraphqlContext = {
+export type ExecutionContext = {
   trx: Transaction;
   shopId: string;
   currentUser: CurrentUser | null;

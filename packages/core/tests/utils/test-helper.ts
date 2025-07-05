@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Database } from '@/persistence/connection';
 import { Fixture } from './fixtures';
+import { FixtureDefaults } from './default-fixtures';
 
 export class TestHelper {
   private db: Database;
@@ -46,7 +47,14 @@ export class TestHelper {
     }
 
     for (const fixture of fixtures) {
-      await this.db(fixture.table).insert(await fixture.build());
+      const partialEntities = await fixture.build();
+      const defaults = FixtureDefaults[fixture.table];
+
+      if (!defaults) throw new Error('No defaults found for fixture table: ' + fixture.table);
+
+      const entitiesWithDefaults = partialEntities.map(entity => ({ ...defaults, ...entity }));
+
+      await this.db(fixture.table).insert(entitiesWithDefaults);
     }
   }
 

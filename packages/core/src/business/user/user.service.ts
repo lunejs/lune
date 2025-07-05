@@ -1,4 +1,4 @@
-import { GraphqlContext } from '@/api/shared/context/types';
+import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
 import {
@@ -16,7 +16,7 @@ export class UserService {
   private repository: UserRepository;
   private jwtService: JwtService;
 
-  constructor(ctx: GraphqlContext) {
+  constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.user;
     this.jwtService = ctx.jwtService;
   }

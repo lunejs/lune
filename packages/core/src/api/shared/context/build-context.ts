@@ -1,6 +1,6 @@
 import { Database } from '@/persistence/connection';
 import { YogaInitialContext } from 'graphql-yoga';
-import { GraphqlContext } from './types';
+import { ExecutionContext } from './types';
 import { buildRepositories } from '@/persistence/repositories/build-repositories';
 import { JwtService } from '@/libs/jwt';
 import { UserJWT } from '../types/api.types';
@@ -12,7 +12,7 @@ export async function buildContext(
   initialContext: YogaInitialContext,
   database: Database,
   jwtService: JwtService
-): Promise<GraphqlContext> {
+): Promise<ExecutionContext> {
   try {
     const rawHeader = initialContext.request.headers.get('authorization') ?? '';
 

@@ -48,6 +48,20 @@ export class Repository<T extends object> {
     }
   }
 
+  async count(input: CountOptions<T>): Promise<number> {
+    try {
+      const query = this.trx(this.tableName)
+        .count('* as count')
+        .where(this.serializer.serialize(input.where));
+
+      const [{ count }] = await query;
+
+      return Number(count);
+    } catch (error) {
+      throw new RepositoryError('Repository.count', error);
+    }
+  }
+
   async create(input: Input<T>): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName).insert(this.serializer.serialize(input), '*');
@@ -99,6 +113,10 @@ type FindManyOptions<T> = {
   fields?: Fields<T>;
   limit?: number;
   offset?: number;
+};
+
+type CountOptions<T> = {
+  where: Where<T>;
 };
 
 type Input<T> = Partial<T>;

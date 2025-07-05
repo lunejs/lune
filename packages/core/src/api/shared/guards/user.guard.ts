@@ -1,10 +1,10 @@
-import { GraphqlContext } from '../context/types';
+import { ExecutionContext } from '../context/types';
 import { GraphQLFieldResolver } from '../graphql-api';
 import { UnauthorizedError } from '../errors/api.errors';
 
 export const UseUserGuard =
   (resolver: GraphQLFieldResolver) =>
-  (parent: unknown, args: unknown, ctx: GraphqlContext, info: unknown) => {
+  (parent: unknown, args: unknown, ctx: ExecutionContext, info: unknown) => {
     if (!ctx.currentUser) {
       throw new UnauthorizedError('Invalid access token');
     }
