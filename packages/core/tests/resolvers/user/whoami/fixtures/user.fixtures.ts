@@ -3,8 +3,13 @@ import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
+const ID = TestHelper.generateUUID();
+const Email = 'magik@gmail.com';
+
 export const UserConstants = {
-  ExistingEmail: 'existing@email.com'
+  ID,
+  Email,
+  AccessToken: TestHelper.generateJWT({ sub: ID, email: Email })
 };
 
 export class UserFixtures implements Fixture<UserTable> {
@@ -13,8 +18,8 @@ export class UserFixtures implements Fixture<UserTable> {
   async build(): Promise<Partial<UserTable>[]> {
     return [
       {
-        id: TestHelper.generateUUID(),
-        email: UserConstants.ExistingEmail,
+        id: UserConstants.ID,
+        email: UserConstants.Email,
         password: await TestHelper.hashPassword('12345678'),
         created_at: new Date(),
         updated_at: new Date()

@@ -1,7 +1,7 @@
 import { VendyxServer } from '@/server';
 import request from 'supertest';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { buildUserFixtures } from './fixtures/user.fixtures';
+import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('generateUserAccessToken - Mutation', () => {
   const testHelper = new TestHelper();
@@ -10,7 +10,7 @@ describe('generateUserAccessToken - Mutation', () => {
   const app = vendyxServer.getApp();
 
   beforeEach(async () => {
-    await testHelper.loadFixtures([await buildUserFixtures()]);
+    await testHelper.loadFixtures([new UserFixtures()]);
   });
 
   afterEach(async () => {

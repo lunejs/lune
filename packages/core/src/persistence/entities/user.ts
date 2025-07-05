@@ -1,15 +1,11 @@
-export type User = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  email: string;
-  password: string;
-};
+import { VendyxEntity, VendyxTable } from './entity';
 
-export type UserTable = {
-  id: string;
-  created_at: Date;
-  updated_at: Date;
+export interface User extends VendyxEntity {
   email: string;
   password: string;
-};
+}
+
+export interface UserTable extends VendyxTable {
+  email: string;
+  password: string;
+}

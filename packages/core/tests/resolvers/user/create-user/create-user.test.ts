@@ -1,9 +1,9 @@
 import { VendyxServer } from '@/server';
 import * as bcrypt from 'bcrypt';
 import request from 'supertest';
-import { TABLES } from '@/persistence/tables';
+import { Tables } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { buildUserFixtures, UserConstants } from './fixtures/user.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('createUser - Mutation', () => {
   const testHelper = new TestHelper();
@@ -13,7 +13,7 @@ describe('createUser - Mutation', () => {
   const app = vendyxServer.getApp();
 
   beforeEach(async () => {
-    await testHelper.loadFixtures([await buildUserFixtures()]);
+    await testHelper.loadFixtures([new UserFixtures()]);
   });
 
   afterEach(async () => {
@@ -56,7 +56,7 @@ describe('createUser - Mutation', () => {
 
     expect(apiErrors).toEqual([]);
 
-    const userInDb = await q(TABLES.USERS).select('password').where({ id: user.id }).first();
+    const userInDb = await q(Tables.Users).select('password').where({ id: user.id }).first();
     expect(await bcrypt.compare('12345678', userInDb.password)).toBe(true);
   });
 

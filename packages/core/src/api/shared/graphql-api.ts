@@ -82,4 +82,11 @@ export type GraphqlApiResolver = {
   Mutation?: Record<string, any>;
 };
 
+export type GraphQLFieldResolver = (
+  parent: unknown,
+  args: unknown,
+  context: GraphqlContext,
+  info: unknown
+) => unknown;
+
 type GraphqlApiHandler = YogaServerInstance<object, object>;

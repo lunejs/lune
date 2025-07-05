@@ -41,8 +41,12 @@ export class JwtService {
    * // decoded will contain the payload if the token is valid
    * ```
    */
-  async verifyToken(token: string) {
-    return jwt.verify(token, this.config.secretKey);
+  async verifyToken<TPayload>(token: string): Promise<TPayload | null> {
+    try {
+      return jwt.verify(token, this.config.secretKey) as TPayload;
+    } catch {
+      return null;
+    }
   }
 }
 

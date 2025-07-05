@@ -1,9 +1,8 @@
 import { Transaction } from '@/persistence/connection';
 import { UserRepository } from '../user.repository';
-import { TABLES } from '@/persistence/tables';
-import { userRepositoryMock } from './user.repository.mock';
 import { RepositoryError } from '../../repository.error';
 import { TestHelper } from '@/tests/utils/test-helper';
+import { UserRepositoryConstants, UserRepositoryMock } from './user.repository.fixtures';
 
 describe('UserRepository', () => {
   let trx: Transaction;
@@ -15,11 +14,13 @@ describe('UserRepository', () => {
   beforeEach(async () => {
     trx = await q.transaction();
 
+    await testHelper.loadFixtures([new UserRepositoryMock()]);
     repository = new UserRepository(trx);
   });
 
   afterEach(async () => {
     await trx.rollback();
+    await testHelper.resetDatabase();
   });
 
   afterAll(async () => {
@@ -34,13 +35,9 @@ describe('UserRepository', () => {
     });
 
     test('returns user when email exists', async () => {
-      const [user] = userRepositoryMock;
+      const result = await repository.findByEmail('existing@gmail.com');
 
-      await trx(TABLES.USERS).insert(user);
-
-      const result = await repository.findByEmail(user.email as string);
-
-      expect(result?.email).toBe(user.email);
+      expect(result?.email).toBe('existing@gmail.com');
     });
 
     test('throws RepositoryError when emailExists fails', async () => {
@@ -49,6 +46,30 @@ describe('UserRepository', () => {
       });
 
       await expect(repository.findByEmail('email')).rejects.toThrow(RepositoryError);
+    });
+  });
+
+  describe('findById', () => {
+    test('returns undefined when id does not exist', async () => {
+      const result = await repository.findById(TestHelper.generateUUID());
+
+      expect(result).toBeUndefined();
+    });
+
+    test('returns user when id exists', async () => {
+      const result = await repository.findById(UserRepositoryConstants.UserId);
+
+      expect(result?.id).toBe(UserRepositoryConstants.UserId);
+    });
+
+    test('throws RepositoryError when emailExists fails', async () => {
+      jest.spyOn(repository, 'findOne').mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      await expect(repository.findById(UserRepositoryConstants.UserId)).rejects.toThrow(
+        RepositoryError
+      );
     });
   });
 });

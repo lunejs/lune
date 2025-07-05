@@ -1,4 +1,4 @@
-export const TABLES = {
-  USERS: 'users',
-  SHOP: 'shops'
-};
+export const enum Tables {
+  Users = 'users',
+  Shop = 'shops'
+}

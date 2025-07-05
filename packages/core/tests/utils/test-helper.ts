@@ -1,4 +1,5 @@
 import knex from 'knex';
+import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Database } from '@/persistence/connection';
 import { Fixture } from './fixtures';
@@ -44,11 +45,13 @@ export class TestHelper {
       throw new Error('Database connection is not initialized.');
     }
 
-    for (const { table, fixtures: data } of fixtures) {
-      if (!data.length) return;
-
-      await this.db(table).insert(data);
+    for (const fixture of fixtures) {
+      await this.db(fixture.table).insert(await fixture.build());
     }
+  }
+
+  static generateJWT(payload: Record<string, any>): string {
+    return jwt.sign(payload, process.env.JWT_SECRET ?? '');
   }
 
   static async hashPassword(password: string): Promise<string> {

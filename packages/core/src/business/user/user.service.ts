@@ -10,6 +10,7 @@ import {
 import { UserRepository } from '@/persistence/repositories/user-repository';
 import { PasswordService } from '@/libs/password';
 import { JwtService } from '@/libs/jwt';
+import { ID } from '@/persistence/entities/entity';
 
 export class UserService {
   private repository: UserRepository;
@@ -18,6 +19,10 @@ export class UserService {
   constructor(ctx: GraphqlContext) {
     this.repository = ctx.repositories.user;
     this.jwtService = ctx.jwtService;
+  }
+
+  async findById(id: ID) {
+    return this.repository.findById(id);
   }
 
   async create(input: CreateUserInput) {
