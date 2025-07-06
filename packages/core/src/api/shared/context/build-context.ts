@@ -5,8 +5,7 @@ import { buildRepositories } from '@/persistence/repositories/build-repositories
 import { JwtService } from '@/libs/jwt';
 import { UserJWT } from '../types/api.types';
 import { Logger } from '@/logger';
-
-const SHOP_ID_PLACEHOLDER = '00000000-0000-0000-0000-000000000000';
+import { runWithoutRLS } from '@/persistence/rls';
 
 export async function buildContext(
   initialContext: YogaInitialContext,
@@ -16,7 +15,7 @@ export async function buildContext(
   try {
     const rawHeader = initialContext.request.headers.get('authorization') ?? '';
 
-    const shopId = initialContext.request.headers.get('x_vendyx_shop_id') || SHOP_ID_PLACEHOLDER;
+    const shopId = initialContext.request.headers.get('x_vendyx_shop_id');
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
 
     const payload = token ? await jwtService.verifyToken<UserJWT>(token) : null;
@@ -24,11 +23,18 @@ export async function buildContext(
     const trx = await database.transaction();
 
     await trx.raw(`SELECT set_config('app.current_shop_id', '${shopId}', TRUE)`);
+    await trx.raw(
+      `SELECT set_config('app.current_owner_id', '${payload?.sub ?? '00000000-0000-0000-0000-000000000000'}', TRUE)`
+    );
+
+    const ownerId = payload?.sub ?? null;
 
     return {
       trx,
       shopId,
       jwtService,
+      runWithoutRLS: runWithoutRLS(trx, shopId, ownerId),
+      ownerId,
       currentUser: payload ? { id: payload.sub, email: payload.email } : null,
       repositories: buildRepositories(trx)
     };

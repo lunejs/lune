@@ -1,7 +1,6 @@
 import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateShopInput } from '@/api/shared/types/graphql';
 import { ShopRepository } from '@/persistence/repositories/shop-repository';
-import { disableRLS } from '@/persistence/rls';
 import { EmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
 import { clean } from '@vendyx/common';
@@ -18,9 +17,9 @@ export class ShopService {
   }
 
   async create(input: CreateShopInput) {
-    await disableRLS(this.ctx);
-
-    const emailExists = await this.repository.findOne({ where: { email: input.email } });
+    const emailExists = await this.ctx.runWithoutRLS(() =>
+      this.repository.findOne({ where: { email: input.email } })
+    );
 
     if (emailExists) {
       return new EmailAlreadyExistsError();

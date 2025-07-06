@@ -4,7 +4,7 @@ import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 const ID = TestHelper.generateUUID();
-const Email = 'magik@gmail.com';
+const Email = 'luna@snow.com';
 
 export const UserConstants = {
   ID,

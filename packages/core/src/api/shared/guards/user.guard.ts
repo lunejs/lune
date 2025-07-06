@@ -4,8 +4,14 @@ import { UnauthorizedError } from '../errors/api.errors';
 
 export const UseUserGuard =
   (resolver: GraphQLFieldResolver) =>
-  (parent: unknown, args: unknown, ctx: ExecutionContext, info: unknown) => {
+  async (parent: unknown, args: unknown, ctx: ExecutionContext, info: unknown) => {
     if (!ctx.currentUser) {
+      throw new UnauthorizedError('Invalid access token');
+    }
+
+    const user = await ctx.repositories.user.findById(ctx.currentUser.id);
+
+    if (!user) {
       throw new UnauthorizedError('Invalid access token');
     }
 

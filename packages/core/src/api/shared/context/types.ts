@@ -4,7 +4,9 @@ import { Repositories } from '@/persistence/repositories/build-repositories';
 
 export type ExecutionContext = {
   trx: Transaction;
-  shopId: string;
+  shopId: string | null;
+  ownerId: string | null;
+  runWithoutRLS: <T>(fn: () => Promise<T>) => Promise<T>;
   currentUser: CurrentUser | null;
   repositories: Repositories;
   jwtService: JwtService;

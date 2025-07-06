@@ -57,16 +57,22 @@ export class Logger {
     console.log(this.common(), magenta('◆'), gray(`[GraphqlRequest]`), magenta(message));
   }
 
-  static ready(message: string) {
+  static ready(ctx: string, message: string) {
     if (!this.canLog()) return;
 
-    console.log(this.common(), green('✔'), white(message));
+    console.log(this.common(), green('✔'), gray(`[${ctx}]`), white(message));
   }
 
   static banner(version: string) {
     if (!this.canLog()) return;
 
     console.log(white(`${this.common()} ⬢ Starting ${version}`));
+  }
+
+  static divider() {
+    if (!this.canLog()) return;
+
+    console.log(white(`${this.common()} ${'-'.repeat(60)}`));
   }
 
   private static common() {

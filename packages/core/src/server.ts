@@ -10,10 +10,7 @@ export class VendyxServer {
   private database: Database;
 
   constructor() {
-    Logger.banner('v0.0.1');
-
     dotenv.config({ path: `.env.local`, quiet: true });
-    Logger.ready('Environment loaded from .env.local');
 
     this.app = express();
 
@@ -33,7 +30,9 @@ export class VendyxServer {
     const port = process.env.PORT;
 
     this.app.listen(port, () => {
-      Logger.ready(`Ready at http://localhost:${port}`);
+      Logger.banner('v0.0.1');
+      Logger.ready('Server', 'Env:         .env.local');
+      Logger.ready('Server', `Admin API:   http://localhost:${port}/admin-api`);
     });
   }
 
