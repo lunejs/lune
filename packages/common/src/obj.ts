@@ -1,5 +1,3 @@
-// TODO: Move this file to common package
-
 import { NullToUndefined } from './types';
 
 /**
@@ -11,7 +9,7 @@ export function clean<T extends object>(obj: T): NullToUndefined<T> {
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key];
-      result[key] = value ?? undefined;
+      result[key] = value === null ? undefined : value;
     }
   }
 

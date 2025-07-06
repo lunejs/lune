@@ -23,7 +23,9 @@
     "pg": "^8.16.3",
     "rimraf": "^6.0.1",
     "slugify": "^1.6.6",
-    "zod": "^3.25.67"
+    "zod": "^3.25.67",
+    "@vendyx/common": "*"
+
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

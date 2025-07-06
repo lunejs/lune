@@ -1,0 +1,16 @@
+{
+  "name": "@vendyx/common",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "vendyx common package",
+  "author": "sam_621",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ]
+}

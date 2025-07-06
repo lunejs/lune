@@ -1,6 +1,6 @@
-// TODO: Move this file to common package
-
-export type THashMap<V = string | number> = Record<string | number, V>;
+export type THashMap<V = string | number> = {
+  [key: string | number]: V;
+};
 
 export type StringifyObject<T> = {
   [K in keyof T]: string;

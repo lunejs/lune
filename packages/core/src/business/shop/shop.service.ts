@@ -4,7 +4,7 @@ import { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { disableRLS } from '@/persistence/rls';
 import { EmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
-import { clean } from '@/utils/obj';
+import { clean } from '@vendyx/common';
 
 export class ShopService {
   repository: ShopRepository;
@@ -46,8 +46,3 @@ export class ShopService {
     return slug + '-' + shopNameCount;
   }
 }
-
-/**
- * - Generate shop api key (pretty)
- * - Move utils (obj.ts and types.ts) to common package (or shared i dont remember how it is called))
- */
