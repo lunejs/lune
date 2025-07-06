@@ -276,6 +276,24 @@ describe('Repository', () => {
       expect(await trx(TEST_TABLE_NAME).where({ id: updatedRecord.id })).toHaveLength(1);
     });
 
+    test('updates updatedAt field automatically', async () => {
+      const input = {
+        password: 'new_password'
+      };
+
+      const oldRecord = await trx(TEST_TABLE_NAME).where({ id: recordsMock[0].id }).first();
+
+      const updatedRecord = await repository.update({
+        where: { id: recordsMock[0].id },
+        data: input
+      });
+
+      expect(updatedRecord.updatedAt).not.toEqual(recordsMock[0].updated_at);
+      expect(updatedRecord.updatedAt.getTime()).toBeGreaterThan(
+        new Date(oldRecord.updated_at).getTime()
+      );
+    });
+
     test('throws RepositoryError when update fails', async () => {
       const invalidInput = {
         foo: 'bar'

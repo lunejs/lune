@@ -1,3 +1,4 @@
+import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
 import { Transaction } from '../../connection';
 import { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
@@ -6,11 +7,11 @@ import { RepositoryError } from '../repository.error';
  * @description
  * A generic repository class for performing CRUD operations on a database table.
  */
-export class Repository<T extends object> {
+export class Repository<T extends VendyxEntity> {
   constructor(
     private readonly tableName: string,
     private readonly trx: Transaction,
-    private readonly serializer: Serializer<T, unknown>
+    private readonly serializer: Serializer<T, VendyxTable>
   ) {}
 
   protected q() {
@@ -62,7 +63,7 @@ export class Repository<T extends object> {
     }
   }
 
-  async create(input: Input<T>): Promise<T> {
+  async create(input: RepositoryInput<T>): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName).insert(this.serializer.serialize(input), '*');
 
@@ -72,11 +73,17 @@ export class Repository<T extends object> {
     }
   }
 
-  async update(input: { where: Where<T>; data: Input<T> }): Promise<T> {
+  async update(input: { where: Where<T>; data: Partial<RepositoryInput<T>> }): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName)
         .where(this.serializer.serialize(input.where))
-        .update(this.serializer.serialize(input.data), '*');
+        .update(
+          this.serializer.serialize({
+            updatedAt: new Date(),
+            ...input.data
+          }),
+          '*'
+        );
 
       return this.serializer.deserialize(result) as T;
     } catch (error) {
@@ -119,7 +126,11 @@ type CountOptions<T> = {
   where: Where<T>;
 };
 
-type Input<T> = Partial<T>;
+export type RepositoryInput<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {
+  id?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 type Fields<T> = (keyof T)[];
 type Where<T> = {
   [K in keyof T]?: T[K];

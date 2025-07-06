@@ -1,4 +1,6 @@
 import { VendyxError } from '@/errors/vendyx.error';
+import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import { RepositoryInput } from '@/persistence/repositories/repository';
 
 /**
  * @description
@@ -14,7 +16,7 @@ import { VendyxError } from '@/errors/vendyx.error';
  *   ['password', 'password']
  * ]);
  */
-export class Serializer<Entity, Table> {
+export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> {
   /**
    * @param fields
    * Array of field mappings for serialization and deserialization.
@@ -75,7 +77,7 @@ export class Serializer<Entity, Table> {
    * // Output: { id: 1, created_at: '2023-01-01', updated_at: '2023-01-02' }
    * ```
    */
-  serialize(data: Partial<Entity>): Partial<Table> {
+  serialize(data: Partial<RepositoryInput<Entity>>): Partial<Table> {
     try {
       const result: Partial<Table> = {};
 

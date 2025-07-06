@@ -36,7 +36,7 @@ async function generateUserAccessToken(
   return isErrorResult(result) ? { apiErrors: [result] } : { accessToken: result, apiErrors: [] };
 }
 
-export const userResolver = {
+export const UserResolver = {
   Query: {
     whoami: UseUserGuard(whoami)
   },
