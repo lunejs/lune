@@ -10,7 +10,7 @@ abstract class ShopErrorResult extends ErrorResult<ShopErrorCode> {
 /**
  * Error thrown when the email provided already exists for a shop
  */
-export class EmailAlreadyExistsError extends ShopErrorResult {
+export class ShopEmailAlreadyExistsError extends ShopErrorResult {
   constructor() {
     super(ShopErrorCode.EmailAlreadyExists, 'Shop with the provided email already exists');
   }

@@ -1,7 +1,7 @@
 import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateShopInput } from '@/api/shared/types/graphql';
 import { ShopRepository } from '@/persistence/repositories/shop-repository';
-import { EmailAlreadyExistsError } from './shop.errors';
+import { ShopEmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
 import { clean } from '@vendyx/common';
 import { ApiKey } from '@/security/api-key/api-key';
@@ -23,7 +23,7 @@ export class ShopService {
     );
 
     if (emailExists) {
-      return new EmailAlreadyExistsError();
+      return new ShopEmailAlreadyExistsError();
     }
 
     const slug = await this.validateAndParseSlug(input.name);

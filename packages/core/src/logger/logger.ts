@@ -1,4 +1,5 @@
-import { white, gray, green, yellow, blue, red, magenta } from 'kleur';
+import kleur from 'kleur';
+const { white, gray, green, yellow, blue, red, magenta } = kleur;
 
 /**
  * @description

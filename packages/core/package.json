@@ -2,8 +2,11 @@
   "name": "@vendyx/core",
   "version": "0.0.1",
   "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsc --build build.tsconfig.json && yarn script:post-build",
+    "build": "rimraf dist && tsc --build build.tsconfig.json && tsc-alias && yarn script:post-build",
+    "build:new": "rimraf dist && tsup && yarn script:post-build",
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
     "start:dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
@@ -48,7 +51,9 @@
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.1"
