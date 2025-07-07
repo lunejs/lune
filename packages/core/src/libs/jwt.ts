@@ -24,7 +24,9 @@ export class JwtService {
    * ```
    */
   async generateToken<TPayload extends object>(payload: TPayload) {
-    return jwt.sign(payload, this.config.secretKey);
+    return jwt.sign(payload, this.config.secretKey, {
+      expiresIn: this.config.expiresIn
+    });
   }
 
   /**
@@ -52,4 +54,5 @@ export class JwtService {
 
 type Config = {
   secretKey: string;
+  expiresIn: number;
 };

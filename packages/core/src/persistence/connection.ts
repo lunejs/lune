@@ -1,9 +1,12 @@
+import { getConfig } from '@/config/config';
 import knex, { Knex } from 'knex';
 
 export const createConnection = (): Database => {
+  const { url } = getConfig().db;
+
   return knex({
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: url
   });
 };
 
