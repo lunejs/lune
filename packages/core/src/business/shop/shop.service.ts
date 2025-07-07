@@ -4,6 +4,7 @@ import { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { EmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
 import { clean } from '@vendyx/common';
+import { ApiKey } from '@/security/api-key/api-key';
 
 export class ShopService {
   repository: ShopRepository;
@@ -26,7 +27,7 @@ export class ShopService {
     }
 
     const slug = await this.validateAndParseSlug(input.name);
-    const shopApiKey = 'temporary-api-key'; // TODO: Generate a real API key
+    const shopApiKey = ApiKey.generate();
 
     return this.repository.create({
       ...clean(input),

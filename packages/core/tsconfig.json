@@ -3,7 +3,7 @@
     "jsx": "react",
     "module": "commonjs",
     // Change from es2017 to es2021 to support replaceAll method
-    "target": "es2021",
+    "target": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
