@@ -2,6 +2,7 @@ import { Transaction } from '@/persistence/connection';
 import { recordsMock, TestEntity, TestRepository } from './repository.mock';
 import { RepositoryError } from '../../repository.error';
 import { TestHelper } from '@/tests/utils/test-helper';
+import { SortKey } from '../repository';
 
 const TEST_TABLE_NAME = 'test_table';
 
@@ -170,7 +171,7 @@ describe('Repository', () => {
       });
     });
 
-    test('returns records with offset', async () => {
+    test('returns records with skip', async () => {
       const result = await repository.findMany({ skip: 1 });
 
       expect(result).toHaveLength(recordsMock.length - 1);
@@ -183,6 +184,15 @@ describe('Repository', () => {
         createdAt: recordsMock[1].created_at,
         updatedAt: recordsMock[1].updated_at
       });
+    });
+
+    test('returns records ordered by a specific field', async () => {
+      const result = await repository.findMany({
+        orderBy: { createdAt: SortKey.Desc }
+      });
+
+      expect(result).toHaveLength(recordsMock.length);
+      expect(result[0].createdAt.getTime()).toBeGreaterThanOrEqual(result[1].createdAt.getTime());
     });
   });
 
