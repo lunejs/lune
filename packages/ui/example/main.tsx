@@ -1,14 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Button } from '../src/components';
 import './index.css';
-
-import { Button } from '@vendyx/ui';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <div>
-      <h1 className="text-red-500">hola</h1>
-      <Button>Click Me</Button>
+    <div className="m-4">
+      <Button>Hola</Button>
     </div>
   </StrictMode>
 );

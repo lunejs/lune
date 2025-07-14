@@ -1,16 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/**
- * Vendyx ui package is built on top of tailwindcss
- * Vendyx ui is build without tailwind styles to avoid overriding styles
- * So we need to add ui package location in tailwind config
- * this will allow tailwind to scan ui package for styles
- *
- * NOTE: When using ui package as npm package, you will point to node_modules folder
- */
-@source '../../ui/**/*.{js,ts,jsx,tsx}';
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
