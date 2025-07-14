@@ -4,12 +4,13 @@ import request from 'supertest';
 import { Tables } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
+import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 
 describe('createUser - Mutation', () => {
   const testHelper = new TestHelper();
   const q = testHelper.getQueryBuilder();
 
-  const vendyxServer = new VendyxServer();
+  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
   const app = vendyxServer.getApp();
 
   beforeEach(async () => {

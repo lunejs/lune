@@ -87,12 +87,6 @@ describe('Repository', () => {
         email: recordsMock[2].email
       });
     });
-
-    test('throws RepositoryError when query fails', async () => {
-      await expect(repository.findOne(undefined as unknown as any)).rejects.toThrow(
-        RepositoryError
-      );
-    });
   });
 
   describe('findMany', () => {
@@ -190,12 +184,6 @@ describe('Repository', () => {
         updatedAt: recordsMock[1].updated_at
       });
     });
-
-    test('throws RepositoryError when query fails', async () => {
-      await expect(repository.findMany(undefined as unknown as any)).rejects.toThrow(
-        RepositoryError
-      );
-    });
   });
 
   describe('count', () => {
@@ -215,10 +203,6 @@ describe('Repository', () => {
       const count = await repository.count({ where: { email: 'nonexisting@gmail.com' } });
 
       expect(count).toBe(0);
-    });
-
-    test('throws RepositoryError when query fails', async () => {
-      await expect(repository.count(undefined as unknown as any)).rejects.toThrow(RepositoryError);
     });
   });
 

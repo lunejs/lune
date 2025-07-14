@@ -3,11 +3,12 @@ import request from 'supertest';
 import { TestHelper } from '@/tests/utils/test-helper';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 
 describe('createShop - Mutation', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer();
+  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
   const app = vendyxServer.getApp();
 
   beforeEach(async () => {

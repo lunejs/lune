@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Database } from '@/persistence/connection';
 import { Fixture } from './fixtures';
 import { FixtureDefaults } from './default-fixtures';
+import { TEST_VENDYX_CONFIG } from './test-config';
 
 export class TestHelper {
   private db: Database;
@@ -59,7 +60,7 @@ export class TestHelper {
   }
 
   static generateJWT(payload: Record<string, any>): string {
-    return jwt.sign(payload, process.env.JWT_SECRET ?? '');
+    return jwt.sign(payload, TEST_VENDYX_CONFIG.auth.jwtSecret ?? '');
   }
 
   static async hashPassword(password: string): Promise<string> {
