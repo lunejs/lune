@@ -70,7 +70,7 @@ describe('shop - Query', () => {
   });
 });
 
-export const GET_SHOP_BY_SLUG_QUERY = /* GraphQL */ `
+const GET_SHOP_BY_SLUG_QUERY = /* GraphQL */ `
   query Shop($slug: String!) {
     shop(slug: $slug) {
       id

@@ -41,6 +41,12 @@ export class Repository<T extends VendyxEntity> {
       if (input?.skip) query.offset(input.skip);
       if (input?.where) query.where(this.serializer.serialize(input.where));
 
+      if (input?.orderBy) {
+        for (const [field, direction] of Object.entries(input.orderBy)) {
+          query.orderBy(this.serializer.serializeField(field as keyof T), direction);
+        }
+      }
+
       const results = await query;
 
       return results.map(result => this.serializer.deserialize(result) as T);
@@ -120,7 +126,21 @@ type FindManyOptions<T> = {
   fields?: Fields<T>;
   take?: number;
   skip?: number;
+  orderBy?: { [K in keyof T]?: SortKey };
 };
+
+export enum SortKey {
+  /**
+   * @description
+   * Oldest first.
+   */
+  Asc = 'asc',
+  /**
+   * @description
+   * Newest first.
+   */
+  Desc = 'desc'
+}
 
 type CountOptions<T> = {
   where?: Where<T>;

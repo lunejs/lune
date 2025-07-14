@@ -49,11 +49,14 @@ export class TestHelper {
 
     for (const fixture of fixtures) {
       const partialEntities = await fixture.build();
-      const defaults = FixtureDefaults[fixture.table];
 
-      if (!defaults) throw new Error('No defaults found for fixture table: ' + fixture.table);
+      const entitiesWithDefaults = partialEntities.map(entity => {
+        const defaults = FixtureDefaults[fixture.table]();
 
-      const entitiesWithDefaults = partialEntities.map(entity => ({ ...defaults, ...entity }));
+        if (!defaults) throw new Error('No defaults found for fixture table: ' + fixture.table);
+
+        return { ...defaults, ...entity };
+      });
 
       await this.db(fixture.table).insert(entitiesWithDefaults);
     }

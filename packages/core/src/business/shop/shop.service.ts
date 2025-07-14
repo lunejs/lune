@@ -5,6 +5,7 @@ import { ShopEmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
 import { clean } from '@vendyx/common';
 import { ApiKey } from '@/security/api-key/api-key';
+import { SortKey } from '@/persistence/repositories/repository';
 
 export class ShopService {
   private readonly repository: ShopRepository;
@@ -18,7 +19,7 @@ export class ShopService {
   }
 
   async findAll(input?: ListInput) {
-    return this.repository.findMany(clean(input ?? {}));
+    return this.repository.findMany({ ...clean(input ?? {}), orderBy: { createdAt: SortKey.Asc } });
   }
 
   async count() {

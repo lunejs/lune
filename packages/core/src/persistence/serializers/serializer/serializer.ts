@@ -129,6 +129,15 @@ export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> 
       throw new SerializeError('Serializer.serializeFields', error);
     }
   }
+
+  serializeField(field: keyof Entity): keyof Table | string {
+    try {
+      const mapping = this.fields.find(([_, to]) => to === field);
+      return mapping ? mapping[0] : (field as string);
+    } catch (error) {
+      throw new SerializeError('Serializer.serializeField', error);
+    }
+  }
 }
 
 export class SerializeError extends VendyxError {
