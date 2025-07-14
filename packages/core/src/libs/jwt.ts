@@ -1,3 +1,4 @@
+import { Logger } from '@/logger';
 import jwt from 'jsonwebtoken';
 
 export class JwtService {
@@ -46,7 +47,8 @@ export class JwtService {
   async verifyToken<TPayload>(token: string): Promise<TPayload | null> {
     try {
       return jwt.verify(token, this.config.secretKey) as TPayload;
-    } catch {
+    } catch (error) {
+      Logger.error('JwtService', 'Failed to verify token', error);
       return null;
     }
   }

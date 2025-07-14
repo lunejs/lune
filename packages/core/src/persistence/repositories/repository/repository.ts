@@ -32,14 +32,14 @@ export class Repository<T extends VendyxEntity> {
     }
   }
 
-  async findMany(input: FindManyOptions<T>): Promise<T[]> {
+  async findMany(input?: FindManyOptions<T>): Promise<T[]> {
     try {
       const query = this.trx(this.tableName);
 
-      if (input.fields) query.select(this.serializer.serializeFields(input.fields));
-      if (input.limit) query.limit(input.limit);
-      if (input.offset) query.offset(input.offset);
-      if (input.where) query.where(this.serializer.serialize(input.where));
+      if (input?.fields) query.select(this.serializer.serializeFields(input.fields));
+      if (input?.take) query.limit(input.take);
+      if (input?.skip) query.offset(input.skip);
+      if (input?.where) query.where(this.serializer.serialize(input.where));
 
       const results = await query;
 
@@ -49,11 +49,11 @@ export class Repository<T extends VendyxEntity> {
     }
   }
 
-  async count(input: CountOptions<T>): Promise<number> {
+  async count(input?: CountOptions<T>): Promise<number> {
     try {
-      const query = this.trx(this.tableName)
-        .count('* as count')
-        .where(this.serializer.serialize(input.where));
+      const query = this.trx(this.tableName).count('* as count');
+
+      if (input?.where) query.where(this.serializer.serialize(input.where));
 
       const [{ count }] = await query;
 
@@ -118,12 +118,12 @@ type FindOneOptions<T> = {
 type FindManyOptions<T> = {
   where?: Where<T>;
   fields?: Fields<T>;
-  limit?: number;
-  offset?: number;
+  take?: number;
+  skip?: number;
 };
 
 type CountOptions<T> = {
-  where: Where<T>;
+  where?: Where<T>;
 };
 
 export type RepositoryInput<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {

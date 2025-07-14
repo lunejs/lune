@@ -1,5 +1,5 @@
 import { ExecutionContext } from '@/api/shared/context/types';
-import { CreateShopInput } from '@/api/shared/types/graphql';
+import { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
 import { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { ShopEmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
@@ -7,7 +7,7 @@ import { clean } from '@vendyx/common';
 import { ApiKey } from '@/security/api-key/api-key';
 
 export class ShopService {
-  repository: ShopRepository;
+  private readonly repository: ShopRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.repository = ctx.repositories.shop;
@@ -15,6 +15,14 @@ export class ShopService {
 
   async findBySlug(slug: string) {
     return this.repository.findOne({ where: { slug } });
+  }
+
+  async findAll(input?: ListInput) {
+    return this.repository.findMany(clean(input ?? {}));
+  }
+
+  async count() {
+    return this.repository.count();
   }
 
   async create(input: CreateShopInput) {

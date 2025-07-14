@@ -5,7 +5,7 @@ import { buildRepositories } from '@/persistence/repositories/build-repositories
 import { JwtService } from '@/libs/jwt';
 import { UserJWT } from '../types/api.types';
 import { Logger } from '@/logger';
-import { runWithoutRLS } from '@/persistence/rls';
+import { enableRLS, runWithoutRLS } from '@/persistence/rls';
 
 export async function buildContext(
   initialContext: YogaInitialContext,
@@ -22,10 +22,7 @@ export async function buildContext(
 
     const trx = await database.transaction();
 
-    await trx.raw(`SELECT set_config('app.current_shop_id', '${shopId}', TRUE)`);
-    await trx.raw(
-      `SELECT set_config('app.current_owner_id', '${payload?.sub ?? '00000000-0000-0000-0000-000000000000'}', TRUE)`
-    );
+    await enableRLS({ trx, shopId, ownerId: payload?.sub ?? null });
 
     const ownerId = payload?.sub ?? null;
 

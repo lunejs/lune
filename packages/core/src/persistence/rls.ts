@@ -42,7 +42,7 @@ async function disableRLS(trx: Transaction) {
   `);
 }
 
-async function enableRLS({
+export async function enableRLS({
   trx,
   shopId,
   ownerId

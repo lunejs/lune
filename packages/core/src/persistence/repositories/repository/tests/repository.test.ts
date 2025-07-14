@@ -162,7 +162,7 @@ describe('Repository', () => {
     });
 
     test('returns limited number of records', async () => {
-      const result = await repository.findMany({ limit: 1 });
+      const result = await repository.findMany({ take: 1 });
 
       expect(result).toHaveLength(1);
       expect(result[0]).toMatchObject({
@@ -177,7 +177,7 @@ describe('Repository', () => {
     });
 
     test('returns records with offset', async () => {
-      const result = await repository.findMany({ offset: 1 });
+      const result = await repository.findMany({ skip: 1 });
 
       expect(result).toHaveLength(recordsMock.length - 1);
       expect(result[0]).toMatchObject({
