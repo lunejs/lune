@@ -9,7 +9,7 @@
  *
  * NOTE: When using ui package as npm package, you will point to node_modules folder
  */
-@source '../../ui/**/*.{js,ts,jsx,tsx}';
+@source '../../../ui/**/*.{js,ts,jsx,tsx}';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,7 +122,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 font-sans
   }
   body {
     @apply bg-background text-foreground;
