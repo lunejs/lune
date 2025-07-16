@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { notification } from '@vendyx/ui';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -13,6 +14,7 @@ export const useLoginForm = () => {
 
   const onSubmit = (data: FormInput) => {
     console.log('Form submitted:', data);
+    notification.success('Login successful!');
   };
 
   return {

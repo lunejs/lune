@@ -1,16 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { ThemeProvider } from '@vendyx/ui';
+import { ThemeProvider, Toaster } from '@vendyx/ui';
 
 import './app.css';
 import { LoginPage } from '@/core/login/pages/login-page';
+import { DashboardPage } from '@/core/dashboard/pages/dashboard-page';
 
 export const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vendyx-ui-theme">
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/me" element={<h1>/ me</h1>} />
+          <Route path="/" element={<DashboardPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

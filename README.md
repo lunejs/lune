@@ -1,0 +1,2 @@
+- add password input (eye at the right of the input)
+- add `as` prop to typography components for better semantic
