@@ -1,36 +1,35 @@
-import * as React from 'react';
+import React, { Component, type ReactNode } from 'react';
 
-export class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback: ReactNode;
+}
 
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  state: ErrorBoundaryState = { hasError: false };
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
   }
 
-  componentDidCatch(error, info) {
-    console.error(error);
-    console.error(info);
-    console.error(React.captureOwnerStack());
-    // logErrorToMyService(
-    //   error,
-    //   // Example "componentStack":
-    //   //   in ComponentThatThrows (created by App)
-    //   //   in ErrorBoundary (created by App)
-    //   //   in div (created by App)
-    //   //   in App
-    //   info.componentStack,
-    //   // Warning: `captureOwnerStack` is not available in production.
-    //   React.captureOwnerStack()
-    // );
+  override componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('Error:', error);
+    console.error('Component Stack:', info.componentStack);
+
+    if (import.meta.env.DEV && typeof React.captureOwnerStack === 'function') {
+      console.error('Owner Stack:', React.captureOwnerStack());
+    }
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return this.props.fallback;
     }
 
