@@ -6,6 +6,7 @@ export const Logo = () => {
       viewBox="0 0 28 28"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      style={{ width: '1.5rem', height: '1.5rem' }}
     >
       <g filter="url(#filter0_dd_24016_147649)">
         <mask id="path-1-inside-1_24016_147649" fill="white">
