@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { ThemeProvider, Toaster } from '@vendyx/ui';
 
-import './app.css';
 import { LoginPage } from '@/core/login/pages/login-page';
 import { DashboardPage } from '@/core/dashboard/pages/dashboard-page';
 import { ErrorBoundary } from './error-boundary';
+
+import '@fontsource-variable/geist';
+import './app.css';
 
 export const App = () => {
   return (
