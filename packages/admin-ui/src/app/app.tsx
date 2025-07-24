@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { ThemeProvider, Toaster } from '@vendyx/ui';
 
-import { LoginPage } from '@/core/login/pages/login-page';
-import { DashboardPage } from '@/core/dashboard/pages/dashboard-page';
+import { LoginPage } from '@/lib/login/pages/login-page';
+import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { ErrorBoundary } from './error-boundary';
 
 import '@fontsource-variable/geist';
 import './app.css';
+import { AuthWrapper } from './auth-wrapper';
 
 export const App = () => {
   return (
@@ -15,8 +16,10 @@ export const App = () => {
         <Toaster />
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<DashboardPage />} />
+            <Route element={<AuthWrapper />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<DashboardPage />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

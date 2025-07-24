@@ -1,9 +1,6 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-} from '@/core/shared/components/sidebar';
-import { AppSidebar } from '@/core/shared/components/layout/app-sidebar';
-import { SiteHeader } from '@/core/shared/components/layout/header';
+import { SidebarInset, SidebarProvider } from '@/lib/shared/components/sidebar';
+import { AppSidebar } from '@/lib/shared/components/layout/app-sidebar';
+import { SiteHeader } from '@/lib/shared/components/layout/header';
 import { SectionCards } from '../components/cards';
 import { ChartAreaInteractive } from '../components/chart';
 
