@@ -38,7 +38,7 @@ export const LoginForm = () => {
                 type="password"
               />
             </div>
-            <Button>Login</Button>
+            <Button isLoading={form.isLoading}>Login</Button>
           </form>
         </Form>
       </CardContent>

@@ -7,13 +7,17 @@
     "start:dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:types": "yarn graphql-codegen"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.6",
     "@hookform/resolvers": "^5.1.1",
     "@tailwindcss/vite": "^4.1.11",
+    "@tanstack/react-query": "^5.83.0",
     "@vendyx/ui": "*",
+    "graphql": "^16.11.0",
+    "graphql-request": "^7.2.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
@@ -25,6 +29,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/client-preset": "^4.8.3",
     "@types/js-cookie": "^3.0.6",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

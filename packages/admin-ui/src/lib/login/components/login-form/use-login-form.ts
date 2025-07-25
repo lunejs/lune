@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { notification } from '@vendyx/ui';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useLogin } from './use-login';
 
 export const useLoginForm = () => {
+  const { isLoading, login } = useLogin();
+
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -13,12 +15,12 @@ export const useLoginForm = () => {
   });
 
   const onSubmit = (data: FormInput) => {
-    console.log('Form submitted:', data);
-    notification.success('Login successful!');
+    login(data);
   };
 
   return {
     ...form,
+    isLoading,
     onSubmit: form.handleSubmit(onSubmit),
   };
 };
