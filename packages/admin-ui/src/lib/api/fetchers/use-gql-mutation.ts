@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import { GraphQLError } from 'graphql';
 
 import { gqlFetcher } from './gql-fetcher';
-import { GraphQLError } from 'graphql';
 
 type ExtractRootField<T> = T extends Record<string, infer U> ? U : never;
 
@@ -46,13 +46,13 @@ export const useGqlMutation = <R extends Record<string, any>, V>(
         return {
           ...rest,
           error: getErrorFn?.(rawError),
-          errorCode: (rawError as any).code,
+          errorCode: (rawError as any).code
         };
       }
 
       return {
-        ...result,
+        ...result
       };
-    },
+    }
   });
 };

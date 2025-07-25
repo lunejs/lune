@@ -1,0 +1,33 @@
+{
+  "semi": true,
+  "arrowParens": "avoid",
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "endOfLine": "auto",
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^react$",
+    "^react-dom/(.*)$",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@vendyx/ui",
+    "",
+    "^@/app/(.*)$",
+    "",
+    "^@/lib/api/(.*)$",
+    "",
+    "^@/lib/shared/(.*)$",
+    "",
+    "^@/lib/(.*)$",
+    "",
+    "^@/tests/(.*)$",
+    "^\\./.*\\.mock$",
+    "",
+    "^[./]",
+    ""
+  ]
+}

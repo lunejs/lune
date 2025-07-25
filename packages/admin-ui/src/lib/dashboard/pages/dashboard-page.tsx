@@ -1,6 +1,7 @@
-import { SidebarInset, SidebarProvider } from '@/lib/shared/components/sidebar';
 import { AppSidebar } from '@/lib/shared/components/layout/app-sidebar';
 import { SiteHeader } from '@/lib/shared/components/layout/header';
+import { SidebarInset, SidebarProvider } from '@/lib/shared/components/sidebar';
+
 import { SectionCards } from '../components/cards';
 import { ChartAreaInteractive } from '../components/chart';
 
@@ -11,7 +12,7 @@ export function DashboardPage() {
         style={
           {
             '--sidebar-width': 'calc(var(--spacing) * 72)',
-            '--header-height': 'calc(var(--spacing) * 12)',
+            '--header-height': 'calc(var(--spacing) * 12)'
           } as React.CSSProperties
         }
       >

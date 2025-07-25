@@ -1,8 +1,8 @@
 export const SUCCESS_GENERATE_USER_ACCESS_TOKEN_RESPONSE = {
   generateUserAccessToken: {
     accessToken: 'mocked-token',
-    apiErrors: [],
-  },
+    apiErrors: []
+  }
 };
 
 export const INVALID_CREDENTIALS_USER_ACCESS_TOKEN_RESPONSE = {
@@ -11,8 +11,8 @@ export const INVALID_CREDENTIALS_USER_ACCESS_TOKEN_RESPONSE = {
     apiErrors: [
       {
         code: 'INVALID_CREDENTIALS',
-        message: 'Invalid credentials',
-      },
-    ],
-  },
+        message: 'Invalid credentials'
+      }
+    ]
+  }
 };

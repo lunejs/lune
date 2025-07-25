@@ -1,5 +1,5 @@
-import { GENERIC_ERROR } from './common.errors';
 import { UserErrorCode, type UserErrorResult } from '../types';
+import { GENERIC_ERROR } from './common.errors';
 
 export function getUserError(error?: UserErrorResult) {
   if (!error) return '';

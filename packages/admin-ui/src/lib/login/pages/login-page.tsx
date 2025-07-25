@@ -1,4 +1,5 @@
 import { Logo } from '@/lib/shared/components/logo';
+
 import { LoginForm } from '../components/login-form/login-form';
 
 export const LoginPage = () => {

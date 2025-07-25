@@ -1,14 +1,16 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router';
+
 import { ThemeProvider, Toaster } from '@vendyx/ui';
 
-import { LoginPage } from '@/lib/login/pages/login-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
+import { LoginPage } from '@/lib/login/pages/login-page';
+
+import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';
 
-import '@fontsource-variable/geist';
 import './app.css';
-import { AuthWrapper } from './auth-wrapper';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@fontsource-variable/geist';
 
 export const queryClient = new QueryClient();
 

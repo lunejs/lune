@@ -1,13 +1,5 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Form,
-  FormInput,
-  H3,
-  Muted,
-} from '@vendyx/ui';
+import { Button, Card, CardContent, CardHeader, Form, FormInput, H3, Muted } from '@vendyx/ui';
+
 import { useLoginForm } from './use-login-form';
 
 export const LoginForm = () => {
@@ -31,12 +23,7 @@ export const LoginForm = () => {
                 name="email"
                 placeholder="m@example.com"
               />
-              <FormInput
-                label="Password"
-                control={form.control}
-                name="password"
-                type="password"
-              />
+              <FormInput label="Password" control={form.control} name="password" type="password" />
             </div>
             <Button isLoading={form.isLoading}>Login</Button>
           </form>

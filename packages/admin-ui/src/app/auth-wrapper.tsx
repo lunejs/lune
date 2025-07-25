@@ -1,7 +1,9 @@
+import { type FC, type PropsWithChildren } from 'react';
+
+import { Navigate, Outlet, useLocation } from 'react-router';
+
 import { getCookie } from '@/lib/shared/cookies';
 import { CookiesKeys } from '@/lib/shared/cookies/keys';
-import { type FC, type PropsWithChildren } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router';
 
 export const AuthWrapper: FC<Props> = ({ children }) => {
   const { pathname } = useLocation();

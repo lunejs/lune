@@ -1,18 +1,18 @@
+import { useNavigate } from 'react-router';
+
+import { notification } from '@vendyx/ui';
+
 import { GENERIC_ERROR } from '@/lib/api/errors/common.errors';
 import { getUserError } from '@/lib/api/errors/user.errors';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { GENERATE_ACCESS_TOKEN_MUTATION } from '@/lib/api/operations/user.operations';
 import type { GenerateUserAccessTokenInput } from '@/lib/api/types';
+
 import { setCookie } from '@/lib/shared/cookies';
 import { CookiesKeys } from '@/lib/shared/cookies/keys';
-import { notification } from '@vendyx/ui';
-import { useNavigate } from 'react-router';
 
 export const useLogin = () => {
-  const { mutateAsync, isPending } = useGqlMutation(
-    GENERATE_ACCESS_TOKEN_MUTATION,
-    getUserError
-  );
+  const { mutateAsync, isPending } = useGqlMutation(GENERATE_ACCESS_TOKEN_MUTATION, getUserError);
 
   const navigate = useNavigate();
 
@@ -35,6 +35,6 @@ export const useLogin = () => {
 
   return {
     login,
-    isLoading: isPending,
+    isLoading: isPending
   };
 };
