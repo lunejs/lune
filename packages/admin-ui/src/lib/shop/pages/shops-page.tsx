@@ -1,4 +1,5 @@
 import { PlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import {
   Button,
@@ -25,9 +26,11 @@ export const ShopsPage = () => {
           <CardTitle>Shops</CardTitle>
           <CardDescription>Welcome back</CardDescription>
           <CardAction className="h-full flex items-center">
-            <Button variant="outline">
-              <PlusIcon size={16} /> Create Shop
-            </Button>
+            <Link to="/shops/new">
+              <Button variant="outline">
+                <PlusIcon size={16} /> Create Shop
+              </Button>
+            </Link>
           </CardAction>
         </CardHeader>
         <CardContent className="flex flex-col px-0">

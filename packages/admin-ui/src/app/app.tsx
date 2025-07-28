@@ -12,6 +12,7 @@ import { ErrorBoundary } from './error-boundary';
 import './app.css';
 import '@fontsource-variable/geist';
 
+import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 
 export const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ export const App = () => {
               <Route element={<AuthWrapper />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/shops" element={<ShopsPage />} />
+                <Route path="/shops/new" element={<CreateShopPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/" element={<DashboardPage />} />
               </Route>

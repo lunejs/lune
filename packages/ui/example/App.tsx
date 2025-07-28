@@ -61,6 +61,7 @@ import {
   DropdownMenuTrigger,
   Input,
   Label,
+  PhoneInput,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -614,6 +615,13 @@ export const App = () => {
           <p>Add to library</p>
         </TooltipContent>
       </Tooltip>
+
+      {/* Phone input */}
+
+      <div>
+        <label htmlFor="some">phone</label>
+        <PhoneInput id="some" />
+      </div>
     </div>
   );
 };

@@ -51,7 +51,7 @@ export const useGqlMutation = <R extends Record<string, any>, V>(
       }
 
       return {
-        ...result
+        ...rest
       };
     }
   });

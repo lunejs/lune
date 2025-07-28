@@ -4,6 +4,7 @@ import { Label } from '@vendyx/ui';
 
 import type { CommonListShopFragment } from '@/lib/api/types';
 
+import { ShopsListEmptyState } from './empty-state';
 import { useSelectShop } from './use-select-shop';
 
 export const ShopsList = ({ shops, isLoading }: Props) => {
@@ -15,6 +16,10 @@ export const ShopsList = ({ shops, isLoading }: Props) => {
         <Loader2Icon size={16} className="animate-spin" />
       </div>
     );
+  }
+
+  if (!isLoading && !shops.length) {
+    return <ShopsListEmptyState />;
   }
 
   return shops.map(shop => (

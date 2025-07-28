@@ -1,12 +1,8 @@
 'use client';
 
 import { EllipsisVerticalIcon, LogOutIcon } from 'lucide-react';
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from '../sidebar';
+import { Link } from 'react-router';
+
 import {
   Avatar,
   AvatarFallback,
@@ -17,11 +13,13 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@vendyx/ui';
 
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../sidebar';
+
 export function User({
-  user,
+  user
 }: {
   user: {
     name: string;
@@ -43,9 +41,7 @@ export function User({
               <div className="text-foreground-primary-negative flex shrink-0 justify-center items-center bg-gradient-to-r from-orange-400 to-green-500 rounded-full w-6 h-6"></div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
-                </span>
+                <span className="text-muted-foreground truncate text-xs">{user.email}</span>
               </div>
               <EllipsisVerticalIcon className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -64,16 +60,16 @@ export function User({
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
-                  </span>
+                  <span className="text-muted-foreground truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>Account</DropdownMenuItem>
-              <DropdownMenuItem>Preferences</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to={'/shops'}>Shops</Link>
+              </DropdownMenuItem>
               {/* <DropdownMenuItem>
                 <IconCreditCard />
                 Billing

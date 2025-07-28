@@ -36,7 +36,7 @@ describe('Login Form', () => {
 
     await waitFor(() => {
       expect(setCookie).toHaveBeenCalledWith('x-user-vendyx-token', 'mocked-token', { expires: 7 });
-      expect(navigateSpy).toHaveBeenCalledWith('/');
+      expect(navigateSpy).toHaveBeenCalledWith('/shops');
     });
   });
 
