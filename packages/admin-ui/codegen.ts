@@ -1,4 +1,4 @@
-import { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: 'http://localhost:4000/admin-api',
@@ -8,13 +8,13 @@ const config: CodegenConfig = {
     './src/lib/api/codegen/': {
       preset: 'client',
       presetConfig: {
-        fragmentMasking: { unmaskFunctionName: 'getFragmentData' },
+        fragmentMasking: { unmaskFunctionName: 'getFragmentData' }
       },
       config: {
-        skipTypename: true,
-      },
-    },
-  },
+        skipTypename: true
+      }
+    }
+  }
 };
 
 export default config;

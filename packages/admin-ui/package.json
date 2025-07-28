@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:types": "yarn graphql-codegen",
+    "gen:types": "yarn graphql-codegen && bash ./scripts/format-codegen.sh",
     "test": "vitest"
   },
   "dependencies": {

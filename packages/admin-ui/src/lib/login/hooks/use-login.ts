@@ -26,7 +26,7 @@ export const useLogin = () => {
       }
 
       setCookie(CookiesKeys.UserToken, accessToken as string, { expires: 7 });
-      navigate('/');
+      navigate('/shops');
     } catch (error) {
       console.error(error);
       notification.error(GENERIC_ERROR);

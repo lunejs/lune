@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useLogin } from './use-login';
+import { useLogin } from '../../hooks/use-login';
 
 export const useLoginForm = () => {
   const { isLoading, login } = useLogin();

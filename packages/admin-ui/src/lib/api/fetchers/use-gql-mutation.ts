@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
-import { GraphQLError } from 'graphql';
+import type { GraphQLError } from 'graphql';
 
 import { gqlFetcher } from './gql-fetcher';
 

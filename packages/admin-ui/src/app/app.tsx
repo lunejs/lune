@@ -12,6 +12,8 @@ import { ErrorBoundary } from './error-boundary';
 import './app.css';
 import '@fontsource-variable/geist';
 
+import { ShopsPage } from '@/lib/shop/pages/shops-page';
+
 export const queryClient = new QueryClient();
 
 export const App = () => {
@@ -24,6 +26,8 @@ export const App = () => {
             <Routes>
               <Route element={<AuthWrapper />}>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/shops" element={<ShopsPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/" element={<DashboardPage />} />
               </Route>
             </Routes>

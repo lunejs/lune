@@ -6,7 +6,7 @@ export const LoginForm = () => {
   const form = useLoginForm();
 
   return (
-    <Card className="w-[400px]">
+    <Card className="max-w-[400px] w-full">
       <CardHeader className="gap-0">
         <H3 className="text-2xl font-semibold text-center">Welcome back</H3>
         <Muted className="text-sm font-normal text-muted-foreground text-center">

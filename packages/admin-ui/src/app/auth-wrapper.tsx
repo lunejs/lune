@@ -14,8 +14,8 @@ export const AuthWrapper: FC<Props> = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (isAuthenticated && pathname === '/login') {
-    return <Navigate to="/" replace />;
+  if (isAuthenticated && ['/login', '/'].includes(pathname)) {
+    return <Navigate to="/shops" replace />;
   }
 
   return children ?? <Outlet />;
