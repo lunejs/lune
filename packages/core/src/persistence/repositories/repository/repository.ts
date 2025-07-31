@@ -7,11 +7,11 @@ import { RepositoryError } from '../repository.error';
  * @description
  * A generic repository class for performing CRUD operations on a database table.
  */
-export class Repository<T extends VendyxEntity> {
+export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   constructor(
     private readonly tableName: string,
     private readonly trx: Transaction,
-    private readonly serializer: Serializer<T, VendyxTable>
+    private readonly serializer: Serializer<T, Table>
   ) {}
 
   protected q() {

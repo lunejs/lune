@@ -37,7 +37,7 @@ export const recordsMock: TestTable[] = [
   }
 ];
 
-export class TestRepository extends Repository<TestEntity> {
+export class TestRepository extends Repository<TestEntity, TestTable> {
   constructor(table: string, trx: Transaction) {
     super(table, trx, new TestSerializer());
   }
@@ -64,6 +64,7 @@ export type TestEntity = {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date;
 };
 
 type TestTable = {
@@ -73,4 +74,5 @@ type TestTable = {
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
+  deleted_at?: Date;
 };

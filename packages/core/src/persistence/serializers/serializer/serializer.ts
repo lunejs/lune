@@ -23,7 +23,7 @@ export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> 
    * Each tuple contains the source field name (from the table) and the target field name (in the entity).
    * [[from, to], [from, to], ...]
    */
-  constructor(private readonly fields: [string, string][]) {}
+  constructor(private readonly fields: [keyof Table, keyof Entity][]) {}
 
   /**
    * @description
@@ -49,7 +49,7 @@ export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> 
 
       for (const [from, to] of this.fields) {
         if (row[from] !== undefined) {
-          result[to] = row[from];
+          result[to] = row[from] as unknown as Entity[typeof to];
         }
       }
 
@@ -82,8 +82,9 @@ export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> 
       const result: Partial<Table> = {};
 
       for (const [from, to] of this.fields) {
-        if (data[to] !== undefined) {
-          result[from] = data[to];
+        const value = data[to as keyof RepositoryInput<Entity>];
+        if (value !== undefined) {
+          result[from] = value as unknown as Table[typeof from];
         }
       }
 
