@@ -1,0 +1,63 @@
+type Query {
+  products(input: ProductListInput): ProductList!
+  """
+  Get a list of products by their variant IDs.
+  Useful for fetching products win cases when you only have variant IDs like
+  fetching products from a discount metadata
+  """
+  productsByVariantIds(ids: [ID!]!, input: ProductListInput): ProductList!
+}
+
+type Mutation {
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  softRemoveProduct(ids: [ID!]!): Boolean!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String
+  enabled: Boolean
+
+  assets: [AssetInProductInput!]
+  tags: [ID!]
+}
+
+input UpdateProductInput {
+  name: String
+  description: String
+  enabled: Boolean
+  archived: Boolean
+
+  assets: [AssetInProductInput!]
+  tags: [ID!]
+  looks: [ID!]
+}
+
+input AssetInProductInput {
+  id: ID!
+  order: Int!
+}
+
+input ProductListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: ProductFilters
+}
+
+input ProductFilters {
+  name: StringFilter
+  enabled: BooleanFilter
+  archived: BooleanFilter
+}

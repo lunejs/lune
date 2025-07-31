@@ -34,6 +34,7 @@ export class VendyxServer {
     this.app.listen(port, () => {
       Logger.banner('v0.0.1');
       Logger.ready('Server', `Admin API:   http://localhost:${port}/admin-api`);
+      Logger.ready('Server', `Shop API:    http://localhost:${port}/shop-api`);
     });
   }
 

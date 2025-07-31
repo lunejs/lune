@@ -1,0 +1,63 @@
+type Query {
+  tags(input: TagListInput): TagList!
+}
+
+type Mutation {
+  createTags(input: [CreateTagInput!]!): CreateTagsResult!
+  updateTag(id: ID!, input: UpdateTagInput!): TagResult!
+  removeTags(ids: [ID!]!): Boolean!
+}
+
+input CreateTagInput {
+  name: String!
+}
+
+input UpdateTagInput {
+  name: String
+}
+
+type TagList implements List {
+  items: [Tag!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+input TagListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: TagFilters
+}
+
+input TagFilters {
+  name: StringFilter
+}
+
+type CreateTagsResult {
+  apiErrors: [TagErrorResult!]!
+  tags: [Tag!]!
+}
+
+type TagResult {
+  apiErrors: [TagErrorResult!]!
+  tag: Tag
+}
+
+type TagErrorResult {
+  code: TagErrorCode!
+  message: String!
+}
+
+enum TagErrorCode {
+  NAME_ALREADY_EXISTS
+}

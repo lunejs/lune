@@ -1,0 +1,61 @@
+extend type Variant {
+  deletedAt: Date
+  weight: Float
+  dimensions: Dimensions
+}
+
+type Dimensions {
+  length: Float
+  width: Float
+  height: Float
+}
+
+input DimensionsInput {
+  length: Float
+  width: Float
+  height: Float
+}
+
+type Query {
+  variant(id: ID!): Variant
+}
+
+type Mutation {
+  createVariant(productId: ID!, input: [CreateVariantInput!]!): [Variant]!
+  updateVariant(id: ID!, input: UpdateVariantInput!): Variant!
+  softRemoveVariant(id: ID!): Variant!
+}
+
+input CreateVariantInput {
+  salePrice: Float!
+  stock: Int
+  sku: String
+  comparisonPrice: Float
+  costPerUnit: Float
+  requiresShipping: Boolean
+  assetId: ID
+  weight: Float
+  dimensions: DimensionsInput
+
+  optionValues: [ID!]
+  assets: [AssetInProductInput!]
+}
+
+input UpdateVariantInput {
+  salePrice: Float
+  stock: Int
+  sku: String
+  comparisonPrice: Float
+  costPerUnit: Float
+  requiresShipping: Boolean
+  weight: Float
+  dimensions: DimensionsInput
+
+  optionValues: [ID!]
+  assets: [AssetInVariantInput!]
+}
+
+input AssetInVariantInput {
+  id: ID!
+  order: Int!
+}

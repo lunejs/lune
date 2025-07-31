@@ -1,0 +1,58 @@
+"""
+A product is a good or service that you want to sell.
+"""
+type Product implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The product's name
+  """
+  name: String!
+  """
+  A human-friendly unique string for the Product automatically generated from its name
+  """
+  slug: String!
+  """
+  The product's description
+  """
+  description: String
+  """
+  Whether the products is enabled or not.
+  Not enabled products are not exposed to the storefront API but are visible in the admin ui.
+  Useful for products that are not published by now but they planned to be published in the future.
+  """
+  enabled: Boolean!
+  """
+  Whether the product is archived or not.
+  Archived products are not exposed to the storefront API and are not visible in the admin ui by default.
+  Useful for products that are not available anymore but you don't want to lose their data.
+  """
+  archived: Boolean!
+  """
+  The minimum price of the product
+  obtained from the variants sale prices.
+  """
+  minSalePrice: Int!
+  """
+  The maximum price of the product
+  obtained from the variants sale prices.
+  """
+  maxSalePrice: Int!
+
+  variants(input: ListInput): VariantList!
+  assets(input: ListInput): AssetList!
+  options(name: String): [Option!]!
+  tags: [Tag!]!
+  # collections(input: ListInput): CollectionList!
+}
+
+type ProductList implements List {
+  items: [Product!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  product(id: ID, slug: String): Product
+}

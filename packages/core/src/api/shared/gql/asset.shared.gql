@@ -1,0 +1,21 @@
+enum AssetType {
+  IMAGE
+  PDF
+}
+
+type Asset implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  name: String!
+  source: String!
+  type: AssetType!
+  order: Int!
+}
+
+type AssetList implements List {
+  items: [Asset!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
