@@ -33,7 +33,6 @@ describe('shops - Query', () => {
       });
 
     const { shops } = res.body.data;
-    console.log({ shops });
 
     expect(shops.count).toBe(3);
     expect(shops.pageInfo.total).toBe(3);

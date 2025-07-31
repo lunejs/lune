@@ -1,4 +1,4 @@
-import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import { VendyxEntity } from '@/persistence/entities/entity';
 import { Transaction } from '../../connection';
 import { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
@@ -7,11 +7,11 @@ import { RepositoryError } from '../repository.error';
  * @description
  * A generic repository class for performing CRUD operations on a database table.
  */
-export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
+export class Repository<T extends VendyxEntity> {
   constructor(
     private readonly tableName: string,
     private readonly trx: Transaction,
-    private readonly serializer: Serializer<T, Table>
+    private readonly serializer: Serializer<T, any>
   ) {}
 
   protected q() {

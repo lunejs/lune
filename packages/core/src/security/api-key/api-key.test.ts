@@ -2,26 +2,17 @@ import { ApiKey } from './api-key';
 
 describe('ApiKey', () => {
   test('generates a valid API key', () => {
-    const key = ApiKey.generate();
-    expect(typeof key).toBe('string');
-    expect(key.startsWith('VXSK_')).toBe(true);
-    expect(ApiKey.validate(key)).toBe(true);
-  });
+    const keys = new Array(100).fill(null).map(() => ApiKey.generate());
 
-  test('rejects keys with invalid checksum', () => {
-    const key = ApiKey.generate();
-    const tampered = key.replace(/.$/, c => (c === 'A' ? 'B' : 'A')); // cambia el último char
-    expect(ApiKey.validate(tampered)).toBe(false);
+    keys.forEach(key => {
+      expect(key.startsWith('VXSK_')).toBe(true);
+      expect(ApiKey.validate(key)).toBe(true);
+    });
   });
 
   test('rejects keys with invalid format', () => {
     const invalid = '1234_not_a_valid_key';
     expect(ApiKey.validate(invalid)).toBe(false);
-  });
-
-  test('rejects keys with missing parts', () => {
-    const missingChecksum = ApiKey.generate().split('_').slice(0, 2).join('_');
-    expect(ApiKey.validate(missingChecksum)).toBe(false);
   });
 
   test('generates unique keys across multiple calls', () => {

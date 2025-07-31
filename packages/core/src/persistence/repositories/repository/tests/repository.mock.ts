@@ -37,7 +37,7 @@ export const recordsMock: TestTable[] = [
   }
 ];
 
-export class TestRepository extends Repository<TestEntity, TestTable> {
+export class TestRepository extends Repository<TestEntity> {
   constructor(table: string, trx: Transaction) {
     super(table, trx, new TestSerializer());
   }
