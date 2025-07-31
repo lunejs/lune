@@ -5,14 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsc --build build.tsconfig.json && tsc-alias && yarn script:post-build",
-    "build:new": "rimraf dist && tsup && yarn script:post-build",
+    "build": "rimraf dist && tsc --build build.tsconfig.json && tsc-alias && gulp -f ./scripts/post-build.ts postBuild",
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
     "start:dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
-    "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts",
     "gen:types": "graphql-codegen --config ./scripts/gen-types.ts",
-    "script:post-build": "gulp -f ./scripts/post-build.ts postBuild"
+    "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",
