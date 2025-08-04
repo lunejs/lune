@@ -23,7 +23,8 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     if (input.take) query.limit(input.take);
     if (input.skip) query.offset(input.skip);
 
-    return await query;
+    const result = await query;
+    return result.map(item => this.serializer.deserialize(item) as Product);
   }
 
   async countByFilters(filters: ProductListInput['filters']) {

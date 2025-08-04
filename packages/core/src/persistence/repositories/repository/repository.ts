@@ -12,7 +12,7 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   constructor(
     private readonly tableName: string,
     private readonly trx: Transaction,
-    private readonly serializer: Serializer<T, Table>
+    protected readonly serializer: Serializer<T, Table>
   ) {}
 
   protected q() {

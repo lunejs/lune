@@ -20,7 +20,7 @@ export class ProductService {
     return this.repository.countByFilters(input ?? {});
   }
 
-  async findUnique(id: ID, slug: string, options?: Where<Product>) {
+  async findUnique(id?: ID, slug?: string, options?: Where<Product>) {
     if (id) return this.repository.findOne({ where: { id, ...options } });
     if (slug) return this.repository.findOne({ where: { slug, ...options } });
 

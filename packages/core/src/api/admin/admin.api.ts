@@ -8,6 +8,7 @@ import { UserResolver } from './resolvers/user.resolver';
 import { JwtService } from '@/libs/jwt';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { ShopResolver } from './resolvers/shop.resolver';
+import { ProductResolver } from './resolvers/product.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
@@ -17,7 +18,7 @@ export class AdminApi extends GraphqlApi {
     super({
       endpoint: '/admin-api',
       typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [UserResolver, ShopResolver],
+      resolvers: [UserResolver, ShopResolver, ProductResolver],
       context: initialContext => buildContext(initialContext, database, jwtService),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

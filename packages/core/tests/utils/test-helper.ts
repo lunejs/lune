@@ -20,7 +20,7 @@ export class TestHelper {
   }
 
   async resetDatabase() {
-    await this.trx.rollback();
+    if (this.trx) await this.trx.rollback();
 
     const tables = await this.db.raw(`
     SELECT tablename 

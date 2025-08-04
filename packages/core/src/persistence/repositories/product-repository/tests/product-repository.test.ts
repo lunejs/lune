@@ -89,7 +89,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: convertToCent(23_000) } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.min_sale_price >= convertToCent(23_000))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= convertToCent(23_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -97,7 +97,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { max: convertToCent(10_000) } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.max_sale_price <= convertToCent(10_000))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= convertToCent(10_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -105,8 +105,8 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: convertToCent(50), max: convertToCent(500) } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.min_sale_price >= convertToCent(50))).toBe(true);
-      expect(result.every(p => p.max_sale_price <= convertToCent(500))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= convertToCent(50))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= convertToCent(500))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -144,7 +144,7 @@ describe('Product repository', () => {
 
       const sorted = await trx(Tables.Product).orderBy('created_at', 'desc');
 
-      expect(result.map(p => p.created_at)).toEqual(sorted.map(p => p.created_at));
+      expect(result.map(p => p.createdAt)).toEqual(sorted.map(p => p.created_at));
     });
 
     test('returns products matching sort by createdAt in ascending order', async () => {
@@ -154,7 +154,7 @@ describe('Product repository', () => {
 
       const sorted = await trx(Tables.Product).orderBy('created_at', 'asc');
 
-      expect(result.map(p => p.created_at)).toEqual(sorted.map(p => p.created_at));
+      expect(result.map(p => p.createdAt)).toEqual(sorted.map(p => p.created_at));
     });
 
     test('returns products matching sort by name in descending order', async () => {
@@ -184,7 +184,7 @@ describe('Product repository', () => {
 
       const sorted = await trx(Tables.Product).orderBy('min_sale_price', 'desc');
 
-      expect(result.map(p => p.min_sale_price)).toEqual(sorted.map(p => p.min_sale_price));
+      expect(result.map(p => p.minSalePrice)).toEqual(sorted.map(p => p.min_sale_price));
     });
 
     test('returns products matching sort by min sale price in ascending order', async () => {
@@ -194,7 +194,7 @@ describe('Product repository', () => {
 
       const sorted = await trx(Tables.Product).orderBy('min_sale_price', 'asc');
 
-      expect(result.map(p => p.min_sale_price)).toEqual(sorted.map(p => p.min_sale_price));
+      expect(result.map(p => p.minSalePrice)).toEqual(sorted.map(p => p.min_sale_price));
     });
 
     test('returns limited number of products', async () => {
