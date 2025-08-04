@@ -71,6 +71,12 @@ export class TestHelper {
         return { ...defaults, ...entity };
       });
 
+      if (fixture.table === 'product') {
+        console.log({
+          entitiesWithDefaults
+        });
+      }
+
       await this.db(fixture.table).insert(entitiesWithDefaults);
     }
   }
