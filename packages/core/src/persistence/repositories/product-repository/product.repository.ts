@@ -4,6 +4,7 @@ import { Transaction } from '@/persistence/connection';
 import { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { ProductListInput } from '@/api/shared/types/graphql';
+import { Knex } from 'knex';
 
 export class ProductRepository extends Repository<Product, ProductTable> {
   constructor(trx: Transaction) {
@@ -13,36 +14,62 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   async findByFilters(input: ProductListInput) {
     const query = this.q();
 
-    if (input.filters?.name) {
-      if (input.filters.name.contains) {
-        query.whereLike('name', `%${input.filters.name.contains}%`);
-      } else if (input.filters.name.equals) {
-        query.where('name', input.filters.name.equals);
+    this.applyFilters(query, input.filters);
+
+    if (input.sort?.createdAt) query.orderBy('created_at', this.toOrder(input.sort.createdAt));
+    if (input.sort?.name) query.orderBy('name', this.toOrder(input.sort.name));
+    if (input.sort?.salePrice) query.orderBy('min_sale_price', this.toOrder(input.sort.salePrice));
+
+    if (input.take) query.limit(input.take);
+    if (input.skip) query.offset(input.skip);
+
+    return await query;
+  }
+
+  async countByFilters(filters: ProductListInput['filters']) {
+    const query = this.q().count({ count: '*' });
+
+    this.applyFilters(query, filters);
+
+    const [{ count }] = await query;
+
+    return Number(count);
+  }
+
+  private applyFilters(
+    query: Knex.QueryBuilder<ProductTable, any[]>,
+    filters?: ProductListInput['filters']
+  ) {
+    if (filters?.name) {
+      if (filters.name.contains) {
+        query.whereLike('name', `%${filters.name.contains}%`);
+      } else if (filters.name.equals) {
+        query.where('name', filters.name.equals);
       }
     }
 
-    if (input.filters?.enabled !== undefined) query.where('enabled', input.filters.enabled?.equals);
+    if (filters?.enabled !== undefined) query.where('enabled', filters.enabled?.equals);
 
-    if (input.filters?.tag) {
+    if (filters?.tag) {
       query.whereExists(function () {
         this.select('*')
           .from(Tables.ProductTag)
           .innerJoin(Tables.Tag, `${Tables.Tag}.id`, `${Tables.ProductTag}.tag_id`)
           .whereRaw(`${Tables.ProductTag}.product_id = ${Tables.Product}.id`)
-          .andWhere(`${Tables.Tag}.name`, input.filters?.tag);
+          .andWhere(`${Tables.Tag}.name`, filters?.tag);
       });
     }
 
-    if (input.filters?.salePriceRange?.min) {
-      query.where('min_sale_price', '>=', input.filters.salePriceRange.min);
+    if (filters?.salePriceRange?.min) {
+      query.where('min_sale_price', '>=', filters.salePriceRange.min);
     }
 
-    if (input.filters?.salePriceRange?.max) {
-      query.where('max_sale_price', '<=', input.filters.salePriceRange.max);
+    if (filters?.salePriceRange?.max) {
+      query.where('max_sale_price', '<=', filters.salePriceRange.max);
     }
 
-    if (input.filters?.optionValues?.length) {
-      for (const opv of input.filters.optionValues) {
+    if (filters?.optionValues?.length) {
+      for (const opv of filters.optionValues) {
         query.whereExists(function () {
           this.select('*')
             .from(Tables.Variant)
@@ -59,14 +86,5 @@ export class ProductRepository extends Repository<Product, ProductTable> {
         });
       }
     }
-
-    if (input.sort?.createdAt) query.orderBy('created_at', this.toOrder(input.sort.createdAt));
-    if (input.sort?.name) query.orderBy('name', this.toOrder(input.sort.name));
-    if (input.sort?.salePrice) query.orderBy('min_sale_price', this.toOrder(input.sort.salePrice));
-
-    if (input.take) query.limit(input.take);
-    if (input.skip) query.offset(input.skip);
-
-    return await query;
   }
 }

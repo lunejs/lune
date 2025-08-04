@@ -147,7 +147,7 @@ export enum SortKey {
   Desc = 'desc'
 }
 
-type CountOptions<T> = {
+export type CountOptions<T> = {
   where?: Where<T>;
 };
 
@@ -156,7 +156,8 @@ export type RepositoryInput<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {
   createdAt?: Date;
   updatedAt?: Date;
 };
-type Fields<T> = (keyof T)[];
-type Where<T> = {
+
+export type Fields<T> = (keyof T)[];
+export type Where<T> = {
   [K in keyof T]?: T[K];
 };

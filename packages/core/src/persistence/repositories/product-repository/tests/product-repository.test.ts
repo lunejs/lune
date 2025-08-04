@@ -46,87 +46,95 @@ describe('Product repository', () => {
     await testHelper.destroyDatabase();
   });
 
-  describe('findByFilters', () => {
+  describe('findByFilters & countByFilters', () => {
     test('returns products matching name filter (contains)', async () => {
-      const result = await repository.findByFilters({ filters: { name: { contains: 'Mac' } } });
+      const filters = { name: { contains: 'Mac' } };
+
+      const result = await repository.findByFilters({ filters });
 
       expect(result.map(p => p.name).every(name => name.includes('Mac'))).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching name filter (equals)', async () => {
-      const result = await repository.findByFilters({
-        filters: { name: { equals: 'MacBook Pro 16' } }
-      });
+      const filters = { name: { equals: 'MacBook Pro 16' } };
+      const result = await repository.findByFilters({ filters });
 
       expect(result[0].name).toBe('MacBook Pro 16');
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching enabled filter', async () => {
-      const result = await repository.findByFilters({ filters: { enabled: { equals: false } } });
+      const filters = { enabled: { equals: false } };
+      const result = await repository.findByFilters({ filters });
 
       expect(result.length).toBe(2);
       expect(result.every(p => p.enabled)).toBe(false);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching tag filter', async () => {
-      const result = await repository.findByFilters({ filters: { tag: 'electronics' } });
+      const filters = { tag: 'electronics' };
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(4);
       expect(result.find(p => p.id === ProductConstants.MacBookPro16ID)).toBeDefined();
       expect(result.find(p => p.id === ProductConstants.iPhone14ProMaxID)).toBeDefined();
       expect(result.find(p => p.id === ProductConstants.AppleWatchSeries8ID)).toBeDefined();
       expect(result.find(p => p.id === ProductConstants.AirPodsPro2ndGenID)).toBeDefined();
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching min sale price range', async () => {
-      const result = await repository.findByFilters({
-        filters: { salePriceRange: { min: convertToCent(23_000) } }
-      });
+      const filters = { salePriceRange: { min: convertToCent(23_000) } };
+      const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.min_sale_price >= convertToCent(23_000))).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching max sale price range', async () => {
-      const result = await repository.findByFilters({
-        filters: { salePriceRange: { max: convertToCent(10_000) } }
-      });
+      const filters = { salePriceRange: { max: convertToCent(10_000) } };
+      const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.max_sale_price <= convertToCent(10_000))).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching both min and max sale price range', async () => {
-      const result = await repository.findByFilters({
-        filters: { salePriceRange: { min: convertToCent(50), max: convertToCent(500) } }
-      });
+      const filters = { salePriceRange: { min: convertToCent(50), max: convertToCent(500) } };
+      const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.min_sale_price >= convertToCent(50))).toBe(true);
       expect(result.every(p => p.max_sale_price <= convertToCent(500))).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching option values in the same group (OR)', async () => {
-      const result = await repository.findByFilters({
-        filters: {
-          optionValues: [{ option: 'Color', values: ['Red', 'Green'] }]
-        }
-      });
+      const filters = {
+        optionValues: [{ option: 'Color', values: ['Red', 'Green'] }]
+      };
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(2);
       expect(result.find(p => p.id === ProductConstants.ShirtID)).toBeDefined();
       expect(result.find(p => p.id === ProductConstants.JacketID)).toBeDefined();
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching multiple option values in different groups (AND)', async () => {
-      const result = await repository.findByFilters({
-        filters: {
-          optionValues: [
-            { option: 'Color', values: ['Red'] },
-            { option: 'Material', values: ['Cotton'] }
-          ]
-        }
-      });
+      const filters = {
+        optionValues: [
+          { option: 'Color', values: ['Red'] },
+          { option: 'Material', values: ['Cotton'] }
+        ]
+      };
+
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe(ProductConstants.JacketID);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products matching sort by createdAt in descending order', async () => {
@@ -214,48 +222,51 @@ describe('Product repository', () => {
     });
 
     test('returns products with name and tag filter applied', async () => {
-      const result = await repository.findByFilters({
-        filters: { name: { contains: 'Shirt' }, tag: 'clothing' }
-      });
+      const filters = { name: { contains: 'Shirt' }, tag: 'clothing' };
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(2);
       expect(result.find(p => p.id === ProductConstants.ShirtID)).toBeDefined();
       expect(result.find(p => p.id === ProductConstants.BeachShirtID)).toBeDefined();
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products with option values and price range filter applied', async () => {
-      const result = await repository.findByFilters({
-        filters: {
-          optionValues: [{ option: 'Color', values: ['Red'] }],
-          salePriceRange: { min: convertToCent(90) }
-        }
-      });
+      const filters = {
+        optionValues: [{ option: 'Color', values: ['Red'] }],
+        salePriceRange: { min: convertToCent(90) }
+      };
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe(ProductConstants.JacketID);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products with name and option values filter applied', async () => {
-      const result = await repository.findByFilters({
-        filters: {
-          optionValues: [{ option: 'Color', values: ['Red'] }],
-          name: { contains: 'Shirt' }
-        }
-      });
+      const filters = {
+        optionValues: [{ option: 'Color', values: ['Red'] }],
+        name: { contains: 'Shirt' }
+      };
+
+      const result = await repository.findByFilters({ filters });
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe(ProductConstants.ShirtID);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
     test('returns products with filters and sort applied', async () => {
+      const filters = { name: { contains: 'Shirt' }, tag: 'clothing' };
       const result = await repository.findByFilters({
-        filters: { name: { contains: 'Shirt' }, tag: 'clothing' },
+        filters,
         sort: { createdAt: OrderBy.Asc }
       });
 
       expect(result).toHaveLength(2);
       expect(result[0].id).toBe(ProductConstants.BeachShirtID);
       expect(result[1].id).toBe(ProductConstants.ShirtID);
+      expect(result.length).toBe(await repository.countByFilters(filters));
     });
   });
 });
