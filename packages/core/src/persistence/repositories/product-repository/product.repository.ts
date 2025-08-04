@@ -43,7 +43,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   ) {
     if (filters?.name) {
       if (filters.name.contains) {
-        query.whereLike('name', `%${filters.name.contains}%`);
+        query.whereRaw('LOWER(name) LIKE ?', `%${filters.name.contains.toLowerCase()}%`);
       } else if (filters.name.equals) {
         query.where('name', filters.name.equals);
       }

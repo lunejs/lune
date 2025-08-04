@@ -1,5 +1,5 @@
 import { ExecutionContext } from '@/api/shared/context/types';
-import { ProductListInput } from '@/api/shared/types/graphql';
+import { OrderBy, ProductListInput } from '@/api/shared/types/graphql';
 import { ID } from '@/persistence/entities/entity';
 import { Product } from '@/persistence/entities/product';
 import { ProductRepository } from '@/persistence/repositories/product-repository';
@@ -13,7 +13,10 @@ export class ProductService {
   }
 
   async find(input?: ProductListInput) {
-    return this.repository.findByFilters(input ?? {});
+    return this.repository.findByFilters({
+      ...input,
+      sort: input?.sort ?? { createdAt: OrderBy.Desc }
+    });
   }
 
   async count(input?: ProductListInput['filters']) {

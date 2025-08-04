@@ -42,6 +42,23 @@ describe('product - Query', () => {
     expect(product.id).toBe(ProductConstants.AppleWatchSeries8ID);
   });
 
+  test('returns product by slug', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_QUERY,
+        variables: {
+          slug: ProductConstants.MacBookPro16Slug
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.slug).toBe(ProductConstants.MacBookPro16Slug);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')

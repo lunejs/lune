@@ -21,7 +21,7 @@ input ProductListInput {
   """
   Sort order to apply
   """
-  sort: VariantSort
+  sort: ProductSort
 }
 
 input ProductFilters {
@@ -31,7 +31,7 @@ input ProductFilters {
   tag: String
 }
 
-input VariantSort {
+input ProductSort {
   name: OrderBy
   salePrice: OrderBy
   stock: OrderBy
