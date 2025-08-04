@@ -2,6 +2,7 @@ import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
 import { Transaction } from '../../connection';
 import { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
+import { OrderBy } from '@/api/shared/types/graphql';
 
 /**
  * @description
@@ -16,6 +17,10 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
 
   protected q() {
     return this.trx<Table>(this.tableName);
+  }
+
+  protected toOrder(orderBy: OrderBy) {
+    return orderBy === OrderBy.Asc ? 'asc' : 'desc';
   }
 
   async findOne(input: FindOneOptions<T>): Promise<T | undefined> {

@@ -13,4 +13,5 @@ export interface Tag extends VendyxEntity {
 
 export interface TagTable extends VendyxTable {
   name: string;
+  shop_id: string;
 }

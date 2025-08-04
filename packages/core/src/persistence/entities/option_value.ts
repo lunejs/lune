@@ -25,4 +25,6 @@ export interface OptionValueTable extends VendyxTable {
   name: string;
   order: number;
   metadata?: Record<string, any>;
+  option_id: string;
+  shop_id: string;
 }

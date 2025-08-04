@@ -52,4 +52,6 @@ export interface VariantTable extends VendyxTable {
   requires_shipping: boolean;
   weight?: number;
   dimensions?: Record<string, unknown>;
+  product_id: string;
+  shop_id: string;
 }

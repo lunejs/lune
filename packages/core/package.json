@@ -16,6 +16,7 @@
     "@graphql-tools/load-files": "^7.0.1",
     "@vendyx/common": "*",
     "bcrypt": "^6.0.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.0.0",
     "express": "4.21.2",
     "graphql": "^16.11.0",

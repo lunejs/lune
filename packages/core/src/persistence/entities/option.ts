@@ -20,4 +20,5 @@ export interface OptionTable extends VendyxTable {
   deleted_at?: Date;
   name: string;
   order: number;
+  shop_id: string;
 }

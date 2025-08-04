@@ -1,13 +1,14 @@
 import knex from 'knex';
 import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { Database } from '@/persistence/connection';
+import { Database, Transaction } from '@/persistence/connection';
 import { Fixture } from './fixtures';
 import { FixtureDefaults } from './default-fixtures';
 import { TEST_VENDYX_CONFIG } from './test-config';
 
 export class TestHelper {
   private db: Database;
+  private trx: Transaction;
 
   static Regex = {
     UUID: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
@@ -19,6 +20,8 @@ export class TestHelper {
   }
 
   async resetDatabase() {
+    await this.trx.rollback();
+
     const tables = await this.db.raw(`
     SELECT tablename 
     FROM pg_tables 
@@ -40,6 +43,16 @@ export class TestHelper {
 
   getQueryBuilder() {
     return this.db;
+  }
+
+  async generateTrx() {
+    if (!this.db) {
+      throw new Error('Database connection is not initialized.');
+    }
+
+    this.trx = await this.db.transaction();
+
+    return this.trx;
   }
 
   async loadFixtures(fixtures: Fixture[]) {

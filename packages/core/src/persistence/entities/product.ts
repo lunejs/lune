@@ -43,4 +43,5 @@ export interface ProductTable extends VendyxTable {
   enabled: boolean;
   min_sale_price: number;
   max_sale_price: number;
+  shop_id: string;
 }
