@@ -58,6 +58,8 @@ export class ProductService {
     if (tags?.length) {
       await this.repository.createTags(tags.map(tagId => ({ tagId, productId: product.id })));
     }
+
+    return product;
   }
 
   private async validateAndParseSlug(name: string) {
