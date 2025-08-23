@@ -24,12 +24,6 @@ type Product implements Node {
   """
   enabled: Boolean!
   """
-  Whether the product is archived or not.
-  Archived products are not exposed to the storefront API and are not visible in the admin ui by default.
-  Useful for products that are not available anymore but you don't want to lose their data.
-  """
-  archived: Boolean!
-  """
   The minimum price of the product
   obtained from the variants sale prices.
   """

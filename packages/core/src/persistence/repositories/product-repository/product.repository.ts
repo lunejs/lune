@@ -5,10 +5,24 @@ import { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { ProductListInput } from '@/api/shared/types/graphql';
 import { Knex } from 'knex';
+import { ID } from '@/persistence/entities/entity';
+import { ProductAssetTable } from '@/persistence/entities/product-asset';
+import { ProductTagTable } from '@/persistence/entities/product-tag';
+import { RepositoryError } from '../repository.error';
+import { Tag, TagTable } from '@/persistence/entities/tag';
+import { Asset, AssetTable } from '@/persistence/entities/asset';
+import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
+import { TagSerializer } from '@/persistence/serializers/tag.serializer';
 
 export class ProductRepository extends Repository<Product, ProductTable> {
+  private assetSerializer: AssetSerializer;
+  private tagSerializer: TagSerializer;
+
   constructor(trx: Transaction) {
     super(Tables.Product, trx, new ProductSerializer());
+
+    this.assetSerializer = new AssetSerializer();
+    this.tagSerializer = new TagSerializer();
   }
 
   async findByFilters(input: ProductListInput) {
@@ -35,6 +49,59 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     const [{ count }] = await query;
 
     return Number(count);
+  }
+
+  async createAssets(assets: CreateAssetInput[]) {
+    try {
+      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset).insert(
+        assets.map(asset => ({
+          asset_id: asset.assetId,
+          product_id: asset.productId,
+          order: asset.order
+        }))
+      );
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.createAssets', error);
+    }
+  }
+
+  async createTags(tags: CreateTagInput[]) {
+    try {
+      const result = await this.trx<ProductTagTable>(Tables.ProductTag).insert(
+        tags.map(tag => ({ tag_id: tag.tagId, product_id: tag.productId }))
+      );
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.createTags', error);
+    }
+  }
+
+  async findAssets(product: ID): Promise<Asset[]> {
+    try {
+      const result: AssetTable[] = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+        .where({ product_id: product })
+        .innerJoin(Tables.Asset, `${Tables.Asset}.id`, `${Tables.ProductAsset}.asset_id`)
+        .orderBy(`${Tables.ProductAsset}.order`, 'asc');
+
+      return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.findAssets', error);
+    }
+  }
+
+  async findTags(product: ID): Promise<Tag[]> {
+    try {
+      const result: TagTable[] = await this.trx<ProductTagTable>(Tables.ProductTag)
+        .where({ product_id: product })
+        .innerJoin(Tables.Tag, `${Tables.Tag}.id`, `${Tables.ProductTag}.tag_id`);
+
+      return result.map(tag => this.tagSerializer.deserialize(tag) as Tag);
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.findTags', error);
+    }
   }
 
   private applyFilters(
@@ -89,3 +156,14 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
   }
 }
+
+type CreateAssetInput = {
+  productId: ID;
+  assetId: ID;
+  order: number;
+};
+
+type CreateTagInput = {
+  tagId: ID;
+  productId: ID;
+};

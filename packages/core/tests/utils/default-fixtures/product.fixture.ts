@@ -8,6 +8,7 @@ export const DefaultProductFixture = (): ProductTable => ({
   slug: crypto.randomUUID(),
   description: '',
   enabled: true,
+  archived: false,
   max_sale_price: 0,
   min_sale_price: 0,
   deleted_at: new Date(),

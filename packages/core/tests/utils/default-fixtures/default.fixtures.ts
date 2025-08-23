@@ -8,6 +8,8 @@ import { DefaultVariantFixture } from './variant.fixture';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
 import { DefaultVariantOptionValueFixture } from './variant-option-value.fixture';
+import { DefaultAssetFixture } from './asset.fixture';
+import { DefaultProductAssetFixture } from './asset.fixture copy';
 
 export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Users]: DefaultUserFixture,
@@ -18,5 +20,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Variant]: DefaultVariantFixture,
   [Tables.Option]: DefaultOptionFixture,
   [Tables.OptionValue]: DefaultOptionValueFixture,
-  [Tables.VariantOptionValue]: DefaultVariantOptionValueFixture
+  [Tables.VariantOptionValue]: DefaultVariantOptionValueFixture,
+  [Tables.Asset]: DefaultAssetFixture,
+  [Tables.ProductAsset]: DefaultProductAssetFixture
 };

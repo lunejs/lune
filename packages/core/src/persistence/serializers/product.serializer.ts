@@ -12,6 +12,7 @@ export class ProductSerializer extends Serializer<Product, ProductTable> {
       ['slug', 'slug'],
       ['description', 'description'],
       ['enabled', 'enabled'],
+      ['archived', 'archived'],
       ['min_sale_price', 'minSalePrice'],
       ['max_sale_price', 'maxSalePrice']
     ]);

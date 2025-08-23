@@ -4,7 +4,7 @@ import { ShopFixtures } from './fixtures/shop.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductRepository } from '../product.repository';
 import { Transaction } from '@/persistence/connection';
-import { TagFixtures } from './fixtures/tag.fixtures';
+import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 import { convertToCent } from '@vendyx/common';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
@@ -13,6 +13,7 @@ import { VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 import { OrderBy } from '@/api/shared/types/graphql';
 import { Tables } from '@/persistence/tables';
+import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 
 describe('Product repository', () => {
   const testHelper = new TestHelper();
@@ -33,7 +34,8 @@ describe('Product repository', () => {
       new OptionFixtures(),
       new OptionValueFixtures(),
       new VariantFixtures(),
-      new VariantOptionValueFixtures()
+      new VariantOptionValueFixtures(),
+      new AssetFixtures()
     ]);
   });
 
@@ -267,6 +269,37 @@ describe('Product repository', () => {
       expect(result[0].id).toBe(ProductConstants.BeachShirtID);
       expect(result[1].id).toBe(ProductConstants.ShirtID);
       expect(result.length).toBe(await repository.countByFilters(filters));
+    });
+  });
+
+  describe('createAssets', () => {
+    test('creates product assets', async () => {
+      await repository.createAssets([
+        { assetId: AssetConstants.ImageID, order: 0, productId: ProductConstants.MacBookPro16ID },
+        { assetId: AssetConstants.MeImageID, order: 1, productId: ProductConstants.MacBookPro16ID }
+      ]);
+
+      const createdAssets = await repository.findAssets(ProductConstants.MacBookPro16ID);
+
+      expect(createdAssets).toHaveLength(2);
+      expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
+      expect(createdAssets[1].id).toBe(AssetConstants.MeImageID);
+    });
+  });
+
+  describe('createTags', () => {
+    test('creates product tags', async () => {
+      await repository.createTags([
+        { productId: ProductConstants.AppleWatchSeries8ID, tagId: TagConstants.ClothingID },
+        { productId: ProductConstants.AppleWatchSeries8ID, tagId: TagConstants.DomesticsID }
+      ]);
+
+      const createdTags = await repository.findTags(ProductConstants.AppleWatchSeries8ID);
+
+      expect(createdTags).toHaveLength(3);
+      expect(createdTags.map(t => t.id).sort()).toEqual(
+        [TagConstants.ElectronicsID, TagConstants.ClothingID, TagConstants.DomesticsID].sort()
+      );
     });
   });
 });

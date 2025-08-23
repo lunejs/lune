@@ -13,6 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('slug', 255).notNullable().unique();
     table.text('description').nullable();
     table.boolean('enabled').notNullable().defaultTo(true);
+    table.boolean('archived').notNullable().defaultTo(false);
     table.integer('min_sale_price').notNullable().defaultTo(0);
     table.integer('max_sale_price').notNullable().defaultTo(0);
 

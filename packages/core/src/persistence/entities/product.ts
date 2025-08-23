@@ -24,6 +24,12 @@ export interface Product extends VendyxEntity {
    */
   enabled: boolean;
   /**
+   * Whether the product is archived or not.
+   * Archived products are not exposed to the storefront API and are not visible in the admin ui by default.
+   * Useful for products that are not available anymore but you don't want to lose their data.
+   */
+  archived: boolean;
+  /**
    * The minimum price of the product
    * obtained from the variants sale prices.
    */
@@ -41,6 +47,7 @@ export interface ProductTable extends VendyxTable {
   slug: string;
   description?: string;
   enabled: boolean;
+  archived: boolean;
   min_sale_price: number;
   max_sale_price: number;
   shop_id: string;

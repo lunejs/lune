@@ -3,6 +3,7 @@ import { Transaction } from '../../connection';
 import { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
 import { OrderBy } from '@/api/shared/types/graphql';
+import { Tables } from '@/persistence/tables';
 
 /**
  * @description
@@ -11,12 +12,12 @@ import { OrderBy } from '@/api/shared/types/graphql';
 export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   constructor(
     private readonly tableName: string,
-    private readonly trx: Transaction,
+    protected readonly trx: Transaction,
     protected readonly serializer: Serializer<T, Table>
   ) {}
 
-  protected q() {
-    return this.trx<Table>(this.tableName);
+  protected q(table?: Tables) {
+    return this.trx<Table>(table ?? this.tableName);
   }
 
   protected toOrder(orderBy: OrderBy) {
@@ -81,6 +82,19 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
       return this.serializer.deserialize(result) as T;
     } catch (error) {
       throw new RepositoryError('Repository.create', error);
+    }
+  }
+
+  async createMany(input: RepositoryInput<T>[]): Promise<T[]> {
+    try {
+      const results = await this.trx(this.tableName).insert(
+        input.map(item => this.serializer.serialize(item)),
+        '*'
+      );
+
+      return results.map(result => this.serializer.deserialize(result) as T);
+    } catch (error) {
+      throw new RepositoryError('Repository.createMany', error);
     }
   }
 

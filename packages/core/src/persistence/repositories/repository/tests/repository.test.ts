@@ -332,4 +332,53 @@ describe('Repository', () => {
       await expect(repository.softRemove(invalidInput)).rejects.toThrow(RepositoryError);
     });
   });
+
+  describe('createMany', () => {
+    test('creates multiple records and returns them', async () => {
+      const inputs: TestEntity[] = [
+        {
+          id: crypto.randomUUID(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          email: 'sam@gmail.com',
+          password: 'password123',
+          isActive: true
+        },
+        {
+          id: crypto.randomUUID(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          email: 'lluvia@gmail.com',
+          password: 'password456',
+          isActive: true
+        }
+      ];
+
+      const createdRecords = await repository.createMany(inputs);
+
+      expect(createdRecords).toHaveLength(2);
+      expect(createdRecords).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            email: inputs[0].email,
+            password: inputs[0].password,
+            isActive: inputs[0].isActive,
+            deletedAt: null,
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date)
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            email: inputs[1].email,
+            password: inputs[1].password,
+            isActive: inputs[1].isActive,
+            deletedAt: null,
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date)
+          })
+        ])
+      );
+    });
+  });
 });

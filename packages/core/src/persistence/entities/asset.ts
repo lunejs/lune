@@ -32,4 +32,5 @@ export interface AssetTable extends VendyxTable {
   source: string;
   provider_id: string;
   type: string;
+  shop_id: string;
 }
