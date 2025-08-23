@@ -3,14 +3,14 @@ import { Tables } from '@/persistence/tables';
 import { Transaction } from '@/persistence/connection';
 import { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
-import { ProductListInput } from '@/api/shared/types/graphql';
+import { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import { Knex } from 'knex';
 import { ID } from '@/persistence/entities/entity';
 import { ProductAssetTable } from '@/persistence/entities/product-asset';
 import { ProductTagTable } from '@/persistence/entities/product-tag';
 import { RepositoryError } from '../repository.error';
 import { Tag, TagTable } from '@/persistence/entities/tag';
-import { Asset, AssetTable } from '@/persistence/entities/asset';
+import { Asset } from '@/persistence/entities/asset';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { TagSerializer } from '@/persistence/serializers/tag.serializer';
 
@@ -79,16 +79,33 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
   }
 
-  async findAssets(product: ID): Promise<Asset[]> {
+  async findAssets(product: ID, input?: ListInput): Promise<Asset[]> {
     try {
-      const result: AssetTable[] = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+      const query = this.trx<ProductAssetTable>(Tables.ProductAsset)
         .where({ product_id: product })
         .innerJoin(Tables.Asset, `${Tables.Asset}.id`, `${Tables.ProductAsset}.asset_id`)
         .orderBy(`${Tables.ProductAsset}.order`, 'asc');
 
+      if (input?.take) query.limit(input.take);
+      if (input?.skip) query.offset(input.skip);
+
+      const result = await query;
+
       return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
     } catch (error) {
       throw new RepositoryError('ProductRepository.findAssets', error);
+    }
+  }
+
+  async countAssets(product: ID): Promise<number> {
+    try {
+      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+        .where({ product_id: product })
+        .count({ count: '*' });
+
+      return Number(result[0].count);
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.countAssets', error);
     }
   }
 

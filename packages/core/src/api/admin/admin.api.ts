@@ -9,6 +9,7 @@ import { JwtService } from '@/libs/jwt';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { ShopResolver } from './resolvers/shop.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
+import { ProductFieldResolver } from '../shared/resolvers/product-field.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
@@ -18,7 +19,7 @@ export class AdminApi extends GraphqlApi {
     super({
       endpoint: '/admin-api',
       typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [UserResolver, ShopResolver, ProductResolver],
+      resolvers: [UserResolver, ShopResolver, ProductResolver, ProductFieldResolver],
       context: initialContext => buildContext(initialContext, database, jwtService),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

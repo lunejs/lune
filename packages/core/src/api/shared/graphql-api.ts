@@ -54,6 +54,7 @@ export class GraphqlApi {
 
     this.config.resolvers.forEach(r => {
       _resolvers = {
+        ...r,
         Query: {
           ..._resolvers.Query,
           ...r.Query
@@ -80,7 +81,7 @@ type GraphqlApiConfig = {
 export type GraphqlApiResolver = {
   Query?: Record<string, any>;
   Mutation?: Record<string, any>;
-};
+} & Record<string, any>;
 
 export type GraphQLFieldResolver = (
   parent: unknown,

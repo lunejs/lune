@@ -1,4 +1,5 @@
 import { ExecutionContext } from '@/api/shared/context/types';
+import { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import {
   MutationCreateProductArgs,
@@ -36,7 +37,7 @@ async function createProduct(_, { input }: MutationCreateProductArgs, ctx: Execu
   return result;
 }
 
-export const ProductResolver = {
+export const ProductResolver: GraphqlApiResolver = {
   Mutation: {
     createProduct: UseUserGuard(createProduct)
   },

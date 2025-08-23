@@ -5,6 +5,10 @@ import { TestHelper } from '@/tests/utils/test-helper';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
+import { AssetFixtures } from './fixtures/asset.fixtures';
+import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
+import { TagFixtures } from './fixtures/tag.fixtures';
+import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 
 describe('product - Query', () => {
   const testHelper = new TestHelper();
@@ -13,7 +17,15 @@ describe('product - Query', () => {
   const app = vendyxServer.getApp();
 
   beforeEach(async () => {
-    await testHelper.loadFixtures([new UserFixtures(), new ShopFixtures(), new ProductFixtures()]);
+    await testHelper.loadFixtures([
+      new UserFixtures(),
+      new ShopFixtures(),
+      new ProductFixtures(),
+      new AssetFixtures(),
+      new ProductAssetFixtures(),
+      new TagFixtures(),
+      new ProductTagFixtures()
+    ]);
   });
 
   afterEach(async () => {
@@ -71,10 +83,66 @@ describe('product - Query', () => {
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('returns assets', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_QUERY,
+        variables: {
+          id: ProductConstants.iPhone14ProMaxID
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.assets.count).toBe(2);
+    expect(product.assets.pageInfo.total).toBe(2);
+  });
+
+  test('returns assets with pagination', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_QUERY,
+        variables: {
+          id: ProductConstants.iPhone14ProMaxID,
+          assetInput: {
+            take: 1
+          }
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.assets.count).toBe(1);
+    expect(product.assets.pageInfo.total).toBe(2);
+  });
+
+  test('returns tags', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_QUERY,
+        variables: {
+          id: ProductConstants.MacBookPro16ID
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.tags).toHaveLength(3);
+  });
 });
 
 const GET_PRODUCT_QUERY = /* GraphQL */ `
-  query Product($id: ID, $slug: String) {
+  query Product($id: ID, $slug: String, $assetInput: ListInput) {
     product(id: $id, slug: $slug) {
       id
       createdAt
@@ -84,6 +152,19 @@ const GET_PRODUCT_QUERY = /* GraphQL */ `
       enabled
       minSalePrice
       maxSalePrice
+      tags {
+        id
+        name
+      }
+      assets(input: $assetInput) {
+        count
+        pageInfo {
+          total
+        }
+        items {
+          id
+        }
+      }
     }
   }
 `;

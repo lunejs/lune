@@ -74,7 +74,7 @@ describe('product - Query', () => {
     expect(createProduct.enabled).toBe(true);
   });
 
-  test.skip('creates a product with assets', async () => {
+  test('creates a product with assets', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -94,11 +94,11 @@ describe('product - Query', () => {
 
     const { createProduct } = res.body.data;
 
-    // TODO: check asset once resolve type is set
-    expect(createProduct).toBeDefined();
+    expect(createProduct.assets.items).toHaveLength(2);
+    expect(createProduct.assets.count).toBe(2);
   });
 
-  test.skip('creates a product with tags', async () => {
+  test('creates a product with tags', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -115,8 +115,7 @@ describe('product - Query', () => {
 
     const { createProduct } = res.body.data;
 
-    // TODO: check tags once resolve type is set
-    expect(createProduct).toBeDefined();
+    expect(createProduct.tags).toHaveLength(3);
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -147,6 +146,16 @@ const CREATE_PRODUCT_MUTATION = /* GraphQL */ `
       enabled
       minSalePrice
       maxSalePrice
+      tags {
+        id
+        name
+      }
+      assets {
+        count
+        items {
+          id
+        }
+      }
     }
   }
 `;
