@@ -4,7 +4,7 @@ import { Logo } from '../logo';
 
 export const FloatingLayout = ({ children }: Props) => {
   return (
-    <div className="h-screen bg-muted flex flex-col gap-6 pt-40">
+    <div className="h-screen bg-muted flex flex-col items-center gap-6 pt-40">
       <header className="flex items-center gap-2 justify-center">
         <Link to="/" className="flex items-center gap-2">
           <Logo />
