@@ -3,6 +3,7 @@ import { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import {
   MutationCreateProductArgs,
+  MutationUpdateProductArgs,
   QueryProductArgs,
   QueryProductsArgs
 } from '@/api/shared/types/graphql';
@@ -37,9 +38,18 @@ async function createProduct(_, { input }: MutationCreateProductArgs, ctx: Execu
   return result;
 }
 
+async function updateProduct(_, { id, input }: MutationUpdateProductArgs, ctx: ExecutionContext) {
+  const productService = new ProductService(ctx);
+
+  const result = await productService.update(id, input);
+
+  return result;
+}
+
 export const ProductResolver: GraphqlApiResolver = {
   Mutation: {
-    createProduct: UseUserGuard(createProduct)
+    createProduct: UseUserGuard(createProduct),
+    updateProduct: UseUserGuard(updateProduct)
   },
   Query: {
     product: UseUserGuard(product),

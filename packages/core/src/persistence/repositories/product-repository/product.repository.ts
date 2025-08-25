@@ -51,15 +51,18 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     return Number(count);
   }
 
-  async createAssets(assets: CreateAssetInput[]) {
+  async upsertAssets(productId: ID, assets: UpsertAssetInput[]) {
     try {
-      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset).insert(
-        assets.map(asset => ({
-          asset_id: asset.assetId,
-          product_id: asset.productId,
-          order: asset.order
-        }))
-      );
+      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+        .insert(
+          assets.map(asset => ({
+            asset_id: asset.id,
+            product_id: productId,
+            order: asset.order
+          }))
+        )
+        .onConflict(['asset_id', 'product_id'])
+        .merge();
 
       return result;
     } catch (error) {
@@ -67,15 +70,41 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
   }
 
-  async createTags(tags: CreateTagInput[]) {
+  async removeAssets(productId: ID, ids: ID[]) {
     try {
-      const result = await this.trx<ProductTagTable>(Tables.ProductTag).insert(
-        tags.map(tag => ({ tag_id: tag.tagId, product_id: tag.productId }))
-      );
+      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+        .where({ product_id: productId })
+        .whereIn('asset_id', ids)
+        .del();
 
       return result;
     } catch (error) {
-      throw new RepositoryError('ProductRepository.createTags', error);
+      throw new RepositoryError('ProductRepository.removeAssets', error);
+    }
+  }
+
+  async upsertTags(productId: ID, tags: ID[]) {
+    try {
+      const result = await this.trx<ProductTagTable>(Tables.ProductTag)
+        .insert(tags.map(tagId => ({ tag_id: tagId, product_id: productId })))
+        .onConflict(['tag_id', 'product_id'])
+        .merge();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.upsertTags', error);
+    }
+  }
+
+  async removeTags(ids: ID[]) {
+    try {
+      const result = await this.trx<ProductTagTable>(Tables.ProductTag)
+        .whereIn('tag_id', ids)
+        .del();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.removeTags', error);
     }
   }
 
@@ -174,13 +203,8 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   }
 }
 
-type CreateAssetInput = {
-  productId: ID;
-  assetId: ID;
+type UpsertAssetInput = {
+  id: ID;
   order: number;
 };
 
-type CreateTagInput = {
-  tagId: ID;
-  productId: ID;
-};

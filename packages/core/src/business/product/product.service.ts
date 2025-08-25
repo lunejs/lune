@@ -1,20 +1,23 @@
 import { ExecutionContext } from '@/api/shared/context/types';
-import { CreateProductInput, OrderBy, ProductListInput } from '@/api/shared/types/graphql';
+import {
+  CreateProductInput,
+  OrderBy,
+  ProductListInput,
+  UpdateProductInput
+} from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { ID } from '@/persistence/entities/entity';
 import { Product } from '@/persistence/entities/product';
-import { AssetRepository } from '@/persistence/repositories/asset-repository/asset.repository';
 import { ProductRepository } from '@/persistence/repositories/product-repository';
 import { Where } from '@/persistence/repositories/repository';
+import { hasValue } from '@/utils/array';
 import { clean } from '@vendyx/common';
 
 export class ProductService {
   private repository: ProductRepository;
-  private assetRepository: AssetRepository;
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.product;
-    this.assetRepository = ctx.repositories.asset;
   }
 
   async find(input?: ProductListInput) {
@@ -50,16 +53,33 @@ export class ProductService {
     });
 
     if (assets?.length) {
-      await this.repository.createAssets(
-        assets.map(asset => ({ assetId: asset.id, productId: product.id, order: asset.order }))
-      );
+      await this.repository.upsertAssets(product.id, assets);
     }
 
     if (tags?.length) {
-      await this.repository.createTags(tags.map(tagId => ({ tagId, productId: product.id })));
+      await this.repository.upsertTags(product.id, tags);
     }
 
     return product;
+  }
+
+  async update(id: ID, input: UpdateProductInput) {
+    const { assets, tags, ...baseProduct } = input;
+
+    const result = await this.repository.update({ where: { id }, data: clean(baseProduct) });
+    
+    if (assets?.length) {
+      await this.repository.upsertAssets(id, assets);
+    }
+
+    if (tags?.length) {
+      await this.repository.upsertTags(id, tags);
+    }
+
+    await this.removeMissingAssets(id, assets);
+    await this.removeMissingTags(id, tags);
+
+    return result;
   }
 
   private async validateAndParseSlug(name: string) {
@@ -70,5 +90,33 @@ export class ProductService {
     if (!productNameCount) return slug;
 
     return slug + '-' + productNameCount;
+  }
+
+  private async removeMissingAssets(productId: ID, newAssets: UpdateProductInput['assets']) {
+    if (!Array.isArray(newAssets)) return;
+
+    const assets = await this.repository.findAssets(productId);
+
+    const assetsToRemove = assets
+      .map(a => a.id)
+      .filter(assetId => !newAssets.some(asset => asset.id === assetId))
+      .map(assetToRemoveId => assets.find(a => a.id === assetToRemoveId))
+      .filter(hasValue);
+
+    await this.repository.removeAssets(productId, assetsToRemove.map(asset => asset.id));
+  }
+
+  private async removeMissingTags(productId: ID, newTags: UpdateProductInput['tags']) {
+    if (!Array.isArray(newTags)) return;
+
+    const tags = await this.repository.findTags(productId);
+
+    const tagsToRemove = tags
+      .map(t => t.id)
+      .filter(tagId => !newTags.some(tag => tag === tagId))
+      .map(tagToRemoveId => tags.find(t => t.id === tagToRemoveId))
+      .filter(hasValue);
+
+    await this.repository.removeTags(tagsToRemove.map(tag => tag.id));
   }
 }

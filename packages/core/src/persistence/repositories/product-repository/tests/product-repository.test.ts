@@ -14,6 +14,7 @@ import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixt
 import { OrderBy } from '@/api/shared/types/graphql';
 import { Tables } from '@/persistence/tables';
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
+import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
 
 describe('Product repository', () => {
   const testHelper = new TestHelper();
@@ -35,7 +36,8 @@ describe('Product repository', () => {
       new OptionValueFixtures(),
       new VariantFixtures(),
       new VariantOptionValueFixtures(),
-      new AssetFixtures()
+      new AssetFixtures(),
+      new ProductAssetFixtures()
     ]);
   });
 
@@ -272,11 +274,11 @@ describe('Product repository', () => {
     });
   });
 
-  describe('createAssets', () => {
+  describe('upsertAssets', () => {
     test('creates product assets', async () => {
-      await repository.createAssets([
-        { assetId: AssetConstants.ImageID, order: 0, productId: ProductConstants.MacBookPro16ID },
-        { assetId: AssetConstants.MeImageID, order: 1, productId: ProductConstants.MacBookPro16ID }
+      await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
+        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.MeImageID, order: 1 }
       ]);
 
       const createdAssets = await repository.findAssets(ProductConstants.MacBookPro16ID);
@@ -285,13 +287,30 @@ describe('Product repository', () => {
       expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
       expect(createdAssets[1].id).toBe(AssetConstants.MeImageID);
     });
+
+    test('re order product assets', async () => {
+      await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
+        { id: AssetConstants.ImageID, order: 0 },
+      ]);
+
+      await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
+        { id: AssetConstants.MeImageID, order: 0 },
+        { id: AssetConstants.ImageID, order: 1 }
+      ]);
+
+      const createdAssets = await repository.findAssets(ProductConstants.MacBookPro16ID);
+
+      expect(createdAssets).toHaveLength(2);
+      expect(createdAssets[0].id).toBe(AssetConstants.MeImageID);
+      expect(createdAssets[1].id).toBe(AssetConstants.ImageID);
+    })
   });
 
-  describe('createTags', () => {
+  describe('upsertTags', () => {
     test('creates product tags', async () => {
-      await repository.createTags([
-        { productId: ProductConstants.AppleWatchSeries8ID, tagId: TagConstants.ClothingID },
-        { productId: ProductConstants.AppleWatchSeries8ID, tagId: TagConstants.DomesticsID }
+      await repository.upsertTags(ProductConstants.AppleWatchSeries8ID, [
+        TagConstants.ClothingID,
+        TagConstants.DomesticsID
       ]);
 
       const createdTags = await repository.findTags(ProductConstants.AppleWatchSeries8ID);
@@ -302,4 +321,78 @@ describe('Product repository', () => {
       );
     });
   });
+
+  describe('findAssets', () => {
+    test('returns all product assets', async () => {
+      await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
+        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.MeImageID, order: 1 }
+      ]);
+
+      const createdAssets = await repository.findAssets(ProductConstants.MacBookPro16ID);
+
+      expect(createdAssets).toHaveLength(2);
+      expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
+      expect(createdAssets[1].id).toBe(AssetConstants.MeImageID);
+    });
+
+    test('returns all product assets with pagination', async () => {
+      await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
+        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.MeImageID, order: 1 }
+      ]);
+
+      const createdAssets = await repository.findAssets(ProductConstants.MacBookPro16ID, {
+        take: 1
+      });
+
+      expect(createdAssets).toHaveLength(1);
+      expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
+    });
+  });
+
+  describe('findTags', () => {
+    test('returns all product tags', async () => {
+      await repository.upsertTags(ProductConstants.AppleWatchSeries8ID, [
+        TagConstants.ClothingID,
+        TagConstants.DomesticsID
+      ]);
+
+      const createdTags = await repository.findTags(ProductConstants.AppleWatchSeries8ID);
+
+      expect(createdTags).toHaveLength(3);
+      expect(createdTags.map(t => t.id).sort()).toEqual(
+        [TagConstants.ElectronicsID, TagConstants.ClothingID, TagConstants.DomesticsID].sort()
+      );
+    });
+  });
+
+  describe('removeAssets', () => {
+    test('removes product assets', async () => {
+      const mockedAssets = await repository.findAssets(ProductConstants.iPhone14ProMaxID);
+      expect(mockedAssets).toHaveLength(2);
+
+      await repository.removeAssets(ProductConstants.iPhone14ProMaxID, [
+        AssetConstants.ImageID,
+        AssetConstants.MeImageID
+      ]);
+
+      const assetsAfterRemoval = await repository.findAssets(ProductConstants.iPhone14ProMaxID);
+
+      expect(assetsAfterRemoval).toHaveLength(0);
+    })
+  })
+
+  describe('removeTags', () => {
+    test('removes product tags', async () => {
+      const mockedTags = await repository.findTags(ProductConstants.ShirtID);
+      expect(mockedTags).toHaveLength(1);
+
+      await repository.removeTags([TagConstants.ClothingID]);
+
+      const tagsAfterRemoval = await repository.findTags(ProductConstants.ShirtID);
+
+      expect(tagsAfterRemoval).toHaveLength(0);
+    })
+  })
 });

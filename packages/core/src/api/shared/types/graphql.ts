@@ -65,7 +65,7 @@ export type CreateOptionInput = {
 };
 
 export type CreateOptionValueInput = {
-  metadata: OptionValueMetadata;
+  metadata: OptionValueMetadataInput;
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
 };
@@ -321,6 +321,10 @@ export type OptionValueMetadata = {
   color?: Maybe<Scalars['String']['output']>;
 };
 
+export type OptionValueMetadataInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
+};
+
 export enum OrderBy {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -416,9 +420,16 @@ export type ProductListInput = {
   /** Skip the first n results */
   skip?: InputMaybe<Scalars['Int']['input']>;
   /** Sort order to apply */
-  sort?: InputMaybe<VariantSort>;
+  sort?: InputMaybe<ProductSort>;
   /** takes n result from where the skip position is */
   take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ProductSort = {
+  createdAt?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  salePrice?: InputMaybe<OrderBy>;
+  stock?: InputMaybe<OrderBy>;
 };
 
 export type Query = {
@@ -612,7 +623,7 @@ export type UpdateOptionValueInput = {
    * If not, the value will be created and add it to the option
    */
   id?: InputMaybe<Scalars['ID']['input']>;
-  metadata?: InputMaybe<OptionValueMetadata>;
+  metadata?: InputMaybe<OptionValueMetadataInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -622,7 +633,6 @@ export type UpdateProductInput = {
   assets?: InputMaybe<Array<AssetInProductInput>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  looks?: InputMaybe<Array<Scalars['ID']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -760,13 +770,6 @@ export type VariantList = List & {
   pageInfo: PageInfo;
 };
 
-export type VariantSort = {
-  createdAt?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  salePrice?: InputMaybe<OrderBy>;
-  stock?: InputMaybe<OrderBy>;
-};
-
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -875,6 +878,7 @@ export type ResolversTypes = {
   OptionValue: ResolverTypeWrapper<OptionValue>;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: ResolverTypeWrapper<OptionValueMetadata>;
+  OptionValueMetadataInput: OptionValueMetadataInput;
   OrderBy: OrderBy;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   PriceRange: PriceRange;
@@ -882,6 +886,7 @@ export type ResolversTypes = {
   ProductFilters: ProductFilters;
   ProductList: ResolverTypeWrapper<ProductList>;
   ProductListInput: ProductListInput;
+  ProductSort: ProductSort;
   Query: ResolverTypeWrapper<{}>;
   Shop: ResolverTypeWrapper<Shop>;
   ShopErrorCode: ShopErrorCode;
@@ -914,7 +919,6 @@ export type ResolversTypes = {
   UserResult: ResolverTypeWrapper<UserResult>;
   Variant: ResolverTypeWrapper<Variant>;
   VariantList: ResolverTypeWrapper<VariantList>;
-  VariantSort: VariantSort;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -950,12 +954,14 @@ export type ResolversParentTypes = {
   OptionValue: OptionValue;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: OptionValueMetadata;
+  OptionValueMetadataInput: OptionValueMetadataInput;
   PageInfo: PageInfo;
   PriceRange: PriceRange;
   Product: Product;
   ProductFilters: ProductFilters;
   ProductList: ProductList;
   ProductListInput: ProductListInput;
+  ProductSort: ProductSort;
   Query: {};
   Shop: Shop;
   ShopErrorResult: ShopErrorResult;
@@ -985,7 +991,6 @@ export type ResolversParentTypes = {
   UserResult: UserResult;
   Variant: Variant;
   VariantList: VariantList;
-  VariantSort: VariantSort;
 };
 
 export type AssetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Asset'] = ResolversParentTypes['Asset']> = {

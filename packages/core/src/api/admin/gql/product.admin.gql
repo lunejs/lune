@@ -40,7 +40,6 @@ input UpdateProductInput {
 
   assets: [AssetInProductInput!]
   tags: [ID!]
-  looks: [ID!]
 }
 
 input AssetInProductInput {
