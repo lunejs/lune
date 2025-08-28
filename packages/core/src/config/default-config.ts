@@ -1,3 +1,4 @@
+import { LocalStorageProvider } from './storage/local-storage-provider';
 import { VendyxConfig } from './vendyx.config';
 
 export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
@@ -10,5 +11,8 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
   },
   db: {
     url: 'postgres://app_user:womteC_ruqri0_punqah@localhost:5432/vendyx'
+  },
+  assets: {
+    storageProvider: new LocalStorageProvider()
   }
 };

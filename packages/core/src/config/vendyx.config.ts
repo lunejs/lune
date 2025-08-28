@@ -1,3 +1,5 @@
+import { StorageProvider } from "./contracts/storage";
+
 export interface VendyxConfig {
   app: {
     port: number;
@@ -8,5 +10,8 @@ export interface VendyxConfig {
   };
   db: {
     url: string;
+  };
+  assets: {
+    storageProvider: StorageProvider;
   };
 }
