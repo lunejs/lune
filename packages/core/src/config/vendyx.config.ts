@@ -1,4 +1,5 @@
-import { StorageProvider } from "./contracts/storage";
+import { DefaultImageProcessor } from './image-processor/default-image-processor';
+import { StorageProvider } from './storage/storage';
 
 export interface VendyxConfig {
   app: {
@@ -13,5 +14,6 @@ export interface VendyxConfig {
   };
   assets: {
     storageProvider: StorageProvider;
+    imageProcessor: DefaultImageProcessor;
   };
 }

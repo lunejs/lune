@@ -1,6 +1,6 @@
 import { VendyxEntity, VendyxTable } from './entity';
 
-enum AssetType {
+export enum AssetType {
   IMG = 'IMG',
   FILE = 'FILE'
 }

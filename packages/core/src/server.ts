@@ -5,6 +5,8 @@ import { AdminApi } from './api/admin/admin.api';
 import { JwtService } from './libs/jwt';
 import { VendyxConfig } from './config';
 import { getConfig, setConfig } from './config/config';
+import { join } from 'node:path';
+import { UploadApi } from './api/upload/upload.router';
 
 export class VendyxServer {
   private app: express.Application;
@@ -20,6 +22,18 @@ export class VendyxServer {
     const jwtService = new JwtService({ secretKey: auth.jwtSecret, expiresIn: auth.jwtExpiresIn });
 
     const adminApi = new AdminApi(this.database, jwtService);
+    const uploadApi = new UploadApi(this.database, jwtService)
+
+    this.app.use(uploadApi.router);
+
+    this.app.use(
+      '/uploads',
+      express.static(join(process.cwd(), 'uploads'), {
+        setHeaders(res) {
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
+      })
+    );
 
     this.app.use(adminApi.handler);
   }
