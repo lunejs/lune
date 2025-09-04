@@ -1,10 +1,8 @@
-import sharp from 'sharp';
 import { join } from 'node:path';
-import {
-  ImageProcessor,
-  ProcessFile,
-  ProcessResult
-} from './image-processor';
+
+import sharp from 'sharp';
+
+import { ImageProcessor, ProcessFile, ProcessResult } from './image-processor';
 
 /**
  * @description
@@ -12,7 +10,7 @@ import {
  */
 export class DefaultImageProcessor implements ImageProcessor {
   private options: Required<Options>;
-  
+
   constructor(options: Options = {}) {
     this.options = this.getDefaultOptions(options);
   }
@@ -27,10 +25,7 @@ export class DefaultImageProcessor implements ImageProcessor {
   }
 
   private async optimizeImage(filepath: string, outdir: string) {
-    await sharp(filepath)
-      .rotate()
-      .webp({ quality: this.options.quality })
-      .toFile(outdir);
+    await sharp(filepath).rotate().webp({ quality: this.options.quality }).toFile(outdir);
   }
 
   private getDefaultOptions(options?: Options): Required<Options> {
@@ -42,4 +37,4 @@ export class DefaultImageProcessor implements ImageProcessor {
 
 type Options = {
   quality?: number;
-}
+};

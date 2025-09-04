@@ -9,6 +9,7 @@ import {
 } from '@/api/shared/types/graphql';
 import { ProductService } from '@/business/product/product.service';
 import { ListResponse } from '@/utils/list-response';
+
 import { clean } from '../../../../../vendyx-common/dist/index.cjs';
 
 async function products(_, { input }: QueryProductsArgs, ctx: ExecutionContext) {

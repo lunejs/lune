@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router';
 import { Fragment } from 'react/jsx-runtime';
+import { Link, useLocation } from 'react-router';
 
 import {
   Breadcrumb,
@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '../../../../../vendyx-ui/dist';
-
 import { isLast } from '../utils/arrays.utils';
 
 export const AppBreadcrumb = () => {

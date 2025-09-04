@@ -1,9 +1,10 @@
+import { OrderBy } from '@/api/shared/types/graphql';
 import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import { Tables } from '@/persistence/tables';
+
 import { Transaction } from '../../connection';
 import { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
-import { OrderBy } from '@/api/shared/types/graphql';
-import { Tables } from '@/persistence/tables';
 
 /**
  * @description

@@ -1,8 +1,9 @@
 import { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
-import { ShopConstants } from './shop.fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
+
+import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
   ID: TestHelper.generateUUID(),

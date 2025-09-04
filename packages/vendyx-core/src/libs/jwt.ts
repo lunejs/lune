@@ -1,5 +1,6 @@
-import { Logger } from '@/logger';
 import jwt from 'jsonwebtoken';
+
+import { Logger } from '@/logger';
 
 export class JwtService {
   /**

@@ -1,7 +1,7 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import {
-  useQuery,
   type UndefinedInitialDataOptions,
+  useQuery,
   type UseQueryResult
 } from '@tanstack/react-query';
 import type { GraphQLError } from 'graphql';

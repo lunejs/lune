@@ -1,4 +1,5 @@
 import { User, UserTable } from '@/persistence/entities/user';
+
 import { Serializer } from './serializer';
 
 export class UserSerializer extends Serializer<User, UserTable> {

@@ -1,11 +1,11 @@
 import React, { type Component, forwardRef, useId } from 'react';
+import { ChevronDown, Phone } from 'lucide-react';
 import * as RPNInput from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
 
-import { ChevronDown, Phone } from 'lucide-react';
+import { cn } from '@/lib';
 
 import { Input } from './input';
-import { cn } from '@/lib';
 
 export const PhoneInput = forwardRef<
   Component<
@@ -20,10 +20,7 @@ export const PhoneInput = forwardRef<
   return (
     <RPNInput.default
       ref={ref}
-      className={cn(
-        'flex w-full rounded-lg shadow-sm shadow-black/5',
-        className
-      )}
+      className={cn('flex w-full rounded-lg shadow-sm shadow-black/5', className)}
       international
       defaultCountry="MX"
       flagComponent={FlagComponent}
@@ -32,7 +29,7 @@ export const PhoneInput = forwardRef<
       id={id ?? inputId}
       placeholder={placeholder}
       value={value}
-      onChange={(newValue) => onChange?.(newValue ?? '')}
+      onChange={newValue => onChange?.(newValue ?? '')}
     />
   );
 });
@@ -47,21 +44,17 @@ type PhoneInputProps = {
 
 PhoneInput.displayName = 'PhoneInput';
 
-const RootPhoneInput = forwardRef<
-  HTMLInputElement,
-  React.ComponentProps<'input'>
->(({ className, ...props }, ref) => {
-  return (
-    <Input
-      className={cn(
-        '-ms-px rounded-s-none shadow-none focus-visible:z-10',
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  );
-});
+const RootPhoneInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+  ({ className, ...props }, ref) => {
+    return (
+      <Input
+        className={cn('-ms-px rounded-s-none shadow-none focus-visible:z-10', className)}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 
 RootPhoneInput.displayName = 'RootPhoneInput';
 
@@ -72,12 +65,7 @@ type CountrySelectProps = {
   options: { label: string; value: RPNInput.Country | undefined }[];
 };
 
-const CountrySelect = ({
-  disabled,
-  value,
-  onChange,
-  options,
-}: CountrySelectProps) => {
+const CountrySelect = ({ disabled, value, onChange, options }: CountrySelectProps) => {
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value as RPNInput.Country);
   };
@@ -101,12 +89,10 @@ const CountrySelect = ({
           Select a country
         </option>
         {options
-          .filter((x) => x.value)
+          .filter(x => x.value)
           .map((option, i) => (
             <option key={option.value ?? `empty-${i}`} value={option.value}>
-              {option.label}{' '}
-              {option.value &&
-                `+${RPNInput.getCountryCallingCode(option.value)}`}
+              {option.label} {option.value && `+${RPNInput.getCountryCallingCode(option.value)}`}
             </option>
           ))}
       </select>
@@ -119,11 +105,7 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
 
   return (
     <span className="w-5 overflow-hidden rounded-sm">
-      {Flag ? (
-        <Flag title={countryName} />
-      ) : (
-        <Phone size={16} aria-hidden="true" />
-      )}
+      {Flag ? <Flag title={countryName} /> : <Phone size={16} aria-hidden="true" />}
     </span>
   );
 };

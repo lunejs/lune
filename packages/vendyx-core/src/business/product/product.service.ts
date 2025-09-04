@@ -11,6 +11,7 @@ import { Product } from '@/persistence/entities/product';
 import { ProductRepository } from '@/persistence/repositories/product-repository';
 import { Where } from '@/persistence/repositories/repository';
 import { hasValue } from '@/utils/array';
+
 import { clean } from '../../../../vendyx-common/dist/index.cjs';
 
 export class ProductService {
@@ -67,7 +68,7 @@ export class ProductService {
     const { assets, tags, ...baseProduct } = input;
 
     const result = await this.repository.update({ where: { id }, data: clean(baseProduct) });
-    
+
     if (assets?.length) {
       await this.repository.upsertAssets(id, assets);
     }
@@ -103,7 +104,10 @@ export class ProductService {
       .map(assetToRemoveId => assets.find(a => a.id === assetToRemoveId))
       .filter(hasValue);
 
-    await this.repository.removeAssets(productId, assetsToRemove.map(asset => asset.id));
+    await this.repository.removeAssets(
+      productId,
+      assetsToRemove.map(asset => asset.id)
+    );
   }
 
   private async removeMissingTags(productId: ID, newTags: UpdateProductInput['tags']) {

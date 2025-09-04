@@ -57,10 +57,7 @@ export const Logo = () => {
           />
           <feOffset dy="1" />
           <feGaussianBlur stdDeviation="1" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
-          />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
@@ -74,10 +71,7 @@ export const Logo = () => {
           />
           <feOffset dy="1" />
           <feGaussianBlur stdDeviation="1.5" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
-          />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
           <feBlend
             mode="normal"
             in2="effect1_dropShadow_24016_147649"

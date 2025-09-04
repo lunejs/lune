@@ -1,9 +1,10 @@
+import { OptionValueTable } from '@/persistence/entities/option_value';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { ShopConstants } from './shop.fixtures';
-import { OptionValueTable } from '@/persistence/entities/option_value';
+
 import { OptionConstants } from './option.fixtures';
+import { ShopConstants } from './shop.fixtures';
 
 export const OptionValueConstants = {
   RedOptionValueID: TestHelper.generateUUID(),

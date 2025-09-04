@@ -2,6 +2,7 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { GraphQLSchema } from 'graphql';
 import { createYoga, Plugin, YogaInitialContext, YogaServerInstance } from 'graphql-yoga';
+
 import { ExecutionContext } from './context/types';
 
 /**

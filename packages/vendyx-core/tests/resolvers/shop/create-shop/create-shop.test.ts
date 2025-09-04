@@ -1,9 +1,11 @@
-import { VendyxServer } from '@/server';
 import request from 'supertest';
-import { TestHelper } from '@/tests/utils/test-helper';
-import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
-import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { TestHelper } from '@/tests/utils/test-helper';
+
+import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('createShop - Mutation', () => {
   const testHelper = new TestHelper();

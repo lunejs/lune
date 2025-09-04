@@ -1,5 +1,6 @@
-import { getConfig } from '@/config/config';
 import knex, { Knex } from 'knex';
+
+import { getConfig } from '@/config/config';
 
 export const createConnection = (): Database => {
   const { url } = getConfig().db;

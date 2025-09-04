@@ -1,6 +1,7 @@
+import { ProductAssetTable } from '@/persistence/entities/product-asset';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
-import { ProductAssetTable } from '@/persistence/entities/product-asset';
+
 import { AssetConstants } from './asset.fixtures';
 import { ProductConstants } from './product.fixtures';
 

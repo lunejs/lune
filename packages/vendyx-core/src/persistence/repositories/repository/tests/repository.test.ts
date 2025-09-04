@@ -1,8 +1,10 @@
 import { Transaction } from '@/persistence/connection';
-import { recordsMock, TestEntity, TestRepository } from './repository.mock';
-import { RepositoryError } from '../../repository.error';
 import { TestHelper } from '@/tests/utils/test-helper';
+
+import { RepositoryError } from '../../repository.error';
 import { SortKey } from '../repository';
+
+import { recordsMock, TestEntity, TestRepository } from './repository.mock';
 
 const TEST_TABLE_NAME = 'test_table';
 

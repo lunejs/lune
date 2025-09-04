@@ -1,17 +1,12 @@
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormField,
-  type FormFieldProps,
-  FormItem,
-  FormLabel,
-} from './form';
 import { Checkbox } from '@/components';
+
+import { FormControl, FormField, type FormFieldProps, FormItem, FormLabel } from './form';
 
 export const FormCheckbox = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   label,
@@ -39,7 +34,7 @@ export const FormCheckbox = <
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = FormFieldProps<TFieldValues, TName> & {
   label?: string;
 };

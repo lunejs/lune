@@ -1,5 +1,6 @@
-import { Logger } from '@/logger';
 import { Plugin } from 'graphql-yoga';
+
+import { Logger } from '@/logger';
 
 export function useQueryLogger(): Plugin {
   return {

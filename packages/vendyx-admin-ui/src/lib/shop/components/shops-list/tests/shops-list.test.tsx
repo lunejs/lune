@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router';
 
 import { setCookie } from '@/lib/shared/cookies';
-
 import { render } from '@/tests/render';
-import { SHOPS_MOCK } from './shops-list.mock';
 
 import { ShopsList } from '../shops-list';
+
+import { SHOPS_MOCK } from './shops-list.mock';
 
 vi.mock('@/lib/shared/cookies', () => ({
   setCookie: vi.fn()

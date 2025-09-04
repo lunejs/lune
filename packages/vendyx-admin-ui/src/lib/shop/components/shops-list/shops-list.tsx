@@ -1,8 +1,8 @@
 import { ChevronRightIcon, Loader2Icon } from 'lucide-react';
 
-import { Label } from '../../../../../../vendyx-ui/dist';
-
 import type { CommonListShopFragment } from '@/lib/api/types';
+
+import { Label } from '../../../../../../vendyx-ui/dist';
 
 import { ShopsListEmptyState } from './empty-state';
 import { useSelectShop } from './use-select-shop';

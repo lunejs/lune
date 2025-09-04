@@ -1,7 +1,8 @@
+import { VariantTable } from '@/persistence/entities/variant';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { VariantTable } from '@/persistence/entities/variant';
+
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 

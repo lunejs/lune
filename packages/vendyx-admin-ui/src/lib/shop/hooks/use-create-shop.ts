@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router';
 
 import { queryClient } from '@/app/app';
-
 import { getShopError } from '@/lib/api/errors/shop.errors';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_SHOP_MUTATION } from '@/lib/api/operations/shop.operations';
 import type { CreateShopInput } from '@/lib/api/types';
-
 import { setCookie } from '@/lib/shared/cookies';
 import { CookiesKeys } from '@/lib/shared/cookies/keys';
 

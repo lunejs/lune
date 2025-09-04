@@ -1,8 +1,11 @@
-import { getConfig } from "@/config/config";
-import { RestApiEndpoint, RestApiHandler } from "../shared/rest-api";
-import multer from "multer";
 import { promises as fs } from 'node:fs';
-import { Logger } from "@/logger";
+
+import multer from 'multer';
+
+import { getConfig } from '@/config/config';
+import { Logger } from '@/logger';
+
+import { RestApiEndpoint, RestApiHandler } from '../shared/rest-api';
 
 const TMP_DIR = 'tmp';
 const multerMiddleware = multer({ dest: TMP_DIR, limits: {} });
@@ -42,8 +45,8 @@ const upload: RestApiHandler = async (req, res) => {
     Logger.error('/upload', error, error);
     res.status(500).json({ ok: false });
   }
-}
+};
 
 export const UploadEndpoints: RestApiEndpoint[] = [
   { method: 'post', path: '/', handlers: [multerMiddleware.array('assets', 12), upload] }
-]
+];

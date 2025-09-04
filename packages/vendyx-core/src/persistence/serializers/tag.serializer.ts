@@ -1,4 +1,5 @@
 import { Tag, TagTable } from '../entities/tag';
+
 import { Serializer } from './serializer';
 
 export class TagSerializer extends Serializer<Tag, TagTable> {

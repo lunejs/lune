@@ -1,8 +1,9 @@
+import { AssetTable } from '@/persistence/entities/asset';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
+
 import { ShopConstants } from './shop.fixtures';
-import { AssetTable } from '@/persistence/entities/asset';
 
 export const AssetConstants = {
   ImageID: TestHelper.generateUUID(),

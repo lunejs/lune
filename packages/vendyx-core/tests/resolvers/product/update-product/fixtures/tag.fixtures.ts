@@ -2,6 +2,7 @@ import { TagTable } from '@/persistence/entities/tag';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
+
 import { ShopConstants } from './shop.fixtures';
 
 export const TagConstants = {

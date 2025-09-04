@@ -1,10 +1,12 @@
-import { Database } from '@/persistence/connection';
-import { ExecutionContext } from './types';
-import { buildRepositories } from '@/persistence/repositories/build-repositories';
 import { JwtService } from '@/libs/jwt';
-import { UserJWT } from '../types/api.types';
 import { Logger } from '@/logger';
+import { Database } from '@/persistence/connection';
+import { buildRepositories } from '@/persistence/repositories/build-repositories';
 import { enableRLS, runWithoutRLS } from '@/persistence/rls';
+
+import { UserJWT } from '../types/api.types';
+
+import { ExecutionContext } from './types';
 
 export async function buildContext(
   database: Database,

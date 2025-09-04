@@ -3,16 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router';
 
 import { gqlFetcher } from '@/lib/api/fetchers/gql-fetcher';
-
 import { setCookie } from '@/lib/shared/cookies';
-
 import { render } from '@/tests/render';
+
+import { CreateShopForm } from '../create-shop-form';
+
 import {
   EMAIL_ALREADY_EXISTS_CREATE_SHOP_RESPONSE,
   SUCCESS_CREATE_SHOP_RESPONSE
 } from './create-shop-form.mock';
-
-import { CreateShopForm } from '../create-shop-form';
 
 vi.mock('@/lib/shared/cookies', () => ({
   setCookie: vi.fn()

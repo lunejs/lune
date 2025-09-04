@@ -1,6 +1,6 @@
 import { ExecutionContext } from '../context/types';
-import { GraphQLFieldResolver } from '../graphql-api';
 import { UnauthorizedError } from '../errors/api.errors';
+import { GraphQLFieldResolver } from '../graphql-api';
 
 export const UseUserGuard =
   (resolver: GraphQLFieldResolver) =>

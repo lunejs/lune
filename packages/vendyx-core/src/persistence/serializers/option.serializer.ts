@@ -1,4 +1,5 @@
 import { Option, OptionTable } from '../entities/option';
+
 import { Serializer } from './serializer';
 
 export class OptionSerializer extends Serializer<Option, OptionTable> {

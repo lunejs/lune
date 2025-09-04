@@ -1,23 +1,30 @@
 import path from 'node:path';
-import { GraphqlApi } from '../shared/graphql-api';
-import { useTransaction } from '../shared/plugins/use-transaction';
-import { Database } from '@/persistence/connection';
-import { buildContext } from '../shared/context/build-context';
-import { useErrorLogger } from '../shared/plugins/use-error-logger';
-import { UserResolver } from './resolvers/user.resolver';
-import { JwtService } from '@/libs/jwt';
-import { useQueryLogger } from '../shared/plugins/use-query-logger';
-import { ShopResolver } from './resolvers/shop.resolver';
-import { ProductResolver } from './resolvers/product.resolver';
-import { ProductFieldResolver } from '../shared/resolvers/product-field.resolver';
+
 import { YogaInitialContext } from 'graphql-yoga';
+
+import { JwtService } from '@/libs/jwt';
+import { Database } from '@/persistence/connection';
+
+import { buildContext } from '../shared/context/build-context';
+import { GraphqlApi } from '../shared/graphql-api';
+import { useErrorLogger } from '../shared/plugins/use-error-logger';
+import { useQueryLogger } from '../shared/plugins/use-query-logger';
+import { useTransaction } from '../shared/plugins/use-transaction';
+import { ProductFieldResolver } from '../shared/resolvers/product-field.resolver';
 import { UserJWT } from '../shared/types/api.types';
+
+import { ProductResolver } from './resolvers/product.resolver';
+import { ShopResolver } from './resolvers/shop.resolver';
+import { UserResolver } from './resolvers/user.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
 export class AdminApi extends GraphqlApi {
-  constructor(private readonly database: Database, private readonly jwtService: JwtService) {
+  constructor(
+    private readonly database: Database,
+    private readonly jwtService: JwtService
+  ) {
     super({
       endpoint: '/admin-api',
       typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],

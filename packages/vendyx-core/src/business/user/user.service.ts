@@ -1,16 +1,17 @@
 import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
+import { JwtService } from '@/libs/jwt';
+import { PasswordService } from '@/libs/password';
+import { ID } from '@/persistence/entities/entity';
+import { UserRepository } from '@/persistence/repositories/user-repository';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
+
 import {
   EmailAlreadyExistsError,
   InvalidCredentialsError,
   InvalidEmailError,
   InvalidPasswordError
 } from './user.errors';
-import { UserRepository } from '@/persistence/repositories/user-repository';
-import { PasswordService } from '@/libs/password';
-import { JwtService } from '@/libs/jwt';
-import { ID } from '@/persistence/entities/entity';
 
 export class UserService {
   private repository: UserRepository;

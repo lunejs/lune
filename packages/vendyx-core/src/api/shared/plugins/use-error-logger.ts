@@ -1,7 +1,8 @@
-import { VendyxError } from '@/errors/vendyx.error';
-import { Logger } from '@/logger';
 import { GraphQLError } from 'graphql';
 import { isAsyncIterable, Plugin } from 'graphql-yoga';
+
+import { VendyxError } from '@/errors/vendyx.error';
+import { Logger } from '@/logger';
 
 export function useErrorLogger(): Plugin {
   return {

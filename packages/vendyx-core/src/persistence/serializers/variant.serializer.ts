@@ -1,4 +1,5 @@
 import { Variant, VariantTable } from '../entities/variant';
+
 import { Serializer } from './serializer';
 
 export class VariantSerializer extends Serializer<Variant, VariantTable> {

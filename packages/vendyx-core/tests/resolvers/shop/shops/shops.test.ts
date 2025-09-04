@@ -1,9 +1,11 @@
-import { VendyxServer } from '@/server';
 import request from 'supertest';
-import { TestHelper } from '@/tests/utils/test-helper';
+
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
-import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
+import { TestHelper } from '@/tests/utils/test-helper';
+
 import { ShopFixtures } from './fixtures/shop.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('shops - Query', () => {
   const testHelper = new TestHelper();

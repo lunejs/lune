@@ -1,4 +1,5 @@
 import { Asset, AssetTable } from '../entities/asset';
+
 import { Serializer } from './serializer';
 
 export class AssetSerializer extends Serializer<Asset, AssetTable> {

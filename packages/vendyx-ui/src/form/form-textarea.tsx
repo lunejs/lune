@@ -1,6 +1,8 @@
 import { type ReactNode } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
+import { Textarea } from '@/components';
+
 import {
   FormControl,
   FormDescription,
@@ -8,13 +10,12 @@ import {
   type FormFieldProps,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from './form';
-import { Textarea } from '@/components';
 
 export const FormTextarea = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   label,
@@ -30,12 +31,7 @@ export const FormTextarea = <
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Textarea
-              placeholder={placeholder}
-              className="resize-none"
-              rows={5}
-              {...field}
-            />
+            <Textarea placeholder={placeholder} className="resize-none" rows={5} {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -47,7 +43,7 @@ export const FormTextarea = <
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = FormFieldProps<TFieldValues, TName> & {
   label?: string;
   description?: ReactNode;

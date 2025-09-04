@@ -1,20 +1,22 @@
-import { TestHelper } from '@/tests/utils/test-helper';
-import { UserFixtures } from './fixtures/user.fixtures';
-import { ShopFixtures } from './fixtures/shop.fixtures';
-import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import { ProductRepository } from '../product.repository';
+import { OrderBy } from '@/api/shared/types/graphql';
 import { Transaction } from '@/persistence/connection';
-import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
-import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import { Tables } from '@/persistence/tables';
+import { TestHelper } from '@/tests/utils/test-helper';
+
 import { convertToCent } from '../../../../../../vendyx-common/dist/index.cjs';
-import { OptionValueFixtures } from './fixtures/option-value.fixtures';
+import { ProductRepository } from '../product.repository';
+
+import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
+import { OptionValueFixtures } from './fixtures/option-value.fixtures';
+import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
+import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
+import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import { ShopFixtures } from './fixtures/shop.fixtures';
+import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
+import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
-import { OrderBy } from '@/api/shared/types/graphql';
-import { Tables } from '@/persistence/tables';
-import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
-import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
 
 describe('Product repository', () => {
   const testHelper = new TestHelper();
@@ -290,7 +292,7 @@ describe('Product repository', () => {
 
     test('re order product assets', async () => {
       await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
-        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.ImageID, order: 0 }
       ]);
 
       await repository.upsertAssets(ProductConstants.MacBookPro16ID, [
@@ -303,7 +305,7 @@ describe('Product repository', () => {
       expect(createdAssets).toHaveLength(2);
       expect(createdAssets[0].id).toBe(AssetConstants.MeImageID);
       expect(createdAssets[1].id).toBe(AssetConstants.ImageID);
-    })
+    });
   });
 
   describe('upsertTags', () => {
@@ -380,8 +382,8 @@ describe('Product repository', () => {
       const assetsAfterRemoval = await repository.findAssets(ProductConstants.iPhone14ProMaxID);
 
       expect(assetsAfterRemoval).toHaveLength(0);
-    })
-  })
+    });
+  });
 
   describe('removeTags', () => {
     test('removes product tags', async () => {
@@ -393,6 +395,6 @@ describe('Product repository', () => {
       const tagsAfterRemoval = await repository.findTags(ProductConstants.ShirtID);
 
       expect(tagsAfterRemoval).toHaveLength(0);
-    })
-  })
+    });
+  });
 });

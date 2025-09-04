@@ -3,16 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router';
 
 import { gqlFetcher } from '@/lib/api/fetchers/gql-fetcher';
-
 import { setCookie } from '@/lib/shared/cookies';
-
 import { render } from '@/tests/render';
+
+import { LoginForm } from '../login-form';
+
 import {
   INVALID_CREDENTIALS_USER_ACCESS_TOKEN_RESPONSE,
   SUCCESS_GENERATE_USER_ACCESS_TOKEN_RESPONSE
 } from './login-form.mock';
-
-import { LoginForm } from '../login-form';
 
 vi.mock('@/lib/shared/cookies', () => ({
   setCookie: vi.fn()

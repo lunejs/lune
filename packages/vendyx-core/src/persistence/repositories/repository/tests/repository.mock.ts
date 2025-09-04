@@ -1,6 +1,7 @@
-import { Serializer } from '@/persistence/serializers/serializer';
-import { Repository } from '../repository';
 import { Transaction } from '@/persistence/connection';
+import { Serializer } from '@/persistence/serializers/serializer';
+
+import { Repository } from '../repository';
 
 export const recordsMock: TestTable[] = [
   {

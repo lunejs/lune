@@ -1,7 +1,8 @@
+import { OptionTable } from '@/persistence/entities/option';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { OptionTable } from '@/persistence/entities/option';
+
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionConstants = {

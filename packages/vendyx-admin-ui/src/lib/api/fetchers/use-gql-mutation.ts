@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import type { GraphQLError } from 'graphql';
@@ -7,7 +6,7 @@ import { gqlFetcher } from './gql-fetcher';
 
 type ExtractRootField<T> = T extends Record<string, infer U> ? U : never;
 
-type ExtractApiError<T> = T extends { apiErrors: Array<infer E> }
+type ExtractApiError<T> = T extends { apiErrors: (infer E)[] }
   ? E extends { code: infer C; message: string }
     ? { code: C; message: string }
     : never

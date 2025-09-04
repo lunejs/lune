@@ -1,5 +1,4 @@
 import { type FC, type PropsWithChildren } from 'react';
-
 import { Navigate, Outlet, useLocation } from 'react-router';
 
 import { getCookie } from '@/lib/shared/cookies';

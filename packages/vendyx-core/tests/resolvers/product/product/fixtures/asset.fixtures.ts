@@ -1,7 +1,8 @@
+import { AssetTable } from '@/persistence/entities/asset';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { AssetTable } from '@/persistence/entities/asset';
+
 import { ShopConstants } from './shop.fixtures';
 
 export const AssetConstants = {

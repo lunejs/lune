@@ -1,18 +1,20 @@
-import { Repository } from '../repository';
-import { Tables } from '@/persistence/tables';
-import { Transaction } from '@/persistence/connection';
-import { Product, ProductTable } from '@/persistence/entities/product';
-import { ProductSerializer } from '@/persistence/serializers/product.serializer';
-import { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import { Knex } from 'knex';
+
+import { ListInput, ProductListInput } from '@/api/shared/types/graphql';
+import { Transaction } from '@/persistence/connection';
+import { Asset } from '@/persistence/entities/asset';
 import { ID } from '@/persistence/entities/entity';
+import { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductAssetTable } from '@/persistence/entities/product-asset';
 import { ProductTagTable } from '@/persistence/entities/product-tag';
-import { RepositoryError } from '../repository.error';
 import { Tag, TagTable } from '@/persistence/entities/tag';
-import { Asset } from '@/persistence/entities/asset';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
+import { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { TagSerializer } from '@/persistence/serializers/tag.serializer';
+import { Tables } from '@/persistence/tables';
+
+import { Repository } from '../repository';
+import { RepositoryError } from '../repository.error';
 
 export class ProductRepository extends Repository<Product, ProductTable> {
   private assetSerializer: AssetSerializer;
@@ -207,4 +209,3 @@ type UpsertAssetInput = {
   id: ID;
   order: number;
 };
-

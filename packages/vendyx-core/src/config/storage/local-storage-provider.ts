@@ -1,7 +1,9 @@
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
-import { StorageProvider, UploadOptions } from './storage';
+
 import { Logger } from '@/logger';
+
+import { StorageProvider, UploadOptions } from './storage';
 
 const UPLOAD_DIRNAME = 'uploads';
 const UPLOAD_DIR = join(process.cwd(), UPLOAD_DIRNAME);
@@ -14,12 +16,12 @@ export class LocalStorageProvider implements StorageProvider {
   async upload(filepath: string, options: UploadOptions) {
     try {
       await fs.mkdir(UPLOAD_DIR, { recursive: true });
-  
+
       const filename = options?.filename ?? (filepath.split('/').pop() as string);
       const destPath = join(UPLOAD_DIR, filename);
-  
+
       await fs.copyFile(filepath, destPath);
-  
+
       return {
         source: `/${UPLOAD_DIRNAME}/${filename}`,
         providerId: filename

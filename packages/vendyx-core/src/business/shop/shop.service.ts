@@ -1,11 +1,13 @@
 import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
-import { ShopRepository } from '@/persistence/repositories/shop-repository';
-import { ShopEmailAlreadyExistsError } from './shop.errors';
 import { getSlugBy } from '@/libs/slug';
-import { clean } from '../../../../vendyx-common/dist/index.cjs';
-import { ApiKey } from '@/security/api-key/api-key';
 import { SortKey } from '@/persistence/repositories/repository';
+import { ShopRepository } from '@/persistence/repositories/shop-repository';
+import { ApiKey } from '@/security/api-key/api-key';
+
+import { clean } from '../../../../vendyx-common/dist/index.cjs';
+
+import { ShopEmailAlreadyExistsError } from './shop.errors';
 
 export class ShopService {
   private readonly repository: ShopRepository;

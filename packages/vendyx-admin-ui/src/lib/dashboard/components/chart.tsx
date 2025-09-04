@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
@@ -9,6 +8,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  type ChartConfig,
   ChartContainer,
   Select,
   SelectContent,
@@ -17,8 +17,7 @@ import {
   SelectValue,
   ToggleGroup,
   ToggleGroupItem,
-  useIsMobile,
-  type ChartConfig
+  useIsMobile
 } from '../../../../../vendyx-ui/dist';
 
 export const description = 'An interactive area chart';

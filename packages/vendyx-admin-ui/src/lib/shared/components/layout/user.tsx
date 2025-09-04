@@ -15,7 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../../../../../../vendyx-ui/dist';
-
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../sidebar';
 
 export function User({

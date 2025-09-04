@@ -1,4 +1,5 @@
 import { Shop, ShopTable } from '../entities/shop';
+
 import { Serializer } from './serializer';
 
 export class ShopSerializer extends Serializer<Shop, ShopTable> {

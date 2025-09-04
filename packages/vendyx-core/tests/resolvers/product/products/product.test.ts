@@ -1,14 +1,16 @@
-import { VendyxServer } from '@/server';
 import request from 'supertest';
+
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
-import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
-import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import { TagFixtures } from './fixtures/tag.fixtures';
-import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
+import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
+import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+import { TagFixtures } from './fixtures/tag.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 import { VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 

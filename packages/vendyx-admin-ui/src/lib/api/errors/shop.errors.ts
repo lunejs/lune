@@ -1,4 +1,5 @@
 import { ShopErrorCode, type ShopErrorResult } from '../types';
+
 import { GENERIC_ERROR } from './common.errors';
 
 export const getShopError = (error?: ShopErrorResult) => {

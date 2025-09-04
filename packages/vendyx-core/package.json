@@ -9,6 +9,8 @@
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
     "start:dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint .",
     "gen:types": "graphql-codegen --config ./scripts/gen-types.ts",
     "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts"
   },
@@ -44,10 +46,9 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.0.10",
     "@types/supertest": "^6.0.3",
+    "@vendyx/eslint-config": "*",
     "dotenv-cli": "^8.0.0",
     "eslint": "^9.30.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.0.3",
     "kleur": "^4.1.5",
     "nodemon": "^3.1.10",
@@ -59,8 +60,7 @@
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.35.1"
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=22.10.0"

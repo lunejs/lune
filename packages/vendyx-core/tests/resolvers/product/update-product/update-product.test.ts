@@ -1,14 +1,16 @@
-import { VendyxServer } from '@/server';
 import request from 'supertest';
+
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
-import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
-import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
-import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
+
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('updateProduct - Mutation', () => {
   const testHelper = new TestHelper();

@@ -1,24 +1,14 @@
-import {
-  type ComponentProps,
-  type HTMLInputTypeAttribute,
-  type ReactNode,
-} from 'react';
+import { type ComponentProps, type HTMLInputTypeAttribute, type ReactNode } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './form';
-import { cn } from '@/lib/utils';
 import { Input } from '@/components';
+import { cn } from '@/lib/utils';
+
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 
 export const FormInput = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   label,
@@ -36,9 +26,7 @@ export const FormInput = <
         <FormItem className={cn('w-full', className)}>
           {label && (
             <div className="flex items-center justify-between">
-              <FormLabel className="flex items-center h-[14px]">
-                {label}
-              </FormLabel>
+              <FormLabel className="flex items-center h-[14px]">{label}</FormLabel>
             </div>
           )}
           {/* TODO: Can i remove this div right? */}
@@ -57,7 +45,7 @@ export const FormInput = <
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Pick<
   ComponentProps<typeof FormField<TFieldValues, TName>>,
   'control' | 'defaultValue' | 'disabled' | 'name'

@@ -1,6 +1,7 @@
 import { ShopTable } from '@/persistence/entities/shop';
 import { Tables } from '@/persistence/tables';
 import { Fixture } from '@/tests/utils/fixtures';
+
 import { UserConstants } from './user.fixtures';
 
 export class ShopFixtures implements Fixture<ShopTable> {

@@ -1,4 +1,5 @@
 import { OptionValue, OptionValueTable } from '../entities/option_value';
+
 import { Serializer } from './serializer';
 
 export class OptionValueSerializer extends Serializer<OptionValue, OptionValueTable> {

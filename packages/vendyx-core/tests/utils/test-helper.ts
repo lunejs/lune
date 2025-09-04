@@ -1,9 +1,11 @@
-import knex from 'knex';
-import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import knex from 'knex';
+
 import { Database, Transaction } from '@/persistence/connection';
-import { Fixture } from './fixtures';
+
 import { FixtureDefaults } from './default-fixtures';
+import { Fixture } from './fixtures';
 import { TEST_VENDYX_CONFIG } from './test-config';
 
 export class TestHelper {

@@ -1,0 +1,21 @@
+{
+  "name": "@vendyx/eslint-config",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@eslint/js": "^9.30.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "typescript-eslint": "^8.35.1"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-simple-import-sort": "^12.1.1"
+  }
+}

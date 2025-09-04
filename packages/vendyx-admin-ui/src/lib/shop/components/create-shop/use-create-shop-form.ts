@@ -2,10 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
-import { notification } from '../../../../../../vendyx-ui/dist';
-
 import { ShopErrorCode } from '@/lib/api/types';
 
+import { notification } from '../../../../../../vendyx-ui/dist';
 import { useCreateShop } from '../../hooks/use-create-shop';
 
 export const useCreateShopForm = () => {

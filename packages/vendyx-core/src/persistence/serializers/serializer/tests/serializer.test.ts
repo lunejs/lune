@@ -1,6 +1,8 @@
 import { User } from '@/persistence/entities/user';
-import { TestSerializerMock, TestSerializer } from './serializer.mock';
+
 import { SerializeError } from '../serializer';
+
+import { TestSerializer, TestSerializerMock } from './serializer.mock';
 
 describe('User Serializer', () => {
   describe('deserialize', () => {

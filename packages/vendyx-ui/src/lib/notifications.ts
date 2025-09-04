@@ -65,7 +65,7 @@ export const notification = {
    */
   dismiss: (id: string | number) => {
     toast.dismiss(id);
-  },
+  }
 };
 
 type NotificationOptions = {

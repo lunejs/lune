@@ -1,7 +1,18 @@
 'use client';
 
 import * as React from 'react';
+import {
+  BoxesIcon,
+  ImagesIcon,
+  PackageIcon,
+  SettingsIcon,
+  ShoppingCartIcon,
+  TagIcon,
+  UserIcon,
+  UsersIcon
+} from 'lucide-react';
 
+import { Logo } from '../logo';
 import {
   Sidebar,
   SidebarContent,
@@ -11,68 +22,58 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem
 } from '../sidebar';
-import {
-  BoxesIcon,
-  ImagesIcon,
-  PackageIcon,
-  SettingsIcon,
-  ShoppingCartIcon,
-  TagIcon,
-  UserIcon,
-  UsersIcon,
-} from 'lucide-react';
-import { Logo } from '../logo';
+
 import { User } from './user';
 
 const data = {
   user: {
     name: 'Rogelio Samuel',
     email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+    avatar: '/avatars/shadcn.jpg'
   },
   navMain: [
     {
       title: 'Products',
       url: '#',
-      icon: PackageIcon,
+      icon: PackageIcon
     },
     {
       title: 'Collections',
       url: '#',
-      icon: BoxesIcon,
+      icon: BoxesIcon
     },
     {
       title: 'Assets',
       url: '#',
-      icon: ImagesIcon,
-    },
+      icon: ImagesIcon
+    }
   ],
   sales: [
     {
       title: 'Orders',
       url: '#',
-      icon: ShoppingCartIcon,
+      icon: ShoppingCartIcon
     },
     {
       title: 'Coupons',
       url: '#',
-      icon: TagIcon,
-    },
+      icon: TagIcon
+    }
   ],
   customers: [
     {
       title: 'Customers',
       url: '#',
-      icon: UserIcon,
+      icon: UserIcon
     },
     {
       title: 'Business Customers',
       url: '#',
-      icon: UsersIcon,
-    },
-  ],
+      icon: UsersIcon
+    }
+  ]
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -81,10 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
                 <Logo />
                 <span className="text-base font-semibold">Vendyx</span>
@@ -98,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Catalog</SidebarGroupLabel>
 
           <SidebarMenu>
-            {data.navMain.map((item) => (
+            {data.navMain.map(item => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
@@ -113,7 +111,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Sales</SidebarGroupLabel>
 
           <SidebarMenu>
-            {data.sales.map((item) => (
+            {data.sales.map(item => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
@@ -128,7 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Customers</SidebarGroupLabel>
 
           <SidebarMenu>
-            {data.customers.map((item) => (
+            {data.customers.map(item => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}

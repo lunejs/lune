@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from 'express';
 
 export abstract class RestApi {
   router = Router();
@@ -13,10 +13,13 @@ export abstract class RestApi {
 
   private setupRouter() {
     for (const endpoint of this.endpoints) {
-      this.router[endpoint.method](`${this.basepath}${endpoint.path}`, this.ctxMiddleware,  ...endpoint.handlers);
+      this.router[endpoint.method](
+        `${this.basepath}${endpoint.path}`,
+        this.ctxMiddleware,
+        ...endpoint.handlers
+      );
     }
   }
-
 }
 
 export interface RestApiEndpoint {
@@ -25,5 +28,8 @@ export interface RestApiEndpoint {
   handlers: RestApiHandler[];
 }
 
-export type RestApiHandler = (req: Request, res: Response, next: NextFunction) => Promise<void> | void;
-
+export type RestApiHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void> | void;

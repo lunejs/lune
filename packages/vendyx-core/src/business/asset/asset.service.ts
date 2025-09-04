@@ -1,11 +1,11 @@
-import { ExecutionContext } from "@/api/shared/context/types";
-import { AssetType } from "@/persistence/entities/asset";
-import { AssetRepository } from "@/persistence/repositories/asset-repository/asset.repository";
+import { ExecutionContext } from '@/api/shared/context/types';
+import { AssetType } from '@/persistence/entities/asset';
+import { AssetRepository } from '@/persistence/repositories/asset-repository/asset.repository';
 
 export class AssetService {
   private repository: AssetRepository;
 
-  constructor( ctx: ExecutionContext) {
+  constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.asset;
   }
 
@@ -19,4 +19,4 @@ type Input = {
   providerId: string;
   source: string;
   type: AssetType;
-}
+};

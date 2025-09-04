@@ -1,8 +1,10 @@
-import { VendyxServer } from '@/server';
 import request from 'supertest';
-import { TestHelper } from '@/tests/utils/test-helper';
-import { UserFixtures } from './fixtures/user.fixtures';
+
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { TestHelper } from '@/tests/utils/test-helper';
+
+import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('generateUserAccessToken - Mutation', () => {
   const testHelper = new TestHelper();

@@ -1,10 +1,12 @@
-import { VendyxServer } from '@/server';
 import * as bcrypt from 'bcrypt';
 import request from 'supertest';
+
 import { Tables } from '@/persistence/tables';
-import { TestHelper } from '@/tests/utils/test-helper';
-import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
+import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { TestHelper } from '@/tests/utils/test-helper';
+
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('createUser - Mutation', () => {
   const testHelper = new TestHelper();

@@ -1,26 +1,14 @@
 import { type ComponentProps } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components';
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components';
 import { cn } from '@/lib/utils';
+
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 
 export const FormSelect = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   items,
@@ -44,7 +32,7 @@ export const FormSelect = <
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {items.map((item) => (
+              {items.map(item => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
                 </SelectItem>
@@ -61,7 +49,7 @@ export const FormSelect = <
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Pick<
   ComponentProps<typeof FormField<TFieldValues, TName>>,
   'control' | 'defaultValue' | 'disabled' | 'name'

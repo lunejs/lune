@@ -3,6 +3,7 @@ import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 import { RadioGroup, RadioGroupItem } from '@/components';
 import { cn } from '@/lib/utils';
+
 import {
   FormControl,
   FormDescription,
@@ -10,12 +11,12 @@ import {
   type FormFieldProps,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from './form';
 
 export const FormRadioGroup = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   items,
@@ -36,25 +37,18 @@ export const FormRadioGroup = <
               defaultValue={field.value}
               className={cn('flex flex-col gap-4', className)}
             >
-              {items.map((item) => (
-                <FormItem
-                  key={item.value + 'sosmo'}
-                  className="flex flex-col gap-1"
-                >
+              {items.map(item => (
+                <FormItem key={item.value + 'sosmo'} className="flex flex-col gap-1">
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center space-x-3 space-y-0">
                       <FormControl>
                         <RadioGroupItem value={item.value} />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        {item.label}
-                      </FormLabel>
+                      <FormLabel className="font-normal">{item.label}</FormLabel>
                     </div>
                     {field.value === item.value && item.slot}
                   </div>
-                  {item.description && (
-                    <FormDescription>{item.description}</FormDescription>
-                  )}
+                  {item.description && <FormDescription>{item.description}</FormDescription>}
                 </FormItem>
               ))}
             </RadioGroup>
@@ -69,7 +63,7 @@ export const FormRadioGroup = <
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = FormFieldProps<TFieldValues, TName> & {
   items: {
     /**
