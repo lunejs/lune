@@ -5,6 +5,7 @@ import multer from 'multer';
 import { getConfig } from '@/config/config';
 import { Logger } from '@/logger';
 
+import { userMiddleware } from '../shared/middlewares/user.middleware';
 import { RestApiEndpoint, RestApiHandler } from '../shared/rest-api';
 
 const TMP_DIR = 'tmp';
@@ -48,5 +49,9 @@ const upload: RestApiHandler = async (req, res) => {
 };
 
 export const UploadEndpoints: RestApiEndpoint[] = [
-  { method: 'post', path: '/', handlers: [multerMiddleware.array('assets', 12), upload] }
+  {
+    method: 'post',
+    path: '/',
+    handlers: [userMiddleware, multerMiddleware.array('assets', 12), upload]
+  }
 ];

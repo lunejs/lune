@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import express from 'express';
 
 import { AdminApi } from './api/admin/admin.api';
-import { UploadApi } from './api/upload/upload.router';
+import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
 import { JwtService } from './libs/jwt';
 import { createConnection, Database } from './persistence/connection';
@@ -61,7 +61,5 @@ export class VendyxServer {
 
 /**
  * 1. Get set shop api in hoppscotch headers
- * 2. Protect endpoint with guard
  * 3. add static server as plugin (support plugins)
- * 4. add eslint
  */
