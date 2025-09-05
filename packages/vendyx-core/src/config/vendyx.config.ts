@@ -1,3 +1,5 @@
+import { VendyxPlugin } from '@/plugin/vendyx.plugin';
+
 import { ImageProcessor } from './image-processor/image-processor';
 import { StorageProvider } from './storage/storage';
 
@@ -16,4 +18,5 @@ export interface VendyxConfig {
     storageProvider: StorageProvider;
     imageProcessor: ImageProcessor;
   };
+  plugins: VendyxPlugin[];
 }

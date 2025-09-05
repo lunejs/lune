@@ -1,5 +1,3 @@
-import { join } from 'node:path';
-
 import express from 'express';
 
 import { AdminApi } from './api/admin/admin.api';
@@ -15,7 +13,11 @@ export class VendyxServer {
   private database: Database;
 
   constructor(config: VendyxConfig) {
-    setConfig(config);
+    Logger.banner('v0.0.1');
+    const pluginsConfig = this.getPluginsConfig(config);
+
+    setConfig(pluginsConfig);
+
     const { auth } = getConfig();
 
     this.app = express();
@@ -27,17 +29,9 @@ export class VendyxServer {
     const uploadApi = new UploadApi(this.database, jwtService);
 
     this.app.use(uploadApi.router);
-
-    this.app.use(
-      '/uploads',
-      express.static(join(process.cwd(), 'uploads'), {
-        setHeaders(res) {
-          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        }
-      })
-    );
-
     this.app.use('/admin-api', adminApi.handler);
+
+    this.registerPlugins();
   }
 
   getApp() {
@@ -48,7 +42,6 @@ export class VendyxServer {
     const port = getConfig().app.port;
 
     this.app.listen(port, () => {
-      Logger.banner('v0.0.1');
       Logger.ready('Server', `Admin API:   http://localhost:${port}/admin-api`);
       Logger.ready('Server', `Shop API:    http://localhost:${port}/shop-api`);
     });
@@ -57,9 +50,30 @@ export class VendyxServer {
   async teardown() {
     await this.database.destroy();
   }
-}
 
-/**
- * 1. Get set shop api in hoppscotch headers
- * 3. add static server as plugin (support plugins)
- */
+  private getPluginsConfig(initialConfig: VendyxConfig) {
+    const plugins = initialConfig.plugins;
+    let newConfig = initialConfig;
+
+    for (const plugin of plugins) {
+      const configFn = plugin.config;
+
+      if (configFn) {
+        newConfig = configFn(newConfig);
+      }
+    }
+
+    return newConfig;
+  }
+
+  private registerPlugins() {
+    const plugins = getConfig().plugins;
+
+    for (const plugin of plugins) {
+      if (typeof plugin.register === 'function') {
+        plugin.register(this.app);
+        Logger.info('Plugin', `${plugin.name} initialized`);
+      }
+    }
+  }
+}

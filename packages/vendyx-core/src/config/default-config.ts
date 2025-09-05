@@ -1,4 +1,5 @@
 import { DefaultImageProcessor } from './image-processor/default-image-processor';
+import { AssetServerPlugin } from './plugins/asset-server-plugin';
 import { LocalStorageProvider } from './storage/local-storage-provider';
 import { VendyxConfig } from './vendyx.config';
 
@@ -16,5 +17,6 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
   assets: {
     storageProvider: new LocalStorageProvider('http://localhost:4000'),
     imageProcessor: new DefaultImageProcessor()
-  }
+  },
+  plugins: [new AssetServerPlugin()]
 };
