@@ -5,9 +5,9 @@ import express from 'express';
 import { AdminApi } from './api/admin/admin.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
+import { VendyxConfig } from './config/vendyx.config';
 import { JwtService } from './libs/jwt';
 import { createConnection, Database } from './persistence/connection';
-import { VendyxConfig } from './config';
 import { Logger } from './logger';
 
 export class VendyxServer {
@@ -37,7 +37,7 @@ export class VendyxServer {
       })
     );
 
-    this.app.use(adminApi.handler);
+    this.app.use('/admin-api', adminApi.handler);
   }
 
   getApp() {

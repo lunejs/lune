@@ -5,6 +5,7 @@ import { YogaInitialContext } from 'graphql-yoga';
 import { JwtService } from '@/libs/jwt';
 import { Database } from '@/persistence/connection';
 
+import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
@@ -30,9 +31,9 @@ export class ShopApi extends GraphqlApi {
   }
 
   private async buildAdminApiContext(initialContext: YogaInitialContext) {
-    const rawHeader = initialContext.request.headers.get('authorization') ?? '';
+    const rawHeader = initialContext.request.headers.get(HeaderKeys.Authorization) ?? '';
 
-    const shopId = initialContext.request.headers.get('x_vendyx_shop_id');
+    const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
 
     const payload = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;

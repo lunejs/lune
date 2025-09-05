@@ -14,7 +14,7 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
     url: 'postgres://app_user:womteC_ruqri0_punqah@localhost:5432/vendyx'
   },
   assets: {
-    storageProvider: new LocalStorageProvider(),
+    storageProvider: new LocalStorageProvider('http://localhost:4000'),
     imageProcessor: new DefaultImageProcessor()
   }
 };

@@ -13,17 +13,19 @@ const UPLOAD_DIR = join(process.cwd(), UPLOAD_DIRNAME);
  * Default storage provider that saves files locally to /uploads
  */
 export class LocalStorageProvider implements StorageProvider {
+  constructor(private readonly domain: string) {}
+
   async upload(filepath: string, options: UploadOptions) {
     try {
       await fs.mkdir(UPLOAD_DIR, { recursive: true });
 
-      const filename = options?.filename ?? (filepath.split('/').pop() as string);
+      const filename = this.getFilename(options?.filename, filepath);
       const destPath = join(UPLOAD_DIR, filename);
 
       await fs.copyFile(filepath, destPath);
 
       return {
-        source: `/${UPLOAD_DIRNAME}/${filename}`,
+        source: `${this.domain}/${UPLOAD_DIRNAME}/${filename}`,
         providerId: filename
       };
     } catch (error) {
@@ -41,5 +43,11 @@ export class LocalStorageProvider implements StorageProvider {
       console.log(error);
       return false;
     }
+  }
+
+  private getFilename(filename: string | undefined, filepath: string) {
+    const _filename = filename ?? filepath.split('/').pop();
+
+    return `${crypto.randomUUID()}-${_filename}`;
   }
 }

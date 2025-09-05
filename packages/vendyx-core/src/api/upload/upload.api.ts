@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { JwtService } from '@/libs/jwt';
 import { Database } from '@/persistence/connection';
 
+import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { RestApi } from '../shared/rest-api';
 import { UserJWT } from '../shared/types/api.types';
@@ -18,8 +19,8 @@ export class UploadApi extends RestApi {
   }
 
   private async contextMiddleware(req: Request, res: Response, next: NextFunction) {
-    const shopId = req.headers['x_vendyx_shop_id']?.toString() ?? null;
-    const jwt = req.headers['authorization']?.toString().replace('Bearer ', '');
+    const shopId = req.headers[HeaderKeys.ShopId]?.toString() ?? null;
+    const jwt = req.headers[HeaderKeys.Authorization]?.toString().replace('Bearer ', '');
 
     const userJwt = jwt ? await this.jwtService.verifyToken<UserJWT>(jwt) : null;
 

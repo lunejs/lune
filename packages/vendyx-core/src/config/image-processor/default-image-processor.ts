@@ -16,7 +16,7 @@ export class DefaultImageProcessor implements ImageProcessor {
   }
 
   async process(file: ProcessFile, outdir: string): Promise<ProcessResult[]> {
-    const filename = `${file.name}.webp`;
+    const filename = `${file.filename}.webp`;
     const outPath = join(outdir, filename);
 
     await this.optimizeImage(file.path, outPath);

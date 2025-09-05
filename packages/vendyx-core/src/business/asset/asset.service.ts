@@ -10,7 +10,7 @@ export class AssetService {
   }
 
   async create(input: Input) {
-    await this.repository.create(input);
+    return await this.repository.create(input);
   }
 }
 

@@ -27,16 +27,7 @@ export interface ImageProcessor {
   process(file: ProcessFile, outdir: string): Promise<ProcessResult[]>;
 }
 
-export type ProcessFile = {
-  /**
-   * The full path to the uploaded file.
-   */
-  path: string;
-  /**
-   * The name of the image file.
-   */
-  name: string;
-};
+export type ProcessFile = Express.Multer.File;
 
 export type ProcessResult = {
   /**

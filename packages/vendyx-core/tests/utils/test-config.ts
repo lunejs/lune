@@ -1,4 +1,7 @@
-import { VendyxConfig } from '@/config';
+import { VendyxConfig } from '@/config/vendyx.config';
+
+import { TestImageProcessor } from './config/test-image-processor';
+import { TestStorageProvider } from './config/test-storage-provider';
 
 export const TEST_VENDYX_CONFIG: VendyxConfig = {
   app: {
@@ -10,5 +13,9 @@ export const TEST_VENDYX_CONFIG: VendyxConfig = {
   },
   db: {
     url: 'postgresql://app_user:womteC_ruqri0_punqah@localhost:6500/vendyx_test?schema=public'
+  },
+  assets: {
+    storageProvider: new TestStorageProvider(),
+    imageProcessor: new TestImageProcessor()
   }
 };
