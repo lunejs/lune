@@ -17,5 +17,6 @@ export const TEST_VENDYX_CONFIG: VendyxConfig = {
   assets: {
     storageProvider: new TestStorageProvider(),
     imageProcessor: new TestImageProcessor()
-  }
+  },
+  plugins: []
 };

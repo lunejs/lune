@@ -117,6 +117,20 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
     }
   }
 
+  async upsert(input: {
+    where: Where<T>;
+    create: RepositoryInput<T>;
+    update: Partial<RepositoryInput<T>>;
+  }): Promise<T> {
+    const existing = await this.findOne({ where: input.where });
+
+    if (existing) {
+      return this.update({ where: input.where, data: input.update });
+    }
+
+    return this.create(input.create);
+  }
+
   async remove(input: { where: Where<T> }): Promise<void> {
     try {
       await this.trx(this.tableName).where(input.where).del();

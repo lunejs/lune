@@ -1,11 +1,11 @@
+import { clean } from '@vendyx/common';
+
 import { ExecutionContext } from '@/api/shared/context/types';
 import { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { SortKey } from '@/persistence/repositories/repository';
 import { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { ApiKey } from '@/security/api-key/api-key';
-
-import { clean } from '../../../../vendyx-common/dist/index.cjs';
 
 import { ShopEmailAlreadyExistsError } from './shop.errors';
 

@@ -1,9 +1,10 @@
+import { convertToCent } from '@vendyx/common';
+
 import { OrderBy } from '@/api/shared/types/graphql';
 import { Transaction } from '@/persistence/connection';
 import { Tables } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
 
-import { convertToCent } from '../../../../../../vendyx-common/dist/index.cjs';
 import { ProductRepository } from '../product.repository';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';

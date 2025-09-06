@@ -68,3 +68,8 @@ input PriceRange {
   min: Int
   max: Int
 }
+
+enum Locale {
+  en
+  es
+}

@@ -1,3 +1,9 @@
+type ProductTranslation {
+  name: String
+  slug: String
+  description: String
+}
+
 extend type Product {
   """
   Whether the product is archived or not.
@@ -21,6 +27,7 @@ type Mutation {
   createProduct(input: CreateProductInput!): Product!
   updateProduct(id: ID!, input: UpdateProductInput!): Product!
   softRemoveProduct(ids: [ID!]!): Boolean!
+  addProductTranslation(id: ID!, input: AddProductTranslationInput!): ProductTranslation!
 }
 
 input CreateProductInput {
@@ -45,6 +52,12 @@ input UpdateProductInput {
 input AssetInProductInput {
   id: ID!
   order: Int!
+}
+
+input AddProductTranslationInput {
+  locale: Locale!
+  name: String
+  description: String
 }
 
 input ProductListInput {

@@ -1,7 +1,10 @@
+import { clean } from '@vendyx/common';
+
 import { ExecutionContext } from '@/api/shared/context/types';
 import { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import {
+  MutationAddProductTranslationArgs,
   MutationCreateProductArgs,
   MutationUpdateProductArgs,
   QueryProductArgs,
@@ -9,8 +12,6 @@ import {
 } from '@/api/shared/types/graphql';
 import { ProductService } from '@/business/product/product.service';
 import { ListResponse } from '@/utils/list-response';
-
-import { clean } from '../../../../../vendyx-common/dist/index.cjs';
 
 async function products(_, { input }: QueryProductsArgs, ctx: ExecutionContext) {
   const productService = new ProductService(ctx);
@@ -47,10 +48,23 @@ async function updateProduct(_, { id, input }: MutationUpdateProductArgs, ctx: E
   return result;
 }
 
+async function addProductTranslation(
+  _,
+  { id, input }: MutationAddProductTranslationArgs,
+  ctx: ExecutionContext
+) {
+  const productService = new ProductService(ctx);
+
+  const result = await productService.addTranslation(id, input);
+
+  return result;
+}
+
 export const ProductResolver: GraphqlApiResolver = {
   Mutation: {
     createProduct: UseUserGuard(createProduct),
-    updateProduct: UseUserGuard(updateProduct)
+    updateProduct: UseUserGuard(updateProduct),
+    addProductTranslation: UseUserGuard(addProductTranslation)
   },
   Query: {
     product: UseUserGuard(product),

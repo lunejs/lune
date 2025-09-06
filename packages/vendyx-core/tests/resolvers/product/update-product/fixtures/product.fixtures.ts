@@ -20,7 +20,8 @@ export class ProductFixtures implements Fixture<ProductTable> {
         id: ProductConstants.ID,
         name: ProductConstants.Name,
         slug: ProductConstants.Slug,
-        shop_id: ShopConstants.ID
+        shop_id: ShopConstants.ID,
+        description: 'The best computer ever made'
       }
     ];
   }

@@ -4,7 +4,7 @@ import { VendyxEntity, VendyxTable } from './entity';
  * A product is a good or service that you want to sell.
  */
 export interface Product extends VendyxEntity {
-  deletedAt?: Date;
+  deletedAt?: Date | null;
   /**
    * The product's name
    */
@@ -16,7 +16,7 @@ export interface Product extends VendyxEntity {
   /**
    * The product's description
    */
-  description?: string;
+  description?: string | null;
   /**
    * Whether the products is enabled or not.
    * Not enabled products are not exposed to the storefront API but are visible in the admin ui.
@@ -42,10 +42,10 @@ export interface Product extends VendyxEntity {
 }
 
 export interface ProductTable extends VendyxTable {
-  deleted_at?: Date;
+  deleted_at?: Date | null;
   name: string;
   slug: string;
-  description?: string;
+  description?: string | null;
   enabled: boolean;
   archived: boolean;
   min_sale_price: number;

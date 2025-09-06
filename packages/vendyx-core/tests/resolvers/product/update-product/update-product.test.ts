@@ -62,6 +62,30 @@ describe('updateProduct - Mutation', () => {
     expect(updateProduct.assets.count).toBe(1);
   });
 
+  test('set null description', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            name: 'Playstation 5',
+            description: null
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    expect(updateProduct.slug).toBe(ProductConstants.Slug);
+    expect(updateProduct.name).toBe('Playstation 5');
+    expect(updateProduct.description).toBe(null);
+    expect(updateProduct.assets.count).toBe(1);
+  });
+
   test('add new assets to product', async () => {
     const res = await request(app)
       .post('/admin-api')

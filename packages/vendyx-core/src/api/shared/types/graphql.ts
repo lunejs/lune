@@ -20,6 +20,12 @@ export type Scalars = {
   JSON: { input: any; output: any; }
 };
 
+export type AddProductTranslationInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  locale: Locale;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Asset = Node & {
   __typename?: 'Asset';
   createdAt: Scalars['Date']['output'];
@@ -148,8 +154,14 @@ export type ListInput = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export enum Locale {
+  En = 'en',
+  Es = 'es'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addProductTranslation: ProductTranslation;
   createOption: Array<Option>;
   createProduct: Product;
   /** Create a new shop */
@@ -176,6 +188,12 @@ export type Mutation = {
   /** Update an existing user */
   updateUser: UserResult;
   updateVariant: Variant;
+};
+
+
+export type MutationAddProductTranslationArgs = {
+  id: Scalars['ID']['input'];
+  input: AddProductTranslationInput;
 };
 
 
@@ -430,6 +448,13 @@ export type ProductSort = {
   name?: InputMaybe<OrderBy>;
   salePrice?: InputMaybe<OrderBy>;
   stock?: InputMaybe<OrderBy>;
+};
+
+export type ProductTranslation = {
+  __typename?: 'ProductTranslation';
+  description?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {
@@ -846,6 +871,7 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AddProductTranslationInput: AddProductTranslationInput;
   Asset: ResolverTypeWrapper<Asset>;
   AssetInProductInput: AssetInProductInput;
   AssetInVariantInput: AssetInVariantInput;
@@ -871,6 +897,7 @@ export type ResolversTypes = {
   JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   List: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['List']>;
   ListInput: ListInput;
+  Locale: Locale;
   Mutation: ResolverTypeWrapper<{}>;
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
@@ -887,6 +914,7 @@ export type ResolversTypes = {
   ProductList: ResolverTypeWrapper<ProductList>;
   ProductListInput: ProductListInput;
   ProductSort: ProductSort;
+  ProductTranslation: ResolverTypeWrapper<ProductTranslation>;
   Query: ResolverTypeWrapper<{}>;
   Shop: ResolverTypeWrapper<Shop>;
   ShopErrorCode: ShopErrorCode;
@@ -923,6 +951,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AddProductTranslationInput: AddProductTranslationInput;
   Asset: Asset;
   AssetInProductInput: AssetInProductInput;
   AssetInVariantInput: AssetInVariantInput;
@@ -962,6 +991,7 @@ export type ResolversParentTypes = {
   ProductList: ProductList;
   ProductListInput: ProductListInput;
   ProductSort: ProductSort;
+  ProductTranslation: ProductTranslation;
   Query: {};
   Shop: Shop;
   ShopErrorResult: ShopErrorResult;
@@ -1040,6 +1070,7 @@ export type ListResolvers<ContextType = ExecutionContext, ParentType extends Res
 };
 
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
@@ -1127,6 +1158,13 @@ export type ProductListResolvers<ContextType = ExecutionContext, ParentType exte
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductTranslation'] = ResolversParentTypes['ProductTranslation']> = {
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1289,6 +1327,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   PageInfo?: PageInfoResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductList?: ProductListResolvers<ContextType>;
+  ProductTranslation?: ProductTranslationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Shop?: ShopResolvers<ContextType>;
   ShopErrorResult?: ShopErrorResultResolvers<ContextType>;

@@ -23,5 +23,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.OptionValue]: DefaultOptionValueFixture,
   [Tables.VariantOptionValue]: DefaultVariantOptionValueFixture,
   [Tables.Asset]: DefaultAssetFixture,
-  [Tables.ProductAsset]: DefaultProductAssetFixture
+  [Tables.ProductAsset]: DefaultProductAssetFixture,
+  [Tables.ProductTranslation]: () => ({})
 };
