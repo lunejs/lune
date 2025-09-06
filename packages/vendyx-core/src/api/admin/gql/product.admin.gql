@@ -1,7 +1,11 @@
 type ProductTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
   name: String
   slug: String
   description: String
+  locale: Locale!
 }
 
 extend type Product {
