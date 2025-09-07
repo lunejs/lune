@@ -16,7 +16,11 @@ async function products(_, { input }: QueryProductsArgs, ctx: ExecutionContext) 
       ...input,
       filters: { ...input?.filters, enabled: { equals: true }, archived: { equals: false } }
     }),
-    productService.count(input?.filters)
+    productService.count({
+      ...input?.filters,
+      enabled: { equals: true },
+      archived: { equals: false }
+    })
   ]);
 
   return new ListResponse(products, products.length, { total: count });

@@ -1,5 +1,7 @@
 import { Knex } from 'knex';
 
+import { convertToCent } from '@vendyx/common';
+
 import { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import { Transaction } from '@/persistence/connection';
 import { Asset } from '@/persistence/entities/asset';
@@ -201,6 +203,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
       .del();
   }
 
+  // TODO: Accept a list of tags instead a unique tag for filter
   private applyFilters(
     query: Knex.QueryBuilder<ProductTable, any[]>,
     filters?: ProductListInput['filters']
@@ -226,11 +229,11 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
 
     if (filters?.salePriceRange?.min) {
-      query.where('min_sale_price', '>=', filters.salePriceRange.min);
+      query.where('min_sale_price', '>=', convertToCent(filters.salePriceRange.min));
     }
 
     if (filters?.salePriceRange?.max) {
-      query.where('max_sale_price', '<=', filters.salePriceRange.max);
+      query.where('max_sale_price', '<=', convertToCent(filters.salePriceRange.max));
     }
 
     if (filters?.optionValues?.length) {

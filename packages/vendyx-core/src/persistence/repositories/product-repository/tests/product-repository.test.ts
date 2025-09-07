@@ -101,7 +101,7 @@ describe('Product repository', () => {
     });
 
     test('returns products matching min sale price range', async () => {
-      const filters = { salePriceRange: { min: convertToCent(23_000) } };
+      const filters = { salePriceRange: { min: 23_000 } };
       const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.minSalePrice >= convertToCent(23_000))).toBe(true);
@@ -109,7 +109,7 @@ describe('Product repository', () => {
     });
 
     test('returns products matching max sale price range', async () => {
-      const filters = { salePriceRange: { max: convertToCent(10_000) } };
+      const filters = { salePriceRange: { max: 10_000 } };
       const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.maxSalePrice <= convertToCent(10_000))).toBe(true);
@@ -117,7 +117,7 @@ describe('Product repository', () => {
     });
 
     test('returns products matching both min and max sale price range', async () => {
-      const filters = { salePriceRange: { min: convertToCent(50), max: convertToCent(500) } };
+      const filters = { salePriceRange: { min: 50, max: 500 } };
       const result = await repository.findByFilters({ filters });
 
       expect(result.every(p => p.minSalePrice >= convertToCent(50))).toBe(true);
@@ -159,7 +159,7 @@ describe('Product repository', () => {
 
       const sorted = await trx(Tables.Product).orderBy('created_at', 'desc');
 
-      expect(result.map(p => p.createdAt)).toEqual(sorted.map(p => p.created_at));
+      expect(result.map(p => p.id)).toEqual(sorted.map(p => p.id));
     });
 
     test('returns products matching sort by createdAt in ascending order', async () => {
@@ -224,7 +224,7 @@ describe('Product repository', () => {
       expect(result).toHaveLength((await new ProductFixtures().build()).length - 2);
     });
 
-    test('returns products with pagination', async () => {
+    test('returns products with pagination and order applied', async () => {
       const result = await repository.findByFilters({
         take: 2,
         skip: 1,
@@ -249,7 +249,7 @@ describe('Product repository', () => {
     test('returns products with option values and price range filter applied', async () => {
       const filters = {
         optionValues: [{ option: 'Color', values: ['Red'] }],
-        salePriceRange: { min: convertToCent(90) }
+        salePriceRange: { min: 90 }
       };
       const result = await repository.findByFilters({ filters });
 
