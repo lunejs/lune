@@ -7,7 +7,9 @@ import { ShopConstants } from './shop.fixtures';
 
 export const AssetConstants = {
   ImageID: TestHelper.generateUUID(),
-  MeImageID: TestHelper.generateUUID()
+  MeImageID: TestHelper.generateUUID(),
+  JoelImageID: TestHelper.generateUUID(),
+  EllieImageID: TestHelper.generateUUID()
 };
 
 export class AssetFixtures implements Fixture<AssetTable> {
@@ -26,6 +28,22 @@ export class AssetFixtures implements Fixture<AssetTable> {
       {
         id: AssetConstants.MeImageID,
         name: 'Me.jpg',
+        source: '',
+        type: 'IMG',
+        provider_id: '',
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: AssetConstants.JoelImageID,
+        name: 'Joel.jpg',
+        source: '',
+        type: 'IMG',
+        provider_id: '',
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: AssetConstants.EllieImageID,
+        name: 'Ellie.jpg',
         source: '',
         type: 'IMG',
         provider_id: '',

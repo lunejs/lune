@@ -17,6 +17,14 @@ export class ProductAssetFixtures implements Fixture<ProductAssetTable> {
       {
         asset_id: AssetConstants.MeImageID,
         product_id: ProductConstants.iPhone14ProMaxID
+      },
+      {
+        asset_id: AssetConstants.JoelImageID,
+        product_id: ProductConstants.ShirtID
+      },
+      {
+        asset_id: AssetConstants.EllieImageID,
+        product_id: ProductConstants.ShirtID
       }
     ];
   }

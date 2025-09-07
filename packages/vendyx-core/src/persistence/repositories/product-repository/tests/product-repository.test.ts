@@ -2,6 +2,10 @@ import { convertToCent } from '@vendyx/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import { Transaction } from '@/persistence/connection';
+import { ProductAssetTable } from '@/persistence/entities/product-asset';
+import { ProductOptionTable } from '@/persistence/entities/product-option';
+import { ProductTagTable } from '@/persistence/entities/product-tag';
+import { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
 
@@ -12,7 +16,9 @@ import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
+import { ProductOptionFixtures } from './fixtures/product-option.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import { ProductTranslationFixtures } from './fixtures/product-translation.fixtures';
 import { ShopFixtures } from './fixtures/shop.fixtures';
 import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
@@ -40,7 +46,9 @@ describe('Product repository', () => {
       new VariantFixtures(),
       new VariantOptionValueFixtures(),
       new AssetFixtures(),
-      new ProductAssetFixtures()
+      new ProductAssetFixtures(),
+      new ProductOptionFixtures(),
+      new ProductTranslationFixtures()
     ]);
   });
 
@@ -323,6 +331,21 @@ describe('Product repository', () => {
         [TagConstants.ElectronicsID, TagConstants.ClothingID, TagConstants.DomesticsID].sort()
       );
     });
+
+    test('does not duplicate existing product tags', async () => {
+      const beforeTags = await repository.findTags(ProductConstants.AppleWatchSeries8ID);
+      expect(beforeTags).toHaveLength(1);
+      expect(beforeTags[0].id).toBe(TagConstants.ElectronicsID);
+
+      await repository.upsertTags(ProductConstants.AppleWatchSeries8ID, [
+        TagConstants.ElectronicsID
+      ]);
+
+      const createdTags = await repository.findTags(ProductConstants.AppleWatchSeries8ID);
+
+      expect(createdTags).toHaveLength(1);
+      expect(createdTags.map(t => t.id)).toEqual([TagConstants.ElectronicsID]);
+    });
   });
 
   describe('findAssets', () => {
@@ -396,6 +419,96 @@ describe('Product repository', () => {
       const tagsAfterRemoval = await repository.findTags(ProductConstants.ShirtID);
 
       expect(tagsAfterRemoval).toHaveLength(0);
+    });
+  });
+
+  describe('findAssetsByProductIds', () => {
+    test('returns all assets for the given product ids', async () => {
+      const assets = await repository.findAssetsByProductIds([
+        ProductConstants.ShirtID,
+        ProductConstants.iPhone14ProMaxID,
+        ProductConstants.JacketID
+      ]);
+
+      expect(assets).toHaveLength(4);
+    });
+  });
+
+  describe('removeAllOptions', () => {
+    test('removes all product options for the given product ids', async () => {
+      const mockedOptions = await trx<ProductOptionTable>(Tables.ProductOption).whereIn(
+        'product_id',
+        [ProductConstants.ShirtID, ProductConstants.JacketID]
+      );
+
+      expect(mockedOptions).toHaveLength(4);
+
+      await repository.removeAllOptions([ProductConstants.ShirtID, ProductConstants.JacketID]);
+
+      const optionsAfterRemoval = await trx<ProductOptionTable>(Tables.ProductOption).whereIn(
+        'product_id',
+        [ProductConstants.ShirtID, ProductConstants.JacketID]
+      );
+      expect(optionsAfterRemoval).toHaveLength(0);
+    });
+  });
+
+  describe('removeAllAssets', () => {
+    test('removes all product assets for the given product ids', async () => {
+      const mockedAssets = await trx<ProductAssetTable>(Tables.ProductAsset).whereIn('product_id', [
+        ProductConstants.iPhone14ProMaxID,
+        ProductConstants.ShirtID
+      ]);
+
+      expect(mockedAssets).toHaveLength(4);
+
+      await repository.removeAllAssets([
+        ProductConstants.iPhone14ProMaxID,
+        ProductConstants.ShirtID
+      ]);
+
+      const assetsAfterRemoval = await trx<ProductAssetTable>(Tables.ProductAsset).whereIn(
+        'product_id',
+        [ProductConstants.iPhone14ProMaxID, ProductConstants.ShirtID]
+      );
+      expect(assetsAfterRemoval).toHaveLength(0);
+    });
+  });
+
+  describe('removeAllTags', () => {
+    test('removes all product tags for the given product ids', async () => {
+      const mockedTags = await trx<ProductTagTable>(Tables.ProductTag).whereIn('product_id', [
+        ProductConstants.MacBookPro16ID,
+        ProductConstants.ShirtID
+      ]);
+
+      expect(mockedTags).toHaveLength(2);
+
+      await repository.removeAllTags([ProductConstants.MacBookPro16ID, ProductConstants.ShirtID]);
+
+      const tagsAfterRemoval = await trx<ProductTagTable>(Tables.ProductTag).whereIn('product_id', [
+        ProductConstants.MacBookPro16ID,
+        ProductConstants.ShirtID
+      ]);
+      expect(tagsAfterRemoval).toHaveLength(0);
+    });
+  });
+
+  describe('removeTranslations', () => {
+    test('removes all product translations for the given product ids', async () => {
+      const mockedTranslations = await trx<ProductTranslationTable>(
+        Tables.ProductTranslation
+      ).whereIn('product_id', [ProductConstants.JacketID, ProductConstants.ShirtID]);
+
+      expect(mockedTranslations).toHaveLength(2);
+
+      await repository.removeAllTranslations([ProductConstants.JacketID, ProductConstants.ShirtID]);
+
+      const translationsAfterRemoval = await trx<ProductTranslationTable>(
+        Tables.ProductTranslation
+      ).whereIn('product_id', [ProductConstants.JacketID, ProductConstants.ShirtID]);
+
+      expect(translationsAfterRemoval).toHaveLength(0);
     });
   });
 });

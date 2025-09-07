@@ -112,7 +112,7 @@ export class ProductService {
     await this.repository.removeAllOptions(ids);
     await this.repository.removeAllAssets(ids);
     await this.repository.removeAllTags(ids);
-    await this.repository.removeTranslations(ids);
+    await this.repository.removeAllTranslations(ids);
 
     await Promise.all(ids.map(id => this.repository.softRemove({ where: { id } })));
 

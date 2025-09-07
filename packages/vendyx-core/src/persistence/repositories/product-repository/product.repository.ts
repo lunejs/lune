@@ -195,7 +195,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     await this.trx<ProductTagTable>(Tables.ProductTag).whereIn('product_id', productIds).del();
   }
 
-  async removeTranslations(productIds: ID[]) {
+  async removeAllTranslations(productIds: ID[]) {
     await this.trx<ProductTranslationTable>(Tables.ProductTranslation)
       .whereIn('product_id', productIds)
       .del();
