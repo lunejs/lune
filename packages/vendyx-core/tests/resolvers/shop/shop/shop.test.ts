@@ -78,7 +78,7 @@ const GET_SHOP_BY_SLUG_QUERY = /* GraphQL */ `
       id
       name
       slug
-      shopApiKey
+      storefrontApiKey
       email
       phoneNumber
       logo

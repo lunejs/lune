@@ -16,7 +16,7 @@ type Shop implements Node {
   """
   Api key for other stores to connect to this store
   """
-  shopApiKey: String!
+  storefrontApiKey: String!
   """
   Contact email for the shop, used to show as contact information in emails
   """

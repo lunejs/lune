@@ -1,9 +1,9 @@
 import { ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { MutationCreateShopArgs, QueryShopArgs, QueryShopsArgs } from '@/api/shared/types/graphql';
+import { ListResponse } from '@/api/shared/utils/list-response';
 import { ShopService } from '@/business/shop/shop.service';
 import { isErrorResult } from '@/utils/error-result';
-import { ListResponse } from '@/utils/list-response';
 
 async function createShop(_, { input }: MutationCreateShopArgs, ctx: ExecutionContext) {
   const shopService = new ShopService(ctx);

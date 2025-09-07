@@ -452,9 +452,13 @@ export type ProductSort = {
 
 export type ProductTranslation = {
   __typename?: 'ProductTranslation';
+  createdAt: Scalars['Date']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  locale: Locale;
   name?: Maybe<Scalars['String']['output']>;
   slug?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type Query = {
@@ -532,12 +536,12 @@ export type Shop = Node & {
   owner: User;
   /** Contact phone number for the shop, used to show as contact information in emails */
   phoneNumber: Scalars['String']['output'];
-  /** Api key for other stores to connect to this store */
-  shopApiKey: Scalars['String']['output'];
   /** The shop's slug */
   slug: Scalars['String']['output'];
   /** The shop's socials, used for branding and social media links in emails and storefront */
   socials?: Maybe<ShopSocials>;
+  /** Api key for other stores to connect to this store */
+  storefrontApiKey: Scalars['String']['output'];
   /** The shop's storefront url */
   storefrontUrl?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Date']['output'];
@@ -1162,9 +1166,13 @@ export type ProductListResolvers<ContextType = ExecutionContext, ParentType exte
 };
 
 export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductTranslation'] = ResolversParentTypes['ProductTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1189,9 +1197,9 @@ export type ShopResolvers<ContextType = ExecutionContext, ParentType extends Res
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  shopApiKey?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   socials?: Resolver<Maybe<ResolversTypes['ShopSocials']>, ParentType, ContextType>;
+  storefrontApiKey?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   storefrontUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

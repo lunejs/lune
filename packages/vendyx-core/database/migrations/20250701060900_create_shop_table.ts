@@ -10,7 +10,7 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string('name').notNullable();
     table.string('slug').unique().notNullable();
-    table.string('shop_api_key').unique().notNullable();
+    table.string('storefront_api_key').unique().notNullable();
     table.string('email').unique().notNullable();
     table.string('phone_number', 15).notNullable();
     table.string('logo').nullable();

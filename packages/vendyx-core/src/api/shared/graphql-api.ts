@@ -13,10 +13,12 @@ export class GraphqlApi {
   typeDefs: any[];
   resolvers: GraphqlApiResolver;
   schema: GraphQLSchema;
+  endpoint: string;
 
   handler: GraphqlApiHandler;
 
   constructor(private readonly config: GraphqlApiConfig) {
+    this.endpoint = config.endpoint;
     this.typeDefs = this.genTypeDefs();
     this.resolvers = this.genResolvers();
     this.schema = this.genSchema();
@@ -66,6 +68,14 @@ export class GraphqlApi {
         }
       };
     });
+
+    if (Object.keys(_resolvers.Query ?? {}).length === 0) {
+      delete _resolvers.Query;
+    }
+
+    if (Object.keys(_resolvers.Mutation ?? {}).length === 0) {
+      delete _resolvers.Mutation;
+    }
 
     return _resolvers;
   }

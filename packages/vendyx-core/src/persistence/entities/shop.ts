@@ -15,7 +15,7 @@ export interface Shop extends VendyxEntity {
   /**
    * Api key for other stores to connect to this store
    */
-  shopApiKey: string;
+  storefrontApiKey: string;
   /**
    * Contact email for the shop, used to show as contact information in emails
    */
@@ -41,7 +41,7 @@ export interface Shop extends VendyxEntity {
 export interface ShopTable extends VendyxTable {
   name: string;
   slug: string;
-  shop_api_key: string;
+  storefront_api_key: string;
   email: string;
   phone_number: string;
   logo?: string;

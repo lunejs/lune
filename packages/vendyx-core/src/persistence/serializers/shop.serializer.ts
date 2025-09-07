@@ -10,7 +10,7 @@ export class ShopSerializer extends Serializer<Shop, ShopTable> {
       ['updated_at', 'updatedAt'],
       ['name', 'name'],
       ['slug', 'slug'],
-      ['shop_api_key', 'shopApiKey'],
+      ['storefront_api_key', 'storefrontApiKey'],
       ['email', 'email'],
       ['phone_number', 'phoneNumber'],
       ['logo', 'logo'],

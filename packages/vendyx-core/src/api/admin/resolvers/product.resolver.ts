@@ -10,8 +10,8 @@ import {
   QueryProductArgs,
   QueryProductsArgs
 } from '@/api/shared/types/graphql';
+import { ListResponse } from '@/api/shared/utils/list-response';
 import { ProductService } from '@/business/product/product.service';
-import { ListResponse } from '@/utils/list-response';
 
 async function products(_, { input }: QueryProductsArgs, ctx: ExecutionContext) {
   const productService = new ProductService(ctx);

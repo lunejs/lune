@@ -16,7 +16,7 @@ export interface ProductTranslationTable extends VendyxTable {
   name?: string | null;
   slug?: string | null;
   description?: string | null;
-  locale: string;
+  locale: Locale;
   product_id: string;
   shop_id: string;
 }

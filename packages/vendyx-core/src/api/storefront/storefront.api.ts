@@ -4,6 +4,7 @@ import { YogaInitialContext } from 'graphql-yoga';
 
 import { JwtService } from '@/libs/jwt';
 import { Database } from '@/persistence/connection';
+import { Locale } from '@/persistence/entities/locale';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
@@ -11,20 +12,23 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
+import { COMMON_RESOLVERS } from '../shared/resolvers/common-resolvers';
 import { UserJWT } from '../shared/types/api.types';
+
+import { ProductResolver } from './resolvers/product.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const SHOP_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
-export class ShopApi extends GraphqlApi {
+export class StorefrontApi extends GraphqlApi {
   constructor(
     private readonly database: Database,
     private readonly jwtService: JwtService
   ) {
     super({
-      endpoint: '/shop-api',
+      endpoint: '/storefront-api',
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [],
+      resolvers: [ProductResolver, ...COMMON_RESOLVERS],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });
@@ -33,11 +37,18 @@ export class ShopApi extends GraphqlApi {
   private async buildAdminApiContext(initialContext: YogaInitialContext) {
     const rawHeader = initialContext.request.headers.get(HeaderKeys.Authorization) ?? '';
 
-    const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
+    const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
+    const storefrontApiKey = initialContext.request.headers.get(HeaderKeys.StorefrontApiKey);
+    const storefrontLocale = initialContext.request.headers.get(
+      HeaderKeys.StorefrontLocale
+    ) as Locale | null;
 
     const payload = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
 
-    return buildContext(this.database, this.jwtService, shopId, payload);
+    return buildContext(this.database, this.jwtService, shopId, payload, {
+      apiKey: storefrontApiKey,
+      locale: storefrontLocale
+    });
   }
 }

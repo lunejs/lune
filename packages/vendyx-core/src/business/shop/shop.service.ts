@@ -38,12 +38,12 @@ export class ShopService {
     }
 
     const slug = await this.validateAndParseSlug(input.name);
-    const shopApiKey = ApiKey.generate();
+    const storefrontApiKey = ApiKey.generate();
 
     return this.repository.create({
       ...clean(input),
       slug,
-      shopApiKey
+      storefrontApiKey
     });
   }
 

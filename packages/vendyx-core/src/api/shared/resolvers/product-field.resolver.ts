@@ -1,23 +1,27 @@
-import { ListResponse } from '@/utils/list-response';
-
 import { ExecutionContext } from '../context/types';
 import { GraphqlApiResolver } from '../graphql-api';
 import { Product, ProductAssetsArgs } from '../types/graphql';
+import { getProductLocalizedField } from '../utils/get-localized-field';
+import { getPaginatedResult } from '../utils/pagination';
 
 export const ProductFieldResolver: GraphqlApiResolver = {
   Product: {
     assets: async (parent: Product, { input }: ProductAssetsArgs, ctx: ExecutionContext) => {
-      const [assets, total] = await Promise.all([
-        ctx.repositories.product.findAssets(parent.id, input ?? {}),
-        ctx.repositories.product.countAssets(parent.id)
-      ]);
+      const assets = await ctx.loaders.product.assets.load(parent.id);
 
-      return new ListResponse(assets, assets.length, { total });
+      return getPaginatedResult(assets, input);
     },
     tags: async (parent: Product, _, ctx: ExecutionContext) => {
-      const tags = await ctx.repositories.product.findTags(parent.id);
-
-      return tags;
+      return ctx.loaders.product.tags.load(parent.id);
+    },
+    name: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'name');
+    },
+    slug: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'slug');
+    },
+    description: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'description');
     }
   }
 };

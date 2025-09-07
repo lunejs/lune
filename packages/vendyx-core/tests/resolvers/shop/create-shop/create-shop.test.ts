@@ -97,7 +97,7 @@ export const CREATE_SHOP_MUTATION = /* GraphQL */ `
         id
         name
         slug
-        shopApiKey
+        storefrontApiKey
         email
         phoneNumber
         logo

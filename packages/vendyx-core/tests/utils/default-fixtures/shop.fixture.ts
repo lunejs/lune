@@ -9,7 +9,7 @@ export const DefaultShopFixture = (): ShopTable => ({
   logo: '',
   name: '',
   phone_number: '',
-  shop_api_key: crypto.randomUUID(),
+  storefront_api_key: crypto.randomUUID(),
   socials: undefined,
   storefront_url: crypto.randomUUID(),
   owner_id: crypto.randomUUID()

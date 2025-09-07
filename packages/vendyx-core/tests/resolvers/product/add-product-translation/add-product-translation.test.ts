@@ -71,7 +71,7 @@ describe('addProductTranslation - Mutation', () => {
         variables: {
           id: ProductConstants.ID,
           input: {
-            name: 'Product name in english',
+            description: 'Product description in english',
             locale: 'en'
           }
         }
@@ -79,9 +79,9 @@ describe('addProductTranslation - Mutation', () => {
 
     const { addProductTranslation } = res.body.data;
 
-    expect(addProductTranslation.slug).toBe('product-name-in-english');
-    expect(addProductTranslation.name).toBe('Product name in english');
-    expect(addProductTranslation.description).toBe(null);
+    expect(addProductTranslation.slug).toBe(null);
+    expect(addProductTranslation.name).toBe(null);
+    expect(addProductTranslation.description).toBe('Product description in english');
   });
 
   test('sets a null translation', async () => {
