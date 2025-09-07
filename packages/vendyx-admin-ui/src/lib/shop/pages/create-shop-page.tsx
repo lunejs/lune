@@ -1,12 +1,7 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@vendyx/ui';
+
 import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '../../../../../vendyx-ui/dist';
 import { CreateShopForm } from '../components/create-shop/create-shop-form';
 
 export const CreateShopPage = () => {

@@ -9,7 +9,7 @@
  *
  * NOTE: When using ui package as npm package, you will point to node_modules folder
  */
-@source '../../../ui/**/*.{js,ts,jsx,tsx}';
+@source '../../../vendyx-ui/**/*.{js,ts,jsx,tsx}';
 
 @custom-variant dark (&:is(.dark *));
 

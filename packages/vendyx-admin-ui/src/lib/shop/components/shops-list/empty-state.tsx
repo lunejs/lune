@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { Button } from '../../../../../../vendyx-ui/dist';
+import { Button } from '@vendyx/ui';
 
 export const ShopsListEmptyState = () => {
   return (

@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../../../../../../vendyx-ui/dist';
+} from '@vendyx/ui';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../sidebar';
 
 export function User({

@@ -8,7 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator
-} from '../../../../../vendyx-ui/dist';
+} from '@vendyx/ui';
+
 import { isLast } from '../utils/arrays.utils';
 
 export const AppBreadcrumb = () => {

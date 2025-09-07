@@ -1,6 +1,6 @@
 import { BellIcon } from 'lucide-react';
 
-import { Button, Separator } from '../../../../../../vendyx-ui/dist';
+import { Button, Separator } from '@vendyx/ui';
 import { AppBreadcrumb } from '../app-breadcrumb';
 import { SidebarTrigger } from '../sidebar';
 

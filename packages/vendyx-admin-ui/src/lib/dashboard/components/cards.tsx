@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '../../../../../vendyx-ui/dist';
+} from '@vendyx/ui';
 
 export function SectionCards() {
   return (

@@ -3,12 +3,12 @@ import '@fontsource-variable/geist';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
+import { ThemeProvider, Toaster } from '@vendyx/ui';
+
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
-
-import { ThemeProvider, Toaster } from '../../../vendyx-ui/dist';
 
 import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';

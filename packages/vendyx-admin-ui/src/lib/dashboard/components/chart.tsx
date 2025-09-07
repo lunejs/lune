@@ -18,7 +18,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
   useIsMobile
-} from '../../../../../vendyx-ui/dist';
+} from '@vendyx/ui';
 
 export const description = 'An interactive area chart';
 

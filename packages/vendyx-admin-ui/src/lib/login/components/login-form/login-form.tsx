@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Form,
-  FormInput,
-  H3,
-  Muted
-} from '../../../../../../vendyx-ui/dist';
+import { Button, Card, CardContent, CardHeader, Form, FormInput, H3, Muted } from '@vendyx/ui';
 
 import { useLoginForm } from './use-login-form';
 

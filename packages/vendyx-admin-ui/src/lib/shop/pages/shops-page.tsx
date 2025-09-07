@@ -1,8 +1,6 @@
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
-
 import {
   Button,
   Card,
@@ -11,7 +9,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '../../../../../vendyx-ui/dist';
+} from '@vendyx/ui';
+
+import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
+
 import { ShopsList } from '../components/shops-list/shops-list';
 import { useGetShops } from '../hooks/use-get-shops';
 

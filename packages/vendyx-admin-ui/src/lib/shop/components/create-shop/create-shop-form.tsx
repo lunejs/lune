@@ -1,4 +1,4 @@
-import { Button, Form, FormInput, FormPhoneInput } from '../../../../../../vendyx-ui/dist';
+import { Button, Form, FormInput, FormPhoneInput } from '@vendyx/ui';
 
 import { useCreateShopForm } from './use-create-shop-form';
 

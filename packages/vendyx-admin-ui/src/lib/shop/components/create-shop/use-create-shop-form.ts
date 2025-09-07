@@ -4,7 +4,7 @@ import z from 'zod';
 
 import { ShopErrorCode } from '@/lib/api/types';
 
-import { notification } from '../../../../../../vendyx-ui/dist';
+import { notification } from '@vendyx/ui';
 import { useCreateShop } from '../../hooks/use-create-shop';
 
 export const useCreateShopForm = () => {
