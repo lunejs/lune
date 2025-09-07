@@ -107,6 +107,18 @@ export class ProductService {
     });
   }
 
+  // TODO: remove from product_collection table when implemented
+  async softRemove(ids: ID[]) {
+    await this.repository.removeAllOptions(ids);
+    await this.repository.removeAllAssets(ids);
+    await this.repository.removeAllTags(ids);
+    await this.repository.removeTranslations(ids);
+
+    await Promise.all(ids.map(id => this.repository.softRemove({ where: { id } })));
+
+    return true;
+  }
+
   private async validateAndParseSlug(name: string) {
     const slug = getSlugBy(name);
 

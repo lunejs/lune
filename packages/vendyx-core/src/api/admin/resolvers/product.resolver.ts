@@ -6,6 +6,7 @@ import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import {
   MutationAddProductTranslationArgs,
   MutationCreateProductArgs,
+  MutationSoftRemoveProductArgs,
   MutationUpdateProductArgs,
   QueryProductArgs,
   QueryProductsArgs
@@ -60,11 +61,24 @@ async function addProductTranslation(
   return result;
 }
 
+async function softRemoveProducts(
+  _,
+  { ids }: MutationSoftRemoveProductArgs,
+  ctx: ExecutionContext
+) {
+  const productService = new ProductService(ctx);
+
+  const result = await productService.softRemove(ids);
+
+  return result;
+}
+
 export const ProductResolver: GraphqlApiResolver = {
   Mutation: {
     createProduct: UseUserGuard(createProduct),
     updateProduct: UseUserGuard(updateProduct),
-    addProductTranslation: UseUserGuard(addProductTranslation)
+    addProductTranslation: UseUserGuard(addProductTranslation),
+    softRemoveProducts: UseUserGuard(softRemoveProducts)
   },
   Query: {
     product: UseUserGuard(product),

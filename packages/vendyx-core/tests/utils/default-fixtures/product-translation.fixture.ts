@@ -1,4 +1,3 @@
-import { Locale } from '@/persistence/entities/locale';
 import { ProductTranslationTable } from '@/persistence/entities/product-translation';
 
 export const DefaultProductTranslationFixture = (): ProductTranslationTable => ({
@@ -8,7 +7,7 @@ export const DefaultProductTranslationFixture = (): ProductTranslationTable => (
   name: '',
   slug: crypto.randomUUID(),
   description: '',
-  locale: Locale.EN,
+  locale: 'en' as any,
   product_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

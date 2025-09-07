@@ -7,6 +7,7 @@ import { ID } from '@/persistence/entities/entity';
 import { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductAssetTable } from '@/persistence/entities/product-asset';
 import { ProductTagTable } from '@/persistence/entities/product-tag';
+import { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tag, TagTable } from '@/persistence/entities/tag';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
@@ -150,6 +151,54 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     } catch (error) {
       throw new RepositoryError('ProductRepository.findTags', error);
     }
+  }
+
+  async findAssetsByProductIds(ids: ID[]): Promise<Asset[]> {
+    try {
+      const result = await this.trx<ProductAssetTable>(Tables.ProductAsset)
+        .whereIn('product_id', ids)
+        .innerJoin(Tables.Asset, `${Tables.Asset}.id`, `${Tables.ProductAsset}.asset_id`);
+
+      return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.findAssets', error);
+    }
+  }
+
+  async removeAllOptions(productIds: ID[]) {
+    const optionsToDelete = await this.trx(Tables.ProductOption)
+      .select('option_id')
+      .whereIn('product_id', productIds);
+
+    const optionIds = optionsToDelete.map(o => o.option_id);
+
+    if (optionIds.length === 0) return;
+
+    await this.trx(Tables.VariantOptionValue)
+      .whereIn('option_value_id', function () {
+        this.select('id').from(Tables.OptionValue).whereIn('option_id', optionIds);
+      })
+      .del();
+
+    await this.trx(Tables.OptionValue).whereIn('option_id', optionIds).del();
+
+    await this.trx(Tables.ProductOption).whereIn('product_id', productIds).del();
+
+    await this.trx(Tables.Option).whereIn('id', optionIds).del();
+  }
+
+  async removeAllAssets(productIds: ID[]) {
+    await this.trx<ProductAssetTable>(Tables.ProductAsset).whereIn('product_id', productIds).del();
+  }
+
+  async removeAllTags(productIds: ID[]) {
+    await this.trx<ProductTagTable>(Tables.ProductTag).whereIn('product_id', productIds).del();
+  }
+
+  async removeTranslations(productIds: ID[]) {
+    await this.trx<ProductTranslationTable>(Tables.ProductTranslation)
+      .whereIn('product_id', productIds)
+      .del();
   }
 
   private applyFilters(

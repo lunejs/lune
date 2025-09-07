@@ -5,7 +5,9 @@ import { DefaultProductAssetFixture } from './asset.fixture copy';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
 import { DefaultProductFixture } from './product.fixture';
+import { DefaultProductOptionFixture } from './product-option.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
+import { DefaultProductTranslationFixture } from './product-translation.fixture';
 import { DefaultShopFixture } from './shop.fixture';
 import { DefaultTagFixture } from './tag.fixture';
 import { DefaultUserFixture } from './user.fixture';
@@ -24,5 +26,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.VariantOptionValue]: DefaultVariantOptionValueFixture,
   [Tables.Asset]: DefaultAssetFixture,
   [Tables.ProductAsset]: DefaultProductAssetFixture,
-  [Tables.ProductTranslation]: () => ({})
+  [Tables.ProductTranslation]: DefaultProductTranslationFixture,
+  [Tables.ProductOption]: DefaultProductOptionFixture
 };
