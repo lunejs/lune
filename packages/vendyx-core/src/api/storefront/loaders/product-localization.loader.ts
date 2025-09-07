@@ -9,7 +9,7 @@ import {
 import { ProductTranslationSerializer } from '@/persistence/serializers/product-translation.serializer';
 import { Tables } from '@/persistence/tables';
 
-export function createProductTranslationLoader(
+export function createProductLocalizationLoader(
   trx: Transaction,
   locale: Locale | null | undefined
 ) {

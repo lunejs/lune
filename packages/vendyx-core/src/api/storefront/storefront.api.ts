@@ -12,9 +12,9 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
-import { COMMON_RESOLVERS } from '../shared/resolvers/common-resolvers';
 import { UserJWT } from '../shared/types/api.types';
 
+import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
@@ -28,7 +28,7 @@ export class StorefrontApi extends GraphqlApi {
     super({
       endpoint: '/storefront-api',
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [ProductResolver, ...COMMON_RESOLVERS],
+      resolvers: [ProductResolver, ProductFieldResolver],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

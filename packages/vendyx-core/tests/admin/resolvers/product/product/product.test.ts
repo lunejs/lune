@@ -8,6 +8,10 @@ import { AssetFixtures } from './fixtures/asset.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
+import {
+  ProductTranslationConstants,
+  ProductTranslationFixtures
+} from './fixtures/product-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { TagFixtures } from './fixtures/tag.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -26,7 +30,8 @@ describe('product - Query', () => {
       new AssetFixtures(),
       new ProductAssetFixtures(),
       new TagFixtures(),
-      new ProductTagFixtures()
+      new ProductTagFixtures(),
+      new ProductTranslationFixtures()
     ]);
   });
 
@@ -84,6 +89,24 @@ describe('product - Query', () => {
       });
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns translations', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_QUERY,
+        variables: {
+          id: ProductConstants.MacBookPro16ID
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.translations).toHaveLength(1);
+    expect(product.translations[0].id).toBe(ProductTranslationConstants.ID);
   });
 
   test('returns assets', async () => {
@@ -154,6 +177,13 @@ const GET_PRODUCT_QUERY = /* GraphQL */ `
       enabled
       minSalePrice
       maxSalePrice
+      translations {
+        id
+        name
+        slug
+        description
+        locale
+      }
       tags {
         id
         name

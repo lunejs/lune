@@ -1,3 +1,3 @@
-import { ProductFieldResolver } from './product-field.resolver';
+import { CommonProductFieldResolver } from './product-field.resolver';
 
-export const COMMON_RESOLVERS = [ProductFieldResolver];
+export const COMMON_RESOLVERS = [CommonProductFieldResolver];

@@ -9,7 +9,7 @@ export const getProductLocalizedField = async (
 ) => {
   if (!ctx.storefront?.locale) return parent[field];
 
-  const translation = await ctx.loaders.product.translation.load(parent.id);
+  const translation = await ctx.loaders.product.localization.load(parent.id);
 
   return translation?.[field] ?? parent[field];
 };

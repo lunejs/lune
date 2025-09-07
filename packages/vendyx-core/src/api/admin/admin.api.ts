@@ -11,9 +11,9 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
-import { ProductFieldResolver } from '../shared/resolvers/product-field.resolver';
 import { UserJWT } from '../shared/types/api.types';
 
+import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
 import { UserResolver } from './resolvers/user.resolver';

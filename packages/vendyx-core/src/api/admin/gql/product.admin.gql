@@ -15,6 +15,8 @@ extend type Product {
   Useful for products that are not available anymore but you don't want to lose their data.
   """
   archived: Boolean!
+
+  translations: [ProductTranslation!]!
 }
 
 type Query {
