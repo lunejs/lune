@@ -5,8 +5,8 @@
   "description": "vendyx common package",
   "author": "sam_621",
   "license": "MIT",
-  "main": "dist/index.cjs",
-  "types": "dist/index.d.cts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup"
   },
