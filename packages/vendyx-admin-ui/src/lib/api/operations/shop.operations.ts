@@ -13,7 +13,7 @@ export const COMMON_SHOP_FRAGMENT = graphql(`
       instagram
     }
     phoneNumber
-    shopApiKey
+    storefrontApiKey
   }
 `);
 

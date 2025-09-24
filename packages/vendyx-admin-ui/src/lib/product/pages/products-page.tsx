@@ -19,7 +19,7 @@ export function ProductsPage() {
           <AppSidebar variant="inset" />
           <SidebarInset>
             <SiteHeader />
-            <div className="p-4 lg:p-6">
+            <div className="p-4 lg:p-6 h-full">
               <ProductsTable />
             </div>
           </SidebarInset>

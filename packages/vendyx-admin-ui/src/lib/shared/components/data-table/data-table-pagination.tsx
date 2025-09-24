@@ -5,9 +5,17 @@ import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue }
 
 import { type DataTableProps } from './data-table';
 
-export function DataTablePagination<TData, TValue>({ table, onPageChange }: Props<TData, TValue>) {
+export function DataTablePagination<TData, TValue>({
+  table,
+  onPageChange,
+  onPageSizeChange
+}: Props<TData, TValue>) {
   const onPaginationChange = (pageIndex: number) => {
-    onPageChange?.(pageIndex + 1);
+    onPageChange(pageIndex + 1);
+  };
+
+  const onSizeChange = (pageSize: number) => {
+    onPageSizeChange(pageSize);
   };
 
   return (
@@ -23,6 +31,7 @@ export function DataTablePagination<TData, TValue>({ table, onPageChange }: Prop
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={value => {
               table.setPageSize(Number(value));
+              onSizeChange(Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">

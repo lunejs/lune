@@ -15,7 +15,10 @@ import { isLast } from '../utils/arrays.utils';
 export const AppBreadcrumb = () => {
   const { pathname } = useLocation();
 
-  const breadcrumbItems = [{ label: 'Dashboard', href: '/' }, ...getBreadcrumbItems(pathname)];
+  const breadcrumbItems = [
+    { label: 'Dashboard', href: '/dashboard' },
+    ...getBreadcrumbItems(pathname)
+  ];
 
   return (
     <Breadcrumb>

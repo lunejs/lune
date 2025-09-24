@@ -16,12 +16,12 @@ import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
-  const { columns, data, totalRows, defaultInitialPage, defaultPageSize } = props;
+  const { columns, data, totalRows, defaultPagination } = props;
 
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
-    pageIndex: defaultInitialPage ? defaultInitialPage - 1 : 0,
-    pageSize: defaultPageSize || 10
+    pageIndex: defaultPagination?.page ? defaultPagination.page - 1 : 0,
+    pageSize: defaultPagination?.pageSize || 10
   });
 
   const table = useReactTable({
@@ -43,7 +43,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
   });
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full">
       <DataTableToolbar {...props} table={table} />
       <div className="overflow-hidden rounded-md border">
         <Table>
@@ -95,8 +95,8 @@ export type DataTableProps<TData, TValue> = {
   searchPlaceholder?: string;
   totalRows: number;
   onPageChange: (page: number) => void;
-  defaultInitialPage?: number;
-  defaultPageSize?: number;
+  onPageSizeChange: (pageSize: number) => void;
+  defaultPagination?: { page?: number; pageSize?: number };
   actions?: React.ReactNode;
   filters?: DataTableFilter[];
 };

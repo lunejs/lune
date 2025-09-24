@@ -1,19 +1,21 @@
 /* eslint-disable */
-import type { ResultOf, DocumentTypeDecoration, TypedDocumentNode } from '@graphql-typed-document-node/core';
+import type {
+  DocumentTypeDecoration,
+  ResultOf,
+  TypedDocumentNode
+} from '@graphql-typed-document-node/core';
 import type { FragmentDefinitionNode } from 'graphql';
+
 import type { Incremental } from './graphql';
 
-
-export type FragmentType<TDocumentType extends DocumentTypeDecoration<any, any>> = TDocumentType extends DocumentTypeDecoration<
-  infer TType,
-  any
->
-  ? [TType] extends [{ ' $fragmentName'?: infer TKey }]
-    ? TKey extends string
-      ? { ' $fragmentRefs'?: { [key in TKey]: TType } }
+export type FragmentType<TDocumentType extends DocumentTypeDecoration<any, any>> =
+  TDocumentType extends DocumentTypeDecoration<infer TType, any>
+    ? [TType] extends [{ ' $fragmentName'?: infer TKey }]
+      ? TKey extends string
+        ? { ' $fragmentRefs'?: Record<TKey, TType> }
+        : never
       : never
-    : never
-  : never;
+    : never;
 
 // return non-nullable if `fragmentType` is non-nullable
 export function getFragmentData<TType>(
@@ -38,30 +40,34 @@ export function getFragmentData<TType>(
 // return array of non-nullable if `fragmentType` is array of non-nullable
 export function getFragmentData<TType>(
   _documentNode: DocumentTypeDecoration<TType, any>,
-  fragmentType: Array<FragmentType<DocumentTypeDecoration<TType, any>>>
-): Array<TType>;
+  fragmentType: FragmentType<DocumentTypeDecoration<TType, any>>[]
+): TType[];
 // return array of nullable if `fragmentType` is array of nullable
 export function getFragmentData<TType>(
   _documentNode: DocumentTypeDecoration<TType, any>,
-  fragmentType: Array<FragmentType<DocumentTypeDecoration<TType, any>>> | null | undefined
-): Array<TType> | null | undefined;
+  fragmentType: FragmentType<DocumentTypeDecoration<TType, any>>[] | null | undefined
+): TType[] | null | undefined;
 // return readonly array of non-nullable if `fragmentType` is array of non-nullable
 export function getFragmentData<TType>(
   _documentNode: DocumentTypeDecoration<TType, any>,
-  fragmentType: ReadonlyArray<FragmentType<DocumentTypeDecoration<TType, any>>>
-): ReadonlyArray<TType>;
+  fragmentType: readonly FragmentType<DocumentTypeDecoration<TType, any>>[]
+): readonly TType[];
 // return readonly array of nullable if `fragmentType` is array of nullable
 export function getFragmentData<TType>(
   _documentNode: DocumentTypeDecoration<TType, any>,
-  fragmentType: ReadonlyArray<FragmentType<DocumentTypeDecoration<TType, any>>> | null | undefined
-): ReadonlyArray<TType> | null | undefined;
+  fragmentType: readonly FragmentType<DocumentTypeDecoration<TType, any>>[] | null | undefined
+): readonly TType[] | null | undefined;
 export function getFragmentData<TType>(
   _documentNode: DocumentTypeDecoration<TType, any>,
-  fragmentType: FragmentType<DocumentTypeDecoration<TType, any>> | Array<FragmentType<DocumentTypeDecoration<TType, any>>> | ReadonlyArray<FragmentType<DocumentTypeDecoration<TType, any>>> | null | undefined
-): TType | Array<TType> | ReadonlyArray<TType> | null | undefined {
+  fragmentType:
+    | FragmentType<DocumentTypeDecoration<TType, any>>
+    | FragmentType<DocumentTypeDecoration<TType, any>>[]
+    | readonly FragmentType<DocumentTypeDecoration<TType, any>>[]
+    | null
+    | undefined
+): TType | TType[] | readonly TType[] | null | undefined {
   return fragmentType as any;
 }
-
 
 export function makeFragmentData<
   F extends DocumentTypeDecoration<any, any>,
@@ -74,8 +80,9 @@ export function isFragmentReady<TQuery, TFrag>(
   fragmentNode: TypedDocumentNode<TFrag>,
   data: FragmentType<TypedDocumentNode<Incremental<TFrag>, any>> | null | undefined
 ): data is FragmentType<typeof fragmentNode> {
-  const deferredFields = (queryNode as { __meta__?: { deferredFields: Record<string, (keyof TFrag)[]> } }).__meta__
-    ?.deferredFields;
+  const deferredFields = (
+    queryNode as { __meta__?: { deferredFields: Record<string, (keyof TFrag)[]> } }
+  ).__meta__?.deferredFields;
 
   if (!deferredFields) return true;
 
