@@ -1,16 +1,16 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 import { convertToCent } from '@vendyx/common';
 
-import { ListInput, ProductListInput } from '@/api/shared/types/graphql';
-import { Transaction } from '@/persistence/connection';
-import { Asset } from '@/persistence/entities/asset';
-import { ID } from '@/persistence/entities/entity';
-import { Product, ProductTable } from '@/persistence/entities/product';
-import { ProductAssetTable } from '@/persistence/entities/product-asset';
-import { ProductTagTable } from '@/persistence/entities/product-tag';
-import { ProductTranslationTable } from '@/persistence/entities/product-translation';
-import { Tag, TagTable } from '@/persistence/entities/tag';
+import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
+import type { Transaction } from '@/persistence/connection';
+import type { Asset } from '@/persistence/entities/asset';
+import type { ID } from '@/persistence/entities/entity';
+import type { Product, ProductTable } from '@/persistence/entities/product';
+import type { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { ProductTagTable } from '@/persistence/entities/product-tag';
+import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
+import type { Tag, TagTable } from '@/persistence/entities/tag';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { TagSerializer } from '@/persistence/serializers/tag.serializer';

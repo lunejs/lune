@@ -5,8 +5,16 @@
   "description": "vendyx common package",
   "author": "sam_621",
   "license": "MIT",
-  "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsup"
   },
