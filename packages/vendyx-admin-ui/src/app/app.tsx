@@ -8,6 +8,7 @@ import { ThemeProvider, Toaster } from '@vendyx/ui';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
+import { AdminLayout } from '@/lib/shared/components/layout/admin-layout';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 
@@ -30,8 +31,10 @@ export const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/shops" element={<ShopsPage />} />
                 <Route path="/shops/new" element={<CreateShopPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/products" element={<ProductsPage />} />
+                <Route element={<AdminLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/products" element={<ProductsPage />} />
+                </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>
             </Routes>

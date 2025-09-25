@@ -2,7 +2,7 @@ import { PackageIcon } from 'lucide-react';
 
 import { Button } from '@vendyx/ui';
 
-import { DataTableEmptyState } from '@/lib/shared/components/data-table/dat-table-empty-state';
+import { DataTableEmptyState } from '@/lib/shared/components/data-table/data-table-empty-state';
 
 export const ProductsTableEmptyState = () => {
   return (
