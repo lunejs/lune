@@ -26,6 +26,10 @@ export const useProductsTable = () => {
     take: size
   });
 
+  console.log({
+    productsRaw
+  });
+
   const products: TableProduct[] = useMemo(
     (): TableProduct[] =>
       productsRaw?.map(p => ({

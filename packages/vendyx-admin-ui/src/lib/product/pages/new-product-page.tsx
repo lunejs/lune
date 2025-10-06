@@ -18,7 +18,6 @@ import { useProductDetailsForm } from '../components/product-details/use-product
 
 export const NewProductPage = () => {
   const form = useProductDetailsForm();
-  console.log({ form: form.formState });
 
   return (
     <PageLayout className="max-w-[900px] mx-auto w-full">
@@ -48,7 +47,7 @@ export const NewProductPage = () => {
                     placeholder="T-Shirt"
                   />
                   <FormTextarea control={form.control} name="description" label="Description" />
-                  <Dropzone />
+                  <Dropzone onFilesChange={files => form.setValue('images', files)} />
                 </CardContent>
               </Card>
             </div>

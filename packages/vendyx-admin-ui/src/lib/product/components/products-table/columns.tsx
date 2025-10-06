@@ -5,6 +5,7 @@ import { getFormattedPrice } from '@vendyx/common';
 import { Badge, Checkbox, cn } from '@vendyx/ui';
 
 import { DataTableColumnHeader } from '@/lib/shared/components/data-table/data-table-column-header';
+import { ImagePlaceholder } from '@/lib/shared/components/placeholders/image-placeholder';
 
 import type { TableProduct } from './products-table';
 
@@ -44,7 +45,9 @@ export const ProductsTableColumns: ColumnDef<TableProduct>[] = [
             className="h-12 w-12 object-cover rounded-md flex-shrink-0"
           />
         ) : (
-          <>{/* <ImagePlaceholder initial={row.original.name} /> */}</>
+          <>
+            <ImagePlaceholder initial={row.original.name} />
+          </>
         )}
         <span className="text-nowrap">{row.original.name}</span>
       </Link>

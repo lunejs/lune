@@ -14,8 +14,8 @@ const DEFAULT_ACCEPT = {
   'image/*': []
 };
 
-export const Dropzone = ({ accept = DEFAULT_ACCEPT }: Props) => {
-  const { files, selected, addFiles, removeFiles, toggleFile } = useDropzone();
+export const Dropzone = ({ accept = DEFAULT_ACCEPT, onFilesChange }: Props) => {
+  const { files, selected, addFiles, removeFiles, toggleFile } = useDropzone(onFilesChange);
 
   const { getInputProps, getRootProps } = useReactDropzone({
     accept,
@@ -78,4 +78,5 @@ export const Dropzone = ({ accept = DEFAULT_ACCEPT }: Props) => {
 
 type Props = {
   accept?: Accept;
+  onFilesChange: (files: File[]) => void;
 };

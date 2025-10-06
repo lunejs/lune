@@ -2,24 +2,44 @@ import { useState } from 'react';
 
 import type { FileState } from './dropzone.context';
 
-export const useDropzone = () => {
+export const useDropzone = (onFilesChange: (files: File[]) => void) => {
   const [files, setFiles] = useState<FileState[]>([]);
   const [selected, setSelected] = useState<FileState[]>([]);
 
   const addFiles = (files: File[]) => {
-    setFiles(prev => [...prev, ...files.map(f => createFileState(f))]);
+    setFiles(prev => {
+      const newFiles = [...prev, ...files.map(f => createFileState(f))];
+
+      onFilesChange(newFiles.map(f => f.file));
+      return newFiles;
+    });
   };
 
   const removeFiles = () => {
-    setFiles(files => files.filter(file => !selected.map(({ id }) => id).includes(file.id)));
+    setFiles(prev => {
+      const newFiles = prev.filter(file => !selected.map(({ id }) => id).includes(file.id));
+
+      onFilesChange(newFiles.map(f => f.file));
+      return newFiles;
+    });
     setSelected([]);
   };
 
   const toggleFile = (value: boolean, file: FileState) => {
     if (value) {
-      setSelected(prev => [...prev, file]);
+      setSelected(prev => {
+        const newFiles = [...prev, file];
+
+        onFilesChange(newFiles.map(f => f.file));
+        return newFiles;
+      });
     } else {
-      setSelected(prev => prev.filter(_file => _file.id !== file.id));
+      setSelected(prev => {
+        const newFiles = prev.filter(_file => _file.id !== file.id);
+
+        onFilesChange(newFiles.map(f => f.file));
+        return newFiles;
+      });
     }
   };
 

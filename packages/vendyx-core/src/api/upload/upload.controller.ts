@@ -5,11 +5,12 @@ import multer from 'multer';
 import { AssetService } from '@/business/asset/asset.service';
 import { getConfig } from '@/config/config';
 import { Logger } from '@/logger';
-import { Asset, AssetType } from '@/persistence/entities/asset';
+import type { Asset } from '@/persistence/entities/asset';
+import { AssetType } from '@/persistence/entities/asset';
 
-import { ExecutionContext } from '../shared/context/types';
+import type { ExecutionContext } from '../shared/context/types';
 import { userMiddleware } from '../shared/middlewares/user.middleware';
-import { RestApiEndpoint, RestApiHandler } from '../shared/rest-api';
+import type { RestApiEndpoint, RestApiHandler } from '../shared/rest-api';
 
 const TMP_DIR = 'tmp';
 const multerMiddleware = multer({ dest: TMP_DIR, limits: {} });
@@ -63,6 +64,6 @@ export const UploadEndpoints: RestApiEndpoint[] = [
   {
     method: 'post',
     path: '/',
-    handlers: [userMiddleware, multerMiddleware.array('assets', 12), upload]
+    handlers: [userMiddleware, multerMiddleware.array('files', 12), upload]
   }
 ];

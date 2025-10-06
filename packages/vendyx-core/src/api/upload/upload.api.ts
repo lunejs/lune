@@ -1,12 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
-import { JwtService } from '@/libs/jwt';
-import { Database } from '@/persistence/connection';
+import type { JwtService } from '@/libs/jwt';
+import type { Database } from '@/persistence/connection';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { RestApi } from '../shared/rest-api';
-import { UserJWT } from '../shared/types/api.types';
+import type { UserJWT } from '../shared/types/api.types';
 
 import { UploadEndpoints } from './upload.controller';
 

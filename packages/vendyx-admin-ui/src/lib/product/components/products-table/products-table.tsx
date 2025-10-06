@@ -1,4 +1,5 @@
 import { PlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { Button } from '@vendyx/ui';
 
@@ -40,9 +41,11 @@ export const ProductsTable = () => {
           <Button size="sm" variant="outline" className="hidden lg:flex">
             Import
           </Button>
-          <Button size="sm">
-            <PlusIcon /> <span className="hidden lg:inline">Add Product</span>
-          </Button>
+          <Link to="/products/new">
+            <Button size="sm">
+              <PlusIcon /> <span className="hidden lg:inline">Add Product</span>
+            </Button>
+          </Link>
         </>
       }
     />

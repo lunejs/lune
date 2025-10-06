@@ -1,13 +1,15 @@
+import cors from 'cors';
 import express from 'express';
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 import { AdminApi } from './api/admin/admin.api';
 import { StorefrontApi } from './api/storefront/storefront.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
-import { VendyxConfig } from './config/vendyx.config';
+import type { VendyxConfig } from './config/vendyx.config';
 import { JwtService } from './libs/jwt';
-import { createConnection, Database } from './persistence/connection';
+import type { Database } from './persistence/connection';
+import { createConnection } from './persistence/connection';
 import { Logger } from './logger';
 
 export class VendyxServer {
@@ -23,6 +25,12 @@ export class VendyxServer {
     const { auth } = getConfig();
 
     this.app = express();
+
+    this.app.use(
+      cors({
+        origin: ['http://localhost:5173', 'https://admin.tusitio.com']
+      })
+    );
 
     this.database = createConnection();
     const jwtService = new JwtService({ secretKey: auth.jwtSecret, expiresIn: auth.jwtExpiresIn });
