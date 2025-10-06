@@ -1,4 +1,5 @@
 import { PackageIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { Button } from '@vendyx/ui';
 
@@ -12,7 +13,9 @@ export const ProductsTableEmptyState = () => {
       icon={<PackageIcon />}
       actions={
         <>
-          <Button>Add product</Button>
+          <Link to="/products/new">
+            <Button>Add product</Button>
+          </Link>
           <Button variant={'outline'}>Import</Button>
         </>
       }

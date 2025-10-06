@@ -747,6 +747,19 @@ export type GetProductsQuery = {
   };
 };
 
+export type CreateProductMutationVariables = Exact<{
+  input: CreateProductInput;
+}>;
+
+export type CreateProductMutation = { createProduct: { id: string } };
+
+export type UpdateProductMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateProductInput;
+}>;
+
+export type UpdateProductMutation = { updateProduct: { id: string } };
+
 export type CommonShopFragment = {
   id: string;
   name: string;
@@ -1011,6 +1024,99 @@ export const GetProductsDocument = {
     }
   ]
 } as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
+export const CreateProductDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateProduct' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreateProductInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createProduct' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CreateProductMutation, CreateProductMutationVariables>;
+export const UpdateProductDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateProduct' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateProductInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateProduct' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<UpdateProductMutation, UpdateProductMutationVariables>;
 export const GetShopsDocument = {
   kind: 'Document',
   definitions: [

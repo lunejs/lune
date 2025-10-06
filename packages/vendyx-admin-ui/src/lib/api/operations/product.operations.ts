@@ -32,3 +32,19 @@ export const GET_ALL_PRODUCTS_QUERY = graphql(`
     }
   }
 `);
+
+export const CREATE_PRODUCT_MUTATION = graphql(`
+  mutation CreateProduct($input: CreateProductInput!) {
+    createProduct(input: $input) {
+      id
+    }
+  }
+`);
+
+export const UPDATE_PRODUCT_MUTATION = graphql(`
+  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {
+    updateProduct(id: $id, input: $input) {
+      id
+    }
+  }
+`);

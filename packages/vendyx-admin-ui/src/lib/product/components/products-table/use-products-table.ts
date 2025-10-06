@@ -30,7 +30,7 @@ export const useProductsTable = () => {
     (): TableProduct[] =>
       productsRaw?.map(p => ({
         id: p.id,
-        image: p.assets.items[0].source,
+        image: p.assets.items[0]?.source,
         name: p.name,
         price: p.minSalePrice,
         status: p.enabled,

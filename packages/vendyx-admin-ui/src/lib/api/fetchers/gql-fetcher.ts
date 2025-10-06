@@ -12,8 +12,10 @@ export async function gqlFetcher<R, V>(
 ): Promise<R> {
   try {
     const userToken = getCookie(CookiesKeys.UserToken);
+    const shopId = getCookie(CookiesKeys.ActiveShop);
 
     gqlClient.setHeader('Authorization', userToken ? `Bearer ${userToken}` : '');
+    gqlClient.setHeader('x_vendyx_shop_id', shopId ?? '');
 
     return await gqlClient.request({
       document,
