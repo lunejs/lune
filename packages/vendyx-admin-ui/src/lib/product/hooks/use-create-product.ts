@@ -11,12 +11,16 @@ export const useCreateProduct = () => {
   const create = async (input: CreateProductInput) => {
     let images: Omit<VendyxAsset, 'order'>[] = [];
 
-    if (input.images.has('files')) {
+    if (input.images?.length) {
+      const formData = new FormData();
+
+      input.images.forEach(img => formData.append('files', img, img.name));
+
       const result = await restFetcher<{ success: boolean; data: Omit<VendyxAsset, 'order'>[] }>(
         '/upload',
         {
           method: 'POST',
-          body: input.images
+          body: formData
         }
       );
 
@@ -47,7 +51,7 @@ type CreateProductInput = {
   name: string;
   description?: string;
   enabled?: boolean;
-  images: FormData;
+  images?: File[];
   // tags: string[] | undefined;
   // options: {
   //   id: string;

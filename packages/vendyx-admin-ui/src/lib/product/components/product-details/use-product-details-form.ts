@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { notification } from '@vendyx/ui';
 
 import { FormMessages } from '@/lib/shared/forms/form-messages';
-import { isArray } from '@/lib/shared/utils/arrays.utils';
 
 import { useCreateProduct } from '../../hooks/use-create-product';
 
@@ -25,17 +24,11 @@ export const useProductDetailsForm = () => {
 
   const onSubmit = async (input: FormInput) => {
     try {
-      const images = new FormData();
-
-      if (isArray(input.images)) {
-        input.images.forEach(img => images.append('files', img, img.name));
-      }
-
       await createProduct({
         name: input.name,
         description: input.description,
         enabled: input.enabled,
-        images: images
+        images: input.images
       });
 
       navigate('/products');
