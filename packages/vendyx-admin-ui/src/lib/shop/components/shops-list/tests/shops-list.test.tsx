@@ -2,7 +2,7 @@ import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router';
 
-import { setCookie } from '@/lib/shared/cookies';
+import { setCookie } from '@/shared/cookies';
 import { render } from '@/tests/render';
 
 import { ShopsList } from '../shops-list';

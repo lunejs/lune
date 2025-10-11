@@ -10,7 +10,7 @@ import { LoginPage } from '@/lib/login/pages/login-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
-import { AdminLayout } from '@/lib/shared/components/layout/admin-layout';
+import { AdminLayout } from '@/shared/components/layout/admin-layout';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 

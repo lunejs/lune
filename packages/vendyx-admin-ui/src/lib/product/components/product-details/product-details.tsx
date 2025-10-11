@@ -12,7 +12,7 @@ import {
 } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
-import { Dropzone } from '@/lib/shared/components/dropzone/dropzone';
+import { Dropzone } from '@/shared/components/dropzone/dropzone';
 
 import { useProductAsset } from '../../hooks/use-product-asset';
 

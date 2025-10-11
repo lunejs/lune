@@ -1,5 +1,5 @@
-import { getCookie } from '@/lib/shared/cookies';
-import { CookiesKeys } from '@/lib/shared/cookies/keys';
+import { getCookie } from '@/shared/cookies';
+import { CookiesKeys } from '@/shared/cookies/keys';
 
 /**
  * A wrapper around the fetch API that makes rest request

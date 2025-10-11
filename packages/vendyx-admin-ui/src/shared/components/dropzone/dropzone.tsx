@@ -4,8 +4,8 @@ import { type Accept, useDropzone as useReactDropzone } from 'react-dropzone';
 
 import { Button, Label } from '@vendyx/ui';
 
-import { isLast } from '../../utils/arrays.utils';
-import { getPreview } from '../../utils/files.utils';
+import { isLast } from '@/shared/utils/arrays.utils';
+import { getPreview } from '@/shared/utils/files.utils';
 
 import { DropzoneEmptyState } from './empty-state/dropzone-empty-state';
 import { DropzoneItem } from './item/dropzone-item';

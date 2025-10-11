@@ -1,4 +1,4 @@
-import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
+import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 
 import { LoginForm } from '../components/login-form/login-form';
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@vendyx/ui';
 
-import { DataTableEmptyState } from '@/lib/shared/components/data-table/data-table-empty-state';
+import { DataTableEmptyState } from '@/shared/components/data-table/data-table-empty-state';
 
 export const ProductsTableEmptyState = () => {
   return (

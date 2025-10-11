@@ -1,4 +1,4 @@
-import { PageLayout } from '@/lib/shared/components/layout/page-layout';
+import { PageLayout } from '@/shared/components/layout/page-layout';
 
 import { SectionCards } from '../components/cards';
 import { ChartAreaInteractive } from '../components/chart';

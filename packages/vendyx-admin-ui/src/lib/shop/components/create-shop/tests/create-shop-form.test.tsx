@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router';
 
 import { gqlFetcher } from '@/lib/api/fetchers/gql-fetcher';
-import { setCookie } from '@/lib/shared/cookies';
+import { setCookie } from '@/shared/cookies';
 import { render } from '@/tests/render';
 
 import { CreateShopForm } from '../create-shop-form';

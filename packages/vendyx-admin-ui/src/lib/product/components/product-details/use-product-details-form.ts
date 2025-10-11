@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { notification } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
-import { FormMessages } from '@/lib/shared/forms/form-messages';
+import { FormMessages } from '@/shared/forms/form-messages';
 
 import { useCreateProduct } from '../../hooks/use-create-product';
 import { useUpdateProduct } from '../../hooks/use-update-product';

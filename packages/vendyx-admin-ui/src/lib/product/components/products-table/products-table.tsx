@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@vendyx/ui';
 
-import { DataTable } from '@/lib/shared/components/data-table/data-table';
+import { DataTable } from '@/shared/components/data-table/data-table';
 
 import { ProductsTableColumns } from './columns';
 import { ProductsTableEmptyState } from './empty-state';

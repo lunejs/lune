@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { getSkip } from '@/lib/shared/utils/pagination.utils';
+import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetProducts } from '../../hooks/use-get-products';
 

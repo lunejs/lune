@@ -11,7 +11,7 @@ import {
   CardTitle
 } from '@vendyx/ui';
 
-import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
+import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 
 import { ShopsList } from '../components/shops-list/shops-list';
 import { useGetShops } from '../hooks/use-get-shops';

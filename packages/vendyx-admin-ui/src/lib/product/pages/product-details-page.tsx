@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-import { PageLayout } from '@/lib/shared/components/layout/page-layout';
+import { PageLayout } from '@/shared/components/layout/page-layout';
 
 import { ProductDetails } from '../components/product-details/product-details';
 import { useGetProduct } from '../hooks/use-get-product';

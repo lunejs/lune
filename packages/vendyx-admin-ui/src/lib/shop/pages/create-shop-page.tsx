@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@vendyx/ui';
 
-import { FloatingLayout } from '@/lib/shared/components/layout/floating-layout';
+import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 
 import { CreateShopForm } from '../components/create-shop/create-shop-form';
 

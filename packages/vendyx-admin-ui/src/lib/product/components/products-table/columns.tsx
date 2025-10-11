@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import { getFormattedPrice } from '@vendyx/common';
 import { Badge, Checkbox, cn } from '@vendyx/ui';
 
-import { DataTableColumnHeader } from '@/lib/shared/components/data-table/data-table-column-header';
-import { ImagePlaceholder } from '@/lib/shared/components/placeholders/image-placeholder';
+import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
+import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
 import type { TableProduct } from './products-table';
 

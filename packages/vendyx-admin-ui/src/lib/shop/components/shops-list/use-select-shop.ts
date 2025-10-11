@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
-import { setCookie } from '@/lib/shared/cookies';
-import { CookiesKeys } from '@/lib/shared/cookies/keys';
+import { setCookie } from '@/shared/cookies';
+import { CookiesKeys } from '@/shared/cookies/keys';
 
 export const useSelectShop = () => {
   const navigate = useNavigate();

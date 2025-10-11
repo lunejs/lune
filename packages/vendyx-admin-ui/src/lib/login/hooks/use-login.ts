@@ -7,8 +7,8 @@ import { getUserError } from '@/lib/api/errors/user.errors';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { GENERATE_ACCESS_TOKEN_MUTATION } from '@/lib/api/operations/user.operations';
 import type { GenerateUserAccessTokenInput } from '@/lib/api/types';
-import { setCookie } from '@/lib/shared/cookies';
-import { CookiesKeys } from '@/lib/shared/cookies/keys';
+import { setCookie } from '@/shared/cookies';
+import { CookiesKeys } from '@/shared/cookies/keys';
 
 export const useLogin = () => {
   const { mutateAsync, isPending } = useGqlMutation(GENERATE_ACCESS_TOKEN_MUTATION, getUserError);

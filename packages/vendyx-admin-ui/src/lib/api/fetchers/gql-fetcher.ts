@@ -1,8 +1,8 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { ClientError, GraphQLClient, type Variables } from 'graphql-request';
 
-import { getCookie, setCookie } from '@/lib/shared/cookies';
-import { CookiesKeys } from '@/lib/shared/cookies/keys';
+import { getCookie, setCookie } from '@/shared/cookies';
+import { CookiesKeys } from '@/shared/cookies/keys';
 
 const gqlClient = new GraphQLClient(`http://localhost:4000/admin-api`);
 
