@@ -9,10 +9,13 @@ import type { CommonProductFragment } from '@/lib/api/types';
 import { FormMessages } from '@/lib/shared/forms/form-messages';
 
 import { useCreateProduct } from '../../hooks/use-create-product';
+import { useUpdateProduct } from '../../hooks/use-update-product';
 
 export const useProductDetailsForm = (product?: CommonProductFragment | null) => {
   const navigate = useNavigate();
+
   const { createProduct } = useCreateProduct();
+  const { updateProduct } = useUpdateProduct();
 
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
@@ -25,14 +28,32 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
 
   const onSubmit = async (input: FormInput) => {
     try {
-      await createProduct({
+      if (product) {
+        await updateProduct(product.id, {
+          name: input.name,
+          description: input.description,
+          enabled: input.enabled
+        });
+
+        form.reset({
+          enabled: input.enabled,
+          name: input.name,
+          description: product.description ?? ''
+        });
+
+        notification.success('Product updated');
+
+        return;
+      }
+
+      const productId = await createProduct({
         name: input.name,
         description: input.description,
         enabled: input.enabled,
         images: input.images
       });
 
-      navigate('/products');
+      navigate(`/products/${productId}`);
     } catch (error) {
       console.error(error);
       notification.error('An unexpected error occurred');

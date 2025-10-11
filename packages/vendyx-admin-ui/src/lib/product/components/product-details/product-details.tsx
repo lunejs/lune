@@ -26,7 +26,7 @@ export const ProductDetails = ({ product }: Props) => {
     <Form {...form}>
       <form onSubmit={form.onSubmit} className="flex flex-col gap-6">
         <header className="flex items-center justify-between">
-          <H1 className="font-bold text-2xl">Add product</H1>
+          <H1 className="font-bold text-2xl">{product ? product.name : 'Add product'}</H1>
           <Button
             type="submit"
             isLoading={form.formState.isSubmitting}

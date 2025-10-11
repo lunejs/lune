@@ -23,7 +23,7 @@ export const useCreateProduct = () => {
       images = result.data;
     }
 
-    await createProduct({
+    const { id } = await createProduct({
       input: {
         name: input.name,
         description: input.description,
@@ -31,6 +31,8 @@ export const useCreateProduct = () => {
         assets: images.map((image, i) => ({ id: image.id, order: i }))
       }
     });
+
+    return id;
   };
 
   return {
