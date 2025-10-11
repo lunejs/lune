@@ -12,15 +12,13 @@ import {
 } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
-import { Dropzone } from '@/shared/components/dropzone/dropzone';
 
-import { useProductAsset } from '../../hooks/use-product-asset';
+import { ProductAssetUploader } from '../asset-uploader/product-asset-uploader';
 
 import { useProductDetailsForm } from './use-product-details-form';
 
 export const ProductDetails = ({ product }: Props) => {
   const form = useProductDetailsForm(product);
-  const { upload, remove } = useProductAsset();
 
   return (
     <Form {...form}>
@@ -44,26 +42,7 @@ export const ProductDetails = ({ product }: Props) => {
               <CardContent className="flex flex-col gap-3">
                 <FormInput control={form.control} name="name" label="Name" placeholder="T-Shirt" />
                 <FormTextarea control={form.control} name="description" label="Description" />
-                <Dropzone
-                  persistenceMode={!!product}
-                  previews={product?.assets.items}
-                  onFilesChange={files => {
-                    if (!product) {
-                      form.setValue('images', files);
-                      return;
-                    }
-
-                    upload(product, files);
-                  }}
-                  onPreviewsRemoved={async previews => {
-                    if (!product) return;
-
-                    await remove(
-                      product,
-                      previews.map(p => p.id)
-                    );
-                  }}
-                />
+                <ProductAssetUploader product={product} />
               </CardContent>
             </Card>
           </div>
