@@ -13,6 +13,7 @@ export class VariantService {
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.variant;
+    this.productRepository = ctx.repositories.product;
   }
 
   async create(productId: ID, input: CreateVariantInput[]) {

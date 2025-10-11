@@ -1,6 +1,6 @@
-import { UserTable } from '@/persistence/entities/user';
+import type { UserTable } from '@/persistence/entities/user';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 const ID = TestHelper.generateUUID();
@@ -18,8 +18,7 @@ export class UserFixtures implements Fixture<UserTable> {
   async build(): Promise<Partial<UserTable>[]> {
     return [
       {
-        id: UserConstants.ID,
-        email: UserConstants.Email
+        id: UserConstants.ID
       }
     ];
   }

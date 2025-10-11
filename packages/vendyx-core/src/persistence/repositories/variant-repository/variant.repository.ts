@@ -11,7 +11,7 @@ import { RepositoryError } from '../repository.error';
 
 export class VariantRepository extends Repository<Variant, VariantTable> {
   constructor(trx: Transaction) {
-    super(Tables.Shop, trx, new VariantSerializer());
+    super(Tables.Variant, trx, new VariantSerializer());
   }
 
   async upsertOptionValues(variantId: ID, optionValues: ID[]) {

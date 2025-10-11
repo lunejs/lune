@@ -1,19 +1,19 @@
 import request from 'supertest';
 
-import { Tables } from '@/persistence/tables';
+import { convertToCent } from '@vendyx/common';
+
 import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
+import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
+import { OptionFixtures } from './fixtures/option.fixtures';
+import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import {
-  ProductTranslationConstants,
-  ProductTranslationFixtures
-} from './fixtures/product-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
-describe('addProductTranslation - Mutation', () => {
+describe('createVariant - Mutation', () => {
   const testHelper = new TestHelper();
 
   const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
@@ -23,8 +23,10 @@ describe('addProductTranslation - Mutation', () => {
     await testHelper.loadFixtures([
       new UserFixtures(),
       new ShopFixtures(),
+      new AssetFixtures(),
       new ProductFixtures(),
-      new ProductTranslationFixtures()
+      new OptionFixtures(),
+      new OptionValueFixtures()
     ]);
   });
 
@@ -37,95 +39,147 @@ describe('addProductTranslation - Mutation', () => {
     await vendyxServer.teardown();
   });
 
-  test('add full product translation', async () => {
+  test('creates variants with only required fields', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
       .set('x_vendyx_shop_id', ShopConstants.ID)
       .send({
-        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        query: CREATE_VARIANT_MUTATION,
         variables: {
-          id: ProductConstants.ID,
-          input: {
-            name: 'Product name in english',
-            description: 'One of the biggest creation of humanity',
-            locale: 'en'
-          }
+          productId: ProductConstants.ID,
+          input: [{ salePrice: 1_800 }, { salePrice: 2_300 }]
         }
       });
 
-    const { addProductTranslation } = res.body.data;
+    const { createVariant } = res.body.data;
 
-    expect(addProductTranslation.slug).toBe('product-name-in-english');
-    expect(addProductTranslation.name).toBe('Product name in english');
-    expect(addProductTranslation.description).toBe('One of the biggest creation of humanity');
+    expect(createVariant[0].salePrice).toBe(convertToCent(1_800));
+    expect(createVariant[1].salePrice).toBe(convertToCent(2_300));
   });
 
-  test('add partial product translation', async () => {
+  test('creates simple variants', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
       .set('x_vendyx_shop_id', ShopConstants.ID)
       .send({
-        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        query: CREATE_VARIANT_MUTATION,
         variables: {
-          id: ProductConstants.ID,
-          input: {
-            description: 'Product description in english',
-            locale: 'en'
-          }
+          productId: ProductConstants.ID,
+          input: [
+            {
+              salePrice: 1_800,
+              stock: 12,
+              sku: 'SKU-625',
+              comparisonPrice: 2_000,
+              costPerUnit: 1_500,
+              requiresShipping: true,
+              weight: 1.6,
+              dimensions: {
+                length: 1,
+                width: 1,
+                height: 1
+              }
+            },
+            {
+              salePrice: 2_300,
+              stock: 12,
+              sku: 'SKU-625',
+              comparisonPrice: 2_800,
+              costPerUnit: 2_000,
+              requiresShipping: true,
+              weight: 2.1,
+              dimensions: {
+                length: 1.4,
+                width: 1.4,
+                height: 1.4
+              }
+            }
+          ]
         }
       });
 
-    const { addProductTranslation } = res.body.data;
+    const { createVariant } = res.body.data;
 
-    expect(addProductTranslation.slug).toBe(null);
-    expect(addProductTranslation.name).toBe(null);
-    expect(addProductTranslation.description).toBe('Product description in english');
+    expect(createVariant[0]).toMatchObject({
+      sku: 'SKU-625',
+      salePrice: convertToCent(1_800),
+      stock: 12,
+      comparisonPrice: convertToCent(2_000),
+      costPerUnit: convertToCent(1_500),
+      requiresShipping: true,
+      weight: 1.6,
+      dimensions: {
+        length: 1,
+        width: 1,
+        height: 1
+      }
+    });
+    expect(createVariant[1]).toMatchObject({
+      sku: 'SKU-625',
+      salePrice: convertToCent(2_300),
+      stock: 12,
+      comparisonPrice: convertToCent(2_800),
+      costPerUnit: convertToCent(2_000),
+      requiresShipping: true,
+      weight: 2.1,
+      dimensions: {
+        length: 1.4,
+        width: 1.4,
+        height: 1.4
+      }
+    });
   });
 
-  test('sets a null translation', async () => {
-    const translation = await testHelper
-      .getQueryBuilder()(Tables.ProductTranslation)
-      .where({ product_id: ProductConstants.AlreadyTranslatedID })
-      .first();
-
-    expect(translation.name).toBe(ProductTranslationConstants.Name);
-    expect(translation.description).toBe(ProductTranslationConstants.Description);
-
+  test('creates variants with assets', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
       .set('x_vendyx_shop_id', ShopConstants.ID)
       .send({
-        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        query: CREATE_VARIANT_MUTATION,
         variables: {
-          id: ProductConstants.AlreadyTranslatedID,
-          input: {
-            name: null,
-            description: null,
-            locale: 'en'
-          }
+          productId: ProductConstants.ID,
+          input: [
+            {
+              salePrice: 1_800,
+              assets: [
+                { id: AssetConstants.ImageID, order: 0 },
+                { id: AssetConstants.MeImageID, order: 1 }
+              ]
+            },
+            {
+              salePrice: 2_300,
+              assets: [
+                { id: AssetConstants.MeImageID, order: 0 },
+                { id: AssetConstants.ImageID, order: 1 }
+              ]
+            }
+          ]
         }
       });
 
-    const { addProductTranslation } = res.body.data;
+    console.log(res.body);
+    const { createVariant } = res.body.data;
 
-    expect(addProductTranslation.name).toBe(null);
-    expect(addProductTranslation.description).toBe(null);
-    expect(addProductTranslation.slug).toBe(ProductTranslationConstants.Slug);
+    expect(createVariant[0].assets.items).toHaveLength(2);
+    expect(createVariant[0].assets.items[0].id).toBe(AssetConstants.ImageID);
+    expect(createVariant[0].assets.items[1].id).toBe(AssetConstants.MeImageID);
+
+    expect(createVariant[1].assets.items).toHaveLength(2);
+    expect(createVariant[1].assets.items[0].id).toBe(AssetConstants.MeImageID);
+    expect(createVariant[1].assets.items[1].id).toBe(AssetConstants.ImageID);
   });
 
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
       .send({
-        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        query: CREATE_VARIANT_MUTATION,
         variables: {
-          id: ProductConstants.ID,
-          input: {
-            locale: 'en'
-          }
+          productId: ProductConstants.ID,
+          input: [{ salePrice: 1_800 }, { salePrice: 2_300 }]
         }
       });
 
@@ -133,13 +187,30 @@ describe('addProductTranslation - Mutation', () => {
   });
 });
 
-const ADD_PRODUCT_TRANSLATION_MUTATION = /* GraphQL */ `
-  mutation AddProductTranslation($id: ID!, $input: AddProductTranslationInput!) {
-    addProductTranslation(id: $id, input: $input) {
+const CREATE_VARIANT_MUTATION = /* GraphQL */ `
+  mutation CreateVariants($productId: ID!, $input: [CreateVariantInput!]!) {
+    createVariant(productId: $productId, input: $input) {
       id
-      name
-      slug
-      description
+      createdAt
+      updatedAt
+      sku
+      salePrice
+      stock
+      comparisonPrice
+      costPerUnit
+      requiresShipping
+      weight
+      dimensions {
+        length
+        width
+        height
+      }
+      assets {
+        items {
+          id
+          source
+        }
+      }
     }
   }
 `;

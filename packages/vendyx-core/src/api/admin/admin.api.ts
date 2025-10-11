@@ -1,9 +1,9 @@
 import path from 'node:path';
 
-import { YogaInitialContext } from 'graphql-yoga';
+import type { YogaInitialContext } from 'graphql-yoga';
 
-import { JwtService } from '@/libs/jwt';
-import { Database } from '@/persistence/connection';
+import type { JwtService } from '@/libs/jwt';
+import type { Database } from '@/persistence/connection';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
@@ -11,12 +11,14 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
-import { UserJWT } from '../shared/types/api.types';
+import type { UserJWT } from '../shared/types/api.types';
 
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
+import { VariantFieldResolver } from './field-resolvers/variant-filed.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
 import { UserResolver } from './resolvers/user.resolver';
+import { VariantResolver } from './resolvers/variant.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
@@ -29,7 +31,14 @@ export class AdminApi extends GraphqlApi {
     super({
       endpoint: '/admin-api',
       typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [UserResolver, ShopResolver, ProductResolver, ProductFieldResolver],
+      resolvers: [
+        UserResolver,
+        ShopResolver,
+        ProductResolver,
+        ProductFieldResolver,
+        VariantResolver,
+        VariantFieldResolver
+      ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

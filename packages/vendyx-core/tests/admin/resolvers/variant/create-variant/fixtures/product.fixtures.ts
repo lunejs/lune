@@ -1,18 +1,14 @@
-import { ProductTable } from '@/persistence/entities/product';
+import { convertToCent } from '@vendyx/common';
+
+import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
-  ID: TestHelper.generateUUID(),
-  Name: 'MacBook Pro 16',
-  Slug: 'mac-pro-16',
-
-  AlreadyTranslatedID: TestHelper.generateUUID(),
-  AlreadyTranslatedName: 'T-Shirt',
-  AlreadyTranslatedSlug: 't-shirt'
+  ID: TestHelper.generateUUID()
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
@@ -21,18 +17,13 @@ export class ProductFixtures implements Fixture<ProductTable> {
   async build(): Promise<Partial<ProductTable>[]> {
     return [
       {
+        created_at: new Date(),
         id: ProductConstants.ID,
-        name: ProductConstants.Name,
-        slug: ProductConstants.Slug,
-        shop_id: ShopConstants.ID,
-        description: 'The best computer ever made'
-      },
-      {
-        id: ProductConstants.AlreadyTranslatedID,
-        name: ProductConstants.AlreadyTranslatedName,
-        slug: ProductConstants.AlreadyTranslatedSlug,
-        shop_id: ShopConstants.ID,
-        description: 'A nice t-shirt'
+        name: 'MacBook Pro 16',
+        enabled: true,
+        min_sale_price: convertToCent(23_000),
+        max_sale_price: convertToCent(32_000),
+        shop_id: ShopConstants.ID
       }
     ];
   }
