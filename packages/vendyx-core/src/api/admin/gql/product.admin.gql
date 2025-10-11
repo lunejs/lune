@@ -41,7 +41,7 @@ input CreateProductInput {
   description: String
   enabled: Boolean
 
-  assets: [AssetInProductInput!]
+  assets: [AssetInEntity!]
   tags: [ID!]
 }
 
@@ -51,13 +51,8 @@ input UpdateProductInput {
   enabled: Boolean
   archived: Boolean
 
-  assets: [AssetInProductInput!]
+  assets: [AssetInEntity!]
   tags: [ID!]
-}
-
-input AssetInProductInput {
-  id: ID!
-  order: Int!
 }
 
 input AddProductTranslationInput {

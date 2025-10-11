@@ -1,12 +1,12 @@
 import { clean } from '@vendyx/common';
 
-import { ExecutionContext } from '@/api/shared/context/types';
-import { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
-import {
+import type {
   MutationAddProductTranslationArgs,
   MutationCreateProductArgs,
-  MutationSoftRemoveProductArgs,
+  MutationSoftRemoveProductsArgs,
   MutationUpdateProductArgs,
   QueryProductArgs,
   QueryProductsArgs
@@ -63,7 +63,7 @@ async function addProductTranslation(
 
 async function softRemoveProducts(
   _,
-  { ids }: MutationSoftRemoveProductArgs,
+  { ids }: MutationSoftRemoveProductsArgs,
   ctx: ExecutionContext
 ) {
   const productService = new ProductService(ctx);

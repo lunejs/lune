@@ -10,7 +10,7 @@ export const enum Tables {
   ProductOption = 'product_option',
   ProductTag = 'product_tag',
   Tag = 'tag',
-  // VariantAsset = 'variant_asset',
+  VariantAsset = 'variant_asset',
   VariantOptionValue = 'variant_option_value',
   Asset = 'asset'
 }

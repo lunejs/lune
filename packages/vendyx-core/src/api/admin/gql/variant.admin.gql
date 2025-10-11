@@ -33,12 +33,11 @@ input CreateVariantInput {
   comparisonPrice: Float
   costPerUnit: Float
   requiresShipping: Boolean
-  assetId: ID
   weight: Float
   dimensions: DimensionsInput
 
   optionValues: [ID!]
-  assets: [AssetInProductInput!]
+  assets: [AssetInEntity!]
 }
 
 input UpdateVariantInput {

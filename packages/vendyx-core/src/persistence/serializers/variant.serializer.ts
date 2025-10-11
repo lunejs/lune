@@ -1,4 +1,4 @@
-import { Variant, VariantTable } from '../entities/variant';
+import type { Variant, VariantTable } from '../entities/variant';
 
 import { Serializer } from './serializer';
 
@@ -16,7 +16,8 @@ export class VariantSerializer extends Serializer<Variant, VariantTable> {
       ['sku', 'sku'],
       ['requires_shipping', 'requiresShipping'],
       ['weight', 'weight'],
-      ['dimensions', 'dimensions']
+      ['dimensions', 'dimensions'],
+      ['product_id', 'productId']
     ]);
   }
 }

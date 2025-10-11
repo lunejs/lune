@@ -1,10 +1,11 @@
-import { Transaction } from '../connection';
+import type { Transaction } from '../connection';
 
 import { AssetRepository } from './asset-repository/asset.repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';
 import { UserRepository } from './user-repository';
+import { VariantRepository } from './variant-repository';
 
 export function buildRepositories(trx: Transaction) {
   return {
@@ -12,6 +13,7 @@ export function buildRepositories(trx: Transaction) {
     shop: new ShopRepository(trx),
     product: new ProductRepository(trx),
     asset: new AssetRepository(trx),
+    variant: new VariantRepository(trx),
     productTranslation: new ProductTranslationRepository(trx)
   };
 }

@@ -1,4 +1,4 @@
-import { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { ProductAssetTable } from '@/persistence/entities/product-asset';
 
 export const DefaultProductAssetFixture = (): ProductAssetTable => ({
   asset_id: crypto.randomUUID(),

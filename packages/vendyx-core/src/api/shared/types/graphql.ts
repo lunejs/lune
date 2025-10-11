@@ -37,7 +37,7 @@ export type Asset = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-export type AssetInProductInput = {
+export type AssetInEntity = {
   id: Scalars['ID']['input'];
   order: Scalars['Int']['input'];
 };
@@ -77,7 +77,7 @@ export type CreateOptionValueInput = {
 };
 
 export type CreateProductInput = {
-  assets?: InputMaybe<Array<AssetInProductInput>>;
+  assets?: InputMaybe<Array<AssetInEntity>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
@@ -109,8 +109,7 @@ export type CreateUserInput = {
 };
 
 export type CreateVariantInput = {
-  assetId?: InputMaybe<Scalars['ID']['input']>;
-  assets?: InputMaybe<Array<AssetInProductInput>>;
+  assets?: InputMaybe<Array<AssetInEntity>>;
   comparisonPrice?: InputMaybe<Scalars['Float']['input']>;
   costPerUnit?: InputMaybe<Scalars['Float']['input']>;
   dimensions?: InputMaybe<DimensionsInput>;
@@ -178,7 +177,7 @@ export type Mutation = {
   removeTags: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
-  softRemoveProduct: Scalars['Boolean']['output'];
+  softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateOption: Option;
   updateProduct: Product;
@@ -249,7 +248,7 @@ export type MutationSoftRemoveOptionValuesArgs = {
 };
 
 
-export type MutationSoftRemoveProductArgs = {
+export type MutationSoftRemoveProductsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
@@ -394,6 +393,7 @@ export type Product = Node & {
   /** A human-friendly unique string for the Product automatically generated from its name */
   slug: Scalars['String']['output'];
   tags: Array<Tag>;
+  translations: Array<ProductTranslation>;
   updatedAt: Scalars['Date']['output'];
   variants: VariantList;
 };
@@ -659,7 +659,7 @@ export type UpdateOptionValueInput = {
 
 export type UpdateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
-  assets?: InputMaybe<Array<AssetInProductInput>>;
+  assets?: InputMaybe<Array<AssetInEntity>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -877,7 +877,7 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 export type ResolversTypes = {
   AddProductTranslationInput: AddProductTranslationInput;
   Asset: ResolverTypeWrapper<Asset>;
-  AssetInProductInput: AssetInProductInput;
+  AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
   AssetList: ResolverTypeWrapper<AssetList>;
   AssetType: AssetType;
@@ -957,7 +957,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AddProductTranslationInput: AddProductTranslationInput;
   Asset: Asset;
-  AssetInProductInput: AssetInProductInput;
+  AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
   AssetList: AssetList;
   Boolean: Scalars['Boolean']['output'];
@@ -1085,7 +1085,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
-  softRemoveProduct?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductArgs, 'ids'>>;
+  softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
@@ -1153,6 +1153,7 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
   options?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, Partial<ProductOptionsArgs>>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['ProductTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   variants?: Resolver<ResolversTypes['VariantList'], ParentType, ContextType, Partial<ProductVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -1,11 +1,12 @@
 import { OrderBy } from '@/api/shared/types/graphql';
-import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
-import { Tables } from '@/persistence/tables';
+import type { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import type { Tables } from '@/persistence/tables';
 
-import { Transaction } from '../../connection';
-import { Serializer } from '../../serializers/serializer';
+import type { Transaction } from '../../connection';
+import type { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
 
+// TODO: add findOneOrThrow
 /**
  * @description
  * A generic repository class for performing CRUD operations on a database table.
