@@ -1,8 +1,8 @@
 import DataLoader from 'dataloader';
 
-import { Transaction } from '@/persistence/connection';
-import { Asset, AssetTable } from '@/persistence/entities/asset';
-import { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { Transaction } from '@/persistence/connection';
+import type { Asset, AssetTable } from '@/persistence/entities/asset';
+import type { ProductAssetTable } from '@/persistence/entities/product-asset';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { Tables } from '@/persistence/tables';
 
@@ -15,7 +15,7 @@ export function createProductAssetsLoader(trx: Transaction) {
     const rows: (AssetTable & ProductAssetTable)[] = await trx
       .from({ pa: Tables.ProductAsset })
       .innerJoin({ a: Tables.Asset }, 'a.id', 'pa.asset_id')
-      .select('pa.product_id', trx.ref('a.*'))
+      .select('pa.product_id', 'pa.order', trx.ref('a.*'))
       .whereIn('pa.product_id', ids)
       .orderBy([{ column: 'pa.order', order: 'asc' }]);
 
@@ -23,8 +23,10 @@ export function createProductAssetsLoader(trx: Transaction) {
     for (const id of ids) byId.set(id, []);
 
     for (const r of rows) {
-      const { product_id, ...assetCols } = r;
-      byId.get(product_id)?.push(assetSerializer.deserialize(assetCols as AssetTable) as Asset);
+      const { product_id, order, ...assetCols } = r;
+      byId
+        .get(product_id)
+        ?.push({ ...assetSerializer.deserialize(assetCols as AssetTable), order } as Asset);
     }
 
     return ids.map(id => byId.get(id) as Asset[]);

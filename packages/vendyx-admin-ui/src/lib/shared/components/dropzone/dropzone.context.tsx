@@ -1,5 +1,7 @@
 import { type Context, createContext, type ReactElement, use } from 'react';
 
+export type Preview = { id: string; source: string };
+
 export type FileState = {
   id: `${string}-${string}-${string}-${string}-${string}`;
   file: File;

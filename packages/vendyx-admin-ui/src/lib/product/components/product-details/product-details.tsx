@@ -11,12 +11,16 @@ import {
   H1
 } from '@vendyx/ui';
 
+import type { CommonProductFragment } from '@/lib/api/types';
 import { Dropzone } from '@/lib/shared/components/dropzone/dropzone';
+
+import { useProductAsset } from '../../hooks/use-product-asset';
 
 import { useProductDetailsForm } from './use-product-details-form';
 
-export const ProductDetails = () => {
-  const form = useProductDetailsForm();
+export const ProductDetails = ({ product }: Props) => {
+  const form = useProductDetailsForm(product);
+  const { upload, remove } = useProductAsset();
 
   return (
     <Form {...form}>
@@ -26,7 +30,7 @@ export const ProductDetails = () => {
           <Button
             type="submit"
             isLoading={form.formState.isSubmitting}
-            disabled={!form.formState.isDirty}
+            disabled={!form.formState.isDirty || form.formState.isSubmitting}
           >
             Save
           </Button>
@@ -40,7 +44,26 @@ export const ProductDetails = () => {
               <CardContent className="flex flex-col gap-3">
                 <FormInput control={form.control} name="name" label="Name" placeholder="T-Shirt" />
                 <FormTextarea control={form.control} name="description" label="Description" />
-                <Dropzone onFilesChange={files => form.setValue('images', files)} />
+                <Dropzone
+                  persistenceMode={!!product}
+                  previews={product?.assets.items}
+                  onFilesChange={files => {
+                    if (!product) {
+                      form.setValue('images', files);
+                      return;
+                    }
+
+                    upload(product, files);
+                  }}
+                  onPreviewsRemoved={async previews => {
+                    if (!product) return;
+
+                    await remove(
+                      product,
+                      previews.map(p => p.id)
+                    );
+                  }}
+                />
               </CardContent>
             </Card>
           </div>
@@ -58,4 +81,8 @@ export const ProductDetails = () => {
       </form>
     </Form>
   );
+};
+
+type Props = {
+  product?: CommonProductFragment | null;
 };

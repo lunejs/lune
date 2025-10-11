@@ -1,28 +1,19 @@
 import { notification } from '@vendyx/ui';
 
-import { restFetcher } from '@/lib/api/fetchers/rest-fetcher';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import type { VendyxAsset } from '@/lib/api/types';
+import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 
 export const useCreateProduct = () => {
   const { mutateAsync: createProduct } = useGqlMutation(CREATE_PRODUCT_MUTATION);
+  const { uploadAsset } = useUploadAsset();
 
   const create = async (input: CreateProductInput) => {
     let images: Omit<VendyxAsset, 'order'>[] = [];
 
     if (input.images?.length) {
-      const formData = new FormData();
-
-      input.images.forEach(img => formData.append('files', img, img.name));
-
-      const result = await restFetcher<{ success: boolean; data: Omit<VendyxAsset, 'order'>[] }>(
-        '/upload',
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
+      const result = await uploadAsset(input.images);
 
       if (!result.success) {
         notification.error('Error during uploading images');

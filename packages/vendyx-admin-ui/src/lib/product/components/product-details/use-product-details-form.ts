@@ -5,20 +5,21 @@ import { z } from 'zod';
 
 import { notification } from '@vendyx/ui';
 
+import type { CommonProductFragment } from '@/lib/api/types';
 import { FormMessages } from '@/lib/shared/forms/form-messages';
 
 import { useCreateProduct } from '../../hooks/use-create-product';
 
-export const useProductDetailsForm = () => {
+export const useProductDetailsForm = (product?: CommonProductFragment | null) => {
   const navigate = useNavigate();
   const { createProduct } = useCreateProduct();
 
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      enabled: true,
-      name: '',
-      description: ''
+      enabled: product?.enabled ?? true,
+      name: product?.name ?? '',
+      description: product?.description ?? ''
     }
   });
 

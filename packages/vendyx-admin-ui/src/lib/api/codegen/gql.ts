@@ -15,7 +15,9 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+  '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n': typeof types.CommonProductFragmentDoc;
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        minSalePrice\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n': typeof types.GetProductsDocument;
+  '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n': typeof types.GetProductDocument;
   '\n  mutation CreateProduct($input: CreateProductInput!) {\n    createProduct(input: $input) {\n      id\n    }\n  }\n': typeof types.CreateProductDocument;
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateProductDocument;
   '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    email\n    logo\n    socials {\n      facebook\n      twitter\n      instagram\n    }\n    phoneNumber\n    storefrontApiKey\n  }\n': typeof types.CommonShopFragmentDoc;
@@ -29,8 +31,12 @@ type Documents = {
   '\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n': typeof types.GenerateAccessTokenDocument;
 };
 const documents: Documents = {
+  '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n':
+    types.CommonProductFragmentDoc,
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        minSalePrice\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n':
     types.GetProductsDocument,
+  '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n':
+    types.GetProductDocument,
   '\n  mutation CreateProduct($input: CreateProductInput!) {\n    createProduct(input: $input) {\n      id\n    }\n  }\n':
     types.CreateProductDocument,
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n':
@@ -71,8 +77,20 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        minSalePrice\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n'
 ): (typeof documents)['\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        minSalePrice\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n'
+): (typeof documents)['\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

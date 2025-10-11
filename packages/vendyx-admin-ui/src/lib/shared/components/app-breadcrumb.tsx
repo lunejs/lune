@@ -1,5 +1,5 @@
 import { Fragment } from 'react/jsx-runtime';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 
 import {
   Breadcrumb,
@@ -14,10 +14,11 @@ import { isLast } from '../utils/arrays.utils';
 
 export const AppBreadcrumb = () => {
   const { pathname } = useLocation();
+  const { id } = useParams();
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/dashboard' },
-    ...getBreadcrumbItems(pathname)
+    ...getBreadcrumbItems(pathname, id)
   ];
 
   return (
@@ -49,7 +50,6 @@ export const AppBreadcrumb = () => {
 const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
   '/products': [{ label: 'Products' }],
-  '/products/': [{ href: '/products', label: 'Products' }, { label: 'Product details' }],
   '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Add product' }],
   '/collections': [{ href: '/collections', label: 'Collections' }, { label: 'All collections' }],
   '/collections/': [
@@ -76,6 +76,13 @@ type TBreadcrumbItem = {
   label: string;
 };
 
-const getBreadcrumbItems = (pathname: string) => {
+const getBreadcrumbItems = (pathname: string, id?: string) => {
+  if (pathname === `/products/${id}`) {
+    return [{ href: '/products', label: 'Products' }, { label: 'Product details' }];
+  }
+  if (pathname === `/collections/${id}`) {
+    return [{ href: '/collections', label: 'Collections' }, { label: 'Collection details' }];
+  }
+
   return BREADCRUMBS[pathname] ?? [];
 };

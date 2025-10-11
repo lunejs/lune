@@ -1,21 +1,38 @@
 import { UploadIcon } from 'lucide-react';
+import { Fragment } from 'react/jsx-runtime';
 import { type Accept, useDropzone as useReactDropzone } from 'react-dropzone';
 
 import { Button, Label } from '@vendyx/ui';
 
 import { isLast } from '../../utils/arrays.utils';
+import { getPreview } from '../../utils/files.utils';
 
 import { DropzoneEmptyState } from './empty-state/dropzone-empty-state';
 import { DropzoneItem } from './item/dropzone-item';
-import { DropzoneContextProvider } from './dropzone.context';
+import { DropzoneContextProvider, type Preview } from './dropzone.context';
 import { useDropzone } from './use-dropzone';
 
 const DEFAULT_ACCEPT = {
   'image/*': []
 };
 
-export const Dropzone = ({ accept = DEFAULT_ACCEPT, onFilesChange }: Props) => {
-  const { files, selected, addFiles, removeFiles, toggleFile } = useDropzone(onFilesChange);
+export const Dropzone = ({
+  accept = DEFAULT_ACCEPT,
+  persistenceMode = false,
+  onFilesChange,
+  onPreviewsRemoved,
+  previews
+}: Props) => {
+  const {
+    files,
+    selected,
+    previewsSelected,
+    addFiles,
+    removeFiles,
+    toggleFile,
+    togglePreview,
+    removePreviews
+  } = useDropzone(onFilesChange, onPreviewsRemoved, persistenceMode);
 
   const { getInputProps, getRootProps } = useReactDropzone({
     accept,
@@ -24,7 +41,7 @@ export const Dropzone = ({ accept = DEFAULT_ACCEPT, onFilesChange }: Props) => {
     }
   });
 
-  if (!files.length) {
+  if (!files.length && !previews?.length) {
     return <DropzoneEmptyState inputProps={getInputProps()} rootProps={getRootProps()} />;
   }
 
@@ -44,15 +61,49 @@ export const Dropzone = ({ accept = DEFAULT_ACCEPT, onFilesChange }: Props) => {
               Remove
             </Button>
           )}
+          {!!previewsSelected.length && (
+            <Button
+              type="button"
+              size={'sm'}
+              variant={'link'}
+              className="text-destructive h-fit leading-none"
+              onClick={() => {
+                removePreviews();
+              }}
+            >
+              Remove
+            </Button>
+          )}
         </header>
         <div className="w-full h-full flex flex-col gap-[10px]">
           <div className="grid grid-cols-4 gap-2">
+            {previews?.map((preview, i) => {
+              return (
+                <Fragment key={preview.id}>
+                  <DropzoneItem
+                    preview={preview.source}
+                    onCheckedChange={value => {
+                      togglePreview(value, preview);
+                    }}
+                  />
+                  {isLast(i, previews) && !files.length && (
+                    <div
+                      className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted"
+                      {...getRootProps()}
+                    >
+                      <UploadIcon className="text-muted-foreground" />
+                      <input type="file" {...getInputProps()} />
+                    </div>
+                  )}
+                </Fragment>
+              );
+            })}
             {files.map((file, i) => {
               return (
                 <>
                   <DropzoneItem
                     key={file.file.name}
-                    file={file.file}
+                    preview={getPreview(file.file)}
                     onCheckedChange={value => {
                       toggleFile(value, file);
                     }}
@@ -77,6 +128,9 @@ export const Dropzone = ({ accept = DEFAULT_ACCEPT, onFilesChange }: Props) => {
 };
 
 type Props = {
-  accept?: Accept;
   onFilesChange: (files: File[]) => void;
+  onPreviewsRemoved: (previews: Preview[]) => Promise<void> | void;
+  persistenceMode?: boolean;
+  accept?: Accept;
+  previews?: Preview[];
 };

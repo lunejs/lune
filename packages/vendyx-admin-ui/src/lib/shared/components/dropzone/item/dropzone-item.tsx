@@ -2,9 +2,7 @@ import { useState } from 'react';
 
 import { Checkbox, cn } from '@vendyx/ui';
 
-import { getPreview } from '@/lib/shared/utils/files.utils';
-
-export const DropzoneItem = ({ file, onCheckedChange }: Props) => {
+export const DropzoneItem = ({ preview, onCheckedChange }: Props) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (
@@ -20,7 +18,7 @@ export const DropzoneItem = ({ file, onCheckedChange }: Props) => {
           isChecked && 'block'
         )}
       />
-      <img src={getPreview(file)} alt="file" className="w-full object-cover aspect-square" />
+      <img src={preview} alt="file" className="w-full object-cover aspect-square" />
       <div
         className={cn(
           'top-0 hidden group-hover:block absolute w-full h-full bg-black/50',
@@ -32,6 +30,6 @@ export const DropzoneItem = ({ file, onCheckedChange }: Props) => {
 };
 
 type Props = {
-  file: File;
+  preview: string;
   onCheckedChange: (value: boolean) => void;
 };

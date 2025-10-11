@@ -1,20 +1,20 @@
 import { clean } from '@vendyx/common';
 
-import { ExecutionContext } from '@/api/shared/context/types';
-import {
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type {
   AddProductTranslationInput,
   CreateProductInput,
-  OrderBy,
   ProductListInput,
   UpdateProductInput
 } from '@/api/shared/types/graphql';
+import { OrderBy } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
-import { ID } from '@/persistence/entities/entity';
-import { Locale } from '@/persistence/entities/locale';
-import { Product } from '@/persistence/entities/product';
-import { ProductRepository } from '@/persistence/repositories/product-repository';
-import { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
-import { Where } from '@/persistence/repositories/repository';
+import type { ID } from '@/persistence/entities/entity';
+import type { Locale } from '@/persistence/entities/locale';
+import type { Product } from '@/persistence/entities/product';
+import type { ProductRepository } from '@/persistence/repositories/product-repository';
+import type { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
+import type { Where } from '@/persistence/repositories/repository';
 import { hasValue } from '@/utils/array';
 
 export class ProductService {

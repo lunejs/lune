@@ -1,54 +1,70 @@
 import { useState } from 'react';
 
-import type { FileState } from './dropzone.context';
+import type { FileState, Preview } from './dropzone.context';
 
-export const useDropzone = (onFilesChange: (files: File[]) => void) => {
+export const useDropzone = (
+  onFilesChange: (files: File[]) => void,
+  onPreviewsRemoved: (previews: Preview[]) => Promise<void> | void,
+  persistenceMode: boolean
+) => {
   const [files, setFiles] = useState<FileState[]>([]);
   const [selected, setSelected] = useState<FileState[]>([]);
+  const [previewsSelected, setPreviewsSelected] = useState<Preview[]>([]);
 
-  const addFiles = (files: File[]) => {
-    setFiles(prev => {
-      const newFiles = [...prev, ...files.map(f => createFileState(f))];
+  const addFiles = (filesParam: File[]) => {
+    const newFiles = [...files, ...filesParam.map(f => createFileState(f))];
 
-      onFilesChange(newFiles.map(f => f.file));
-      return newFiles;
-    });
+    onFilesChange(newFiles.map(f => f.file));
+
+    if (persistenceMode) return;
+
+    setFiles(newFiles);
   };
 
   const removeFiles = () => {
-    setFiles(prev => {
-      const newFiles = prev.filter(file => !selected.map(({ id }) => id).includes(file.id));
+    const newFiles = files.filter(file => !selected.map(({ id }) => id).includes(file.id));
 
-      onFilesChange(newFiles.map(f => f.file));
-      return newFiles;
-    });
+    onFilesChange(newFiles.map(f => f.file));
+    setFiles(newFiles);
     setSelected([]);
+  };
+
+  const removePreviews = async () => {
+    await onPreviewsRemoved(previewsSelected);
+    setPreviewsSelected([]);
   };
 
   const toggleFile = (value: boolean, file: FileState) => {
     if (value) {
-      setSelected(prev => {
-        const newFiles = [...prev, file];
+      const newFiles = [...files, file];
 
-        onFilesChange(newFiles.map(f => f.file));
-        return newFiles;
-      });
+      onFilesChange(newFiles.map(f => f.file));
+      setSelected(newFiles);
     } else {
-      setSelected(prev => {
-        const newFiles = prev.filter(_file => _file.id !== file.id);
+      const newFiles = files.filter(_file => _file.id !== file.id);
 
-        onFilesChange(newFiles.map(f => f.file));
-        return newFiles;
-      });
+      onFilesChange(newFiles.map(f => f.file));
+      setSelected(newFiles);
+    }
+  };
+
+  const togglePreview = (value: boolean, preview: Preview) => {
+    if (value) {
+      setPreviewsSelected(prev => [...prev, preview]);
+    } else {
+      setSelected(prev => prev.filter(_file => _file.id !== preview.id));
     }
   };
 
   return {
     files,
     selected,
+    previewsSelected,
     addFiles,
     removeFiles,
-    toggleFile
+    removePreviews,
+    toggleFile,
+    togglePreview
   };
 };
 
