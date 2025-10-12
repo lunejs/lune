@@ -1,11 +1,13 @@
 import { clean, convertToCent } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateVariantInput } from '@/api/shared/types/graphql';
+import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';
+import { getConfig } from '@/config/config';
 import type { ID } from '@/persistence/entities/entity';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import { SortKey } from '@/persistence/repositories/repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
+import { hasValue } from '@/utils/array';
 
 export class VariantService {
   repository: VariantRepository;
@@ -47,6 +49,78 @@ export class VariantService {
     await this.updateProductRangePrice({ productId });
 
     return variants;
+  }
+
+  async update(id: string, input: UpdateVariantInput) {
+    const { optionValues, assets, ...baseVariant } = input;
+
+    const result = await this.repository.update({
+      where: { id },
+      data: {
+        ...clean(baseVariant),
+        salePrice: baseVariant.salePrice ? convertToCent(baseVariant.salePrice) : undefined,
+        comparisonPrice: baseVariant.comparisonPrice
+          ? convertToCent(baseVariant.comparisonPrice)
+          : baseVariant.comparisonPrice,
+        costPerUnit: baseVariant.costPerUnit
+          ? convertToCent(baseVariant.costPerUnit)
+          : baseVariant.costPerUnit
+      }
+    });
+
+    if (assets?.length) {
+      await this.repository.upsertAssets(id, assets);
+    }
+
+    if (optionValues?.length) {
+      await this.repository.upsertOptionValues(id, optionValues);
+    }
+
+    await this.removeMissingAssets(id, assets);
+    await this.removeMissingOptionValues(id, optionValues);
+
+    return result;
+  }
+
+  private async removeMissingAssets(variantId: ID, newAssets: UpdateVariantInput['assets']) {
+    if (!Array.isArray(newAssets)) return;
+
+    const assets = await this.repository.findAssets(variantId);
+
+    const assetsToRemove = assets
+      .map(a => a.id)
+      .filter(assetId => !newAssets.some(asset => asset.id === assetId))
+      .map(assetToRemoveId => assets.find(a => a.id === assetToRemoveId))
+      .filter(hasValue);
+
+    await this.repository.removeAssets(
+      variantId,
+      assetsToRemove.map(asset => asset.id)
+    );
+
+    const { storageProvider } = getConfig().assets;
+
+    await Promise.all(assetsToRemove.map(asset => storageProvider.remove(asset.providerId)));
+  }
+
+  private async removeMissingOptionValues(
+    variantId: string,
+    newOptionValues: UpdateVariantInput['optionValues']
+  ) {
+    if (!Array.isArray(newOptionValues)) return;
+
+    const optionValues = await this.repository.findOptionValues(variantId);
+
+    const assetsToRemove = optionValues
+      .map(a => a.id)
+      .filter(assetId => !newOptionValues.some(opv => opv === assetId))
+      .map(assetToRemoveId => optionValues.find(a => a.id === assetToRemoveId))
+      .filter(hasValue);
+
+    await this.repository.removeAssets(
+      variantId,
+      assetsToRemove.map(asset => asset.id)
+    );
   }
 
   private async updateProductRangePrice({ variantId, productId }: UpdateProductRangePriceInput) {
