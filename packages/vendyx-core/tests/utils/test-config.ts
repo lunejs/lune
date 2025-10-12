@@ -1,4 +1,4 @@
-import { VendyxConfig } from '@/config/vendyx.config';
+import type { VendyxConfig } from '@/config/vendyx.config';
 
 import { TestImageProcessor } from './config/test-image-processor';
 import { TestStorageProvider } from './config/test-storage-provider';

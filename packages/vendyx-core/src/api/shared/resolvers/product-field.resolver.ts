@@ -1,10 +1,9 @@
 import type { ExecutionContext } from '../context/types';
-import type { GraphqlApiResolver } from '../graphql-api';
 import type { Product, ProductAssetsArgs } from '../types/graphql';
 import { ListResponse } from '../utils/list-response';
 import { getPaginatedResult } from '../utils/pagination';
 
-export const CommonProductFieldResolver: GraphqlApiResolver = {
+export const CommonProductFieldResolver = {
   assets: async (parent: Product, { input }: ProductAssetsArgs, ctx: ExecutionContext) => {
     const assets = await ctx.loaders.product.assets.load(parent.id);
 

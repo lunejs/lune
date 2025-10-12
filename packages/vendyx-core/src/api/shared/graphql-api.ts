@@ -1,9 +1,10 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { GraphQLSchema } from 'graphql';
-import { createYoga, Plugin, YogaInitialContext, YogaServerInstance } from 'graphql-yoga';
+import type { GraphQLSchema } from 'graphql';
+import type { Plugin, YogaInitialContext, YogaServerInstance } from 'graphql-yoga';
+import { createYoga } from 'graphql-yoga';
 
-import { ExecutionContext } from './context/types';
+import type { ExecutionContext } from './context/types';
 
 /**
  * @description
@@ -57,6 +58,7 @@ export class GraphqlApi {
 
     this.config.resolvers.forEach(r => {
       _resolvers = {
+        ..._resolvers,
         ...r,
         Query: {
           ..._resolvers.Query,

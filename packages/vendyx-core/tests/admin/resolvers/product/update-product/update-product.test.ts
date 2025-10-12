@@ -161,6 +161,28 @@ describe('updateProduct - Mutation', () => {
     expect(updateProduct.assets.count).toBe(2);
   });
 
+  test('remove all assets from product', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            assets: []
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    expect(updateProduct.slug).toBe(ProductConstants.Slug);
+    expect(updateProduct.assets.items).toHaveLength(0);
+    expect(updateProduct.assets.count).toBe(0);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')

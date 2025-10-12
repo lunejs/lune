@@ -1,4 +1,4 @@
-import { StorageProvider, UploadOptions, UploadReturn } from '@/config/storage/storage';
+import type { StorageProvider, UploadOptions, UploadReturn } from '@/config/storage/storage';
 
 import { TestHelper } from '../test-helper';
 

@@ -8,6 +8,7 @@ import type {
   UpdateProductInput
 } from '@/api/shared/types/graphql';
 import { OrderBy } from '@/api/shared/types/graphql';
+import { getConfig } from '@/config/config';
 import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
@@ -144,6 +145,10 @@ export class ProductService {
       productId,
       assetsToRemove.map(asset => asset.id)
     );
+
+    const { storageProvider } = getConfig().assets;
+
+    await Promise.all(assetsToRemove.map(asset => storageProvider.remove(asset.providerId)));
   }
 
   private async removeMissingTags(productId: ID, newTags: UpdateProductInput['tags']) {
