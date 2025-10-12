@@ -159,6 +159,18 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
       throw new RepositoryError('Repository.softRemove', error);
     }
   }
+
+  async softRemoveMany(input: { whereIn: Field<T>; values: any[] }): Promise<T> {
+    try {
+      const [result] = await this.trx(this.tableName)
+        .whereIn(this.serializer.serializeField(input.whereIn), input.values)
+        .update({ deleted_at: new Date() }, '*');
+
+      return this.serializer.deserialize(result) as T;
+    } catch (error) {
+      throw new RepositoryError('Repository.softRemoveMany', error);
+    }
+  }
 }
 
 type FindOneOptions<T> = {
@@ -197,7 +209,8 @@ export type RepositoryInput<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {
   updatedAt?: Date;
 };
 
-export type Fields<T> = (keyof T)[];
+export type Fields<T> = Field<T>[];
+export type Field<T> = keyof T;
 export type Where<T> = {
   [K in keyof T]?: T[K];
 };

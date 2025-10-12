@@ -67,7 +67,7 @@ export class OptionService {
   }
 
   async softRemoveValues(ids: ID[]) {
-    await this.repository.softRemoveValues(ids);
+    await this.optionValueRepository.softRemoveMany({ whereIn: 'id', values: ids });
 
     return true;
   }
@@ -101,8 +101,8 @@ export class OptionService {
 
     const valuesToRemove = allValuesIds.filter(v => !newValuesIds.includes(v));
 
-    await Promise.all(
-      valuesToRemove.map(value => this.optionValueRepository.softRemove({ where: { id: value } }))
-    );
+    if (!valuesToRemove.length) return;
+
+    await this.optionValueRepository.softRemoveMany({ whereIn: 'id', values: valuesToRemove });
   }
 }

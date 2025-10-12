@@ -4,7 +4,7 @@ import { TestHelper } from '@/tests/utils/test-helper';
 import { RepositoryError } from '../../repository.error';
 import { SortKey } from '../repository';
 
-import type { TestEntity } from './repository.mock';
+import type { TestEntity, TestTable } from './repository.mock';
 import { recordsMock, TestRepository } from './repository.mock';
 
 const TEST_TABLE_NAME = 'test_table';
@@ -395,6 +395,32 @@ describe('Repository', () => {
             updatedAt: expect.any(Date)
           })
         ])
+      );
+    });
+  });
+
+  describe('softRemoveMany', () => {
+    test('soft removes existing records', async () => {
+      const ids = [recordsMock[0].id, recordsMock[1].id, recordsMock[2].id];
+      await repository.softRemoveMany({
+        whereIn: 'id',
+        values: ids
+      });
+
+      const record = await trx<TestTable>(TEST_TABLE_NAME).whereIn('id', ids);
+
+      expect(record.every(r => r.deleted_at)).toBeDefined();
+    });
+
+    test('throws RepositoryError when invalid value format', async () => {
+      await expect(
+        repository.softRemoveMany({ whereIn: 'id', values: ['non-existing-id'] })
+      ).rejects.toThrow(RepositoryError);
+    });
+
+    test('throws RepositoryError when empty array of values were provided', async () => {
+      await expect(repository.softRemoveMany({ whereIn: 'id', values: [] })).rejects.toThrow(
+        RepositoryError
       );
     });
   });

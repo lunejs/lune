@@ -78,7 +78,7 @@ export type TestEntity = {
   deletedAt?: Date;
 };
 
-type TestTable = {
+export type TestTable = {
   id: string;
   email: string;
   password: string;
