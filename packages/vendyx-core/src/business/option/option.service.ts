@@ -27,11 +27,13 @@ export class OptionService {
       const { values, ...baseOption } = optionInput;
       const option = await this.repository.create(baseOption);
 
-      await this.optionValueRepository.createMany(
-        values.map(value => ({ name: value.name, order: value.order, optionId: option.id }))
-      );
+      if (values.length) {
+        await this.createOptionValues(option.id, values);
+      }
 
       await this.productRepository.addOptions(productId, [option.id]);
+
+      return option;
     });
 
     const result = await Promise.all(promises);
@@ -63,10 +65,8 @@ export class OptionService {
   }
 
   private async createOptionValues(optionId: ID, optionValues: UpdateOptionValueInput[]) {
-    const valuesToCreate = optionValues?.filter(v => !v.id) ?? [];
-
     await this.optionValueRepository.createMany(
-      valuesToCreate.map(v => ({
+      optionValues.map(v => ({
         name: v.name ?? '',
         order: v.order ?? 0,
         optionId

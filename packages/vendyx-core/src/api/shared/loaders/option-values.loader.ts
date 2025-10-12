@@ -12,7 +12,9 @@ export function createOptionValuesLoader(trx: Transaction) {
   return new DataLoader<string, OptionValue[]>(async optionIds => {
     const ids = optionIds as ID[];
 
-    const rows: OptionValueTable[] = await trx(Tables.OptionValue).whereIn('option_id', ids);
+    const rows: OptionValueTable[] = await trx<OptionValueTable>(Tables.OptionValue)
+      .whereIn('option_id', ids)
+      .orderBy('order', 'asc');
 
     const byId = new Map<string, OptionValue[]>();
     for (const id of ids) byId.set(id, []);

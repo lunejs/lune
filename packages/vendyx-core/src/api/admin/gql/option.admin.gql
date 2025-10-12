@@ -22,7 +22,6 @@ input CreateOptionInput {
 input CreateOptionValueInput {
   order: Int!
   name: String!
-  metadata: OptionValueMetadataInput!
 }
 
 input UpdateOptionInput {
@@ -39,7 +38,6 @@ input UpdateOptionValueInput {
   id: ID
   name: String
   order: Int
-  metadata: OptionValueMetadataInput
 }
 
 input OptionValueMetadataInput {
