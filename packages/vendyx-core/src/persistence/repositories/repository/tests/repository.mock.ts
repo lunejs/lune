@@ -1,5 +1,6 @@
-import { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection';
 import { Serializer } from '@/persistence/serializers/serializer';
+import type { Tables } from '@/persistence/tables';
 
 import { Repository } from '../repository';
 
@@ -35,12 +36,21 @@ export const recordsMock: TestTable[] = [
     is_active: false,
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    id: crypto.randomUUID(),
+    email: 'taylor@swift.com',
+    password: 'password123',
+    is_active: false,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: new Date()
   }
 ];
 
 export class TestRepository extends Repository<TestEntity, TestTable> {
   constructor(table: string, trx: Transaction) {
-    super(table, trx, new TestSerializer());
+    super(table as Tables, trx, new TestSerializer());
   }
 }
 

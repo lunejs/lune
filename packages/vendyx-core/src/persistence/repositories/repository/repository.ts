@@ -1,6 +1,6 @@
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
-import type { Tables } from '@/persistence/tables';
+import { Tables } from '@/persistence/tables';
 
 import type { Transaction } from '../../connection';
 import type { Serializer } from '../../serializers/serializer';
@@ -13,13 +13,19 @@ import { RepositoryError } from '../repository.error';
  */
 export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   constructor(
-    private readonly tableName: string,
+    private readonly tableName: Tables,
     protected readonly trx: Transaction,
     protected readonly serializer: Serializer<T, Table>
   ) {}
 
   protected q(table?: Tables) {
     return this.trx<Table>(table ?? this.tableName);
+  }
+
+  protected applyDeletedAtClause(query: ReturnType<typeof this.q>) {
+    if (!TABLES_WITH_DELETED_AT.includes(this.tableName)) return;
+
+    query.whereNull('deleted_at');
   }
 
   protected toOrder(orderBy: OrderBy) {
@@ -29,6 +35,7 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   async findOne(input: FindOneOptions<T>): Promise<T | undefined> {
     try {
       const query = this.trx(this.tableName).where(this.serializer.serialize(input.where)).first();
+      this.applyDeletedAtClause(query);
 
       if (input.fields) query.select(this.serializer.serializeFields(input.fields));
 
@@ -43,6 +50,7 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
   async findMany(input?: FindManyOptions<T>): Promise<T[]> {
     try {
       const query = this.trx(this.tableName);
+      this.applyDeletedAtClause(query);
 
       if (input?.fields) query.select(this.serializer.serializeFields(input.fields));
       if (input?.take) query.limit(input.take);
@@ -191,3 +199,11 @@ export type Fields<T> = (keyof T)[];
 export type Where<T> = {
   [K in keyof T]?: T[K];
 };
+
+const TABLES_WITH_DELETED_AT = [
+  Tables.Product,
+  Tables.Variant,
+  Tables.Option,
+  Tables.OptionValue,
+  'test_table'
+];

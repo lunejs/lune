@@ -1,10 +1,10 @@
-import { OptionValueTable } from '@/persistence/entities/option_value';
+import type { OptionValueTable } from '@/persistence/entities/option_value';
 
 export const DefaultOptionValueFixture = (): OptionValueTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
-  deleted_at: new Date(),
+  deleted_at: null,
   name: '',
   order: 0,
   metadata: {},

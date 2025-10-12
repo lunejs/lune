@@ -1,10 +1,10 @@
-import { VariantTable } from '@/persistence/entities/variant';
+import type { VariantTable } from '@/persistence/entities/variant';
 
 export const DefaultVariantFixture = (): VariantTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
-  deleted_at: new Date(),
+  deleted_at: null,
   requires_shipping: true,
   sale_price: 0,
   sku: '',

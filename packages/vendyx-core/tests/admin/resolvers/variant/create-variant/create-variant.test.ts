@@ -162,7 +162,6 @@ describe('createVariant - Mutation', () => {
         }
       });
 
-    console.log(res.body);
     const { createVariant } = res.body.data;
 
     expect(createVariant[0].assets.items).toHaveLength(2);

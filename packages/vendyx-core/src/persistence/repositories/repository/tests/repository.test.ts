@@ -1,10 +1,11 @@
-import { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { RepositoryError } from '../../repository.error';
 import { SortKey } from '../repository';
 
-import { recordsMock, TestEntity, TestRepository } from './repository.mock';
+import type { TestEntity } from './repository.mock';
+import { recordsMock, TestRepository } from './repository.mock';
 
 const TEST_TABLE_NAME = 'test_table';
 
@@ -90,24 +91,32 @@ describe('Repository', () => {
         email: recordsMock[2].email
       });
     });
+
+    test('by default does not return records which deleted at is not null', async () => {
+      const result = await repository.findOne({ where: { email: 'taylor@swift.com' } });
+
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('findMany', () => {
     test('returns all records when filters are not provided', async () => {
       const result = await repository.findMany({});
 
-      expect(result).toHaveLength(recordsMock.length);
+      expect(result).toHaveLength(4);
       expect(result).toEqual(
         expect.arrayContaining(
-          recordsMock.map(record => ({
-            id: record.id,
-            email: record.email,
-            password: record.password,
-            isActive: record.is_active,
-            deletedAt: null,
-            createdAt: record.created_at,
-            updatedAt: record.updated_at
-          }))
+          recordsMock
+            .filter(m => !m.deleted_at)
+            .map(record => ({
+              id: record.id,
+              email: record.email,
+              password: record.password,
+              isActive: record.is_active,
+              deletedAt: null,
+              createdAt: record.created_at,
+              updatedAt: record.updated_at
+            }))
         )
       );
     });
@@ -176,7 +185,7 @@ describe('Repository', () => {
     test('returns records with skip', async () => {
       const result = await repository.findMany({ skip: 1 });
 
-      expect(result).toHaveLength(recordsMock.length - 1);
+      expect(result).toHaveLength(3);
       expect(result[0]).toMatchObject({
         id: recordsMock[1].id,
         email: recordsMock[1].email,
@@ -193,8 +202,14 @@ describe('Repository', () => {
         orderBy: { createdAt: SortKey.Desc }
       });
 
-      expect(result).toHaveLength(recordsMock.length);
+      expect(result).toHaveLength(4);
       expect(result[0].createdAt.getTime()).toBeGreaterThanOrEqual(result[1].createdAt.getTime());
+    });
+
+    test('by default does not return records which deleted at is not null', async () => {
+      const result = await repository.findMany({ where: { email: 'taylor@swift.com' } });
+
+      expect(result).toHaveLength(0);
     });
   });
 

@@ -1,4 +1,4 @@
-import { ProductTable } from '@/persistence/entities/product';
+import type { ProductTable } from '@/persistence/entities/product';
 
 export const DefaultProductFixture = (): ProductTable => ({
   id: crypto.randomUUID(),
@@ -11,6 +11,6 @@ export const DefaultProductFixture = (): ProductTable => ({
   archived: false,
   max_sale_price: 0,
   min_sale_price: 0,
-  deleted_at: new Date(),
+  deleted_at: null,
   shop_id: crypto.randomUUID()
 });

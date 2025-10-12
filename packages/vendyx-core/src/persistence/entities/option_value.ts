@@ -1,11 +1,11 @@
-import { VendyxEntity, VendyxTable } from './entity';
+import type { VendyxEntity, VendyxTable } from './entity';
 
 /**
  * An option value represents a specific value of an option and is used to differentiate the variants of a product.
  * For example, if the option is color, the option value can be red, blue, or green.
  */
 export interface OptionValue extends VendyxEntity {
-  deletedAt?: Date;
+  deletedAt?: Date | null;
   /**
    * The option value's name
    */
@@ -21,7 +21,7 @@ export interface OptionValue extends VendyxEntity {
 }
 
 export interface OptionValueTable extends VendyxTable {
-  deleted_at?: Date;
+  deleted_at?: Date | null;
   name: string;
   order: number;
   metadata?: Record<string, any>;
