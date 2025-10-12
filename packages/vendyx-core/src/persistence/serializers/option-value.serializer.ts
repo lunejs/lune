@@ -1,4 +1,4 @@
-import { OptionValue, OptionValueTable } from '../entities/option_value';
+import type { OptionValue, OptionValueTable } from '../entities/option_value';
 
 import { Serializer } from './serializer';
 
@@ -11,7 +11,8 @@ export class OptionValueSerializer extends Serializer<OptionValue, OptionValueTa
       ['deleted_at', 'deletedAt'],
       ['name', 'name'],
       ['order', 'order'],
-      ['metadata', 'metadata']
+      ['metadata', 'metadata'],
+      ['option_id', 'optionId']
     ]);
   }
 }

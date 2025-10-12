@@ -1,6 +1,8 @@
 import type { Transaction } from '../connection';
 
 import { AssetRepository } from './asset-repository/asset.repository';
+import { OptionRepository } from './option-repository/option.repository';
+import { OptionValueRepository } from './option-value-repository/option-value.repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';
@@ -14,7 +16,9 @@ export function buildRepositories(trx: Transaction) {
     product: new ProductRepository(trx),
     asset: new AssetRepository(trx),
     variant: new VariantRepository(trx),
-    productTranslation: new ProductTranslationRepository(trx)
+    productTranslation: new ProductTranslationRepository(trx),
+    option: new OptionRepository(trx),
+    optionValue: new OptionValueRepository(trx)
   };
 }
 

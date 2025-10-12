@@ -8,6 +8,7 @@ import type { Asset } from '@/persistence/entities/asset';
 import type { ID } from '@/persistence/entities/entity';
 import type { Product, ProductTable } from '@/persistence/entities/product';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import type { Tag, TagTable } from '@/persistence/entities/tag';
@@ -201,6 +202,17 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     await this.trx<ProductTranslationTable>(Tables.ProductTranslation)
       .whereIn('product_id', productIds)
       .del();
+  }
+
+  async addOptions(productId: ID, ids: ID[]) {
+    await Promise.all(
+      ids.map(id =>
+        this.trx<ProductOptionTable>(Tables.ProductOption).insert({
+          product_id: productId,
+          option_id: id
+        })
+      )
+    );
   }
 
   // TODO: Accept a list of tags instead a unique tag for filter
