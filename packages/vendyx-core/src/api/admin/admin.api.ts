@@ -13,8 +13,10 @@ import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
+import { OptionFieldResolver } from './field-resolvers/option-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { VariantFieldResolver } from './field-resolvers/variant-filed.resolver';
+import { OptionResolver } from './resolvers/option.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
 import { UserResolver } from './resolvers/user.resolver';
@@ -37,7 +39,9 @@ export class AdminApi extends GraphqlApi {
         ProductResolver,
         ProductFieldResolver,
         VariantResolver,
-        VariantFieldResolver
+        VariantFieldResolver,
+        OptionResolver,
+        OptionFieldResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
