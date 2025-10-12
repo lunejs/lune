@@ -148,11 +148,13 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
     }
   }
 
-  async softRemove(input: { where: Where<T> }): Promise<void> {
+  async softRemove(input: { where: Where<T> }): Promise<T> {
     try {
-      await this.trx(this.tableName)
+      const [result] = await this.trx(this.tableName)
         .where(this.serializer.serialize(input.where))
-        .update({ deleted_at: new Date() });
+        .update({ deleted_at: new Date() }, '*');
+
+      return this.serializer.deserialize(result) as T;
     } catch (error) {
       throw new RepositoryError('Repository.softRemove', error);
     }

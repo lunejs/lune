@@ -91,6 +91,14 @@ export class VariantService {
     return result;
   }
 
+  async softRemove(id: ID) {
+    const removedVariant = await this.repository.softRemove({ where: { id } });
+
+    await this.updateProductRangePrice({ variantId: id });
+
+    return removedVariant;
+  }
+
   private async removeMissingAssets(variantId: ID, newAssets: UpdateVariantInput['assets']) {
     if (!Array.isArray(newAssets)) return;
 
