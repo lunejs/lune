@@ -1,4 +1,4 @@
-import { clean, convertToCent } from '@vendyx/common';
+import { clean, convertToCent, isNumber } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';
@@ -58,15 +58,24 @@ export class VariantService {
       where: { id },
       data: {
         ...clean(baseVariant),
-        salePrice: baseVariant.salePrice ? convertToCent(baseVariant.salePrice) : undefined,
-        comparisonPrice: baseVariant.comparisonPrice
+        salePrice: isNumber(baseVariant.salePrice)
+          ? convertToCent(baseVariant.salePrice)
+          : undefined,
+        comparisonPrice: isNumber(baseVariant.comparisonPrice)
           ? convertToCent(baseVariant.comparisonPrice)
           : baseVariant.comparisonPrice,
-        costPerUnit: baseVariant.costPerUnit
+        costPerUnit: isNumber(baseVariant.costPerUnit)
           ? convertToCent(baseVariant.costPerUnit)
-          : baseVariant.costPerUnit
+          : baseVariant.costPerUnit,
+        dimensions: baseVariant.dimensions,
+        sku: baseVariant.sku,
+        weight: baseVariant.weight
       }
     });
+
+    if (isNumber(input.salePrice)) {
+      await this.updateProductRangePrice({ variantId: id });
+    }
 
     if (assets?.length) {
       await this.repository.upsertAssets(id, assets);

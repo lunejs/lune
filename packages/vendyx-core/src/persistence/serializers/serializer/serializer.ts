@@ -1,6 +1,6 @@
 import { VendyxError } from '@/errors/vendyx.error';
-import { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
-import { RepositoryInput } from '@/persistence/repositories/repository';
+import type { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import type { RepositoryInput } from '@/persistence/repositories/repository';
 
 /**
  * @description

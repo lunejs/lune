@@ -44,7 +44,7 @@ export class VariantRepository extends Repository<Variant, VariantTable> {
         .innerJoin(
           Tables.OptionValue,
           `${Tables.OptionValue}.id`,
-          `${Tables.VariantOptionValue}.asset_id`
+          `${Tables.VariantOptionValue}.option_value_id`
         );
 
       return result.map(asset => this.optionValueSerializer.deserialize(asset) as OptionValue);

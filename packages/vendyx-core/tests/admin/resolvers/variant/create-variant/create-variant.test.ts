@@ -2,6 +2,8 @@ import request from 'supertest';
 
 import { convertToCent } from '@vendyx/common';
 
+import type { ProductTable } from '@/persistence/entities/product';
+import { Tables } from '@/persistence/tables';
 import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
@@ -213,6 +215,28 @@ describe('createVariant - Mutation', () => {
     expect(createVariant[1].optionValues[0].id).toBe(OptionValueConstants.GreenOptionValueID);
     expect(createVariant[1].optionValues[1].id).toBe(OptionValueConstants.MediumOptionValueID);
     expect(createVariant[1].optionValues[2].id).toBe(OptionValueConstants.CottonOptionValueID);
+  });
+
+  test('updates min and max product sale price', async () => {
+    await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_VARIANT_MUTATION,
+        variables: {
+          productId: ProductConstants.ID,
+          input: [{ salePrice: 1_800 }, { salePrice: 2_300 }, { salePrice: 5_600 }]
+        }
+      });
+
+    const [product] = await testHelper
+      .getQueryBuilder()<ProductTable>(Tables.Product)
+      .select('*')
+      .where({ id: ProductConstants.ID });
+
+    expect(product.min_sale_price).toBe(convertToCent(1_800));
+    expect(product.max_sale_price).toBe(convertToCent(5_600));
   });
 
   test('returns Authorization error when no token is provided', async () => {
