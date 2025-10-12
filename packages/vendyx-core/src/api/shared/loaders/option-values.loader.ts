@@ -14,6 +14,7 @@ export function createOptionValuesLoader(trx: Transaction) {
 
     const rows: OptionValueTable[] = await trx<OptionValueTable>(Tables.OptionValue)
       .whereIn('option_id', ids)
+      .whereNull('deleted_at')
       .orderBy('order', 'asc');
 
     const byId = new Map<string, OptionValue[]>();

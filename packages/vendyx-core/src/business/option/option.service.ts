@@ -47,9 +47,17 @@ export class OptionService {
     const valuesToCreate = values?.filter(v => !v.id) ?? [];
     const valuesToUpdate = values?.filter(v => !!v.id) ?? [];
 
-    await this.removeMissingOptionValues(id, valuesToUpdate);
-    await this.createOptionValues(id, valuesToCreate);
-    await this.updateOptionValues(valuesToUpdate);
+    if (Array.isArray(values)) {
+      await this.removeMissingOptionValues(id, valuesToUpdate);
+    }
+
+    if (valuesToCreate.length) {
+      await this.createOptionValues(id, valuesToCreate);
+    }
+
+    if (valuesToUpdate.length) {
+      await this.updateOptionValues(valuesToUpdate);
+    }
 
     return await this.repository.update({ where: { id }, data: clean(baseOption) });
   }

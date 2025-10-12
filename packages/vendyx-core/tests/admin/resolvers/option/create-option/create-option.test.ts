@@ -111,6 +111,27 @@ describe('createOption - Mutation', () => {
 
     expect(productOptions).toHaveLength(2);
   });
+
+  test('returns Authorization error when no token is provided', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_OPTION_MUTATION,
+        variables: {
+          productId: ProductConstants.ID,
+          input: [
+            {
+              order: 0,
+              name: 'New Option',
+              values: []
+            }
+          ]
+        }
+      });
+
+    expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const CREATE_OPTION_MUTATION = /* GraphQL */ `
