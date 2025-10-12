@@ -8,7 +8,7 @@ import { TestHelper } from '@/tests/utils/test-helper';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
-import { OptionValueFixtures } from './fixtures/option-value.fixtures';
+import { OptionValueConstants, OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -172,6 +172,49 @@ describe('createVariant - Mutation', () => {
     expect(createVariant[1].assets.items[1].id).toBe(AssetConstants.ImageID);
   });
 
+  test('creates variants with option values', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_VARIANT_MUTATION,
+        variables: {
+          productId: ProductConstants.ID,
+          input: [
+            {
+              salePrice: 1_800,
+              optionValues: [
+                OptionValueConstants.BlueOptionValueID,
+                OptionValueConstants.LargeOptionValueID,
+                OptionValueConstants.PolyesterOptionValueID
+              ]
+            },
+            {
+              salePrice: 2_300,
+              optionValues: [
+                OptionValueConstants.GreenOptionValueID,
+                OptionValueConstants.MediumOptionValueID,
+                OptionValueConstants.CottonOptionValueID
+              ]
+            }
+          ]
+        }
+      });
+
+    const { createVariant } = res.body.data;
+
+    expect(createVariant[0].optionValues).toHaveLength(3);
+    expect(createVariant[0].optionValues[0].id).toBe(OptionValueConstants.BlueOptionValueID);
+    expect(createVariant[0].optionValues[1].id).toBe(OptionValueConstants.LargeOptionValueID);
+    expect(createVariant[0].optionValues[2].id).toBe(OptionValueConstants.PolyesterOptionValueID);
+
+    expect(createVariant[1].optionValues).toHaveLength(3);
+    expect(createVariant[1].optionValues[0].id).toBe(OptionValueConstants.GreenOptionValueID);
+    expect(createVariant[1].optionValues[1].id).toBe(OptionValueConstants.MediumOptionValueID);
+    expect(createVariant[1].optionValues[2].id).toBe(OptionValueConstants.CottonOptionValueID);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
@@ -210,6 +253,10 @@ const CREATE_VARIANT_MUTATION = /* GraphQL */ `
           id
           source
         }
+      }
+      optionValues {
+        id
+        name
       }
     }
   }

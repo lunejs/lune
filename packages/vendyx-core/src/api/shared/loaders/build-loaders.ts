@@ -6,6 +6,7 @@ import { createProductAssetsLoader } from './product-asset.loader';
 import { createProductTagsLoader } from './product-tags.loader';
 import { createProductTranslationsLoader } from './product-translations.loader';
 import { createVariantAssetsLoader } from './variant-assets.loader';
+import { createVariantOptionValuesLoader } from './variant-option-values.loader';
 
 export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
   return {
@@ -16,7 +17,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       tags: createProductTagsLoader(trx)
     },
     variant: {
-      assets: createVariantAssetsLoader(trx)
+      assets: createVariantAssetsLoader(trx),
+      optionValues: createVariantOptionValuesLoader(trx)
     }
   };
 };

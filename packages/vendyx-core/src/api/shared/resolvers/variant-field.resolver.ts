@@ -8,5 +8,10 @@ export const CommonVariantFieldResolver: GraphqlApiResolver = {
     const assets = await ctx.loaders.variant.assets.load(parent.id);
 
     return getPaginatedResult(assets, input);
+  },
+  optionValues: async (parent: Variant, _, ctx: ExecutionContext) => {
+    const optionValues = await ctx.loaders.variant.optionValues.load(parent.id);
+
+    return optionValues;
   }
 };
