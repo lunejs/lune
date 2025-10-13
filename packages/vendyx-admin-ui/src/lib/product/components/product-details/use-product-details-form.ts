@@ -47,14 +47,36 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
         await updateProduct(product.id, {
           name: input.name,
           description: input.description,
-          enabled: input.enabled
+          enabled: input.enabled,
+          variants: [
+            {
+              id: defaultVariant?.id as string,
+              salePrice: input.salePrice ? parsePrice(input.salePrice) : 0,
+              comparisonPrice: input.comparisonPrice ? parsePrice(input.comparisonPrice) : 0,
+              stock: input.stock || 0,
+              sku: input.sku,
+              weight: input.weight as number,
+              length: input.length as number,
+              width: input.width as number,
+              height: input.height as number,
+              requiresShipping: input.requiresShipping
+            }
+          ]
         });
 
         form.reset({
           enabled: input.enabled,
           name: input.name,
           description: product.description ?? '',
-          requiresShipping: input.requiresShipping
+          requiresShipping: input.requiresShipping,
+          comparisonPrice: input.comparisonPrice,
+          height: input.height,
+          length: input.length,
+          salePrice: input.salePrice,
+          width: input.width,
+          sku: input.sku,
+          stock: input.stock,
+          weight: input.weight
         });
 
         notification.success('Product updated');
