@@ -1,21 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
+
+import { Button, Card, CardAction, CardContent, CardHeader, CardTitle, cn } from '@vendyx/ui';
 
 import { OptionsListing } from '../option-details/options-listing';
 
 import { VariantsListing } from './variant-listing/variants-listing';
+import { useVariantContext } from './variants.context';
 
 export const ProductVariants = () => {
+  const { options, appendOption } = useVariantContext();
   return (
-    <Card>
+    <Card className={cn('overflow-hidden', options.length && 'pb-0')}>
       <CardHeader>
         <CardTitle>Variant</CardTitle>
+        {!options.length && (
+          <CardAction>
+            <Button variant={'outline'} onClick={() => appendOption()} type="button">
+              <CircleFadingPlusIcon /> Add options
+            </Button>
+          </CardAction>
+        )}
       </CardHeader>
-      <CardContent className="flex flex-col p-0">
-        <div className="px-6 pb-4">
-          <OptionsListing />
-        </div>
-        <VariantsListing />
-      </CardContent>
+      {!!options.length && (
+        <CardContent className="flex flex-col p-0">
+          <div className="px-6 pb-4">
+            <OptionsListing />
+          </div>
+          <VariantsListing />
+        </CardContent>
+      )}
     </Card>
   );
 };

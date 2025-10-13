@@ -18,7 +18,7 @@ export const VariantsListing = () => {
 
   return (
     <div>
-      <header className="h-12 px-6 flex items-center border-y">
+      <header className="h-12 px-6 flex items-center border-y bg-input/30 ">
         <div className="flex items-center gap-2 w-full">
           <Checkbox
             id="variants"
