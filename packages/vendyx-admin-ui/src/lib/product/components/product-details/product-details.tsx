@@ -1,20 +1,13 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Form,
-  FormInput,
-  FormSwitch,
-  FormTextarea,
-  H1
-} from '@vendyx/ui';
+import { Form } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 
-import { ProductAssetUploader } from '../asset-uploader/product-asset-uploader';
-
+import { GeneralProductCard } from './cards/general-product-card';
+import { PricingProductCard } from './cards/pricing-product-card';
+import { StatusProductCard } from './cards/status-product-card';
+import { StockProductCard } from './cards/stock-product-card';
+import { ProductDetailsHeader } from './header/product-details-header';
+import { ShippingProductCard } from './shipping/shipping-product-card';
 import { useProductDetailsForm } from './use-product-details-form';
 
 export const ProductDetails = ({ product }: Props) => {
@@ -23,38 +16,16 @@ export const ProductDetails = ({ product }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit} className="flex flex-col gap-6">
-        <header className="flex items-center justify-between">
-          <H1 className="font-bold text-2xl">{product ? product.name : 'Add product'}</H1>
-          <Button
-            type="submit"
-            isLoading={form.formState.isSubmitting}
-            disabled={!form.formState.isDirty || form.formState.isSubmitting}
-          >
-            Save
-          </Button>
-        </header>
+        <ProductDetailsHeader />
         <main className="flex flex-col gap-6 lg:grid grid-cols-6">
           <div className="col-span-4 flex flex-col gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>General</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <FormInput control={form.control} name="name" label="Name" placeholder="T-Shirt" />
-                <FormTextarea control={form.control} name="description" label="Description" />
-                <ProductAssetUploader product={product} />
-              </CardContent>
-            </Card>
+            <GeneralProductCard />
+            <PricingProductCard />
+            <StockProductCard />
+            <ShippingProductCard />
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">
-            <Card>
-              <CardHeader>
-                <CardTitle>Status</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <FormSwitch control={form.control} name="enabled" label="Published" />
-              </CardContent>
-            </Card>
+            <StatusProductCard />
           </div>
         </main>
       </form>

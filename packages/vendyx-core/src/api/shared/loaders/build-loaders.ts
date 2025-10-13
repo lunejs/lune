@@ -8,6 +8,7 @@ import { createProductTagsLoader } from './product-tags.loader';
 import { createProductTranslationsLoader } from './product-translations.loader';
 import { createVariantAssetsLoader } from './variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant-option-values.loader';
+import { createVariantsLoader } from './variants.loader';
 
 export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
   return {
@@ -15,7 +16,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       localization: createProductLocalizationLoader(trx, locale),
       translation: createProductTranslationsLoader(trx),
       assets: createProductAssetsLoader(trx),
-      tags: createProductTagsLoader(trx)
+      tags: createProductTagsLoader(trx),
+      variants: createVariantsLoader(trx)
     },
     variant: {
       assets: createVariantAssetsLoader(trx),

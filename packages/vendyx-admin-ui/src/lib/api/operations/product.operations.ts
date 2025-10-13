@@ -12,9 +12,28 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
     variants {
       items {
         id
+        salePrice
         sku
         stock
-        salePrice
+        comparisonPrice
+        costPerUnit
+        requiresShipping
+        weight
+        dimensions {
+          length
+          width
+          height
+        }
+        optionValues {
+          id
+          name
+        }
+        assets {
+          items {
+            id
+            source
+          }
+        }
       }
     }
     assets {

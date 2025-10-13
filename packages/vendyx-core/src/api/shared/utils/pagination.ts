@@ -1,4 +1,4 @@
-import { ListInput, Node } from '../types/graphql';
+import type { ListInput, Node } from '../types/graphql';
 
 import { ListResponse } from './list-response';
 

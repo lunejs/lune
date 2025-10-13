@@ -2,11 +2,13 @@ import { notification } from '@vendyx/ui';
 
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
+import { CREATE_VARIANT_MUTATION } from '@/lib/api/operations/variant.operations';
 import type { VendyxAsset } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 
 export const useCreateProduct = () => {
   const { mutateAsync: createProduct } = useGqlMutation(CREATE_PRODUCT_MUTATION);
+  const { mutateAsync: createVariants } = useGqlMutation(CREATE_VARIANT_MUTATION);
   const { uploadAsset } = useUploadAsset();
 
   const create = async (input: CreateProductInput) => {
@@ -32,6 +34,20 @@ export const useCreateProduct = () => {
       }
     });
 
+    await createVariants({
+      productId: id,
+      input: input.variants.map(variant => ({
+        salePrice: variant.salePrice,
+        comparisonPrice: variant.comparisonPrice,
+        stock: variant.stock,
+        sku: variant.sku,
+        requiresShipping: variant.requiresShipping,
+        weight: variant.weight,
+        dimensions: { height: variant.height, width: variant.width, length: variant.length },
+        optionValues: variant.optionValues?.map(value => value.id)
+      }))
+    });
+
     return id;
   };
 
@@ -51,16 +67,16 @@ type CreateProductInput = {
   //   name: string;
   //   values: { id: string; name: string; color?: string; translation?: string }[];
   // }[];
-  // variants: {
-  //   salePrice: number;
-  //   comparisonPrice?: number;
-  //   stock?: number;
-  //   sku?: string;
-  //   requiresShipping?: boolean;
-  //   weight?: number;
-  //   length?: number;
-  //   width?: number;
-  //   height?: number;
-  //   optionValues?: { id: string; name: string; color?: string; translation?: string }[];
-  // }[];
+  variants: {
+    salePrice: number;
+    comparisonPrice?: number;
+    stock?: number;
+    sku?: string;
+    requiresShipping?: boolean;
+    weight?: number;
+    length?: number;
+    width?: number;
+    height?: number;
+    optionValues?: { id: string; name: string; color?: string; translation?: string }[];
+  }[];
 };

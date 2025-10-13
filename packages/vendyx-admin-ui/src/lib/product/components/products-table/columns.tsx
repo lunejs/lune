@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router';
 
-import { getFormattedPrice } from '@vendyx/common';
+import { formatPrice } from '@vendyx/common';
 import { Badge, Checkbox, cn } from '@vendyx/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
@@ -78,7 +78,7 @@ export const ProductsTableColumns: ColumnDef<TableProduct>[] = [
       return <DataTableColumnHeader column={column} title="Price" />;
     },
     cell: ({ row }) => {
-      return <p className="text-nowrap">{getFormattedPrice(row.original.price ?? 0)}</p>;
+      return <p className="text-nowrap">{formatPrice(row.original.price ?? 0)}</p>;
     },
     enableSorting: false
   },

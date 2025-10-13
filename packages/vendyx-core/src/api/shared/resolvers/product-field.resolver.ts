@@ -1,6 +1,5 @@
 import type { ExecutionContext } from '../context/types';
-import type { Product, ProductAssetsArgs } from '../types/graphql';
-import { ListResponse } from '../utils/list-response';
+import type { Product, ProductAssetsArgs, ProductVariantsArgs } from '../types/graphql';
 import { getPaginatedResult } from '../utils/pagination';
 
 export const CommonProductFieldResolver = {
@@ -12,7 +11,9 @@ export const CommonProductFieldResolver = {
   tags: async (parent: Product, _, ctx: ExecutionContext) => {
     return ctx.loaders.product.tags.load(parent.id);
   },
-  variants: () => {
-    return new ListResponse([], 0, { total: 0 });
+  variants: async (parent: Product, { input }: ProductVariantsArgs, ctx: ExecutionContext) => {
+    const variants = await ctx.loaders.product.variants.load(parent.id);
+
+    return getPaginatedResult(variants, input);
   }
 };
