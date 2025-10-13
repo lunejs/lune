@@ -6,9 +6,38 @@ import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
-}
+const DialogContext = React.createContext({
+  isOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setIsOpen: (_: boolean) => {}
+});
+
+export const useDialogContext = () => React.useContext(DialogContext);
+
+const Dialog: React.FC<
+  React.PropsWithChildren & { isOpen?: boolean; setIsOpen?: (_: boolean) => void }
+> = ({ children, isOpen: isOpenProp, setIsOpen: setIsOpenProp, ...props }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DialogContext.Provider
+      value={{ isOpen: isOpenProp ?? isOpen, setIsOpen: setIsOpenProp ?? setIsOpen }}
+    >
+      <DialogPrimitive.Root
+        open={isOpenProp ?? isOpen}
+        onOpenChange={open => (setIsOpenProp ? setIsOpenProp(open) : setIsOpen(open))}
+        data-slot="dialog"
+        {...props}
+      >
+        {children}
+      </DialogPrimitive.Root>
+    </DialogContext.Provider>
+  );
+};
+
+// function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
+//   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+// }
 
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;

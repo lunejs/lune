@@ -1,0 +1,79 @@
+import { type FC } from 'react';
+
+import { Checkbox, cn, Input } from '@vendyx/ui';
+
+import { useVariantContext, type VariantContext } from '../variants.context';
+
+import { VariantItemDialogWrapper } from './variant-item-dialog-wrapper';
+
+export const VariantItem: FC<Props> = ({ variant, groupName }) => {
+  const { variants, updateVariants } = useVariantContext();
+
+  const inGroup = Boolean(groupName);
+
+  const variantName = inGroup
+    ? variant.values
+        .filter(v => v.name !== groupName)
+        .map(v => v.name)
+        .join('/')
+    : variant.values.map(v => v.name).join(' / ');
+
+  return (
+    <div className="flex items-center px-6 py-4 hover:bg-muted/50">
+      <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
+        <Checkbox
+          checked={variant.selected}
+          onCheckedChange={checked =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, selected: Boolean(checked) } : v))
+            )
+          }
+        />
+        {/* <VariantAssetUploader
+          isLoading={isLoading || removeLoading}
+          size={inGroup ? 'sm' : 'md'}
+          disabled={!isPersistedVariant} // can upload images only when the variant is saved
+          image={variantImage}
+          onRemove={() => {
+            removeVariantImage([variant.id]);
+          }}
+          onUpload={file => {
+            addVariantImage([variant.id], file);
+          }}
+        /> */}
+        <VariantItemDialogWrapper variant={variant}>
+          <span className="hover:underline w-full cursor-pointer">{variantName}</span>
+        </VariantItemDialogWrapper>
+      </div>
+      <div className="flex items-center gap-2 w-full">
+        <Input
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, price: e.target.value } : v))
+            )
+          }
+          value={variant.price}
+          placeholder="$ 0.00"
+        />
+        <Input
+          value={variant.stock}
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, stock: Number(e.target.value) } : v))
+            )
+          }
+          type="number"
+          placeholder="0"
+        />
+      </div>
+    </div>
+  );
+};
+
+type Props = {
+  variant: VariantContext['variants'][0];
+  /**
+   * Determines if the variant is being rendered inside a group
+   */
+  groupName?: string;
+};

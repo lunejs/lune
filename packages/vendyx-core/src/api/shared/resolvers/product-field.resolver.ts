@@ -15,5 +15,8 @@ export const CommonProductFieldResolver = {
     const variants = await ctx.loaders.product.variants.load(parent.id);
 
     return getPaginatedResult(variants, input);
+  },
+  options: async (parent: Product, _, ctx: ExecutionContext) => {
+    return ctx.loaders.product.options.load(parent.id);
   }
 };

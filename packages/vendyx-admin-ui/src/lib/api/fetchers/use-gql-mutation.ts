@@ -37,6 +37,10 @@ export const useGqlMutation = <R extends Record<string, any>, V>(
 
       if (!result) throw new Error('Unexpected response format');
 
+      if (Array.isArray(result)) {
+        return result;
+      }
+
       const { apiErrors, ...rest } = result;
 
       if (apiErrors?.length) {
@@ -49,9 +53,7 @@ export const useGqlMutation = <R extends Record<string, any>, V>(
         };
       }
 
-      return {
-        ...rest
-      };
+      return rest;
     }
   });
 };

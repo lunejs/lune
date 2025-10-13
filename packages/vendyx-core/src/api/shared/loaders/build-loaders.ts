@@ -4,6 +4,7 @@ import type { Locale } from '@/persistence/entities/locale';
 
 import { createOptionValuesLoader } from './option-values.loader';
 import { createProductAssetsLoader } from './product-asset.loader';
+import { createProductOptionsLoader } from './product-options.loader';
 import { createProductTagsLoader } from './product-tags.loader';
 import { createProductTranslationsLoader } from './product-translations.loader';
 import { createVariantAssetsLoader } from './variant-assets.loader';
@@ -17,7 +18,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       translation: createProductTranslationsLoader(trx),
       assets: createProductAssetsLoader(trx),
       tags: createProductTagsLoader(trx),
-      variants: createVariantsLoader(trx)
+      variants: createVariantsLoader(trx),
+      options: createProductOptionsLoader(trx)
     },
     variant: {
       assets: createVariantAssetsLoader(trx),

@@ -8,6 +8,8 @@ import { StatusProductCard } from './cards/status-product-card';
 import { StockProductCard } from './cards/stock-product-card';
 import { ProductDetailsHeader } from './header/product-details-header';
 import { ShippingProductCard } from './shipping/shipping-product-card';
+import { ProductVariants } from './variants/product-variants';
+import { VariantContextProvider } from './variants/variants.context';
 import { useProductDetailsForm } from './use-product-details-form';
 
 export const ProductDetails = ({ product }: Props) => {
@@ -23,6 +25,9 @@ export const ProductDetails = ({ product }: Props) => {
             <PricingProductCard />
             <StockProductCard />
             <ShippingProductCard />
+            <VariantContextProvider product={product ?? undefined}>
+              <ProductVariants />
+            </VariantContextProvider>
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">
             <StatusProductCard />

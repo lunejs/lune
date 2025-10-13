@@ -36,6 +36,14 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
         }
       }
     }
+    options {
+      id
+      name
+      values {
+        id
+        name
+      }
+    }
     assets {
       items {
         id
