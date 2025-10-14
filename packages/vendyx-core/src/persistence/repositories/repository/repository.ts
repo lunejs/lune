@@ -78,9 +78,9 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
       if (input?.where) {
         for (const [key, value] of Object.entries(input.where)) {
           if (typeof value === 'string' && input.caseSensitive === false) {
-            query.whereILike(key, value);
+            query.whereILike(this.serializer.serializeField(key as keyof T) as string, value);
           } else {
-            query.where(key, value);
+            query.where(this.serializer.serializeField(key as keyof T), value);
           }
         }
       }

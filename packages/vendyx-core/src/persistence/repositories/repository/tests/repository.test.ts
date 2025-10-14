@@ -21,6 +21,7 @@ describe('Repository', () => {
       table.uuid('id').primary();
       table.string('email').notNullable();
       table.string('password').notNullable();
+      table.string('name').notNullable();
       table.boolean('is_active').notNullable();
       table.timestamp('created_at').defaultTo(q.fn.now());
       table.timestamp('updated_at').defaultTo(q.fn.now());
@@ -113,6 +114,7 @@ describe('Repository', () => {
               email: record.email,
               password: record.password,
               isActive: record.is_active,
+              name: record.name,
               deletedAt: null,
               createdAt: record.created_at,
               updatedAt: record.updated_at
@@ -140,6 +142,7 @@ describe('Repository', () => {
               email: record.email,
               password: record.password,
               isActive: record.is_active,
+              name: record.name,
               deletedAt: null,
               createdAt: record.created_at,
               updatedAt: record.updated_at
@@ -231,6 +234,12 @@ describe('Repository', () => {
 
       expect(count).toBe(0);
     });
+
+    test('returns the count of records without case sensitive', async () => {
+      const count = await repository.count({ where: { name: 'sam' }, caseSensitive: false });
+
+      expect(count).toBe(2);
+    });
   });
 
   describe('create', () => {
@@ -240,6 +249,7 @@ describe('Repository', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         email: 'sam@gmail.com',
+        name: 'same',
         password: 'password123',
         isActive: true
       };
@@ -358,6 +368,7 @@ describe('Repository', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           email: 'sam@gmail.com',
+          name: 'sam',
           password: 'password123',
           isActive: true
         },
@@ -366,6 +377,7 @@ describe('Repository', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           email: 'lluvia@gmail.com',
+          name: 'rain',
           password: 'password456',
           isActive: true
         }

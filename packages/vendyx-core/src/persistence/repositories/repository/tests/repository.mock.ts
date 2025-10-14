@@ -9,6 +9,7 @@ export const recordsMock: TestTable[] = [
     id: crypto.randomUUID(),
     email: 'ellie@williams.com',
     password: 'password123',
+    name: 'ellie',
     is_active: true,
     created_at: new Date(),
     updated_at: new Date()
@@ -17,6 +18,7 @@ export const recordsMock: TestTable[] = [
     id: crypto.randomUUID(),
     email: 'joel@miller.com',
     password: 'password123',
+    name: 'joel',
     is_active: true,
     created_at: new Date(),
     updated_at: new Date()
@@ -25,6 +27,7 @@ export const recordsMock: TestTable[] = [
     id: crypto.randomUUID(),
     email: 'natha@drake.com',
     password: 'password123',
+    name: 'nathan',
     is_active: false,
     created_at: new Date(),
     updated_at: new Date()
@@ -33,6 +36,7 @@ export const recordsMock: TestTable[] = [
     id: crypto.randomUUID(),
     email: 'sam@drake.com',
     password: 'password123',
+    name: 'sam',
     is_active: false,
     created_at: new Date(),
     updated_at: new Date()
@@ -41,6 +45,17 @@ export const recordsMock: TestTable[] = [
     id: crypto.randomUUID(),
     email: 'taylor@swift.com',
     password: 'password123',
+    name: 'taylor',
+    is_active: false,
+    created_at: new Date(),
+    updated_at: new Date(),
+    deleted_at: new Date()
+  },
+  {
+    id: crypto.randomUUID(),
+    email: 'sam@uel.com',
+    password: 'password123',
+    name: 'Sam',
     is_active: false,
     created_at: new Date(),
     updated_at: new Date(),
@@ -63,7 +78,8 @@ class TestSerializer extends Serializer<TestEntity, TestTable> {
       ['deleted_at', 'deletedAt'],
       ['email', 'email'],
       ['password', 'password'],
-      ['is_active', 'isActive']
+      ['is_active', 'isActive'],
+      ['name', 'name']
     ]);
   }
 }
@@ -72,6 +88,7 @@ export type TestEntity = {
   id: string;
   email: string;
   password: string;
+  name: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -82,6 +99,7 @@ export type TestTable = {
   id: string;
   email: string;
   password: string;
+  name: string;
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
