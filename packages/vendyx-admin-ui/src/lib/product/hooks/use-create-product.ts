@@ -37,7 +37,6 @@ export const useCreateProduct = () => {
     });
 
     if (!input.options?.length) {
-      // await createVariants(product.id, input.variants);
       await createVariants({
         productId: id,
         input: input.variants.map(variant => ({
@@ -51,11 +50,10 @@ export const useCreateProduct = () => {
           optionValues: variant.optionValues?.map(value => value.id)
         }))
       });
-      // await onCreate(product.id);
+
       return id;
     }
 
-    // const options = await createOptions(product.id, input.options);
     const options = await createOptions({
       productId: id,
       input: input.options.map((option, i) => ({
@@ -64,15 +62,12 @@ export const useCreateProduct = () => {
         values: option.values.map((value, i) => ({
           name: value.name,
           order: i
-          // color: value.color,
-          // translation: value.translation
         }))
       }))
     });
 
     const newVariants = attachOptionValues(options, input.variants);
 
-    // await createVariants(product.id, newVariants);
     await createVariants({
       productId: id,
       input: newVariants.map(variant => ({
@@ -124,12 +119,6 @@ type CreateProductInput = {
   description?: string;
   enabled?: boolean;
   images?: File[];
-  // tags: string[] | undefined;
-  // options: {
-  //   id: string;
-  //   name: string;
-  //   values: { id: string; name: string; color?: string; translation?: string }[];
-  // }[];
   options: {
     id: string;
     name: string;

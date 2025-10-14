@@ -33,7 +33,6 @@ export const useUpdateProduct = () => {
       await removeVariant({ id: input.defaultVariant });
     }
 
-    // const optionsUpdated = await updateOptions(optionsToUpdate);
     const optionsUpdated = optionsToUpdate.length
       ? await Promise.all(
           optionsToUpdate.map((option, i) =>
@@ -45,8 +44,6 @@ export const useUpdateProduct = () => {
                 values: option.values.map((value, i) => ({
                   id: isUUID(value.id) ? value.id : '',
                   name: value.name,
-                  // color: value.color,
-                  // translation: value.translation,
                   order: isUUID(value.id) ? undefined : i
                 }))
               }
@@ -55,7 +52,6 @@ export const useUpdateProduct = () => {
         )
       : [];
 
-    // const optionsCreated = await createOptions(productId, optionsToCreate);
     const optionsCreated = optionsToCreate.length
       ? await createOptions({
           productId,
@@ -65,16 +61,11 @@ export const useUpdateProduct = () => {
             values: option.values.map((value, i) => ({
               name: value.name,
               order: i
-              // color: value.color,
-              // translation: value.translation
             }))
           }))
         })
       : [];
 
-    // await Promise.all(
-    //   input.optionsToRemove.map(async optionId => await OptionService.remove(optionId))
-    // );
     await Promise.all(input.optionsToRemove.map(optionId => removeOption({ id: optionId })));
 
     const newOptions = [...optionsUpdated, ...optionsCreated];

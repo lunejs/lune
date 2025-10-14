@@ -8,7 +8,7 @@ import type { CommonProductFragment } from '@/lib/api/types';
 import {
   type ProductDetailsFormInput,
   useProductDetailsFormContext
-} from '../../use-product-details-form';
+} from '../../use-form/use-product-details-form';
 
 export const ProductSubmitButton = () => {
   const { product, ...form } = useProductDetailsFormContext();
@@ -20,7 +20,6 @@ export const ProductSubmitButton = () => {
   return (
     <Button
       type="submit"
-      isLoading={form.formState.isSubmitting}
       disabled={
         !(form.formState.isDirty || variantsHasChanged || optionsHasChanged) ||
         form.formState.isSubmitting ||

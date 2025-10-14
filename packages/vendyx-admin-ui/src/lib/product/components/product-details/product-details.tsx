@@ -8,9 +8,9 @@ import { StatusProductCard } from './cards/status-product-card';
 import { StockProductCard } from './cards/stock-product-card';
 import { ProductDetailsHeader } from './header/product-details-header';
 import { ShippingProductCard } from './shipping/shipping-product-card';
+import { useProductDetailsForm } from './use-form/use-product-details-form';
 import { ProductVariants } from './variants/product-variants';
 import { VariantContextProvider } from './variants/variants.context';
-import { useProductDetailsForm } from './use-product-details-form';
 
 export const ProductDetails = ({ product }: Props) => {
   const form = useProductDetailsForm(product);

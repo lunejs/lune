@@ -7,7 +7,7 @@ import { formatPrice } from '@vendyx/common';
 import type { CommonProductFragment } from '@/lib/api/types';
 import { getUnusedOptionValues } from '@/lib/product/utils/variant.utils';
 
-import { useProductDetailsFormContext } from '../use-product-details-form';
+import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
 
 export type VariantContext = {
   options: {

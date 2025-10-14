@@ -1,12 +1,9 @@
-import { useRef } from 'react';
-
-import { notification } from '@vendyx/ui';
-
 import { queryClient } from '@/app/app';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { UPDATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
+import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { ProductCacheKeys } from '../constants/cache-keys';
 
@@ -78,35 +75,3 @@ export const useProductAsset = () => {
     remove
   };
 };
-
-const useLoadingNotification = () => {
-  const notificationId = useRef<string | number | null>(null);
-
-  const loading = (msg: string) => {
-    notificationId.current = notification.loading(msg);
-  };
-
-  const success = (msg: string) => {
-    if (notificationId.current) {
-      notification.dismiss(notificationId.current);
-    }
-
-    notification.success(msg);
-  };
-
-  const failure = (msg: string) => {
-    if (notificationId.current) {
-      notification.dismiss(notificationId.current);
-    }
-
-    notification.error(msg);
-  };
-
-  return {
-    loading,
-    success,
-    failure
-  };
-};
-
-export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

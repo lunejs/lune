@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, FormInput, FormTextarea } from '@vendyx/ui';
 
 import { ProductAssetUploader } from '../../asset-uploader/product-asset-uploader';
-import { useProductDetailsFormContext } from '../use-product-details-form';
+import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
 
 export const GeneralProductCard = () => {
   const { product, ...form } = useProductDetailsFormContext();

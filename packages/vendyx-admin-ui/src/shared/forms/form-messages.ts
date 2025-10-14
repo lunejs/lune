@@ -3,5 +3,6 @@ export const FormMessages = {
   invalidEmail: 'Invalid email',
   invalidPhoneNumber: 'Invalid phone number',
   min: (min: number) => `Must be at least ${min} characters long`,
-  max: (max: number) => `Cannot exceed ${max} characters`
+  max: (max: number) => `Cannot exceed ${max} characters`,
+  greater: (value: number) => `Must be greater than ${value}`
 };

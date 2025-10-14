@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, FormCheckbox } from '@vendyx/ui';
 
-import { useProductDetailsFormContext } from '../use-product-details-form';
+import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
 
 import { ProductDimensions } from './product-dimensions';
 

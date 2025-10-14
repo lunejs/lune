@@ -2,7 +2,7 @@ import type { CommonProductFragment } from '@/lib/api/types';
 import { Dropzone } from '@/shared/components/dropzone/dropzone';
 
 import { useProductAsset } from '../../hooks/use-product-asset';
-import { useProductDetailsFormContext } from '../product-details/use-product-details-form';
+import { useProductDetailsFormContext } from '../product-details/use-form/use-product-details-form';
 
 export const ProductAssetUploader = ({ product }: Props) => {
   const form = useProductDetailsFormContext();
