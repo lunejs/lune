@@ -1,7 +1,14 @@
-import { PlusIcon } from 'lucide-react';
+import { ChevronDown, PencilRulerIcon, PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@vendyx/ui';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@vendyx/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 
@@ -43,11 +50,32 @@ export const ProductsTable = () => {
           </Button>
           <Link to="/products/new">
             <Button size="sm">
-              <PlusIcon /> <span className="hidden lg:inline">Add Product</span>
+              <PlusIcon className="lg:hidden" />
+              <span className="hidden lg:inline">Add Product</span>
             </Button>
           </Link>
         </>
       }
+      // Add productAction component
+      onSelectRender={rows => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" variant="outline">
+              <span className="hidden lg:inline">Actions</span> <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <PencilRulerIcon /> Massive edition
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Archive</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive hover:text-destructive!">
+              Remove
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     />
   );
 };

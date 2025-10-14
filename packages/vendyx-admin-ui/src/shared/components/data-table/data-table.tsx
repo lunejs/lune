@@ -99,6 +99,7 @@ export type DataTableProps<TData, TValue> = {
   defaultPagination?: { page?: number; pageSize?: number };
   actions?: React.ReactNode;
   filters?: DataTableFilter[];
+  onSelectRender?: (rows: TData[]) => React.ReactElement;
 };
 
 export type DataTableFilter = {

@@ -10,8 +10,11 @@ export function DataTableToolbar<TData, TValue>({
   searchPlaceholder,
   actions,
   filters,
-  table
+  table,
+  onSelectRender
 }: Props<TData, TValue>) {
+  const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
@@ -29,6 +32,7 @@ export function DataTableToolbar<TData, TValue>({
       </div>
       <div className="flex items-center gap-2">
         {/* <DataTableViewOptions table={table} /> */}
+        {!!selectedRows.length && onSelectRender?.(selectedRows)}
         {actions}
       </div>
     </div>
