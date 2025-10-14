@@ -23,10 +23,6 @@ export const useDropzone = (
 
   const removeFiles = () => {
     const newFiles = files.filter(file => !selected.map(({ id }) => id).includes(file.id));
-    console.log({
-      newFiles,
-      selected
-    });
 
     onFilesChange(newFiles.map(f => f.file));
     setFiles(newFiles);

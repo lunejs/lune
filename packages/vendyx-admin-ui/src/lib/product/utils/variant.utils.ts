@@ -14,7 +14,7 @@ import type { VariantContext } from '../components/product-details/variants/vari
  * If create, it means that the variant generated does not exist int he existing variants and should be created.
  * If update, it means that the variant generated does exist in the existing variants and just need to be updated.
  *
- * This is useful to keep a persistance of the variants that are already created.
+ * This is useful to keep a persistence of the variants that are already created.
  *
  * @example
  * const options = [
@@ -61,7 +61,7 @@ export const generateVariants = (
                 : (formValues?.salePrice ?? '0'),
               stock: variantAlreadyExists
                 ? variantAlreadyExists.stock
-                : (Number(formValues?.stock) ?? 0),
+                : (Number(formValues?.stock ?? 0) ?? 0),
               comparisonPrice: variantAlreadyExists
                 ? variantAlreadyExists.comparisonPrice
                 : (formValues?.comparisonPrice ?? '0'),
@@ -142,7 +142,7 @@ export const generateVariants = (
             id: persistedVariant?.id ?? Math.random().toString(),
             values: [value, ...variant.values],
             price: persistedVariant?.price ?? formValues?.salePrice ?? '0',
-            stock: persistedVariant?.stock ?? Number(formValues?.stock) ?? 0,
+            stock: persistedVariant?.stock ?? Number(formValues?.stock ?? 0) ?? 0,
             comparisonPrice:
               persistedVariant?.comparisonPrice ?? formValues?.comparisonPrice ?? '0',
             sku: persistedVariant?.sku ?? formValues?.sku ?? '',

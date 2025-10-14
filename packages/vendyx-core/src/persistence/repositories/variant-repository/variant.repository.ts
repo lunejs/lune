@@ -102,6 +102,19 @@ export class VariantRepository extends Repository<Variant, VariantTable> {
       throw new RepositoryError('ProductRepository.removeAssets', error);
     }
   }
+
+  async removeOptionValues(variantId: ID, ids: ID[]) {
+    try {
+      const result = await this.trx<VariantOptionValueTable>(Tables.VariantOptionValue)
+        .where({ variant_id: variantId })
+        .whereIn('option_value_id', ids)
+        .del();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('ProductRepository.removeAssets', error);
+    }
+  }
 }
 
 type UpsertAssetInput = {

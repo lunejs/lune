@@ -128,15 +128,15 @@ export class VariantService {
 
     const optionValues = await this.repository.findOptionValues(variantId);
 
-    const assetsToRemove = optionValues
+    const optionValuesToRemove = optionValues
       .map(a => a.id)
-      .filter(assetId => !newOptionValues.some(opv => opv === assetId))
-      .map(assetToRemoveId => optionValues.find(a => a.id === assetToRemoveId))
+      .filter(optionValueId => !newOptionValues.some(opv => opv === optionValueId))
+      .map(optionValueToRemoveId => optionValues.find(a => a.id === optionValueToRemoveId))
       .filter(hasValue);
 
-    await this.repository.removeAssets(
+    await this.repository.removeOptionValues(
       variantId,
-      assetsToRemove.map(asset => asset.id)
+      optionValuesToRemove.map(asset => asset.id)
     );
   }
 

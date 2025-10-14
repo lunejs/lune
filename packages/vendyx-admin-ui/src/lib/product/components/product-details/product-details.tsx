@@ -22,9 +22,13 @@ export const ProductDetails = ({ product }: Props) => {
         <main className="flex flex-col gap-6 lg:grid grid-cols-6">
           <div className="col-span-4 flex flex-col gap-6">
             <GeneralProductCard />
-            <PricingProductCard />
-            <StockProductCard />
-            <ShippingProductCard />
+            {!product?.options.length && (
+              <>
+                <PricingProductCard />
+                <StockProductCard />
+                <ShippingProductCard />
+              </>
+            )}
             <VariantContextProvider product={product ?? undefined}>
               <ProductVariants />
             </VariantContextProvider>

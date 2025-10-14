@@ -1,5 +1,6 @@
 import { isUUID } from '@vendyx/common';
 
+import { queryClient } from '@/app/app';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import {
   CREATE_OPTION_MUTATION,
@@ -12,6 +13,8 @@ import {
   REMOVE_VARIANT_MUTATION,
   UPDATE_VARIANT_MUTATION
 } from '@/lib/api/operations/variant.operations';
+
+import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useUpdateProduct = () => {
   const { mutateAsync: updateProduct } = useGqlMutation(UPDATE_PRODUCT_MUTATION);
@@ -31,38 +34,43 @@ export const useUpdateProduct = () => {
     }
 
     // const optionsUpdated = await updateOptions(optionsToUpdate);
-    const optionsUpdated = await Promise.all(
-      optionsToUpdate.map(option =>
-        updateOptions({
-          id: option.id,
-          input: {
-            name: option.name,
-            values: option.values.map((value, i) => ({
-              id: isUUID(value.id) ? value.id : '',
-              name: value.name,
-              // color: value.color,
-              // translation: value.translation,
-              order: isUUID(value.id) ? undefined : i
-            }))
-          }
-        })
-      )
-    );
+    const optionsUpdated = optionsToUpdate.length
+      ? await Promise.all(
+          optionsToUpdate.map((option, i) =>
+            updateOptions({
+              id: option.id,
+              input: {
+                order: i,
+                name: option.name,
+                values: option.values.map((value, i) => ({
+                  id: isUUID(value.id) ? value.id : '',
+                  name: value.name,
+                  // color: value.color,
+                  // translation: value.translation,
+                  order: isUUID(value.id) ? undefined : i
+                }))
+              }
+            })
+          )
+        )
+      : [];
 
     // const optionsCreated = await createOptions(productId, optionsToCreate);
-    const optionsCreated = await createOptions({
-      productId,
-      input: optionsToCreate.map((option, i) => ({
-        order: i,
-        name: option.name,
-        values: option.values.map((value, i) => ({
-          name: value.name,
-          order: i
-          // color: value.color,
-          // translation: value.translation
-        }))
-      }))
-    });
+    const optionsCreated = optionsToCreate.length
+      ? await createOptions({
+          productId,
+          input: optionsToCreate.map((option, i) => ({
+            order: optionsToUpdate.length + i,
+            name: option.name,
+            values: option.values.map((value, i) => ({
+              name: value.name,
+              order: i
+              // color: value.color,
+              // translation: value.translation
+            }))
+          }))
+        })
+      : [];
 
     // await Promise.all(
     //   input.optionsToRemove.map(async optionId => await OptionService.remove(optionId))
@@ -70,13 +78,7 @@ export const useUpdateProduct = () => {
     await Promise.all(input.optionsToRemove.map(optionId => removeOption({ id: optionId })));
 
     const newOptions = [...optionsUpdated, ...optionsCreated];
-    console.log({
-      newOptions
-    });
     const newVariants = attachOptionValues(newOptions, input.variants);
-    console.log({
-      newVariants
-    });
 
     await updateProduct({
       id: productId,
@@ -89,11 +91,6 @@ export const useUpdateProduct = () => {
 
     const variantsToUpdate = newVariants.filter(variant => isUUID(variant.id ?? ''));
     const variantsToCreate = newVariants.filter(variant => !isUUID(variant.id ?? ''));
-
-    console.log({
-      variantsToCreate,
-      variantsToUpdate
-    });
 
     await Promise.all(
       variantsToUpdate.map(
@@ -126,6 +123,12 @@ export const useUpdateProduct = () => {
         optionValues: variant.optionValues?.map(value => value.id)
       }))
     });
+
+    await Promise.all(
+      input.variantsToRemove.map(async variantId => await removeVariant({ id: variantId }))
+    );
+
+    queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(productId)] });
   };
 
   return {

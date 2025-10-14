@@ -31,7 +31,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
       comparisonPrice: defaultVariant?.comparisonPrice
         ? formatPrice(defaultVariant.comparisonPrice)
         : '',
-      stock: defaultVariant?.stock ?? '',
+      stock: defaultVariant?.stock,
       sku: defaultVariant?.sku ?? '',
       requiresShipping: defaultVariant?.requiresShipping ?? false,
       weight: defaultVariant?.weight ?? '',
@@ -42,9 +42,10 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
       variants:
         product?.variants.items
           .map(variant => ({
+            id: variant.id,
             salePrice: variant.salePrice ? formatPrice(variant.salePrice) : '',
             comparisonPrice: variant.comparisonPrice ? formatPrice(variant.comparisonPrice) : '',
-            stock: variant.stock ?? '',
+            stock: variant.stock,
             sku: variant.sku ?? '',
             requiresShipping: variant.requiresShipping ?? false,
             weight: (variant.weight ?? '') as number,

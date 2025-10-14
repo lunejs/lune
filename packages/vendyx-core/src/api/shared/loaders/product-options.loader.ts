@@ -18,6 +18,7 @@ export function createProductOptionsLoader(trx: Transaction) {
       .from({ po: Tables.ProductOption })
       .innerJoin({ o: Tables.Option }, 'o.id', 'po.option_id')
       .select('po.product_id', 'o.order', trx.ref('o.*'))
+      .whereNull('o.deleted_at')
       .whereIn('po.product_id', ids)
       .orderBy([{ column: 'o.order', order: 'asc' }]);
 

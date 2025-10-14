@@ -81,9 +81,9 @@ export const VariantContextProvider = ({
           // color: v.metadata?.color,
           // translation: v.translation ?? ''
         })),
-        price: formatPrice(v.salePrice),
-        comparisonPrice: v.comparisonPrice ? formatPrice(v.comparisonPrice) : undefined,
-        sku: v.sku ? v.sku : undefined,
+        price: v.salePrice ? formatPrice(v.salePrice) : '',
+        comparisonPrice: v.comparisonPrice ? formatPrice(v.comparisonPrice) : '',
+        sku: v.sku ? v.sku : '',
         stock: v.stock,
         requiresShipping: v.requiresShipping,
         weight: v.weight ?? undefined,
@@ -112,7 +112,13 @@ export const VariantContextProvider = ({
     function setValuesInForm() {
       setValue(
         'options',
-        options.filter(o => o.name)
+        options
+          .filter(o => o.name)
+          .map(op => ({
+            id: op.id,
+            name: op.name,
+            values: op.values
+          }))
       );
 
       setValue(

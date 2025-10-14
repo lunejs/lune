@@ -249,7 +249,7 @@ describe('updateVariant - Mutation', () => {
       .send({
         query: UPDATE_VARIANT_MUTATION,
         variables: {
-          id: VariantConstants.WithAssetsID,
+          id: VariantConstants.ID,
           input: {
             optionValues: []
           }
@@ -269,7 +269,7 @@ describe('updateVariant - Mutation', () => {
       .send({
         query: UPDATE_VARIANT_MUTATION,
         variables: {
-          id: VariantConstants.WithAssetsID,
+          id: VariantConstants.ID,
           input: {
             optionValues: [OptionValueConstants.PolyesterOptionValueID]
           }

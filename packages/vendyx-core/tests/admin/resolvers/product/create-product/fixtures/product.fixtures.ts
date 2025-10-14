@@ -1,6 +1,6 @@
-import { ProductTable } from '@/persistence/entities/product';
+import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ShopConstants } from './shop.fixtures';
@@ -8,7 +8,7 @@ import { ShopConstants } from './shop.fixtures';
 export const ProductConstants = {
   ID: TestHelper.generateUUID(),
   Name: 'MacBook Pro 16',
-  Slug: 'mac-pro-16'
+  Slug: 'macbook-pro-16'
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {

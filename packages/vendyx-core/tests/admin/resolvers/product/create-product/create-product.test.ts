@@ -76,6 +76,26 @@ describe('product - Query', () => {
     expect(createProduct.enabled).toBe(true);
   });
 
+  test('creates a product with a name that generates same slug', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_PRODUCT_MUTATION,
+        variables: {
+          input: {
+            name: ProductConstants.Name.toUpperCase()
+          }
+        }
+      });
+
+    const { createProduct } = res.body.data;
+
+    expect(createProduct.slug).toBe('macbook-pro-16-1');
+    expect(createProduct.enabled).toBe(true);
+  });
+
   test('creates a product with assets', async () => {
     const res = await request(app)
       .post('/admin-api')

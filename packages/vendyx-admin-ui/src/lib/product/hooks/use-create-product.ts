@@ -52,7 +52,7 @@ export const useCreateProduct = () => {
         }))
       });
       // await onCreate(product.id);
-      return;
+      return id;
     }
 
     // const options = await createOptions(product.id, input.options);

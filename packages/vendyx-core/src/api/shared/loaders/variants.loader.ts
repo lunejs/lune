@@ -9,7 +9,8 @@ export function createVariantsLoader(trx: Transaction) {
   return new DataLoader<string, Variant[]>(async productIds => {
     const variantSerializer = new VariantSerializer();
 
-    const rows: VariantTable[] = await trx(Tables.Variant)
+    const rows: VariantTable[] = await trx<VariantTable>(Tables.Variant)
+      .whereNull('deleted_at')
       .whereIn('product_id', productIds)
       .orderBy('created_at', 'asc');
 
