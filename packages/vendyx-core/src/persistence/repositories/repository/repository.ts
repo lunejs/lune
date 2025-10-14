@@ -75,7 +75,15 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
     try {
       const query = this.trx(this.tableName).count('* as count');
 
-      if (input?.where) query.where(this.serializer.serialize(input.where));
+      if (input?.where) {
+        for (const [key, value] of Object.entries(input.where)) {
+          if (typeof value === 'string' && input.caseSensitive === false) {
+            query.whereILike(key, value);
+          } else {
+            query.where(key, value);
+          }
+        }
+      }
 
       const [{ count }] = await query;
 
@@ -201,6 +209,7 @@ export enum SortKey {
 
 export type CountOptions<T> = {
   where?: Where<T>;
+  caseSensitive?: boolean;
 };
 
 export type RepositoryInput<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'> & {

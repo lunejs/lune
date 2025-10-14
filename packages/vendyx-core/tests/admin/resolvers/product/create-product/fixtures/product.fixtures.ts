@@ -8,7 +8,9 @@ import { ShopConstants } from './shop.fixtures';
 export const ProductConstants = {
   ID: TestHelper.generateUUID(),
   Name: 'MacBook Pro 16',
-  Slug: 'macbook-pro-16'
+  Slug: 'macbook-pro-16',
+
+  MultipleSameName: 'same name'
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
@@ -20,6 +22,21 @@ export class ProductFixtures implements Fixture<ProductTable> {
         id: ProductConstants.ID,
         name: ProductConstants.Name,
         slug: ProductConstants.Slug,
+        shop_id: ShopConstants.ID
+      },
+      {
+        name: ProductConstants.MultipleSameName,
+        slug: 'same-name',
+        shop_id: ShopConstants.ID
+      },
+      {
+        name: ProductConstants.MultipleSameName,
+        slug: 'same-name-1',
+        shop_id: ShopConstants.ID
+      },
+      {
+        name: ProductConstants.MultipleSameName,
+        slug: 'same-name-2',
         shop_id: ShopConstants.ID
       }
     ];
