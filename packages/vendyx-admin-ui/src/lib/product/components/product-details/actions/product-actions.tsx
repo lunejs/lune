@@ -12,10 +12,12 @@ import {
 
 import type { CommonProductFragment } from '@/lib/api/types';
 
+import { ArchiveProduct } from './archive/archive-product';
 import { RemoveProduct } from './remove/remove-product';
 
 export const ProductActions = ({ product }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isRemoveProductOpen, setRemoveProductOpen] = useState(false);
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
 
   return (
     <>
@@ -30,18 +32,23 @@ export const ProductActions = ({ product }: Props) => {
             <LanguagesIcon /> Translate
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsArchiveOpen(true)}>
             <ArchiveIcon /> Archive
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive hover:text-destructive!"
-            onClick={() => setIsOpen(true)}
+            onClick={() => setRemoveProductOpen(true)}
           >
             <Trash2Icon className="text-destructive" /> Remove
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <RemoveProduct isOpen={isOpen} setIsOpen={setIsOpen} product={product} />
+      <RemoveProduct
+        isOpen={isRemoveProductOpen}
+        setIsOpen={setRemoveProductOpen}
+        product={product}
+      />
+      <ArchiveProduct isOpen={isArchiveOpen} setIsOpen={setIsArchiveOpen} product={product} />
     </>
   );
 };

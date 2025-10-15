@@ -15,10 +15,9 @@ export const useRemoveProducts = () => {
         return { isSuccess: false };
       }
 
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Products] }),
-        queryClient.refetchQueries({ queryKey: [ProductCacheKeys.ProductsCount] })
-      ]);
+      queryClient.refetchQueries({
+        queryKey: [ProductCacheKeys.Products, ProductCacheKeys.ProductsCount]
+      });
 
       return { isSuccess: true };
     } catch (error) {

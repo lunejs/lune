@@ -233,6 +233,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
 
     if (filters?.enabled !== undefined) query.where('enabled', filters.enabled?.equals);
+    if (filters?.archived !== undefined) query.where('archived', filters.archived?.equals);
 
     if (filters?.tag) {
       query.whereExists(function () {

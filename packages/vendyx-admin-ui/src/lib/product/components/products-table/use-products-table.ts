@@ -21,7 +21,8 @@ export const useProductsTable = () => {
   } = useGetProducts({
     filters: {
       ...(search && { name: { contains: search } }),
-      ...(status !== undefined && { enabled: { equals: status } })
+      ...(status !== undefined && { enabled: { equals: status } }),
+      archived: { equals: false }
     },
     skip: getSkip(page, size),
     take: size
