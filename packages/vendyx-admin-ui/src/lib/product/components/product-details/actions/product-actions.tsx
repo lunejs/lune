@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDownIcon, PencilRulerIcon } from 'lucide-react';
+import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
 
 import {
   Button,
@@ -10,40 +10,42 @@ import {
   DropdownMenuTrigger
 } from '@vendyx/ui';
 
-import type { TableProduct } from '../products-table';
+import type { CommonProductFragment } from '@/lib/api/types';
 
-import { RemoveMassiveProducts } from './remove/remove-massive-products';
+import { RemoveProduct } from './remove/remove-product';
 
-export const ProductTableActions = ({ rows }: Props) => {
+export const ProductActions = ({ product }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <DropdownMenu modal={false}>
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="outline">
+          <Button variant="outline">
             <span className="hidden lg:inline">Actions</span> <ChevronDownIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <PencilRulerIcon /> Massive edition
+            <LanguagesIcon /> Translate
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Archive</DropdownMenuItem>
+          <DropdownMenuItem>
+            <ArchiveIcon /> Archive
+          </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive hover:text-destructive!"
             onClick={() => setIsOpen(true)}
           >
-            Remove
+            <Trash2Icon className="text-destructive" /> Remove
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <RemoveMassiveProducts isOpen={isOpen} setIsOpen={setIsOpen} rows={rows} />
+      <RemoveProduct isOpen={isOpen} setIsOpen={setIsOpen} product={product} />
     </>
   );
 };
 
 type Props = {
-  rows: TableProduct[];
+  product: CommonProductFragment;
 };

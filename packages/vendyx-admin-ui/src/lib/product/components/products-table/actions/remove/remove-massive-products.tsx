@@ -10,16 +10,12 @@ import {
   AlertDialogTrigger
 } from '@vendyx/ui';
 
-import { useRemoveProducts } from '@/lib/product/hooks/use-remove-product';
-
 import type { TableProduct } from '../../products-table';
 
-export const RemoveProducts = ({ isOpen, setIsOpen, products }: Props) => {
-  const { removeProducts } = useRemoveProducts();
+import { useRemoveMassiveProducts } from './use-remove-massive-products';
 
-  const onClick = async () => {
-    removeProducts(products.map(p => p.id));
-  };
+export const RemoveMassiveProducts = ({ isOpen, setIsOpen, rows }: Props) => {
+  const { removeMassiveProducts } = useRemoveMassiveProducts();
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -34,7 +30,9 @@ export const RemoveProducts = ({ isOpen, setIsOpen, products }: Props) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onClick}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => removeMassiveProducts(rows.map(r => r.id))}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -44,5 +42,5 @@ export const RemoveProducts = ({ isOpen, setIsOpen, products }: Props) => {
 type Props = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  products: TableProduct[];
+  rows: TableProduct[];
 };
