@@ -29,8 +29,8 @@ export const ProductsTable = () => {
         {
           title: 'Status',
           options: [
-            { label: 'Enabled', value: 'enabled' },
-            { label: 'Disabled', value: 'disabled' }
+            { label: 'Published', value: 'enabled' },
+            { label: 'Unpublished', value: 'disabled' }
           ],
           onChange: status => onUpdate({ status })
         }

@@ -153,7 +153,7 @@ export class VariantService {
     ]);
 
     await this.productRepository.update({
-      where: { id: productId },
+      where: { id: resolvedProductId },
       data: {
         minSalePrice: minSalePriceVariant?.salePrice ?? 0,
         maxSalePrice: maxSalePriceVariant?.salePrice ?? 0
