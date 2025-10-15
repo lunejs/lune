@@ -7,10 +7,11 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
+  BreadcrumbSeparator,
+  cn
 } from '@vendyx/ui';
 
-import { isLast } from '../utils/arrays.utils';
+import { isFirst, isLast } from '../utils/arrays.utils';
 
 export const AppBreadcrumb = () => {
   const { pathname } = useLocation();
@@ -31,14 +32,14 @@ export const AppBreadcrumb = () => {
             </BreadcrumbItem>
           ) : (
             <Fragment key={label}>
-              <BreadcrumbItem>
+              <BreadcrumbItem className={cn(isFirst(i) && 'hidden sm:flex')}>
                 <BreadcrumbLink asChild>
                   <Link to={`${href ?? ''}`} className="flex items-center">
                     {label}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator className={cn(isFirst(i) && 'hidden sm:flex')} />
             </Fragment>
           )
         )}
