@@ -12,7 +12,9 @@ export const ProductVariants = () => {
   return (
     <Card className={cn('overflow-hidden', options.length && 'pb-0')}>
       <CardHeader>
-        <CardTitle>Variant</CardTitle>
+        <CardTitle className="col-start-1 row-span-2 row-start-1 self-start justify-self-start h-full flex items-center">
+          Variant
+        </CardTitle>
         {!options.length && (
           <CardAction>
             <Button variant={'outline'} onClick={() => appendOption()} type="button">

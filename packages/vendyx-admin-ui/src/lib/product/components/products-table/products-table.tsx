@@ -1,27 +1,19 @@
-import { ChevronDown, PencilRulerIcon, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@vendyx/ui';
+import { Button } from '@vendyx/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 
+import { ProductTableActions } from './actions/product-table-actions';
 import { ProductsTableColumns } from './columns';
 import { ProductsTableEmptyState } from './empty-state';
 import { useProductsTable } from './use-products-table';
 
 export const ProductsTable = () => {
-  const { isLoading, products, pagination, onUpdate } = useProductsTable();
+  const { isLoading, hasNoProducts, products, pagination, onUpdate } = useProductsTable();
 
-  if (isLoading) return null;
-
-  if (pagination.pageInfo?.total === 0) return <ProductsTableEmptyState />;
+  if (hasNoProducts && !isLoading) return <ProductsTableEmptyState />;
 
   return (
     <DataTable
@@ -56,26 +48,7 @@ export const ProductsTable = () => {
           </Link>
         </>
       }
-      // Add productAction component
-      onSelectRender={rows => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="sm" variant="outline">
-              <span className="hidden lg:inline">Actions</span> <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <PencilRulerIcon /> Massive edition
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Archive</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive hover:text-destructive!">
-              Remove
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      onSelectRender={rows => <ProductTableActions rows={rows} />}
     />
   );
 };

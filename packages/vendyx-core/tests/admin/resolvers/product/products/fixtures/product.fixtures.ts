@@ -2,9 +2,9 @@ import { subMinutes } from 'date-fns';
 
 import { convertToCent } from '@vendyx/common';
 
-import { ProductTable } from '@/persistence/entities/product';
+import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ShopConstants } from './shop.fixtures';
@@ -21,7 +21,9 @@ export const ProductConstants = {
   JeansID: TestHelper.generateUUID(),
   JacketID: TestHelper.generateUUID(),
   SneakersID: TestHelper.generateUUID(),
-  BeachShirtID: TestHelper.generateUUID()
+  BeachShirtID: TestHelper.generateUUID(),
+
+  SoftRemovedProduct: TestHelper.generateUUID()
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
@@ -108,6 +110,12 @@ export class ProductFixtures implements Fixture<ProductTable> {
         enabled: true,
         min_sale_price: convertToCent(15),
         max_sale_price: convertToCent(35),
+        shop_id: ShopConstants.ID
+      },
+      {
+        created_at: subMinutes(TODAY, 270),
+        id: ProductConstants.SoftRemovedProduct,
+        deleted_at: TODAY,
         shop_id: ShopConstants.ID
       }
     ];

@@ -795,6 +795,10 @@ export type GetProductsQuery = {
   };
 };
 
+export type GetProductsExistsQueryVariables = Exact<Record<string, never>>;
+
+export type GetProductsExistsQuery = { products: { count: number } };
+
 export type GetProductQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']['input']>;
 }>;
@@ -815,6 +819,12 @@ export type UpdateProductMutationVariables = Exact<{
 }>;
 
 export type UpdateProductMutation = { updateProduct: { id: string } };
+
+export type RemoveProductsMutationVariables = Exact<{
+  ids: Scalars['ID']['input'][] | Scalars['ID']['input'];
+}>;
+
+export type RemoveProductsMutation = { softRemoveProducts: boolean };
 
 export type CommonShopFragment = {
   id: string;
@@ -1414,6 +1424,45 @@ export const GetProductsDocument = {
     }
   ]
 } as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
+export const GetProductsExistsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetProductsExists' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'products' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'count' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetProductsExistsQuery, GetProductsExistsQueryVariables>;
 export const GetProductDocument = {
   kind: 'Document',
   definitions: [
@@ -1675,6 +1724,48 @@ export const UpdateProductDocument = {
     }
   ]
 } as unknown as DocumentNode<UpdateProductMutation, UpdateProductMutationVariables>;
+export const RemoveProductsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveProducts' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+              }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'softRemoveProducts' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'ids' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<RemoveProductsMutation, RemoveProductsMutationVariables>;
 export const GetShopsDocument = {
   kind: 'Document',
   definitions: [

@@ -87,6 +87,14 @@ export const GET_ALL_PRODUCTS_QUERY = graphql(`
   }
 `);
 
+export const GET_PRODUCTS_EXISTS = graphql(`
+  query GetProductsExists {
+    products(input: { take: 1 }) {
+      count
+    }
+  }
+`);
+
 export const GET_PRODUCT_BY_ID_QUERY = graphql(`
   query GetProduct($id: ID) {
     product(id: $id) {
@@ -108,5 +116,11 @@ export const UPDATE_PRODUCT_MUTATION = graphql(`
     updateProduct(id: $id, input: $input) {
       id
     }
+  }
+`);
+
+export const REMOVE_PRODUCT_MUTATION = graphql(`
+  mutation RemoveProducts($ids: [ID!]!) {
+    softRemoveProducts(ids: $ids)
   }
 `);

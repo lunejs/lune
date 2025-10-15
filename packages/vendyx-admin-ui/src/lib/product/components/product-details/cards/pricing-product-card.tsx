@@ -10,7 +10,7 @@ export const PricingProductCard = () => {
       <CardHeader>
         <CardTitle>Pricing</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2 items-start sm:flex-row">
+      <CardContent className="flex flex-col gap-3 items-start sm:flex-row">
         <FormInput
           control={form.control}
           name="salePrice"

@@ -10,7 +10,7 @@ export const StockProductCard = () => {
       <CardHeader>
         <CardTitle>Stock</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2 items-start sm:flex-row">
+      <CardContent className="flex flex-col gap-3 items-start sm:flex-row">
         <FormInput
           type="number"
           control={form.control}

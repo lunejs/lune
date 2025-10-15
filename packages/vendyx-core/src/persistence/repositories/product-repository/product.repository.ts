@@ -34,6 +34,8 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   async findByFilters(input: ProductListInput) {
     const query = this.q();
 
+    this.applyDeletedAtClause(query);
+
     this.applyFilters(query, input.filters);
 
     if (input.sort?.createdAt) query.orderBy('created_at', this.toOrder(input.sort.createdAt));
@@ -48,11 +50,13 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   }
 
   async countByFilters(filters: ProductListInput['filters']) {
-    const query = this.q().count({ count: '*' });
+    const query = this.q();
+
+    this.applyDeletedAtClause(query);
 
     this.applyFilters(query, filters);
 
-    const [{ count }] = await query;
+    const [{ count }] = await query.count({ count: '*' });
 
     return Number(count);
   }

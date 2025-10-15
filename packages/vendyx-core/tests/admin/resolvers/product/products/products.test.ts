@@ -118,6 +118,24 @@ describe('product - Query', () => {
     expect(products.items[0].id).toBe(ProductConstants.AppleWatchSeries8ID);
     expect(products.items[1].id).toBe(ProductConstants.AirPodsPro2ndGenID);
   });
+
+  test('returns a list of products without the product soft removed', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCTS_QUERY,
+        variables: {}
+      });
+
+    const { products } = res.body.data;
+
+    expect(products.items).toHaveLength(9);
+    expect(products.count).toBe(9);
+    expect(products.pageInfo.total).toBe(9);
+    expect(products.items.every(p => p.id !== ProductConstants.SoftRemovedProduct)).toBe(true);
+  });
 });
 
 const GET_PRODUCTS_QUERY = /* GraphQL */ `
