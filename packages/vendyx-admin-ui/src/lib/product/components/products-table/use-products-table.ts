@@ -5,6 +5,7 @@ import { getSkip } from '@/shared/utils/pagination.utils';
 import { useGetProducts } from '../../hooks/use-get-products';
 
 import type { TableProduct } from './products-table';
+import { isArray } from '@/shared/utils/arrays.utils';
 
 export const useProductsTable = () => {
   const [search, setSearch] = useState('');
@@ -51,10 +52,12 @@ export const useProductsTable = () => {
     if (input.page) setPage(input.page);
     if (input.size) setSize(input.size);
 
-    if (input.status?.length === 2 || !input.status?.length) {
-      setStatus(undefined);
-    } else {
-      setStatus(input.status[0] === 'enabled');
+    if (isArray(input.status)) {
+      if (input.status?.length === 2 || !input.status?.length) {
+        setStatus(undefined);
+      } else {
+        setStatus(input.status[0] === 'enabled');
+      }
     }
   };
 

@@ -101,19 +101,21 @@ export const useUpdateProduct = () => {
           })
       )
     );
-    await createVariants({
-      productId: productId,
-      input: variantsToCreate.map(variant => ({
-        salePrice: variant.salePrice,
-        comparisonPrice: variant.comparisonPrice,
-        stock: variant.stock,
-        sku: variant.sku,
-        requiresShipping: variant.requiresShipping,
-        weight: variant.weight,
-        dimensions: { height: variant.height, width: variant.width, length: variant.length },
-        optionValues: variant.optionValues?.map(value => value.id)
-      }))
-    });
+    if (variantsToCreate.length) {
+      await createVariants({
+        productId: productId,
+        input: variantsToCreate.map(variant => ({
+          salePrice: variant.salePrice,
+          comparisonPrice: variant.comparisonPrice,
+          stock: variant.stock,
+          sku: variant.sku,
+          requiresShipping: variant.requiresShipping,
+          weight: variant.weight,
+          dimensions: { height: variant.height, width: variant.width, length: variant.length },
+          optionValues: variant.optionValues?.map(value => value.id)
+        }))
+      });
+    }
 
     await Promise.all(
       input.variantsToRemove.map(async variantId => await removeVariant({ id: variantId }))
