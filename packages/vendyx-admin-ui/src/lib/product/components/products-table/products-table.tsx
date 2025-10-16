@@ -30,7 +30,8 @@ export const ProductsTable = () => {
           title: 'Status',
           options: [
             { label: 'Published', value: 'enabled' },
-            { label: 'Unpublished', value: 'disabled' }
+            { label: 'Unpublished', value: 'disabled' },
+            { label: 'Archived', value: 'archived' }
           ],
           onChange: status => onUpdate({ status })
         }

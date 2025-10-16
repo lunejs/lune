@@ -219,6 +219,16 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     );
   }
 
+  async countDuplicatedSlug(slug: string) {
+    const [{ count }] = await this.q()
+      .where(qb => {
+        qb.where('slug', slug).orWhere('slug', 'like', `${slug}-%`);
+      })
+      .count();
+
+    return Number(count);
+  }
+
   // TODO: Accept a list of tags instead a unique tag for filter
   private applyFilters(
     query: Knex.QueryBuilder<ProductTable, any[]>,

@@ -123,7 +123,7 @@ export class ProductService {
   private async validateAndParseSlug(name: string) {
     const slug = getSlugBy(name);
 
-    const productNameCount = await this.repository.count({ where: { name }, caseSensitive: false });
+    const productNameCount = await this.repository.countDuplicatedSlug(slug);
 
     if (!productNameCount) return slug;
 

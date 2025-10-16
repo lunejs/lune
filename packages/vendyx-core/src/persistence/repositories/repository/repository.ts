@@ -18,8 +18,8 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
     protected readonly serializer: Serializer<T, Table>
   ) {}
 
-  protected q(table?: Tables) {
-    return this.trx<Table>(table ?? this.tableName);
+  protected q() {
+    return this.trx<Table>(this.tableName);
   }
 
   protected applyDeletedAtClause(query: ReturnType<typeof this.q>) {

@@ -10,7 +10,10 @@ export const ProductConstants = {
   Name: 'MacBook Pro 16',
   Slug: 'macbook-pro-16',
 
-  MultipleSameName: 'same name'
+  MultipleSameName: 'same name',
+
+  NoMatchingName: 'Random slug',
+  NoMatchingSlug: 'random-slug'
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
@@ -37,6 +40,11 @@ export class ProductFixtures implements Fixture<ProductTable> {
       {
         name: ProductConstants.MultipleSameName,
         slug: 'same-name-2',
+        shop_id: ShopConstants.ID
+      },
+      {
+        name: 'no matching name',
+        slug: ProductConstants.NoMatchingSlug,
         shop_id: ShopConstants.ID
       }
     ];

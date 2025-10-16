@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { isArray } from '@/shared/utils/arrays.utils';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetProducts } from '../../hooks/use-get-products';
 
 import type { TableProduct } from './products-table';
-import { isArray } from '@/shared/utils/arrays.utils';
 
 export const useProductsTable = () => {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [status, setStatus] = useState<boolean | undefined>();
+  const [archived, setArchived] = useState<boolean | undefined>();
 
   const {
     isLoading,
@@ -23,7 +24,9 @@ export const useProductsTable = () => {
     filters: {
       ...(search && { name: { contains: search } }),
       ...(status !== undefined && { enabled: { equals: status } }),
-      archived: { equals: false }
+      ...(archived !== undefined
+        ? { archived: { equals: archived } }
+        : { archived: { equals: false } })
     },
     skip: getSkip(page, size),
     take: size
@@ -45,7 +48,7 @@ export const useProductsTable = () => {
 
   useEffect(() => {
     refetch();
-  }, [search, page, size, status]);
+  }, [search, page, size, status, archived]);
 
   const onUpdate = (input: OnUpdateInput) => {
     if (input.search !== undefined) setSearch(input.search);
@@ -53,10 +56,14 @@ export const useProductsTable = () => {
     if (input.size) setSize(input.size);
 
     if (isArray(input.status)) {
-      if (input.status?.length === 2 || !input.status?.length) {
-        setStatus(undefined);
+      setArchived(input.status.includes('archived'));
+
+      if (input.status.includes('enabled')) {
+        setStatus(true);
+      } else if (input.status.includes('disabled')) {
+        setStatus(false);
       } else {
-        setStatus(input.status[0] === 'enabled');
+        setStatus(undefined);
       }
     }
   };
