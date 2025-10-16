@@ -4,6 +4,6 @@ export type ActionResult<T> =
     }
   | {
       isSuccess: false;
-      error?: string;
+      error: string;
       errorCode?: T;
     };

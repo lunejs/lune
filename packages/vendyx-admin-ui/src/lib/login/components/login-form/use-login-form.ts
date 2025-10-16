@@ -1,10 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 import { z } from 'zod';
+
+import { notification } from '@vendyx/ui';
 
 import { useLogin } from '../../hooks/use-login';
 
 export const useLoginForm = () => {
+  const navigate = useNavigate();
+
   const { isLoading, login } = useLogin();
 
   const form = useForm<FormInput>({
@@ -15,8 +20,15 @@ export const useLoginForm = () => {
     }
   });
 
-  const onSubmit = (data: FormInput) => {
-    login(data);
+  const onSubmit = async (data: FormInput) => {
+    const result = await login(data);
+
+    if (!result.isSuccess) {
+      notification.error(result.error);
+      return;
+    }
+
+    navigate('/shops');
   };
 
   return {
