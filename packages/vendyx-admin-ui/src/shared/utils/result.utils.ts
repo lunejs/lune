@@ -1,4 +1,4 @@
-export type ActionResult<T> =
+export type ActionResult<T = string> =
   | {
       isSuccess: true;
     }

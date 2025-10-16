@@ -13,7 +13,7 @@ export const useRemoveProductButton = () => {
     const { isSuccess } = await removeProducts([id]);
 
     if (!isSuccess) {
-      failure('Failed to remove products');
+      failure('Failed to remove product');
       return;
     }
 

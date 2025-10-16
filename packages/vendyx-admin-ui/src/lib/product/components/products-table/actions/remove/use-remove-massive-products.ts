@@ -13,10 +13,14 @@ export const useRemoveMassiveProducts = () => {
   const exec = async (ids: string[]) => {
     loading('Removing...');
 
-    const { isSuccess } = await removeProducts(ids);
+    const prevRowSelection = table.getState().rowSelection;
+    table.resetRowSelection();
 
-    if (!isSuccess) {
-      failure('Failed to remove products');
+    const result = await removeProducts(ids);
+
+    if (!result.isSuccess) {
+      table.setRowSelection(prevRowSelection);
+      failure(result.error);
       return;
     }
 

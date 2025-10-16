@@ -8,10 +8,10 @@ export const useArchiveProductButton = () => {
   const exec = async (id: string) => {
     loading('Archiving...');
 
-    const { isSuccess } = await archiveProduct(id);
+    const result = await archiveProduct(id);
 
-    if (!isSuccess) {
-      failure('Failed to archive the product');
+    if (!result.isSuccess) {
+      failure(result.error);
       return;
     }
 
