@@ -1,13 +1,23 @@
 import { useState } from 'react';
-import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
+import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, LogOutIcon, Trash2Icon } from 'lucide-react';
 
 import {
   Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  H4,
+  Muted,
+  Small
 } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
@@ -18,6 +28,7 @@ import { RemoveProduct } from './remove/remove-product';
 export const ProductActions = ({ product }: Props) => {
   const [isRemoveProductOpen, setRemoveProductOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+  const [isTranslateOpen, setIsTranslateOpen] = useState(false);
 
   return (
     <>
@@ -28,7 +39,7 @@ export const ProductActions = ({ product }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsTranslateOpen(true)}>
             <LanguagesIcon /> Translate
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -49,6 +60,28 @@ export const ProductActions = ({ product }: Props) => {
         product={product}
       />
       <ArchiveProduct isOpen={isArchiveOpen} setIsOpen={setIsArchiveOpen} product={product} />
+      <Dialog isOpen={isTranslateOpen} setIsOpen={setIsTranslateOpen}>
+        <DialogContent
+          className="max-w-[calc(100%-2rem)]! h-[calc(100%-2rem)]! p-0 "
+          showCloseButton={false}
+        >
+          <DialogHeader className="rounded-t-md h-fit border-b flex flex-row items-center justify-between bg-input/30">
+            <DialogClose className="flex items-center gap-4 h-full w-fit p-4 cursor-pointer rounded-tl-lg transition-colors">
+              <LogOutIcon size={16} className="rotate-180" /> <Small>Quit</Small>
+            </DialogClose>
+            <H4>Translate</H4>
+            <div className="flex items-center gap-2 mr-4">
+              <Button size={'sm'} variant={'outline'}>
+                Cancel
+              </Button>
+              <Button size={'sm'}>Save</Button>
+            </div>
+          </DialogHeader>
+          <div>
+            <h1>hiu</h1>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

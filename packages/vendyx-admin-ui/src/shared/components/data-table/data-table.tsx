@@ -9,6 +9,7 @@ import {
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
+import { LoaderIcon } from 'lucide-react';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@vendyx/ui';
 
@@ -17,7 +18,7 @@ import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
-  const { columns, data, totalRows, defaultPagination } = props;
+  const { columns, data, totalRows, defaultPagination, isLoading } = props;
 
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
@@ -65,23 +66,32 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map(row => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
+              {isLoading && (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
+                  <TableCell colSpan={columns.length} className="h-24">
+                    <div className="w-full flex justify-center">
+                      <LoaderIcon className="text-muted-foreground animate-spin" />
+                    </div>
                   </TableCell>
                 </TableRow>
               )}
+              {table.getRowModel().rows?.length && !isLoading
+                ? table.getRowModel().rows.map(row => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                : !isLoading && (
+                    <TableRow>
+                      <TableCell colSpan={columns.length} className="h-24 text-center">
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
             </TableBody>
           </Table>
         </div>
@@ -99,6 +109,7 @@ export type DataTableProps<TData, TValue> = {
   totalRows: number;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
+  isLoading: boolean;
   defaultPagination?: { page?: number; pageSize?: number };
   actions?: React.ReactNode;
   filters?: DataTableFilter[];

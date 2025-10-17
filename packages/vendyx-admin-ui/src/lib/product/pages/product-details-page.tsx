@@ -10,10 +10,8 @@ export const ProductDetailsPage = () => {
 
   const { isLoading, product } = useGetProduct(params.id ?? '');
 
-  if (isLoading) return <h1>Loading</h1>;
-
   return (
-    <PageLayout className="max-w-[900px] mx-auto w-full">
+    <PageLayout className="max-w-[900px] mx-auto w-full" isLoading={isLoading}>
       <ProductDetails product={product} />
     </PageLayout>
   );

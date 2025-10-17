@@ -17,6 +17,7 @@ export const ProductsTable = () => {
 
   return (
     <DataTable
+      isLoading={isLoading}
       data={products}
       columns={ProductsTableColumns}
       onSearch={async q => onUpdate({ search: q })}
