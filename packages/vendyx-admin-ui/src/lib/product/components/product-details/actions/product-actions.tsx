@@ -1,22 +1,19 @@
 import { useState } from 'react';
 import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, LogOutIcon, Trash2Icon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import {
   Button,
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   H4,
-  Muted,
   Small
 } from '@vendyx/ui';
 
@@ -39,9 +36,11 @@ export const ProductActions = ({ product }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setIsTranslateOpen(true)}>
-            <LanguagesIcon /> Translate
-          </DropdownMenuItem>
+          <Link to={`/translate/products/${product.id}`}>
+            <DropdownMenuItem>
+              <LanguagesIcon /> Translate
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsArchiveOpen(true)}>
             <ArchiveIcon /> Archive

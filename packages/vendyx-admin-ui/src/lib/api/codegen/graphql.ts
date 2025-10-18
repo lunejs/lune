@@ -772,6 +772,17 @@ export type CommonProductFragment = {
   assets: { items: { id: string; source: string; order: number }[] };
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
+export type CommonListProductFragment = {
+  id: string;
+  createdAt: any;
+  name: string;
+  slug: string;
+  enabled: boolean;
+  minSalePrice: number;
+  variants: { items: { id: string; sku?: string | null; stock: number; salePrice: number }[] };
+  assets: { items: { id: string; source: string }[] };
+} & { ' $fragmentName'?: 'CommonListProductFragment' };
+
 export type GetProductsQueryVariables = Exact<{
   input?: InputMaybe<ProductListInput>;
 }>;
@@ -780,18 +791,7 @@ export type GetProductsQuery = {
   products: {
     count: number;
     pageInfo: { total: number };
-    items: {
-      id: string;
-      createdAt: any;
-      name: string;
-      slug: string;
-      enabled: boolean;
-      minSalePrice: number;
-      variants: {
-        items: { id: string; sku?: string | null; stock: number; salePrice: number }[];
-      };
-      assets: { items: { id: string; source: string }[] };
-    }[];
+    items: { ' $fragmentRefs'?: { CommonListProductFragment: CommonListProductFragment } }[];
   };
 };
 
@@ -1055,6 +1055,85 @@ export const CommonProductFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonProductFragment, unknown>;
+export const CommonListProductFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListProduct' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Product' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'minSalePrice' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'variants' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'sku' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'stock' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'salePrice' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonListProductFragment, unknown>;
 export const CommonShopFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -1349,70 +1428,81 @@ export const GetProductsDocument = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
+                      { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonListProduct' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListProduct' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Product' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'minSalePrice' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'variants' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'minSalePrice' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'variants' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'items' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'sku' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'stock' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'salePrice' } }
-                                ]
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'assets' },
-                        arguments: [
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'input' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'take' },
-                                  value: { kind: 'IntValue', value: '1' }
-                                }
-                              ]
-                            }
-                          }
-                        ],
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'items' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'source' } }
-                                ]
-                              }
-                            }
-                          ]
-                        }
-                      }
+                      { kind: 'Field', name: { kind: 'Name', value: 'sku' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'stock' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'salePrice' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
                     ]
                   }
                 }

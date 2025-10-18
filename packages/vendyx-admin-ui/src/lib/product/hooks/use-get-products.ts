@@ -1,9 +1,10 @@
 import { useGqlQuery } from '@/lib/api/fetchers/use-gql-query';
 import {
+  COMMON_LIST_PRODUCT_FRAGMENT,
   GET_ALL_PRODUCTS_QUERY,
   GET_PRODUCTS_EXISTS
 } from '@/lib/api/operations/product.operations';
-import type { ProductListInput } from '@/lib/api/types';
+import { getFragmentData, type ProductListInput } from '@/lib/api/types';
 
 import { ProductCacheKeys } from '../constants/cache-keys';
 
@@ -18,7 +19,8 @@ export const useGetProducts = (input?: ProductListInput) => {
     { key: [ProductCacheKeys.ProductsCount] }
   );
 
-  const products = data?.products?.items;
+  const products =
+    data?.products?.items.map(p => getFragmentData(COMMON_LIST_PRODUCT_FRAGMENT, p)) ?? [];
 
   return {
     products,
