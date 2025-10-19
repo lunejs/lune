@@ -11,9 +11,19 @@ export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
     options {
       id
       name
+      translations {
+        id
+        locale
+        name
+      }
       values {
         id
         name
+        translations {
+          id
+          locale
+          name
+        }
       }
     }
     translations {

@@ -1,5 +1,5 @@
 import { ChevronDownIcon, LogOutIcon } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 import {
   Button,
@@ -11,14 +11,16 @@ import {
   Small
 } from '@vendyx/ui';
 
+import { useBack } from '@/shared/hooks/use-back';
+
 export const TranslateHeader = () => {
-  const navigate = useNavigate();
+  const { back } = useBack();
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center justify-between p-4">
         <button
-          onClick={() => navigate(-1)}
+          onClick={back}
           className="group flex items-center w-fit gap-3 p-1 cursor-pointer h-full transition-colors"
         >
           <LogOutIcon size={16} className="rotate-180" />{' '}

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, LogOutIcon, Trash2Icon } from 'lucide-react';
-import { Link } from 'react-router';
 
 import {
   Button,
@@ -18,11 +17,14 @@ import {
 } from '@vendyx/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
+import { useBack } from '@/shared/hooks/use-back';
 
 import { ArchiveProduct } from './archive/archive-product';
 import { RemoveProduct } from './remove/remove-product';
 
 export const ProductActions = ({ product }: Props) => {
+  const { goto } = useBack();
+
   const [isRemoveProductOpen, setRemoveProductOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isTranslateOpen, setIsTranslateOpen] = useState(false);
@@ -36,11 +38,10 @@ export const ProductActions = ({ product }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <Link to={`/translate/products/${product.id}`}>
-            <DropdownMenuItem>
-              <LanguagesIcon /> Translate
-            </DropdownMenuItem>
-          </Link>
+          <DropdownMenuItem onClick={() => goto(`/translate/products/${product.id}`)}>
+            <LanguagesIcon /> Translate
+          </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsArchiveOpen(true)}>
             <ArchiveIcon /> Archive

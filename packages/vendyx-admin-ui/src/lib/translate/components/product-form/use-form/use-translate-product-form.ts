@@ -7,27 +7,22 @@ import { type CommonProductForTranslationFragment, Locale } from '@/lib/api/type
 import { useAddProductTranslation } from '@/lib/product/hooks/use-add-product-translation';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
+import { buildProductTranslateFormDefaultValues as buildDefaultValues } from './default-values';
+
 export const useTranslateProductForm = (product: CommonProductForTranslationFragment) => {
   const { loading, success, failure } = useLoadingNotification();
   const { addProductTranslation } = useAddProductTranslation();
-  const translation = product.translations.find(t => t.locale === Locale.En);
 
-  const form = useForm<FormValues>({
+  const form = useForm<TranslateProductFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name: translation?.name ?? '',
-      description: translation?.description ?? ''
-    }
+    defaultValues: buildDefaultValues(product, Locale.En)
   });
 
   useEffect(() => {
-    form.reset({
-      name: translation?.name ?? '',
-      description: translation?.description ?? ''
-    });
+    form.reset(buildDefaultValues(product, Locale.En));
   }, [product]);
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: TranslateProductFormValues) => {
     loading('Saving...');
 
     const result = await addProductTranslation(product.id, { ...values, locale: Locale.En });
@@ -56,9 +51,15 @@ const schema = z.object({
       id: z.string(),
       name: z.string().optional()
     })
+  ),
+  optionValues: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().optional()
+    })
   )
 });
 
-type FormValues = z.infer<typeof schema>;
+export type TranslateProductFormValues = z.infer<typeof schema>;
 
-export const useTranslateProductFormContext = () => useFormContext<FormValues>();
+export const useTranslateProductFormContext = () => useFormContext<TranslateProductFormValues>();

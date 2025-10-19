@@ -2,7 +2,9 @@ import { createProductLocalizationLoader } from '@/api/storefront/loaders/produc
 import type { Transaction } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
+import { createOptionTranslationsLoader } from './option-translations.loader';
 import { createOptionValuesLoader } from './option-values.loader';
+import { createOptionValuesTranslationsLoader } from './option-values-translations.loader';
 import { createProductAssetsLoader } from './product-asset.loader';
 import { createProductOptionsLoader } from './product-options.loader';
 import { createProductTagsLoader } from './product-tags.loader';
@@ -26,7 +28,11 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       optionValues: createVariantOptionValuesLoader(trx)
     },
     option: {
-      values: createOptionValuesLoader(trx)
+      values: createOptionValuesLoader(trx),
+      translations: createOptionTranslationsLoader(trx)
+    },
+    optionValues: {
+      translations: createOptionValuesTranslationsLoader(trx)
     }
   };
 };

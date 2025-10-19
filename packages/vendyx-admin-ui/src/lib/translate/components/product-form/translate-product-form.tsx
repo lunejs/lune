@@ -1,12 +1,10 @@
 import { ChevronDownIcon, Languages } from 'lucide-react';
-import { Fragment } from 'react/jsx-runtime';
 
 import {
   Button,
   Card,
   CardContent,
   CardTitle,
-  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -17,8 +15,7 @@ import {
   TableBody
 } from '@vendyx/ui';
 
-import type { CommonProductForTranslationFragment } from '@/lib/api/types';
-import { isFirst, isLast } from '@/shared/utils/arrays.utils';
+import { type CommonProductForTranslationFragment } from '@/lib/api/types';
 
 import { TranslateFormCell } from '../form/translate-form-cell';
 import { TranslateFormHeader } from '../form/translate-form-header';
@@ -27,7 +24,9 @@ import { TranslateFormSeparator } from '../form/translate-form-separator';
 import { TranslateInput } from '../form/translate-input';
 import { TranslateTextarea } from '../form/translate-textarea';
 
-import { useTranslateProductForm } from './use-translate-product-form';
+import { TranslateOptions } from './options/translate-product-options';
+import { TranslateProductFormSubmitButton } from './submit-button/translate-product-form-submit-button';
+import { useTranslateProductForm } from './use-form/use-translate-product-form';
 
 export const TranslateProductForm = ({ product }: Props) => {
   const form = useTranslateProductForm(product);
@@ -56,7 +55,7 @@ export const TranslateProductForm = ({ product }: Props) => {
                 <DropdownMenuItem>German</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button disabled={!form.formState.isDirty || form.formState.isSubmitting}>Save</Button>
+            <TranslateProductFormSubmitButton product={product} />
           </div>
         </header>
         <div className="p-4">
@@ -82,28 +81,7 @@ export const TranslateProductForm = ({ product }: Props) => {
 
                   <TranslateFormSeparator text="Options" />
 
-                  {product.options.map(option => (
-                    <Fragment key={option.id}>
-                      <TranslateFormRow>
-                        <TranslateFormCell>Option name</TranslateFormCell>
-                        <TranslateFormCell isDisabled>{option.name}</TranslateFormCell>
-                        <TranslateInput defaultValue={''} />
-                      </TranslateFormRow>
-
-                      {option.values.map((value, i) => (
-                        <TranslateFormRow
-                          key={value.id}
-                          className={cn(!isLast(i, option.values) && 'border-0!')}
-                        >
-                          <TranslateFormCell>{isFirst(i) && 'Option Values'}</TranslateFormCell>
-                          <TranslateFormCell className="border-b" isDisabled>
-                            {value.name}
-                          </TranslateFormCell>
-                          <TranslateInput defaultValue={''} className="border-b" />
-                        </TranslateFormRow>
-                      ))}
-                    </Fragment>
-                  ))}
+                  <TranslateOptions product={product} />
                 </TableBody>
               </Table>
             </CardContent>

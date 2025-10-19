@@ -7,14 +7,13 @@ import { TranslateList } from '../components/list/translate-list';
 import { TranslateProductForm } from '../components/product-form/translate-product-form';
 
 export const TranslateProductsPage = () => {
-  const { id } = useTranslateProductsPageParams();
+  const { id } = useParams() as TranslatePageParams;
 
   const { product } = useGetProductForTranslation(id);
-  console.log({ product });
 
   return (
-    <div className="bg-sidebar min-h-screen p-4">
-      <div className="bg-background h-full rounded-xl overflow-hidden">
+    <div className="bg-sidebar min-h-screen flex p-4">
+      <div className="bg-background rounded-xl overflow-hidden">
         <TranslateHeader />
         <main className="flex h-full">
           <TranslateList />
@@ -25,4 +24,4 @@ export const TranslateProductsPage = () => {
   );
 };
 
-export const useTranslateProductsPageParams = () => useParams() as { id: string };
+export type TranslatePageParams = { id: string };

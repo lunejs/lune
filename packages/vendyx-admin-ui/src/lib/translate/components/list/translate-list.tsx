@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ListFilterIcon } from 'lucide-react';
+import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { Button, InputGroup } from '@vendyx/ui';
@@ -8,12 +9,12 @@ import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 
-import { useTranslateProductsPageParams } from '../../pages/translate-products-page';
+import { type TranslatePageParams } from '../../pages/translate-products-page';
 
 import { TranslateListItem } from './item/translate-list-item';
 
 export const TranslateList = () => {
-  const { id } = useTranslateProductsPageParams();
+  const { id } = useParams() as TranslatePageParams;
   const [query, setQuery] = useState('');
 
   const { products, isLoading, isRefetching, refetch } = useGetProducts({

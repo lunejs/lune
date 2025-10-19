@@ -72,4 +72,5 @@ input PriceRange {
 enum Locale {
   en
   es
+  fr
 }

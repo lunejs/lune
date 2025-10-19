@@ -156,7 +156,8 @@ export type ListInput = {
 
 export enum Locale {
   En = 'en',
-  Es = 'es'
+  Es = 'es',
+  Fr = 'fr'
 }
 
 export type Mutation = {

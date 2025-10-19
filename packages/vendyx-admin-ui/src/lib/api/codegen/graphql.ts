@@ -26,6 +26,8 @@ export type AddProductTranslationInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   locale: Locale;
   name?: InputMaybe<Scalars['String']['input']>;
+  optionValues?: InputMaybe<OptionValueTranslationInput[]>;
+  options?: InputMaybe<OptionTranslationInput[]>;
 };
 
 export type Asset = Node & {
@@ -152,7 +154,8 @@ export type ListInput = {
 
 export enum Locale {
   En = 'en',
-  Es = 'es'
+  Es = 'es',
+  Fr = 'fr'
 }
 
 export type Mutation = {
@@ -282,6 +285,7 @@ export type Option = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   order: Scalars['Int']['output'];
+  translations: OptionTranslation[];
   updatedAt: Scalars['Date']['output'];
   values: OptionValue[];
 };
@@ -292,6 +296,19 @@ export type OptionList = List & {
   pageInfo: PageInfo;
 };
 
+export type OptionTranslation = {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionTranslationInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type OptionValue = Node & {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
@@ -299,6 +316,7 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
+  translations: OptionValueTranslation[];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -308,6 +326,19 @@ export type OptionValueMetadata = {
 
 export type OptionValueMetadataInput = {
   color?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OptionValueTranslation = {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionValueTranslationInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum OrderBy {
@@ -752,7 +783,16 @@ export type CommonProductForTranslationFragment = {
   description?: string | null;
   slug: string;
   enabled: boolean;
-  options: { id: string; name: string; values: { id: string; name: string }[] }[];
+  options: {
+    id: string;
+    name: string;
+    translations: { id: string; locale: Locale; name?: string | null }[];
+    values: {
+      id: string;
+      name: string;
+      translations: { id: string; locale: Locale; name?: string | null }[];
+    }[];
+  }[];
   translations: {
     name?: string | null;
     slug?: string | null;
@@ -981,12 +1021,36 @@ export const CommonProductForTranslationFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 {
                   kind: 'Field',
+                  name: { kind: 'Name', value: 'translations' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'locale' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                },
+                {
+                  kind: 'Field',
                   name: { kind: 'Name', value: 'values' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'translations' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'locale' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                          ]
+                        }
+                      }
                     ]
                   }
                 }
@@ -1911,12 +1975,36 @@ export const GetProductForTranslationDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 {
                   kind: 'Field',
+                  name: { kind: 'Name', value: 'translations' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'locale' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                },
+                {
+                  kind: 'Field',
                   name: { kind: 'Name', value: 'values' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'translations' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'locale' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                          ]
+                        }
+                      }
                     ]
                   }
                 }
