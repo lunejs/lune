@@ -1,5 +1,5 @@
-import { Transaction } from '@/persistence/connection';
-import {
+import type { Transaction } from '@/persistence/connection';
+import type {
   ProductTranslation,
   ProductTranslationTable
 } from '@/persistence/entities/product-translation';

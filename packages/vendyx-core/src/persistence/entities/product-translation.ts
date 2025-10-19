@@ -1,5 +1,5 @@
-import { ID, VendyxEntity, VendyxTable } from './entity';
-import { Locale } from './locale';
+import type { ID, VendyxEntity, VendyxTable } from './entity';
+import type { Locale } from './locale';
 
 /**
  * A product translation is a localized version of a product's fields

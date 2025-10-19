@@ -24,6 +24,8 @@ export type AddProductTranslationInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   locale: Locale;
   name?: InputMaybe<Scalars['String']['input']>;
+  optionValues?: InputMaybe<Array<OptionValueTranslationInput>>;
+  options?: InputMaybe<Array<OptionTranslationInput>>;
 };
 
 export type Asset = Node & {
@@ -71,7 +73,6 @@ export type CreateOptionInput = {
 };
 
 export type CreateOptionValueInput = {
-  metadata: OptionValueMetadataInput;
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
 };
@@ -306,6 +307,7 @@ export type Option = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   order: Scalars['Int']['output'];
+  translations: Array<OptionTranslation>;
   updatedAt: Scalars['Date']['output'];
   values: Array<OptionValue>;
 };
@@ -317,6 +319,20 @@ export type OptionList = List & {
   pageInfo: PageInfo;
 };
 
+export type OptionTranslation = {
+  __typename?: 'OptionTranslation';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionTranslationInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type OptionValue = Node & {
   __typename?: 'OptionValue';
   createdAt: Scalars['Date']['output'];
@@ -325,6 +341,7 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
+  translations: Array<OptionValueTranslation>;
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -340,6 +357,20 @@ export type OptionValueMetadata = {
 
 export type OptionValueMetadataInput = {
   color?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OptionValueTranslation = {
+  __typename?: 'OptionValueTranslation';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionValueTranslationInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export enum OrderBy {
@@ -652,7 +683,6 @@ export type UpdateOptionValueInput = {
    * If not, the value will be created and add it to the option
    */
   id?: InputMaybe<Scalars['ID']['input']>;
-  metadata?: InputMaybe<OptionValueMetadataInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -906,10 +936,14 @@ export type ResolversTypes = {
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
   OptionList: ResolverTypeWrapper<OptionList>;
+  OptionTranslation: ResolverTypeWrapper<OptionTranslation>;
+  OptionTranslationInput: OptionTranslationInput;
   OptionValue: ResolverTypeWrapper<OptionValue>;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: ResolverTypeWrapper<OptionValueMetadata>;
   OptionValueMetadataInput: OptionValueMetadataInput;
+  OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
+  OptionValueTranslationInput: OptionValueTranslationInput;
   OrderBy: OrderBy;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   PriceRange: PriceRange;
@@ -984,10 +1018,14 @@ export type ResolversParentTypes = {
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
   OptionList: OptionList;
+  OptionTranslation: OptionTranslation;
+  OptionTranslationInput: OptionTranslationInput;
   OptionValue: OptionValue;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: OptionValueMetadata;
   OptionValueMetadataInput: OptionValueMetadataInput;
+  OptionValueTranslation: OptionValueTranslation;
+  OptionValueTranslationInput: OptionValueTranslationInput;
   PageInfo: PageInfo;
   PriceRange: PriceRange;
   Product: Product;
@@ -1107,6 +1145,7 @@ export type OptionResolvers<ContextType = ExecutionContext, ParentType extends R
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['OptionTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   values?: Resolver<Array<ResolversTypes['OptionValue']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1119,6 +1158,15 @@ export type OptionListResolvers<ContextType = ExecutionContext, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type OptionTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionTranslation'] = ResolversParentTypes['OptionTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type OptionValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValue'] = ResolversParentTypes['OptionValue']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1126,12 +1174,22 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   option?: Resolver<ResolversTypes['Option'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['OptionValueTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type OptionValueMetadataResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueMetadata'] = ResolversParentTypes['OptionValueMetadata']> = {
   color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type OptionValueTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueTranslation'] = ResolversParentTypes['OptionValueTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1331,8 +1389,10 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Node?: NodeResolvers<ContextType>;
   Option?: OptionResolvers<ContextType>;
   OptionList?: OptionListResolvers<ContextType>;
+  OptionTranslation?: OptionTranslationResolvers<ContextType>;
   OptionValue?: OptionValueResolvers<ContextType>;
   OptionValueMetadata?: OptionValueMetadataResolvers<ContextType>;
+  OptionValueTranslation?: OptionValueTranslationResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductList?: ProductListResolvers<ContextType>;

@@ -1,4 +1,4 @@
-import { ProductTranslation, ProductTranslationTable } from '../entities/product-translation';
+import type { ProductTranslation, ProductTranslationTable } from '../entities/product-translation';
 
 import { Serializer } from './serializer';
 

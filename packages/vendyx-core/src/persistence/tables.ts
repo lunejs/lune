@@ -12,5 +12,7 @@ export const enum Tables {
   Tag = 'tag',
   VariantAsset = 'variant_asset',
   VariantOptionValue = 'variant_option_value',
-  Asset = 'asset'
+  Asset = 'asset',
+  OptionTranslation = 'option_translation',
+  OptionValueTranslation = 'option_value_translation'
 }

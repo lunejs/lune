@@ -59,6 +59,18 @@ input AddProductTranslationInput {
   locale: Locale!
   name: String
   description: String
+  options: [OptionTranslationInput!]
+  optionValues: [OptionValueTranslationInput!]
+}
+
+input OptionTranslationInput {
+  id: ID!
+  name: String
+}
+
+input OptionValueTranslationInput {
+  id: ID!
+  name: String
 }
 
 input ProductListInput {

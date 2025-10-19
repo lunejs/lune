@@ -13,6 +13,8 @@ import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
 import type { Product } from '@/persistence/entities/product';
+import type { OptionTranslationRepository } from '@/persistence/repositories/option-translation-repository/option-translation.repository';
+import type { OptionValueTranslationRepository } from '@/persistence/repositories/option-value-translation-repository/option-value-translation.repository';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import type { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
@@ -21,10 +23,14 @@ import { hasValue } from '@/utils/array';
 export class ProductService {
   private repository: ProductRepository;
   private translationRepository: ProductTranslationRepository;
+  private optionTranslationRepository: OptionTranslationRepository;
+  private optionValueTranslationRepository: OptionValueTranslationRepository;
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.product;
     this.translationRepository = ctx.repositories.productTranslation;
+    this.optionTranslationRepository = ctx.repositories.optionTranslation;
+    this.optionValueTranslationRepository = ctx.repositories.optionValueTranslation;
   }
 
   async find(input?: ProductListInput) {
@@ -93,6 +99,42 @@ export class ProductService {
   }
 
   async addTranslation(id: ID, input: AddProductTranslationInput) {
+    if (input.options?.length) {
+      await Promise.all([
+        input.options.map(opt =>
+          this.optionTranslationRepository.upsert({
+            where: { optionId: opt.id, locale: input.locale as unknown as Locale },
+            create: {
+              locale: input.locale as unknown as Locale,
+              optionId: opt.id,
+              name: opt.name
+            },
+            update: {
+              name: opt.name
+            }
+          })
+        )
+      ]);
+    }
+
+    if (input.optionValues?.length) {
+      await Promise.all([
+        input.optionValues.map(opv =>
+          this.optionValueTranslationRepository.upsert({
+            where: { optionValueId: opv.id, locale: input.locale as unknown as Locale },
+            create: {
+              locale: input.locale as unknown as Locale,
+              optionValueId: opv.id,
+              name: opv.name
+            },
+            update: {
+              name: opv.name
+            }
+          })
+        )
+      ]);
+    }
+
     return await this.translationRepository.upsert({
       where: { productId: id, locale: input.locale as unknown as Locale },
       create: {

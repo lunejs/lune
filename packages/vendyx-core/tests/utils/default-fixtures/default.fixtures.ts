@@ -2,7 +2,9 @@ import { Tables } from '@/persistence/tables';
 
 import { DefaultAssetFixture } from './asset.fixture';
 import { DefaultOptionFixture } from './option.fixture';
+import { DefaultOptionTranslationFixture } from './option-translation.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
+import { DefaultOptionValueTranslationFixture } from './option-value-translation.fixture';
 import { DefaultProductFixture } from './product.fixture';
 import { DefaultProductAssetFixture } from './product-asset.fixture';
 import { DefaultProductOptionFixture } from './product-option.fixture';
@@ -29,5 +31,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.ProductAsset]: DefaultProductAssetFixture,
   [Tables.ProductTranslation]: DefaultProductTranslationFixture,
   [Tables.ProductOption]: DefaultProductOptionFixture,
-  [Tables.VariantAsset]: DefaultVariantAssetFixture
+  [Tables.VariantAsset]: DefaultVariantAssetFixture,
+  [Tables.OptionTranslation]: DefaultOptionTranslationFixture,
+  [Tables.OptionValueTranslation]: DefaultOptionValueTranslationFixture
 };

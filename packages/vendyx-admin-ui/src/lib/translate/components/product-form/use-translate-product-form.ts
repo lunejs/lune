@@ -50,7 +50,13 @@ export const useTranslateProductForm = (product: CommonProductForTranslationFrag
 
 const schema = z.object({
   name: z.string().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  options: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().optional()
+    })
+  )
 });
 
 type FormValues = z.infer<typeof schema>;

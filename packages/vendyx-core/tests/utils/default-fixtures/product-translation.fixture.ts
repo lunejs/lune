@@ -1,4 +1,4 @@
-import { ProductTranslationTable } from '@/persistence/entities/product-translation';
+import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 
 export const DefaultProductTranslationFixture = (): ProductTranslationTable => ({
   id: crypto.randomUUID(),

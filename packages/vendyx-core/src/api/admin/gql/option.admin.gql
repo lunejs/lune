@@ -1,9 +1,29 @@
+type OptionTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String
+  locale: Locale!
+}
+
+type OptionValueTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String
+  locale: Locale!
+}
+
 extend type Option {
   order: Int!
+
+  translations: [OptionTranslation!]!
 }
 
 extend type OptionValue {
   order: Int!
+
+  translations: [OptionValueTranslation!]!
 }
 
 type Mutation {
