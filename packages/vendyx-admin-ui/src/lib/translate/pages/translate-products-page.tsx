@@ -25,3 +25,5 @@ export const TranslateProductsPage = () => {
 };
 
 export type TranslatePageParams = { id: string };
+
+// add field resolvers for fields in option for translations (like in product where you hve for name, description and slug)

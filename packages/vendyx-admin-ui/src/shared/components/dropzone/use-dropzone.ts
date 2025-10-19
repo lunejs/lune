@@ -41,7 +41,7 @@ export const useDropzone = (
       onFilesChange(newFiles.map(f => f.file));
       setSelected(newFiles);
     } else {
-      const newFiles = files.filter(_file => _file.id !== file.id);
+      const newFiles = selected.filter(_file => _file.id !== file.id);
 
       onFilesChange(newFiles.map(f => f.file));
       setSelected(newFiles);
