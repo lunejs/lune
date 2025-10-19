@@ -1,0 +1,1 @@
+export const TYPING_DEBOUNCE_DELAY = 300;

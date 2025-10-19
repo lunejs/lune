@@ -12,6 +12,7 @@ export * from './command';
 export * from './dialog';
 export * from './dropdown-menu';
 export * from './input';
+export * from './input-group';
 export * from './label';
 export * from './phone-input';
 export * from './popover';

@@ -1,5 +1,37 @@
 import { graphql } from '../codegen';
 
+export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
+  fragment CommonProductForTranslation on Product {
+    id
+    createdAt
+    name
+    description
+    slug
+    enabled
+    options {
+      id
+      name
+      values {
+        id
+        name
+      }
+    }
+    translations {
+      name
+      slug
+      description
+      locale
+    }
+    assets(input: { take: 1 }) {
+      items {
+        id
+        source
+        order
+      }
+    }
+  }
+`);
+
 export const COMMON_PRODUCT_FRAGMENT = graphql(`
   fragment CommonProduct on Product {
     id
@@ -109,6 +141,14 @@ export const GET_PRODUCT_BY_ID_QUERY = graphql(`
   }
 `);
 
+export const GET_PRODUCT_BY_ID_FOR_TRANSLATION_QUERY = graphql(`
+  query GetProductForTranslation($id: ID) {
+    product(id: $id) {
+      ...CommonProductForTranslation
+    }
+  }
+`);
+
 export const CREATE_PRODUCT_MUTATION = graphql(`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {
@@ -128,5 +168,13 @@ export const UPDATE_PRODUCT_MUTATION = graphql(`
 export const REMOVE_PRODUCT_MUTATION = graphql(`
   mutation RemoveProducts($ids: [ID!]!) {
     softRemoveProducts(ids: $ids)
+  }
+`);
+
+export const ADD_TRANSLATION_TO_PRODUCT = graphql(`
+  mutation AddProductTranslationMutation($id: ID!, $input: AddProductTranslationInput!) {
+    addProductTranslation(id: $id, input: $input) {
+      id
+    }
   }
 `);
