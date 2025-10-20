@@ -46,10 +46,10 @@ export const ProductsTableColumns: ColumnDef<TableProduct>[] = [
           />
         ) : (
           <>
-            <ImagePlaceholder initial={row.original.name} />
+            <ImagePlaceholder initial={row.original.name} className="flex-shrink-0" />
           </>
         )}
-        <span className="text-nowrap">{row.original.name}</span>
+        <span className="">{row.original.name}</span>
       </Link>
     ),
     enableSorting: false,

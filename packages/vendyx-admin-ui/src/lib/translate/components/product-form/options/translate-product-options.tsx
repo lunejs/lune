@@ -6,8 +6,7 @@ import { cn } from '@vendyx/ui';
 import { type CommonProductForTranslationFragment, Locale } from '@/lib/api/types';
 import { isFirst, isLast } from '@/shared/utils/arrays.utils';
 
-import { TranslateFormCell } from '../../form/translate-form-cell';
-import { TranslateFormRow } from '../../form/translate-form-row';
+import { TranslateFormRowData } from '../../form/translate-form-row-data';
 import { TranslateInput } from '../../form/translate-input';
 import {
   type TranslateProductFormValues,
@@ -19,12 +18,11 @@ export const TranslateOptions = ({ product }: Props) => {
 
   const values = useWatch({ defaultValue: form.formState.defaultValues });
 
-  return product.options.map(option => (
+  return product.options.map((option, optionIdx) => (
     <Fragment key={option.id}>
-      <TranslateFormRow>
-        <TranslateFormCell>Option name</TranslateFormCell>
-        <TranslateFormCell isDisabled>{option.name}</TranslateFormCell>
+      <TranslateFormRowData key={option.id} field="Option name" reference={option.name}>
         <TranslateInput
+          label="English"
           onChange={e => {
             const value = e.target.value;
             const translation = option.translations.find(t => t.locale === Locale.En);
@@ -56,16 +54,29 @@ export const TranslateOptions = ({ product }: Props) => {
             form.formState.defaultValues?.options?.find(o => o?.id === option.id)?.name ?? ''
           }
         />
-      </TranslateFormRow>
+      </TranslateFormRowData>
 
       {option.values.map((value, i) => (
-        <TranslateFormRow key={value.id} className={cn(!isLast(i, option.values) && 'border-0!')}>
-          <TranslateFormCell>{isFirst(i) && 'Option Values'}</TranslateFormCell>
-          <TranslateFormCell className={cn(!isLast(i, option.values) && 'border-b')} isDisabled>
-            {value.name}
-          </TranslateFormCell>
+        <TranslateFormRowData
+          key={value.id}
+          className={{
+            row: cn(
+              !isLast(i, option.values) && 'border-0!',
+              isLast(i, option.values) && isLast(optionIdx, product.options) && 'border-0!'
+            ),
+            referenceCell: cn(!isLast(i, option.values) && 'border-b')
+          }}
+          field={isFirst(i) ? 'Option Values' : null}
+          reference={value.name}
+        >
           <TranslateInput
-            className={cn(!isLast(i, option.values) && 'border-b')}
+            label="English"
+            className={cn(
+              !isLast(i, option.values) && 'border-b',
+              isLast(i, option.values) &&
+                isLast(optionIdx, product.options) &&
+                'ring-0! lg:[&:has(input:focus-visible)]:ring-primary/50! lg:[&:has(input:focus-visible)]:ring-[1px]!'
+            )}
             onChange={e => {
               const query = e.target.value;
               const translation = value.translations.find(t => t.locale === Locale.En);
@@ -100,7 +111,50 @@ export const TranslateOptions = ({ product }: Props) => {
               ''
             }
           />
-        </TranslateFormRow>
+        </TranslateFormRowData>
+        // <TranslateFormRow key={value.id} className={cn(!isLast(i, option.values) && 'border-0!')}>
+        //   <TranslateFormCell>{isFirst(i) && 'Option Values'}</TranslateFormCell>
+        //   <TranslateFormCell className={cn(!isLast(i, option.values) && 'border-b')} isDisabled>
+        //     {value.name}
+        //   </TranslateFormCell>
+        //   <TranslateInput
+        //     label="English"
+        //     className={cn(!isLast(i, option.values) && 'border-b')}
+        //     onChange={e => {
+        //       const query = e.target.value;
+        //       const translation = value.translations.find(t => t.locale === Locale.En);
+
+        //       if (!query && !translation) {
+        //         const newOptionValues = values.optionValues?.filter(o => o?.id !== value.id) ?? [];
+        //         form.setValue(
+        //           'optionValues',
+        //           newOptionValues as TranslateProductFormValues['optionValues']
+        //         );
+        //         return;
+        //       }
+
+        //       const isPresent = values.optionValues?.find(op => op?.id === value.id);
+        //       const mappedOptionValues = values.optionValues?.map(opv =>
+        //         opv?.id === value.id ? { ...opv, name: query } : opv
+        //       );
+        //       const optionValuesWithNew = [
+        //         ...(values.optionValues ?? []),
+        //         { id: value.id, name: query }
+        //       ];
+
+        //       form.setValue(
+        //         'optionValues',
+        //         (isPresent
+        //           ? mappedOptionValues
+        //           : optionValuesWithNew) as TranslateProductFormValues['optionValues']
+        //       );
+        //     }}
+        //     defaultValue={
+        //       form.formState.defaultValues?.optionValues?.find(opv => opv?.id === value.id)?.name ??
+        //       ''
+        //     }
+        //   />
+        // </TranslateFormRow>
       ))}
     </Fragment>
   ));

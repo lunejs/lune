@@ -22,7 +22,11 @@ export const TranslateProductFormSubmitButton = ({ product }: Props) => {
   const isDirty =
     optionsHasChanged || optionValuesHasChanged || generalHasChanged || form.formState.isSubmitting;
 
-  return <Button disabled={!isDirty}>Save</Button>;
+  return (
+    <Button disabled={!isDirty} className="w-full sm:w-auto">
+      Save
+    </Button>
+  );
 };
 
 type Props = {

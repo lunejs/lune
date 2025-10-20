@@ -13,10 +13,10 @@ export const TranslateProductsPage = () => {
 
   return (
     <div className="bg-sidebar min-h-screen flex p-4">
-      <div className="bg-background rounded-xl overflow-hidden">
+      <div className="bg-background rounded-xl overflow-hidden w-full">
         <TranslateHeader />
         <main className="flex h-full">
-          <TranslateList />
+          <TranslateList className="hidden lg:flex" />
           {product && <TranslateProductForm product={product} />}
         </main>
       </div>
@@ -26,4 +26,5 @@ export const TranslateProductsPage = () => {
 
 export type TranslatePageParams = { id: string };
 
+//
 // add field resolvers for fields in option for translations (like in product where you hve for name, description and slug)

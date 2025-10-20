@@ -10,7 +10,7 @@ export const ProductDetailsHeader = () => {
 
   return (
     <header className="flex items-center justify-between">
-      <H1 className="font-bold text-2xl">{product ? product.name : 'Add product'}</H1>
+      <H1 className="font-bold text-2xl text-left">{product ? product.name : 'Add product'}</H1>
       <div className="flex items-center gap-2">
         {product && <ProductActions product={product} />}
         <ProductSubmitButton />
