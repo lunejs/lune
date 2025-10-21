@@ -16,5 +16,7 @@ export const enum Tables {
   OptionTranslation = 'option_translation',
   OptionValueTranslation = 'option_value_translation',
   Collection = 'collection',
-  CollectionTranslation = 'collection_translation'
+  CollectionTranslation = 'collection_translation',
+  CollectionProduct = 'collection_product',
+  CollectionAsset = 'collection_asset'
 }
