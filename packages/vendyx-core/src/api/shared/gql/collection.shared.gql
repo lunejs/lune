@@ -1,0 +1,73 @@
+"""
+A collection is a group of products that are displayed together in the storefront.
+"""
+type Collection implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The collection's name
+  """
+  name: String!
+  """
+  The collection's slug used in the URL
+  """
+  slug: String!
+  """
+  The collection's description
+  """
+  description: String
+  """
+  Whether the collection is enabled or not.
+  Not enabled collections are not exposed to the storefront API but are visible in the admin ui.
+  Useful for collections that are not published by now but they planned to be published in the future.
+  """
+  enabled: Boolean!
+  """
+  The collection's content type indicating if the collection contains products or other collections
+  """
+  contentType: CollectionContentType!
+
+  parentCollection: Collection
+
+  assets(input: ListInput): AssetList!
+  products(input: ProductListInput): ProductList!
+  subCollections(input: CollectionListInput): CollectionList!
+}
+
+type CollectionList implements List {
+  items: [Collection!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  collection(id: ID, slug: String): Collection
+}
+
+enum CollectionContentType {
+  PRODUCTS
+  COLLECTIONS
+}
+
+input CollectionListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: CollectionFilters
+}
+
+input CollectionFilters {
+  name: StringFilter
+}

@@ -1,0 +1,57 @@
+extend type Collection {
+  order: Int!
+  translations: [CollectionTranslation!]!
+}
+
+type CollectionTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String
+  slug: String
+  description: String
+  locale: Locale!
+}
+
+type Mutation {
+  createCollection(input: CreateCollectionInput!): Collection!
+  updateCollection(id: ID!, input: UpdateCollectionInput!): Collection!
+  removeCollection(ids: [ID!]!): Boolean!
+  addCollectionTranslation(id: ID!, input: CollectionTranslationInput!): Collection!
+}
+
+type Query {
+  collections(input: CollectionListInput): CollectionList!
+}
+
+input CollectionTranslationInput {
+  locale: Locale!
+  name: String
+  description: String
+}
+
+input CreateCollectionInput {
+  name: String!
+  description: String
+  enabled: Boolean
+  contentType: CollectionContentType!
+  products: [ID!]
+  assets: [AssetInEntity!]
+  subCollections: [ID!]
+  order: Int
+}
+
+input UpdateCollectionInput {
+  name: String
+  description: String
+  enabled: Boolean
+  products: [ID!]
+  assets: [AssetInEntity!]
+  subCollections: [ID!]
+  order: Int
+}
+
+extend input CollectionFilters {
+  enabled: BooleanFilter
+  contentType: CollectionContentType
+}

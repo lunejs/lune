@@ -66,6 +66,107 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** A collection is a group of products that are displayed together in the storefront. */
+export type Collection = Node & {
+  __typename?: 'Collection';
+  assets: AssetList;
+  /** The collection's content type indicating if the collection contains products or other collections */
+  contentType: CollectionContentType;
+  createdAt: Scalars['Date']['output'];
+  /** The collection's description */
+  description?: Maybe<Scalars['String']['output']>;
+  /**
+   * Whether the collection is enabled or not.
+   * Not enabled collections are not exposed to the storefront API but are visible in the admin ui.
+   * Useful for collections that are not published by now but they planned to be published in the future.
+   */
+  enabled: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  /** The collection's name */
+  name: Scalars['String']['output'];
+  order: Scalars['Int']['output'];
+  parentCollection?: Maybe<Collection>;
+  products: ProductList;
+  /** The collection's slug used in the URL */
+  slug: Scalars['String']['output'];
+  subCollections: CollectionList;
+  translations: Array<CollectionTranslation>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionAssetsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionProductsArgs = {
+  input?: InputMaybe<ProductListInput>;
+};
+
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionSubCollectionsArgs = {
+  input?: InputMaybe<CollectionListInput>;
+};
+
+export enum CollectionContentType {
+  Collections = 'COLLECTIONS',
+  Products = 'PRODUCTS'
+}
+
+export type CollectionFilters = {
+  contentType?: InputMaybe<CollectionContentType>;
+  enabled?: InputMaybe<BooleanFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type CollectionList = List & {
+  __typename?: 'CollectionList';
+  count: Scalars['Int']['output'];
+  items: Array<Collection>;
+  pageInfo: PageInfo;
+};
+
+export type CollectionListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CollectionFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CollectionTranslation = {
+  __typename?: 'CollectionTranslation';
+  createdAt: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type CollectionTranslationInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  locale: Locale;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateCollectionInput = {
+  assets?: InputMaybe<Array<AssetInEntity>>;
+  contentType: CollectionContentType;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  order?: InputMaybe<Scalars['Int']['input']>;
+  products?: InputMaybe<Array<Scalars['ID']['input']>>;
+  subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -162,7 +263,9 @@ export enum Locale {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addCollectionTranslation: Collection;
   addProductTranslation: ProductTranslation;
+  createCollection: Collection;
   createOption: Array<Option>;
   createProduct: Product;
   /** Create a new shop */
@@ -176,11 +279,13 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
+  removeCollection: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
+  updateCollection: Collection;
   updateOption: Option;
   updateProduct: Product;
   /** Update an existing shop details */
@@ -192,9 +297,20 @@ export type Mutation = {
 };
 
 
+export type MutationAddCollectionTranslationArgs = {
+  id: Scalars['ID']['input'];
+  input: CollectionTranslationInput;
+};
+
+
 export type MutationAddProductTranslationArgs = {
   id: Scalars['ID']['input'];
   input: AddProductTranslationInput;
+};
+
+
+export type MutationCreateCollectionArgs = {
+  input: CreateCollectionInput;
 };
 
 
@@ -235,6 +351,11 @@ export type MutationGenerateUserAccessTokenArgs = {
 };
 
 
+export type MutationRemoveCollectionArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
+
 export type MutationRemoveTagsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
@@ -257,6 +378,12 @@ export type MutationSoftRemoveProductsArgs = {
 
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateCollectionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
 };
 
 
@@ -495,6 +622,8 @@ export type ProductTranslation = {
 
 export type Query = {
   __typename?: 'Query';
+  collection?: Maybe<Collection>;
+  collections: CollectionList;
   product?: Maybe<Product>;
   products: ProductList;
   /**
@@ -514,6 +643,17 @@ export type Query = {
   variant?: Maybe<Variant>;
   /** Get user in session */
   whoami?: Maybe<User>;
+};
+
+
+export type QueryCollectionArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryCollectionsArgs = {
+  input?: InputMaybe<CollectionListInput>;
 };
 
 
@@ -670,6 +810,16 @@ export type TagResult = {
   __typename?: 'TagResult';
   apiErrors: Array<TagErrorResult>;
   tag?: Maybe<Tag>;
+};
+
+export type UpdateCollectionInput = {
+  assets?: InputMaybe<Array<AssetInEntity>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
+  products?: InputMaybe<Array<Scalars['ID']['input']>>;
+  subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type UpdateOptionInput = {
@@ -900,8 +1050,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( OptionList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Option ) | ( OptionValue ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant );
+  List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  Node: ( Asset ) | ( Collection ) | ( Option ) | ( OptionValue ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -914,6 +1064,14 @@ export type ResolversTypes = {
   AssetType: AssetType;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   BooleanFilter: BooleanFilter;
+  Collection: ResolverTypeWrapper<Collection>;
+  CollectionContentType: CollectionContentType;
+  CollectionFilters: CollectionFilters;
+  CollectionList: ResolverTypeWrapper<CollectionList>;
+  CollectionListInput: CollectionListInput;
+  CollectionTranslation: ResolverTypeWrapper<CollectionTranslation>;
+  CollectionTranslationInput: CollectionTranslationInput;
+  CreateCollectionInput: CreateCollectionInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
   CreateProductInput: CreateProductInput;
@@ -971,6 +1129,7 @@ export type ResolversTypes = {
   TagList: ResolverTypeWrapper<TagList>;
   TagListInput: TagListInput;
   TagResult: ResolverTypeWrapper<TagResult>;
+  UpdateCollectionInput: UpdateCollectionInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateProductInput: UpdateProductInput;
@@ -997,6 +1156,13 @@ export type ResolversParentTypes = {
   AssetList: AssetList;
   Boolean: Scalars['Boolean']['output'];
   BooleanFilter: BooleanFilter;
+  Collection: Collection;
+  CollectionFilters: CollectionFilters;
+  CollectionList: CollectionList;
+  CollectionListInput: CollectionListInput;
+  CollectionTranslation: CollectionTranslation;
+  CollectionTranslationInput: CollectionTranslationInput;
+  CreateCollectionInput: CreateCollectionInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
   CreateProductInput: CreateProductInput;
@@ -1050,6 +1216,7 @@ export type ResolversParentTypes = {
   TagList: TagList;
   TagListInput: TagListInput;
   TagResult: TagResult;
+  UpdateCollectionInput: UpdateCollectionInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateProductInput: UpdateProductInput;
@@ -1084,6 +1251,42 @@ export type AssetListResolvers<ContextType = ExecutionContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CollectionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Collection'] = ResolversParentTypes['Collection']> = {
+  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<CollectionAssetsArgs>>;
+  contentType?: Resolver<ResolversTypes['CollectionContentType'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  parentCollection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType>;
+  products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<CollectionProductsArgs>>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subCollections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<CollectionSubCollectionsArgs>>;
+  translations?: Resolver<Array<ResolversTypes['CollectionTranslation']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollectionListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionList'] = ResolversParentTypes['CollectionList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Collection']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollectionTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionTranslation'] = ResolversParentTypes['CollectionTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CreateTagsResult'] = ResolversParentTypes['CreateTagsResult']> = {
   apiErrors?: Resolver<Array<ResolversTypes['TagErrorResult']>, ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
@@ -1106,14 +1309,16 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'OptionList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'OptionList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addCollectionTranslation?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
+  createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
@@ -1121,11 +1326,13 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
+  removeCollection?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionArgs, 'ids'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
+  updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
@@ -1135,7 +1342,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Option' | 'OptionValue' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Option' | 'OptionValue' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -1237,6 +1444,8 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 };
 
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
+  collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
   products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
   productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
@@ -1381,6 +1590,9 @@ export type VariantListResolvers<ContextType = ExecutionContext, ParentType exte
 export type Resolvers<ContextType = ExecutionContext> = {
   Asset?: AssetResolvers<ContextType>;
   AssetList?: AssetListResolvers<ContextType>;
+  Collection?: CollectionResolvers<ContextType>;
+  CollectionList?: CollectionListResolvers<ContextType>;
+  CollectionTranslation?: CollectionTranslationResolvers<ContextType>;
   CreateTagsResult?: CreateTagsResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Dimensions?: DimensionsResolvers<ContextType>;
