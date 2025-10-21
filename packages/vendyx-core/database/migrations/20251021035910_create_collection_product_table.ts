@@ -1,13 +1,13 @@
 import type { Knex } from 'knex';
 
-const TABLE_NAME = 'product_collection';
+const TABLE_NAME = 'collection_product';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable(TABLE_NAME, table => {
-    table.uuid('product_id').notNullable().references('id').inTable('product');
     table.uuid('collection_id').notNullable().references('id').inTable('collection');
+    table.uuid('product_id').notNullable().references('id').inTable('product');
 
-    table.primary(['product_id', 'collection_id']);
+    table.primary(['collection_id', 'product_id']);
   });
 }
 

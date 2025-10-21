@@ -1,5 +1,6 @@
-import { VendyxEntity, VendyxTable } from './entity';
+import type { VendyxEntity, VendyxTable } from './entity';
 
+// TODO: convert keys to PascalCase
 export enum AssetType {
   IMG = 'IMG',
   FILE = 'FILE'
