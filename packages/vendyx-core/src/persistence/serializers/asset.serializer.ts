@@ -1,4 +1,4 @@
-import { Asset, AssetTable } from '../entities/asset';
+import type { Asset, AssetTable } from '../entities/asset';
 
 import { Serializer } from './serializer';
 
