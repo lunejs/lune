@@ -14,5 +14,7 @@ export const enum Tables {
   VariantOptionValue = 'variant_option_value',
   Asset = 'asset',
   OptionTranslation = 'option_translation',
-  OptionValueTranslation = 'option_value_translation'
+  OptionValueTranslation = 'option_value_translation',
+  Collection = 'collection',
+  CollectionTranslation = 'collection_translation'
 }
