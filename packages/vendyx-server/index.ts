@@ -1,4 +1,9 @@
-import { VendyxServer } from '@vendyx/core';
+import {
+  AssetServerPlugin,
+  DefaultImageProcessor,
+  LocalStorageProvider,
+  VendyxServer,
+} from '@vendyx/core';
 import { config } from 'dotenv';
 
 config();
@@ -12,6 +17,11 @@ const vendyxServer = new VendyxServer({
   db: {
     url: process.env.DATABASE_URL ?? '',
   },
+  assets: {
+    imageProcessor: new DefaultImageProcessor(),
+    storageProvider: new LocalStorageProvider('http://localhost:4000'),
+  },
+  plugins: [new AssetServerPlugin()],
 });
 
 vendyxServer.start();

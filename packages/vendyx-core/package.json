@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsc --build build.tsconfig.json && tsc-alias && gulp -f ./scripts/post-build.ts postBuild",
+    "build": "rimraf dist && tsc -p build.tsconfig.json && tsc-alias && gulp -f ./scripts/post-build.ts postBuild",
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
     "start:dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
