@@ -1,9 +1,10 @@
-import { VendyxPlugin } from '@/plugin/vendyx.plugin';
+import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
 
-import { ImageProcessor } from './image-processor/image-processor';
-import { StorageProvider } from './storage/storage';
+import type { ImageProcessor } from './image-processor/image-processor';
+import type { StorageProvider } from './storage/storage';
 
 export interface VendyxConfig {
+  adminUIServeUrl: string;
   app: {
     port: number;
   };

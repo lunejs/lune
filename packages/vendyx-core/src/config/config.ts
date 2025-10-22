@@ -1,4 +1,4 @@
-import { VendyxConfig } from './vendyx.config';
+import type { VendyxConfig } from './vendyx.config';
 
 let config: VendyxConfig;
 

@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import express from 'express';
 
-import { VendyxPlugin } from '@/plugin/vendyx.plugin';
+import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
 
 /**
  * Asset server plugin
@@ -13,8 +13,9 @@ import { VendyxPlugin } from '@/plugin/vendyx.plugin';
  * You can customize the route and folder via options.
  */
 export class AssetServerPlugin implements VendyxPlugin {
-  private options: Required<Options>;
   name = 'AssetServerPlugin';
+
+  private options: Required<Options>;
 
   constructor(options?: Options) {
     this.options = this.getOptions(options);

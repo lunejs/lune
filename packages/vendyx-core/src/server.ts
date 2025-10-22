@@ -54,11 +54,12 @@ export class VendyxServer {
   }
 
   start() {
-    const port = getConfig().app.port;
+    const { app, adminUIServeUrl } = getConfig();
 
-    this.app.listen(port, () => {
-      Logger.ready('Server', `Admin API:   http://localhost:${port}/admin-api`);
-      Logger.ready('Server', `Storefront API:    http://localhost:${port}/storefront-api`);
+    this.app.listen(app.port, () => {
+      Logger.ready('Server', `Admin UI:    http://localhost:${app.port}${adminUIServeUrl}`);
+      Logger.ready('Server', `Admin API:   http://localhost:${app.port}/admin-api`);
+      Logger.ready('Server', `Storefront API:    http://localhost:${app.port}/storefront-api`);
     });
   }
 
@@ -71,10 +72,8 @@ export class VendyxServer {
     let newConfig = initialConfig;
 
     for (const plugin of plugins) {
-      const configFn = plugin.config;
-
-      if (configFn) {
-        newConfig = configFn(newConfig);
+      if (typeof plugin.config === 'function') {
+        newConfig = plugin.config(newConfig);
       }
     }
 

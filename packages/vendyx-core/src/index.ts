@@ -38,6 +38,7 @@ export * from './errors/vendyx.error';
  */
 export * from './config/image-processor/default-image-processor';
 export * from './config/image-processor/image-processor';
+export * from './config/plugins/admin-ui-server-plugin';
 export * from './config/plugins/asset-server-plugin';
 export * from './config/storage/local-storage-provider';
 export * from './config/storage/storage';
