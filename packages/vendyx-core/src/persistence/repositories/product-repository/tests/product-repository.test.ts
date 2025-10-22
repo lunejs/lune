@@ -1,11 +1,11 @@
-import { convertToCent } from '@vendyx/common';
+import { VendyxPrice } from '@vendyx/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
-import { Transaction } from '@/persistence/connection';
-import { ProductAssetTable } from '@/persistence/entities/product-asset';
-import { ProductOptionTable } from '@/persistence/entities/product-option';
-import { ProductTagTable } from '@/persistence/entities/product-tag';
-import { ProductTranslationTable } from '@/persistence/entities/product-translation';
+import type { Transaction } from '@/persistence/connection';
+import type { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { ProductOptionTable } from '@/persistence/entities/product-option';
+import type { ProductTagTable } from '@/persistence/entities/product-tag';
+import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
 import { TestHelper } from '@/tests/utils/test-helper';
 
@@ -104,7 +104,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: 23_000 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.minSalePrice >= convertToCent(23_000))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= VendyxPrice.toCent(23_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -112,7 +112,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { max: 10_000 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.maxSalePrice <= convertToCent(10_000))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= VendyxPrice.toCent(10_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -120,8 +120,8 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: 50, max: 500 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.minSalePrice >= convertToCent(50))).toBe(true);
-      expect(result.every(p => p.maxSalePrice <= convertToCent(500))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= VendyxPrice.toCent(50))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= VendyxPrice.toCent(500))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 

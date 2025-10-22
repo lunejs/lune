@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 
-import { convertToCent } from '@vendyx/common';
+import { VendyxPrice } from '@vendyx/common';
 
 import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
@@ -260,11 +260,11 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     }
 
     if (filters?.salePriceRange?.min) {
-      query.where('min_sale_price', '>=', convertToCent(filters.salePriceRange.min));
+      query.where('min_sale_price', '>=', VendyxPrice.toCent(filters.salePriceRange.min));
     }
 
     if (filters?.salePriceRange?.max) {
-      query.where('max_sale_price', '<=', convertToCent(filters.salePriceRange.max));
+      query.where('max_sale_price', '<=', VendyxPrice.toCent(filters.salePriceRange.max));
     }
 
     if (filters?.optionValues?.length) {

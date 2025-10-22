@@ -104,5 +104,3 @@ const getOptionsHasChanged = (
     return nameIsDifferent || valueContentIsDifferent;
   });
 };
-
-// TODO: La default variant del producto persiste, hay que checar eso

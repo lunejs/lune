@@ -1,4 +1,4 @@
-import { CollectionContentType, type CollectionTable } from '@/persistence/entities/collection';
+import { type CollectionTable } from '@/persistence/entities/collection';
 
 export const DefaultCollectionFixture = (): CollectionTable => ({
   id: crypto.randomUUID(),
@@ -7,7 +7,7 @@ export const DefaultCollectionFixture = (): CollectionTable => ({
   name: '',
   slug: crypto.randomUUID(),
   description: null,
-  content_type: CollectionContentType.Products,
+  content_type: 'PRODUCTS' as any,
   enabled: true,
   order: 0,
   shop_id: crypto.randomUUID()

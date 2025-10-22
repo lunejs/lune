@@ -1,5 +1,4 @@
 import type { CollectionTranslationTable } from '@/persistence/entities/collection-translation';
-import { Locale } from '@/persistence/entities/locale';
 
 export const DefaultCollectionTranslationFixture = (): CollectionTranslationTable => ({
   id: crypto.randomUUID(),
@@ -9,6 +8,6 @@ export const DefaultCollectionTranslationFixture = (): CollectionTranslationTabl
   slug: crypto.randomUUID(),
   description: null,
   collection_id: crypto.randomUUID(),
-  locale: Locale.EN,
+  locale: 'en' as any,
   shop_id: crypto.randomUUID()
 });
