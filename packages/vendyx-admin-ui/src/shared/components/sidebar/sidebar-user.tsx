@@ -15,18 +15,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@vendyx/ui';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../sidebar';
 
-export function User({
-  user
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+import { useWhoami } from '@/lib/user/hooks/use-whoami';
+
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from './sidebar';
+
+export const SidebarUser = () => {
   const { isMobile } = useSidebar();
+  const { user } = useWhoami();
 
   return (
     <SidebarMenu>
@@ -39,8 +35,8 @@ export function User({
             >
               <div className="text-foreground-primary-negative flex shrink-0 justify-center items-center bg-gradient-to-r from-orange-400 to-green-500 rounded-full w-6 h-6"></div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="text-muted-foreground truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">{user?.email}</span>
+                <span className="text-muted-foreground truncate text-xs">Admin</span>
               </div>
               <EllipsisVerticalIcon className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -54,12 +50,12 @@ export function User({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">RS</AvatarFallback>
+                  <AvatarImage src={''} alt={'Admin'} />
+                  <AvatarFallback className="rounded-lg">AD</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="text-muted-foreground truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">{user?.email}</span>
+                  <span className="text-muted-foreground truncate text-xs">Admin</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -88,4 +84,4 @@ export function User({
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};

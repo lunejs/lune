@@ -2,9 +2,9 @@ import { UploadIcon } from 'lucide-react';
 import { Fragment } from 'react/jsx-runtime';
 import { type Accept, useDropzone as useReactDropzone } from 'react-dropzone';
 
+import { isLast } from '@vendyx/common';
 import { Button, Label } from '@vendyx/ui';
 
-import { isLast } from '@/shared/utils/arrays.utils';
 import { getPreview } from '@/shared/utils/files.utils';
 
 import { DropzoneEmptyState } from './empty-state/dropzone-empty-state';

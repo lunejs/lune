@@ -1,4 +1,4 @@
-import { clean, isNumber, VendyxPrice } from '@vendyx/common';
+import { clean, isArray, isNumber, isTruthy, VendyxPrice } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';
@@ -7,7 +7,6 @@ import type { ID } from '@/persistence/entities/entity';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import { SortKey } from '@/persistence/repositories/repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
-import { hasValue } from '@/utils/array';
 
 export class VariantService {
   repository: VariantRepository;
@@ -102,7 +101,7 @@ export class VariantService {
   }
 
   private async removeMissingAssets(variantId: ID, newAssets: UpdateVariantInput['assets']) {
-    if (!Array.isArray(newAssets)) return;
+    if (!isArray(newAssets)) return;
 
     const assets = await this.repository.findAssets(variantId);
 
@@ -110,7 +109,7 @@ export class VariantService {
       .map(a => a.id)
       .filter(assetId => !newAssets.some(asset => asset.id === assetId))
       .map(assetToRemoveId => assets.find(a => a.id === assetToRemoveId))
-      .filter(hasValue);
+      .filter(isTruthy);
 
     await this.repository.removeAssets(
       variantId,
@@ -126,7 +125,7 @@ export class VariantService {
     variantId: string,
     newOptionValues: UpdateVariantInput['optionValues']
   ) {
-    if (!Array.isArray(newOptionValues)) return;
+    if (!isArray(newOptionValues)) return;
 
     const optionValues = await this.repository.findOptionValues(variantId);
 
@@ -134,7 +133,7 @@ export class VariantService {
       .map(a => a.id)
       .filter(optionValueId => !newOptionValues.some(opv => opv === optionValueId))
       .map(optionValueToRemoveId => optionValues.find(a => a.id === optionValueToRemoveId))
-      .filter(hasValue);
+      .filter(isTruthy);
 
     await this.repository.removeOptionValues(
       variantId,

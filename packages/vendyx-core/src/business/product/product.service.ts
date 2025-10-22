@@ -1,4 +1,4 @@
-import { clean } from '@vendyx/common';
+import { clean, isArray, isTruthy } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
@@ -18,7 +18,6 @@ import type { OptionValueTranslationRepository } from '@/persistence/repositorie
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import type { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
-import { hasValue } from '@/utils/array';
 
 export class ProductService {
   private repository: ProductRepository;
@@ -173,7 +172,7 @@ export class ProductService {
   }
 
   private async removeMissingAssets(productId: ID, newAssets: UpdateProductInput['assets']) {
-    if (!Array.isArray(newAssets)) return;
+    if (!isArray(newAssets)) return;
 
     const assets = await this.repository.findAssets(productId);
 
@@ -181,7 +180,7 @@ export class ProductService {
       .map(a => a.id)
       .filter(assetId => !newAssets.some(asset => asset.id === assetId))
       .map(assetToRemoveId => assets.find(a => a.id === assetToRemoveId))
-      .filter(hasValue);
+      .filter(isTruthy);
 
     await this.repository.removeAssets(
       productId,
@@ -194,7 +193,7 @@ export class ProductService {
   }
 
   private async removeMissingTags(productId: ID, newTags: UpdateProductInput['tags']) {
-    if (!Array.isArray(newTags)) return;
+    if (!isArray(newTags)) return;
 
     const tags = await this.repository.findTags(productId);
 
@@ -202,7 +201,7 @@ export class ProductService {
       .map(t => t.id)
       .filter(tagId => !newTags.some(tag => tag === tagId))
       .map(tagToRemoveId => tags.find(t => t.id === tagToRemoveId))
-      .filter(hasValue);
+      .filter(isTruthy);
 
     await this.repository.removeTags(tagsToRemove.map(tag => tag.id));
   }

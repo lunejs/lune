@@ -1,9 +1,8 @@
 import { type FC } from 'react';
 import { Trash2Icon } from 'lucide-react';
 
+import { isFirst, isLast } from '@vendyx/common';
 import { Button, Input, Label } from '@vendyx/ui';
-
-import { isFirst, isLast } from '@/shared/utils/arrays.utils';
 
 import type { VariantContext } from '../../variants/variants.context';
 

@@ -1,10 +1,10 @@
 import { Fragment } from 'react/jsx-runtime';
 import { useWatch } from 'react-hook-form';
 
+import { isFirst, isLast } from '@vendyx/common';
 import { cn } from '@vendyx/ui';
 
 import { type CommonProductForTranslationFragment, Locale } from '@/lib/api/types';
-import { isFirst, isLast } from '@/shared/utils/arrays.utils';
 
 import { TranslateFormRowData } from '../../form/translate-form-row-data';
 import { TranslateInput } from '../../form/translate-input';
@@ -112,49 +112,6 @@ export const TranslateOptions = ({ product }: Props) => {
             }
           />
         </TranslateFormRowData>
-        // <TranslateFormRow key={value.id} className={cn(!isLast(i, option.values) && 'border-0!')}>
-        //   <TranslateFormCell>{isFirst(i) && 'Option Values'}</TranslateFormCell>
-        //   <TranslateFormCell className={cn(!isLast(i, option.values) && 'border-b')} isDisabled>
-        //     {value.name}
-        //   </TranslateFormCell>
-        //   <TranslateInput
-        //     label="English"
-        //     className={cn(!isLast(i, option.values) && 'border-b')}
-        //     onChange={e => {
-        //       const query = e.target.value;
-        //       const translation = value.translations.find(t => t.locale === Locale.En);
-
-        //       if (!query && !translation) {
-        //         const newOptionValues = values.optionValues?.filter(o => o?.id !== value.id) ?? [];
-        //         form.setValue(
-        //           'optionValues',
-        //           newOptionValues as TranslateProductFormValues['optionValues']
-        //         );
-        //         return;
-        //       }
-
-        //       const isPresent = values.optionValues?.find(op => op?.id === value.id);
-        //       const mappedOptionValues = values.optionValues?.map(opv =>
-        //         opv?.id === value.id ? { ...opv, name: query } : opv
-        //       );
-        //       const optionValuesWithNew = [
-        //         ...(values.optionValues ?? []),
-        //         { id: value.id, name: query }
-        //       ];
-
-        //       form.setValue(
-        //         'optionValues',
-        //         (isPresent
-        //           ? mappedOptionValues
-        //           : optionValuesWithNew) as TranslateProductFormValues['optionValues']
-        //       );
-        //     }}
-        //     defaultValue={
-        //       form.formState.defaultValues?.optionValues?.find(opv => opv?.id === value.id)?.name ??
-        //       ''
-        //     }
-        //   />
-        // </TranslateFormRow>
       ))}
     </Fragment>
   ));

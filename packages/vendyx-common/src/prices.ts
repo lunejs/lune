@@ -53,7 +53,7 @@ export class VendyxPrice {
   static format(price: number) {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'USD'
     }).format(VendyxPrice.toDollar(price));
   }
 
@@ -135,7 +135,7 @@ export const convertToDollar = (price: number) => {
 export const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'USD'
   }).format(convertToDollar(price));
 };
 

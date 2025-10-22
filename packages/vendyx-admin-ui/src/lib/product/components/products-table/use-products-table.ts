@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { isArray } from '@/shared/utils/arrays.utils';
+import { isArray } from '@vendyx/common';
+
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetProducts } from '../../hooks/use-get-products';

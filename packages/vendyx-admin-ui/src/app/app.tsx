@@ -13,7 +13,7 @@ import { ProductsPage } from '@/lib/product/pages/products-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 import { TranslateProductsPage } from '@/lib/translate/pages/translate-products-page';
-import { AdminLayout } from '@/shared/components/layout/admin-layout';
+import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
 
 import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';

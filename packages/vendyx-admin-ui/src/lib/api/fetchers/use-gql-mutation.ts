@@ -2,6 +2,8 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import type { GraphQLError } from 'graphql';
 
+import { isArray } from '@vendyx/common';
+
 import { gqlFetcher } from './gql-fetcher';
 
 type ExtractRootField<T> = T extends Record<string, infer U> ? U : never;
@@ -39,7 +41,7 @@ export const useGqlMutation = <R extends Record<string, any>, V>(
 
       if (typeof result !== 'object') return result;
 
-      if (Array.isArray(result)) return result;
+      if (isArray(result)) return result;
 
       const { apiErrors, ...rest } = result;
 

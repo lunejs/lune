@@ -1,6 +1,7 @@
 import { Fragment } from 'react/jsx-runtime';
 import { Link, useLocation, useParams } from 'react-router';
 
+import { isFirst, isLast } from '@vendyx/common';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,8 +11,6 @@ import {
   BreadcrumbSeparator,
   cn
 } from '@vendyx/ui';
-
-import { isFirst, isLast } from '../utils/arrays.utils';
 
 export const AppBreadcrumb = () => {
   const { pathname } = useLocation();

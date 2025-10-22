@@ -1,4 +1,4 @@
-import { clean } from '@vendyx/common';
+import { clean, isArray } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
@@ -47,7 +47,7 @@ export class OptionService {
     const valuesToCreate = values?.filter(v => !v.id) ?? [];
     const valuesToUpdate = values?.filter(v => !!v.id) ?? [];
 
-    if (Array.isArray(values)) {
+    if (isArray(values)) {
       await this.removeMissingOptionValues(id, valuesToUpdate);
     }
 

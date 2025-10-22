@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router';
 
-import { SidebarInset, SidebarProvider } from '../sidebar';
+import { AppSidebar } from '../sidebar/app-sidebar';
+import { SidebarInset, SidebarProvider } from '../sidebar/sidebar';
 
-import { AppSidebar } from './app-sidebar';
-import { SiteHeader } from './header';
+import { AdminLayoutHeader } from './admin-layout-header';
 
 export const AdminLayout = () => {
   return (
@@ -18,7 +18,7 @@ export const AdminLayout = () => {
       <>
         <AppSidebar variant="inset" />
         <SidebarInset>
-          <SiteHeader />
+          <AdminLayoutHeader />
           {/* <div className={cn('p-4 lg:p-6 h-full', className)}>{children}</div> */}
           <Outlet />
         </SidebarInset>
