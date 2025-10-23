@@ -43,3 +43,8 @@ export * from './config/plugins/asset-server-plugin';
 export * from './config/storage/local-storage-provider';
 export * from './config/storage/storage';
 export * from './config/vendyx.config';
+
+/**
+ * Migrations
+ */
+export * from './migration/migration';

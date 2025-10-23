@@ -9,7 +9,13 @@ import { dest, parallel, src } from 'gulp';
 export const copySchemaToDistFolder = () => {
   const stream = src('../src/**/*.gql');
 
-  return stream.pipe(dest('../dist'));
+  return stream.pipe(dest('../dist/src'));
 };
 
-export const postBuild = parallel(copySchemaToDistFolder);
+export const copyDatabaseMigrationsToDistFolder = () => {
+  const stream = src('../database/**/*.ts');
+
+  return stream.pipe(dest('../dist/database'));
+};
+
+export const postBuild = parallel(copySchemaToDistFolder, copyDatabaseMigrationsToDistFolder);

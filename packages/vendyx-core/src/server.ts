@@ -22,7 +22,7 @@ export class VendyxServer {
 
     setConfig(pluginsConfig);
 
-    const { auth } = getConfig();
+    const { auth, db } = getConfig();
 
     this.app = express();
 
@@ -32,7 +32,7 @@ export class VendyxServer {
       })
     );
 
-    this.database = createConnection();
+    this.database = createConnection(db.url);
     const jwtService = new JwtService({ secretKey: auth.jwtSecret, expiresIn: auth.jwtExpiresIn });
 
     const adminApi = new AdminApi(this.database, jwtService);
@@ -53,7 +53,7 @@ export class VendyxServer {
     return this.app;
   }
 
-  start() {
+  async start() {
     const { app, adminUIServeUrl } = getConfig();
 
     this.app.listen(app.port, () => {

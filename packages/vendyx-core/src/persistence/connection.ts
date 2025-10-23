@@ -1,10 +1,7 @@
-import knex, { Knex } from 'knex';
+import type { Knex } from 'knex';
+import knex from 'knex';
 
-import { getConfig } from '@/config/config';
-
-export const createConnection = (): Database => {
-  const { url } = getConfig().db;
-
+export const createConnection = (url: string): Database => {
   return knex({
     client: 'pg',
     connection: url
