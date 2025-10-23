@@ -1,6 +1,6 @@
 import { type DeepPartial } from 'react-hook-form';
 
-import type { ProductDetailsFormInput } from '../components/product-details/use-product-details-form';
+import type { ProductDetailsFormInput } from '../components/product-details/use-form/use-product-details-form';
 import type { VariantContext } from '../components/product-details/variants/variants.context';
 
 /**

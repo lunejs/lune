@@ -1,5 +1,3 @@
-import '@fontsource-variable/geist';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
@@ -17,8 +15,6 @@ import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
 
 import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';
-
-import './app.css';
 
 export const queryClient = new QueryClient({
   defaultOptions: {

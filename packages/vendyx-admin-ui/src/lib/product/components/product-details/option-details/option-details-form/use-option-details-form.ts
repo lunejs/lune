@@ -5,7 +5,7 @@ import { isUUID } from '@vendyx/common';
 
 import { generateVariants } from '@/lib/product/utils/variant.utils';
 
-import type { ProductDetailsFormInput } from '../../use-product-details-form';
+import type { ProductDetailsFormInput } from '../../use-form/use-product-details-form';
 import { useVariantContext, type VariantContext } from '../../variants/variants.context';
 
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {

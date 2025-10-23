@@ -1,8 +1,14 @@
 {
-  "name": "admin-ui",
+  "name": "@vendyx/admin-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "start:dev": "vite",
     "build": "tsc -b && vite build",
@@ -27,8 +33,6 @@
     "graphql-request": "^7.2.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.525.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.63.0",
     "react-router": "^7.6.3",
@@ -58,9 +62,16 @@
     "globals": "^16.3.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

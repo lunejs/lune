@@ -30,6 +30,10 @@ export class AdminUiServerPlugin implements VendyxPlugin {
 
   register(app: express.Application): void {
     app.use(this.adminUIServeUrl, express.static(join(process.cwd(), this.options.folder)));
+
+    app.get('*', (req, res) => {
+      res.sendFile(join(process.cwd(), this.options.folder, 'index.html'));
+    });
   }
 
   private getOptions(option?: Options): Required<Options> {
