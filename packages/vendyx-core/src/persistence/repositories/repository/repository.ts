@@ -34,12 +34,13 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
 
   async findOne(input: FindOneOptions<T>): Promise<T | undefined> {
     try {
-      const query = this.trx(this.tableName).where(this.serializer.serialize(input.where)).first();
-      this.applyDeletedAtClause(query);
+      const query = this.trx(this.tableName).where(this.serializer.serialize(input.where));
+
+      if (!input.withDeleted) this.applyDeletedAtClause(query);
 
       if (input.fields) query.select(this.serializer.serializeFields(input.fields));
 
-      const result = await query;
+      const result = await query.first();
 
       return result ? (this.serializer.deserialize(result) as T) : undefined;
     } catch (error) {
@@ -184,6 +185,7 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
 type FindOneOptions<T> = {
   where: Where<T>;
   fields?: Fields<T>;
+  withDeleted?: boolean;
 };
 
 type FindManyOptions<T> = {

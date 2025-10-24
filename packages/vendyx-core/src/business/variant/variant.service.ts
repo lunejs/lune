@@ -163,9 +163,11 @@ export class VariantService {
   }
 
   private async getProductIdFromVariant(variantId: ID) {
+    console.log({ variantIdFormMethod: variantId });
     const productFromVariant = await this.repository.findOne({
       where: { id: variantId },
-      fields: ['productId']
+      fields: ['productId'],
+      withDeleted: true
     });
 
     return productFromVariant?.productId as ID;

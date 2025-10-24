@@ -4,6 +4,7 @@ import { TestImageProcessor } from './config/test-image-processor';
 import { TestStorageProvider } from './config/test-storage-provider';
 
 export const TEST_VENDYX_CONFIG: VendyxConfig = {
+  adminUIServeUrl: '/',
   app: {
     port: 4000
   },

@@ -98,6 +98,15 @@ describe('Repository', () => {
 
       expect(result).toBeUndefined();
     });
+
+    test('returns deleted records when withDeleted is true', async () => {
+      const result = await repository.findOne({
+        where: { email: 'taylor@swift.com' },
+        withDeleted: true
+      });
+
+      expect(result).toBeDefined();
+    });
   });
 
   describe('findMany', () => {
