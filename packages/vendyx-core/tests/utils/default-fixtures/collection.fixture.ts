@@ -5,6 +5,7 @@ export const DefaultCollectionFixture = (): CollectionTable => ({
   created_at: new Date(),
   updated_at: new Date(),
   name: '',
+  parent_id: null,
   slug: crypto.randomUUID(),
   description: null,
   content_type: 'PRODUCTS' as any,

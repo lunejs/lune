@@ -1,4 +1,4 @@
-import type { VendyxEntity, VendyxTable } from './entity';
+import type { ID, VendyxEntity, VendyxTable } from './entity';
 
 export enum CollectionContentType {
   Products = 'PRODUCTS',
@@ -36,6 +36,10 @@ export interface Collection extends VendyxEntity {
    * The collection's order
    */
   order: number;
+  /**
+   * The parent collection who this collection belongs to
+   */
+  parentId?: ID | null;
 }
 
 export interface CollectionTable extends VendyxTable {
@@ -45,5 +49,6 @@ export interface CollectionTable extends VendyxTable {
   enabled: boolean;
   content_type: CollectionContentType;
   order: number;
-  shop_id: string;
+  shop_id: ID;
+  parent_id?: ID | null;
 }

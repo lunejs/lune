@@ -53,7 +53,6 @@ describe('Product repository', () => {
   });
 
   afterEach(async () => {
-    await trx.rollback();
     await testHelper.resetDatabase();
   });
 
