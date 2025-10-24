@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { Logger } from '@/logger';
 
-import { StorageProvider, UploadOptions } from './storage';
+import type { StorageProvider, UploadOptions } from './storage';
 
 const UPLOAD_DIRNAME = 'uploads';
 const UPLOAD_DIR = join(process.cwd(), UPLOAD_DIRNAME);

@@ -163,7 +163,6 @@ export class VariantService {
   }
 
   private async getProductIdFromVariant(variantId: ID) {
-    console.log({ variantIdFormMethod: variantId });
     const productFromVariant = await this.repository.findOne({
       where: { id: variantId },
       fields: ['productId'],

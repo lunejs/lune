@@ -9,7 +9,6 @@ export const TranslateTextarea = ({ className, label, ...rest }: Props) => {
     <TableCell
       onClick={() => {
         document.getElementById(id)?.focus();
-        console.log('click');
       }}
       className={cn(
         'cursor-text align-top h-full p-0 [&:has(textarea:focus-visible)]:ring-primary/50 [&:has(textarea:focus-visible)]:ring-[1px]',
