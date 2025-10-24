@@ -1,8 +1,8 @@
 import DataLoader from 'dataloader';
 
-import { Transaction } from '@/persistence/connection';
-import { Locale } from '@/persistence/entities/locale';
-import {
+import type { Transaction } from '@/persistence/connection';
+import type { Locale } from '@/persistence/entities/locale';
+import type {
   ProductTranslation,
   ProductTranslationTable
 } from '@/persistence/entities/product-translation';

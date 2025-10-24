@@ -1,8 +1,8 @@
-import { ExecutionContext } from '@/api/shared/context/types';
-import { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
 import { getProductLocalizedField } from '@/api/shared/utils/get-localized-field';
-import { Product } from '@/persistence/entities/product';
+import type { Product } from '@/persistence/entities/product';
 
 export const ProductFieldResolver: GraphqlApiResolver = {
   Product: {

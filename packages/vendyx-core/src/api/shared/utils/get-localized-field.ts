@@ -1,15 +1,34 @@
-import { Product } from '@/persistence/entities/product';
+import type { VendyxEntity } from '@/persistence/entities/entity';
+import type { Option } from '@/persistence/entities/option';
+import type { Product } from '@/persistence/entities/product';
 
-import { ExecutionContext } from '../context/types';
+import type { ExecutionContext } from '../context/types';
 
 export const getProductLocalizedField = async (
   ctx: ExecutionContext,
   parent: Product,
   field: keyof Product
 ) => {
+  return getLocalizedField(ctx, parent, field, 'product');
+};
+
+export const getOptionLocalizedField = async (
+  ctx: ExecutionContext,
+  parent: Option,
+  field: keyof Option
+) => {
+  return getLocalizedField(ctx, parent, field, 'option');
+};
+
+const getLocalizedField = async <T extends VendyxEntity>(
+  ctx: ExecutionContext,
+  parent: T,
+  field: keyof T,
+  key: 'product' | 'option'
+) => {
   if (!ctx.storefront?.locale) return parent[field];
 
-  const translation = await ctx.loaders.product.localization.load(parent.id);
+  const translation = await ctx.loaders[key].localization.load(parent.id);
 
-  return translation?.[field] ?? parent[field];
+  return translation?.[field as any] ?? parent[field];
 };
