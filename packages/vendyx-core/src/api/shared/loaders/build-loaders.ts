@@ -1,4 +1,5 @@
 import { createOptionLocalizationLoader } from '@/api/storefront/loaders/option-localization.loader';
+import { createOptionValueLocalizationLoader } from '@/api/storefront/loaders/option-value-localization.loader copy';
 import { createProductLocalizationLoader } from '@/api/storefront/loaders/product-localization.loader';
 import type { Transaction } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
@@ -34,6 +35,7 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       translations: createOptionTranslationsLoader(trx)
     },
     optionValues: {
+      localization: createOptionValueLocalizationLoader(trx, locale),
       translations: createOptionValuesTranslationsLoader(trx)
     }
   };
