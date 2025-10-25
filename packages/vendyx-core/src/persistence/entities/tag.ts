@@ -1,4 +1,4 @@
-import { VendyxEntity, VendyxTable } from './entity';
+import type { VendyxEntity, VendyxTable } from './entity';
 
 /**
  * A tag is an arbitrary label which can be applied to certain entities.

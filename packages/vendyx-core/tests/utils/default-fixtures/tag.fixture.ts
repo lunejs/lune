@@ -1,4 +1,4 @@
-import { TagTable } from '@/persistence/entities/tag';
+import type { TagTable } from '@/persistence/entities/tag';
 
 export const DefaultTagFixture = (): TagTable => ({
   id: crypto.randomUUID(),

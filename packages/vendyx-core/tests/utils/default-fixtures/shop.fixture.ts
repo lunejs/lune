@@ -1,4 +1,4 @@
-import { ShopTable } from '@/persistence/entities/shop';
+import type { ShopTable } from '@/persistence/entities/shop';
 
 export const DefaultShopFixture = (): ShopTable => ({
   id: crypto.randomUUID(),

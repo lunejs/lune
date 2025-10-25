@@ -1,4 +1,4 @@
-import { VendyxEntity, VendyxTable } from './entity';
+import type { VendyxEntity, VendyxTable } from './entity';
 
 /**
  * A vendyx shop

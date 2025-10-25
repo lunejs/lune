@@ -1,9 +1,9 @@
-import { JwtService } from '@/libs/jwt';
-import { Transaction } from '@/persistence/connection';
-import { Locale } from '@/persistence/entities/locale';
-import { Repositories } from '@/persistence/repositories/build-repositories';
+import type { JwtService } from '@/libs/jwt';
+import type { Transaction } from '@/persistence/connection';
+import type { Locale } from '@/persistence/entities/locale';
+import type { Repositories } from '@/persistence/repositories/build-repositories';
 
-import { Loaders } from '../loaders/build-loaders';
+import type { Loaders } from '../loaders/build-loaders';
 
 export type ExecutionContext = {
   trx: Transaction;

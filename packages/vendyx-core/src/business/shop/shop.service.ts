@@ -1,10 +1,10 @@
 import { clean } from '@vendyx/common';
 
-import { ExecutionContext } from '@/api/shared/context/types';
-import { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { SortKey } from '@/persistence/repositories/repository';
-import { ShopRepository } from '@/persistence/repositories/shop-repository';
+import type { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { ApiKey } from '@/security/api-key/api-key';
 
 import { ShopEmailAlreadyExistsError } from './shop.errors';

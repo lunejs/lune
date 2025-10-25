@@ -1,6 +1,10 @@
-import { ExecutionContext } from '@/api/shared/context/types';
+import type { ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
-import { MutationCreateShopArgs, QueryShopArgs, QueryShopsArgs } from '@/api/shared/types/graphql';
+import type {
+  MutationCreateShopArgs,
+  QueryShopArgs,
+  QueryShopsArgs
+} from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { ShopService } from '@/business/shop/shop.service';
 import { isErrorResult } from '@/utils/error-result';

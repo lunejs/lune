@@ -1,4 +1,4 @@
-import { UserTable } from '@/persistence/entities/user';
+import type { UserTable } from '@/persistence/entities/user';
 
 export const DefaultUserFixture = (): UserTable => ({
   id: crypto.randomUUID(),

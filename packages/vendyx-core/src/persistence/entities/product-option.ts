@@ -1,4 +1,4 @@
-import { ID } from './entity';
+import type { ID } from './entity';
 
 export interface ProductOption {
   productId: ID;

@@ -1,6 +1,6 @@
-import { CurrentUser, ExecutionContext } from '@/api/shared/context/types';
+import type { CurrentUser, ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
-import {
+import type {
   MutationCreateUserArgs,
   MutationGenerateUserAccessTokenArgs
 } from '@/api/shared/types/graphql';

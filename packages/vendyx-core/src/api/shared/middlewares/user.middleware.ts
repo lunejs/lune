@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
-import { ExecutionContext } from '../context/types';
+import type { ExecutionContext } from '../context/types';
 
 export const userMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const ctx = res.locals.context as ExecutionContext;

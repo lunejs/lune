@@ -1,5 +1,5 @@
-import { Transaction } from '@/persistence/connection';
-import { Asset, AssetTable } from '@/persistence/entities/asset';
+import type { Transaction } from '@/persistence/connection';
+import type { Asset, AssetTable } from '@/persistence/entities/asset';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { Tables } from '@/persistence/tables';
 

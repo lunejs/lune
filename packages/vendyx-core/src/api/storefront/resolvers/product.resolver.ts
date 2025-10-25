@@ -1,8 +1,8 @@
 import { clean } from '@vendyx/common';
 
-import { ExecutionContext } from '@/api/shared/context/types';
-import { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { QueryProductArgs, QueryProductsArgs } from '@/api/shared/types/graphql';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import type { QueryProductArgs, QueryProductsArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { ProductService } from '@/business/product/product.service';
 

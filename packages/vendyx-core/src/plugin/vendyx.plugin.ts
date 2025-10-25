@@ -1,6 +1,6 @@
-import express from 'express';
+import type express from 'express';
 
-import { VendyxConfig } from '@/config/vendyx.config';
+import type { VendyxConfig } from '@/config/vendyx.config';
 
 /**
  * Vendyx plugin interface

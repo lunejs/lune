@@ -1,10 +1,10 @@
 import path from 'node:path';
 
-import { YogaInitialContext } from 'graphql-yoga';
+import type { YogaInitialContext } from 'graphql-yoga';
 
-import { JwtService } from '@/libs/jwt';
-import { Database } from '@/persistence/connection';
-import { Locale } from '@/persistence/entities/locale';
+import type { JwtService } from '@/libs/jwt';
+import type { Database } from '@/persistence/connection';
+import type { Locale } from '@/persistence/entities/locale';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
@@ -12,7 +12,7 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
-import { UserJWT } from '../shared/types/api.types';
+import type { UserJWT } from '../shared/types/api.types';
 
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { ProductResolver } from './resolvers/product.resolver';

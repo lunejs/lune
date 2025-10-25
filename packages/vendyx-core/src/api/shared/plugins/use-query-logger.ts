@@ -1,4 +1,4 @@
-import { Plugin } from 'graphql-yoga';
+import type { Plugin } from 'graphql-yoga';
 
 import { Logger } from '@/logger';
 

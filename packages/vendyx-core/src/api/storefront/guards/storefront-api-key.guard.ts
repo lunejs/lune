@@ -1,6 +1,6 @@
-import { ExecutionContext } from '@/api/shared/context/types';
+import type { ExecutionContext } from '@/api/shared/context/types';
 import { UnauthorizedError } from '@/api/shared/errors/api.errors';
-import { GraphQLFieldResolver } from '@/api/shared/graphql-api';
+import type { GraphQLFieldResolver } from '@/api/shared/graphql-api';
 
 export const UseStorefrontApiKeyGuard =
   (resolver: GraphQLFieldResolver) =>

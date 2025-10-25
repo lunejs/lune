@@ -1,6 +1,6 @@
-import { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
+import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 
 import { OptionValueConstants } from './option-value.fixtures';
 import { VariantConstants } from './variant.fixtures';

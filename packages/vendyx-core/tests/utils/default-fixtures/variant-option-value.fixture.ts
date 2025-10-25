@@ -1,4 +1,4 @@
-import { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
+import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 
 export const DefaultVariantOptionValueFixture = (): VariantOptionValueTable => ({
   variant_id: crypto.randomUUID(),

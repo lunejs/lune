@@ -1,4 +1,4 @@
-import { ProductTagTable } from '@/persistence/entities/product-tag';
+import type { ProductTagTable } from '@/persistence/entities/product-tag';
 
 export const DefaultProductTagFixture = (): ProductTagTable => ({
   product_id: crypto.randomUUID(),

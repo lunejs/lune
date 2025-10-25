@@ -1,6 +1,6 @@
-import { UserTable } from '@/persistence/entities/user';
+import type { UserTable } from '@/persistence/entities/user';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 export const UserConstants = {

@@ -1,9 +1,9 @@
-import { ExecutionContext } from '@/api/shared/context/types';
-import { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
-import { JwtService } from '@/libs/jwt';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
+import type { JwtService } from '@/libs/jwt';
 import { PasswordService } from '@/libs/password';
-import { ID } from '@/persistence/entities/entity';
-import { UserRepository } from '@/persistence/repositories/user-repository';
+import type { ID } from '@/persistence/entities/entity';
+import type { UserRepository } from '@/persistence/repositories/user-repository';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
 
 import {

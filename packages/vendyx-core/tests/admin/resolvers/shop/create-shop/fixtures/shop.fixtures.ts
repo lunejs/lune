@@ -1,6 +1,6 @@
-import { ShopTable } from '@/persistence/entities/shop';
+import type { ShopTable } from '@/persistence/entities/shop';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 
 import { UserConstants } from './user.fixtures';
 

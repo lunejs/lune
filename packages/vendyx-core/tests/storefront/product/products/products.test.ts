@@ -3,7 +3,7 @@ import request from 'supertest';
 import { convertToCent } from '@vendyx/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
-import { ProductTable } from '@/persistence/entities/product';
+import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';

@@ -1,8 +1,8 @@
-import { ID } from '@/persistence/entities/entity';
+import type { ID } from '@/persistence/entities/entity';
 import { UserSerializer } from '@/persistence/serializers/user.serializer';
 
-import { Transaction } from '../../connection';
-import { User, UserTable } from '../../entities/user';
+import type { Transaction } from '../../connection';
+import type { User, UserTable } from '../../entities/user';
 import { Tables } from '../../tables';
 import { Repository } from '../repository';
 import { RepositoryError } from '../repository.error';

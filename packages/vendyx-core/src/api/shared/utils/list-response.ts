@@ -1,4 +1,4 @@
-import { List, Node } from '@/api/shared/types/graphql';
+import type { List, Node } from '@/api/shared/types/graphql';
 
 export class ListResponse<T extends Node> implements List {
   constructor(

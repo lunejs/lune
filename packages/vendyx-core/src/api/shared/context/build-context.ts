@@ -1,13 +1,13 @@
-import { JwtService } from '@/libs/jwt';
+import type { JwtService } from '@/libs/jwt';
 import { Logger } from '@/logger';
-import { Database } from '@/persistence/connection';
+import type { Database } from '@/persistence/connection';
 import { buildRepositories } from '@/persistence/repositories/build-repositories';
 import { enableRLS, runWithoutRLS } from '@/persistence/rls';
 
 import { buildLoaders } from '../loaders/build-loaders';
-import { UserJWT } from '../types/api.types';
+import type { UserJWT } from '../types/api.types';
 
-import { ExecutionContext, StorefrontContext } from './types';
+import type { ExecutionContext, StorefrontContext } from './types';
 
 export async function buildContext(
   database: Database,

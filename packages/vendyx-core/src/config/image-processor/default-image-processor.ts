@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import sharp from 'sharp';
 
-import { ImageProcessor, ProcessFile, ProcessResult } from './image-processor';
+import type { ImageProcessor, ProcessFile, ProcessResult } from './image-processor';
 
 /**
  * @description

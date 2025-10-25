@@ -1,4 +1,4 @@
-import { Transaction } from './connection';
+import type { Transaction } from './connection';
 
 /**
  * @description

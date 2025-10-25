@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql';
-import { isAsyncIterable, Plugin } from 'graphql-yoga';
+import type { Plugin } from 'graphql-yoga';
+import { isAsyncIterable } from 'graphql-yoga';
 
 import { VendyxError } from '@/errors/vendyx.error';
 import { Logger } from '@/logger';

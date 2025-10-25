@@ -1,4 +1,4 @@
-import { Option, OptionTable } from '../entities/option';
+import type { Option, OptionTable } from '../entities/option';
 
 import { Serializer } from './serializer';
 

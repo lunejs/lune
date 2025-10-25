@@ -1,4 +1,4 @@
-import { Tag, TagTable } from '../entities/tag';
+import type { Tag, TagTable } from '../entities/tag';
 
 import { Serializer } from './serializer';
 

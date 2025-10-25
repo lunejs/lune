@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import type { NextFunction, Request, Response } from 'express';
+import { Router } from 'express';
 
 export abstract class RestApi {
   router = Router();

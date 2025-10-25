@@ -1,4 +1,4 @@
-import { User } from '@/persistence/entities/user';
+import type { User } from '@/persistence/entities/user';
 
 import { SerializeError } from '../serializer';
 

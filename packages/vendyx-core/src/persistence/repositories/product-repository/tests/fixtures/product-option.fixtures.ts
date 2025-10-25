@@ -1,6 +1,6 @@
-import { ProductOptionTable } from '@/persistence/entities/product-option';
+import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 
 import { OptionConstants } from './option.fixtures';
 import { ProductConstants } from './product.fixtures';

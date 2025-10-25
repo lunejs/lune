@@ -1,6 +1,6 @@
-import { ProductTranslationTable } from '@/persistence/entities/product-translation';
+import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ProductConstants } from './product.fixtures';

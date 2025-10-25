@@ -2,9 +2,9 @@ import { subMinutes } from 'date-fns';
 
 import { convertToCent } from '@vendyx/common';
 
-import { ProductTable } from '@/persistence/entities/product';
+import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { Fixture } from '@/tests/utils/fixtures';
+import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ShopConstants } from './shop.fixtures';

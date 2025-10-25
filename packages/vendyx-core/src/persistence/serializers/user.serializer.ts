@@ -1,4 +1,4 @@
-import { User, UserTable } from '@/persistence/entities/user';
+import type { User, UserTable } from '@/persistence/entities/user';
 
 import { Serializer } from './serializer';
 

@@ -1,4 +1,4 @@
-import { Shop, ShopTable } from '../entities/shop';
+import type { Shop, ShopTable } from '../entities/shop';
 
 import { Serializer } from './serializer';
 

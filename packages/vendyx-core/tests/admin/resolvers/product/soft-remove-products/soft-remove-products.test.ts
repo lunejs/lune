@@ -1,9 +1,9 @@
 import request from 'supertest';
 
-import { ID } from '@/index';
-import { OptionValueTable } from '@/persistence/entities/option_value';
-import { ProductTable } from '@/persistence/entities/product';
-import { ProductOptionTable } from '@/persistence/entities/product-option';
+import type { ID } from '@/index';
+import type { OptionValueTable } from '@/persistence/entities/option_value';
+import type { ProductTable } from '@/persistence/entities/product';
+import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import { Tables } from '@/persistence/tables';
 import { VendyxServer } from '@/server';
 import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
