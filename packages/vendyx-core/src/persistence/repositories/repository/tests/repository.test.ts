@@ -351,6 +351,25 @@ describe('Repository', () => {
     });
   });
 
+  describe('removeMany', () => {
+    test('removes existing records', async () => {
+      const ids = [recordsMock[0].id, recordsMock[1].id];
+
+      await repository.removeMany({
+        whereIn: 'id',
+        values: ids
+      });
+
+      expect(await trx(TEST_TABLE_NAME).whereIn('id', ids)).toHaveLength(0);
+    });
+
+    test('throws RepositoryError when removal fails', async () => {
+      await expect(
+        repository.removeMany({ whereIn: 'id', values: ['non-existing-id'] })
+      ).rejects.toThrow(RepositoryError);
+    });
+  });
+
   describe('softRemove', () => {
     test('soft removes an existing record', async () => {
       const input = { where: { id: recordsMock[0].id } };

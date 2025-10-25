@@ -6,6 +6,7 @@ import type { Asset } from '@/persistence/entities/asset';
 import type { Collection, CollectionTable } from '@/persistence/entities/collection';
 import type { CollectionAssetTable } from '@/persistence/entities/collection-asset';
 import type { CollectionProductTable } from '@/persistence/entities/collection-product';
+import type { CollectionTranslationTable } from '@/persistence/entities/collection-translation';
 import type { ID } from '@/persistence/entities/entity';
 import type { Product } from '@/persistence/entities/product';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
@@ -167,6 +168,42 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
       return result;
     } catch (error) {
       throw new RepositoryError('CollectionRepository.removeAssets', error);
+    }
+  }
+
+  async removeAllAssets(collectionIds: ID[]) {
+    try {
+      const result = await this.trx<CollectionAssetTable>(Tables.CollectionAsset)
+        .whereIn('collection_id', collectionIds)
+        .del();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('CollectionRepository.removeAllAssets', error);
+    }
+  }
+
+  async removeAllProducts(collectionIds: ID[]) {
+    try {
+      const result = await this.trx<CollectionProductTable>(Tables.CollectionProduct)
+        .whereIn('collection_id', collectionIds)
+        .del();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('CollectionRepository.removeAllProducts', error);
+    }
+  }
+
+  async removeAllTranslations(collectionIds: ID[]) {
+    try {
+      const result = await this.trx<CollectionTranslationTable>(Tables.CollectionTranslation)
+        .whereIn('collection_id', collectionIds)
+        .del();
+
+      return result;
+    } catch (error) {
+      throw new RepositoryError('CollectionRepository.removeAllTranslations', error);
     }
   }
 

@@ -160,6 +160,14 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
     }
   }
 
+  async removeMany(input: { whereIn: Field<T>; values: any[] }): Promise<void> {
+    try {
+      await this.trx(this.tableName).whereIn(input.whereIn, input.values).del();
+    } catch (error) {
+      throw new RepositoryError('Repository.removeMany', error);
+    }
+  }
+
   async softRemove(input: { where: Where<T> }): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName)

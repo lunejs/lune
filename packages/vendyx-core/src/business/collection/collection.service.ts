@@ -92,6 +92,15 @@ export class CollectionService {
     return result;
   }
 
+  async remove(ids: ID[]) {
+    await Promise.all([
+      this.repository.removeAllAssets(ids),
+      this.repository.removeAllProducts(ids),
+      this.repository.removeAllTranslations(ids),
+      this.repository.removeMany({ whereIn: 'id', values: ids })
+    ]);
+  }
+
   private async addNewSubCollections(
     collectionId: ID,
     newSubCollections: UpdateCollectionInput['subCollections']
