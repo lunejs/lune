@@ -7,6 +7,7 @@ import type { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
 
 // TODO: add findOneOrThrow
+// TODO: add add WhereIn param
 /**
  * @description
  * A generic repository class for performing CRUD operations on a database table.

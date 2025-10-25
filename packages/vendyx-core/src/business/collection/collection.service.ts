@@ -1,15 +1,17 @@
+import { clean, isArray } from '@vendyx/common';
+
 import type { ExecutionContext } from '@/api/shared/context/types';
+import type { UpdateCollectionInput } from '@/api/shared/types/graphql';
 import {
   CollectionContentType as ApiCollectionContentType,
   type CollectionListInput,
   type CreateCollectionInput
 } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
-import { CollectionContentType, type Collection } from '@/persistence/entities/collection';
+import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
 import type { CollectionRepository } from '@/persistence/repositories/collection-repository/collection.repository';
 import type { Where } from '@/persistence/repositories/repository';
-import { clean } from '@vendyx/common';
 
 export class CollectionService {
   private repository: CollectionRepository;
@@ -53,14 +55,107 @@ export class CollectionService {
     }
 
     if (products?.length && input.contentType === ApiCollectionContentType.Products) {
-      await this.repository.addProducts(collection.id, products);
+      await this.repository.upsertProducts(collection.id, products);
     }
 
     if (subCollections?.length && input.contentType === ApiCollectionContentType.Collections) {
-      await this.repository.addProducts(collection.id, subCollections);
+      await this.repository.addSubCollections(collection.id, subCollections);
     }
 
     return collection;
+  }
+
+  async update(id: ID, input: UpdateCollectionInput) {
+    const { assets, products, subCollections, ...baseCollection } = input;
+
+    const result = await this.repository.update({
+      where: { id },
+      data: clean(baseCollection)
+    });
+
+    if (assets?.length) {
+      await this.repository.upsertAssets(id, assets);
+    }
+
+    if (products?.length) {
+      await this.repository.upsertProducts(id, products);
+    }
+
+    if (subCollections?.length) {
+      await this.addNewSubCollections(id, subCollections);
+    }
+
+    await this.removeMissingSubCollection(id, subCollections);
+    await this.removeMissingAssets(id, assets);
+    await this.removeMissingProducts(id, products);
+
+    return result;
+  }
+
+  private async addNewSubCollections(
+    collectionId: ID,
+    newSubCollections: UpdateCollectionInput['subCollections']
+  ) {
+    const { contentType } = (await this.repository.findOne({
+      where: { id: collectionId },
+      fields: ['contentType']
+    })) as Collection;
+
+    if (contentType === CollectionContentType.Products) return;
+
+    const subCollections = await this.repository.findMany({ where: { parentId: collectionId } });
+
+    const subCollectionsPersisted = subCollections
+      .map(subCollection => subCollection.id)
+      .filter(subCollection => newSubCollections?.includes(subCollection));
+
+    const subCollectionsToAdd = subCollections
+      .map(subCollection => subCollection.id)
+      .filter(subCollection => !subCollectionsPersisted.includes(subCollection));
+
+    await this.repository.addSubCollections(collectionId, subCollectionsToAdd);
+  }
+
+  private async removeMissingSubCollection(
+    collectionId: ID,
+    newSubCollections: UpdateCollectionInput['subCollections']
+  ) {
+    if (!isArray(newSubCollections)) return;
+
+    const subCollections = await this.repository.findMany({ where: { parentId: collectionId } });
+
+    const subCollectionsToRemove = subCollections
+      .map(subCollection => subCollection.id)
+      .filter(subCollection => !newSubCollections?.includes(subCollection));
+
+    await this.repository.removeSubCollection(subCollectionsToRemove);
+  }
+
+  private async removeMissingAssets(collectionId: ID, newAssets: UpdateCollectionInput['assets']) {
+    if (!isArray(newAssets)) return;
+
+    const assets = await this.repository.findAssets(collectionId);
+
+    const assetsToRemove = assets
+      .map(a => a.id)
+      .filter(assetId => !newAssets.some(asset => asset.id === assetId));
+
+    await this.repository.removeAssets(collectionId, assetsToRemove);
+  }
+
+  private async removeMissingProducts(
+    collectionId: ID,
+    newProducts: UpdateCollectionInput['products']
+  ) {
+    if (!isArray(newProducts)) return;
+
+    const products = await this.repository.findProducts(collectionId);
+
+    const productsToRemove = products
+      .map(a => a.id)
+      .filter(productId => !newProducts.some(id => id === productId));
+
+    await this.repository.removeAssets(collectionId, productsToRemove);
   }
 
   private async validateAndParseSlug(name: string) {
