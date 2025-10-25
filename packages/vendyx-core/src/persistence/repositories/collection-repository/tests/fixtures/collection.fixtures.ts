@@ -22,6 +22,10 @@ export const CollectionConstants = {
   Lego: crypto.randomUUID(),
   DeletedCollection: crypto.randomUUID(),
 
+  Alaska: crypto.randomUUID(),
+  Ales: crypto.randomUUID(),
+  Ala: crypto.randomUUID(),
+
   ParentCollection1: crypto.randomUUID(),
   ParentCollection2: crypto.randomUUID()
 };
@@ -128,6 +132,27 @@ export class CollectionFixtures implements Fixture<CollectionTable> {
         id: CollectionConstants.ParentCollection2,
         content_type: 'COLLECTIONS' as any,
         name: 'Parent 2'
+      },
+      {
+        created_at: subMinutes(TODAY, 390),
+        shop_id: ShopConstants.ID,
+        id: CollectionConstants.Alaska,
+        content_type: 'PRODUCTS' as any,
+        name: 'Alaska'
+      },
+      {
+        created_at: subMinutes(TODAY, 420),
+        shop_id: ShopConstants.ID,
+        id: CollectionConstants.Ales,
+        content_type: 'PRODUCTS' as any,
+        name: 'Ales'
+      },
+      {
+        created_at: subMinutes(TODAY, 450),
+        shop_id: ShopConstants.ID,
+        id: CollectionConstants.Ala,
+        content_type: 'PRODUCTS' as any,
+        name: 'Ala'
       }
     ];
   }

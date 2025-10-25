@@ -50,6 +50,39 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
     return Number(count);
   }
 
+  async findAssets(collectionId: ID): Promise<Asset[]> {
+    try {
+      const query = this.trx<CollectionAssetTable>(Tables.CollectionAsset)
+        .where({ collection_id: collectionId })
+        .innerJoin(Tables.Asset, `${Tables.Asset}.id`, `${Tables.CollectionAsset}.asset_id`)
+        .orderBy(`${Tables.CollectionAsset}.order`, 'asc');
+
+      const result = await query;
+
+      return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
+    } catch (error) {
+      throw new RepositoryError('CollectionRepository.findAssets', error);
+    }
+  }
+
+  async findProducts(collectionId: ID): Promise<Product[]> {
+    try {
+      const query = this.trx<CollectionProductTable>(Tables.CollectionProduct)
+        .where({ collection_id: collectionId })
+        .innerJoin(
+          Tables.Product,
+          `${Tables.Product}.id`,
+          `${Tables.CollectionProduct}.product_id`
+        );
+
+      const result = await query;
+
+      return result.map(product => this.assetSerializer.deserialize(product) as Product);
+    } catch (error) {
+      throw new RepositoryError('CollectionRepository.findProducts', error);
+    }
+  }
+
   async countDuplicatedSlug(slug: string) {
     const [{ count }] = await this.q()
       .where(qb => {
@@ -134,35 +167,6 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
       return result;
     } catch (error) {
       throw new RepositoryError('CollectionRepository.removeAssets', error);
-    }
-  }
-
-  async findAssets(collectionId: ID): Promise<Asset[]> {
-    try {
-      const query = this.trx<CollectionAssetTable>(Tables.CollectionAsset)
-        .where({ collection_id: collectionId })
-        .innerJoin(Tables.Asset, `${Tables.Asset}.id`, `${Tables.CollectionAsset}.asset_id`)
-        .orderBy(`${Tables.CollectionAsset}.order`, 'asc');
-
-      const result = await query;
-
-      return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
-    } catch (error) {
-      throw new RepositoryError('CollectionRepository.findAssets', error);
-    }
-  }
-
-  async findProducts(collectionId: ID): Promise<Product[]> {
-    try {
-      const query = this.trx<CollectionProductTable>(Tables.CollectionProduct)
-        .where({ collection_id: collectionId })
-        .innerJoin(Tables.Product, `${Tables.Product}.id`, `${Tables.Product}.product_id`);
-
-      const result = await query;
-
-      return result.map(product => this.assetSerializer.deserialize(product) as Product);
-    } catch (error) {
-      throw new RepositoryError('CollectionRepository.findAssets', error);
     }
   }
 

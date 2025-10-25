@@ -6,7 +6,11 @@ import { TestHelper } from '@/tests/utils/test-helper';
 
 import { CollectionRepository } from '../collection.repository';
 
+import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
+import { CollectionAssetFixtures } from './fixtures/collection-assets.fixtures';
+import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
+import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
@@ -23,7 +27,11 @@ describe('Collection repository', () => {
     await testHelper.loadFixtures([
       new UserFixtures(),
       new ShopFixtures(),
-      new CollectionFixtures()
+      new CollectionFixtures(),
+      new ProductFixtures(),
+      new AssetFixtures(),
+      new CollectionProductFixtures(),
+      new CollectionAssetFixtures()
     ]);
   });
 
@@ -65,7 +73,6 @@ describe('Collection repository', () => {
     test('returns collections matching name filter (equals)', async () => {
       const filters = { name: { equals: 'Joel' } };
       const result = await repository.findByFilters({ filters });
-      console.log({ result });
 
       expect(result[0].name).toBe('Joel');
       expect(result.length).toBe(await repository.countByFilters(filters));
@@ -84,7 +91,7 @@ describe('Collection repository', () => {
       const filters = { contentType: CollectionContentType.Products };
       const result = await repository.findByFilters({ filters });
 
-      expect(result).toHaveLength(11);
+      expect(result).toHaveLength(14);
       expect(result.every(p => p.contentType === 'PRODUCTS')).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
@@ -102,14 +109,14 @@ describe('Collection repository', () => {
       const result = await repository.findByFilters({ take: 4 });
 
       expect(result).toHaveLength(4);
-      expect(await repository.countByFilters({})).toBe(8);
+      expect(await repository.countByFilters({})).toBe(11);
     });
 
     test('returns collections with offset', async () => {
       const result = await repository.findByFilters({ skip: 5 });
 
-      expect(result).toHaveLength(3);
-      expect(await repository.countByFilters({})).toBe(8);
+      expect(result).toHaveLength(6);
+      expect(await repository.countByFilters({})).toBe(11);
     });
 
     test('returns collections with pagination', async () => {
@@ -118,7 +125,7 @@ describe('Collection repository', () => {
       expect(result).toHaveLength(2);
       expect(result[0].id).toBe(CollectionConstants.WaterCollection);
       expect(result[1].id).toBe(CollectionConstants.Lego);
-      expect(await repository.countByFilters({})).toBe(8);
+      expect(await repository.countByFilters({})).toBe(11);
     });
 
     test('returns collections with name and content type filter applied', async () => {
@@ -128,6 +135,139 @@ describe('Collection repository', () => {
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe(CollectionConstants.AlesCollection);
       expect(result.length).toBe(await repository.countByFilters(filters));
+    });
+  });
+
+  describe('findAssets', () => {
+    test('returns all collection assets', async () => {
+      const assets = await repository.findAssets(CollectionConstants.EllieCollection);
+
+      expect(assets).toHaveLength(2);
+      expect(assets[0].id).toBe(AssetConstants.EllieImageID);
+      expect(assets[1].id).toBe(AssetConstants.ImageID);
+    });
+  });
+
+  describe('findProducts', () => {
+    test('returns all collection products', async () => {
+      const products = await repository.findProducts(CollectionConstants.EllieCollection);
+
+      expect(products).toHaveLength(4);
+    });
+  });
+
+  describe('upsertAssets', () => {
+    test('creates collection assets', async () => {
+      await repository.upsertAssets(CollectionConstants.AlesCollection, [
+        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.MeImageID, order: 1 }
+      ]);
+
+      const createdAssets = await repository.findAssets(CollectionConstants.AlesCollection);
+
+      expect(createdAssets).toHaveLength(2);
+      expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
+      expect(createdAssets[1].id).toBe(AssetConstants.MeImageID);
+    });
+
+    test('re order product assets', async () => {
+      await repository.upsertAssets(CollectionConstants.EllieCollection, [
+        { id: AssetConstants.ImageID, order: 0 },
+        { id: AssetConstants.EllieImageID, order: 1 }
+      ]);
+
+      const createdAssets = await repository.findAssets(CollectionConstants.EllieCollection);
+
+      expect(createdAssets).toHaveLength(2);
+      expect(createdAssets[0].id).toBe(AssetConstants.ImageID);
+      expect(createdAssets[1].id).toBe(AssetConstants.EllieImageID);
+    });
+  });
+
+  describe('upsertProducts', () => {
+    test('creates collection products', async () => {
+      await repository.upsertProducts(CollectionConstants.AlesCollection, [
+        ProductConstants.ShirtID,
+        ProductConstants.BeachShirtID,
+        ProductConstants.JeansID
+      ]);
+
+      const createdProducts = await repository.findProducts(CollectionConstants.AlesCollection);
+
+      expect(createdProducts).toHaveLength(3);
+      expect(createdProducts.find(p => p.id === ProductConstants.ShirtID)).toBeDefined();
+      expect(createdProducts.find(p => p.id === ProductConstants.BeachShirtID)).toBeDefined();
+      expect(createdProducts.find(p => p.id === ProductConstants.JeansID)).toBeDefined();
+    });
+  });
+
+  describe('addSubCollections', () => {
+    test('add sub collections to existing collection', async () => {
+      await repository.addSubCollections(CollectionConstants.ParentCollection1, [
+        CollectionConstants.Ala,
+        CollectionConstants.Alaska,
+        CollectionConstants.Ales
+      ]);
+
+      const [alaCollection, alaskaCollection, alesCollection] = await Promise.all([
+        trx<CollectionTable>(Tables.Collection).where({ id: CollectionConstants.Ala }).first(),
+        trx<CollectionTable>(Tables.Collection).where({ id: CollectionConstants.Alaska }).first(),
+        trx<CollectionTable>(Tables.Collection).where({ id: CollectionConstants.Ales }).first()
+      ]);
+
+      expect(alaCollection?.parent_id).toBe(CollectionConstants.ParentCollection1);
+      expect(alaskaCollection?.parent_id).toBe(CollectionConstants.ParentCollection1);
+      expect(alesCollection?.parent_id).toBe(CollectionConstants.ParentCollection1);
+    });
+  });
+
+  describe('removeAssets', () => {
+    test('remove collection assets', async () => {
+      await repository.removeAssets(CollectionConstants.EllieCollection, [
+        AssetConstants.EllieImageID
+      ]);
+
+      const assets = await repository.findAssets(CollectionConstants.EllieCollection);
+
+      expect(assets).toHaveLength(1);
+      expect(assets[0]?.id).toBe(AssetConstants.ImageID);
+    });
+  });
+
+  describe('removeProducts', () => {
+    test('remove collection products', async () => {
+      await repository.removeProducts(CollectionConstants.EllieCollection, [
+        ProductConstants.AirPodsPro2ndGenID,
+        ProductConstants.AppleWatchSeries8ID
+      ]);
+
+      const products = await repository.findProducts(CollectionConstants.EllieCollection);
+
+      expect(products).toHaveLength(2);
+      expect(products.find(p => p.id === ProductConstants.MacBookPro16ID)).toBeDefined();
+      expect(products.find(p => p.id === ProductConstants.iPhone14ProMaxID)).toBeDefined();
+    });
+  });
+
+  describe('removeSubCollection', () => {
+    test('remove subCollections from collection', async () => {
+      await repository.removeSubCollection([
+        CollectionConstants.EllieCollection,
+        CollectionConstants.TaylorSwiftCollection,
+        CollectionConstants.GamesCollection,
+        CollectionConstants.AlesCollection,
+        CollectionConstants.WosCollection
+      ]);
+
+      const collections = await Promise.all([
+        repository.findOne({ where: { id: CollectionConstants.EllieCollection } }),
+        repository.findOne({ where: { id: CollectionConstants.TaylorSwiftCollection } }),
+        repository.findOne({ where: { id: CollectionConstants.GamesCollection } }),
+        repository.findOne({ where: { id: CollectionConstants.AlesCollection } }),
+        repository.findOne({ where: { id: CollectionConstants.WosCollection } })
+      ]);
+
+      expect(collections.every(c => !c?.parentId)).toBe(true);
     });
   });
 });
