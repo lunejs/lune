@@ -1,6 +1,8 @@
 import type { Transaction } from '../connection';
 
 import { AssetRepository } from './asset-repository/asset.repository';
+import { CollectionRepository } from './collection-repository/collection.repository';
+import { CollectionTranslationRepository } from './collection-translation-repository/collection.translation-repository';
 import { OptionRepository } from './option-repository/option.repository';
 import { OptionTranslationRepository } from './option-translation-repository/option-translation.repository';
 import { OptionValueRepository } from './option-value-repository/option-value.repository';
@@ -22,7 +24,9 @@ export function buildRepositories(trx: Transaction) {
     option: new OptionRepository(trx),
     optionValue: new OptionValueRepository(trx),
     optionTranslation: new OptionTranslationRepository(trx),
-    optionValueTranslation: new OptionValueTranslationRepository(trx)
+    optionValueTranslation: new OptionValueTranslationRepository(trx),
+    collection: new CollectionRepository(trx),
+    collectionTranslation: new CollectionTranslationRepository(trx)
   };
 }
 

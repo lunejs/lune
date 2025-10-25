@@ -226,10 +226,10 @@ describe('Repository', () => {
   });
 
   describe('count', () => {
-    test('returns the total number of records', async () => {
+    test('returns the total number of records with deleted at clause applied', async () => {
       const count = await repository.count({ where: {} });
 
-      expect(count).toBe(recordsMock.length);
+      expect(count).toBe(4);
     });
 
     test('returns the count of records that match the provided filters', async () => {
@@ -247,7 +247,7 @@ describe('Repository', () => {
     test('returns the count of records without case sensitive', async () => {
       const count = await repository.count({ where: { name: 'sam' }, caseSensitive: false });
 
-      expect(count).toBe(2);
+      expect(count).toBe(1);
     });
   });
 

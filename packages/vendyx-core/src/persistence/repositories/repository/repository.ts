@@ -74,7 +74,9 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
 
   async count(input?: CountOptions<T>): Promise<number> {
     try {
-      const query = this.trx(this.tableName).count('* as count');
+      const query = this.trx(this.tableName);
+
+      this.applyDeletedAtClause(query);
 
       if (input?.where) {
         for (const [key, value] of Object.entries(input.where)) {
@@ -86,7 +88,7 @@ export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
         }
       }
 
-      const [{ count }] = await query;
+      const [{ count }] = await query.count('* as count');
 
       return Number(count);
     } catch (error) {
