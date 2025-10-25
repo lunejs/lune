@@ -16,7 +16,7 @@ type CollectionTranslation {
 type Mutation {
   createCollection(input: CreateCollectionInput!): Collection!
   updateCollection(id: ID!, input: UpdateCollectionInput!): Collection!
-  removeCollection(ids: [ID!]!): Boolean!
+  removeCollections(ids: [ID!]!): Boolean!
   addCollectionTranslation(id: ID!, input: CollectionTranslationInput!): Collection!
 }
 

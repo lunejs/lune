@@ -17,6 +17,7 @@ import { OptionFieldResolver } from './field-resolvers/option-field.resolver';
 import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { VariantFieldResolver } from './field-resolvers/variant-filed.resolver';
+import { CollectionResolver } from './resolvers/collection.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
@@ -43,7 +44,8 @@ export class AdminApi extends GraphqlApi {
         VariantFieldResolver,
         OptionResolver,
         OptionFieldResolver,
-        OptionValueFieldResolver
+        OptionValueFieldResolver,
+        CollectionResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
