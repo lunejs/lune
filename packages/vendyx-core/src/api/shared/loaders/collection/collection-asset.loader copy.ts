@@ -13,14 +13,14 @@ export function createCollectionSubCollectionsLoader(trx: Transaction) {
 
     const rows = await trx<CollectionTable>(Tables.Collection)
       .whereIn('parent_id', ids)
-      .orderBy('order');
+      .orderBy('order', 'desc');
 
     const byId = new Map<string, Collection[]>();
     for (const id of ids) byId.set(id, []);
 
     for (const r of rows) {
-      const { id, ...collectionCols } = r;
-      byId.get(id)?.push({
+      const { parent_id, ...collectionCols } = r;
+      byId.get(parent_id as string)?.push({
         ...(collectionSerializer.deserialize(collectionCols as CollectionTable) as Collection)
       });
     }

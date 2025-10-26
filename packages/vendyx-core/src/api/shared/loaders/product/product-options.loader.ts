@@ -1,12 +1,10 @@
 import DataLoader from 'dataloader';
 
 import type { Transaction } from '@/persistence/connection';
-import type { OptionTable } from '@/persistence/entities/option';
+import type { Option, OptionTable } from '@/persistence/entities/option';
 import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import { OptionSerializer } from '@/persistence/serializers/option.serializer';
 import { Tables } from '@/persistence/tables';
-
-import type { Option } from '../types/graphql';
 
 export function createProductOptionsLoader(trx: Transaction) {
   const optionSerializer = new OptionSerializer();

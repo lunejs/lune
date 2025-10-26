@@ -14,9 +14,9 @@ export function createCollectionProductsLoader(trx: Transaction) {
 
     const rows: (ProductTable & CollectionProductTable)[] = await trx
       .from({ cp: Tables.CollectionProduct })
-      .innerJoin({ a: Tables.Asset }, 'a.id', 'cp.asset_id')
-      .select('cp.product_id', trx.ref('a.*'))
-      .whereIn('cp.product_id', ids);
+      .innerJoin({ a: Tables.Product }, 'a.id', 'cp.product_id')
+      .select('cp.collection_id', trx.ref('a.*'))
+      .whereIn('cp.collection_id', ids);
 
     const byId = new Map<string, Product[]>();
     for (const id of ids) byId.set(id, []);

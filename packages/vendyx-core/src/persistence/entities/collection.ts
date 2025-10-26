@@ -2,7 +2,7 @@ import type { ID, VendyxEntity, VendyxTable } from './entity';
 
 export enum CollectionContentType {
   Products = 'PRODUCTS',
-  Collection = 'COLLECTIONS'
+  Collections = 'COLLECTIONS'
 }
 
 /**

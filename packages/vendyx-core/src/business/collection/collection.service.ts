@@ -2,11 +2,7 @@ import { clean, isArray } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { UpdateCollectionInput } from '@/api/shared/types/graphql';
-import {
-  CollectionContentType as ApiCollectionContentType,
-  type CollectionListInput,
-  type CreateCollectionInput
-} from '@/api/shared/types/graphql';
+import { type CollectionListInput, type CreateCollectionInput } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
@@ -54,11 +50,11 @@ export class CollectionService {
       await this.repository.upsertAssets(collection.id, assets);
     }
 
-    if (products?.length && input.contentType === ApiCollectionContentType.Products) {
+    if (products?.length && collection.contentType === CollectionContentType.Products) {
       await this.repository.upsertProducts(collection.id, products);
     }
 
-    if (subCollections?.length && input.contentType === ApiCollectionContentType.Collections) {
+    if (subCollections?.length && collection.contentType === CollectionContentType.Collections) {
       await this.repository.addSubCollections(collection.id, subCollections);
     }
 
