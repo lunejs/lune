@@ -13,7 +13,7 @@ import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
-describe('product - Query', () => {
+describe('createProduct - Mutation', () => {
   const testHelper = new TestHelper();
 
   const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);

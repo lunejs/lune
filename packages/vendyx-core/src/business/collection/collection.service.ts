@@ -97,10 +97,7 @@ export class CollectionService {
     ]);
   }
 
-  private async addNewSubCollections(
-    collectionId: ID,
-    newSubCollections: UpdateCollectionInput['subCollections']
-  ) {
+  private async addNewSubCollections(collectionId: ID, newSubCollections: string[]) {
     const { contentType } = (await this.repository.findOne({
       where: { id: collectionId },
       fields: ['contentType']
@@ -109,14 +106,11 @@ export class CollectionService {
     if (contentType === CollectionContentType.Products) return;
 
     const subCollections = await this.repository.findMany({ where: { parentId: collectionId } });
+    console.log({ subCollections });
 
-    const subCollectionsPersisted = subCollections
-      .map(subCollection => subCollection.id)
-      .filter(subCollection => newSubCollections?.includes(subCollection));
-
-    const subCollectionsToAdd = subCollections
-      .map(subCollection => subCollection.id)
-      .filter(subCollection => !subCollectionsPersisted.includes(subCollection));
+    const subCollectionsToAdd = newSubCollections.filter(
+      subCollection => !subCollections.map(s => s.id).includes(subCollection)
+    );
 
     await this.repository.addSubCollections(collectionId, subCollectionsToAdd);
   }
@@ -160,7 +154,7 @@ export class CollectionService {
       .map(a => a.id)
       .filter(productId => !newProducts.some(id => id === productId));
 
-    await this.repository.removeAssets(collectionId, productsToRemove);
+    await this.repository.removeProducts(collectionId, productsToRemove);
   }
 
   private async validateAndParseSlug(name: string) {

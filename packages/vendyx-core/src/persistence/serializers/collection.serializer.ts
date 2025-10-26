@@ -13,7 +13,8 @@ export class CollectionSerializer extends Serializer<Collection, CollectionTable
       ['description', 'description'],
       ['enabled', 'enabled'],
       ['content_type', 'contentType'],
-      ['order', 'order']
+      ['order', 'order'],
+      ['parent_id', 'parentId']
     ]);
   }
 }

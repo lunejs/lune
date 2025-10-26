@@ -11,7 +11,6 @@ import type { ID } from '@/persistence/entities/entity';
 import type { Product } from '@/persistence/entities/product';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { CollectionSerializer } from '@/persistence/serializers/collection.serializer';
-import type { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { Tables } from '@/persistence/tables';
 
 import { Repository } from '../repository';
@@ -19,7 +18,6 @@ import { RepositoryError } from '../repository.error';
 
 export class CollectionRepository extends Repository<Collection, CollectionTable> {
   private assetSerializer: AssetSerializer;
-  private productSerializer: ProductSerializer;
 
   constructor(trx: Transaction) {
     super(Tables.Collection, trx, new CollectionSerializer());
@@ -167,7 +165,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeAssets', error);
+      throw new RepositoryError('CollectionRepository.removeSubCollections', error);
     }
   }
 

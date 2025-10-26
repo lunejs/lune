@@ -32,8 +32,7 @@ export class CollectionFixtures implements Fixture<CollectionTable> {
         slug: CollectionConstants.EllieCollectionSlug,
         content_type: 'PRODUCTS' as any,
         parent_id: CollectionConstants.ParentCollection1,
-        name: CollectionConstants.EllieCollectionName,
-        description: 'description'
+        name: CollectionConstants.EllieCollectionName
       },
       {
         created_at: subMinutes(TODAY, 180),
