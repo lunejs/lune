@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { ThemeProvider, Toaster } from '@vendyx/ui';
 
+import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
@@ -43,6 +44,8 @@ export const App = () => {
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/products/:id" element={<ProductDetailsPage />} />
                   <Route path="/products/new" element={<NewProductPage />} />
+
+                  <Route path="/collections" element={<CollectionsPage />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

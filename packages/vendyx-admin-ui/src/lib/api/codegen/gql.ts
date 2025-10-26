@@ -15,6 +15,15 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionFragmentDoc;
+  '\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CommonListCollectionFragmentDoc;
+  '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCollection\n      }\n    }\n  }\n': typeof types.GetAllCollectionsDocument;
+  '\n  query GetCollectionsExists {\n    collections(input: { take: 1 }) {\n      count\n    }\n  }\n': typeof types.GetCollectionsExistsDocument;
+  '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n': typeof types.GetCollectionDocument;
+  '\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n': typeof types.CreateCollectionDocument;
+  '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateCollectionDocument;
+  '\n  mutation RemoveCollections($ids: [ID!]!) {\n    removeCollections(ids: $ids)\n  }\n': typeof types.RemoveCollectionsDocument;
+  '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.AddCollectionTranslationMutationDocument;
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CreateOptionDocument;
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.UpdateOptionDocument;
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n': typeof types.RemoveOptionDocument;
@@ -43,6 +52,24 @@ type Documents = {
   '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n': typeof types.SoftRemoveVariantDocument;
 };
 const documents: Documents = {
+  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n':
+    types.CommonCollectionFragmentDoc,
+  '\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n':
+    types.CommonListCollectionFragmentDoc,
+  '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCollection\n      }\n    }\n  }\n':
+    types.GetAllCollectionsDocument,
+  '\n  query GetCollectionsExists {\n    collections(input: { take: 1 }) {\n      count\n    }\n  }\n':
+    types.GetCollectionsExistsDocument,
+  '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n':
+    types.GetCollectionDocument,
+  '\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n':
+    types.CreateCollectionDocument,
+  '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdateCollectionDocument,
+  '\n  mutation RemoveCollections($ids: [ID!]!) {\n    removeCollections(ids: $ids)\n  }\n':
+    types.RemoveCollectionsDocument,
+  '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.AddCollectionTranslationMutationDocument,
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
@@ -109,6 +136,60 @@ const documents: Documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCollection\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCollection\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCollectionsExists {\n    collections(input: { take: 1 }) {\n      count\n    }\n  }\n'
+): (typeof documents)['\n  query GetCollectionsExists {\n    collections(input: { take: 1 }) {\n      count\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n'
+): (typeof documents)['\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n'
+): (typeof documents)['\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): (typeof documents)['\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveCollections($ids: [ID!]!) {\n    removeCollections(ids: $ids)\n  }\n'
+): (typeof documents)['\n  mutation RemoveCollections($ids: [ID!]!) {\n    removeCollections(ids: $ids)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): (typeof documents)['\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

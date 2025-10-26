@@ -66,6 +66,101 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** A collection is a group of products that are displayed together in the storefront. */
+export type Collection = Node & {
+  assets: AssetList;
+  /** The collection's content type indicating if the collection contains products or other collections */
+  contentType: CollectionContentType;
+  createdAt: Scalars['Date']['output'];
+  /** The collection's description */
+  description?: Maybe<Scalars['String']['output']>;
+  /**
+   * Whether the collection is enabled or not.
+   * Not enabled collections are not exposed to the storefront API but are visible in the admin ui.
+   * Useful for collections that are not published by now but they planned to be published in the future.
+   */
+  enabled: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  /** The collection's name */
+  name: Scalars['String']['output'];
+  order: Scalars['Int']['output'];
+  parentCollection?: Maybe<Collection>;
+  products: ProductList;
+  /** The collection's slug used in the URL */
+  slug: Scalars['String']['output'];
+  subCollections: CollectionList;
+  translations: CollectionTranslation[];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionAssetsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionProductsArgs = {
+  input?: InputMaybe<ProductListInput>;
+};
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionSubCollectionsArgs = {
+  input?: InputMaybe<CollectionListInput>;
+};
+
+export enum CollectionContentType {
+  Collections = 'COLLECTIONS',
+  Products = 'PRODUCTS'
+}
+
+export type CollectionFilters = {
+  contentType?: InputMaybe<CollectionContentType>;
+  enabled?: InputMaybe<BooleanFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type CollectionList = List & {
+  count: Scalars['Int']['output'];
+  items: Collection[];
+  pageInfo: PageInfo;
+};
+
+export type CollectionListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CollectionFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CollectionTranslation = {
+  createdAt: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  name?: Maybe<Scalars['String']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type CollectionTranslationInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  locale: Locale;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateCollectionInput = {
+  assets?: InputMaybe<AssetInEntity[]>;
+  contentType?: InputMaybe<CollectionContentType>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  order?: InputMaybe<Scalars['Int']['input']>;
+  products?: InputMaybe<Scalars['ID']['input'][]>;
+  subCollections?: InputMaybe<Scalars['ID']['input'][]>;
+};
+
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -159,7 +254,9 @@ export enum Locale {
 }
 
 export type Mutation = {
+  addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
+  createCollection: Collection;
   createOption: Option[];
   createProduct: Product;
   /** Create a new shop */
@@ -173,11 +270,13 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
+  removeCollections: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
+  updateCollection: Collection;
   updateOption: Option;
   updateProduct: Product;
   /** Update an existing shop details */
@@ -188,9 +287,18 @@ export type Mutation = {
   updateVariant: Variant;
 };
 
+export type MutationAddCollectionTranslationArgs = {
+  id: Scalars['ID']['input'];
+  input: CollectionTranslationInput;
+};
+
 export type MutationAddProductTranslationArgs = {
   id: Scalars['ID']['input'];
   input: AddProductTranslationInput;
+};
+
+export type MutationCreateCollectionArgs = {
+  input: CreateCollectionInput;
 };
 
 export type MutationCreateOptionArgs = {
@@ -223,6 +331,10 @@ export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
 
+export type MutationRemoveCollectionsArgs = {
+  ids: Scalars['ID']['input'][];
+};
+
 export type MutationRemoveTagsArgs = {
   ids: Scalars['ID']['input'][];
 };
@@ -241,6 +353,11 @@ export type MutationSoftRemoveProductsArgs = {
 
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type MutationUpdateCollectionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
 };
 
 export type MutationUpdateOptionArgs = {
@@ -442,6 +559,8 @@ export type ProductTranslation = {
 };
 
 export type Query = {
+  collection?: Maybe<Collection>;
+  collections: CollectionList;
   product?: Maybe<Product>;
   products: ProductList;
   /**
@@ -460,6 +579,15 @@ export type Query = {
   variant?: Maybe<Variant>;
   /** Get user in session */
   whoami?: Maybe<User>;
+};
+
+export type QueryCollectionArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryCollectionsArgs = {
+  input?: InputMaybe<CollectionListInput>;
 };
 
 export type QueryProductArgs = {
@@ -600,6 +728,16 @@ export type TagListInput = {
 export type TagResult = {
   apiErrors: TagErrorResult[];
   tag?: Maybe<Tag>;
+};
+
+export type UpdateCollectionInput = {
+  assets?: InputMaybe<AssetInEntity[]>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
+  products?: InputMaybe<Scalars['ID']['input'][]>;
+  subCollections?: InputMaybe<Scalars['ID']['input'][]>;
 };
 
 export type UpdateOptionInput = {
@@ -751,6 +889,80 @@ export type VariantList = List & {
   items: Variant[];
   pageInfo: PageInfo;
 };
+
+export type CommonCollectionFragment = {
+  id: string;
+  name: string;
+  description?: string | null;
+  enabled: boolean;
+  contentType: CollectionContentType;
+  order: number;
+  products: { items: { id: string }[] };
+  assets: { items: { id: string; name: string; source: string }[] };
+} & { ' $fragmentName'?: 'CommonCollectionFragment' };
+
+export type CommonListCollectionFragment = {
+  id: string;
+  name: string;
+  slug: string;
+  enabled: boolean;
+  contentType: CollectionContentType;
+  assets: { items: { id: string; source: string }[] };
+  subCollections: { count: number; items: { id: string; name: string }[] };
+  products: { count: number; items: { id: string; name: string }[] };
+} & { ' $fragmentName'?: 'CommonListCollectionFragment' };
+
+export type GetAllCollectionsQueryVariables = Exact<{
+  input?: InputMaybe<CollectionListInput>;
+}>;
+
+export type GetAllCollectionsQuery = {
+  collections: {
+    count: number;
+    pageInfo: { total: number };
+    items: {
+      ' $fragmentRefs'?: { CommonListCollectionFragment: CommonListCollectionFragment };
+    }[];
+  };
+};
+
+export type GetCollectionsExistsQueryVariables = Exact<Record<string, never>>;
+
+export type GetCollectionsExistsQuery = { collections: { count: number } };
+
+export type GetCollectionQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+export type GetCollectionQuery = {
+  collection?: { ' $fragmentRefs'?: { CommonCollectionFragment: CommonCollectionFragment } } | null;
+};
+
+export type CreateCollectionMutationVariables = Exact<{
+  input: CreateCollectionInput;
+}>;
+
+export type CreateCollectionMutation = { createCollection: { id: string } };
+
+export type UpdateCollectionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
+}>;
+
+export type UpdateCollectionMutation = { updateCollection: { id: string } };
+
+export type RemoveCollectionsMutationVariables = Exact<{
+  ids: Scalars['ID']['input'][] | Scalars['ID']['input'];
+}>;
+
+export type RemoveCollectionsMutation = { removeCollections: boolean };
+
+export type AddCollectionTranslationMutationMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: CollectionTranslationInput;
+}>;
+
+export type AddCollectionTranslationMutationMutation = { addCollectionTranslation: { id: string } };
 
 export type CreateOptionMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
@@ -995,6 +1207,179 @@ export type SoftRemoveVariantMutationVariables = Exact<{
 
 export type SoftRemoveVariantMutation = { softRemoveVariant: { id: string } };
 
+export const CommonCollectionFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'contentType' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'order' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'products' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonCollectionFragment, unknown>;
+export const CommonListCollectionFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'contentType' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'subCollections' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'products' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonListCollectionFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -1394,6 +1779,498 @@ export const CommonUserFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonUserFragment, unknown>;
+export const GetAllCollectionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllCollections' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'CollectionListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'collections' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'total' } }]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'CommonListCollection' }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'contentType' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'subCollections' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'products' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllCollectionsQuery, GetAllCollectionsQueryVariables>;
+export const GetCollectionsExistsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCollectionsExists' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'collections' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'count' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetCollectionsExistsQuery, GetCollectionsExistsQueryVariables>;
+export const GetCollectionDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCollection' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'collection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonCollection' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'contentType' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'order' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'products' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetCollectionQuery, GetCollectionQueryVariables>;
+export const CreateCollectionDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateCollection' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreateCollectionInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCollection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CreateCollectionMutation, CreateCollectionMutationVariables>;
+export const UpdateCollectionDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateCollection' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateCollectionInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateCollection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<UpdateCollectionMutation, UpdateCollectionMutationVariables>;
+export const RemoveCollectionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveCollections' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+              }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeCollections' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'ids' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<RemoveCollectionsMutation, RemoveCollectionsMutationVariables>;
+export const AddCollectionTranslationMutationDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'AddCollectionTranslationMutation' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CollectionTranslationInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'addCollectionTranslation' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<
+  AddCollectionTranslationMutationMutation,
+  AddCollectionTranslationMutationMutationVariables
+>;
 export const CreateOptionDocument = {
   kind: 'Document',
   definitions: [

@@ -120,7 +120,7 @@ const SIDEBAR = {
     },
     {
       title: 'Collections',
-      url: '#',
+      url: '/collections',
       icon: BoxesIcon
     },
     {
