@@ -95,6 +95,8 @@ export class CollectionService {
       this.repository.removeAllTranslations(ids),
       this.repository.removeMany({ whereIn: 'id', values: ids })
     ]);
+
+    return true;
   }
 
   private async addNewSubCollections(collectionId: ID, newSubCollections: string[]) {
