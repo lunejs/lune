@@ -1,19 +1,23 @@
 import { clean, isArray } from '@vendyx/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { UpdateCollectionInput } from '@/api/shared/types/graphql';
+import type { CollectionTranslationInput, UpdateCollectionInput } from '@/api/shared/types/graphql';
 import { type CollectionListInput, type CreateCollectionInput } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
+import type { Locale } from '@/persistence/entities/locale';
 import type { CollectionRepository } from '@/persistence/repositories/collection-repository/collection.repository';
+import type { CollectionTranslationRepository } from '@/persistence/repositories/collection-translation-repository/collection.translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
 
 export class CollectionService {
   private repository: CollectionRepository;
+  private translationRepository: CollectionTranslationRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.collection;
+    this.translationRepository = ctx.repositories.collectionTranslation;
   }
 
   async find(input?: CollectionListInput) {
@@ -97,6 +101,26 @@ export class CollectionService {
     ]);
 
     return true;
+  }
+
+  async addTranslation(id: ID, input: CollectionTranslationInput) {
+    const r = await this.translationRepository.upsert({
+      where: { collectionId: id, locale: input.locale as unknown as Locale },
+      create: {
+        ...clean(input),
+        slug: input.name ? await this.validateAndParseSlug(input.name) : undefined,
+        collectionId: id,
+        locale: input.locale as unknown as Locale
+      },
+      update: {
+        name: input.name,
+        description: input.description
+      }
+    });
+
+    console.log({ r });
+
+    return r;
   }
 
   private async addNewSubCollections(collectionId: ID, newSubCollections: string[]) {

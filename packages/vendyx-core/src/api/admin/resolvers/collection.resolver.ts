@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
+  MutationAddCollectionTranslationArgs,
   MutationCreateCollectionArgs,
   MutationRemoveCollectionsArgs,
   MutationUpdateCollectionArgs,
@@ -54,11 +55,22 @@ async function removeCollection(_, { ids }: MutationRemoveCollectionsArgs, ctx: 
   return collectionService.remove(ids);
 }
 
+async function addCollectionTranslation(
+  _,
+  { id, input }: MutationAddCollectionTranslationArgs,
+  ctx: ExecutionContext
+) {
+  const collectionService = new CollectionService(ctx);
+
+  return collectionService.addTranslation(id, input);
+}
+
 export const CollectionResolver: GraphqlApiResolver = {
   Mutation: {
     createCollection: UseUserGuard(createCollection),
     updateCollection: UseUserGuard(updateCollection),
-    removeCollections: UseUserGuard(removeCollection)
+    removeCollections: UseUserGuard(removeCollection),
+    addCollectionTranslation: UseUserGuard(addCollectionTranslation)
   },
   Query: {
     collection: UseUserGuard(collection),

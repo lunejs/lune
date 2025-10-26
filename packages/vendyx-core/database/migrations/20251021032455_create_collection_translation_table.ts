@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).defaultTo(knex.fn.now());
 
-    table.string('name', 255).notNullable();
-    table.string('slug', 255).notNullable().unique();
+    table.string('name', 255).nullable();
+    table.string('slug', 255).nullable();
     table.text('description').nullable();
     table.string('locale', 10).notNullable();
 

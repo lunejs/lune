@@ -13,6 +13,6 @@ export class CollectionTranslationRepository extends Repository<
   CollectionTranslationTable
 > {
   constructor(trx: Transaction) {
-    super(Tables.Collection, trx, new CollectionTranslationSerializer());
+    super(Tables.CollectionTranslation, trx, new CollectionTranslationSerializer());
   }
 }
