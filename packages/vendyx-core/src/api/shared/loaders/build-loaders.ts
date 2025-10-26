@@ -4,16 +4,16 @@ import { createProductLocalizationLoader } from '@/api/storefront/loaders/produc
 import type { Transaction } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
-import { createOptionTranslationsLoader } from './option-translations.loader';
-import { createOptionValuesLoader } from './option-values.loader';
-import { createOptionValuesTranslationsLoader } from './option-values-translations.loader';
-import { createProductAssetsLoader } from './product-asset.loader';
-import { createProductOptionsLoader } from './product-options.loader';
-import { createProductTagsLoader } from './product-tags.loader';
-import { createProductTranslationsLoader } from './product-translations.loader';
-import { createVariantAssetsLoader } from './variant-assets.loader';
-import { createVariantOptionValuesLoader } from './variant-option-values.loader';
-import { createVariantsLoader } from './variants.loader';
+import { createOptionTranslationsLoader } from './option/option-translations.loader';
+import { createOptionValuesLoader } from './option-value/option-values.loader';
+import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
+import { createProductAssetsLoader } from './product/product-asset.loader';
+import { createProductOptionsLoader } from './product/product-options.loader';
+import { createProductTagsLoader } from './product/product-tags.loader';
+import { createProductTranslationsLoader } from './product/product-translations.loader';
+import { createVariantAssetsLoader } from './variant/variant-assets.loader';
+import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
+import { createVariantsLoader } from './variant/variants.loader';
 
 export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
   return {

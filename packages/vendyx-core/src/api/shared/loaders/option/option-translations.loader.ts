@@ -5,7 +5,7 @@ import type { OptionTranslationTable } from '@/persistence/entities/option-trans
 import { OptionTranslationSerializer } from '@/persistence/serializers/option-translation.serializer';
 import { Tables } from '@/persistence/tables';
 
-import type { OptionTranslation } from '../types/graphql';
+import type { OptionTranslation } from '../../types/graphql';
 
 export function createOptionTranslationsLoader(trx: Transaction) {
   return new DataLoader<string, OptionTranslation[]>(async optionIds => {
