@@ -108,7 +108,6 @@ export class CollectionService {
     if (contentType === CollectionContentType.Products) return;
 
     const subCollections = await this.repository.findMany({ where: { parentId: collectionId } });
-    console.log({ subCollections });
 
     const subCollectionsToAdd = newSubCollections.filter(
       subCollection => !subCollections.map(s => s.id).includes(subCollection)
