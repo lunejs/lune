@@ -158,7 +158,7 @@ export type CollectionTranslationInput = {
 
 export type CreateCollectionInput = {
   assets?: InputMaybe<Array<AssetInEntity>>;
-  contentType: CollectionContentType;
+  contentType?: InputMaybe<CollectionContentType>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];

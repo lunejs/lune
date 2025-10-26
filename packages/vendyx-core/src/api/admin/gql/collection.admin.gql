@@ -34,7 +34,7 @@ input CreateCollectionInput {
   name: String!
   description: String
   enabled: Boolean
-  contentType: CollectionContentType!
+  contentType: CollectionContentType
   products: [ID!]
   assets: [AssetInEntity!]
   subCollections: [ID!]
