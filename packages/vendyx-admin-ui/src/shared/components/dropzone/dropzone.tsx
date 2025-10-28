@@ -43,7 +43,8 @@ export const Dropzone = ({
   persistenceMode = false,
   onFilesChange,
   onPreviewsRemoved,
-  previews
+  previews,
+  max
 }: Props) => {
   const {
     files,
@@ -60,7 +61,8 @@ export const Dropzone = ({
     accept,
     onDrop(acceptedFiles) {
       addFiles(acceptedFiles);
-    }
+    },
+    maxFiles: max
   });
 
   if (!files.length && !previews?.length) {
@@ -166,6 +168,7 @@ type Props = {
    */
   previews?: Preview[];
   accept?: Accept;
+  max?: number;
 };
 
 const DEFAULT_ACCEPT = {
