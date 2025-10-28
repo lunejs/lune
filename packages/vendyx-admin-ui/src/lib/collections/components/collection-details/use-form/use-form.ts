@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import type z from 'zod';
 
@@ -63,10 +63,16 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
 
   return {
     ...form,
+    collection,
     onSubmit: form.handleSubmit(onSubmit)
   };
 };
 
 export type CollectionDetailsFormValues = z.infer<typeof schema>;
 
-export const useCollectionDetailsFormContext = () => useFormContext<CollectionDetailsFormValues>();
+export const useCollectionDetailsFormContext = () =>
+  useFormContext<CollectionDetailsFormValues>() as HookReturn;
+
+type HookReturn = UseFormReturn<CollectionDetailsFormValues> & {
+  collection: CommonCollectionFragment | null;
+};

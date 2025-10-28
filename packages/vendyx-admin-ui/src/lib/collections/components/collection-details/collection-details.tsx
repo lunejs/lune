@@ -1,20 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Form,
-  FormInput,
-  FormRadioGroup,
-  FormSwitch,
-  FormTextarea,
-  H1
-} from '@vendyx/ui';
+import { Form, H1 } from '@vendyx/ui';
 
-import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/types';
+import { type CommonCollectionFragment } from '@/lib/api/types';
 
-import { CollectionAssetUploader } from '../asset-uploader/asset-uploader';
-
+import { CollectionContentTypeCard } from './cards/content-type-card';
+import { CollectionGeneralCard } from './cards/general-card';
+import { CollectionStatusCard } from './cards/status-card';
 import { useCollectionDetailsForm } from './use-form/use-form';
 import { CollectionDetailsSubmitButton } from './submit-button';
 
@@ -35,56 +25,12 @@ export const CollectionDetails = ({ collection }: Props) => {
         </header>
         <main className="flex flex-col gap-6 lg:grid grid-cols-6">
           <div className="col-span-4 flex flex-col gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>General</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <FormInput
-                  control={form.control}
-                  name="name"
-                  label="Name"
-                  placeholder="Electronics"
-                />
-                <FormTextarea control={form.control} name="description" label="Description" />
-                <CollectionAssetUploader collection={collection} />
-              </CardContent>
-            </Card>
+            <CollectionGeneralCard />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Content type</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4">
-                <FormRadioGroup
-                  control={form.control}
-                  name="contentType"
-                  items={[
-                    {
-                      label: 'Products',
-                      value: CollectionContentType.Products,
-                      description: 'A normal collection containing products.'
-                    },
-                    {
-                      label: 'Collections',
-                      value: CollectionContentType.Collections,
-                      description:
-                        'Convert this collection into a parent collection containing sub collections.'
-                    }
-                  ]}
-                />
-              </CardContent>
-            </Card>
+            {!collection && <CollectionContentTypeCard />}
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">
-            <Card>
-              <CardHeader>
-                <CardTitle>Status</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <FormSwitch control={form.control} name="enabled" label="Published" />
-              </CardContent>
-            </Card>
+            <CollectionStatusCard />
           </div>
         </main>
       </form>
