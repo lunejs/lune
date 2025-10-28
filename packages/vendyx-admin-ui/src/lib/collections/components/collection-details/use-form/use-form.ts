@@ -5,6 +5,7 @@ import type z from 'zod';
 
 import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/types';
 import { useCreateCollection } from '@/lib/collections/hooks/use-create-collection';
+import { useUpdateCollection } from '@/lib/collections/hooks/use-update-collection';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { CollectionDetailsFormSchema as schema } from './form-schema';
@@ -14,6 +15,7 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
 
   const { loading, failure, success } = useLoadingNotification();
   const { createCollection } = useCreateCollection();
+  const { updateCollection } = useUpdateCollection();
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -27,7 +29,22 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
 
   const onSubmit = async (values: CollectionDetailsFormValues) => {
     if (collection) {
-      console.log({ values });
+      loading('Saving...');
+
+      const result = await updateCollection(collection.id, {
+        name: values.name,
+        description: values.description,
+        enabled: values.enabled
+      });
+
+      if (!result.isSuccess) {
+        failure(result.error);
+        return;
+      }
+
+      form.reset(values);
+
+      success('Collection updated');
       return;
     }
 
@@ -40,7 +57,7 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
       return;
     }
 
-    success('Collections');
+    success('Collection created');
     navigate(`/collections/${result.data.id}`);
   };
 

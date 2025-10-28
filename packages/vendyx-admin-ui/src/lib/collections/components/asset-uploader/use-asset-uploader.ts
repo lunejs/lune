@@ -14,7 +14,7 @@ export const useCollectionAssetUploader = () => {
 
   const upload = async (collection: CommonCollectionFragment, files: File) => {
     try {
-      loading('Uploading');
+      loading('Uploading...');
 
       const result = await uploadAsset([files]);
 
@@ -46,7 +46,7 @@ export const useCollectionAssetUploader = () => {
 
   const remove = async (collection: CommonCollectionFragment) => {
     try {
-      loading('Uploading');
+      loading('Removing...');
 
       await updateCollection({
         id: collection.id,
@@ -57,7 +57,7 @@ export const useCollectionAssetUploader = () => {
         queryKey: [CollectionsCacheKeys.Collection(collection.id)]
       });
 
-      success('Images uploaded');
+      success('Image removed');
     } catch (error) {
       console.error(error);
       failure('Unable to upload images');
