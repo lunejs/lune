@@ -1,6 +1,8 @@
 import { Form, H1 } from '@vendyx/ui';
 
-import { type CommonCollectionFragment } from '@/lib/api/types';
+import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/types';
+
+import { CollectionProductsCard } from '../products/products-card';
 
 import { CollectionContentTypeCard } from './cards/content-type-card';
 import { CollectionGeneralCard } from './cards/general-card';
@@ -28,6 +30,9 @@ export const CollectionDetails = ({ collection }: Props) => {
             <CollectionGeneralCard />
 
             {!collection && <CollectionContentTypeCard />}
+            {collection?.contentType === CollectionContentType.Products && (
+              <CollectionProductsCard collection={collection} />
+            )}
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">
             <CollectionStatusCard />

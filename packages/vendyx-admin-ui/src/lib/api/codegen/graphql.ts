@@ -912,6 +912,14 @@ export type CommonListCollectionFragment = {
   products: { count: number; items: { id: string; name: string }[] };
 } & { ' $fragmentName'?: 'CommonListCollectionFragment' };
 
+export type CommonCollectionProductFragment = {
+  id: string;
+  name: string;
+  slug: string;
+  enabled: boolean;
+  assets: { items: { id: string; source: string }[] };
+} & { ' $fragmentName'?: 'CommonCollectionProductFragment' };
+
 export type GetAllCollectionsQueryVariables = Exact<{
   input?: InputMaybe<CollectionListInput>;
 }>;
@@ -936,6 +944,22 @@ export type GetCollectionQueryVariables = Exact<{
 
 export type GetCollectionQuery = {
   collection?: { ' $fragmentRefs'?: { CommonCollectionFragment: CommonCollectionFragment } } | null;
+};
+
+export type GetCollectionProductsQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+  input?: InputMaybe<ProductListInput>;
+}>;
+
+export type GetCollectionProductsQuery = {
+  collection?: {
+    products: {
+      count: number;
+      items: {
+        ' $fragmentRefs'?: { CommonCollectionProductFragment: CommonCollectionProductFragment };
+      }[];
+    };
+  } | null;
 };
 
 export type CreateCollectionMutationVariables = Exact<{
@@ -1380,6 +1404,61 @@ export const CommonListCollectionFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonListCollectionFragment, unknown>;
+export const CommonCollectionProductFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollectionProduct' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Product' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonCollectionProductFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -2080,6 +2159,129 @@ export const GetCollectionDocument = {
     }
   ]
 } as unknown as DocumentNode<GetCollectionQuery, GetCollectionQueryVariables>;
+export const GetCollectionProductsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCollectionProducts' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ProductListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'collection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'products' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'input' },
+                      value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+                    }
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'FragmentSpread',
+                              name: { kind: 'Name', value: 'CommonCollectionProduct' }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollectionProduct' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Product' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetCollectionProductsQuery, GetCollectionProductsQueryVariables>;
 export const CreateCollectionDocument = {
   kind: 'Document',
   definitions: [
