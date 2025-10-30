@@ -1,5 +1,5 @@
 {
-  "name": "vendyx",
+  "name": "lune",
   "private": true,
   "scripts": {
     "build": "turbo run build",

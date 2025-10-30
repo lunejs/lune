@@ -1,0 +1,27 @@
+{
+  "name": "@lune/common",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "lune common package",
+  "author": "sam_621",
+  "license": "MIT",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "tsup": "^8.5.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@lune/server",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "author": "Rogelio Samuel Moreno Corrales",
+  "scripts": {
+    "start:dev": "ts-node index.ts",
+    "build": "tsc",
+    "build:client": "cd ./client && yarn build",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@lune/core": "*",
+    "@lune/admin-ui": "*",
+    "dotenv": "^16.4.5",
+    "rimraf": "^5.0.7",
+    "ts-node": "^10.9.2"
+  }
+}
