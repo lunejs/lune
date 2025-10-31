@@ -1,7 +1,7 @@
 export * from './codegen';
 export * from './codegen/graphql';
 
-export type VendyxAsset = {
+export type LuneAsset = {
   id: string;
   name: string;
   source: string;

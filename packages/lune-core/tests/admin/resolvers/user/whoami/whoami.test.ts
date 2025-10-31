@@ -1,7 +1,7 @@
 import request from 'supertest';
 
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -9,8 +9,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('whoami - Query', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([new UserFixtures()]);
@@ -22,7 +22,7 @@ describe('whoami - Query', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('returns current user', async () => {

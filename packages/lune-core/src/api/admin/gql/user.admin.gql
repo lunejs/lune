@@ -1,5 +1,5 @@
 """
-A vendyx customer
+A lune customer
 """
 type User implements Node {
   id: ID!

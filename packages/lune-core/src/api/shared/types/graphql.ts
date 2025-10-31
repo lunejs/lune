@@ -263,7 +263,7 @@ export enum Locale {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addCollectionTranslation: Collection;
+  addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
   createCollection: Collection;
   createOption: Array<Option>;
@@ -693,7 +693,7 @@ export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
 };
 
-/** A vendyx shop */
+/** A lune shop */
 export type Shop = Node & {
   __typename?: 'Shop';
   createdAt: Scalars['Date']['output'];
@@ -877,7 +877,7 @@ export type UpdateVariantInput = {
   weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
-/** A vendyx customer */
+/** A lune customer */
 export type User = Node & {
   __typename?: 'User';
   createdAt: Scalars['Date']['output'];
@@ -1316,7 +1316,7 @@ export type ListResolvers<ContextType = ExecutionContext, ParentType extends Res
 };
 
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addCollectionTranslation?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
+  addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;

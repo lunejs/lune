@@ -1,9 +1,9 @@
-import type { VendyxEntity, VendyxTable } from './entity';
+import type { LuneEntity, LuneTable } from './entity';
 
 /**
- * A vendyx shop
+ * A lune shop
  */
-export interface Shop extends VendyxEntity {
+export interface Shop extends LuneEntity {
   /**
    * The shop's name
    */
@@ -38,7 +38,7 @@ export interface Shop extends VendyxEntity {
   socials?: ShopSocial;
 }
 
-export interface ShopTable extends VendyxTable {
+export interface ShopTable extends LuneTable {
   name: string;
   slug: string;
   storefront_api_key: string;

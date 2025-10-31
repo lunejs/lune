@@ -21,7 +21,7 @@ export const restFetcher = async <R>(url: string, options?: RestFetcherOptions) 
     method: options?.method ?? 'GET',
     headers: {
       Authorization: userToken ? `Bearer ${userToken}` : '',
-      x_vendyx_shop_id: shopId ?? ''
+      x_lune_shop_id: shopId ?? ''
     },
     body: options?.body
   });

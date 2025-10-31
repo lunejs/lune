@@ -34,7 +34,7 @@ describe('Login Form', () => {
     await userEvent.click(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
-      expect(setCookie).toHaveBeenCalledWith('x-user-vendyx-token', 'mocked-token', { expires: 7 });
+      expect(setCookie).toHaveBeenCalledWith('x-user-lune-token', 'mocked-token', { expires: 7 });
       expect(navigateSpy).toHaveBeenCalledWith('/shops');
     });
   });

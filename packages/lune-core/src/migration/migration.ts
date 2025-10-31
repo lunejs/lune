@@ -4,7 +4,7 @@ import path from 'path';
 import { createConnection } from '@/persistence/connection';
 const { green } = kleur;
 
-export class VendyxMigration {
+export class LuneMigration {
   constructor(private readonly dbUrl: string) {
     if (!dbUrl) throw new Error('No database URL provided');
   }

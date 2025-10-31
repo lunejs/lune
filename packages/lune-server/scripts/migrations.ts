@@ -1,11 +1,11 @@
-import { VendyxMigration } from '@lune/core';
+import { LuneMigration } from '@lune/core';
 import { config } from 'dotenv';
 
 config();
 
-const vendyxMigration = new VendyxMigration(process.env.DATABASE_URL as string);
+const luneMigration = new LuneMigration(process.env.DATABASE_URL as string);
 
-vendyxMigration
+luneMigration
   .runMigrations()
   .catch((err) => console.error(err))
   .finally(() => process.exit(0));

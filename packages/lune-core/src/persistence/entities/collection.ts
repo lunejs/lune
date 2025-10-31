@@ -1,4 +1,4 @@
-import type { ID, VendyxEntity, VendyxTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
 
 export enum CollectionContentType {
   Products = 'PRODUCTS',
@@ -8,7 +8,7 @@ export enum CollectionContentType {
 /**
  * A collection is a group of products that are displayed together in the storefront.
  */
-export interface Collection extends VendyxEntity {
+export interface Collection extends LuneEntity {
   /**
    * The collection's name
    */
@@ -42,7 +42,7 @@ export interface Collection extends VendyxEntity {
   parentId?: ID | null;
 }
 
-export interface CollectionTable extends VendyxTable {
+export interface CollectionTable extends LuneTable {
   name: string;
   slug: string;
   description?: string | null;

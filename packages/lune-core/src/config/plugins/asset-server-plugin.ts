@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import express from 'express';
 
-import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
+import type { LunePlugin } from '@/plugin/lune.plugin';
 
 /**
  * Asset server plugin
@@ -12,7 +12,7 @@ import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
  * By default, it serves from the 'uploads' folder at the '/uploads' route.
  * You can customize the route and folder via options.
  */
-export class AssetServerPlugin implements VendyxPlugin {
+export class AssetServerPlugin implements LunePlugin {
   name = 'AssetServerPlugin';
 
   private options: Required<Options>;

@@ -620,7 +620,7 @@ export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
 };
 
-/** A vendyx shop */
+/** A lune shop */
 export type Shop = Node & {
   createdAt: Scalars['Date']['output'];
   /** Contact email for the shop, used to show as contact information in emails */
@@ -795,7 +795,7 @@ export type UpdateVariantInput = {
   weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
-/** A vendyx customer */
+/** A lune customer */
 export type User = Node & {
   createdAt: Scalars['Date']['output'];
   /** The user's email (unique) */

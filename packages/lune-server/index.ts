@@ -3,13 +3,13 @@ import {
   AssetServerPlugin,
   DefaultImageProcessor,
   LocalStorageProvider,
-  VendyxServer,
+  LuneServer,
 } from '@lune/core';
 import { config } from 'dotenv';
 
 config();
 
-const vendyxServer = new VendyxServer({
+const luneServer = new LuneServer({
   adminUIServeUrl: '/',
   app: { port: Number(process.env.PORT) ?? 8080 },
   auth: {
@@ -26,4 +26,4 @@ const vendyxServer = new VendyxServer({
   plugins: [new AssetServerPlugin(), new AdminUiServerPlugin()],
 });
 
-vendyxServer.start();
+luneServer.start();

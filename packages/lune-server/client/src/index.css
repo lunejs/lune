@@ -2,7 +2,7 @@
 @import 'tw-animate-css';
 
 /**
- * Import styles from @vendyx/admin-ui package
+ * Import styles from @lune/admin-ui package
  * This ensures that all Tailwind classes used in admin-ui are scanned
  */
 @source '../../../lune-admin-ui/src/**/*.{js,ts,jsx,tsx}';

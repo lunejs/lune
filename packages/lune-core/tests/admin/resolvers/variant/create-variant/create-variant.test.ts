@@ -4,8 +4,8 @@ import { convertToCent } from '@lune/common';
 
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
@@ -18,8 +18,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('createVariant - Mutation', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -38,14 +38,14 @@ describe('createVariant - Mutation', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('creates variants with only required fields', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: CREATE_VARIANT_MUTATION,
         variables: {
@@ -64,7 +64,7 @@ describe('createVariant - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: CREATE_VARIANT_MUTATION,
         variables: {
@@ -138,7 +138,7 @@ describe('createVariant - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: CREATE_VARIANT_MUTATION,
         variables: {
@@ -177,7 +177,7 @@ describe('createVariant - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: CREATE_VARIANT_MUTATION,
         variables: {
@@ -220,7 +220,7 @@ describe('createVariant - Mutation', () => {
     await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: CREATE_VARIANT_MUTATION,
         variables: {

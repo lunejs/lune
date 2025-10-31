@@ -32,7 +32,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary fallback={<p>Something went wrong</p>}>
-        <ThemeProvider defaultTheme="dark" storageKey="vendyx-ui-theme">
+        <ThemeProvider defaultTheme="dark" storageKey="lune-ui-theme">
           <Toaster />
           <BrowserRouter>
             <Routes>

@@ -1,4 +1,4 @@
-export class VendyxError extends Error {
+export class LuneError extends Error {
   constructor(
     readonly ctx: string,
     message: string,

@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
       : {
           lib: {
             entry: path.resolve('src', 'index.ts'),
-            name: 'VendyxAdminUI',
+            name: 'LuneAdminUI',
             formats: ['es'],
             fileName: format => `index.${format}.js`
           },

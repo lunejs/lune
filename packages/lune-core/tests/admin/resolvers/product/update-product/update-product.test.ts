@@ -1,7 +1,7 @@
 import request from 'supertest';
 
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
@@ -15,8 +15,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('updateProduct - Mutation', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -36,14 +36,14 @@ describe('updateProduct - Mutation', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('update a basic product', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {
@@ -66,7 +66,7 @@ describe('updateProduct - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {
@@ -90,7 +90,7 @@ describe('updateProduct - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {
@@ -116,7 +116,7 @@ describe('updateProduct - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {
@@ -139,7 +139,7 @@ describe('updateProduct - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {
@@ -165,7 +165,7 @@ describe('updateProduct - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_PRODUCT_MUTATION,
         variables: {

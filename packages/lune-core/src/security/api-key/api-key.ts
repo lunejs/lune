@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid';
 
-const PREFIX = 'VXSK';
+const PREFIX = 'LNSK';
 const CROCKFORD = '23456789ABCDEFGHJKMNPQRSTVWXYZ';
 const ID_LENGTH = 40;
 
@@ -8,18 +8,18 @@ const CrockfordAlphabet = customAlphabet(CROCKFORD, ID_LENGTH);
 
 /**
    * @description
-   * Generates a new API key with the Vendyx format.
+   * Generates a new API key with the Lune format.
    *
    * @format
    * ```
-   * VXSK_38QARV01ET0G6Z2CJD9VA2ZZAR0
+   * LUSK_38QARV01ET0G6Z2CJD9VA2ZZAR0
    * └──┘ └─────────────────────────┘
    * Prefix   Crockford Base32 UUID  
 
    * ```
    *
    * The key consists of:
-   * - A prefix "VXSK" Vendyx Storefront Key
+   * - A prefix "LUSK" Lune Storefront Key
    * - A unique Key generated using Crockford Base32 encoding
    *
    * Inspired by:

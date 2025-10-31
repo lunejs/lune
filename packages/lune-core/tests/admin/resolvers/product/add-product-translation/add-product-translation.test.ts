@@ -3,8 +3,8 @@ import request from 'supertest';
 import type { OptionTranslationTable } from '@/persistence/entities/option-translation';
 import type { OptionValueTranslationTable } from '@/persistence/entities/option-value-translation';
 import { Tables } from '@/persistence/tables';
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { OptionConstants, OptionFixtures } from './fixtures/option.fixtures';
@@ -26,8 +26,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('addProductTranslation - Mutation', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -49,14 +49,14 @@ describe('addProductTranslation - Mutation', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('add full product translation', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -80,7 +80,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -111,7 +111,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -135,7 +135,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -173,7 +173,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -219,7 +219,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -254,7 +254,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -296,7 +296,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {
@@ -338,7 +338,7 @@ describe('addProductTranslation - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: ADD_PRODUCT_TRANSLATION_MUTATION,
         variables: {

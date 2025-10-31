@@ -5,8 +5,8 @@ import { convertToCent } from '@lune/common';
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { OptionFixtures } from './fixtures/option.fixtures';
@@ -22,8 +22,8 @@ import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixt
 describe('product - Query', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -45,14 +45,14 @@ describe('product - Query', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('returns a list of products with pagination', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -76,8 +76,8 @@ describe('product - Query', () => {
   test('returns a list of products with name filter (contains)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -101,8 +101,8 @@ describe('product - Query', () => {
   test('returns a list of products with name filter (equals)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -125,8 +125,8 @@ describe('product - Query', () => {
   test('returns a list of products with name filter (equals) with input matching for includes but not for equals', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -148,8 +148,8 @@ describe('product - Query', () => {
   test('returns a list of products with tags filter', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -171,8 +171,8 @@ describe('product - Query', () => {
   test('returns a list of products with min sale price range filter', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -194,8 +194,8 @@ describe('product - Query', () => {
   test('returns a list of products with max sale price range filter', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -217,8 +217,8 @@ describe('product - Query', () => {
   test('returns a list of products with both min and max sale price range filter', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -242,8 +242,8 @@ describe('product - Query', () => {
   test('returns a list of products matching option values in the same group (OR)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -267,8 +267,8 @@ describe('product - Query', () => {
   test('returns a list of products matching multiple option values in different groups (AND)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -294,8 +294,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by createdAt in descending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -319,8 +319,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by createdAt in ascending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -344,8 +344,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by name in descending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -369,8 +369,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by name in ascending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -394,8 +394,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by min sale price in descending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -419,8 +419,8 @@ describe('product - Query', () => {
   test('returns a list of products matching sort by min sale price in ascending order', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -444,8 +444,8 @@ describe('product - Query', () => {
   test('returns a list of products limited to 3 items', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -463,8 +463,8 @@ describe('product - Query', () => {
   test('returns a list of products with offset of 2', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -482,8 +482,8 @@ describe('product - Query', () => {
   test('returns a list of products with pagination and order applied', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -505,8 +505,8 @@ describe('product - Query', () => {
   test('returns a list of products with name and tag filter applied', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -531,8 +531,8 @@ describe('product - Query', () => {
   test('returns a list of products with option values and price range filter applied', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -556,8 +556,8 @@ describe('product - Query', () => {
   test('returns a list of products with name and option values filter applied', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -581,8 +581,8 @@ describe('product - Query', () => {
   test('returns a list of products with filters and sort applied', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -618,8 +618,8 @@ describe('product - Query', () => {
   test('returns Authorization error when storefront api key is invalid', async () => {
     const response = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', 'invalid_key')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {
@@ -633,7 +633,7 @@ describe('product - Query', () => {
   test('returns Authorization error when no shop id is provided', async () => {
     const response = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCTS_QUERY,
         variables: {

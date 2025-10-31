@@ -1,4 +1,4 @@
 export const enum CookiesKeys {
-  UserToken = 'x-user-vendyx-token',
-  ActiveShop = 'x-active-shop-vendyx'
+  UserToken = 'x-user-lune-token',
+  ActiveShop = 'x-active-shop-lune'
 }

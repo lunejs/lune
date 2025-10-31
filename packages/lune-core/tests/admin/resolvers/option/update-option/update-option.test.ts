@@ -1,7 +1,7 @@
 import request from 'supertest';
 
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { OptionConstants, OptionFixtures } from './fixtures/option.fixtures';
@@ -13,8 +13,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('updateOption - Mutation', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -32,14 +32,14 @@ describe('updateOption - Mutation', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('update simple option', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_OPTION_MUTATION,
         variables: {
@@ -62,7 +62,7 @@ describe('updateOption - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_OPTION_MUTATION,
         variables: {
@@ -89,7 +89,7 @@ describe('updateOption - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_OPTION_MUTATION,
         variables: {
@@ -112,7 +112,7 @@ describe('updateOption - Mutation', () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_OPTION_MUTATION,
         variables: {
@@ -138,7 +138,7 @@ describe('updateOption - Mutation', () => {
   test('returns Authorization error when no token is provided', async () => {
     const res = await request(app)
       .post('/admin-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
+      .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: UPDATE_OPTION_MUTATION,
         variables: {

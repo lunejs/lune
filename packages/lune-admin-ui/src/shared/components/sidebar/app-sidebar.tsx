@@ -37,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="/dashboard">
                 <Logo />
-                <span className="text-base font-semibold">Vendyx</span>
+                <span className="text-base font-semibold">Lune</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

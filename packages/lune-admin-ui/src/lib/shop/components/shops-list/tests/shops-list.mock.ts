@@ -8,7 +8,7 @@ export const SHOPS_MOCK: CommonListShopFragment[] = [
   },
   {
     id: '2',
-    name: 'Vendyx Shop',
-    slug: 'vendyx-shop'
+    name: 'Lune Shop',
+    slug: 'lune-shop'
   }
 ];

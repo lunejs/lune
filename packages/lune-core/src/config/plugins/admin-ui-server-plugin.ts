@@ -2,9 +2,9 @@ import { join } from 'node:path';
 
 import express from 'express';
 
-import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
+import type { LunePlugin } from '@/plugin/lune.plugin';
 
-import type { VendyxConfig } from '../vendyx.config';
+import type { LuneConfig } from '../lune.config';
 
 /**
  * Admin UI Plugin
@@ -12,7 +12,7 @@ import type { VendyxConfig } from '../vendyx.config';
  * @description
  * A plugin to serve admin ui app via the express server
  */
-export class AdminUiServerPlugin implements VendyxPlugin {
+export class AdminUiServerPlugin implements LunePlugin {
   name = 'AdminUiServerPlugin';
 
   private options: Required<Options>;
@@ -22,7 +22,7 @@ export class AdminUiServerPlugin implements VendyxPlugin {
     this.options = this.getOptions(options);
   }
 
-  config(config: VendyxConfig): VendyxConfig {
+  config(config: LuneConfig): LuneConfig {
     this.adminUIServeUrl = config.adminUIServeUrl;
 
     return config;

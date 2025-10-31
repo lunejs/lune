@@ -15,7 +15,7 @@ export async function gqlFetcher<R, V>(
     const shopId = getCookie(CookiesKeys.ActiveShop);
 
     gqlClient.setHeader('Authorization', userToken ? `Bearer ${userToken}` : '');
-    gqlClient.setHeader('x_vendyx_shop_id', shopId ?? '');
+    gqlClient.setHeader('x_lune_shop_id', shopId ?? '');
 
     return await gqlClient.request({
       document,

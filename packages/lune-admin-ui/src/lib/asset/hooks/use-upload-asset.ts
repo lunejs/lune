@@ -1,5 +1,5 @@
 import { restFetcher } from '@/lib/api/fetchers/rest-fetcher';
-import type { VendyxAsset } from '@/lib/api/types';
+import type { LuneAsset } from '@/lib/api/types';
 
 export const useUploadAsset = () => {
   const uploadAsset = async (images: File[]) => {
@@ -7,7 +7,7 @@ export const useUploadAsset = () => {
 
     images.forEach(img => formData.append('files', img, img.name));
 
-    const result = await restFetcher<{ success: boolean; data: Omit<VendyxAsset, 'order'>[] }>(
+    const result = await restFetcher<{ success: boolean; data: Omit<LuneAsset, 'order'>[] }>(
       '/upload',
       {
         method: 'POST',

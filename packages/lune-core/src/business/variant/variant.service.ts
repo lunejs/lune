@@ -1,4 +1,4 @@
-import { clean, isArray, isNumber, isTruthy, VendyxPrice } from '@lune/common';
+import { clean, isArray, isNumber, isTruthy, LunePrice } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';
@@ -24,11 +24,11 @@ export class VariantService {
       const variant = await this.repository.create({
         ...clean(v),
         createdAt: new Date(now.setMilliseconds(now.getMilliseconds() + i)),
-        salePrice: VendyxPrice.toCent(v.salePrice),
+        salePrice: LunePrice.toCent(v.salePrice),
         comparisonPrice: v.comparisonPrice
-          ? VendyxPrice.toCent(v.comparisonPrice)
+          ? LunePrice.toCent(v.comparisonPrice)
           : v.comparisonPrice,
-        costPerUnit: v.costPerUnit ? VendyxPrice.toCent(v.costPerUnit) : v.costPerUnit,
+        costPerUnit: v.costPerUnit ? LunePrice.toCent(v.costPerUnit) : v.costPerUnit,
         stock: v.stock ?? 0,
         requiresShipping: v.requiresShipping ?? false,
         productId
@@ -60,13 +60,13 @@ export class VariantService {
       data: {
         ...clean(baseVariant),
         salePrice: isNumber(baseVariant.salePrice)
-          ? VendyxPrice.toCent(baseVariant.salePrice)
+          ? LunePrice.toCent(baseVariant.salePrice)
           : undefined,
         comparisonPrice: isNumber(baseVariant.comparisonPrice)
-          ? VendyxPrice.toCent(baseVariant.comparisonPrice)
+          ? LunePrice.toCent(baseVariant.comparisonPrice)
           : baseVariant.comparisonPrice,
         costPerUnit: isNumber(baseVariant.costPerUnit)
-          ? VendyxPrice.toCent(baseVariant.costPerUnit)
+          ? LunePrice.toCent(baseVariant.costPerUnit)
           : baseVariant.costPerUnit,
         dimensions: baseVariant.dimensions,
         sku: baseVariant.sku,

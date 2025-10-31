@@ -31,18 +31,18 @@ export * from './logger';
 /**
  * Errors
  */
-export * from './errors/vendyx.error';
+export * from './errors/lune.error';
 
 /**
- * Vendyx config
+ * Lune config
  */
 export * from './config/image-processor/default-image-processor';
 export * from './config/image-processor/image-processor';
+export * from './config/lune.config';
 export * from './config/plugins/admin-ui-server-plugin';
 export * from './config/plugins/asset-server-plugin';
 export * from './config/storage/local-storage-provider';
 export * from './config/storage/storage';
-export * from './config/vendyx.config';
 
 /**
  * Migrations

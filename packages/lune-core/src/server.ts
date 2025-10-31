@@ -6,17 +6,17 @@ import { AdminApi } from './api/admin/admin.api';
 import { StorefrontApi } from './api/storefront/storefront.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
-import type { VendyxConfig } from './config/vendyx.config';
+import type { LuneConfig } from './config/lune.config';
 import { JwtService } from './libs/jwt';
 import type { Database } from './persistence/connection';
 import { createConnection } from './persistence/connection';
 import { Logger } from './logger';
 
-export class VendyxServer {
+export class LuneServer {
   private app: express.Application;
   private database: Database;
 
-  constructor(config: VendyxConfig) {
+  constructor(config: LuneConfig) {
     Logger.banner('v0.0.1');
     const pluginsConfig = this.getPluginsConfig(config);
 
@@ -67,7 +67,7 @@ export class VendyxServer {
     await this.database.destroy();
   }
 
-  private getPluginsConfig(initialConfig: VendyxConfig) {
+  private getPluginsConfig(initialConfig: LuneConfig) {
     const plugins = initialConfig.plugins;
     let newConfig = initialConfig;
 

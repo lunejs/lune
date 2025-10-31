@@ -1,6 +1,6 @@
-import { DEFAULT_VENDYX_CONFIG } from './config/default-config';
-import { VendyxServer } from './server';
+import { DEFAULT_LUNE_CONFIG } from './config/default-config';
+import { LuneServer } from './server';
 
-const vendyxServer = new VendyxServer(DEFAULT_VENDYX_CONFIG);
+const luneServer = new LuneServer(DEFAULT_LUNE_CONFIG);
 
-vendyxServer.start();
+luneServer.start();

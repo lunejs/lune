@@ -1,7 +1,7 @@
 /**
- * Utility class to manage prices in vendyx
+ * Utility class to manage prices in lune
  */
-export class VendyxPrice {
+export class LunePrice {
   /**
    * Utility function to convert a price in dollars to cents, this is useful for storing prices in the database as integers and avoiding floating point errors
    * @param price Price in dollar
@@ -10,7 +10,7 @@ export class VendyxPrice {
    * @example
    * ```ts
    * const priceInDollars = 10.99;
-   * const priceInCents = VendyxPrice.toCent(priceInDollars);
+   * const priceInCents = LunePrice.toCent(priceInDollars);
    * // priceInCents = 1099
    * ```
    *
@@ -28,7 +28,7 @@ export class VendyxPrice {
    * @example
    * ```ts
    * const priceInCents = 1099;
-   * const priceInDollars = VendyxPrice.toDollar(priceInCents);
+   * const priceInDollars = LunePrice.toDollar(priceInCents);
    * // priceInDollars = 10.99
    * ```
    *
@@ -46,7 +46,7 @@ export class VendyxPrice {
    * @example
    * ```ts
    * const priceInCents = 1099;
-   * const priceFormatted = VendyxPrice.format(priceInCents);
+   * const priceFormatted = LunePrice.format(priceInCents);
    * // priceFormatted = $10.99
    * ```
    */
@@ -54,14 +54,14 @@ export class VendyxPrice {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
-    }).format(VendyxPrice.toDollar(price));
+    }).format(LunePrice.toDollar(price));
   }
 
   /**
    * Convert formatted price to number
    *
    * @example
-   * VendyxPrice.parse('$1,234.56') // 123456
+   * LunePrice.parse('$1,234.56') // 123456
    */
   static parse(price: string) {
     const parsedPrice = price;

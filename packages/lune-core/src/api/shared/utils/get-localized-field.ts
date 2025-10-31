@@ -1,4 +1,4 @@
-import type { VendyxEntity } from '@/persistence/entities/entity';
+import type { LuneEntity } from '@/persistence/entities/entity';
 import type { Option } from '@/persistence/entities/option';
 import type { OptionValue } from '@/persistence/entities/option_value';
 import type { Product } from '@/persistence/entities/product';
@@ -29,7 +29,7 @@ export const getOptionValueLocalizedField = async (
   return getLocalizedField(ctx, parent, field, 'optionValue');
 };
 
-const getLocalizedField = async <T extends VendyxEntity>(
+const getLocalizedField = async <T extends LuneEntity>(
   ctx: ExecutionContext,
   parent: T,
   field: keyof T,

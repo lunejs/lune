@@ -1,10 +1,10 @@
-export interface VendyxEntity {
+export interface LuneEntity {
   id: ID;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface VendyxTable {
+export interface LuneTable {
   id: ID;
   created_at: Date;
   updated_at: Date;

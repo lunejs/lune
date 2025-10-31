@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql';
 import type { Plugin } from 'graphql-yoga';
 import { isAsyncIterable } from 'graphql-yoga';
 
-import { VendyxError } from '@/errors/vendyx.error';
+import { LuneError } from '@/errors/lune.error';
 import { Logger } from '@/logger';
 
 export function useErrorLogger(): Plugin {
@@ -17,7 +17,7 @@ export function useErrorLogger(): Plugin {
           for (const error of result.errors ?? []) {
             const original = error.originalError;
 
-            if (original instanceof VendyxError) {
+            if (original instanceof LuneError) {
               Logger.error(original.ctx, original.message, original.metadata);
             } else if (original instanceof GraphQLError) {
               Logger.error('Graphql', original.message, original);

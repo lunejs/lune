@@ -1,9 +1,9 @@
-import type { VendyxEntity, VendyxTable } from './entity';
+import type { LuneEntity, LuneTable } from './entity';
 
 /**
  * A product is a good or service that you want to sell.
  */
-export interface Product extends VendyxEntity {
+export interface Product extends LuneEntity {
   deletedAt?: Date | null;
   /**
    * The product's name
@@ -41,7 +41,7 @@ export interface Product extends VendyxEntity {
   maxSalePrice: number;
 }
 
-export interface ProductTable extends VendyxTable {
+export interface ProductTable extends LuneTable {
   deleted_at?: Date | null;
   name: string;
   slug: string;

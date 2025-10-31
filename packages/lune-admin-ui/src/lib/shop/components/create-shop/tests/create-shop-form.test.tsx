@@ -37,7 +37,7 @@ describe('Create Shop Form Component', () => {
 
     await waitFor(() => {
       expect(setCookie).toHaveBeenCalledWith(
-        'x-active-shop-vendyx',
+        'x-active-shop-lune',
         SUCCESS_CREATE_SHOP_RESPONSE.createShop.shop.id,
         { expires: 30 }
       );

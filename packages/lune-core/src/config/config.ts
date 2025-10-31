@@ -1,8 +1,8 @@
-import type { VendyxConfig } from './vendyx.config';
+import type { LuneConfig } from './lune.config';
 
-let config: VendyxConfig;
+let config: LuneConfig;
 
-export const setConfig = (input?: Partial<VendyxConfig>) => {
+export const setConfig = (input?: Partial<LuneConfig>) => {
   if (!input) return;
 
   config = {

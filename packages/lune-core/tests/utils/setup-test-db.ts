@@ -11,7 +11,7 @@ async function main() {
 
     CREATE USER app_user WITH PASSWORD 'womteC_ruqri0_punqah';
 
-    GRANT ALL PRIVILEGES ON DATABASE vendyx_test TO app_user;
+    GRANT ALL PRIVILEGES ON DATABASE lune_test TO app_user;
 
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
     GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;

@@ -1,5 +1,5 @@
 import { OrderBy } from '@/api/shared/types/graphql';
-import type { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import type { LuneEntity, LuneTable } from '@/persistence/entities/entity';
 import { Tables } from '@/persistence/tables';
 
 import type { Transaction } from '../../connection';
@@ -12,7 +12,7 @@ import { RepositoryError } from '../repository.error';
  * @description
  * A generic repository class for performing CRUD operations on a database table.
  */
-export class Repository<T extends VendyxEntity, Table extends VendyxTable> {
+export class Repository<T extends LuneEntity, Table extends LuneTable> {
   constructor(
     private readonly tableName: Tables,
     protected readonly trx: Transaction,

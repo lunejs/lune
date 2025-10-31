@@ -1,4 +1,4 @@
-import { VendyxPrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
@@ -103,7 +103,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: 23_000 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.minSalePrice >= VendyxPrice.toCent(23_000))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= LunePrice.toCent(23_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -111,7 +111,7 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { max: 10_000 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.maxSalePrice <= VendyxPrice.toCent(10_000))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= LunePrice.toCent(10_000))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 
@@ -119,8 +119,8 @@ describe('Product repository', () => {
       const filters = { salePriceRange: { min: 50, max: 500 } };
       const result = await repository.findByFilters({ filters });
 
-      expect(result.every(p => p.minSalePrice >= VendyxPrice.toCent(50))).toBe(true);
-      expect(result.every(p => p.maxSalePrice <= VendyxPrice.toCent(500))).toBe(true);
+      expect(result.every(p => p.minSalePrice >= LunePrice.toCent(50))).toBe(true);
+      expect(result.every(p => p.maxSalePrice <= LunePrice.toCent(500))).toBe(true);
       expect(result.length).toBe(await repository.countByFilters(filters));
     });
 

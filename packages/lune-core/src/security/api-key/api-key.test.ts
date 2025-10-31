@@ -5,7 +5,7 @@ describe('ApiKey', () => {
     const keys = new Array(100).fill(null).map(() => ApiKey.generate());
 
     keys.forEach(key => {
-      expect(key.startsWith('VXSK_')).toBe(true);
+      expect(key.startsWith('LNSK_')).toBe(true);
       expect(ApiKey.validate(key)).toBe(true);
     });
   });

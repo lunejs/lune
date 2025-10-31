@@ -3,7 +3,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: vendyx_test
+      POSTGRES_DB: lune_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: test
     ports:
@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres -d vendyx_test']
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d lune_test']
       interval: 5s
       timeout: 3s
       retries: 20

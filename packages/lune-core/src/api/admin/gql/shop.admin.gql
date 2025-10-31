@@ -1,5 +1,5 @@
 """
-A vendyx shop
+A lune shop
 """
 type Shop implements Node {
   id: ID!

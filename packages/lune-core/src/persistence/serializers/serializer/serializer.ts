@@ -1,5 +1,5 @@
-import { VendyxError } from '@/errors/vendyx.error';
-import type { VendyxEntity, VendyxTable } from '@/persistence/entities/entity';
+import { LuneError } from '@/errors/lune.error';
+import type { LuneEntity, LuneTable } from '@/persistence/entities/entity';
 import type { RepositoryInput } from '@/persistence/repositories/repository';
 
 /**
@@ -16,7 +16,7 @@ import type { RepositoryInput } from '@/persistence/repositories/repository';
  *   ['password', 'password']
  * ]);
  */
-export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> {
+export class Serializer<Entity extends LuneEntity, Table extends LuneTable> {
   /**
    * @param fields
    * Array of field mappings for serialization and deserialization.
@@ -141,7 +141,7 @@ export class Serializer<Entity extends VendyxEntity, Table extends VendyxTable> 
   }
 }
 
-export class SerializeError extends VendyxError {
+export class SerializeError extends LuneError {
   constructor(ctx: string, error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown serialization error';
 

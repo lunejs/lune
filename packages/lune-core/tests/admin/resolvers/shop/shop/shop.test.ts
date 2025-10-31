@@ -1,7 +1,7 @@
 import request from 'supertest';
 
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
@@ -10,8 +10,8 @@ import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 describe('shop - Query', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([new UserFixtures(), new ShopFixtures()]);
@@ -23,7 +23,7 @@ describe('shop - Query', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('returns shop by slug', async () => {
@@ -39,7 +39,7 @@ describe('shop - Query', () => {
 
     const { shop } = res.body.data;
 
-    expect(shop.slug).toBe('vendyx-store');
+    expect(shop.slug).toBe('lune-store');
   });
 
   test('returns null for non-existing shop slug', async () => {

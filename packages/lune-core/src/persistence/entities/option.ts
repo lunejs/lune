@@ -1,10 +1,10 @@
-import type { VendyxEntity, VendyxTable } from './entity';
+import type { LuneEntity, LuneTable } from './entity';
 
 /**
  * An option represents a group of values which generates the variants of a product.
  * For example, some typical options are color, size, or material.
  */
-export interface Option extends VendyxEntity {
+export interface Option extends LuneEntity {
   deletedAt?: Date | null;
   /**
    * The option's name
@@ -16,7 +16,7 @@ export interface Option extends VendyxEntity {
   order: number;
 }
 
-export interface OptionTable extends VendyxTable {
+export interface OptionTable extends LuneTable {
   deleted_at?: Date | null;
   name: string;
   order: number;

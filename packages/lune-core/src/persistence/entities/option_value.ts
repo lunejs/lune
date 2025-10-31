@@ -1,10 +1,10 @@
-import type { ID, VendyxEntity, VendyxTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
 
 /**
  * An option value represents a specific value of an option and is used to differentiate the variants of a product.
  * For example, if the option is color, the option value can be red, blue, or green.
  */
-export interface OptionValue extends VendyxEntity {
+export interface OptionValue extends LuneEntity {
   deletedAt?: Date | null;
   /**
    * The option value's name
@@ -22,7 +22,7 @@ export interface OptionValue extends VendyxEntity {
   optionId: ID;
 }
 
-export interface OptionValueTable extends VendyxTable {
+export interface OptionValueTable extends LuneTable {
   deleted_at?: Date | null;
   name: string;
   order: number;

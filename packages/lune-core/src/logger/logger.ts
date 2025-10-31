@@ -3,7 +3,7 @@ const { white, gray, green, yellow, blue, red, magenta } = kleur;
 
 /**
  * @description
- * Logger utility for Vendyx. Provides styled console logging for different levels
+ * Logger utility for Lune. Provides styled console logging for different levels
  * like `ready`, `info`, `warn`, and `error`.
  */
 export class Logger {
@@ -84,7 +84,7 @@ export class Logger {
   }
 
   private static logo() {
-    return gray('Vendyx');
+    return gray('Lune');
   }
 
   private static timestamp() {

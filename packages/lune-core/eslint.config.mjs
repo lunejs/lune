@@ -1,4 +1,4 @@
 // @ts-check
-import vendyxConfig from '@lune/eslint-config';
+import luneConfig from '@lune/eslint-config';
 
-export default [...vendyxConfig];
+export default [...luneConfig];

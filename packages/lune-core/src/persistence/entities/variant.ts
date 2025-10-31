@@ -1,10 +1,10 @@
-import type { ID, VendyxEntity, VendyxTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
 
 /**
  * A variant is a specific version of a product.
  * For example, a product can have a variant with a specific color, size, or material.
  */
-export interface Variant extends VendyxEntity {
+export interface Variant extends LuneEntity {
   deletedAt?: Date | null;
   /**
    * The variant's sale price
@@ -43,7 +43,7 @@ export interface Variant extends VendyxEntity {
   productId: ID;
 }
 
-export interface VariantTable extends VendyxTable {
+export interface VariantTable extends LuneTable {
   deleted_at?: Date | null;
   sale_price: number;
   comparison_price?: number | null;

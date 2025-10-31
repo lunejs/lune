@@ -2,8 +2,8 @@ import * as bcrypt from 'bcrypt';
 import request from 'supertest';
 
 import { Tables } from '@/persistence/tables';
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -12,8 +12,8 @@ describe('createUser - Mutation', () => {
   const testHelper = new TestHelper();
   const q = testHelper.getQueryBuilder();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([new UserFixtures()]);
@@ -25,7 +25,7 @@ describe('createUser - Mutation', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('creates user with valid input', async () => {

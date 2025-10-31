@@ -1,8 +1,8 @@
 import request from 'supertest';
 
 import { Locale } from '@/persistence/entities/locale';
-import { VendyxServer } from '@/server';
-import { TEST_VENDYX_CONFIG } from '@/tests/utils/test-config';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
 import { AssetFixtures } from './fixtures/asset.fixtures';
@@ -20,8 +20,8 @@ import { UserFixtures } from './fixtures/user.fixtures';
 describe('product - Query', () => {
   const testHelper = new TestHelper();
 
-  const vendyxServer = new VendyxServer(TEST_VENDYX_CONFIG);
-  const app = vendyxServer.getApp();
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
 
   beforeEach(async () => {
     await testHelper.loadFixtures([
@@ -42,14 +42,14 @@ describe('product - Query', () => {
 
   afterAll(async () => {
     await testHelper.destroyDatabase();
-    await vendyxServer.teardown();
+    await luneServer.teardown();
   });
 
   test('returns product by id', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -65,8 +65,8 @@ describe('product - Query', () => {
   test('returns product by slug', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -82,8 +82,8 @@ describe('product - Query', () => {
   test('return null when product is disabled (id)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -99,8 +99,8 @@ describe('product - Query', () => {
   test('return null when product is disabled (slug)', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -116,9 +116,9 @@ describe('product - Query', () => {
   test('returns translated product when locale is provided', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_storefront_locale', Locale.EN)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_locale', Locale.EN)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -136,9 +136,9 @@ describe('product - Query', () => {
   test('returns normal product when locale does not match', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('x_vendyx_storefront_locale', Locale.FR)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_locale', Locale.FR)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -169,8 +169,8 @@ describe('product - Query', () => {
   test('returns Authorization error when storefront api key is invalid', async () => {
     const response = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', 'invalid_key')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -184,7 +184,7 @@ describe('product - Query', () => {
   test('returns Authorization error when no shop id is provided', async () => {
     const response = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -198,8 +198,8 @@ describe('product - Query', () => {
   test('returns assets', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -216,8 +216,8 @@ describe('product - Query', () => {
   test('returns assets with pagination', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {
@@ -237,8 +237,8 @@ describe('product - Query', () => {
   test('returns tags', async () => {
     const res = await request(app)
       .post('/storefront-api')
-      .set('x_vendyx_shop_id', ShopConstants.ID)
-      .set('x_vendyx_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
         query: GET_PRODUCT_QUERY,
         variables: {

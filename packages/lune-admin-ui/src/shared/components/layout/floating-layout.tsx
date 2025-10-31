@@ -8,7 +8,7 @@ export const FloatingLayout = ({ children }: Props) => {
       <header className="flex items-center gap-2 justify-center">
         <Link to="/" className="flex items-center gap-2">
           <Logo />
-          <h1 className="font-semibold text-sm">Vendyx</h1>
+          <h1 className="font-semibold text-sm">Lune</h1>
         </Link>
       </header>
       {children}

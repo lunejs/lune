@@ -6,7 +6,7 @@ import type { Database, Transaction } from '@/persistence/connection';
 
 import { FixtureDefaults } from './default-fixtures';
 import type { Fixture } from './fixtures';
-import { TEST_VENDYX_CONFIG } from './test-config';
+import { TEST_LUNE_CONFIG } from './test-config';
 
 export class TestHelper {
   private db: Database;
@@ -78,7 +78,7 @@ export class TestHelper {
   }
 
   static generateJWT(payload: Record<string, any>): string {
-    return jwt.sign(payload, TEST_VENDYX_CONFIG.auth.jwtSecret ?? '');
+    return jwt.sign(payload, TEST_LUNE_CONFIG.auth.jwtSecret ?? '');
   }
 
   static async hashPassword(password: string): Promise<string> {

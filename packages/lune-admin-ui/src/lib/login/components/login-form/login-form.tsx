@@ -10,7 +10,7 @@ export const LoginForm = () => {
       <CardHeader className="gap-0">
         <H3 className="text-2xl font-semibold text-center">Welcome back</H3>
         <Muted className="text-sm font-normal text-muted-foreground text-center">
-          Login to your vendyx account
+          Login to your Lune account
         </Muted>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">

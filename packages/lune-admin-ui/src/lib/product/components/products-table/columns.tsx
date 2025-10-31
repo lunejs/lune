@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router';
 
-import { VendyxPrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 import { Badge, Checkbox, cn } from '@lune/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
@@ -78,7 +78,7 @@ export const ProductsTableColumns: ColumnDef<TableProduct>[] = [
       return <DataTableColumnHeader column={column} title="Price" />;
     },
     cell: ({ row }) => {
-      return <p className="text-nowrap">{VendyxPrice.format(row.original.price ?? 0)}</p>;
+      return <p className="text-nowrap">{LunePrice.format(row.original.price ?? 0)}</p>;
     },
     enableSorting: false
   },

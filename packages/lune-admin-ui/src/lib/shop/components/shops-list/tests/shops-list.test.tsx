@@ -28,7 +28,7 @@ describe('ShopsList Component', () => {
 
     await userEvent.click(acmeShopButton);
 
-    expect(setCookie).toHaveBeenCalledWith('x-active-shop-vendyx', '1', { expires: 30 });
+    expect(setCookie).toHaveBeenCalledWith('x-active-shop-lune', '1', { expires: 30 });
     expect(navigateSpy).toHaveBeenCalledWith('/dashboard');
   });
 

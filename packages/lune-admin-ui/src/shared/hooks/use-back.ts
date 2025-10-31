@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router';
 
-const BACK_ROUTE_KEY = 'x-vendyx-back-route';
+const BACK_ROUTE_KEY = 'x-lune-back-route';
 
 /**
  * Manage persisted href to back navigation

@@ -1,19 +1,19 @@
 import type express from 'express';
 
-import type { VendyxConfig } from '@/config/vendyx.config';
+import type { LuneConfig } from '@/config/lune.config';
 
 /**
- * Vendyx plugin interface
+ * Lune plugin interface
  *
  * @description
- * A plugin in Vendyx is a class capable to extend its functionality
+ * A plugin in Lune is a class capable to extend its functionality
  * in the way you think is necessary without changing the core.
  * Here are some examples of what you can do with a plugin:
  * - Extend the storefront/admin api for extra functionality
  * - Add new routes, middleware, etc.
  * - Inject new configuration before the server starts
  */
-export interface VendyxPlugin {
+export interface LunePlugin {
   /**
    * Plugin name
    *
@@ -29,7 +29,7 @@ export interface VendyxPlugin {
    * return the config to be used. Prefer returning a **new object** instead of
    * mutating the input.
    */
-  config?(config: VendyxConfig): VendyxConfig;
+  config?(config: LuneConfig): LuneConfig;
 
   /**
    * Register function

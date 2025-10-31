@@ -4,7 +4,7 @@ import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_OPTION_MUTATION } from '@/lib/api/operations/option.operations';
 import { CREATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import { CREATE_VARIANT_MUTATION } from '@/lib/api/operations/variant.operations';
-import type { VendyxAsset } from '@/lib/api/types';
+import type { LuneAsset } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 
 export const useCreateProduct = () => {
@@ -14,7 +14,7 @@ export const useCreateProduct = () => {
   const { mutateAsync: createOptions } = useGqlMutation(CREATE_OPTION_MUTATION);
 
   const create = async (input: CreateProductInput) => {
-    let images: Omit<VendyxAsset, 'order'>[] = [];
+    let images: Omit<LuneAsset, 'order'>[] = [];
 
     if (input.images?.length) {
       const result = await uploadAsset(input.images);

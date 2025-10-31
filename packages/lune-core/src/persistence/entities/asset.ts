@@ -1,4 +1,4 @@
-import type { VendyxEntity, VendyxTable } from './entity';
+import type { LuneEntity, LuneTable } from './entity';
 
 // TODO: convert keys to PascalCase
 export enum AssetType {
@@ -9,7 +9,7 @@ export enum AssetType {
 /**
  * Represents a file or media asset such as an image, PDF, etc.
  */
-export interface Asset extends VendyxEntity {
+export interface Asset extends LuneEntity {
   /**
    * Asset's name
    */
@@ -28,7 +28,7 @@ export interface Asset extends VendyxEntity {
   type: AssetType;
 }
 
-export interface AssetTable extends VendyxTable {
+export interface AssetTable extends LuneTable {
   name: string;
   source: string;
   provider_id: string;

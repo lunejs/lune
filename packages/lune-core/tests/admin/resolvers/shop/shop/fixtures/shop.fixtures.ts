@@ -5,7 +5,7 @@ import type { Fixture } from '@/tests/utils/fixtures';
 import { UserConstants } from './user.fixtures';
 
 export const ShopConstants = {
-  ExistingSlug: 'vendyx-store'
+  ExistingSlug: 'lune-store'
 };
 
 export class ShopFixtures implements Fixture<ShopTable> {

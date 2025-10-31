@@ -1,10 +1,10 @@
-import type { ID, VendyxEntity, VendyxTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
 import type { Locale } from './locale';
 
 /**
  * A product translation is a localized version of a product's fields
  */
-export interface ProductTranslation extends VendyxEntity {
+export interface ProductTranslation extends LuneEntity {
   name?: string | null;
   slug?: string | null;
   description?: string | null;
@@ -12,7 +12,7 @@ export interface ProductTranslation extends VendyxEntity {
   productId: ID;
 }
 
-export interface ProductTranslationTable extends VendyxTable {
+export interface ProductTranslationTable extends LuneTable {
   name?: string | null;
   slug?: string | null;
   description?: string | null;

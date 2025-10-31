@@ -1,9 +1,9 @@
-import type { VendyxPlugin } from '@/plugin/vendyx.plugin';
+import type { LunePlugin } from '@/plugin/lune.plugin';
 
 import type { ImageProcessor } from './image-processor/image-processor';
 import type { StorageProvider } from './storage/storage';
 
-export interface VendyxConfig {
+export interface LuneConfig {
   adminUIServeUrl: string;
   app: {
     port: number;
@@ -19,5 +19,5 @@ export interface VendyxConfig {
     storageProvider: StorageProvider;
     imageProcessor: ImageProcessor;
   };
-  plugins: VendyxPlugin[];
+  plugins: LunePlugin[];
 }
