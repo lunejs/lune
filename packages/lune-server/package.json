@@ -1,5 +1,6 @@
 {
   "name": "@lune/server",
+  "license": "AGPL-3.0",
   "version": "0.0.0",
   "private": true,
   "main": "index.js",
