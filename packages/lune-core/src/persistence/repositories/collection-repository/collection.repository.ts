@@ -1,5 +1,3 @@
-import type { Knex } from 'knex';
-
 import type { AssetInEntity, CollectionListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
 import type { Asset } from '@/persistence/entities/asset';
@@ -9,6 +7,7 @@ import type { CollectionProductTable } from '@/persistence/entities/collection-p
 import type { CollectionTranslationTable } from '@/persistence/entities/collection-translation';
 import type { ID } from '@/persistence/entities/entity';
 import type { Product } from '@/persistence/entities/product';
+import { CollectionFilter } from '@/persistence/filters/collection.filter';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { CollectionSerializer } from '@/persistence/serializers/collection.serializer';
 import { Tables } from '@/persistence/tables';
@@ -28,21 +27,19 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
   async findByFilters(input: CollectionListInput) {
     const query = this.q();
 
-    this.applyFilters(query, input.filters);
+    const result = await new CollectionFilter(query)
+      .applyFilters(input.filters ?? {})
+      .applyPagination(input)
+      .applySort()
+      .build();
 
-    if (input.take) query.limit(input.take);
-    if (input.skip) query.offset(input.skip);
-
-    query.orderBy('created_at', 'desc');
-
-    const result = await query;
     return result.map(item => this.serializer.deserialize(item) as Collection);
   }
 
   async countByFilters(filters: CollectionListInput['filters']) {
     const query = this.q();
 
-    this.applyFilters(query, filters);
+    new CollectionFilter(query).applyFilters(filters ?? {});
 
     const [{ count }] = await query.count({ count: '*' });
 
@@ -202,27 +199,6 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
       return result;
     } catch (error) {
       throw new RepositoryError('CollectionRepository.removeAllTranslations', error);
-    }
-  }
-
-  private applyFilters(
-    query: Knex.QueryBuilder<CollectionTable, any[]>,
-    filters?: CollectionListInput['filters']
-  ) {
-    if (filters?.name) {
-      if (filters.name.contains) {
-        query.whereRaw('LOWER(name) LIKE ?', `%${filters.name.contains.toLowerCase()}%`);
-      } else if (filters.name.equals) {
-        query.where('name', filters.name.equals);
-      }
-    }
-
-    if (filters?.enabled !== undefined) query.where('enabled', filters.enabled?.equals);
-
-    if (filters?.contentType) {
-      query.where('content_type', filters.contentType);
-    } else {
-      query.whereNull('parent_id');
     }
   }
 }

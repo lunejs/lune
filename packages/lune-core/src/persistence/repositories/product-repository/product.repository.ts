@@ -1,7 +1,3 @@
-import type { Knex } from 'knex';
-
-import { LunePrice } from '@lune/common';
-
 import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
 import type { Asset } from '@/persistence/entities/asset';
@@ -37,13 +33,11 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
     this.applyDeletedAtClause(query);
 
-    new ProductFilter(query)
+    const result = await new ProductFilter(query)
       .applyFilters(input.filters ?? {})
       .applySort(input.sort ?? {})
       .applyPagination(input)
       .build();
-
-    const result = await query;
 
     return result.map(item => this.serializer.deserialize(item) as Product);
   }
@@ -226,64 +220,6 @@ export class ProductRepository extends Repository<Product, ProductTable> {
       .count();
 
     return Number(count);
-  }
-
-  // TODO: Accept a list of tags instead a unique tag for filter
-  private applyFilters(
-    query: Knex.QueryBuilder<ProductTable, any[]>,
-    filters?: ProductListInput['filters']
-  ) {
-    if (filters?.name) {
-      if (filters.name.contains) {
-        query.whereRaw('LOWER(name) LIKE ?', `%${filters.name.contains.toLowerCase()}%`);
-      } else if (filters.name.equals) {
-        query.where('name', filters.name.equals);
-      }
-    }
-
-    if (filters?.enabled !== undefined) query.where('enabled', filters.enabled?.equals);
-    if (filters?.archived !== undefined) {
-      query.where('archived', filters.archived?.equals);
-    } else {
-      query.where('archived', false);
-    }
-
-    if (filters?.tag) {
-      query.whereExists(function () {
-        this.select('*')
-          .from(Tables.ProductTag)
-          .innerJoin(Tables.Tag, `${Tables.Tag}.id`, `${Tables.ProductTag}.tag_id`)
-          .whereRaw(`${Tables.ProductTag}.product_id = ${Tables.Product}.id`)
-          .andWhere(`${Tables.Tag}.name`, filters?.tag);
-      });
-    }
-
-    if (filters?.salePriceRange?.min) {
-      query.where('min_sale_price', '>=', LunePrice.toCent(filters.salePriceRange.min));
-    }
-
-    if (filters?.salePriceRange?.max) {
-      query.where('max_sale_price', '<=', LunePrice.toCent(filters.salePriceRange.max));
-    }
-
-    if (filters?.optionValues?.length) {
-      for (const opv of filters.optionValues) {
-        query.whereExists(function () {
-          this.select('*')
-            .from(Tables.Variant)
-            .innerJoin(
-              `${Tables.VariantOptionValue} as vov`,
-              'vov.variant_id',
-              `${Tables.Variant}.id`
-            )
-            .innerJoin(`${Tables.OptionValue} as ov`, 'ov.id', 'vov.option_value_id')
-            .innerJoin(`${Tables.Option} as o`, 'o.id', 'ov.option_id')
-            .whereRaw(`${Tables.Variant}.product_id = ${Tables.Product}.id`)
-            .andWhereILike('o.name', opv.option)
-            .whereIn('ov.name', opv.values);
-        });
-      }
-    }
   }
 }
 

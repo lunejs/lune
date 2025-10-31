@@ -3,12 +3,14 @@ import type { Knex } from 'knex';
 import { LunePrice } from '@lune/common';
 
 import type { ProductFilters, ProductSort } from '@/api/shared/types/graphql';
+import type { ProductTable } from '@/persistence/entities/product';
 
 import { Tables } from '../tables';
 
 import { BaseFilter } from './base.filter';
 
-export class ProductFilter extends BaseFilter {
+// TODO: Accept a list of tags instead a unique tag for filter
+export class ProductFilter extends BaseFilter<ProductTable> {
   constructor(
     query: Knex.QueryBuilder,
     private readonly tableAlias: string = Tables.Product

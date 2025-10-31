@@ -3,10 +3,12 @@ import type { Knex } from 'knex';
 import type { ListInput } from '@/api/shared/types/graphql';
 import { OrderBy } from '@/api/shared/types/graphql';
 
-export abstract class BaseFilter {
-  protected query: Knex.QueryBuilder;
+import type { LuneTable } from '../entities/entity';
 
-  constructor(query: Knex.QueryBuilder) {
+export abstract class BaseFilter<T extends LuneTable> {
+  protected query: Knex.QueryBuilder<T, T[]>;
+
+  constructor(query: Knex.QueryBuilder<T, T[]>) {
     this.query = query;
   }
 

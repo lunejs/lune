@@ -25,12 +25,11 @@ export function createCollectionProductsLoader(
       .select('cp.collection_id', trx.ref('p.*'))
       .whereIn('cp.collection_id', ids);
 
-    new ProductFilter(query, 'p')
+    const rows = (await new ProductFilter(query, 'p')
       .applyFilters(input?.filters ?? {})
       .applySort(input?.sort ?? {})
-      .applyPagination(input ?? {});
-
-    const rows: (ProductTable & CollectionProductTable)[] = await query;
+      .applyPagination(input ?? {})
+      .build()) as (ProductTable & CollectionProductTable)[];
 
     const byId = new Map<string, Product[]>();
     for (const id of ids) byId.set(id, []);
