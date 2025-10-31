@@ -2,70 +2,11 @@
 
 An open-source solution for commerce management.
 
-### Customizable at its core
+## Overview
 
-Configure your Lune server just the way you need — flexible, modular, and ready to adapt.
+Lune is an open-source foundation for building commerce management systems. It focuses on modularity and extensibility, allowing developers to customize how data, assets, and integrations are handled.
 
-```ts
-import { LuneServer } from '@lune/core';
-
-const luneServer = new LuneServer({
-  port: 4000,
-  databaseUrl: process.env.DATABASE_URL,
-});
-
-luneServer.start();
-```
-
-### Powerful interfaces for extension
-
-Plug in your own storage, image processors, and more through well-designed interfaces.
-
-```ts
-const luneServer = new LuneServer({
-  assets: {
-    imageProcessor: new CloudImageProcessor(),
-    storageProvider: new S3StorageProvider('https://cdn.yourdomain.com'),
-  },
-  payments: {
-    handlers: [new StripePaymentHandler(), new PayPalPaymentHandler()],
-  },
-  shipping: {
-    priceCalculators: [new FlatPriceCalculator(), new CountryPriceCalculator()],
-  },
-});
-```
-
-### Plugin-based architecture
-
-Extend Lune effortlessly with server plugins — from asset handling to admin UI integration.
-
-```ts
-import { AssetServerPlugin, AdminUiServerPlugin } from '@lune/plugins';
-
-const luneServer = new LuneServer({
-  plugins: [new AssetServerPlugin(), new RatingsPlugin()],
-});
-```
-
-### Composable Admin UI
-
-Extend or customize your admin experience with the App component. Add pages or a custom brand feel effortlessly.
-
-```ts
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { App } from '@lune/admin-ui';
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App
-      pages={[{ path: '/orders', component: OrdersPage }]}
-      brand={{ name: 'Lune Store', logo: '/logo.svg' }}
-    />
-  </StrictMode>
-);
-```
+<img width="1470" height="916" alt="Screenshot 2025-10-30 at 10 08 39 p m" src="https://github.com/user-attachments/assets/f7984693-2663-4a4c-aad9-9362de1e04ee" />
 
 ## Tech stack
 
