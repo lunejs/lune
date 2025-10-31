@@ -51,9 +51,9 @@ export async function enableRLS({
   shopId: string | null;
   ownerId: string | null;
 }) {
-  await trx.raw(`SELECT set_config('app.current_shop_id', '${shopId ?? UUID_PLACEHOLDER}', TRUE)`);
+  await trx.raw(`SELECT set_config('app.current_shop_id', '${shopId || UUID_PLACEHOLDER}', TRUE)`);
   await trx.raw(
-    `SELECT set_config('app.current_owner_id', '${ownerId ?? UUID_PLACEHOLDER}', TRUE)`
+    `SELECT set_config('app.current_owner_id', '${ownerId || UUID_PLACEHOLDER}', TRUE)`
   );
 }
 
