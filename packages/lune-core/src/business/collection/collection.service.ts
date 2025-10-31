@@ -118,8 +118,6 @@ export class CollectionService {
       }
     });
 
-    console.log({ r });
-
     return r;
   }
 

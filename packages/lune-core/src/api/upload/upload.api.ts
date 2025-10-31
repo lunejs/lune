@@ -22,9 +22,15 @@ export class UploadApi extends RestApi {
     const shopId = req.headers[HeaderKeys.ShopId]?.toString() ?? null;
     const jwt = req.headers[HeaderKeys.Authorization]?.toString().replace('Bearer ', '');
 
-    const userJwt = jwt ? await this.jwtService.verifyToken<UserJWT>(jwt) : null;
+    const userJWT = jwt ? await this.jwtService.verifyToken<UserJWT>(jwt) : null;
 
-    const ctx = await buildContext(this.database, this.jwtService, shopId, userJwt);
+    // const ctx = await buildContext(this.database, this.jwtService, shopId, userJwt);
+    const ctx = await buildContext({
+      database: this.database,
+      jwtService: this.jwtService,
+      shopId,
+      userJWT
+    });
 
     res.locals.context = ctx;
 

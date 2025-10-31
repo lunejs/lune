@@ -9,19 +9,15 @@ import type { UserJWT } from '../types/api.types';
 
 import type { ExecutionContext, StorefrontContext } from './types';
 
-export async function buildContext(
-  database: Database,
-  jwtService: JwtService,
-  shopId: string | null,
-  userJwt: UserJWT | null,
-  storefront?: StorefrontContext
-): Promise<ExecutionContext> {
+export async function buildContext(input: Input): Promise<ExecutionContext> {
   try {
+    const { database, jwtService, shopId, userJWT, storefront } = input;
+
     const trx = await database.transaction();
 
-    await enableRLS({ trx, shopId, ownerId: userJwt?.sub ?? null });
+    await enableRLS({ trx, shopId, ownerId: userJWT?.sub ?? null });
 
-    const ownerId = userJwt?.sub ?? null;
+    const ownerId = userJWT?.sub ?? null;
 
     return {
       trx,
@@ -29,9 +25,9 @@ export async function buildContext(
       jwtService,
       runWithoutRLS: runWithoutRLS(trx, shopId, ownerId),
       ownerId,
-      currentUser: userJwt ? { id: userJwt.sub, email: userJwt.email } : null,
+      currentUser: userJWT ? { id: userJWT.sub, email: userJWT.email } : null,
       repositories: buildRepositories(trx),
-      loaders: buildLoaders(trx, storefront?.locale),
+      loaders: buildLoaders(trx, storefront?.locale, input.variables),
       storefront
     };
   } catch (error) {
@@ -39,3 +35,12 @@ export async function buildContext(
     throw error;
   }
 }
+
+type Input = {
+  database: Database;
+  jwtService: JwtService;
+  shopId: string | null;
+  userJWT: UserJWT | null;
+  variables?: Record<string, unknown>;
+  storefront?: StorefrontContext;
+};

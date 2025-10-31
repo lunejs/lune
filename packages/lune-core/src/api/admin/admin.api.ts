@@ -60,8 +60,14 @@ export class AdminApi extends GraphqlApi {
     const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
 
-    const payload = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
+    const userJWT = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
 
-    return buildContext(this.database, this.jwtService, shopId, payload);
+    return buildContext({
+      database: this.database,
+      jwtService: this.jwtService,
+      shopId,
+      userJWT,
+      variables: initialContext.params.variables
+    });
   }
 }

@@ -44,11 +44,17 @@ export class StorefrontApi extends GraphqlApi {
       HeaderKeys.StorefrontLocale
     ) as Locale | null;
 
-    const payload = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
+    const userJWT = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
 
-    return buildContext(this.database, this.jwtService, shopId, payload, {
-      apiKey: storefrontApiKey,
-      locale: storefrontLocale
+    return buildContext({
+      database: this.database,
+      jwtService: this.jwtService,
+      shopId,
+      userJWT,
+      storefront: {
+        apiKey: storefrontApiKey,
+        locale: storefrontLocale
+      }
     });
   }
 }

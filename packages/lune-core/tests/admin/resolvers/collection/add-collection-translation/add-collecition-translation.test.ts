@@ -90,8 +90,6 @@ describe('createProduct - Mutation', () => {
       .where({ collection_id: CollectionConstants.JoelCollection })
       .first();
 
-    console.log({ translation });
-
     expect(translation.name).toBe(CollectionTranslationConstants.Name);
     expect(translation.slug).toBe(CollectionTranslationConstants.Slug);
     expect(translation.description).toBe(CollectionTranslationConstants.Description);

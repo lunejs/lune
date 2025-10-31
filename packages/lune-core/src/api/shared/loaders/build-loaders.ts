@@ -18,7 +18,11 @@ import { createVariantAssetsLoader } from './variant/variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
 import { createVariantsLoader } from './variant/variants.loader';
 
-export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
+export const buildLoaders = (
+  trx: Transaction,
+  locale: Locale | null | undefined,
+  variables: Record<string, unknown> | undefined
+) => {
   return {
     product: {
       localization: createProductLocalizationLoader(trx, locale),
@@ -43,7 +47,7 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     collections: {
       assets: createCollectionAssetsLoader(trx),
-      products: createCollectionProductsLoader(trx),
+      products: createCollectionProductsLoader(trx, variables),
       subCollections: createCollectionSubCollectionsLoader(trx)
     }
   };

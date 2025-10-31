@@ -12,6 +12,7 @@ import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import type { Tag, TagTable } from '@/persistence/entities/tag';
+import { ProductFilter } from '@/persistence/filters/product.filter';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
 import { TagSerializer } from '@/persistence/serializers/tag.serializer';
@@ -36,16 +37,14 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
     this.applyDeletedAtClause(query);
 
-    this.applyFilters(query, input.filters);
-
-    if (input.sort?.createdAt) query.orderBy('created_at', this.toOrder(input.sort.createdAt));
-    if (input.sort?.name) query.orderBy('name', this.toOrder(input.sort.name));
-    if (input.sort?.salePrice) query.orderBy('min_sale_price', this.toOrder(input.sort.salePrice));
-
-    if (input.take) query.limit(input.take);
-    if (input.skip) query.offset(input.skip);
+    new ProductFilter(query)
+      .applyFilters(input.filters ?? {})
+      .applySort(input.sort ?? {})
+      .applyPagination(input)
+      .build();
 
     const result = await query;
+
     return result.map(item => this.serializer.deserialize(item) as Product);
   }
 
@@ -54,7 +53,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
     this.applyDeletedAtClause(query);
 
-    this.applyFilters(query, filters);
+    new ProductFilter(query).applyFilters(filters ?? {});
 
     const [{ count }] = await query.count({ count: '*' });
 

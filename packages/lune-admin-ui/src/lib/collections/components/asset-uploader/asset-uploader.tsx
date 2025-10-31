@@ -10,8 +10,6 @@ export const CollectionAssetUploader = ({ collection }: Props) => {
 
   const { upload, remove } = useCollectionAssetUploader();
 
-  console.log(collection?.assets.items);
-
   return (
     <Dropzone
       max={1}

@@ -8,7 +8,6 @@ import { getFragmentData, type ProductListInput } from '@/lib/api/types';
 import { CollectionsCacheKeys } from '../constants/cache-keys';
 
 export const useGetCollectionProducts = (collectionId: string, input?: ProductListInput) => {
-  console.log({ input });
   const result = useGqlQuery(GET_ALL_COLLECTION_PRODUCTS_QUERY, {
     variables: { id: collectionId, input },
     key: [CollectionsCacheKeys.Products(collectionId)]
