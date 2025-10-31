@@ -1,18 +1,71 @@
 # Lune
 
-A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.
+An open-source solution for commerce management.
 
-Lune is created to provide a open source solution to e-commerce administration, and also to simplify the way you manage a e-commerce.
+### Customizable at its core
 
-## Why Lune?
+Configure your Lune server just the way you need — flexible, modular, and ready to adapt.
 
-I know there are so many other options for e-commerce platform, so why choose us?
+```ts
+import { LuneServer } from '@lune/core';
 
-🎨 **Admin ui focused on simplicity:** Lune offers a unique and simple administration interface, inspired by the elegance and functionality of Shopify.
+const luneServer = new LuneServer({
+  port: 4000,
+  databaseUrl: process.env.DATABASE_URL,
+});
 
-🟢 **Production ready:** Lune offers production ready integrations for payments, storage and shipments to you just pick up the ones you want and start selling.
+luneServer.start();
+```
 
-📦 **Your product:** Self host, fork, built on top of it, Lune is a open source solution for your next e-commerce platform
+### Powerful interfaces for extension
+
+Plug in your own storage, image processors, and more through well-designed interfaces.
+
+```ts
+const luneServer = new LuneServer({
+  assets: {
+    imageProcessor: new CloudImageProcessor(),
+    storageProvider: new S3StorageProvider('https://cdn.yourdomain.com'),
+  },
+  payments: {
+    handlers: [new StripePaymentHandler(), new PayPalPaymentHandler()],
+  },
+  shipping: {
+    priceCalculators: [new FlatPriceCalculator(), new CountryPriceCalculator()],
+  },
+});
+```
+
+### Plugin-based architecture
+
+Extend Lune effortlessly with server plugins — from asset handling to admin UI integration.
+
+```ts
+import { AssetServerPlugin, AdminUiServerPlugin } from '@lune/plugins';
+
+const luneServer = new LuneServer({
+  plugins: [new AssetServerPlugin(), new RatingsPlugin()],
+});
+```
+
+### Composable Admin UI
+
+Extend or customize your admin experience with the App component. Add pages or a custom brand feel effortlessly.
+
+```ts
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { App } from '@lune/admin-ui';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App
+      pages={[{ path: '/orders', component: OrdersPage }]}
+      brand={{ name: 'Lune Store', logo: '/logo.svg' }}
+    />
+  </StrictMode>
+);
+```
 
 ## Tech stack
 
