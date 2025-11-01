@@ -1,12 +1,12 @@
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { Dropzone } from '@/shared/components/dropzone/dropzone';
 
-import { useCollectionDetailsForm } from '../collection-details/use-form/use-form';
+import { useCollectionDetailsFormContext } from '../collection-details/use-form/use-form';
 
 import { useCollectionAssetUploader } from './use-asset-uploader';
 
 export const CollectionAssetUploader = ({ collection }: Props) => {
-  const form = useCollectionDetailsForm();
+  const form = useCollectionDetailsFormContext();
 
   const { upload, remove } = useCollectionAssetUploader();
 
