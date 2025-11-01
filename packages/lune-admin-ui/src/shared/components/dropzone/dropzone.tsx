@@ -44,7 +44,7 @@ export const Dropzone = ({
   onFilesChange,
   onPreviewsRemoved,
   previews,
-  max
+  max = 50
 }: Props) => {
   const {
     files,
@@ -99,7 +99,7 @@ export const Dropzone = ({
             </Button>
           )}
         </header>
-        <div className="w-full h-full flex flex-col gap-[10px]">
+        <div className="w-full h-full flex flex-col gap-2.5">
           <div className="grid grid-cols-4 gap-2">
             {previews?.map((preview, i) => {
               return (
@@ -110,7 +110,7 @@ export const Dropzone = ({
                       togglePreview(value, preview);
                     }}
                   />
-                  {isLast(i, previews) && !files.length && (
+                  {isLast(i, previews) && !files.length && previews.length < max && (
                     <div
                       className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted"
                       {...getRootProps()}
@@ -131,7 +131,7 @@ export const Dropzone = ({
                       toggleFile(value, file);
                     }}
                   />
-                  {isLast(i, files) && (
+                  {isLast(i, files) && files.length < max && (
                     <div
                       className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted"
                       {...getRootProps()}

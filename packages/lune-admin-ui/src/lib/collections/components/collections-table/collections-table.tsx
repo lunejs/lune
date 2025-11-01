@@ -41,10 +41,10 @@ export const CollectionsTable = () => {
           <Button size="sm" variant="outline" className="hidden lg:flex">
             Import
           </Button>
-          <Link to="/products/new">
+          <Link to="/collections/new">
             <Button size="sm">
               <PlusIcon className="lg:hidden" />
-              <span className="hidden lg:inline">Add Product</span>
+              <span className="hidden lg:inline">Add Collection</span>
             </Button>
           </Link>
         </>
