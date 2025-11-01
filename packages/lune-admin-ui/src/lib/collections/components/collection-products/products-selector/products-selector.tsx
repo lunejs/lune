@@ -15,17 +15,17 @@ export const ProductsSelector = ({ disabled, defaultSelected, collection }: Prop
     <EntitySelector
       title="Add products"
       description="Add products to your collection"
-      isLoading={isLoading}
-      items={products}
-      onSearch={setQuery}
-      getRowId={item => item.id}
-      defaultSelected={products.filter(p => defaultSelected.includes(p.id))}
-      onDone={async selected => selectProducts(selected)}
       trigger={
         <Button variant={'outline'} type="button" disabled={disabled}>
           <CircleFadingPlusIcon /> Add products
         </Button>
       }
+      items={products}
+      isLoading={isLoading}
+      defaultSelected={products.filter(p => defaultSelected.includes(p.id))}
+      onSearch={setQuery}
+      getRowId={item => item.id}
+      onDone={async selected => selectProducts(selected)}
       renderItem={({ rowId, item, isSelected, onSelect }) => (
         <DefaultEntitySelectorRow
           key={rowId}
