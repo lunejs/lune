@@ -4,6 +4,7 @@ import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/
 
 import { CollectionProductsCard } from '../collection-products/collection-products';
 
+import { CollectionActions } from './actions/collection-actions';
 import { CollectionContentTypeCard } from './cards/content-type-card';
 import { CollectionGeneralCard } from './cards/general-card';
 import { CollectionStatusCard } from './cards/status-card';
@@ -21,7 +22,7 @@ export const CollectionDetails = ({ collection }: Props) => {
             {collection ? collection.name : 'Add collection'}
           </H1>
           <div className="flex items-center gap-2">
-            {/* {product && <ProductActions product={product} />} */}
+            {collection && <CollectionActions collection={collection} />}
             <CollectionDetailsSubmitButton />
           </div>
         </header>
