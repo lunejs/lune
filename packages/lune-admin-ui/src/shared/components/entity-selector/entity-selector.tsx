@@ -98,21 +98,23 @@ export const EntitySelector = <T,>({
 
         <div className="flex flex-col gap-4 border-b">
           <div className="px-6">
-            <Input placeholder="Search products..." onChange={e => onQueryChange(e.target.value)} />
+            <Input placeholder="Search..." onChange={e => onQueryChange(e.target.value)} />
           </div>
 
           <div className="border-t divide-y max-h-[calc(100svh-324px)] lg:max-h-[calc(100svh-274px)] overflow-y-auto">
             {isLoading && (
               <div className="h-full flex items-center justify-center gap-2">
                 <SpinnerLoader />
-                <P className="text-muted-foreground text-center">Loading products...</P>
+                <P className="text-muted-foreground text-center">Loading...</P>
               </div>
             )}
+
             {!items.length && !isLoading && (
               <div className="h-full flex items-center justify-center">
                 <P className="text-muted-foreground text-center">No results.</P>
               </div>
             )}
+
             {items.map(item =>
               renderItem({
                 item,

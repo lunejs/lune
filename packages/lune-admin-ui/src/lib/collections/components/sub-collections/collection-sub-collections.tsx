@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { notification, P } from '@lune/ui';
+import { notification } from '@lune/ui';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { ItemsTable } from '@/shared/components/items-table/items-table';
@@ -31,6 +31,7 @@ export const CollectionSubCollectionsCard = ({ collection }: Props) => {
     <ItemsTable>
       <ItemsTable.Header>
         <ItemsTable.HeaderTitle>Products</ItemsTable.HeaderTitle>
+
         <ItemsTable.HeaderAction>
           <CollectionsSelector
             collection={collection}
@@ -46,11 +47,8 @@ export const CollectionSubCollectionsCard = ({ collection }: Props) => {
         />
 
         <ItemsTable.List>
-          {!subCollections?.length && (
-            <div className="flex justify-center py-8">
-              <P className="text-muted-foreground">No results</P>
-            </div>
-          )}
+          {!subCollections?.length && <ItemsTable.ListEmpty />}
+
           {subCollections?.map(subCollection => (
             <ItemsTable.ListItem
               key={subCollection.id}

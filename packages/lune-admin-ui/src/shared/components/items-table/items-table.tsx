@@ -2,7 +2,17 @@ import { type ComponentProps, type PropsWithChildren, useState } from 'react';
 import { XIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Badge, Card, CardAction, CardContent, CardHeader, CardTitle, cn, Input } from '@lune/ui';
+import {
+  Badge,
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  cn,
+  Input,
+  P
+} from '@lune/ui';
 
 import { SpinnerLoader } from '../loader/spinner-loader';
 import { ImagePlaceholder } from '../placeholders/image-placeholder';
@@ -51,6 +61,14 @@ const Search = (props: ComponentProps<'input'>) => {
 
 const List = ({ children }: PropsWithChildren) => {
   return <div className="divide-y border-t">{children}</div>;
+};
+
+const ListEmpty = () => {
+  return (
+    <div className="flex justify-center py-8">
+      <P className="text-muted-foreground">No results</P>
+    </div>
+  );
 };
 
 const ListItem = ({
@@ -111,6 +129,7 @@ const ItemsTable = Object.assign(ItemsTableRoot, {
   Content,
   Search,
   List,
+  ListEmpty,
   ListItem
 });
 
