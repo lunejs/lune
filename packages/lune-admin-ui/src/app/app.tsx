@@ -42,7 +42,9 @@ export const App = () => {
                 <Route path="/shops" element={<ShopsPage />} />
                 <Route path="/shops/new" element={<CreateShopPage />} />
                 <Route path="/translate/products/:id" element={<TranslateProductsPage />} />
+                <Route path="/translate/products" element={<TranslateProductsPage />} />
                 <Route path="/translate/collections/:id" element={<TranslateCollectionsPage />} />
+                <Route path="/translate/collections" element={<TranslateCollectionsPage />} />
                 <Route element={<AdminLayout />}>
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/products" element={<ProductsPage />} />

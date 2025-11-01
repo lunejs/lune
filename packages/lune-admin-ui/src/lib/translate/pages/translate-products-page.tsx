@@ -1,5 +1,7 @@
 import { useParams } from 'react-router';
 
+import { P } from '@lune/ui';
+
 import { useGetProductForTranslation } from '@/lib/product/hooks/use-get-product-for-translation';
 
 import { TranslateHeader } from '../components/header/translate-header';
@@ -17,7 +19,13 @@ export const TranslateProductsPage = () => {
         <TranslateHeader />
         <main className="flex h-full">
           <ProductTranslateList className="hidden lg:flex" />
-          {product && <TranslateProductForm product={product} />}
+          {product ? (
+            <TranslateProductForm product={product} />
+          ) : (
+            <div className="w-full border-l flex items-center justify-center">
+              <P className="text-muted-foreground">Select a product to start translating</P>
+            </div>
+          )}
         </main>
       </div>
     </div>
