@@ -52,14 +52,16 @@ export const CollectionsTableColumns: ColumnDef<CollectionsTableRow>[] = [
           <span className="text-nowrap">{row.original.name}</span>
         </Link>
       );
-    }
+    },
+    enableSorting: false
   },
   {
     accessorKey: 'totalContent',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Items" />,
     cell: ({ row }) => {
       return <p className="text-nowrap">{row.original.totalContent}</p>;
-    }
+    },
+    enableSorting: false
   },
   {
     accessorKey: 'contentType',

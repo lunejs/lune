@@ -6,6 +6,7 @@ import { Button } from '@lune/ui';
 import { CollectionContentType } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
 
+import { CollectionTableActions } from './actions/collection-table-actions';
 import { CollectionsTableColumns } from './columns';
 import { CollectionsTableEmptyState } from './empty-state';
 import { useCollectionsTable } from './use-collections-table';
@@ -49,7 +50,7 @@ export const CollectionsTable = () => {
           </Link>
         </>
       }
-      // onSelectRender={rows => <ProductTableActions rows={rows} />}
+      onSelectRender={rows => <CollectionTableActions rows={rows} />}
     />
   );
 };
