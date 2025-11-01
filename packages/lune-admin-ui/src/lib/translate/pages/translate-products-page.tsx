@@ -16,7 +16,7 @@ export const TranslateProductsPage = () => {
   return (
     <div className="bg-sidebar min-h-screen flex p-4">
       <div className="bg-background rounded-xl overflow-hidden w-full">
-        <TranslateHeader />
+        <TranslateHeader entitySelectorTitle="Products" />
         <main className="flex h-full">
           <ProductTranslateList className="hidden lg:flex" />
           {product ? (

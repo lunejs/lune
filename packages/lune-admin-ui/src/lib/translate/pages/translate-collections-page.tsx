@@ -16,7 +16,7 @@ export const TranslateCollectionsPage = () => {
   return (
     <div className="bg-sidebar min-h-screen flex p-4">
       <div className="bg-background rounded-xl overflow-hidden w-full">
-        <TranslateHeader />
+        <TranslateHeader entitySelectorTitle="Collections" />
         <main className="flex h-full">
           <CollectionTranslateList />
           {collection ? (

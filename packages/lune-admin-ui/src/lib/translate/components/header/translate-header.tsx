@@ -13,7 +13,7 @@ import {
 
 import { useBack } from '@/shared/hooks/use-back';
 
-export const TranslateHeader = () => {
+export const TranslateHeader = ({ entitySelectorTitle }: Props) => {
   const { back } = useBack();
 
   return (
@@ -33,11 +33,11 @@ export const TranslateHeader = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost">
-                <span className="">Products</span> <ChevronDownIcon />
+                {entitySelectorTitle} <ChevronDownIcon />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link to={'/translate/collections'}>
+              <Link to={'/translate/products'}>
                 <DropdownMenuItem>Products</DropdownMenuItem>
               </Link>
               <Link to={'/translate/collections'}>
@@ -49,4 +49,8 @@ export const TranslateHeader = () => {
       </div>
     </header>
   );
+};
+
+type Props = {
+  entitySelectorTitle: string;
 };
