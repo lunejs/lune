@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { CircleFadingPlusIcon } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { Button, Card, CardAction, CardContent, CardHeader, CardTitle, InputGroup } from '@lune/ui';
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@lune/ui';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
@@ -10,7 +9,8 @@ import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 
 import { useGetCollectionProducts } from '../../hooks/use-get-collection-products';
 
-import { CollectionProductsItem } from './product-item';
+import { ProductsSelector } from './products-selector/products-selector';
+import { CollectionProductsTable } from './table/collection-products-table';
 
 export const CollectionProductsCard = ({ collection }: Props) => {
   const [query, setQuery] = useState('');
@@ -25,8 +25,6 @@ export const CollectionProductsCard = ({ collection }: Props) => {
     refetch();
   }, [query]);
 
-  // const hasNoProducts = !products?.length && !query && !isLoading;
-
   const onQueryChange = useDebouncedCallback(setQuery, TYPING_DEBOUNCE_DELAY);
 
   return (
@@ -36,9 +34,7 @@ export const CollectionProductsCard = ({ collection }: Props) => {
           Products
         </CardTitle>
         <CardAction>
-          <Button variant={'outline'} type="button" disabled={isLoading}>
-            <CircleFadingPlusIcon /> Add products
-          </Button>
+          <ProductsSelector defaultSelected={products.map(p => p.id)} disabled={isLoading} />
         </CardAction>
       </CardHeader>
       <CardContent className="px-0">
@@ -49,20 +45,11 @@ export const CollectionProductsCard = ({ collection }: Props) => {
         )}
 
         {!isLoading && (
-          <div className="flex flex-col gap-4">
-            <div className="px-6">
-              <InputGroup
-                placeholder="Search products..."
-                onChange={e => onQueryChange(e.target.value)}
-                rightAddon={isRefetching && <SpinnerLoader />}
-              />
-            </div>
-            <div className="divide-y border-t">
-              {products?.map(product => (
-                <CollectionProductsItem product={product} />
-              ))}
-            </div>
-          </div>
+          <CollectionProductsTable
+            isRefetching={isRefetching}
+            onChange={onQueryChange}
+            products={products}
+          />
         )}
       </CardContent>
     </Card>

@@ -13,9 +13,10 @@ export const useGetCollectionProducts = (collectionId: string, input?: ProductLi
     key: [CollectionsCacheKeys.Products(collectionId)]
   });
 
-  const products = result.data?.collection?.products.items.map(item =>
-    getFragmentData(COMMON_COLLECTION_PRODUCT_FRAGMENT, item)
-  );
+  const products =
+    result.data?.collection?.products.items.map(item =>
+      getFragmentData(COMMON_COLLECTION_PRODUCT_FRAGMENT, item)
+    ) ?? [];
 
   return {
     ...result,

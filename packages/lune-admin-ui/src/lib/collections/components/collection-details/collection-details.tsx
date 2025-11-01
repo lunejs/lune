@@ -2,7 +2,7 @@ import { Form, H1 } from '@lune/ui';
 
 import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/types';
 
-import { CollectionProductsCard } from '../products/products-card';
+import { CollectionProductsCard } from '../collection-products/collection-products';
 
 import { CollectionContentTypeCard } from './cards/content-type-card';
 import { CollectionGeneralCard } from './cards/general-card';
