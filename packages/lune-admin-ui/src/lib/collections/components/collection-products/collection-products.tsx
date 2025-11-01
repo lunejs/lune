@@ -50,6 +50,7 @@ export const CollectionProductsCard = ({ collection }: Props) => {
 
         {!isLoading && (
           <CollectionProductsTable
+            collection={collection}
             isRefetching={isRefetching}
             onChange={onQueryChange}
             products={products}
