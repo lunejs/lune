@@ -44,19 +44,32 @@ describe('Collection repository', () => {
   });
 
   describe('findByFilters & countByFilters', () => {
-    test('returns all collections without a parent by default', async () => {
+    test('returns all collections', async () => {
       const result = await repository.findByFilters({});
 
-      expect(result.every(c => !c.parentId)).toBe(true);
       expect(result.length).toBe(await repository.countByFilters({}));
+    });
+
+    test('returns all collections without a parent', async () => {
+      const filters = { isTopLevel: { equals: true } };
+      const result = await repository.findByFilters({ filters });
+
+      expect(result.every(c => !c.parentId)).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters({ ...filters }));
+    });
+
+    test('returns all collections with a parent', async () => {
+      const filters = { isTopLevel: { equals: false } };
+      const result = await repository.findByFilters({ filters });
+
+      expect(result.every(c => c.parentId)).toBe(true);
+      expect(result.length).toBe(await repository.countByFilters({ ...filters }));
     });
 
     test('returns collections sorted by createdAt in descending order by default', async () => {
       const result = await repository.findByFilters({});
 
-      const sorted = await trx<CollectionTable>(Tables.Collection)
-        .orderBy('created_at', 'desc')
-        .whereNull('parent_id');
+      const sorted = await trx<CollectionTable>(Tables.Collection).orderBy('created_at', 'desc');
 
       expect(result.map(p => p.id)).toEqual(sorted.map(p => p.id));
     });
@@ -109,23 +122,23 @@ describe('Collection repository', () => {
       const result = await repository.findByFilters({ take: 4 });
 
       expect(result).toHaveLength(4);
-      expect(await repository.countByFilters({})).toBe(11);
+      expect(await repository.countByFilters({})).toBe(16);
     });
 
     test('returns collections with offset', async () => {
       const result = await repository.findByFilters({ skip: 5 });
 
-      expect(result).toHaveLength(6);
-      expect(await repository.countByFilters({})).toBe(11);
+      expect(result).toHaveLength(11);
+      expect(await repository.countByFilters({})).toBe(16);
     });
 
     test('returns collections with pagination', async () => {
       const result = await repository.findByFilters({ take: 2, skip: 4 });
 
       expect(result).toHaveLength(2);
-      expect(result[0].id).toBe(CollectionConstants.WaterCollection);
-      expect(result[1].id).toBe(CollectionConstants.Lego);
-      expect(await repository.countByFilters({})).toBe(11);
+      expect(result[0].id).toBe(CollectionConstants.WosCollection);
+      expect(result[1].id).toBe(CollectionConstants.AppleCollection);
+      expect(await repository.countByFilters({})).toBe(16);
     });
 
     test('returns collections with name and content type filter applied', async () => {

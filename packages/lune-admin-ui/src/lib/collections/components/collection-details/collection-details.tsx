@@ -3,6 +3,7 @@ import { Form, H1 } from '@lune/ui';
 import { CollectionContentType, type CommonCollectionFragment } from '@/lib/api/types';
 
 import { CollectionProductsCard } from '../collection-products/collection-products';
+import { CollectionSubCollectionsCard } from '../sub-collections/collection-sub-collections';
 
 import { CollectionActions } from './actions/collection-actions';
 import { CollectionContentTypeCard } from './cards/content-type-card';
@@ -31,8 +32,13 @@ export const CollectionDetails = ({ collection }: Props) => {
             <CollectionGeneralCard />
 
             {!collection && <CollectionContentTypeCard />}
+
             {collection?.contentType === CollectionContentType.Products && (
               <CollectionProductsCard collection={collection} />
+            )}
+
+            {collection?.contentType === CollectionContentType.Collections && (
+              <CollectionSubCollectionsCard collection={collection} />
             )}
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">

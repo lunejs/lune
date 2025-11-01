@@ -120,6 +120,7 @@ export enum CollectionContentType {
 export type CollectionFilters = {
   contentType?: InputMaybe<CollectionContentType>;
   enabled?: InputMaybe<BooleanFilter>;
+  isTopLevel?: InputMaybe<BooleanFilter>;
   name?: InputMaybe<StringFilter>;
 };
 

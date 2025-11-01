@@ -22,7 +22,8 @@ export const useCollectionsTable = () => {
     refetch
   } = useGetCollections({
     filters: {
-      ...(search && { name: { contains: search } })
+      ...(search && { name: { contains: search } }),
+      isTopLevel: { equals: true }
     },
     skip: getSkip(page, size),
     take: size

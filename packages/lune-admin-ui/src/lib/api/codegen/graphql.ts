@@ -116,6 +116,7 @@ export enum CollectionContentType {
 export type CollectionFilters = {
   contentType?: InputMaybe<CollectionContentType>;
   enabled?: InputMaybe<BooleanFilter>;
+  isTopLevel?: InputMaybe<BooleanFilter>;
   name?: InputMaybe<StringFilter>;
 };
 
@@ -928,6 +929,14 @@ export type CommonCollectionProductFragment = {
   assets: { items: { id: string; source: string }[] };
 } & { ' $fragmentName'?: 'CommonCollectionProductFragment' };
 
+export type CommonCollectionSubCollectionFragment = {
+  id: string;
+  name: string;
+  slug: string;
+  enabled: boolean;
+  assets: { items: { id: string; source: string }[] };
+} & { ' $fragmentName'?: 'CommonCollectionSubCollectionFragment' };
+
 export type GetAllCollectionsQueryVariables = Exact<{
   input?: InputMaybe<CollectionListInput>;
 }>;
@@ -965,6 +974,24 @@ export type GetCollectionProductsQuery = {
       count: number;
       items: {
         ' $fragmentRefs'?: { CommonCollectionProductFragment: CommonCollectionProductFragment };
+      }[];
+    };
+  } | null;
+};
+
+export type GetCollectionSubCollectionsQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+  input?: InputMaybe<CollectionListInput>;
+}>;
+
+export type GetCollectionSubCollectionsQuery = {
+  collection?: {
+    subCollections: {
+      count: number;
+      items: {
+        ' $fragmentRefs'?: {
+          CommonCollectionSubCollectionFragment: CommonCollectionSubCollectionFragment;
+        };
       }[];
     };
   } | null;
@@ -1546,6 +1573,61 @@ export const CommonCollectionProductFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonCollectionProductFragment, unknown>;
+export const CommonCollectionSubCollectionFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollectionSubCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonCollectionSubCollectionFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -2369,6 +2451,132 @@ export const GetCollectionProductsDocument = {
     }
   ]
 } as unknown as DocumentNode<GetCollectionProductsQuery, GetCollectionProductsQueryVariables>;
+export const GetCollectionSubCollectionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCollectionSubCollections' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'CollectionListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'collection' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'subCollections' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'input' },
+                      value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+                    }
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'FragmentSpread',
+                              name: { kind: 'Name', value: 'CommonCollectionSubCollection' }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCollectionSubCollection' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Collection' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '1' }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<
+  GetCollectionSubCollectionsQuery,
+  GetCollectionSubCollectionsQueryVariables
+>;
 export const GetCollectionForTranslationDocument = {
   kind: 'Document',
   definitions: [

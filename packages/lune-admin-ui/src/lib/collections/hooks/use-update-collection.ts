@@ -25,6 +25,9 @@ export const useUpdateCollection = () => {
         }),
         queryClient.refetchQueries({
           queryKey: [CollectionsCacheKeys.Products(collectionId)]
+        }),
+        queryClient.refetchQueries({
+          queryKey: [CollectionsCacheKeys.SubCollections(collectionId)]
         })
       ]);
 

@@ -10,7 +10,7 @@ import { CollectionsCacheKeys } from '../constants/cache-keys';
 export const useGetCollections = (input?: CollectionListInput) => {
   const { data, ...rest } = useGqlQuery(GET_ALL_COLLECTIONS_QUERY, {
     variables: { input },
-    key: [CollectionsCacheKeys.Collections]
+    key: [CollectionsCacheKeys.Collections, JSON.stringify(input?.filters)]
   });
 
   const collections =

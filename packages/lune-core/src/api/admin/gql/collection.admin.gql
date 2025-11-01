@@ -54,4 +54,5 @@ input UpdateCollectionInput {
 extend input CollectionFilters {
   enabled: BooleanFilter
   contentType: CollectionContentType
+  isTopLevel: BooleanFilter
 }

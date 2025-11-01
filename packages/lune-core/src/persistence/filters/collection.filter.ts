@@ -38,8 +38,14 @@ export class CollectionFilter extends BaseFilter<CollectionTable> {
 
     if (filters?.contentType) {
       this.query.where(`${this.tableAlias}.content_type`, filters.contentType);
-    } else {
-      this.query.whereNull('parent_id');
+    }
+
+    if (filters.isTopLevel !== undefined) {
+      if (filters.isTopLevel?.equals === true) {
+        this.query.whereNull(`${this.tableAlias}.parent_id`);
+      } else if (filters.isTopLevel?.equals === false) {
+        this.query.whereNotNull(`${this.tableAlias}.parent_id`);
+      }
     }
 
     return this;
