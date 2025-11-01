@@ -4,15 +4,13 @@ import { Link } from 'react-router';
 
 import { Badge, cn, notification } from '@lune/ui';
 
-import type { CommonCollectionFragment, CommonCollectionProductFragment } from '@/lib/api/types';
-import { useUpdateCollection } from '@/lib/collections/hooks/use-update-collection';
+import type { CommonCollectionProductFragment } from '@/lib/api/types';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
+import type { ActionResult } from '@/shared/utils/result.utils';
 
-export const CollectionProductsItem = ({ collection, product, products }: Props) => {
+export const CollectionProductsItem = ({ product, onRemove }: Props) => {
   const [isRemoving, setIsRemoving] = useState(false);
-
-  const { updateCollection } = useUpdateCollection();
 
   return (
     <article
@@ -44,9 +42,11 @@ export const CollectionProductsItem = ({ collection, product, products }: Props)
           onClick={async () => {
             setIsRemoving(true);
 
-            const result = await updateCollection(collection.id, {
-              products: [...products.map(p => p.id).filter(id => id !== product.id)]
-            });
+            // const result = await onRemove(collection.id, {
+            //   products: [...products.map(p => p.id).filter(id => id !== product.id)]
+            // });
+
+            const result = await onRemove();
 
             if (!result.isSuccess) {
               notification.error(result.error);
@@ -67,6 +67,5 @@ export const CollectionProductsItem = ({ collection, product, products }: Props)
 
 type Props = {
   product: CommonCollectionProductFragment;
-  products: CommonCollectionProductFragment[];
-  collection: CommonCollectionFragment;
+  onRemove: () => Promise<ActionResult>;
 };

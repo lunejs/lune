@@ -1,6 +1,7 @@
 import { InputGroup, P } from '@lune/ui';
 
 import type { CommonCollectionFragment, CommonCollectionProductFragment } from '@/lib/api/types';
+import { useUpdateCollection } from '@/lib/collections/hooks/use-update-collection';
 
 import { CollectionProductsItem } from './item';
 
@@ -10,6 +11,8 @@ export const CollectionProductsTable = ({
   products,
   onChange
 }: Props) => {
+  const { updateCollection } = useUpdateCollection();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="px-6">
@@ -25,8 +28,11 @@ export const CollectionProductsTable = ({
           <CollectionProductsItem
             key={product.id}
             product={product}
-            collection={collection}
-            products={allCollectionProducts}
+            onRemove={() => {
+              return updateCollection(collection.id, {
+                products: [...allCollectionProducts.map(p => p.id).filter(id => id !== product.id)]
+              });
+            }}
           />
         ))}
       </div>
