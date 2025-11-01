@@ -1,24 +1,19 @@
 import { InputGroup, P } from '@lune/ui';
 
 import type { CommonCollectionFragment, CommonCollectionProductFragment } from '@/lib/api/types';
-import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 
 import { CollectionProductsItem } from './item';
 
 export const CollectionProductsTable = ({
   collection,
+  allCollectionProducts,
   products,
-  onChange,
-  isRefetching
+  onChange
 }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="px-6">
-        <InputGroup
-          placeholder="Search products..."
-          onChange={e => onChange(e.target.value)}
-          rightAddon={isRefetching && <SpinnerLoader />}
-        />
+        <InputGroup placeholder="Search products..." onChange={e => onChange(e.target.value)} />
       </div>
       <div className="divide-y border-t">
         {!products?.length && (
@@ -31,7 +26,7 @@ export const CollectionProductsTable = ({
             key={product.id}
             product={product}
             collection={collection}
-            products={products}
+            products={allCollectionProducts}
           />
         ))}
       </div>
@@ -42,6 +37,6 @@ export const CollectionProductsTable = ({
 type Props = {
   onChange: (q: string) => void;
   collection: CommonCollectionFragment;
-  isRefetching: boolean;
   products: CommonCollectionProductFragment[];
+  allCollectionProducts: CommonCollectionProductFragment[];
 };

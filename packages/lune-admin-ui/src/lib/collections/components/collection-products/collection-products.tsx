@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@lune/ui';
@@ -15,17 +15,14 @@ import { CollectionProductsTable } from './table/collection-products-table';
 export const CollectionProductsCard = ({ collection }: Props) => {
   const [query, setQuery] = useState('');
 
-  const { isLoading, isRefetching, products, refetch } = useGetCollectionProducts(collection.id, {
-    filters: {
-      ...(query ? { name: { contains: query } } : {})
-    }
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [query]);
+  const { isLoading, products: collectionProducts } = useGetCollectionProducts(collection.id);
 
   const onQueryChange = useDebouncedCallback(setQuery, TYPING_DEBOUNCE_DELAY);
+
+  const products = useMemo(
+    () => collectionProducts.filter(p => p.name.toLowerCase().includes(query.toLowerCase())),
+    [collectionProducts]
+  );
 
   return (
     <Card className="pb-0 overflow-hidden">
@@ -36,7 +33,7 @@ export const CollectionProductsCard = ({ collection }: Props) => {
         <CardAction>
           <ProductsSelector
             collection={collection}
-            defaultSelected={products.map(p => p.id)}
+            defaultSelected={collectionProducts.map(p => p.id)}
             disabled={isLoading}
           />
         </CardAction>
@@ -51,9 +48,9 @@ export const CollectionProductsCard = ({ collection }: Props) => {
         {!isLoading && (
           <CollectionProductsTable
             collection={collection}
-            isRefetching={isRefetching}
             onChange={onQueryChange}
             products={products}
+            allCollectionProducts={collectionProducts}
           />
         )}
       </CardContent>
