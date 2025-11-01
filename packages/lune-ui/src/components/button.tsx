@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Loader2Icon } from 'lucide-react';
+import { LoaderIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -20,9 +20,9 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline'
       },
       size: {
-        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
-        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3 data-[loading=true]:px-4',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5 data-[loading=true]:px-3',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4 data-[loading=true]:px-6',
         icon: 'size-9'
       }
     },
@@ -52,11 +52,12 @@ function Button({
   return (
     <Comp
       data-slot="button"
+      data-loading={isLoading}
       disabled={isLoading}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {isLoading ? <Loader2Icon size={16} className="animate-spin" /> : null}
+      {isLoading ? <LoaderIcon size={16} className="animate-spin" /> : null}
       {children}
     </Comp>
   );
