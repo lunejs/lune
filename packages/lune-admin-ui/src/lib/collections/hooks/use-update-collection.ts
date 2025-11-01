@@ -12,7 +12,7 @@ export const useUpdateCollection = () => {
   const exec = async (
     collectionId: string,
     input: UpdateCollectionInput
-  ): Promise<CreateCollectionResult> => {
+  ): Promise<ActionResult> => {
     try {
       await updateCollection({ id: collectionId, input });
 
@@ -22,6 +22,9 @@ export const useUpdateCollection = () => {
         }),
         queryClient.refetchQueries({
           queryKey: [CollectionsCacheKeys.Collection(collectionId)]
+        }),
+        queryClient.refetchQueries({
+          queryKey: [CollectionsCacheKeys.Products(collectionId)]
         })
       ]);
 
@@ -36,5 +39,3 @@ export const useUpdateCollection = () => {
     updateCollection: exec
   };
 };
-
-type CreateCollectionResult = ActionResult;

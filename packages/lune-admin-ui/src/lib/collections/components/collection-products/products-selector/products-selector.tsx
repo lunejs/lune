@@ -1,19 +1,15 @@
-import { useState } from 'react';
 import { CircleFadingPlusIcon } from 'lucide-react';
 
-import { wait } from '@lune/common';
 import { Button } from '@lune/ui';
 
-import { useGetProducts } from '@/lib/product/hooks/use-get-products';
+import type { CommonCollectionFragment } from '@/lib/api/types';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';
 import { DefaultEntitySelectorRow } from '@/shared/components/entity-selector/rows/default-entity-selector-row';
 
-export const ProductsSelector = ({ disabled, defaultSelected }: Props) => {
-  const [query, setQuery] = useState('');
+import { useProductsSelector } from './use-products-selector';
 
-  const { isLoading, products: fetchedProducts } = useGetProducts();
-
-  const products = fetchedProducts.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+export const ProductsSelector = ({ disabled, defaultSelected, collection }: Props) => {
+  const { selectProducts, isLoading, products, setQuery } = useProductsSelector(collection.id);
 
   return (
     <EntitySelector
@@ -24,10 +20,7 @@ export const ProductsSelector = ({ disabled, defaultSelected }: Props) => {
       onSearch={setQuery}
       getRowId={item => item.id}
       defaultSelected={products.filter(p => defaultSelected.includes(p.id))}
-      onDone={async selected => {
-        await wait(2000);
-        console.log({ selected });
-      }}
+      onDone={async selected => selectProducts(selected)}
       trigger={
         <Button variant={'outline'} type="button" disabled={disabled}>
           <CircleFadingPlusIcon /> Add products
@@ -47,6 +40,7 @@ export const ProductsSelector = ({ disabled, defaultSelected }: Props) => {
 };
 
 type Props = {
+  collection: CommonCollectionFragment;
   disabled: boolean;
   defaultSelected: string[];
 };

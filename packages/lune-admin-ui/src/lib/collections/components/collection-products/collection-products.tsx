@@ -34,7 +34,11 @@ export const CollectionProductsCard = ({ collection }: Props) => {
           Products
         </CardTitle>
         <CardAction>
-          <ProductsSelector defaultSelected={products.map(p => p.id)} disabled={isLoading} />
+          <ProductsSelector
+            collection={collection}
+            defaultSelected={products.map(p => p.id)}
+            disabled={isLoading}
+          />
         </CardAction>
       </CardHeader>
       <CardContent className="px-0">

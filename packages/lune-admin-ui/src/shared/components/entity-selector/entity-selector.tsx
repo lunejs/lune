@@ -33,13 +33,15 @@ export const EntitySelector = <T,>({
   defaultSelected,
   onDone
 }: EntitySelectorProps<T>) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
+
   const { selected, isSelected, onSelect } = useEntitySelector({ getRowId, defaultSelected });
 
   const onQueryChange = useDebouncedCallback(onSearch, TYPING_DEBOUNCE_DELAY);
 
   return (
-    <Dialog>
+    <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="px-0 max-h-[calc(100svh-64px)]">
         <DialogHeader className="px-6">
@@ -83,8 +85,11 @@ export const EntitySelector = <T,>({
             isLoading={isDoneLoading}
             onClick={async () => {
               setIsDoneLoading(true);
-              await onDone(selected);
+              const isSuccess = await onDone(selected);
+
               setIsDoneLoading(false);
+
+              if (isSuccess) setIsOpen(false);
             }}
             className="px-4!"
           >
@@ -101,7 +106,7 @@ export type EntitySelectorProps<T> = {
   title: string;
   description: string;
   onSearch: (query: string) => void;
-  onDone: (selected: T[]) => void | Promise<void>;
+  onDone: (selected: T[]) => boolean | Promise<boolean>;
   isLoading: boolean;
   items: T[];
   getRowId: (item: T) => string;
