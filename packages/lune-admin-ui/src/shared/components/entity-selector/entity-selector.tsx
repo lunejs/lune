@@ -74,12 +74,21 @@ export const EntitySelector = <T,>({
   const [isOpen, setIsOpen] = useState(false);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
 
-  const { selected, isSelected, onSelect } = useEntitySelector({ getRowId, defaultSelected });
+  const { selected, isSelected, onSelect, resetSelection } = useEntitySelector({
+    getRowId,
+    defaultSelected
+  });
 
   const onQueryChange = useDebouncedCallback(onSearch, TYPING_DEBOUNCE_DELAY);
 
   return (
-    <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Dialog
+      isOpen={isOpen}
+      setIsOpen={open => {
+        if (open) resetSelection();
+        setIsOpen(open);
+      }}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="px-0 max-h-[calc(100svh-64px)]">
         <DialogHeader className="px-6">

@@ -21,9 +21,12 @@ export const useEntitySelector = <T,>(input: Input<T>) => {
     }
   };
 
+  const resetSelection = () => setSelected(input.defaultSelected);
+
   return {
     selected,
     isSelected,
+    resetSelection,
     onSelect
   };
 };
