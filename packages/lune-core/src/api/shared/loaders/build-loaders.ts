@@ -7,6 +7,7 @@ import type { Locale } from '@/persistence/entities/locale';
 import { createCollectionAssetsLoader } from './collection/collection-asset.loader';
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
+import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
@@ -18,6 +19,7 @@ import { createVariantAssetsLoader } from './variant/variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
 import { createVariantsLoader } from './variant/variants.loader';
 
+// TODO: standardize object keys (all plural or all singular)
 export const buildLoaders = (
   trx: Transaction,
   locale: Locale | null | undefined,
@@ -48,7 +50,8 @@ export const buildLoaders = (
     collections: {
       assets: createCollectionAssetsLoader(trx),
       products: createCollectionProductsLoader(trx, variables),
-      subCollections: createCollectionSubCollectionsLoader(trx)
+      subCollections: createCollectionSubCollectionsLoader(trx),
+      translations: createCollectionTranslationsLoader(trx)
     }
   };
 };

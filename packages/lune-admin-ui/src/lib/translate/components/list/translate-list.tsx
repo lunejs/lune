@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { type ReactElement, useState } from 'react';
 import { ListFilterIcon } from 'lucide-react';
-import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
 import {
@@ -13,44 +12,30 @@ import {
   InputGroup
 } from '@lune/ui';
 
-import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 
-import { type TranslatePageParams } from '../../pages/translate-products-page';
+export const TranslateList = <T,>({
+  isLoading,
+  filters,
+  renderItem,
+  items,
+  onSearch,
+  onFilterChange,
+  className
+}: Props<T>) => {
+  const [activeFilters, setActiveFilters] = useState<string[]>(
+    filters.some(f => f.defaultChecked)
+      ? [filters.find(f => f.defaultChecked)?.value as string]
+      : []
+  );
 
-import { TranslateListItem } from './item/translate-list-item';
-
-export const TranslateList = ({ className }: Props) => {
-  const { id } = useParams() as TranslatePageParams;
-  const [query, setQuery] = useState('');
-  const [published, setPublished] = useState<boolean>(true);
-  const [archived, setArchived] = useState<boolean>(false);
-
-  const { products, isLoading, isRefetching, refetch } = useGetProducts({
-    filters: {
-      archived: { equals: archived },
-      enabled: { equals: published },
-      ...(query && { name: { contains: query } })
-    }
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [query, archived, published]);
-
-  const debouncedOnQueryChange = useDebouncedCallback(value => {
-    setQuery(value);
-  }, TYPING_DEBOUNCE_DELAY);
+  const OnQueryChange = useDebouncedCallback(onSearch, TYPING_DEBOUNCE_DELAY);
 
   return (
     <aside className={cn('flex w-80 divide-y h-full flex-col gap-4 shrink-0', className)}>
       <header className="flex items-center gap-3 p-4">
-        <InputGroup
-          placeholder="Search products..."
-          onChange={e => debouncedOnQueryChange(e.target.value)}
-          rightAddon={isRefetching && <SpinnerLoader />}
-        />
+        <InputGroup placeholder="Search..." onChange={e => OnQueryChange(e.target.value)} />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -59,24 +44,31 @@ export const TranslateList = ({ className }: Props) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuCheckboxItem
-              checked={published}
-              onCheckedChange={value => setPublished(value)}
-            >
-              Published
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={!published}
-              onCheckedChange={value => setPublished(!value)}
-            >
-              Unpublished
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={archived}
-              onCheckedChange={value => setArchived(value)}
-            >
-              Archived
-            </DropdownMenuCheckboxItem>
+            {filters.map(filter => (
+              <DropdownMenuCheckboxItem
+                checked={activeFilters.some(activeFilter => activeFilter === filter.value)}
+                onCheckedChange={value => {
+                  if (value) {
+                    const newActiveFilters = filter.combinable
+                      ? [...activeFilters, filter.value]
+                      : [filter.value];
+
+                    setActiveFilters(newActiveFilters);
+                    onFilterChange(newActiveFilters);
+                    return;
+                  }
+
+                  const newActiveFilters = activeFilters.filter(
+                    activeFilter => activeFilter !== filter.value
+                  );
+
+                  setActiveFilters(newActiveFilters);
+                  onFilterChange(newActiveFilters);
+                }}
+              >
+                {filter.label}
+              </DropdownMenuCheckboxItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
@@ -86,7 +78,8 @@ export const TranslateList = ({ className }: Props) => {
             <SpinnerLoader />
           </div>
         )}
-        {products?.map(product => {
+        {items.map(item => renderItem(item))}
+        {/* {products?.map(product => {
           const isSelected = product.id === id;
 
           return (
@@ -98,12 +91,18 @@ export const TranslateList = ({ className }: Props) => {
               image={product.assets.items[0]?.source}
             />
           );
-        })}
+        })} */}
       </div>
     </aside>
   );
 };
 
-type Props = {
+type Props<T> = {
+  isLoading: boolean;
+  items: T[];
+  renderItem: (item: T) => ReactElement;
+  filters: { label: string; value: string; combinable: boolean; defaultChecked?: boolean }[];
+  onSearch: (q: string) => void;
+  onFilterChange: (activeFilters: string[]) => void;
   className?: string;
 };

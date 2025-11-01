@@ -1,48 +1,44 @@
-import { Card, CardContent, CardTitle, cn, Form, H4, Table, TableBody } from '@lune/ui';
+import { Card, CardContent, CardTitle, Form, H4, Table, TableBody } from '@lune/ui';
 
-import { type CommonProductForTranslationFragment } from '@/lib/api/types';
+import { type CommonCollectionForTranslationFragment } from '@/lib/api/types';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
 import { TranslateFormHeader } from '../form/translate-form-header';
 import { TranslateFormRowData } from '../form/translate-form-row-data';
-import { TranslateFormSeparator } from '../form/translate-form-separator';
 import { TranslateInput } from '../form/translate-input';
 import { TranslateTextarea } from '../form/translate-textarea';
 import { LocaleSelector } from '../locale-selector/locale-selector';
 
-import { TranslateOptions } from './options/translate-product-options';
-import { ReplaceProductSheet } from './replace-product/replace-product-sheet';
-import { TranslateProductFormSubmitButton } from './submit-button/translate-product-form-submit-button';
-import { useTranslateProductForm } from './use-form/use-translate-product-form';
+import { ReplaceCollectionSheet } from './replace-collection/replace-collection-sheet';
+import { useTranslateCollectionForm } from './use-form/use-translate-collection-form';
+import { TranslateCollectionSubmitButton } from './submit-button';
 
-export const TranslateProductForm = ({ product }: Props) => {
-  const form = useTranslateProductForm(product);
-
-  const hasOptions = !!product.options.length;
+export const TranslateCollectionForm = ({ collection }: Props) => {
+  const form = useTranslateCollectionForm(collection);
 
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit} className="w-full border-l">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full p-4 border-b">
           <div className="flex items-center gap-3">
-            {product.assets.items?.[0]?.source ? (
+            {collection.assets.items?.[0]?.source ? (
               <img
-                src={product.assets.items?.[0]?.source}
-                alt={product.name}
+                src={collection.assets.items?.[0]?.source}
+                alt={collection.name}
                 className="shrink-0 size-10 sm:size-9 rounded-sm object-cover"
               />
             ) : (
               <ImagePlaceholder
                 className="shrink-0 size-10 sm:size-9 rounded-sm object-cover"
-                initial={product.name}
+                initial={collection.name}
               />
             )}
-            <H4>{product.name}</H4>
+            <H4>{collection.name}</H4>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <ReplaceProductSheet />
+            <ReplaceCollectionSheet />
             <LocaleSelector />
-            <TranslateProductFormSubmitButton product={product} />
+            <TranslateCollectionSubmitButton collection={collection} />
           </div>
         </header>
         <div className="p-4">
@@ -54,7 +50,7 @@ export const TranslateProductForm = ({ product }: Props) => {
               <Table>
                 <TranslateFormHeader />
                 <TableBody>
-                  <TranslateFormRowData field="Name" reference={product.name}>
+                  <TranslateFormRowData field="Name" reference={collection.name}>
                     <TranslateInput
                       label="English"
                       {...form.register('name')}
@@ -64,8 +60,8 @@ export const TranslateProductForm = ({ product }: Props) => {
 
                   <TranslateFormRowData
                     field="Description"
-                    reference={product.description}
-                    className={cn(!hasOptions && 'border-b-0')}
+                    reference={collection.description}
+                    className="border-b-0"
                   >
                     <TranslateTextarea
                       label="English"
@@ -73,10 +69,6 @@ export const TranslateProductForm = ({ product }: Props) => {
                       onChange={e => form.setValue('description', e.target.value)}
                     />
                   </TranslateFormRowData>
-
-                  {hasOptions && <TranslateFormSeparator text="Options" />}
-
-                  <TranslateOptions product={product} />
                 </TableBody>
               </Table>
             </CardContent>
@@ -88,5 +80,5 @@ export const TranslateProductForm = ({ product }: Props) => {
 };
 
 type Props = {
-  product: CommonProductForTranslationFragment;
+  collection: CommonCollectionForTranslationFragment;
 };

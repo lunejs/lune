@@ -1,5 +1,25 @@
 import { graphql } from '../codegen';
 
+export const COMMON_COLLECTION_FOR_TRANSLATION_FRAGMENT = graphql(`
+  fragment CommonCollectionForTranslation on Collection {
+    id
+    name
+    description
+    translations {
+      name
+      description
+      locale
+    }
+    assets(input: { take: 1 }) {
+      items {
+        id
+        name
+        source
+      }
+    }
+  }
+`);
+
 export const COMMON_COLLECTION_FRAGMENT = graphql(`
   fragment CommonCollection on Collection {
     id
@@ -107,6 +127,14 @@ export const GET_ALL_COLLECTION_PRODUCTS_QUERY = graphql(`
           ...CommonCollectionProduct
         }
       }
+    }
+  }
+`);
+
+export const GET_COLLECTION_BY_ID_FOR_TRANSLATION_QUERY = graphql(`
+  query GetCollectionForTranslation($id: ID) {
+    collection(id: $id) {
+      ...CommonCollectionForTranslation
     }
   }
 `);

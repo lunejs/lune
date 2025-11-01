@@ -2,9 +2,9 @@ import { ReplaceIcon } from 'lucide-react';
 
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@lune/ui';
 
-import { ProductTranslateList } from '../list/product-translate-list';
+import { CollectionTranslateList } from '../list/collection-translate-list';
 
-export const ReplaceProductSheet = () => {
+export const ReplaceCollectionSheet = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -14,9 +14,9 @@ export const ReplaceProductSheet = () => {
       </SheetTrigger>
       <SheetContent className="gap-0 w-screen">
         <SheetHeader>
-          <SheetTitle>Select product</SheetTitle>
+          <SheetTitle>Select collection</SheetTitle>
         </SheetHeader>
-        <ProductTranslateList className="w-full" />
+        <CollectionTranslateList className="w-full flex!" />
       </SheetContent>
     </Sheet>
   );
