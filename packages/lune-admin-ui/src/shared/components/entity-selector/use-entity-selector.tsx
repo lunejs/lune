@@ -6,7 +6,7 @@ export const useEntitySelector = <T,>(input: Input<T>) => {
   const [selected, setSelected] = useState<T[]>(input.defaultSelected);
 
   useEffect(() => {
-    setSelected(input.defaultSelected);
+    setSelected([...input.defaultSelected, ...selected]);
   }, [input.defaultSelected]);
 
   const isSelected = (item: T) => {
