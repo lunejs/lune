@@ -42,7 +42,7 @@ export const ProductTranslateList = ({ className }: Props) => {
   }, TYPING_DEBOUNCE_DELAY);
 
   return (
-    <aside className={cn('flex w-80 divide-y h-full flex-col gap-4 shrink-0', className)}>
+    <aside className={cn('flex w-80 divide-y h-full flex-col shrink-0', className?.root)}>
       <header className="flex items-center gap-3 p-4">
         <InputGroup
           placeholder="Search products..."
@@ -78,7 +78,7 @@ export const ProductTranslateList = ({ className }: Props) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
-      <div className="flex flex-col gap-4 px-4">
+      <div className={cn('flex flex-col gap-4 px-4 py-4', className?.list)}>
         {isLoading && (
           <div className="w-full flex justify-center pt-6">
             <SpinnerLoader />
@@ -103,5 +103,8 @@ export const ProductTranslateList = ({ className }: Props) => {
 };
 
 type Props = {
-  className?: string;
+  className?: {
+    root?: string;
+    list?: string;
+  };
 };

@@ -16,7 +16,9 @@ export const ReplaceProductSheet = () => {
         <SheetHeader>
           <SheetTitle>Select product</SheetTitle>
         </SheetHeader>
-        <ProductTranslateList className="w-full" />
+        <ProductTranslateList
+          className={{ root: 'w-full', list: 'h-[calc(100vh-69px-56px)] overflow-auto' }}
+        />
       </SheetContent>
     </Sheet>
   );

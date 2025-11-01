@@ -18,7 +18,12 @@ export const TranslateProductsPage = () => {
       <div className="bg-background rounded-xl overflow-hidden w-full">
         <TranslateHeader entitySelectorTitle="Products" />
         <main className="flex h-full">
-          <ProductTranslateList className="hidden lg:flex" />
+          <ProductTranslateList
+            className={{
+              root: 'hidden lg:flex',
+              list: 'h-[calc(100vh-69px-69px-32px)] overflow-y-auto'
+            }}
+          />
           {product ? (
             <TranslateProductForm product={product} />
           ) : (

@@ -18,7 +18,12 @@ export const TranslateCollectionsPage = () => {
       <div className="bg-background rounded-xl overflow-hidden w-full">
         <TranslateHeader entitySelectorTitle="Collections" />
         <main className="flex h-full">
-          <CollectionTranslateList />
+          <CollectionTranslateList
+            className={{
+              root: 'hidden lg:flex',
+              list: 'h-[calc(100vh-69px-69px-32px)] overflow-y-auto'
+            }}
+          />
           {collection ? (
             <TranslateCollectionForm collection={collection} />
           ) : (

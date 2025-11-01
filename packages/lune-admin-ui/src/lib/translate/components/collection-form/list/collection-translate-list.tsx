@@ -1,7 +1,5 @@
 import { useParams } from 'react-router';
 
-import { cn } from '@lune/ui';
-
 import { TranslateListItem } from '../../list/item/translate-list-item';
 import { TranslateList } from '../../list/translate-list';
 
@@ -14,7 +12,7 @@ export const CollectionTranslateList = ({ className }: Props) => {
 
   return (
     <TranslateList
-      className={cn('hidden lg:flex', className)}
+      className={className}
       filters={[
         { label: 'All', value: 'all', combinable: false, defaultChecked: true },
         { label: 'Products', value: 'products', combinable: false },
@@ -42,5 +40,8 @@ export const CollectionTranslateList = ({ className }: Props) => {
 };
 
 type Props = {
-  className?: string;
+  className?: {
+    root?: string;
+    list?: string;
+  };
 };

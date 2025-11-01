@@ -15,6 +15,7 @@ import {
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 
+// TODO: Refactor to be a composable component
 export const TranslateList = <T,>({
   isLoading,
   filters,
@@ -33,7 +34,7 @@ export const TranslateList = <T,>({
   const OnQueryChange = useDebouncedCallback(onSearch, TYPING_DEBOUNCE_DELAY);
 
   return (
-    <aside className={cn('flex w-80 divide-y h-full flex-col gap-4 shrink-0', className)}>
+    <aside className={cn('flex w-80 divide-y h-full flex-col shrink-0', className?.root)}>
       <header className="flex items-center gap-3 p-4">
         <InputGroup placeholder="Search..." onChange={e => OnQueryChange(e.target.value)} />
 
@@ -72,7 +73,7 @@ export const TranslateList = <T,>({
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
-      <div className="flex flex-col gap-4 px-4">
+      <div className={cn('flex flex-col gap-4 px-4 py-4', className?.list)}>
         {isLoading && (
           <div className="w-full flex justify-center pt-6">
             <SpinnerLoader />
@@ -104,5 +105,8 @@ type Props<T> = {
   filters: { label: string; value: string; combinable: boolean; defaultChecked?: boolean }[];
   onSearch: (q: string) => void;
   onFilterChange: (activeFilters: string[]) => void;
-  className?: string;
+  className?: {
+    root?: string;
+    list?: string;
+  };
 };

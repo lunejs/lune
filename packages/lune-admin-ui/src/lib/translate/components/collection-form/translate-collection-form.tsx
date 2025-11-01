@@ -41,7 +41,7 @@ export const TranslateCollectionForm = ({ collection }: Props) => {
             <TranslateCollectionSubmitButton collection={collection} />
           </div>
         </header>
-        <div className="p-4">
+        <div className="p-4 sm:h-[calc(100vh-69px-69px-32px)] overflow-y-auto">
           <Card className="pb-0">
             <div className="flex items-center justify-between px-4">
               <CardTitle>General</CardTitle>
