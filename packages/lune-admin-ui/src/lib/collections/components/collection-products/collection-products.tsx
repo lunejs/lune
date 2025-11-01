@@ -1,20 +1,21 @@
 import { useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@lune/ui';
+import { notification, P } from '@lune/ui';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
-import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
+import { ItemsTable } from '@/shared/components/items-table/items-table';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 
 import { useGetCollectionProducts } from '../../hooks/use-get-collection-products';
+import { useUpdateCollection } from '../../hooks/use-update-collection';
 
 import { ProductsSelector } from './products-selector/products-selector';
-import { CollectionProductsTable } from './table/collection-products-table';
 
 export const CollectionProductsCard = ({ collection }: Props) => {
   const [query, setQuery] = useState('');
 
+  const { updateCollection } = useUpdateCollection();
   const { isLoading, products: collectionProducts } = useGetCollectionProducts(collection.id);
 
   const onQueryChange = useDebouncedCallback(setQuery, TYPING_DEBOUNCE_DELAY);
@@ -25,36 +26,53 @@ export const CollectionProductsCard = ({ collection }: Props) => {
   );
 
   return (
-    <Card className="pb-0 overflow-hidden">
-      <CardHeader>
-        <CardTitle className="col-start-1 row-span-2 row-start-1 self-start justify-self-start h-full flex items-center">
-          Products
-        </CardTitle>
-        <CardAction>
+    <ItemsTable>
+      <ItemsTable.Header>
+        <ItemsTable.HeaderTitle>Products</ItemsTable.HeaderTitle>
+        <ItemsTable.HeaderAction>
           <ProductsSelector
             collection={collection}
             defaultSelected={collectionProducts.map(p => p.id)}
             disabled={isLoading}
           />
-        </CardAction>
-      </CardHeader>
-      <CardContent className="px-0">
-        {isLoading && (
-          <div className="w-full flex justify-center px-6">
-            <SpinnerLoader />
-          </div>
-        )}
+        </ItemsTable.HeaderAction>
+      </ItemsTable.Header>
+      <ItemsTable.Content isLoading={isLoading}>
+        <ItemsTable.Search
+          placeholder="Search products..."
+          onChange={e => onQueryChange(e.target.value)}
+        />
 
-        {!isLoading && (
-          <CollectionProductsTable
-            collection={collection}
-            onChange={onQueryChange}
-            products={products}
-            allCollectionProducts={collectionProducts}
-          />
-        )}
-      </CardContent>
-    </Card>
+        <ItemsTable.List>
+          {!products?.length && (
+            <div className="flex justify-center py-8">
+              <P className="text-muted-foreground">No results</P>
+            </div>
+          )}
+          {products?.map(product => (
+            <ItemsTable.ListItem
+              key={product.id}
+              title={product.name}
+              image={product.assets.items[0]?.source}
+              enabled={product.enabled}
+              href={`/products/${product.id}`}
+              onRemove={async () => {
+                const result = await updateCollection(collection.id, {
+                  products: [...collectionProducts.map(p => p.id).filter(id => id !== product.id)]
+                });
+
+                if (!result.isSuccess) {
+                  notification.error(result.error);
+                  return;
+                }
+
+                notification.success('Product removed');
+              }}
+            />
+          ))}
+        </ItemsTable.List>
+      </ItemsTable.Content>
+    </ItemsTable>
   );
 };
 
