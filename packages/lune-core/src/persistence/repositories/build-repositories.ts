@@ -7,6 +7,7 @@ import { OptionRepository } from './option-repository/option.repository';
 import { OptionTranslationRepository } from './option-translation-repository/option-translation.repository';
 import { OptionValueRepository } from './option-value-repository/option-value.repository';
 import { OptionValueTranslationRepository } from './option-value-translation-repository/option-value-translation.repository';
+import { CustomerRepository } from './customer-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';
@@ -26,7 +27,8 @@ export function buildRepositories(trx: Transaction) {
     optionTranslation: new OptionTranslationRepository(trx),
     optionValueTranslation: new OptionValueTranslationRepository(trx),
     collection: new CollectionRepository(trx),
-    collectionTranslation: new CollectionTranslationRepository(trx)
+    collectionTranslation: new CollectionTranslationRepository(trx),
+    customer: new CustomerRepository(trx)
   };
 }
 
