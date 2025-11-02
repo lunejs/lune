@@ -1,5 +1,6 @@
 import type { Transaction } from '../connection';
 
+import { AddressRepository } from './address-repository';
 import { AssetRepository } from './asset-repository';
 import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
@@ -32,7 +33,8 @@ export function buildRepositories(trx: Transaction) {
     collectionTranslation: new CollectionTranslationRepository(trx),
     customer: new CustomerRepository(trx),
     country: new CountryRepository(trx),
-    state: new StateRepository(trx)
+    state: new StateRepository(trx),
+    address: new AddressRepository(trx)
   };
 }
 

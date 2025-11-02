@@ -1,5 +1,6 @@
 import { Tables } from '@/persistence/tables';
 
+import { DefaultAddressFixture } from './address.fixture';
 import { DefaultAssetFixture } from './asset.fixture';
 import { DefaultCollectionFixture } from './collection.fixture';
 import { DefaultCollectionAssetFixture } from './collection-asset.fixture';
@@ -47,5 +48,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CollectionAsset]: DefaultCollectionAssetFixture,
   [Tables.Customer]: DefaultCustomerFixture,
   [Tables.Country]: DefaultCountryFixture,
-  [Tables.State]: DefaultStateFixture
+  [Tables.State]: DefaultStateFixture,
+  [Tables.Address]: DefaultAddressFixture
 };

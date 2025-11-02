@@ -12,11 +12,11 @@ export async function up(knex: Knex): Promise<void> {
     table.string('street_line_1').notNullable();
     table.string('street_line_2').nullable();
     table.string('city').notNullable();
-    table.string('postal_code').notNullable();
+    table.string('postal_code', 12).notNullable();
     table.string('phone_number', 15).notNullable();
     table.boolean('is_default').notNullable().defaultTo(false);
     table.text('references').nullable();
-    
+
     table.uuid('country_id').notNullable().references('id').inTable('country');
     table.uuid('state_id').notNullable().references('id').inTable('state');
 
@@ -34,4 +34,3 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTableIfExists(TABLE_NAME);
 }
-
