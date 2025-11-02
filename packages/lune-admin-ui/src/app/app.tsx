@@ -12,10 +12,12 @@ import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
+import { ShopDetails } from '@/lib/shop/pages/shop-details';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 import { TranslateCollectionsPage } from '@/lib/translate/pages/translate-collections-page';
 import { TranslateProductsPage } from '@/lib/translate/pages/translate-products-page';
 import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
+import { SettingsLayout } from '@/shared/components/settings-layout/settings-layout';
 
 import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';
@@ -41,10 +43,12 @@ export const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/shops" element={<ShopsPage />} />
                 <Route path="/shops/new" element={<CreateShopPage />} />
+
                 <Route path="/translate/products/:id" element={<TranslateProductsPage />} />
                 <Route path="/translate/products" element={<TranslateProductsPage />} />
                 <Route path="/translate/collections/:id" element={<TranslateCollectionsPage />} />
                 <Route path="/translate/collections" element={<TranslateCollectionsPage />} />
+
                 <Route element={<AdminLayout />}>
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/products" element={<ProductsPage />} />
@@ -54,6 +58,10 @@ export const App = () => {
                   <Route path="/collections" element={<CollectionsPage />} />
                   <Route path="/collections/new" element={<NewCollectionPage />} />
                   <Route path="/collections/:id" element={<CollectionDetailsPage />} />
+                </Route>
+
+                <Route element={<SettingsLayout />}>
+                  <Route path="/settings/shop" element={<ShopDetails />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

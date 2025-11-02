@@ -94,10 +94,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
-              <SettingsIcon />
-              <span>Settings</span>
-            </SidebarMenuButton>
+            <Link to={'/settings/shop'}>
+              <SidebarMenuButton tooltip="Settings">
+                <SettingsIcon />
+                <span>Settings</span>
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarUser />
