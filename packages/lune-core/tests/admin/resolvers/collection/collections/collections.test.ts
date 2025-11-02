@@ -58,11 +58,11 @@ describe('collections - Query', () => {
 
     expect(collections.items).toHaveLength(4);
     expect(collections.count).toBe(4);
-    expect(collections.pageInfo.total).toBe(11);
-    expect(collections.items[0].id).toBe(CollectionConstants.WaterCollection);
-    expect(collections.items[1].id).toBe(CollectionConstants.Lego);
-    expect(collections.items[2].id).toBe(CollectionConstants.ParentCollection1);
-    expect(collections.items[3].id).toBe(CollectionConstants.ParentCollection2);
+    expect(collections.pageInfo.total).toBe(16);
+    expect(collections.items[0].id).toBe(CollectionConstants.WosCollection);
+    expect(collections.items[1].id).toBe(CollectionConstants.AppleCollection);
+    expect(collections.items[2].id).toBe(CollectionConstants.JoelCollection);
+    expect(collections.items[3].id).toBe(CollectionConstants.SpiderManCollection);
   });
 
   test('returns a list of collections with name filter', async () => {
@@ -83,12 +83,13 @@ describe('collections - Query', () => {
 
     const { collections } = res.body.data;
 
-    expect(collections.items).toHaveLength(3);
-    expect(collections.count).toBe(3);
-    expect(collections.pageInfo.total).toBe(3);
-    expect(collections.items[0].id).toBe(CollectionConstants.Alaska);
-    expect(collections.items[1].id).toBe(CollectionConstants.Ales);
-    expect(collections.items[2].id).toBe(CollectionConstants.Ala);
+    expect(collections.items).toHaveLength(4);
+    expect(collections.count).toBe(4);
+    expect(collections.pageInfo.total).toBe(4);
+    expect(collections.items[0].id).toBe(CollectionConstants.AlesCollection);
+    expect(collections.items[1].id).toBe(CollectionConstants.Alaska);
+    expect(collections.items[2].id).toBe(CollectionConstants.Ales);
+    expect(collections.items[3].id).toBe(CollectionConstants.Ala);
   });
 
   test('returns a list of collections with enabled filter', async () => {
@@ -116,6 +117,54 @@ describe('collections - Query', () => {
     expect(collections.items[1].id).toBe(CollectionConstants.Lego);
   });
 
+  test('returns a list of collections with contentType filter', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_COLLECTIONS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              contentType: 'COLLECTIONS'
+            }
+          }
+        }
+      });
+
+    const { collections } = res.body.data;
+
+    expect(collections.items).toHaveLength(2);
+    expect(collections.count).toBe(2);
+    expect(collections.pageInfo.total).toBe(2);
+
+    expect(collections.items.every(c => c.contentType === 'COLLECTIONS'));
+  });
+
+  test('returns a list of collections with isTopLevel filter', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_COLLECTIONS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              isTopLevel: { equals: true }
+            }
+          }
+        }
+      });
+
+    const { collections } = res.body.data;
+
+    expect(collections.items).toHaveLength(11);
+    expect(collections.count).toBe(11);
+    expect(collections.pageInfo.total).toBe(11);
+  });
+
   test('returns a list of collections with name filter and pagination', async () => {
     const res = await request(app)
       .post('/admin-api')
@@ -137,9 +186,9 @@ describe('collections - Query', () => {
 
     expect(collections.items).toHaveLength(2);
     expect(collections.count).toBe(2);
-    expect(collections.pageInfo.total).toBe(3);
-    expect(collections.items[0].id).toBe(CollectionConstants.Alaska);
-    expect(collections.items[1].id).toBe(CollectionConstants.Ales);
+    expect(collections.pageInfo.total).toBe(4);
+    expect(collections.items[0].id).toBe(CollectionConstants.AlesCollection);
+    expect(collections.items[1].id).toBe(CollectionConstants.Alaska);
   });
 
   test('returns Authorization error when no token is provided', async () => {
