@@ -20,5 +20,6 @@ export const enum Tables {
   CollectionProduct = 'collection_product',
   CollectionAsset = 'collection_asset',
   Customer = 'customer',
-  Country = 'country'
+  Country = 'country',
+  State = 'state'
 }

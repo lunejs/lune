@@ -5,5 +5,5 @@ export const DefaultCountryFixture = (): CountryTable => ({
   created_at: new Date(),
   updated_at: new Date(),
   name: 'Narnia',
-  code: `NA-${crypto.randomUUID()}`
+  code: `NA`
 });

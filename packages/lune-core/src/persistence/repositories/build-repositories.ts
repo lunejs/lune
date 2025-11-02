@@ -12,6 +12,7 @@ import { OptionValueTranslationRepository } from './option-value-translation-rep
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';
+import { StateRepository } from './state-repository';
 import { UserRepository } from './user-repository';
 import { VariantRepository } from './variant-repository';
 
@@ -30,7 +31,8 @@ export function buildRepositories(trx: Transaction) {
     collection: new CollectionRepository(trx),
     collectionTranslation: new CollectionTranslationRepository(trx),
     customer: new CustomerRepository(trx),
-    country: new CountryRepository(trx)
+    country: new CountryRepository(trx),
+    state: new StateRepository(trx)
   };
 }
 

@@ -17,6 +17,7 @@ import { DefaultProductOptionFixture } from './product-option.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
 import { DefaultShopFixture } from './shop.fixture';
+import { DefaultStateFixture } from './state.fixture';
 import { DefaultTagFixture } from './tag.fixture';
 import { DefaultUserFixture } from './user.fixture';
 import { DefaultVariantFixture } from './variant.fixture';
@@ -45,5 +46,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CollectionProduct]: DefaultCollectionProductFixture,
   [Tables.CollectionAsset]: DefaultCollectionAssetFixture,
   [Tables.Customer]: DefaultCustomerFixture,
-  [Tables.Country]: DefaultCountryFixture
+  [Tables.Country]: DefaultCountryFixture,
+  [Tables.State]: DefaultStateFixture
 };
