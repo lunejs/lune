@@ -1,6 +1,6 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { AssetType } from '@/persistence/entities/asset';
-import type { AssetRepository } from '@/persistence/repositories/asset-repository/asset.repository';
+import type { AssetRepository } from '@/persistence/repositories/asset-repository';
 
 export class AssetService {
   private repository: AssetRepository;

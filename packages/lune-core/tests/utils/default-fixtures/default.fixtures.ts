@@ -5,10 +5,7 @@ import { DefaultCollectionFixture } from './collection.fixture';
 import { DefaultCollectionAssetFixture } from './collection-asset.fixture';
 import { DefaultCollectionProductFixture } from './collection-product.fixture';
 import { DefaultCollectionTranslationFixture } from './collection-translation.fixture';
-// import { DefaultCollectionFixture } from './collection.fixture';
-// import { DefaultCollectionAssetFixture } from './collection-asset.fixture';
-// import { DefaultCollectionProductFixture } from './collection-product.fixture';
-// import { DefaultCollectionTranslationFixture } from './collection-translation.fixture';
+import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionTranslationFixture } from './option-translation.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
@@ -45,5 +42,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Collection]: DefaultCollectionFixture,
   [Tables.CollectionTranslation]: DefaultCollectionTranslationFixture,
   [Tables.CollectionProduct]: DefaultCollectionProductFixture,
-  [Tables.CollectionAsset]: DefaultCollectionAssetFixture
+  [Tables.CollectionAsset]: DefaultCollectionAssetFixture,
+  [Tables.Customer]: DefaultCustomerFixture
 };

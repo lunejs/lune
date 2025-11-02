@@ -1,13 +1,13 @@
 import type { Transaction } from '../connection';
 
-import { AssetRepository } from './asset-repository/asset.repository';
-import { CollectionRepository } from './collection-repository/collection.repository';
-import { CollectionTranslationRepository } from './collection-translation-repository/collection.translation-repository';
-import { OptionRepository } from './option-repository/option.repository';
-import { OptionTranslationRepository } from './option-translation-repository/option-translation.repository';
-import { OptionValueRepository } from './option-value-repository/option-value.repository';
-import { OptionValueTranslationRepository } from './option-value-translation-repository/option-value-translation.repository';
+import { AssetRepository } from './asset-repository';
+import { CollectionRepository } from './collection-repository';
+import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CustomerRepository } from './customer-repository';
+import { OptionRepository } from './option-repository';
+import { OptionTranslationRepository } from './option-translation-repository';
+import { OptionValueRepository } from './option-value-repository';
+import { OptionValueTranslationRepository } from './option-value-translation-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';

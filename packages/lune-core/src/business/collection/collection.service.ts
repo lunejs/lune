@@ -7,8 +7,8 @@ import { getSlugBy } from '@/libs/slug';
 import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
-import type { CollectionRepository } from '@/persistence/repositories/collection-repository/collection.repository';
-import type { CollectionTranslationRepository } from '@/persistence/repositories/collection-translation-repository/collection.translation-repository';
+import type { CollectionRepository } from '@/persistence/repositories/collection-repository';
+import type { CollectionTranslationRepository } from '@/persistence/repositories/collection-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
 
 export class CollectionService {
