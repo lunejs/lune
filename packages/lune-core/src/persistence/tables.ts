@@ -22,5 +22,6 @@ export const enum Tables {
   Customer = 'customer',
   Country = 'country',
   State = 'state',
-  Address = 'address'
+  Address = 'address',
+  Payment = 'payment'
 }

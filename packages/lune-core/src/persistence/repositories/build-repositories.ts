@@ -10,6 +10,7 @@ import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
 import { OptionValueTranslationRepository } from './option-value-translation-repository';
+import { PaymentRepository } from './payment-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShopRepository } from './shop-repository';
@@ -34,7 +35,8 @@ export function buildRepositories(trx: Transaction) {
     customer: new CustomerRepository(trx),
     country: new CountryRepository(trx),
     state: new StateRepository(trx),
-    address: new AddressRepository(trx)
+    address: new AddressRepository(trx),
+    payment: new PaymentRepository(trx)
   };
 }
 
