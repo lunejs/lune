@@ -1,4 +1,35 @@
-import type { LuneEntity, LuneTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
+
+export enum PaymentState {
+  /**
+   * The payment record exists, but there is no evidence of it yet.
+   */
+  PENDING = 'PENDING',
+  /**
+   * Evidence of the payment has been submitted but not yet verified.
+   */
+  SUBMITTED = 'SUBMITTED',
+  /**
+   * Funds are reserved in the customer's account but have not been transferred yet.
+   */
+  AUTHORIZED = 'AUTHORIZED',
+  /**
+   * Funds have been successfully transferred.
+   */
+  CAPTURED = 'CAPTURED',
+  /**
+   * The payment failed during processing by the provider.
+   */
+  FAILED = 'FAILED',
+  /**
+   * The payment was manually rejected by an administrator.
+   */
+  REJECTED = 'REJECTED',
+  /**
+   * The payment was canceled because the order could not be fulfilled or was voided before completion.
+   */
+  CANCELED = 'CANCELED'
+}
 
 /**
  * A payment is a transaction between a customer and a shop, is assigned to an order
@@ -16,11 +47,22 @@ export interface Payment extends LuneEntity {
    * The payment method used (e.g., 'stripe', 'paypal')
    */
   method: string;
+  /**
+   * Payment's state
+   */
+  state: PaymentState;
+
+  /**
+   * Payment method used for this payment
+   */
+  paymentMethodId: ID;
 }
 
 export interface PaymentTable extends LuneTable {
   transaction_id?: string | null;
   amount: number;
   method: string;
+  state: PaymentState;
+  payment_method_id: ID;
   shop_id: string;
 }
