@@ -8,6 +8,7 @@ export class PaymentMethodSerializer extends Serializer<PaymentMethod, PaymentMe
       ['id', 'id'],
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
+      ['name', 'name'],
       ['enabled', 'enabled'],
       ['handler', 'handler']
     ]);

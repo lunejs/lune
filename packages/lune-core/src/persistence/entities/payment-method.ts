@@ -5,6 +5,10 @@ import type { LuneEntity, LuneTable } from './entity';
  */
 export interface PaymentMethod extends LuneEntity {
   /**
+   * Payment method's name
+   */
+  name: string;
+  /**
    * Whether the payment method is enabled. Disabled methods won't be shown in the storefront
    */
   enabled: boolean;
@@ -16,6 +20,7 @@ export interface PaymentMethod extends LuneEntity {
 }
 
 export interface PaymentMethodTable extends LuneTable {
+  name: string;
   enabled: boolean;
   handler: unknown;
   shop_id: string;

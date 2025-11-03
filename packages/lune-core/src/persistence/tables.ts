@@ -24,5 +24,5 @@ export const enum Tables {
   State = 'state',
   Address = 'address',
   Orders = 'orders',
-  Payment = 'payment'
+  PaymentMethod = 'payment_method'
 }
