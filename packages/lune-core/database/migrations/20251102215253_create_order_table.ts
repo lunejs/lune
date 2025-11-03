@@ -9,16 +9,19 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
     table.integer('code').nullable().unique();
-    table.enu('state', [
-      'MODIFYING',
-      'PLACED',
-      'PROCESSING',
-      'SHIPPED',
-      'DELIVERED',
-      'READY_FOR_PICKUP',
-      'CANCELED',
-      'COMPLETED'
-    ]);
+    table
+      .enu('state', [
+        'MODIFYING',
+        'PLACED',
+        'PROCESSING',
+        'SHIPPED',
+        'DELIVERED',
+        'READY_FOR_PICKUP',
+        'CANCELED',
+        'COMPLETED'
+      ])
+      .notNullable()
+      .defaultTo('MODIFYING');
     table.integer('total').notNullable();
     table.integer('subtotal').notNullable();
     table.integer('total_quantity').notNullable();
