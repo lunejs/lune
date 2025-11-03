@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 
-const TABLE_NAME = 'payment_failure';
+const TABLE_NAME = 'payment_cancellation';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, table => {

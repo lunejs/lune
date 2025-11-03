@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.string('reason').notNullable();
+    table.text('reason').notNullable();
 
     table.uuid('payment_id').notNullable().references('id').inTable('payment');
 
