@@ -5,6 +5,7 @@ export const DefaultPaymentMethodFixture = (): PaymentMethodTable => ({
   created_at: new Date(),
   updated_at: new Date(),
   enabled: true,
+  name: '',
   handler: {},
   shop_id: crypto.randomUUID()
 });

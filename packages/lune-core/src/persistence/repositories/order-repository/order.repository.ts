@@ -7,6 +7,6 @@ import { Repository } from '../repository';
 
 export class OrderRepository extends Repository<Order, OrderTable> {
   constructor(trx: Transaction) {
-    super(Tables.Orders, trx, new OrderSerializer());
+    super(Tables.Order, trx, new OrderSerializer());
   }
 }
