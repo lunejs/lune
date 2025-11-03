@@ -14,6 +14,7 @@ import { DefaultOptionValueFixture } from './option-value.fixture';
 import { DefaultOptionValueTranslationFixture } from './option-value-translation.fixture';
 import { DefaultOrderFixture } from './order.fixture';
 import { DefaultPaymentFixture } from './payment.fixture';
+import { DefaultPaymentFailureFixture } from './payment-failure.fixture';
 import { DefaultPaymentMethodFixture } from './payment-method.fixture';
 import { DefaultProductFixture } from './product.fixture';
 import { DefaultProductAssetFixture } from './product-asset.fixture';
@@ -55,5 +56,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Address]: DefaultAddressFixture,
   [Tables.Orders]: DefaultOrderFixture,
   [Tables.PaymentMethod]: DefaultPaymentMethodFixture,
-  [Tables.Payment]: DefaultPaymentFixture
+  [Tables.Payment]: DefaultPaymentFixture,
+  [Tables.PaymentFailure]: DefaultPaymentFailureFixture
 };
