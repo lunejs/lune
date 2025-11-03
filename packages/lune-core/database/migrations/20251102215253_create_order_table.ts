@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 
-const TABLE_NAME = 'payment_method';
+const TABLE_NAME = 'orders';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, table => {
@@ -8,8 +8,25 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.boolean('enabled').notNullable().defaultTo(true);
-    table.jsonb('handler').notNullable();
+    table.integer('code').nullable().unique();
+    table.enu('state', [
+      'MODIFYING',
+      'PLACED',
+      'PROCESSING',
+      'SHIPPED',
+      'DELIVERED',
+      'READY_FOR_PICKUP',
+      'CANCELED',
+      'COMPLETED'
+    ]);
+    table.integer('total').notNullable();
+    table.integer('subtotal').notNullable();
+    table.integer('total_quantity').notNullable();
+    table.jsonb('shipping_address').nullable();
+    table.timestamp('placed_at', { useTz: true }).notNullable();
+    table.timestamp('completed_at', { useTz: true }).notNullable();
+
+    table.uuid('customer_id').nullable().references('id').inTable('customer');
 
     table
       .uuid('shop_id')
@@ -23,4 +40,3 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTableIfExists(TABLE_NAME);
 }
-
