@@ -30,5 +30,6 @@ export const enum Tables {
   PaymentRejection = 'payment_rejection',
   PaymentCancellation = 'payment_cancellation',
   OrderCancellation = 'order_cancellation',
-  OrderLine = 'order_line'
+  OrderLine = 'order_line',
+  Fulfillment = 'fulfillment'
 }
