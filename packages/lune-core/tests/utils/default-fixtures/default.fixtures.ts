@@ -9,6 +9,7 @@ import { DefaultCollectionTranslationFixture } from './collection-translation.fi
 import { DefaultCountryFixture } from './country.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
+import { DefaultLocationFixture } from './location.fixture';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionTranslationFixture } from './option-translation.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
@@ -67,5 +68,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.PaymentCancellation]: DefaultPaymentCancellationFixture,
   [Tables.OrderCancellation]: DefaultOrderCancellationFixture,
   [Tables.OrderLine]: DefaultOrderLineFixture,
-  [Tables.Fulfillment]: DefaultFulfillmentFixture
+  [Tables.Fulfillment]: DefaultFulfillmentFixture,
+  [Tables.Location]: DefaultLocationFixture
 };
