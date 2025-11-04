@@ -10,6 +10,7 @@ import { DefaultCountryFixture } from './country.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
+import { DefaultInStorePickupFulfillmentFixture } from './in-store-pickup-fulfillment.fixture';
 import { DefaultLocationFixture } from './location.fixture';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionTranslationFixture } from './option-translation.fixture';
@@ -73,5 +74,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Fulfillment]: DefaultFulfillmentFixture,
   [Tables.Location]: DefaultLocationFixture,
   [Tables.InStorePickup]: DefaultInStorePickupFixture,
-  [Tables.ShippingFulfillment]: DefaultShippingFulfillmentFixture
+  [Tables.ShippingFulfillment]: DefaultShippingFulfillmentFixture,
+  [Tables.InStorePickupFulfillment]: DefaultInStorePickupFulfillmentFixture
 };
