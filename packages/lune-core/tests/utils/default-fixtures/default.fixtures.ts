@@ -28,6 +28,7 @@ import { DefaultProductAssetFixture } from './product-asset.fixture';
 import { DefaultProductOptionFixture } from './product-option.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
+import { DefaultShippingFulfillmentFixture } from './shipping-fulfillment.fixture';
 import { DefaultShopFixture } from './shop.fixture';
 import { DefaultStateFixture } from './state.fixture';
 import { DefaultTagFixture } from './tag.fixture';
@@ -71,5 +72,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.OrderLine]: DefaultOrderLineFixture,
   [Tables.Fulfillment]: DefaultFulfillmentFixture,
   [Tables.Location]: DefaultLocationFixture,
-  [Tables.InStorePickup]: DefaultInStorePickupFixture
+  [Tables.InStorePickup]: DefaultInStorePickupFixture,
+  [Tables.ShippingFulfillment]: DefaultShippingFulfillmentFixture
 };

@@ -19,6 +19,7 @@ import { PaymentRejectionRepository } from './payment-rejection-repository';
 import { PaymentRepository } from './payment-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
+import { ShippingFulfillmentRepository } from './shipping-fulfillment-repository';
 import { ShopRepository } from './shop-repository';
 import { StateRepository } from './state-repository';
 import { UserRepository } from './user-repository';
@@ -48,7 +49,8 @@ export function buildRepositories(trx: Transaction) {
     paymentFailure: new PaymentFailureRepository(trx),
     paymentRejection: new PaymentRejectionRepository(trx),
     paymentCancellation: new PaymentCancellationRepository(trx),
-    inStorePickup: new InStorePickupRepository(trx)
+    inStorePickup: new InStorePickupRepository(trx),
+    shippingFulfillment: new ShippingFulfillmentRepository(trx)
   };
 }
 
