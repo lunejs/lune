@@ -1,0 +1,46 @@
+"""
+A customer's saved address for shipping
+"""
+type Address {
+  id: ID!
+  """
+  Full name of the recipient
+  """
+  fullName: String!
+  """
+  Street address line 1
+  """
+  streetLine1: String!
+  """
+  Street address line 2 (apartment, suite, etc.)
+  """
+  streetLine2: String
+  """
+  Address's city
+  """
+  city: String!
+  """
+  Postal/ZIP code
+  """
+  postalCode: String!
+  """
+  Phone number for delivery
+  """
+  phoneNumber: String!
+  """
+  Whether this is the default address for the customer
+  """
+  isDefault: Boolean!
+  """
+  Additional delivery references or instructions
+  """
+  references: String
+  """
+  Address's country
+  """
+  country: Country!
+  """
+  Address's state/province/region
+  """
+  state: State!
+}

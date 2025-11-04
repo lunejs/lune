@@ -1,0 +1,14 @@
+"""
+A state is a Geographical Region in a country.
+"""
+type State implements Node {
+  id: ID!
+  """
+  The state's name
+  """
+  name: String!
+  """
+  The state's code (e.g., 'JAL', 'CA', 'TX')
+  """
+  code: String!
+}

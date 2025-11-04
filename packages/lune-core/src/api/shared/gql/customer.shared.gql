@@ -1,0 +1,22 @@
+"""
+A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile
+"""
+type Customer {
+  id: ID!
+  """
+  The customer's first name
+  """
+  firstName: String
+  """
+  The customer's last name
+  """
+  lastName: String!
+  """
+  The customer's email address. Used to identify the customer in orders and admin
+  """
+  email: String!
+  """
+  The customer's phone number
+  """
+  phoneNumber: String
+}

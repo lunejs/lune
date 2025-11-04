@@ -1,0 +1,11 @@
+extend type Location {
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Whether this location is enabled or not
+  This is used to show/hide location in the storefront
+  """
+  enabled: Boolean!
+
+  inStorePickup: InStorePickup!
+}

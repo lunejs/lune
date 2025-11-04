@@ -1,0 +1,4 @@
+extend type ShippingFulfillment {
+  createdAt: Date!
+  updatedAt: Date!
+}

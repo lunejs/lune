@@ -1,0 +1,16 @@
+"""
+A payment rejection records when an admin manually rejects a payment (typically for bank transfers or submitted proofs)
+"""
+type PaymentRejection implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The reason why the payment was rejected
+  """
+  reason: String!
+  """
+  The payment that was rejected
+  """
+  payment: Payment!
+}

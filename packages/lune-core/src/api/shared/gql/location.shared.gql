@@ -1,0 +1,34 @@
+"""
+A physical location where customers can pick up their orders
+"""
+type Location {
+  id: ID!
+  """
+  Name of the location
+  """
+  name: String!
+  """
+  Street address line 1
+  """
+  streetLine1: String!
+  """
+  Street address line 2 (optional)
+  """
+  streetLine2: String
+  """
+  Location's city
+  """
+  city: String!
+  """
+  Postal/ZIP code
+  """
+  postalCode: String!
+  """
+  Location's phone number
+  """
+  phoneNumber: String!
+  """
+  Additional references or instructions for finding the location
+  """
+  references: String
+}

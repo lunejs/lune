@@ -1,0 +1,69 @@
+"""
+Payment state enum
+"""
+enum PaymentState {
+  """
+  The payment record exists, but there is no evidence of it yet.
+  """
+  PENDING
+  """
+  Evidence of the payment has been submitted but not yet verified.
+  """
+  SUBMITTED
+  """
+  Funds are reserved in the customer's account but have not been transferred yet.
+  """
+  AUTHORIZED
+  """
+  Funds have been successfully transferred.
+  """
+  CAPTURED
+  """
+  The payment failed during processing by the provider.
+  """
+  FAILED
+  """
+  The payment was manually rejected by an administrator.
+  """
+  REJECTED
+  """
+  The payment was canceled because the order could not be fulfilled or was voided before completion.
+  """
+  CANCELED
+}
+
+union PaymentDetails = PaymentFailure | PaymentRejection | PaymentCancellation
+
+"""
+A payment is a transaction between a customer and a shop, is assigned to an order
+"""
+type Payment implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The transaction ID from the payment provider (nullable if not processed yet)
+  """
+  transactionId: String
+  """
+  The total amount of the payment
+  """
+  amount: Int!
+  """
+  The payment method used (e.g., 'stripe', 'paypal')
+  """
+  method: String!
+  """
+  Payment's state
+  """
+  state: PaymentState!
+  """
+  Payment method used for this payment
+  """
+  paymentMethod: PaymentMethod!
+
+  """
+  Union type which will store details of the payment depending on the state
+  """
+  details: PaymentDetails
+}

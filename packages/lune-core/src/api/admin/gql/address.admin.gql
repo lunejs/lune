@@ -1,0 +1,4 @@
+extend type Address {
+  createdAt: Date!
+  updatedAt: Date!
+}

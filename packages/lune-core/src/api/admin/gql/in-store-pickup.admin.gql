@@ -1,0 +1,16 @@
+"""
+Represents in-store pickup fulfillment configuration for a location
+"""
+type InStorePickup implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Whether in-store pickup is available at this location
+  """
+  isAvailable: Boolean!
+  """
+  Special instructions for in-store pickup at this location
+  """
+  instructions: String!
+}

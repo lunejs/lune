@@ -1,0 +1,22 @@
+"""
+Represents shipping fulfillment details for an order
+"""
+type ShippingFulfillment implements Node {
+  id: ID!
+  """
+  Tracking code provided by the carrier
+  """
+  trackingCode: String!
+  """
+  Name of the shipping carrier
+  """
+  carrier: String!
+  """
+  Date and time when the order was shipped
+  """
+  shippedAt: Date!
+  """
+  Date and time when the order was delivered
+  """
+  deliveredAt: Date!
+}

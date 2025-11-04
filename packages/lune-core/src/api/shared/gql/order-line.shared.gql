@@ -1,0 +1,24 @@
+"""
+An order line represents a single item in an order
+"""
+type OrderLine implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The price per unit at the time of purchase
+  """
+  unitPrice: Int!
+  """
+  The line subtotal (unitPrice * quantity before adjustments)
+  """
+  lineSubtotal: Int!
+  """
+  The final line total after all adjustments
+  """
+  lineTotal: Int!
+  """
+  The product variant being ordered
+  """
+  variant: Variant!
+}

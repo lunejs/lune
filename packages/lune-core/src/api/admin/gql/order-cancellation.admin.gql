@@ -1,0 +1,16 @@
+"""
+An order cancellation records when an order is canceled
+"""
+type OrderCancellation implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The reason why the order was canceled
+  """
+  reason: String!
+  """
+  The order that was canceled
+  """
+  order: Order!
+}

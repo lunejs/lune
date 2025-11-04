@@ -1,0 +1,56 @@
+type Mutation {
+  createOrder(input: CreateOrderInput!): OrderResult!
+  addLineToOrder(orderId: ID!, input: CreateOrderLineInput!): OrderResult!
+  updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): OrderResult!
+  removeOrderLine(lineId: ID!): OrderResult!
+  addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
+  addShippingAddressToOrder(orderId: ID!, input: CreateOrderAddressInput!): OrderResult!
+}
+
+input CreateOrderInput {
+  line: CreateOrderLineInput
+}
+
+input CreateOrderLineInput {
+  productVariantId: ID!
+  quantity: Int!
+}
+
+input UpdateOrderLineInput {
+  quantity: Int!
+}
+
+input AddCustomerToOrderInput {
+  firstName: String
+  lastName: String!
+  email: String!
+  phoneNumber: String
+}
+
+input CreateOrderAddressInput {
+  fullName: String!
+  phoneNumber: String
+  countryId: String!
+  streetLine1: String!
+  streetLine2: String
+  city: String!
+  province: String!
+  postalCode: String!
+  references: String
+}
+
+" Results "
+type OrderResult {
+  order: Order
+  apiErrors: [OrderErrorResult!]!
+}
+
+type OrderErrorResult {
+  code: OrderErrorCode!
+  message: String!
+}
+
+" Utils "
+enum OrderErrorCode {
+  NOT_ENOUGH_STOCK
+}

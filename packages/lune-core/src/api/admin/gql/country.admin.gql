@@ -1,0 +1,4 @@
+extend type Country {
+  createdAt: Date!
+  updatedAt: Date!
+}

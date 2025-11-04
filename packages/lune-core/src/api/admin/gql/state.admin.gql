@@ -1,0 +1,4 @@
+extend type State {
+  createdAt: Date!
+  updatedAt: Date!
+}

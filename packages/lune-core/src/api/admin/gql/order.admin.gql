@@ -1,0 +1,3 @@
+extend type Order {
+  payments: [Payment!]!
+}

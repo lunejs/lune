@@ -1,0 +1,18 @@
+"""
+Represents in-store pickup fulfillment details for an order
+"""
+type InStorePickupFulfillment implements Node {
+  id: ID!
+  """
+  Address information stored as JSON
+  """
+  address: JSON!
+  """
+  Date and time when the order is ready for pickup
+  """
+  readyAt: Date!
+  """
+  Date and time when the order was picked up
+  """
+  pickedUpAt: Date!
+}

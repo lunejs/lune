@@ -1,0 +1,9 @@
+extend type Customer {
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  Whether the customer is enabled. Disabled customers cannot login or place orders
+  """
+  enabled: Boolean!
+}
