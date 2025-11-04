@@ -6,6 +6,7 @@ import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
 import { CustomerRepository } from './customer-repository';
+import { InStorePickupRepository } from './in-store-pickup-repository';
 import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
@@ -46,7 +47,8 @@ export function buildRepositories(trx: Transaction) {
     paymentMethod: new PaymentMethodRepository(trx),
     paymentFailure: new PaymentFailureRepository(trx),
     paymentRejection: new PaymentRejectionRepository(trx),
-    paymentCancellation: new PaymentCancellationRepository(trx)
+    paymentCancellation: new PaymentCancellationRepository(trx),
+    inStorePickup: new InStorePickupRepository(trx)
   };
 }
 
