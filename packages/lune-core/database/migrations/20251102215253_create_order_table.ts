@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.integer('code').nullable().unique();
+    table.string('code').nullable().unique();
     table
       .enu('state', [
         'MODIFYING',

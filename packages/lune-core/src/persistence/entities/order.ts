@@ -42,7 +42,7 @@ export interface Order extends LuneEntity {
   /**
    * Unique order code generated after order is placed
    */
-  code?: number | null;
+  code?: string | null;
   /**
    * Current state of the order
    */

@@ -5,10 +5,10 @@ import { OrderBy } from '@/api/shared/types/graphql';
 
 import type { LuneTable } from '../entities/entity';
 
-export abstract class BaseFilter<T extends LuneTable> {
-  protected query: Knex.QueryBuilder<T, T[]>;
+export abstract class BaseFilter<Table extends LuneTable> {
+  protected query: Knex.QueryBuilder<Table, Table[]>;
 
-  constructor(query: Knex.QueryBuilder<T, T[]>) {
+  constructor(query: Knex.QueryBuilder<Table, Table[]>) {
     this.query = query;
   }
 
