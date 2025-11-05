@@ -26,8 +26,8 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('subtotal').notNullable();
     table.integer('total_quantity').notNullable();
     table.jsonb('shipping_address').nullable();
-    table.timestamp('placed_at', { useTz: true }).notNullable();
-    table.timestamp('completed_at', { useTz: true }).notNullable();
+    table.timestamp('placed_at', { useTz: true }).nullable();
+    table.timestamp('completed_at', { useTz: true }).nullable();
 
     table.uuid('customer_id').nullable().references('id').inTable('customer');
 

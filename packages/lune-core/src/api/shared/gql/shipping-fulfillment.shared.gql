@@ -1,7 +1,7 @@
 """
 Represents shipping fulfillment details for an order
 """
-type ShippingFulfillment implements Node {
+type ShippingFulfillment {
   id: ID!
   """
   Tracking code provided by the carrier

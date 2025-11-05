@@ -1,7 +1,7 @@
 """
 A state is a Geographical Region in a country.
 """
-type State implements Node {
+type State {
   id: ID!
   """
   The state's name

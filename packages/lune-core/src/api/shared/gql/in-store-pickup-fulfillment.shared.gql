@@ -1,7 +1,7 @@
 """
 Represents in-store pickup fulfillment details for an order
 """
-type InStorePickupFulfillment implements Node {
+type InStorePickupFulfillment {
   id: ID!
   """
   Address information stored as JSON

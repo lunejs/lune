@@ -2,7 +2,7 @@
 A country is a representation of a country in the world.
 Indicating where shops can deliver their products
 """
-type Country implements Node {
+type Country {
   id: ID!
   """
   The country's name

@@ -46,7 +46,7 @@ type Order implements Node {
   """
   Unique order code generated after order is placed
   """
-  code: Int
+  code: String
   """
   Current state of the order
   """

@@ -6,6 +6,7 @@ import type { JwtService } from '@/libs/jwt';
 import type { Database } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
+import { OrderResolver } from '../admin/resolvers/order.resolver';
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
@@ -28,7 +29,7 @@ export class StorefrontApi extends GraphqlApi {
     super({
       endpoint: '/storefront-api',
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [ProductResolver, ProductFieldResolver],
+      resolvers: [ProductResolver, ProductFieldResolver, OrderResolver],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

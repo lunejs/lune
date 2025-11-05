@@ -78,7 +78,7 @@ export interface Order extends LuneEntity {
 }
 
 export interface OrderTable extends LuneTable {
-  code?: number | null;
+  code?: string | null;
   state: OrderState;
   total: number;
   subtotal: number;
