@@ -12,6 +12,7 @@ import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
 import { OptionValueTranslationRepository } from './option-value-translation-repository';
+import { OrderLineRepository } from './order-line-repository';
 import { OrderRepository } from './order-repository';
 import { PaymentCancellationRepository } from './payment-cancellation-repository';
 import { PaymentFailureRepository } from './payment-failure-repository';
@@ -45,6 +46,7 @@ export function buildRepositories(trx: Transaction) {
     state: new StateRepository(trx),
     address: new AddressRepository(trx),
     order: new OrderRepository(trx),
+    orderLine: new OrderLineRepository(trx),
     payment: new PaymentRepository(trx),
     paymentMethod: new PaymentMethodRepository(trx),
     paymentFailure: new PaymentFailureRepository(trx),

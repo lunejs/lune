@@ -22,9 +22,9 @@ export async function up(knex: Knex): Promise<void> {
       ])
       .notNullable()
       .defaultTo('MODIFYING');
-    table.integer('total').notNullable();
-    table.integer('subtotal').notNullable();
-    table.integer('total_quantity').notNullable();
+    table.integer('total').notNullable().defaultTo(0);
+    table.integer('subtotal').notNullable().defaultTo(0);
+    table.integer('total_quantity').notNullable().defaultTo(0);
     table.jsonb('shipping_address').nullable();
     table.timestamp('placed_at', { useTz: true }).nullable();
     table.timestamp('completed_at', { useTz: true }).nullable();

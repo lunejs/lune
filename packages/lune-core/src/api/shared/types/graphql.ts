@@ -197,7 +197,7 @@ export type CollectionTranslationInput = {
  * A country is a representation of a country in the world.
  * Indicating where shops can deliver their products
  */
-export type Country = Node & {
+export type Country = {
   __typename?: 'Country';
   /** The country's ISO 3166-1 alpha-2 code (e.g., 'MX', 'US', 'CA') */
   code: Scalars['String']['output'];
@@ -370,7 +370,7 @@ export type InStorePickup = Node & {
 };
 
 /** Represents in-store pickup fulfillment details for an order */
-export type InStorePickupFulfillment = Node & {
+export type InStorePickupFulfillment = {
   __typename?: 'InStorePickupFulfillment';
   /** Address information stored as JSON */
   address: Scalars['JSON']['output'];
@@ -717,7 +717,7 @@ export type OptionValueTranslationInput = {
 export type Order = Node & {
   __typename?: 'Order';
   /** Unique order code generated after order is placed */
-  code?: Maybe<Scalars['Int']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
   /** The date and time when the order has been marked as completed (delivered and paid) */
   completedAt?: Maybe<Scalars['Date']['output']>;
   createdAt: Scalars['Date']['output'];
@@ -787,6 +787,7 @@ export type OrderCancellation = Node & {
 
 /**  Utils  */
 export enum OrderErrorCode {
+  ForbiddenAction = 'FORBIDDEN_ACTION',
   NotEnoughStock = 'NOT_ENOUGH_STOCK'
 }
 
@@ -1127,7 +1128,7 @@ export type QueryVariantArgs = {
 };
 
 /** Represents shipping fulfillment details for an order */
-export type ShippingFulfillment = Node & {
+export type ShippingFulfillment = {
   __typename?: 'ShippingFulfillment';
   /** Name of the shipping carrier */
   carrier: Scalars['String']['output'];
@@ -1206,7 +1207,7 @@ export type ShopSocialsInput = {
 };
 
 /** A state is a Geographical Region in a country. */
-export type State = Node & {
+export type State = {
   __typename?: 'State';
   /** The state's code (e.g., 'JAL', 'CA', 'TX') */
   code: Scalars['String']['output'];
@@ -1521,7 +1522,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Country ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( InStorePickupFulfillment ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( ShippingFulfillment ) | ( Shop ) | ( State ) | ( Tag ) | ( User ) | ( Variant );
+  Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -1964,7 +1965,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Country' | 'Fulfillment' | 'InStorePickup' | 'InStorePickupFulfillment' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'ShippingFulfillment' | 'Shop' | 'State' | 'Tag' | 'User' | 'Variant', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2024,7 +2025,7 @@ export type OptionValueTranslationResolvers<ContextType = ExecutionContext, Pare
 };
 
 export type OrderResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
-  code?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;

@@ -2,7 +2,7 @@ import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import type { QueryOrderArgs } from '@/api/shared/types/graphql';
+import type { MutationAddLineToOrderArgs, QueryOrderArgs } from '@/api/shared/types/graphql';
 import { OrderService } from '@/business/order/order.service';
 
 async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
@@ -11,8 +11,17 @@ async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
   return orderService.findUnique(clean(input));
 }
 
+async function addLine(_, { orderId, input }: MutationAddLineToOrderArgs, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  return orderService.addLine(orderId, input);
+}
+
 export const CommonOrderResolver: GraphqlApiResolver = {
   Query: {
     order
+  },
+  Mutation: {
+    addLine
   }
 };

@@ -18,6 +18,10 @@ type OrderLine implements Node {
   """
   lineTotal: Int!
   """
+  The line quantity
+  """
+  quantity: Int!
+  """
   The product variant being ordered
   """
   variant: Variant!
