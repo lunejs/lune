@@ -49,6 +49,14 @@ export class Repository<T extends LuneEntity, Table extends LuneTable> {
     }
   }
 
+  async findOneOrThrow(input: FindOneOptions<T>): Promise<T> {
+    const result = await this.findOne(input);
+
+    if (!result) throw new Error('Entity not found');
+
+    return result;
+  }
+
   async findMany(input?: FindManyOptions<T>): Promise<T[]> {
     try {
       const query = this.trx(this.tableName);

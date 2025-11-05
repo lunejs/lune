@@ -109,6 +109,69 @@ describe('Repository', () => {
     });
   });
 
+  describe('findOneOrThrow', () => {
+    test('throws an error when no record matches', async () => {
+      await expect(
+        repository.findOneOrThrow({ where: { email: 'non.existing@email.com' } })
+      ).rejects.toThrow(Error);
+    });
+
+    test('return the first record when there are no filters provided', async () => {
+      const result = await repository.findOneOrThrow({ where: {} });
+
+      expect(result).toMatchObject({
+        id: recordsMock[0].id,
+        email: recordsMock[0].email,
+        password: recordsMock[0].password,
+        isActive: recordsMock[0].is_active,
+        deletedAt: null,
+        createdAt: recordsMock[0].created_at,
+        updatedAt: recordsMock[0].updated_at
+      });
+    });
+
+    test('returns the first record that matches the provided filters', async () => {
+      const result = await repository.findOneOrThrow({ where: { email: recordsMock[1].email } });
+
+      expect(result).toMatchObject({
+        id: recordsMock[1].id,
+        email: recordsMock[1].email,
+        password: recordsMock[1].password,
+        isActive: recordsMock[1].is_active,
+        deletedAt: null,
+        createdAt: recordsMock[1].created_at,
+        updatedAt: recordsMock[1].updated_at
+      });
+    });
+
+    test('returns record with the provided fields', async () => {
+      const result = await repository.findOneOrThrow({
+        where: { email: recordsMock[2].email },
+        fields: ['id', 'email']
+      });
+
+      expect(result).toMatchObject({
+        id: recordsMock[2].id,
+        email: recordsMock[2].email
+      });
+    });
+
+    test('by default throws an error when fetching records which deleted at is not null', async () => {
+      await expect(
+        repository.findOneOrThrow({ where: { email: 'taylor@swift.com' } })
+      ).rejects.toThrow(Error);
+    });
+
+    test('returns deleted records when withDeleted is true', async () => {
+      const result = await repository.findOneOrThrow({
+        where: { email: 'taylor@swift.com' },
+        withDeleted: true
+      });
+
+      expect(result).toBeDefined();
+    });
+  });
+
   describe('findMany', () => {
     test('returns all records when filters are not provided', async () => {
       const result = await repository.findMany({});
