@@ -5,17 +5,17 @@ import type { LuneEntity, LuneTable } from './entity';
  */
 export interface Customer extends LuneEntity {
   /**
+   * The customer's email address. Used to identify the customer in orders and admin
+   */
+  email: string;
+  /**
    * The customer's first name
    */
   firstName?: string | null;
   /**
    * The customer's last name
    */
-  lastName: string;
-  /**
-   * The customer's email address. Used to identify the customer in orders and admin
-   */
-  email: string;
+  lastName?: string | null;
   /**
    * The customer's password. Nullable for guest customers
    */
@@ -31,9 +31,9 @@ export interface Customer extends LuneEntity {
 }
 
 export interface CustomerTable extends LuneTable {
-  first_name?: string | null;
-  last_name: string;
   email: string;
+  first_name?: string | null;
+  last_name?: string | null;
   password?: string | null;
   phone_number?: string | null;
   enabled: boolean;

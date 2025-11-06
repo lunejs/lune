@@ -209,13 +209,9 @@ export class OrderService {
       return new ForbiddenOrderActionError(order.state);
     }
 
-    const customer = await this.customerRepository.findOneOrThrow({
-      where: { email: input.email }
-    });
-
     const customerUpsert = await this.customerRepository.upsert({
-      where: { id: customer.id },
-      update: clean(input),
+      where: { email: input.email },
+      update: input,
       create: {
         ...clean(input),
         enabled: true

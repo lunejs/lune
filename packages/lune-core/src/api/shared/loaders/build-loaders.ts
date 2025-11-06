@@ -11,6 +11,7 @@ import { createCollectionTranslationsLoader } from './collection/collection-tran
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
+import { createOrderCustomersLoader } from './order/order-customers.loader';
 import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
@@ -56,7 +57,8 @@ export const buildLoaders = (
       translations: createCollectionTranslationsLoader(trx)
     },
     order: {
-      lines: createOrderLineLoader(trx)
+      lines: createOrderLineLoader(trx),
+      customers: createOrderCustomersLoader(trx)
     },
     orderLine: {
       variant: createOrderLineVariantsLoader(trx)

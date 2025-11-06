@@ -22,7 +22,7 @@ input UpdateOrderLineInput {
 
 input AddCustomerToOrderInput {
   firstName: String
-  lastName: String!
+  lastName: String
   email: String!
   phoneNumber: String
 }

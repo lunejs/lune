@@ -24,7 +24,7 @@ export type Scalars = {
 export type AddCustomerToOrderInput = {
   email: Scalars['String']['input'];
   firstName?: InputMaybe<Scalars['String']['input']>;
-  lastName: Scalars['String']['input'];
+  lastName?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -308,7 +308,7 @@ export type Customer = {
   firstName?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   /** The customer's last name */
-  lastName: Scalars['String']['output'];
+  lastName?: Maybe<Scalars['String']['output']>;
   /** The customer's phone number */
   phoneNumber?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Date']['output'];
@@ -1867,7 +1867,7 @@ export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

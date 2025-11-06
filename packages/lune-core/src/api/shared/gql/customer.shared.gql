@@ -10,7 +10,7 @@ type Customer {
   """
   The customer's last name
   """
-  lastName: String!
+  lastName: String
   """
   The customer's email address. Used to identify the customer in orders and admin
   """

@@ -8,9 +8,9 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.string('first_name', 100).nullable();
-    table.string('last_name', 100).notNullable();
     table.string('email', 255).notNullable().unique();
+    table.string('first_name', 100).nullable();
+    table.string('last_name', 100).nullable();
     table.string('password').nullable();
     table.string('phone_number', 15).nullable();
     table.boolean('enabled').notNullable().defaultTo(true);

@@ -11,8 +11,6 @@ export function createOrderLineLoader(trx: Transaction) {
       .whereIn('order_id', orderIds)
       .orderBy('created_at', 'asc');
 
-    // console.log({ orderIds, rows });
-
     const serializer = new OrderLineSerializer();
 
     const byOrderId = new Map<string, OrderLine[]>();

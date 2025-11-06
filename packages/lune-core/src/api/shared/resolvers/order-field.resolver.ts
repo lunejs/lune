@@ -8,5 +8,10 @@ export const CommonOrderFieldResolver = {
     const lines = await ctx.loaders.order.lines.load(parent.id);
 
     return new ListResponse(lines, lines.length, { total: lines.length });
+  },
+  customer: async (parent: Order, _, ctx: ExecutionContext) => {
+    const customer = await ctx.loaders.order.customers.load(parent.customerId ?? null);
+
+    return customer;
   }
 };
