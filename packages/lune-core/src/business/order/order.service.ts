@@ -1,13 +1,22 @@
+import { clean } from '@lune/common';
+
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateOrderLineInput, UpdateOrderLineInput } from '@/api/shared/types/graphql';
+import type {
+  AddCustomerToOrderInput,
+  CreateOrderLineInput,
+  UpdateOrderLineInput
+} from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
+import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
+import { isValidEmail } from '@/utils/validators';
 
 import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
   ForbiddenOrderActionError,
+  InvalidCustomerEmailError,
   InvalidQuantityError,
   NotEnoughStockError
 } from './order.errors';
@@ -18,6 +27,7 @@ export class OrderService {
   private readonly repository: OrderRepository;
   private readonly lineRepository: OrderLineRepository;
   private readonly variantRepository: VariantRepository;
+  private readonly customerRepository: CustomerRepository;
 
   constructor(ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -25,6 +35,7 @@ export class OrderService {
     this.repository = ctx.repositories.order;
     this.lineRepository = ctx.repositories.orderLine;
     this.variantRepository = ctx.repositories.variant;
+    this.customerRepository = ctx.repositories.customer;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -183,6 +194,38 @@ export class OrderService {
         total: order.total - line.lineTotal,
         subtotal: order.subtotal - line.lineTotal,
         totalQuantity: order.totalQuantity - line.quantity
+      }
+    });
+  }
+
+  async addCustomer(orderId: ID, input: AddCustomerToOrderInput) {
+    if (!isValidEmail(input.email)) {
+      return new InvalidCustomerEmailError();
+    }
+
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!this.validator.canAddCustomer(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const customer = await this.customerRepository.findOneOrThrow({
+      where: { email: input.email }
+    });
+
+    const customerUpsert = await this.customerRepository.upsert({
+      where: { id: customer.id },
+      update: clean(input),
+      create: {
+        ...clean(input),
+        enabled: true
+      }
+    });
+
+    return await this.repository.update({
+      where: { id: orderId },
+      data: {
+        customerId: customerUpsert.id
       }
     });
   }

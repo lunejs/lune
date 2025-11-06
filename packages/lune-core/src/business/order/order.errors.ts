@@ -39,3 +39,12 @@ export class InvalidQuantityError extends OrderErrorResult {
     );
   }
 }
+
+/**
+ * Error thrown when provided customer email is not valid
+ */
+export class InvalidCustomerEmailError extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.InvalidCustomerEmail, 'Invalid customer email');
+  }
+}

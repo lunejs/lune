@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
+  MutationAddCustomerToOrderArgs,
   MutationAddLineToOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
@@ -49,6 +50,18 @@ async function removeOrderLine(_, { lineId }: MutationRemoveOrderLineArgs, ctx: 
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addCustomerToOrder(
+  _,
+  { orderId, input }: MutationAddCustomerToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addCustomer(orderId, input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
@@ -56,6 +69,7 @@ export const OrderResolver: GraphqlApiResolver = {
   Mutation: {
     addLineToOrder,
     updateOrderLine,
-    removeOrderLine
+    removeOrderLine,
+    addCustomerToOrder
   }
 };

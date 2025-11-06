@@ -12,4 +12,12 @@ export class OrderActionsValidator {
   canRemoveLine(state: OrderState) {
     return state === OrderState.MODIFYING;
   }
+
+  canAddCustomer(state: OrderState) {
+    return state === OrderState.MODIFYING;
+  }
+
+  canAddShippingAddress(state: OrderState) {
+    return state === OrderState.MODIFYING;
+  }
 }
