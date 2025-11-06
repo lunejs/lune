@@ -11,6 +11,7 @@ import { VariantConstants } from './variant.fixtures';
 
 export const OrderLineConstants = {
   ID: TestHelper.generateUUID(),
+  SecondID: TestHelper.generateUUID(),
   InPlacedOrderID: TestHelper.generateUUID()
 };
 
@@ -23,10 +24,20 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         id: OrderLineConstants.ID,
         order_id: OrderConstants.ID,
         variant_id: VariantConstants.AlreadyInLineID,
-        line_total: LunePrice.toCent(VariantConstants.AlreadyInLinePrice * 2),
-        line_subtotal: LunePrice.toCent(VariantConstants.AlreadyInLinePrice * 2),
-        quantity: 2,
+        line_total: LunePrice.toCent(VariantConstants.AlreadyInLinePrice),
+        line_subtotal: LunePrice.toCent(VariantConstants.AlreadyInLinePrice),
+        quantity: 1,
         unit_price: LunePrice.toCent(VariantConstants.AlreadyInLinePrice),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: OrderLineConstants.SecondID,
+        order_id: OrderConstants.ID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(VariantConstants.Price * 2),
+        line_subtotal: LunePrice.toCent(VariantConstants.Price * 2),
+        quantity: 2,
+        unit_price: LunePrice.toCent(VariantConstants.Price),
         shop_id: ShopConstants.ID
       },
       {

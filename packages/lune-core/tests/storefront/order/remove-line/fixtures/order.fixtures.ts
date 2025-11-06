@@ -24,9 +24,11 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.ID,
         code: OrderConstants.Code,
-        total: LunePrice.toCent(VariantConstants.AlreadyInLinePrice * 2),
-        subtotal: LunePrice.toCent(VariantConstants.AlreadyInLinePrice * 2),
-        total_quantity: 2
+        total: LunePrice.toCent(VariantConstants.AlreadyInLinePrice + VariantConstants.Price * 2),
+        subtotal: LunePrice.toCent(
+          VariantConstants.AlreadyInLinePrice + VariantConstants.Price * 2
+        ),
+        total_quantity: 3
       },
       {
         shop_id: ShopConstants.ID,

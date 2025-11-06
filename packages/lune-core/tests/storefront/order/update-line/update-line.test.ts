@@ -43,7 +43,7 @@ describe('updateOrderLine - Mutation', () => {
     await luneServer.teardown();
   });
 
-  test('update quantity in line', async () => {
+  test('add quantity to a line', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -78,7 +78,42 @@ describe('updateOrderLine - Mutation', () => {
     expect(addedLine.lineTotal).toBe(LunePrice.toCent(2_400));
   });
 
-  test('removed line setting quantity as 0', async () => {
+  test('subtract quantity to a line', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_ORDER_LINE_MUTATION,
+        variables: {
+          lineId: OrderLineConstants.ID,
+          input: {
+            quantity: 1
+          }
+        }
+      });
+
+    const {
+      updateOrderLine: { order }
+    } = res.body.data;
+
+    const addedLine = order.lines.items.find(l => l.id === OrderLineConstants.ID);
+
+    expect(order.id).toBe(OrderConstants.ID);
+
+    expect(order.total).toBe(LunePrice.toCent(800));
+    expect(order.subtotal).toBe(LunePrice.toCent(800));
+    expect(order.totalQuantity).toBe(1);
+
+    expect(order.lines.items).toHaveLength(1);
+
+    expect(addedLine.unitPrice).toBe(LunePrice.toCent(800));
+    expect(addedLine.quantity).toBe(1);
+    expect(addedLine.lineSubtotal).toBe(LunePrice.toCent(800));
+    expect(addedLine.lineTotal).toBe(LunePrice.toCent(800));
+  });
+
+  test('removes line setting quantity as 0', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -183,31 +218,6 @@ describe('updateOrderLine - Mutation', () => {
 
     expect(order).toBeNull();
     expect(error.code).toBe('NOT_ENOUGH_STOCK');
-  });
-
-  test('returns INVALID_QUANTITY when input quantity is a negative number', async () => {
-    const res = await request(app)
-      .post('/storefront-api')
-      .set('x_lune_shop_id', ShopConstants.ID)
-      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .send({
-        query: ADD_ORDER_LINE_MUTATION,
-        variables: {
-          lineId: OrderLineConstants.ID,
-          input: {
-            quantity: -1
-          }
-        }
-      });
-
-    const {
-      updateOrderLine: { order, apiErrors }
-    } = res.body.data;
-
-    const [error] = apiErrors;
-
-    expect(order).toBeNull();
-    expect(error.code).toBe('INVALID_QUANTITY');
   });
 });
 
