@@ -166,4 +166,24 @@ export class OrderService {
       }
     });
   }
+
+  async removeLine(lineId: ID) {
+    const line = await this.lineRepository.findOneOrThrow({ where: { id: lineId } });
+    const order = await this.repository.findOneOrThrow({ where: { id: line.orderId } });
+
+    if (!this.validator.canRemoveLine(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    await this.lineRepository.remove({ where: { id: lineId } });
+
+    return await this.repository.update({
+      where: { id: order.id },
+      data: {
+        total: order.total - line.lineTotal,
+        subtotal: order.subtotal - line.lineTotal,
+        totalQuantity: order.totalQuantity - line.quantity
+      }
+    });
+  }
 }

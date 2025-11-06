@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
   MutationAddLineToOrderArgs,
+  MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
   QueryOrderArgs
 } from '@/api/shared/types/graphql';
@@ -40,12 +41,21 @@ async function updateOrderLine(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function removeOrderLine(_, { lineId }: MutationRemoveOrderLineArgs, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.removeLine(lineId);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
   },
   Mutation: {
     addLineToOrder,
-    updateOrderLine
+    updateOrderLine,
+    removeOrderLine
   }
 };
