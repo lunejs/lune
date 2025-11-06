@@ -54,4 +54,5 @@ type OrderErrorResult {
 enum OrderErrorCode {
   FORBIDDEN_ORDER_ACTION
   NOT_ENOUGH_STOCK
+  INVALID_QUANTITY
 }

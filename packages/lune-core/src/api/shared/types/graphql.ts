@@ -788,6 +788,7 @@ export type OrderCancellation = Node & {
 /**  Utils  */
 export enum OrderErrorCode {
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
+  InvalidQuantity = 'INVALID_QUANTITY',
   NotEnoughStock = 'NOT_ENOUGH_STOCK'
 }
 

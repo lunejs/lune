@@ -6,7 +6,11 @@ import type { OrderRepository } from '@/persistence/repositories/order-repositor
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
 
 import { OrderActionsValidator } from './validator/order-actions-validator';
-import { ForbiddenOrderActionError, NotEnoughStockError } from './order.errors';
+import {
+  ForbiddenOrderActionError,
+  InvalidQuantityError,
+  NotEnoughStockError
+} from './order.errors';
 
 export class OrderService {
   private readonly validator: OrderActionsValidator;
@@ -34,6 +38,8 @@ export class OrderService {
   }
 
   async addLine(orderId: ID, input: CreateOrderLineInput) {
+    if (input.quantity < 0) return new InvalidQuantityError(input.quantity);
+
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     if (!this.validator.canAddLine(order.state)) {
@@ -108,6 +114,8 @@ export class OrderService {
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+    if (input.quantity < 0) return new InvalidQuantityError(input.quantity);
+
     const line = await this.lineRepository.findOneOrThrow({ where: { id: lineId } });
 
     const [order, variant] = await Promise.all([

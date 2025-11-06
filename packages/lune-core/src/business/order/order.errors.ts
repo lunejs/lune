@@ -27,3 +27,15 @@ export class NotEnoughStockError extends OrderErrorResult {
     super(OrderErrorCode.NotEnoughStock, `Not enough stock for variant(s)`, { variantIds });
   }
 }
+
+/**
+ * Error thrown when provided quantity is not a positive integer
+ */
+export class InvalidQuantityError extends OrderErrorResult {
+  constructor(quantity: number) {
+    super(
+      OrderErrorCode.InvalidQuantity,
+      `Quantity with value ${quantity} is not a valid quantity`
+    );
+  }
+}
