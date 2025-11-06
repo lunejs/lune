@@ -16,6 +16,8 @@ import type { UserJWT } from '../shared/types/api.types';
 import { CollectionFieldResolver } from './field-resolvers/collection-field.resolver';
 import { OptionFieldResolver } from './field-resolvers/option-field.resolver';
 import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
+import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
+import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { VariantFieldResolver } from './field-resolvers/variant-filed.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
@@ -49,7 +51,9 @@ export class AdminApi extends GraphqlApi {
         OptionValueFieldResolver,
         CollectionResolver,
         CollectionFieldResolver,
-        OrderResolver
+        OrderResolver,
+        OrderFieldResolver,
+        OrderLineFieldResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

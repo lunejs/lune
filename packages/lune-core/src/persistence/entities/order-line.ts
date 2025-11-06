@@ -16,4 +16,5 @@ export interface OrderLineTable extends LuneTable {
   quantity: number;
   variant_id: ID;
   order_id: ID;
+  shop_id: ID;
 }

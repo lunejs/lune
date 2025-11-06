@@ -48,8 +48,8 @@ export class OrderService {
       return new NotEnoughStockError([variant.id]);
     }
 
-    const lineWithTheVariant = await this.lineRepository.findOneOrThrow({
-      where: { variantId: input.productVariantId }
+    const lineWithTheVariant = await this.lineRepository.findOne({
+      where: { orderId, variantId: input.productVariantId }
     });
 
     const newLinePrice = (input.quantity + (lineWithTheVariant?.quantity ?? 0)) * variant.salePrice;
@@ -97,7 +97,7 @@ export class OrderService {
       orderId
     });
 
-    await this.repository.update({
+    return await this.repository.update({
       where: { id: orderId },
       data: {
         subtotal: order.subtotal + newLinePrice,

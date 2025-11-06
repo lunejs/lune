@@ -11,6 +11,7 @@ export class OrderLineSerializer extends Serializer<OrderLine, OrderLineTable> {
       ['line_total', 'lineTotal'],
       ['line_subtotal', 'lineSubtotal'],
       ['unit_price', 'unitPrice'],
+      ['quantity', 'quantity'],
       ['variant_id', 'variantId'],
       ['order_id', 'orderId']
     ]);

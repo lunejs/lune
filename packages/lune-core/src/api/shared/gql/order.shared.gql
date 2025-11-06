@@ -82,7 +82,7 @@ type Order implements Node {
   """
   Order lines for the order
   """
-  lines: [OrderLine!]!
+  lines: OrderLineList!
   """
   Order's fulfillment
   """

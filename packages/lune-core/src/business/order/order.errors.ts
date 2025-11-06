@@ -14,7 +14,7 @@ abstract class OrderErrorResult extends ErrorResult<OrderErrorCode> {
  */
 export class ForbiddenOrderActionError extends OrderErrorResult {
   constructor(state: OrderState) {
-    super(OrderErrorCode.ForbiddenAction, `Forbidden action on order with state ${state}`);
+    super(OrderErrorCode.ForbiddenOrderAction, `Forbidden action on order with state ${state}`);
   }
 }
 

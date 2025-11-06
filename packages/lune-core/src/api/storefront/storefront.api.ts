@@ -6,7 +6,6 @@ import type { JwtService } from '@/libs/jwt';
 import type { Database } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
-import { OrderResolver } from '../admin/resolvers/order.resolver';
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
@@ -15,7 +14,10 @@ import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
+import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
+import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
+import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
@@ -29,7 +31,13 @@ export class StorefrontApi extends GraphqlApi {
     super({
       endpoint: '/storefront-api',
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
-      resolvers: [ProductResolver, ProductFieldResolver, OrderResolver],
+      resolvers: [
+        ProductResolver,
+        ProductFieldResolver,
+        OrderResolver,
+        OrderFieldResolver,
+        OrderLineFieldResolver
+      ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });

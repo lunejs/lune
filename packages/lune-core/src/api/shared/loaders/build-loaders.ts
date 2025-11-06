@@ -11,6 +11,8 @@ import { createCollectionTranslationsLoader } from './collection/collection-tran
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
+import { createOrderLineLoader } from './order/order-lines.loader';
+import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
 import { createProductOptionsLoader } from './product/product-options.loader';
 import { createProductTagsLoader } from './product/product-tags.loader';
@@ -52,6 +54,12 @@ export const buildLoaders = (
       products: createCollectionProductsLoader(trx, variables),
       subCollections: createCollectionSubCollectionsLoader(trx),
       translations: createCollectionTranslationsLoader(trx)
+    },
+    order: {
+      lines: createOrderLineLoader(trx)
+    },
+    orderLine: {
+      variant: createOrderLineVariantsLoader(trx)
     }
   };
 };

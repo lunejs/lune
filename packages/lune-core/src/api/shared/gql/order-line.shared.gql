@@ -26,3 +26,9 @@ type OrderLine implements Node {
   """
   variant: Variant!
 }
+
+type OrderLineList implements List {
+  items: [OrderLine!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
