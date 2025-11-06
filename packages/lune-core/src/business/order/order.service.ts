@@ -1,5 +1,5 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateOrderLineInput } from '@/api/shared/types/graphql';
+import type { CreateOrderLineInput, UpdateOrderLineInput } from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -103,6 +103,58 @@ export class OrderService {
         subtotal: order.subtotal + newLinePrice,
         total: order.total + newLinePrice,
         totalQuantity: order.totalQuantity + input.quantity
+      }
+    });
+  }
+
+  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+    const line = await this.lineRepository.findOneOrThrow({ where: { id: lineId } });
+
+    const [order, variant] = await Promise.all([
+      this.repository.findOneOrThrow({ where: { id: line.orderId } }),
+      this.variantRepository.findOneOrThrow({ where: { id: line.variantId } })
+    ]);
+
+    if (!this.validator.canUpdateLine(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    if (input.quantity <= 0) {
+      await this.lineRepository.remove({ where: { id: lineId } });
+
+      return await this.repository.update({
+        where: { id: order.id },
+        data: {
+          subtotal: order.subtotal - line.lineTotal,
+          total: order.total - line.lineTotal,
+          totalQuantity: order.totalQuantity - line.quantity
+        }
+      });
+    }
+
+    if (variant.stock < input.quantity) {
+      return new NotEnoughStockError([variant.id]);
+    }
+
+    const unitPrice = variant.salePrice;
+    const linePrice = unitPrice * input.quantity;
+
+    await this.lineRepository.update({
+      where: { id: lineId },
+      data: {
+        quantity: input.quantity,
+        lineSubtotal: linePrice,
+        lineTotal: linePrice,
+        unitPrice
+      }
+    });
+
+    return await this.repository.update({
+      where: { id: order.id },
+      data: {
+        total: order.total - line.lineTotal + linePrice,
+        subtotal: order.subtotal - line.lineTotal + linePrice,
+        totalQuantity: order.totalQuantity - line.quantity + input.quantity
       }
     });
   }
