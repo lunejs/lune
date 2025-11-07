@@ -232,12 +232,12 @@ export type CreateOptionValueInput = {
 
 export type CreateOrderAddressInput = {
   city: Scalars['String']['input'];
-  countryId: Scalars['String']['input'];
+  countryCode: Scalars['String']['input'];
   fullName: Scalars['String']['input'];
-  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber: Scalars['String']['input'];
   postalCode: Scalars['String']['input'];
-  province: Scalars['String']['input'];
   references?: InputMaybe<Scalars['String']['input']>;
+  stateCode: Scalars['String']['input'];
   streetLine1: Scalars['String']['input'];
   streetLine2?: InputMaybe<Scalars['String']['input']>;
 };
@@ -752,6 +752,8 @@ export type OrderAddressJson = {
   country: Scalars['String']['output'];
   /** Address's country code */
   countryCode: Scalars['String']['output'];
+  /** Full name of the recipient */
+  fullName: Scalars['String']['output'];
   /** Phone number for delivery */
   phoneNumber: Scalars['String']['output'];
   /** Postal/ZIP code */
@@ -2060,6 +2062,7 @@ export type OrderAddressJsonResolvers<ContextType = ExecutionContext, ParentType
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fullName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   references?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

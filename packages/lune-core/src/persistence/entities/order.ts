@@ -70,11 +70,58 @@ export interface Order extends LuneEntity {
   /**
    * Shipping address where the order has to be delivered
    */
-  shippingAddress?: any | null;
+  shippingAddress?: OrderAddress | null;
   /**
    * Customer who placed the order. Nullable for guest orders
    */
   customerId?: string | null;
+}
+
+export interface OrderAddress {
+  /**
+   * Full name of the recipient
+   */
+  fullName: string;
+  /**
+   * Street address line 1
+   */
+  streetLine1: string;
+  /**
+   * Street address line 2 (apartment, suite, etc.)
+   */
+  streetLine2?: string | null;
+  /**
+   * Address's city
+   */
+  city: string;
+  /**
+   * Postal/ZIP code
+   */
+  postalCode: string;
+  /**
+   * Phone number for delivery
+   */
+  phoneNumber: string;
+  /**
+   * Additional delivery references or instructions
+   */
+  references?: string | null;
+  /**
+   * Address's country
+   */
+  country: string;
+  /**
+   * Address's country code
+   */
+  countryCode: string;
+  /**
+   * Address's state/province/region
+   */
+  state: string;
+  /**
+   * Address's state/province/region code
+   */
+  stateCode: string;
 }
 
 export interface OrderTable extends LuneTable {

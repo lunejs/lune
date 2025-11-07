@@ -3,13 +3,16 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddCustomerToOrderInput,
+  CreateOrderAddressInput,
   CreateOrderLineInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
+import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
+import type { StateRepository } from '@/persistence/repositories/state-repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
 import { isValidEmail } from '@/utils/validators';
 
@@ -28,6 +31,8 @@ export class OrderService {
   private readonly lineRepository: OrderLineRepository;
   private readonly variantRepository: VariantRepository;
   private readonly customerRepository: CustomerRepository;
+  private readonly countryRepository: CountryRepository;
+  private readonly stateRepository: StateRepository;
 
   constructor(ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -36,6 +41,8 @@ export class OrderService {
     this.lineRepository = ctx.repositories.orderLine;
     this.variantRepository = ctx.repositories.variant;
     this.customerRepository = ctx.repositories.customer;
+    this.countryRepository = ctx.repositories.country;
+    this.stateRepository = ctx.repositories.state;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -222,6 +229,32 @@ export class OrderService {
       where: { id: orderId },
       data: {
         customerId: customerUpsert.id
+      }
+    });
+  }
+
+  async addShippingAddress(orderId: ID, input: CreateOrderAddressInput) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!this.validator.canAddShippingAddress(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const [country, state] = await Promise.all([
+      this.countryRepository.findOneOrThrow({ where: { code: input.countryCode } }),
+      this.stateRepository.findOneOrThrow({ where: { code: input.stateCode } })
+    ]);
+
+    return await this.repository.update({
+      where: { id: orderId },
+      data: {
+        shippingAddress: {
+          ...input,
+          country: country.name,
+          countryCode: country.code,
+          state: state.name,
+          stateCode: state.code
+        }
       }
     });
   }

@@ -95,6 +95,10 @@ type Query {
 
 type OrderAddressJson {
   """
+  Full name of the recipient
+  """
+  fullName: String!
+  """
   Street address line 1
   """
   streetLine1: String!

@@ -5,6 +5,7 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
   MutationAddCustomerToOrderArgs,
   MutationAddLineToOrderArgs,
+  MutationAddShippingAddressToOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
   QueryOrderArgs
@@ -62,6 +63,18 @@ async function addCustomerToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addShippingAddressToOrder(
+  _,
+  { orderId, input }: MutationAddShippingAddressToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addShippingAddress(orderId, input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
@@ -70,6 +83,7 @@ export const OrderResolver: GraphqlApiResolver = {
     addLineToOrder,
     updateOrderLine,
     removeOrderLine,
-    addCustomerToOrder
+    addCustomerToOrder,
+    addShippingAddressToOrder
   }
 };
