@@ -240,15 +240,19 @@ export class OrderService {
       return new ForbiddenOrderActionError(order.state);
     }
 
-    const [country, state] = await Promise.all([
-      this.countryRepository.findOneOrThrow({ where: { code: input.countryCode } }),
-      this.stateRepository.findOneOrThrow({ where: { code: input.stateCode } })
-    ]);
+    const country = await this.countryRepository.findOneOrThrow({
+      where: { code: input.countryCode }
+    });
+
+    const state = await this.stateRepository.findOneOrThrow({
+      where: { code: input.stateCode, countryId: country.id }
+    });
 
     return await this.repository.update({
       where: { id: orderId },
       data: {
         shippingAddress: {
+          ...order.shippingAddress,
           ...input,
           country: country.name,
           countryCode: country.code,
