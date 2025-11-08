@@ -1,5 +1,6 @@
 import { DefaultImageProcessor } from './image-processor/default-image-processor';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
+import { FlatShippingHandler } from './shipping-handler/flat-shipping-handler';
 import { LocalStorageProvider } from './storage/local-storage-provider';
 import type { LuneConfig } from './lune.config';
 
@@ -18,6 +19,9 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
   assets: {
     storageProvider: new LocalStorageProvider('http://localhost:4000'),
     imageProcessor: new DefaultImageProcessor()
+  },
+  shipping: {
+    handlers: [new FlatShippingHandler()]
   },
   plugins: [new AssetServerPlugin()]
 };
