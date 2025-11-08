@@ -26,6 +26,7 @@ import { ShopRepository } from './shop-repository';
 import { StateRepository } from './state-repository';
 import { UserRepository } from './user-repository';
 import { VariantRepository } from './variant-repository';
+import { ZoneRepository } from './zone-repository';
 
 export function buildRepositories(trx: Transaction) {
   return {
@@ -54,7 +55,8 @@ export function buildRepositories(trx: Transaction) {
     paymentCancellation: new PaymentCancellationRepository(trx),
     inStorePickup: new InStorePickupRepository(trx),
     shippingFulfillment: new ShippingFulfillmentRepository(trx),
-    inStorePickupFulfillment: new InStorePickupFulfillmentRepository(trx)
+    inStorePickupFulfillment: new InStorePickupFulfillmentRepository(trx),
+    zone: new ZoneRepository(trx)
   };
 }
 

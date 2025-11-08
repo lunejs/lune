@@ -1,0 +1,18 @@
+"""
+A zone represents a geographical area for shipping purposes.
+"""
+type Zone implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The zone's name
+  """
+  name: String!
+
+  """
+  The zone's states
+  """
+  states: [State!]!
+}
