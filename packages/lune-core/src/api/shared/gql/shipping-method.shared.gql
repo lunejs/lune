@@ -1,0 +1,28 @@
+"""
+A shipping method defines a way to ship products to customers within a specific zone.
+"""
+type ShippingMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The shipping method's name
+  """
+  name: String!
+
+  """
+  The shipping method's handler configuration
+  """
+  handler: JSON!
+
+  """
+  Whether the shipping method is enabled
+  """
+  enabled: Boolean!
+
+  """
+  The zone this shipping method applies to
+  """
+  zone: Zone!
+}

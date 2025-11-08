@@ -30,6 +30,7 @@ import { DefaultProductOptionFixture } from './product-option.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
 import { DefaultShippingFulfillmentFixture } from './shipping-fulfillment.fixture';
+import { DefaultShippingMethodFixture } from './shipping-method.fixture';
 import { DefaultShopFixture } from './shop.fixture';
 import { DefaultStateFixture } from './state.fixture';
 import { DefaultTagFixture } from './tag.fixture';
@@ -79,5 +80,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.ShippingFulfillment]: DefaultShippingFulfillmentFixture,
   [Tables.InStorePickupFulfillment]: DefaultInStorePickupFulfillmentFixture,
   [Tables.Zone]: DefaultZoneFixture,
-  [Tables.ZoneState]: DefaultZoneStateFixture
+  [Tables.ZoneState]: DefaultZoneStateFixture,
+  [Tables.ShippingMethod]: DefaultShippingMethodFixture
 };

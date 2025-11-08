@@ -22,6 +22,7 @@ import { PaymentRepository } from './payment-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShippingFulfillmentRepository } from './shipping-fulfillment-repository';
+import { ShippingMethodRepository } from './shipping-method-repository';
 import { ShopRepository } from './shop-repository';
 import { StateRepository } from './state-repository';
 import { UserRepository } from './user-repository';
@@ -58,7 +59,8 @@ export function buildRepositories(trx: Transaction) {
     shippingFulfillment: new ShippingFulfillmentRepository(trx),
     inStorePickupFulfillment: new InStorePickupFulfillmentRepository(trx),
     zone: new ZoneRepository(trx),
-    zoneState: new ZoneStateRepository(trx)
+    zoneState: new ZoneStateRepository(trx),
+    shippingMethod: new ShippingMethodRepository(trx)
   };
 }
 
