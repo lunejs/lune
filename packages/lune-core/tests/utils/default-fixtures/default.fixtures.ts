@@ -38,6 +38,7 @@ import { DefaultVariantFixture } from './variant.fixture';
 import { DefaultVariantAssetFixture } from './variant-asset.fixture';
 import { DefaultVariantOptionValueFixture } from './variant-option-value.fixture';
 import { DefaultZoneFixture } from './zone.fixture';
+import { DefaultZoneStateFixture } from './zone-state.fixture';
 
 export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Users]: DefaultUserFixture,
@@ -77,5 +78,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.InStorePickup]: DefaultInStorePickupFixture,
   [Tables.ShippingFulfillment]: DefaultShippingFulfillmentFixture,
   [Tables.InStorePickupFulfillment]: DefaultInStorePickupFulfillmentFixture,
-  [Tables.Zone]: DefaultZoneFixture
+  [Tables.Zone]: DefaultZoneFixture,
+  [Tables.ZoneState]: DefaultZoneStateFixture
 };

@@ -36,5 +36,6 @@ export const enum Tables {
   InStorePickup = 'in_store_pickup',
   ShippingFulfillment = 'shipping_fulfillment',
   InStorePickupFulfillment = 'in_store_pickup_fulfillment',
-  Zone = 'zone'
+  Zone = 'zone',
+  ZoneState = 'zone_state'
 }

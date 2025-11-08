@@ -1,5 +1,4 @@
 import { OrderBy } from '@/api/shared/types/graphql';
-import type { LuneEntity, LuneTable } from '@/persistence/entities/entity';
 import { Tables } from '@/persistence/tables';
 
 import type { Transaction } from '../../connection';
@@ -12,7 +11,7 @@ import { RepositoryError } from '../repository.error';
  * @description
  * A generic repository class for performing CRUD operations on a database table.
  */
-export class Repository<T extends LuneEntity, Table extends LuneTable> {
+export class Repository<T extends Record<string, any>, Table extends Record<string, any>> {
   constructor(
     private readonly tableName: Tables,
     protected readonly trx: Transaction,
