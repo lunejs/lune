@@ -5,6 +5,7 @@ type Mutation {
   removeOrderLine(lineId: ID!): OrderResult!
   addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
   addShippingAddressToOrder(orderId: ID!, input: CreateOrderAddressInput!): OrderResult!
+  addShippingFulfillmentToOrder(orderId: ID!, input: AddShippingFulfillmentInput!): OrderResult!
 }
 
 input CreateOrderInput {
@@ -37,6 +38,10 @@ input CreateOrderAddressInput {
   references: String
   countryCode: String!
   stateCode: String!
+}
+
+input AddShippingFulfillmentInput {
+  methodId: ID!
 }
 
 " Results "
