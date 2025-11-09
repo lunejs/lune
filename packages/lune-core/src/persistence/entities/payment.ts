@@ -4,31 +4,31 @@ export enum PaymentState {
   /**
    * The payment record exists, but there is no evidence of it yet.
    */
-  PENDING = 'PENDING',
+  Pending = 'PENDING',
   /**
    * Evidence of the payment has been submitted but not yet verified.
    */
-  SUBMITTED = 'SUBMITTED',
+  Submitted = 'SUBMITTED',
   /**
    * Funds are reserved in the customer's account but have not been transferred yet.
    */
-  AUTHORIZED = 'AUTHORIZED',
+  Authorized = 'AUTHORIZED',
   /**
    * Funds have been successfully transferred.
    */
-  CAPTURED = 'CAPTURED',
+  Captured = 'CAPTURED',
   /**
    * The payment failed during processing by the provider.
    */
-  FAILED = 'FAILED',
+  Failed = 'FAILED',
   /**
    * The payment was manually rejected by an administrator.
    */
-  REJECTED = 'REJECTED',
+  Rejected = 'REJECTED',
   /**
    * The payment was canceled because the order could not be fulfilled or was voided before completion.
    */
-  CANCELED = 'CANCELED'
+  Canceled = 'CANCELED'
 }
 
 /**

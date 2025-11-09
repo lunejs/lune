@@ -1,4 +1,6 @@
 import type { LuneConfig } from '@/config/lune.config';
+import { TestPaymentHandler } from '@/config/payment-handler/test-payment-handler';
+import { FlatShippingHandler } from '@/config/shipping-handler/flat-shipping-handler';
 
 import { TestImageProcessor } from './config/test-image-processor';
 import { TestStorageProvider } from './config/test-storage-provider';
@@ -18,6 +20,12 @@ export const TEST_LUNE_CONFIG: LuneConfig = {
   assets: {
     storageProvider: new TestStorageProvider(),
     imageProcessor: new TestImageProcessor()
+  },
+  shipping: {
+    handlers: [new FlatShippingHandler()]
+  },
+  payments: {
+    handlers: [new TestPaymentHandler()]
   },
   plugins: []
 };

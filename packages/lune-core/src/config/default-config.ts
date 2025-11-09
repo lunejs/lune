@@ -1,4 +1,5 @@
 import { DefaultImageProcessor } from './image-processor/default-image-processor';
+import { TestPaymentHandler } from './payment-handler/test-payment-handler';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
 import { FlatShippingHandler } from './shipping-handler/flat-shipping-handler';
 import { LocalStorageProvider } from './storage/local-storage-provider';
@@ -22,6 +23,9 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
   },
   shipping: {
     handlers: [new FlatShippingHandler()]
+  },
+  payments: {
+    handlers: [new TestPaymentHandler()]
   },
   plugins: [new AssetServerPlugin()]
 };

@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('zone_id').notNullable().references('id').inTable('zone');
     table.uuid('state_id').notNullable().references('id').inTable('state');
 
-    table.primary(['collection_id', 'product_id']);
+    table.primary(['zone_id', 'state_id']);
   });
 }
 

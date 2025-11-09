@@ -1,6 +1,7 @@
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
 import type { ImageProcessor } from './image-processor/image-processor';
+import type { PaymentHandler } from './payment-handler/payment-handler';
 import type { ShippingHandler } from './shipping-handler/shipping-handler';
 import type { StorageProvider } from './storage/storage';
 
@@ -22,6 +23,9 @@ export interface LuneConfig {
   };
   shipping: {
     handlers: ShippingHandler[];
+  };
+  payments: {
+    handlers: PaymentHandler[];
   };
   plugins: LunePlugin[];
 }
