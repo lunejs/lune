@@ -803,6 +803,8 @@ export enum OrderErrorCode {
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
   InvalidCustomerEmail = 'INVALID_CUSTOMER_EMAIL',
   InvalidQuantity = 'INVALID_QUANTITY',
+  InvalidShippingMethod = 'INVALID_SHIPPING_METHOD',
+  MissingShippingAddress = 'MISSING_SHIPPING_ADDRESS',
   NotEnoughStock = 'NOT_ENOUGH_STOCK'
 }
 

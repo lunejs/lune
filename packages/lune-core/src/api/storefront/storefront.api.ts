@@ -14,6 +14,7 @@ import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
+import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
 import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
 import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
@@ -36,7 +37,8 @@ export class StorefrontApi extends GraphqlApi {
         ProductFieldResolver,
         OrderResolver,
         OrderFieldResolver,
-        OrderLineFieldResolver
+        OrderLineFieldResolver,
+        FulfillmentFieldResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

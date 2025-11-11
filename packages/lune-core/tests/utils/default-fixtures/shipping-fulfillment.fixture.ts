@@ -4,10 +4,12 @@ export const DefaultShippingFulfillmentFixture = (): ShippingFulfillmentTable =>
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
-  tracking_code: '1Z999AA10123456784',
-  carrier: 'UPS',
-  shipped_at: new Date(),
-  delivered_at: new Date(),
+  method: 'Express',
+  tracking_code: null,
+  carrier: null,
+  shipped_at: null,
+  delivered_at: null,
   fulfillment_id: crypto.randomUUID(),
+  shipping_method_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

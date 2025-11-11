@@ -14,11 +14,13 @@ export class ShippingFulfillmentSerializer extends Serializer<
       ['id', 'id'],
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
+      ['method', 'method'],
       ['tracking_code', 'trackingCode'],
       ['carrier', 'carrier'],
       ['shipped_at', 'shippedAt'],
       ['delivered_at', 'deliveredAt'],
-      ['fulfillment_id', 'fulfillmentId']
+      ['fulfillment_id', 'fulfillmentId'],
+      ['shipping_method_id', 'shippingMethodId']
     ]);
   }
 }

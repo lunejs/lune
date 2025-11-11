@@ -8,12 +8,14 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.string('tracking_code').notNullable();
-    table.string('carrier').notNullable();
-    table.timestamp('shipped_at', { useTz: true }).notNullable();
-    table.timestamp('delivered_at', { useTz: true }).notNullable();
+    table.string('method').notNullable();
+    table.string('tracking_code').nullable();
+    table.string('carrier').nullable();
+    table.timestamp('shipped_at', { useTz: true }).nullable();
+    table.timestamp('delivered_at', { useTz: true }).nullable();
 
     table.uuid('fulfillment_id').notNullable().references('id').inTable('fulfillment');
+    table.uuid('shipping_method_id').notNullable().references('id').inTable('shipping_method');
 
     table
       .uuid('shop_id')

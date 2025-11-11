@@ -4,35 +4,35 @@ export enum OrderState {
   /**
    * The order is being modified by the customer
    */
-  MODIFYING = 'MODIFYING',
+  Modifying = 'MODIFYING',
   /**
    * A payment has been added to the order and cannot be modified anymore
    */
-  PLACED = 'PLACED',
+  Placed = 'PLACED',
   /**
    * Order is being processed for shipment
    */
-  PROCESSING = 'PROCESSING',
+  Processing = 'PROCESSING',
   /**
    * Order has been shipped via the carrier
    */
-  SHIPPED = 'SHIPPED',
+  Shipped = 'SHIPPED',
   /**
    * Order has been delivered to the customer
    */
-  DELIVERED = 'DELIVERED',
+  Delivered = 'DELIVERED',
   /**
    * Order is ready for pick up at the location chosen by the customer
    */
-  READY_FOR_PICKUP = 'READY_FOR_PICKUP',
+  ReadyForPickup = 'READY_FOR_PICKUP',
   /**
    * Order is completed (delivered and fully paid)
    */
-  COMPLETED = 'COMPLETED',
+  Completed = 'COMPLETED',
   /**
    * Order has been cancelled
    */
-  CANCELED = 'CANCELED'
+  Canceled = 'CANCELED'
 }
 
 /**

@@ -97,6 +97,17 @@ describe('User Serializer', () => {
         email: 'troy@staff.com'
       });
     });
+
+    test('returns user with properties values null when passed undefined', () => {
+      const serializer = new TestSerializer();
+
+      const deserialized = serializer.serialize({ email: undefined, password: undefined });
+
+      expect(deserialized).toEqual({
+        email: null,
+        password: null
+      });
+    });
   });
 
   describe('serializeFields', () => {

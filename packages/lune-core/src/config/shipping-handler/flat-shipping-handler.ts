@@ -6,8 +6,8 @@ import type { Args } from '../common/args.config';
 import type { ShippingHandler } from './shipping-handler';
 
 export class FlatShippingHandler implements ShippingHandler {
-  name = 'Flat shipping handler';
-  code: 'flat-shipping-handler';
+  name = 'Flat shipping handlers';
+  code = 'flat-shipping-handler';
 
   args: Args = {
     price: {

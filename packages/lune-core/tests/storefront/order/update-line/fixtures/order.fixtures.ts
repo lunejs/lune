@@ -31,7 +31,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.OrderPlacedID,
-        state: OrderState.PLACED
+        state: OrderState.Placed
       }
     ];
   }

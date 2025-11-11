@@ -3,20 +3,28 @@ Represents shipping fulfillment details for an order
 """
 type ShippingFulfillment {
   id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The shipping method used to generate this fulfillment
+  """
+  method: String!
   """
   Tracking code provided by the carrier
   """
-  trackingCode: String!
+  trackingCode: String
   """
   Name of the shipping carrier
   """
-  carrier: String!
+  carrier: String
   """
   Date and time when the order was shipped
   """
-  shippedAt: Date!
+  shippedAt: Date
   """
   Date and time when the order was delivered
   """
-  deliveredAt: Date!
+  deliveredAt: Date
+
+  shippingMethod: ShippingMethod!
 }

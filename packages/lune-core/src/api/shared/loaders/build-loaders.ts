@@ -8,10 +8,13 @@ import { createCollectionAssetsLoader } from './collection/collection-asset.load
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
+import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
+import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
 import { createOrderCustomersLoader } from './order/order-customers.loader';
+import { createOrderFulfillmentsLoader } from './order/order-fulfillments.loader';
 import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
@@ -58,10 +61,15 @@ export const buildLoaders = (
     },
     order: {
       lines: createOrderLineLoader(trx),
-      customers: createOrderCustomersLoader(trx)
+      customers: createOrderCustomersLoader(trx),
+      fulfillment: createOrderFulfillmentsLoader(trx)
     },
     orderLine: {
       variant: createOrderLineVariantsLoader(trx)
+    },
+    fulfillment: {
+      details: createFulfillmentDetailsLoader(trx),
+      shippingMethod: createFulfillmentShippingMethodLoader(trx)
     }
   };
 };

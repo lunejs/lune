@@ -79,12 +79,15 @@ export class Serializer<Entity, Table> {
   serialize(data: Partial<RepositoryInput<Entity>>): Partial<Table> {
     try {
       const result: Partial<Table> = {};
+      const dataKeys = Object.keys(data);
 
       for (const [from, to] of this.fields) {
         const value = data[to as keyof RepositoryInput<Entity>];
-        if (value !== undefined) {
-          result[from] = value as unknown as Table[typeof from];
-        }
+
+        if (value === undefined && !dataKeys.includes(to as string)) continue;
+
+        // knex (sql) does not accept undefined as valid values, so for that we use null instead
+        result[from] = (value ?? null) as unknown as Table[typeof from];
       }
 
       return result;

@@ -3,15 +3,21 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddCustomerToOrderInput,
+  AddShippingFulfillmentInput,
   CreateOrderAddressInput,
   CreateOrderLineInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
+import { getConfig } from '@/config/config';
 import type { ID } from '@/persistence/entities/entity';
+import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
+import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
+import type { ShippingFulfillmentRepository } from '@/persistence/repositories/shipping-fulfillment-repository';
+import type { ShippingMethodRepository } from '@/persistence/repositories/shipping-method-repository';
 import type { StateRepository } from '@/persistence/repositories/state-repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
 import { isValidEmail } from '@/utils/validators';
@@ -21,6 +27,8 @@ import {
   ForbiddenOrderActionError,
   InvalidCustomerEmailError,
   InvalidQuantityError,
+  InvalidShippingMethodError,
+  MissingShippingAddress,
   NotEnoughStockError
 } from './order.errors';
 
@@ -33,8 +41,11 @@ export class OrderService {
   private readonly customerRepository: CustomerRepository;
   private readonly countryRepository: CountryRepository;
   private readonly stateRepository: StateRepository;
+  private readonly shippingMethodRepository: ShippingMethodRepository;
+  private readonly fulfillmentRepository: FulfillmentRepository;
+  private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
 
-  constructor(ctx: ExecutionContext) {
+  constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
 
     this.repository = ctx.repositories.order;
@@ -43,6 +54,9 @@ export class OrderService {
     this.customerRepository = ctx.repositories.customer;
     this.countryRepository = ctx.repositories.country;
     this.stateRepository = ctx.repositories.state;
+    this.shippingMethodRepository = ctx.repositories.shippingMethod;
+    this.fulfillmentRepository = ctx.repositories.fulfillment;
+    this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -259,6 +273,83 @@ export class OrderService {
           state: state.name,
           stateCode: state.code
         }
+      }
+    });
+  }
+
+  async addShippingFulfillment(orderId: ID, input: AddShippingFulfillmentInput) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!order.shippingAddress) {
+      return new MissingShippingAddress();
+    }
+
+    if (!this.validator.canAddShippingFulfillment(order)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const country = await this.countryRepository.findOneOrThrow({
+      where: { code: order.shippingAddress?.countryCode },
+      fields: ['id']
+    });
+
+    const state = await this.stateRepository.findOneOrThrow({
+      where: { code: order.shippingAddress?.stateCode, countryId: country.id },
+      fields: ['id']
+    });
+
+    const method = await this.shippingMethodRepository.findEnabledByIdAndState(
+      input.methodId,
+      state.id
+    );
+
+    if (!method) {
+      return new InvalidShippingMethodError();
+    }
+
+    const shippingHandler = getConfig().shipping.handlers.find(h => h.code === method.handler.code);
+
+    if (!shippingHandler) {
+      throw new Error(`shipping handler not found with code ${method.handler.code}`);
+    }
+
+    const shippingPrice = await shippingHandler?.calculatePrice(
+      order,
+      method.handler.args,
+      this.ctx
+    );
+
+    const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+
+    const fulfillment = await this.fulfillmentRepository.upsert({
+      where: { id: orderFulfillment?.id },
+      create: {
+        orderId,
+        amount: shippingPrice,
+        type: FulfillmentType.SHIPPING
+      },
+      update: {
+        amount: shippingPrice
+      }
+    });
+
+    await this.shippingFulfillmentRepository.upsert({
+      where: { fulfillmentId: orderFulfillment?.id },
+      create: {
+        fulfillmentId: fulfillment.id,
+        method: method.name,
+        shippingMethodId: method.id
+      },
+      update: {
+        method: method.name,
+        shippingMethodId: method.id
+      }
+    });
+
+    return await this.repository.update({
+      where: { id: orderId },
+      data: {
+        total: order.total - (orderFulfillment?.amount ?? 0) + shippingPrice
       }
     });
   }

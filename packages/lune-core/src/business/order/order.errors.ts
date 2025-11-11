@@ -48,3 +48,21 @@ export class InvalidCustomerEmailError extends OrderErrorResult {
     super(OrderErrorCode.InvalidCustomerEmail, 'Invalid customer email');
   }
 }
+
+/**
+ * Error thrown when provided shipping method is invalid
+ */
+export class InvalidShippingMethodError extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.InvalidShippingMethod, 'Shipping method provided is invalid');
+  }
+}
+
+/**
+ * Error thrown when provided shipping method is invalid
+ */
+export class MissingShippingAddress extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.MissingShippingAddress, 'There is no shipping address in the order');
+  }
+}

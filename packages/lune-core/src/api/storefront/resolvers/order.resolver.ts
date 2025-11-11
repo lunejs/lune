@@ -6,6 +6,7 @@ import type {
   MutationAddCustomerToOrderArgs,
   MutationAddLineToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
+  MutationAddShippingFulfillmentToOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
   QueryOrderArgs
@@ -75,6 +76,18 @@ async function addShippingAddressToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addShippingFulfillmentToOrder(
+  _,
+  { orderId, input }: MutationAddShippingFulfillmentToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addShippingFulfillment(orderId, input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
@@ -84,6 +97,7 @@ export const OrderResolver: GraphqlApiResolver = {
     updateOrderLine,
     removeOrderLine,
     addCustomerToOrder,
-    addShippingAddressToOrder
+    addShippingAddressToOrder,
+    addShippingFulfillmentToOrder
   }
 };
