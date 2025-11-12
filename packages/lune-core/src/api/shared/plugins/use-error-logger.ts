@@ -3,7 +3,7 @@ import type { Plugin } from 'graphql-yoga';
 import { isAsyncIterable } from 'graphql-yoga';
 
 import { LuneError } from '@/errors/lune.error';
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 
 export function useErrorLogger(): Plugin {
   return {
@@ -18,11 +18,11 @@ export function useErrorLogger(): Plugin {
             const original = error.originalError;
 
             if (original instanceof LuneError) {
-              Logger.error(original.ctx, original.message, original.metadata);
+              LuneLogger.error(original);
             } else if (original instanceof GraphQLError) {
-              Logger.error('Graphql', original.message, original);
+              LuneLogger.error(original);
             } else if (original instanceof Error) {
-              Logger.error('Server', original.message, original);
+              LuneLogger.error(original);
             }
           }
         }

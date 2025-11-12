@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
 
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 
 import type { StorageProvider, UploadOptions } from './storage';
 
@@ -29,7 +29,7 @@ export class LocalStorageProvider implements StorageProvider {
         providerId: filename
       };
     } catch (error) {
-      Logger.error('LocalStorageProvider.upload', error, error);
+      LuneLogger.error(error);
 
       return null;
     }

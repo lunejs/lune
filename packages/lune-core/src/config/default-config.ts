@@ -27,5 +27,8 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
   payments: {
     handlers: [new TestPaymentHandler()]
   },
-  plugins: [new AssetServerPlugin()]
+  plugins: [new AssetServerPlugin()],
+  logger: {
+    levels: ['*']
+  }
 };

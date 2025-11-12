@@ -44,7 +44,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return result ? (this.serializer.deserialize(result) as T) : undefined;
     } catch (error) {
-      throw new RepositoryError('Repository.findOne', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -76,7 +76,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return results.map(result => this.serializer.deserialize(result) as T);
     } catch (error) {
-      throw new RepositoryError('Repository.findMany', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -100,7 +100,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return Number(count);
     } catch (error) {
-      throw new RepositoryError('Repository.count', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -110,7 +110,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return this.serializer.deserialize(result) as T;
     } catch (error) {
-      throw new RepositoryError('Repository.create', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -123,7 +123,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return results.map(result => this.serializer.deserialize(result) as T);
     } catch (error) {
-      throw new RepositoryError('Repository.createMany', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -141,7 +141,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return this.serializer.deserialize(result) as T;
     } catch (error) {
-      throw new RepositoryError('Repository.update', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -163,7 +163,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
     try {
       await this.trx(this.tableName).where(this.serializer.serializeWhere(input.where)).del();
     } catch (error) {
-      throw new RepositoryError('Repository.remove', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -171,7 +171,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
     try {
       await this.trx(this.tableName).whereIn(input.whereIn, input.values).del();
     } catch (error) {
-      throw new RepositoryError('Repository.removeMany', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -183,7 +183,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return this.serializer.deserialize(result) as T;
     } catch (error) {
-      throw new RepositoryError('Repository.softRemove', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -195,7 +195,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
       return this.serializer.deserialize(result) as T;
     } catch (error) {
-      throw new RepositoryError('Repository.softRemoveMany', error);
+      throw new RepositoryError(error);
     }
   }
 }

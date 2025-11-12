@@ -1,6 +1,6 @@
 import type { Plugin } from 'graphql-yoga';
 
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 
 export function useQueryLogger(): Plugin {
   return {
@@ -14,7 +14,7 @@ export function useQueryLogger(): Plugin {
 
           if (operationName === 'IntrospectionQuery') return;
 
-          Logger.graphql(`${operationName}() in ${duration}ms`);
+          LuneLogger.debug(`${operationName}() in ${duration}ms`);
         }
       };
     }

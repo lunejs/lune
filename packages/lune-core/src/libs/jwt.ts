@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 
 export class JwtService {
   /**
@@ -49,7 +49,7 @@ export class JwtService {
     try {
       return jwt.verify(token, this.config.secretKey) as TPayload;
     } catch (error) {
-      Logger.error('JwtService', 'Failed to verify token', error);
+      LuneLogger.error(error);
       return null;
     }
   }

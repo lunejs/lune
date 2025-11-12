@@ -1,3 +1,4 @@
+import type { LuneLoggerLevel } from '@/logger/lune.logger';
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
 import type { ImageProcessor } from './image-processor/image-processor';
@@ -28,4 +29,7 @@ export interface LuneConfig {
     handlers: PaymentHandler[];
   };
   plugins: LunePlugin[];
+  logger?: {
+    levels?: LuneLoggerLevel[];
+  };
 }

@@ -33,7 +33,7 @@ export class GraphqlApi {
       context,
       schema: this.schema,
       plugins: this.config.plugins,
-      logging: true
+      logging: false
     });
   }
 

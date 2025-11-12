@@ -27,5 +27,8 @@ export const TEST_LUNE_CONFIG: LuneConfig = {
   payments: {
     handlers: [new TestPaymentHandler()]
   },
-  plugins: []
+  plugins: [],
+  logger: {
+    levels: []
+  }
 };

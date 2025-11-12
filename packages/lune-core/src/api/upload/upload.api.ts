@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import type { JwtService } from '@/libs/jwt';
+import { LuneLogger } from '@/logger/lune.logger';
 import type { Database } from '@/persistence/connection';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
@@ -16,6 +17,8 @@ export class UploadApi extends RestApi {
     private readonly jwtService: JwtService
   ) {
     super('/upload', UploadEndpoints, (...args) => this.contextMiddleware(...args));
+
+    LuneLogger.info('UploadApi initialized');
   }
 
   private async contextMiddleware(req: Request, res: Response, next: NextFunction) {

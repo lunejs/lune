@@ -69,7 +69,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result;
     } catch (error) {
-      throw new RepositoryError('ProductRepository.createAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -82,7 +82,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result;
     } catch (error) {
-      throw new RepositoryError('ProductRepository.removeAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -95,7 +95,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result;
     } catch (error) {
-      throw new RepositoryError('ProductRepository.upsertTags', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -107,7 +107,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result;
     } catch (error) {
-      throw new RepositoryError('ProductRepository.removeTags', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -125,7 +125,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
     } catch (error) {
-      throw new RepositoryError('ProductRepository.findAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -137,7 +137,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return Number(result[0].count);
     } catch (error) {
-      throw new RepositoryError('ProductRepository.countAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -149,7 +149,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result.map(tag => this.tagSerializer.deserialize(tag) as Tag);
     } catch (error) {
-      throw new RepositoryError('ProductRepository.findTags', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -161,7 +161,7 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
       return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
     } catch (error) {
-      throw new RepositoryError('ProductRepository.findAssets', error);
+      throw new RepositoryError(error);
     }
   }
 

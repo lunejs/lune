@@ -54,7 +54,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Serializer.deserialize', error);
+      throw new SerializeError(error);
     }
   }
 
@@ -90,7 +90,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Serializer.serialize', error);
+      throw new SerializeError(error);
     }
   }
 
@@ -128,7 +128,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Serializer.serialize', error);
+      throw new SerializeError(error);
     }
   }
 
@@ -165,7 +165,7 @@ export class Serializer<Entity, Table> {
 
       return result;
     } catch (error) {
-      throw new SerializeError('Serializer.serializeFields', error);
+      throw new SerializeError(error);
     }
   }
 
@@ -174,15 +174,15 @@ export class Serializer<Entity, Table> {
       const mapping = this.fields.find(([_, to]) => to === field);
       return mapping ? mapping[0] : (field as string);
     } catch (error) {
-      throw new SerializeError('Serializer.serializeField', error);
+      throw new SerializeError(error);
     }
   }
 }
 
 export class SerializeError extends LuneError {
-  constructor(ctx: string, error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unknown serialization error';
+  constructor(error: Error | unknown) {
+    const message = error instanceof Error ? error.message : String(error);
 
-    super(ctx, message, error);
+    super(message);
   }
 }

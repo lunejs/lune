@@ -1,5 +1,5 @@
 import type { JwtService } from '@/libs/jwt';
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 import type { Database } from '@/persistence/connection';
 import { buildRepositories } from '@/persistence/repositories/build-repositories';
 import { enableRLS, runWithoutRLS } from '@/persistence/rls';
@@ -25,13 +25,13 @@ export async function buildContext(input: Input): Promise<ExecutionContext> {
       jwtService,
       runWithoutRLS: runWithoutRLS(trx, shopId, ownerId),
       ownerId,
-      currentUser: userJWT ? { id: userJWT.sub, email: userJWT.email } : null,
+      currentUser: userJWT ? { id: userJWT?.sub ?? '', email: userJWT?.email ?? '' } : null,
       repositories: buildRepositories(trx),
       loaders: buildLoaders(trx, storefront?.locale, input.variables),
       storefront
     };
   } catch (error) {
-    Logger.error('BuildContext', 'Failed to build GraphQL context', error);
+    LuneLogger.fatal(error);
     throw error;
   }
 }

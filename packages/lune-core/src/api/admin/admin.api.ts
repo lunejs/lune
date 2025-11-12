@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { YogaInitialContext } from 'graphql-yoga';
 
 import type { JwtService } from '@/libs/jwt';
+import { LuneLogger } from '@/logger/lune.logger';
 import type { Database } from '@/persistence/connection';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
@@ -60,6 +61,8 @@ export class AdminApi extends GraphqlApi {
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
     });
+
+    LuneLogger.info('AdminApi initialized');
   }
 
   private async buildAdminApiContext(initialContext: YogaInitialContext) {

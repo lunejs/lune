@@ -4,7 +4,7 @@ import multer from 'multer';
 
 import { AssetService } from '@/business/asset/asset.service';
 import { getConfig } from '@/config/config';
-import { Logger } from '@/logger';
+import { LuneLogger } from '@/logger/lune.logger';
 import type { Asset } from '@/persistence/entities/asset';
 import { AssetType } from '@/persistence/entities/asset';
 
@@ -54,7 +54,7 @@ const upload: RestApiHandler = async (req, res) => {
     await ctx.trx.commit();
     res.json({ success: true, data: assets });
   } catch (error) {
-    Logger.error('/upload', error, error);
+    LuneLogger.error(error);
     await ctx.trx.rollback();
     res.status(500).json({ success: false });
   }

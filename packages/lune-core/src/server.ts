@@ -8,16 +8,17 @@ import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
 import type { LuneConfig } from './config/lune.config';
 import { JwtService } from './libs/jwt';
+import { LuneLogger } from './logger/lune.logger';
 import type { Database } from './persistence/connection';
 import { createConnection } from './persistence/connection';
-import { Logger } from './logger';
 
 export class LuneServer {
   private app: express.Application;
   private database: Database;
 
   constructor(config: LuneConfig) {
-    Logger.banner('v0.0.1');
+    LuneLogger.setLevels(config.logger?.levels ?? ['*']);
+
     const pluginsConfig = this.getPluginsConfig(config);
 
     setConfig(pluginsConfig);
@@ -57,9 +58,10 @@ export class LuneServer {
     const { app, adminUIServeUrl } = getConfig();
 
     this.app.listen(app.port, () => {
-      Logger.ready('Server', `Admin UI:    http://localhost:${app.port}${adminUIServeUrl}`);
-      Logger.ready('Server', `Admin API:   http://localhost:${app.port}/admin-api`);
-      Logger.ready('Server', `Storefront API:    http://localhost:${app.port}/storefront-api`);
+      LuneLogger.ready(`Lune server (v0.0.1) running on port ${app.port}`);
+      LuneLogger.ready(`Admin UI:          http://localhost:${app.port}${adminUIServeUrl}`);
+      LuneLogger.ready(`Admin API:         http://localhost:${app.port}/admin-api`);
+      LuneLogger.ready(`Storefront API:    http://localhost:${app.port}/storefront-api`);
     });
   }
 
@@ -86,7 +88,7 @@ export class LuneServer {
     for (const plugin of plugins) {
       if (typeof plugin.register === 'function') {
         plugin.register(this.app);
-        Logger.info('Plugin', `${plugin.name} initialized`);
+        LuneLogger.info(`${plugin.name} initialized`);
       }
     }
   }

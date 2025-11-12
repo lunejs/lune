@@ -37,13 +37,17 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
   }
 
   async countByFilters(filters: CollectionListInput['filters']) {
-    const query = this.q();
+    try {
+      const query = this.q();
 
-    new CollectionFilter(query).applyFilters(filters ?? {});
+      new CollectionFilter(query).applyFilters(filters ?? {});
 
-    const [{ count }] = await query.count({ count: '*' });
+      const [{ count }] = await query.count({ count: '*' });
 
-    return Number(count);
+      return Number(count);
+    } catch (error) {
+      throw new RepositoryError(error);
+    }
   }
 
   async findAssets(collectionId: ID): Promise<Asset[]> {
@@ -57,7 +61,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result.map(asset => this.assetSerializer.deserialize(asset) as Asset);
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.findAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -75,18 +79,22 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result.map(product => this.assetSerializer.deserialize(product) as Product);
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.findProducts', error);
+      throw new RepositoryError(error);
     }
   }
 
   async countDuplicatedSlug(slug: string) {
-    const [{ count }] = await this.q()
-      .where(qb => {
-        qb.where('slug', slug).orWhere('slug', 'like', `${slug}-%`);
-      })
-      .count();
+    try {
+      const [{ count }] = await this.q()
+        .where(qb => {
+          qb.where('slug', slug).orWhere('slug', 'like', `${slug}-%`);
+        })
+        .count();
 
-    return Number(count);
+      return Number(count);
+    } catch (error) {
+      throw new RepositoryError(error);
+    }
   }
 
   async upsertAssets(collectionId: ID, assets: AssetInEntity[]) {
@@ -104,28 +112,36 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.upsertAsset', error);
+      throw new RepositoryError(error);
     }
   }
 
   async upsertProducts(collectionId: ID, ids: ID[]) {
-    await Promise.all(
-      ids.map(id =>
-        this.trx<CollectionProductTable>(Tables.CollectionProduct)
-          .insert({
-            collection_id: collectionId,
-            product_id: id
-          })
-          .onConflict(['product_id', 'collection_id'])
-          .merge()
-      )
-    );
+    try {
+      await Promise.all(
+        ids.map(id =>
+          this.trx<CollectionProductTable>(Tables.CollectionProduct)
+            .insert({
+              collection_id: collectionId,
+              product_id: id
+            })
+            .onConflict(['product_id', 'collection_id'])
+            .merge()
+        )
+      );
+    } catch (error) {
+      throw new RepositoryError(error);
+    }
   }
 
   async addSubCollections(collectionId: ID, ids: ID[]) {
-    await this.trx<CollectionTable>(Tables.Collection)
-      .update({ parent_id: collectionId })
-      .whereIn('id', ids);
+    try {
+      await this.trx<CollectionTable>(Tables.Collection)
+        .update({ parent_id: collectionId })
+        .whereIn('id', ids);
+    } catch (error) {
+      throw new RepositoryError(error);
+    }
   }
 
   async removeAssets(collectionId: ID, ids: ID[]) {
@@ -137,7 +153,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -150,7 +166,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeProducts', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -162,7 +178,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeSubCollections', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -174,7 +190,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeAllAssets', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -186,7 +202,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeAllProducts', error);
+      throw new RepositoryError(error);
     }
   }
 
@@ -198,7 +214,7 @@ export class CollectionRepository extends Repository<Collection, CollectionTable
 
       return result;
     } catch (error) {
-      throw new RepositoryError('CollectionRepository.removeAllTranslations', error);
+      throw new RepositoryError(error);
     }
   }
 }
