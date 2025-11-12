@@ -79,6 +79,42 @@ export class Serializer<Entity, Table> {
   serialize(data: Partial<RepositoryInput<Entity>>): Partial<Table> {
     try {
       const result: Partial<Table> = {};
+
+      for (const [from, to] of this.fields) {
+        const value = data[to as keyof RepositoryInput<Entity>];
+
+        if (value === undefined) continue;
+
+        result[from] = value as unknown as Table[typeof from];
+      }
+
+      return result;
+    } catch (error) {
+      throw new SerializeError('Serializer.serialize', error);
+    }
+  }
+
+  /**
+   * @description
+   * Serialize an entity into a row for the database table in where clause
+   *
+   * @example
+   * ```typescript
+   * const serializer = new Serializer<User, UserTable>([
+   *   ['id', 'id'],
+   *   ['created_at', 'createdAt'],
+   *   ['updated_at', 'updatedAt'],
+   * ]);
+   *
+   * const user = { id: 1, createdAt: '2023-01-01', updatedAt: undefined };
+   * const serializedUsed = serializer.serialize(user);
+   * console.log(serializedUsed);
+   * // Output: { id: 1, created_at: '2023-01-01', updated_at: null }
+   * ```
+   */
+  serializeWhere(data: Partial<RepositoryInput<Entity>>): Partial<Table> {
+    try {
+      const result: Partial<Table> = {};
       const dataKeys = Object.keys(data);
 
       for (const [from, to] of this.fields) {

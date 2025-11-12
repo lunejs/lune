@@ -34,7 +34,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
   async findOne(input: FindOneOptions<T>): Promise<T | undefined> {
     try {
-      const query = this.trx(this.tableName).where(this.serializer.serialize(input.where));
+      const query = this.trx(this.tableName).where(this.serializer.serializeWhere(input.where));
 
       if (!input.withDeleted) this.applyDeletedAtClause(query);
 
@@ -64,7 +64,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
       if (input?.fields) query.select(this.serializer.serializeFields(input.fields));
       if (input?.take) query.limit(input.take);
       if (input?.skip) query.offset(input.skip);
-      if (input?.where) query.where(this.serializer.serialize(input.where));
+      if (input?.where) query.where(this.serializer.serializeWhere(input.where));
 
       if (input?.orderBy) {
         for (const [field, direction] of Object.entries(input.orderBy)) {
@@ -130,7 +130,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
   async update(input: { where: Where<T>; data: Partial<RepositoryInput<T>> }): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName)
-        .where(this.serializer.serialize(input.where))
+        .where(this.serializer.serializeWhere(input.where))
         .update(
           this.serializer.serialize({
             updatedAt: new Date(),
@@ -161,7 +161,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
   async remove(input: { where: Where<T> }): Promise<void> {
     try {
-      await this.trx(this.tableName).where(input.where).del();
+      await this.trx(this.tableName).where(this.serializer.serializeWhere(input.where)).del();
     } catch (error) {
       throw new RepositoryError('Repository.remove', error);
     }
@@ -178,7 +178,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
   async softRemove(input: { where: Where<T> }): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName)
-        .where(this.serializer.serialize(input.where))
+        .where(this.serializer.serializeWhere(input.where))
         .update({ deleted_at: new Date() }, '*');
 
       return this.serializer.deserialize(result) as T;

@@ -98,10 +98,22 @@ describe('User Serializer', () => {
       });
     });
 
+    test('returns user without properties which values were undefined', () => {
+      const serializer = new TestSerializer();
+
+      const deserialized = serializer.serialize({ email: '', password: undefined });
+
+      expect(deserialized).toEqual({
+        email: ''
+      });
+    });
+  });
+
+  describe('serializeWhere', () => {
     test('returns user with properties values null when passed undefined', () => {
       const serializer = new TestSerializer();
 
-      const deserialized = serializer.serialize({ email: undefined, password: undefined });
+      const deserialized = serializer.serializeWhere({ email: undefined, password: undefined });
 
       expect(deserialized).toEqual({
         email: null,
