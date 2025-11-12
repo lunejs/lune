@@ -13,7 +13,8 @@ export const OrderConstants = {
   ID: TestHelper.generateUUID(),
   PlacedID: TestHelper.generateUUID(),
   WithShippingAddressID: TestHelper.generateUUID(),
-  WithFulfillmentID: TestHelper.generateUUID()
+  WithFulfillmentID: TestHelper.generateUUID(),
+  WithoutAvailableShippingMethod: TestHelper.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {
@@ -28,7 +29,20 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.PlacedID,
-        state: OrderState.Placed
+        state: OrderState.Placed,
+        shipping_address: {
+          fullName: 'Ellie Williams',
+          streetLine1: '1st street',
+          streetLine2: '2nd street',
+          city: 'New York',
+          postalCode: '07086',
+          phoneNumber: '13125552046',
+          references: 'Diet Mountain Dew',
+          country: 'United States',
+          countryCode: CountryConstants.UsCode,
+          state: 'New York',
+          stateCode: StateConstants.UsNewYorkCode
+        }
       },
       {
         shop_id: ShopConstants.ID,
@@ -66,6 +80,23 @@ export class OrderFixtures implements Fixture<OrderTable> {
           countryCode: CountryConstants.UsCode,
           state: 'New York',
           stateCode: StateConstants.UsNewYorkCode
+        }
+      },
+      {
+        shop_id: ShopConstants.ID,
+        id: OrderConstants.WithoutAvailableShippingMethod,
+        shipping_address: {
+          fullName: 'Sam',
+          streetLine1: '1st street',
+          streetLine2: '2nd street',
+          city: 'Alaska city',
+          postalCode: '07086',
+          phoneNumber: '13125552046',
+          references: 'Diet Mountain Dew',
+          country: 'United States',
+          countryCode: CountryConstants.UsCode,
+          state: 'Alaska',
+          stateCode: StateConstants.UsAlaskaCode
         }
       }
     ];

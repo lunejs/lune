@@ -24,7 +24,7 @@ import { UserFixtures } from './fixtures/user.fixtures';
 import { ZoneFixtures } from './fixtures/zone.fixtures';
 import { ZoneStateFixtures } from './fixtures/zone-state.fixtures';
 
-describe('addCustomerToOrder - Mutation', () => {
+describe('addShippingFulfillmentToOrder - Mutation', () => {
   const testHelper = new TestHelper();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
@@ -142,7 +142,80 @@ describe('addCustomerToOrder - Mutation', () => {
     expect(orderShippingFulfillments).toHaveLength(1);
   });
 
-  // test error cases
+  test('returns MISSING_SHIPPING_ADDRESS error when provided order has no shipping address', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: {
+            methodId: ShippingMethodConstants.StandardInternationalID
+          }
+        }
+      });
+
+    const {
+      addShippingFulfillmentToOrder: { order, apiErrors }
+    } = res.body.data;
+
+    const [error] = apiErrors;
+
+    expect(error.code).toBe('MISSING_SHIPPING_ADDRESS');
+    expect(order).toBeNull();
+  });
+
+  test('returns FORBIDDEN_ORDER_ACTION error when provided order is already placed', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.PlacedID,
+          input: {
+            methodId: ShippingMethodConstants.StandardInternationalID
+          }
+        }
+      });
+
+    const {
+      addShippingFulfillmentToOrder: { order, apiErrors }
+    } = res.body.data;
+
+    const [error] = apiErrors;
+
+    expect(error.code).toBe('FORBIDDEN_ORDER_ACTION');
+    expect(order).toBeNull();
+  });
+
+  test('returns INVALID_SHIPPING_METHOD error when provided shipping method is not available for the order shipping address', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.WithoutAvailableShippingMethod,
+          input: {
+            methodId: ShippingMethodConstants.StandardInternationalID
+          }
+        }
+      });
+
+    const {
+      addShippingFulfillmentToOrder: { order, apiErrors }
+    } = res.body.data;
+
+    const [error] = apiErrors;
+
+    expect(error.code).toBe('INVALID_SHIPPING_METHOD');
+    expect(order).toBeNull();
+  });
 });
 
 const ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION = /* GraphQL */ `

@@ -309,10 +309,12 @@ export class OrderService {
 
     const shippingHandler = getConfig().shipping.handlers.find(h => h.code === method.handler.code);
 
+    // TODO: validate this or handle properly
     if (!shippingHandler) {
       throw new Error(`shipping handler not found with code ${method.handler.code}`);
     }
 
+    // What happen if calculate price throws and error?
     const shippingPrice = await shippingHandler?.calculatePrice(
       order,
       method.handler.args,
