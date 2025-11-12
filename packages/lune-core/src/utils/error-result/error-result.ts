@@ -1,5 +1,3 @@
-import { LuneLogger } from '@/logger/lune.logger';
-
 /**
  * This type is returned when an error has occurred in the service layer.
  */
@@ -9,9 +7,7 @@ export class ErrorResult<T> {
     readonly code: T,
     readonly message: string,
     readonly metadata?: any
-  ) {
-    LuneLogger.debug(`${code}: ${message}`);
-  }
+  ) {}
 }
 
 /**

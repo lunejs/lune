@@ -1,20 +1,42 @@
-import type { Plugin } from 'graphql-yoga';
+import { isAsyncIterable, type Plugin } from 'graphql-yoga';
 
 import { LuneLogger } from '@/logger/lune.logger';
 
 export function useQueryLogger(): Plugin {
   return {
-    onExecute({ args }) {
-      const operationName = args.operationName || 'Anonymous';
+    onExecute() {
       const start = Date.now();
 
       return {
-        onExecuteDone() {
-          const duration = Date.now() - start;
+        onExecuteDone({ result, args }) {
+          try {
+            const duration = Date.now() - start;
 
-          if (operationName === 'IntrospectionQuery') return;
+            if (isAsyncIterable(result)) {
+              return;
+            }
 
-          LuneLogger.debug(`${operationName}() in ${duration}ms`);
+            if (args.operationName === 'IntrospectionQuery') return;
+
+            if (result.errors) {
+              const [error] = result.errors ?? [];
+              const original = error.originalError;
+
+              LuneLogger.debug(`${args.operationName}() in ${duration}ms: ${original.name}`);
+
+              return;
+            }
+
+            const [operationName] = Object.keys(result.data ?? {});
+
+            const [apiError] = (result.data?.[operationName] as any)?.apiErrors ?? [];
+
+            LuneLogger.debug(
+              `${args.operationName}() in ${duration}ms: ${apiError ? apiError.code : 'Ok'}`
+            );
+          } catch (error) {
+            LuneLogger.error(error);
+          }
         }
       };
     }
