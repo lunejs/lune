@@ -1,5 +1,5 @@
 import kleur from 'kleur';
-const { green, yellow, blue, red } = kleur;
+const { green, yellow, red } = kleur;
 
 export type LuneLoggerLevel = '*' | 'info' | 'debug' | 'error' | 'fatal';
 
@@ -9,7 +9,7 @@ export class LuneLogger {
   static info(message: string) {
     if (!this.canLog('info')) return;
 
-    console.log(`${blue('info')}:`, message);
+    console.log(`${green('info')}:`, message);
   }
 
   static debug(message: string) {
