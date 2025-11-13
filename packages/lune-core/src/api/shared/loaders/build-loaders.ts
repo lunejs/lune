@@ -24,6 +24,8 @@ import { createProductTranslationsLoader } from './product/product-translations.
 import { createVariantAssetsLoader } from './variant/variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
 import { createVariantsLoader } from './variant/variants.loader';
+import { createZoneShippingMethodsLoader } from './zone/zone-shipping-methods.loader';
+import { createZoneStatesLoader } from './zone/zone-states.loader';
 
 // TODO: standardize object keys (all plural or all singular)
 export const buildLoaders = (
@@ -70,6 +72,10 @@ export const buildLoaders = (
     fulfillment: {
       details: createFulfillmentDetailsLoader(trx),
       shippingMethod: createFulfillmentShippingMethodLoader(trx)
+    },
+    zone: {
+      states: createZoneStatesLoader(trx),
+      shippingMethods: createZoneShippingMethodsLoader(trx)
     }
   };
 };

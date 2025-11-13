@@ -29,6 +29,7 @@ import { ProductResolver } from './resolvers/product.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
 import { UserResolver } from './resolvers/user.resolver';
 import { VariantResolver } from './resolvers/variant.resolver';
+import { ZoneResolver } from './resolvers/zone.resolver';
 
 const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
@@ -56,7 +57,8 @@ export class AdminApi extends GraphqlApi {
         OrderResolver,
         OrderFieldResolver,
         OrderLineFieldResolver,
-        FulfillmentFieldResolver
+        FulfillmentFieldResolver,
+        ZoneResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

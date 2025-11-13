@@ -24,7 +24,7 @@ type Zone implements Node {
 
 type Query {
   zones: [Zone!]!
-  zone(id: ID!): Zone!
+  zone(id: ID!): Zone
 }
 
 type Mutation {
