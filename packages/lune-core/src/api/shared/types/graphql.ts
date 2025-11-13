@@ -302,7 +302,7 @@ export type CreateVariantInput = {
 
 export type CreateZoneInput = {
   name: Scalars['String']['input'];
-  stateIds: Array<Scalars['ID']['input']>;
+  stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
@@ -1121,7 +1121,7 @@ export type Query = {
   variant?: Maybe<Variant>;
   /** Get user in session */
   whoami?: Maybe<User>;
-  zone: Zone;
+  zone?: Maybe<Zone>;
   zones: Array<Zone>;
 };
 
@@ -2319,7 +2319,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   validateAccessToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   variant?: Resolver<Maybe<ResolversTypes['Variant']>, ParentType, ContextType, RequireFields<QueryVariantArgs, 'id'>>;
   whoami?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  zone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<QueryZoneArgs, 'id'>>;
+  zone?: Resolver<Maybe<ResolversTypes['Zone']>, ParentType, ContextType, RequireFields<QueryZoneArgs, 'id'>>;
   zones?: Resolver<Array<ResolversTypes['Zone']>, ParentType, ContextType>;
 };
 

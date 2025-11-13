@@ -29,7 +29,9 @@ export class ZoneService {
   async create(input: CreateZoneInput) {
     const zone = await this.repository.create({ name: input.name });
 
-    await this.createStates(zone.id, input.stateIds);
+    if (input.stateIds?.length) {
+      await this.createStates(zone.id, input.stateIds);
+    }
 
     return zone;
   }

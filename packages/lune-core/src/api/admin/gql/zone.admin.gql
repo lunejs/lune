@@ -35,7 +35,7 @@ type Mutation {
 
 input CreateZoneInput {
   name: String!
-  stateIds: [ID!]!
+  stateIds: [ID!]
 }
 
 input UpdateZoneInput {
