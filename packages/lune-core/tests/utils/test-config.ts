@@ -29,6 +29,6 @@ export const TEST_LUNE_CONFIG: LuneConfig = {
   },
   plugins: [],
   logger: {
-    levels: ['error']
+    levels: []
   }
 };
