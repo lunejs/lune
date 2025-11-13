@@ -169,7 +169,9 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
 
   async removeMany(input: { whereIn: Field<T>; values: any[] }): Promise<void> {
     try {
-      await this.trx(this.tableName).whereIn(input.whereIn, input.values).del();
+      await this.trx(this.tableName)
+        .whereIn(this.serializer.serializeField(input.whereIn), input.values)
+        .del();
     } catch (error) {
       throw new RepositoryError(error);
     }

@@ -1,7 +1,7 @@
 import kleur from 'kleur';
 const { green, yellow, blue, red } = kleur;
 
-export type LuneLoggerLevel = '*' | 'info' | 'debug' | 'error';
+export type LuneLoggerLevel = '*' | 'info' | 'debug' | 'error' | 'fatal';
 
 export class LuneLogger {
   private static levels: LuneLoggerLevel[] = [];
@@ -19,13 +19,13 @@ export class LuneLogger {
   }
 
   static error(error: Error) {
-    if (!this.canLog('info')) return;
+    if (!this.canLog('error')) return;
 
     console.log(`${red('error')}:`, error);
   }
 
   static fatal(error: Error) {
-    if (!this.canLog('info')) return;
+    if (!this.canLog('fatal')) return;
 
     console.log(`${red('FATAL')}:`, error);
   }

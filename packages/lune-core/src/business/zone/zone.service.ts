@@ -37,16 +37,20 @@ export class ZoneService {
   }
 
   async update(zoneId: ID, input: UpdateZoneInput) {
-    if (isArray(input.stateIds)) {
-      await this.removeMissingStates(zoneId, input.stateIds);
-    }
-
-    return await this.repository.update({
+    const zone = await this.repository.update({
       where: { id: zoneId },
       data: {
         name: input.name ?? undefined
       }
     });
+
+    if (input.stateIds?.length) {
+      await this.repository.upsertStates(zoneId, input.stateIds);
+    }
+
+    await this.removeMissingStates(zoneId, input.stateIds);
+
+    return zone;
   }
 
   async remove(zoneId: ID) {
@@ -63,7 +67,9 @@ export class ZoneService {
     await this.zoneStateRepository.createMany(statesIds.map(stateId => ({ stateId, zoneId })));
   }
 
-  private async removeMissingStates(zoneId: ID, newStates: ID[]) {
+  private async removeMissingStates(zoneId: ID, newStates: UpdateZoneInput['stateIds']) {
+    if (!isArray(newStates)) return;
+
     const zoneStates = await this.zoneStateRepository.findMany({ where: { zoneId } });
 
     const statesToRemove = zoneStates.filter(state => !newStates.includes(state.stateId));
