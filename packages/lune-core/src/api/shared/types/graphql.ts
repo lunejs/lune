@@ -300,6 +300,11 @@ export type CreateVariantInput = {
   weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type CreateZoneInput = {
+  name: Scalars['String']['input'];
+  stateIds: Array<Scalars['ID']['input']>;
+};
+
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type Customer = {
   __typename?: 'Customer';
@@ -455,6 +460,7 @@ export type Mutation = {
   /** Create a new user */
   createUser: UserResult;
   createVariant: Array<Maybe<Variant>>;
+  createZone: Zone;
   /**
    * Generate an access token for a user
    * This token can be used to access user-specific resources
@@ -463,6 +469,7 @@ export type Mutation = {
   removeCollections: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
   removeTags: Scalars['Boolean']['output'];
+  removeZone: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
@@ -477,6 +484,7 @@ export type Mutation = {
   /** Update an existing user */
   updateUser: UserResult;
   updateVariant: Variant;
+  updateZone: Zone;
 };
 
 
@@ -558,6 +566,11 @@ export type MutationCreateVariantArgs = {
 };
 
 
+export type MutationCreateZoneArgs = {
+  input: CreateZoneInput;
+};
+
+
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
@@ -575,6 +588,11 @@ export type MutationRemoveOrderLineArgs = {
 
 export type MutationRemoveTagsArgs = {
   ids: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationRemoveZoneArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -643,6 +661,12 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateVariantArgs = {
   id: Scalars['ID']['input'];
   input: UpdateVariantInput;
+};
+
+
+export type MutationUpdateZoneArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateZoneInput;
 };
 
 /** A node, each type that represents a entity should implement this interface */
@@ -1097,6 +1121,8 @@ export type Query = {
   variant?: Maybe<Variant>;
   /** Get user in session */
   whoami?: Maybe<User>;
+  zone: Zone;
+  zones: Array<Zone>;
 };
 
 
@@ -1153,24 +1179,32 @@ export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type QueryZoneArgs = {
+  id: Scalars['ID']['input'];
+};
+
 /** Represents shipping fulfillment details for an order */
 export type ShippingFulfillment = {
   __typename?: 'ShippingFulfillment';
   /** Name of the shipping carrier */
-  carrier: Scalars['String']['output'];
+  carrier?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Date']['output'];
   /** Date and time when the order was delivered */
-  deliveredAt: Scalars['Date']['output'];
+  deliveredAt?: Maybe<Scalars['Date']['output']>;
   id: Scalars['ID']['output'];
+  /** The shipping method used to generate this fulfillment */
+  method: Scalars['String']['output'];
   /** Date and time when the order was shipped */
-  shippedAt: Scalars['Date']['output'];
+  shippedAt?: Maybe<Scalars['Date']['output']>;
+  shippingMethod: ShippingMethod;
   /** Tracking code provided by the carrier */
-  trackingCode: Scalars['String']['output'];
+  trackingCode?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Date']['output'];
 };
 
 /** A shipping method defines a way to ship products to customers within a specific zone. */
-export type ShippingMethod = Node & {
+export type ShippingMethod = {
   __typename?: 'ShippingMethod';
   createdAt: Scalars['Date']['output'];
   /** Whether the shipping method is enabled */
@@ -1385,6 +1419,11 @@ export type UpdateVariantInput = {
   weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type UpdateZoneInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
 /** A lune customer */
 export type User = Node & {
   __typename?: 'User';
@@ -1495,6 +1534,8 @@ export type Zone = Node & {
   id: Scalars['ID']['output'];
   /** The zone's name */
   name: Scalars['String']['output'];
+  /** The zone's shipping methods */
+  shippingMethods: Array<ShippingMethod>;
   /** The zone's states */
   states: Array<State>;
   updatedAt: Scalars['Date']['output'];
@@ -1576,7 +1617,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( ShippingMethod ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -1612,6 +1653,7 @@ export type ResolversTypes = {
   CreateTagsResult: ResolverTypeWrapper<CreateTagsResult>;
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
+  CreateZoneInput: CreateZoneInput;
   Customer: ResolverTypeWrapper<Customer>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Dimensions: ResolverTypeWrapper<Dimensions>;
@@ -1696,6 +1738,7 @@ export type ResolversTypes = {
   UpdateTagInput: UpdateTagInput;
   UpdateUserInput: UpdateUserInput;
   UpdateVariantInput: UpdateVariantInput;
+  UpdateZoneInput: UpdateZoneInput;
   User: ResolverTypeWrapper<User>;
   UserAccessTokenResult: ResolverTypeWrapper<UserAccessTokenResult>;
   UserErrorCode: UserErrorCode;
@@ -1738,6 +1781,7 @@ export type ResolversParentTypes = {
   CreateTagsResult: CreateTagsResult;
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
+  CreateZoneInput: CreateZoneInput;
   Customer: Customer;
   Date: Scalars['Date']['output'];
   Dimensions: Dimensions;
@@ -1814,6 +1858,7 @@ export type ResolversParentTypes = {
   UpdateTagInput: UpdateTagInput;
   UpdateUserInput: UpdateUserInput;
   UpdateVariantInput: UpdateVariantInput;
+  UpdateZoneInput: UpdateZoneInput;
   User: User;
   UserAccessTokenResult: UserAccessTokenResult;
   UserErrorResult: UserErrorResult;
@@ -2009,10 +2054,12 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createTags?: Resolver<ResolversTypes['CreateTagsResult'], ParentType, ContextType, RequireFields<MutationCreateTagsArgs, 'input'>>;
   createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
+  createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
+  removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
@@ -2025,10 +2072,11 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   updateTag?: Resolver<ResolversTypes['TagResult'], ParentType, ContextType, RequireFields<MutationUpdateTagArgs, 'id' | 'input'>>;
   updateUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id' | 'input'>>;
   updateVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationUpdateVariantArgs, 'id' | 'input'>>;
+  updateZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationUpdateZoneArgs, 'id' | 'input'>>;
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'ShippingMethod' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2271,15 +2319,19 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   validateAccessToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   variant?: Resolver<Maybe<ResolversTypes['Variant']>, ParentType, ContextType, RequireFields<QueryVariantArgs, 'id'>>;
   whoami?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  zone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<QueryZoneArgs, 'id'>>;
+  zones?: Resolver<Array<ResolversTypes['Zone']>, ParentType, ContextType>;
 };
 
 export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingFulfillment'] = ResolversParentTypes['ShippingFulfillment']> = {
-  carrier?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  carrier?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  deliveredAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  deliveredAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  shippedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  trackingCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  method?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shippedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  shippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType>;
+  trackingCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2437,6 +2489,7 @@ export type ZoneResolvers<ContextType = ExecutionContext, ParentType extends Res
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
   states?: Resolver<Array<ResolversTypes['State']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
