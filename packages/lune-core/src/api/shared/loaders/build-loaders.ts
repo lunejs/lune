@@ -21,6 +21,7 @@ import { createProductAssetsLoader } from './product/product-asset.loader';
 import { createProductOptionsLoader } from './product/product-options.loader';
 import { createProductTagsLoader } from './product/product-tags.loader';
 import { createProductTranslationsLoader } from './product/product-translations.loader';
+import { createStateCountryLoader } from './state/state-country.loader';
 import { createVariantAssetsLoader } from './variant/variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
 import { createVariantsLoader } from './variant/variants.loader';
@@ -76,6 +77,9 @@ export const buildLoaders = (
     zone: {
       states: createZoneStatesLoader(trx),
       shippingMethods: createZoneShippingMethodsLoader(trx)
+    },
+    state: {
+      country: createStateCountryLoader(trx)
     }
   };
 };

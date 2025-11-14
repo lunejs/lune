@@ -11,4 +11,9 @@ type State {
   The state's code (e.g., 'JAL', 'CA', 'TX')
   """
   code: String!
+
+  """
+  The country this state belongs to
+  """
+  country: Country!
 }
