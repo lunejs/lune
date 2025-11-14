@@ -1534,6 +1534,30 @@ export type AddCollectionTranslationMutationMutationVariables = Exact<{
 
 export type AddCollectionTranslationMutationMutation = { addCollectionTranslation: { id: string } };
 
+export type CommonCountryFragment = {
+  id: string;
+  name: string;
+  states: { id: string; name: string }[];
+} & { ' $fragmentName'?: 'CommonCountryFragment' };
+
+export type CommonCountryForSelectorFragment = { id: string; name: string } & {
+  ' $fragmentName'?: 'CommonCountryForSelectorFragment';
+};
+
+export type GetCountriesQueryVariables = Exact<Record<string, never>>;
+
+export type GetCountriesQuery = {
+  countries: { ' $fragmentRefs'?: { CommonCountryFragment: CommonCountryFragment } }[];
+};
+
+export type GetCountriesForSelectorQueryVariables = Exact<Record<string, never>>;
+
+export type GetCountriesForSelectorQuery = {
+  countries: {
+    ' $fragmentRefs'?: { CommonCountryForSelectorFragment: CommonCountryForSelectorFragment };
+  }[];
+};
+
 export type CreateOptionMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   input: CreateOptionInput[] | CreateOptionInput;
@@ -2215,6 +2239,51 @@ export const CommonCollectionSubCollectionFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonCollectionSubCollectionFragment, unknown>;
+export const CommonCountryFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCountry' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Country' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'states' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonCountryFragment, unknown>;
+export const CommonCountryForSelectorFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCountryForSelector' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Country' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonCountryForSelectorFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3557,6 +3626,94 @@ export const AddCollectionTranslationMutationDocument = {
   AddCollectionTranslationMutationMutation,
   AddCollectionTranslationMutationMutationVariables
 >;
+export const GetCountriesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCountries' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'countries' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonCountry' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCountry' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Country' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'states' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetCountriesQuery, GetCountriesQueryVariables>;
+export const GetCountriesForSelectorDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCountriesForSelector' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'countries' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'CommonCountryForSelector' }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonCountryForSelector' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Country' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetCountriesForSelectorQuery, GetCountriesForSelectorQueryVariables>;
 export const CreateOptionDocument = {
   kind: 'Document',
   definitions: [

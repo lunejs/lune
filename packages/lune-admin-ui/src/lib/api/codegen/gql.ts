@@ -30,6 +30,10 @@ type Documents = {
   '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateCollectionDocument;
   '\n  mutation RemoveCollections($ids: [ID!]!) {\n    removeCollections(ids: $ids)\n  }\n': typeof types.RemoveCollectionsDocument;
   '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.AddCollectionTranslationMutationDocument;
+  '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n': typeof types.CommonCountryFragmentDoc;
+  '\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n': typeof types.CommonCountryForSelectorFragmentDoc;
+  '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n': typeof types.GetCountriesDocument;
+  '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n': typeof types.GetCountriesForSelectorDocument;
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CreateOptionDocument;
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.UpdateOptionDocument;
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n': typeof types.RemoveOptionDocument;
@@ -100,6 +104,14 @@ const documents: Documents = {
     types.RemoveCollectionsDocument,
   '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n':
     types.AddCollectionTranslationMutationDocument,
+  '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n':
+    types.CommonCountryFragmentDoc,
+  '\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n':
+    types.CommonCountryForSelectorFragmentDoc,
+  '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n':
+    types.GetCountriesDocument,
+  '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n':
+    types.GetCountriesForSelectorDocument,
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
@@ -279,6 +291,30 @@ export function graphql(
 export function graphql(
   source: '\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'
 ): (typeof documents)['\n  mutation AddCollectionTranslationMutation($id: ID!, $input: CollectionTranslationInput!) {\n    addCollectionTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n'
+): (typeof documents)['\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n'
+): (typeof documents)['\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n'
+): (typeof documents)['\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
