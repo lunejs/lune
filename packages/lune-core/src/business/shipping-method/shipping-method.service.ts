@@ -47,7 +47,7 @@ export class ShippingMethodService {
         ...clean(baseMethod),
         handler: {
           ...method.handler,
-          args
+          args: args ?? method.handler.args
         }
       }
     });

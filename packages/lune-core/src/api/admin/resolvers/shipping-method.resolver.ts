@@ -36,11 +36,7 @@ async function updateShippingMethod(
 ) {
   const shippingMethodService = new ShippingMethodService(ctx);
 
-  const result = await shippingMethodService.update(id, input);
-
-  return isErrorResult(result)
-    ? { shippingMethod: null, apiErrors: [result] }
-    : { shippingMethod: result, apiErrors: [] };
+  return await shippingMethodService.update(id, input);
 }
 
 async function removeShippingMethod(
