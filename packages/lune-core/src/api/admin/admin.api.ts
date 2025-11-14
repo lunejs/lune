@@ -19,6 +19,7 @@ import { OptionValueFieldResolver } from './field-resolvers/option-value-field.r
 import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { StateFieldResolver } from './field-resolvers/state-field.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
+import { CountryResolver } from './resolvers/country.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
@@ -52,7 +53,8 @@ export class AdminApi extends GraphqlApi {
         FulfillmentFieldResolver,
         ZoneResolver,
         StateFieldResolver,
-        ShippingMethodResolver
+        ShippingMethodResolver,
+        CountryResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

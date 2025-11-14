@@ -12,4 +12,13 @@ type Country {
   The country's ISO 3166-1 alpha-2 code (e.g., 'MX', 'US', 'CA')
   """
   code: String!
+
+  """
+  The country states
+  """
+  states: [State!]!
+}
+
+type Query {
+  countries: [Country!]!
 }

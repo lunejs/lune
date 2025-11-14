@@ -8,6 +8,7 @@ import { createCollectionAssetsLoader } from './collection/collection-asset.load
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
+import { createCountryStatesLoader } from './country/country-states.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
 import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
@@ -77,6 +78,9 @@ export const buildLoaders = (
     zone: {
       states: createZoneStatesLoader(trx),
       shippingMethods: createZoneShippingMethodsLoader(trx)
+    },
+    country: {
+      states: createCountryStatesLoader(trx)
     },
     state: {
       country: createStateCountryLoader(trx)
