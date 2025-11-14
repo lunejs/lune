@@ -4,13 +4,10 @@ import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
-import { CountryFixtures } from './fixtures/country.fixtures';
 import { ShippingMethodFixtures } from './fixtures/shipping-method.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
-import { StateFixtures } from './fixtures/state.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 import { ZoneConstants, ZoneFixtures } from './fixtures/zone.fixtures';
-import { ZoneStateFixtures } from './fixtures/zone-state.fixtures';
 
 describe('createShippingMethod - Mutation', () => {
   const testHelper = new TestHelper();
@@ -22,10 +19,7 @@ describe('createShippingMethod - Mutation', () => {
     await testHelper.loadFixtures([
       new UserFixtures(),
       new ShopFixtures(),
-      new CountryFixtures(),
-      new StateFixtures(),
       new ZoneFixtures(),
-      new ZoneStateFixtures(),
       new ShippingMethodFixtures()
     ]);
   });

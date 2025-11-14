@@ -11,11 +11,6 @@ extend type ShippingMethod {
   Whether the shipping method is enabled
   """
   enabled: Boolean!
-
-  """
-  The zone this shipping method applies to
-  """
-  zone: Zone!
 }
 
 type ShippingMethodHandler {
