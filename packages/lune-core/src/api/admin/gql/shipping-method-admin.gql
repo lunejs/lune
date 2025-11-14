@@ -33,9 +33,14 @@ type Mutation {
   removeShippingMethod(id: ID!): Boolean!
 }
 
+input ShippingMethodHandlerInput {
+  code: String!
+  args: JSON!
+}
+
 input CreateShippingMethodInput {
   name: String!
-  handler: ShippingMethodHandler!
+  handler: ShippingMethodHandlerInput!
   enabled: Boolean
   zoneId: ID!
 }
