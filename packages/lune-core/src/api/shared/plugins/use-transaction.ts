@@ -15,12 +15,12 @@ export function useTransaction(): Plugin {
 
       const context = p.context as unknown as ExecutionContext;
 
-      if (p.result?.errors) {
+      if (p.result?.errors && context.trx) {
         context.trx.rollback();
         return;
       }
 
-      context.trx.commit();
+      if (context.trx) context.trx.commit();
     }
   };
 }
