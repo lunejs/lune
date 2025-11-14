@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonCollectionFieldResolver } from '@/api/shared/resolvers/collection-field.resolver';
 import type {
   MutationAddCollectionTranslationArgs,
   MutationCreateCollectionArgs,
@@ -13,6 +14,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CollectionService } from '@/business/collection/collection.service';
+import type { Collection } from '@/persistence/entities/collection';
 
 async function collections(_, { input }: QueryCollectionsArgs, ctx: ExecutionContext) {
   const collectionService = new CollectionService(ctx);
@@ -75,5 +77,11 @@ export const CollectionResolver: GraphqlApiResolver = {
   Query: {
     collection: UseUserGuard(collection),
     collections: UseUserGuard(collections)
+  },
+  Collection: {
+    ...CommonCollectionFieldResolver,
+    translations: async (parent: Collection, _, ctx: ExecutionContext) => {
+      return ctx.loaders.collections.translations.load(parent.id);
+    }
   }
 };

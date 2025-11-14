@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type { QueryOrderArgs } from '@/api/shared/types/graphql';
 import { OrderService } from '@/business/order/order.service';
 
@@ -15,5 +16,8 @@ async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order: UseUserGuard(order)
+  },
+  Order: {
+    ...CommonOrderFieldResolver
   }
 };

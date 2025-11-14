@@ -1,6 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonVariantFieldResolver } from '@/api/shared/resolvers/variant-field.resolver';
 import type {
   MutationCreateVariantArgs,
   MutationSoftRemoveVariantArgs,
@@ -35,5 +36,8 @@ export const VariantResolver: GraphqlApiResolver = {
     createVariant: UseUserGuard(createVariant),
     updateVariant: UseUserGuard(updateVariant),
     softRemoveVariant: UseUserGuard(softRemoveVariant)
+  },
+  Variant: {
+    ...CommonVariantFieldResolver
   }
 };

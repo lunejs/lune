@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
 import type {
   MutationAddProductTranslationArgs,
   MutationCreateProductArgs,
@@ -13,6 +14,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { ProductService } from '@/business/product/product.service';
+import type { Product } from '@/persistence/entities/product';
 
 async function products(_, { input }: QueryProductsArgs, ctx: ExecutionContext) {
   const productService = new ProductService(ctx);
@@ -83,5 +85,11 @@ export const ProductResolver: GraphqlApiResolver = {
   Query: {
     product: UseUserGuard(product),
     products: UseUserGuard(products)
+  },
+  Product: {
+    ...CommonProductFieldResolver,
+    translations: async (parent: Product, _, ctx: ExecutionContext) => {
+      return ctx.loaders.product.translation.load(parent.id);
+    }
   }
 };

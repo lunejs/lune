@@ -14,15 +14,10 @@ import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
-import { CollectionFieldResolver } from './field-resolvers/collection-field.resolver';
 import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
-import { OptionFieldResolver } from './field-resolvers/option-field.resolver';
 import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
-import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
 import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
-import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { StateFieldResolver } from './field-resolvers/state-field.resolver';
-import { VariantFieldResolver } from './field-resolvers/variant-filed.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
@@ -47,16 +42,11 @@ export class AdminApi extends GraphqlApi {
         UserResolver,
         ShopResolver,
         ProductResolver,
-        ProductFieldResolver,
         VariantResolver,
-        VariantFieldResolver,
         OptionResolver,
-        OptionFieldResolver,
         OptionValueFieldResolver,
         CollectionResolver,
-        CollectionFieldResolver,
         OrderResolver,
-        OrderFieldResolver,
         OrderLineFieldResolver,
         FulfillmentFieldResolver,
         ZoneResolver,

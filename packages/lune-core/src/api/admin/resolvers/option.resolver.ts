@@ -1,6 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonOptionFieldResolver } from '@/api/shared/resolvers/option-field.resolver';
 import type {
   MutationCreateOptionArgs,
   MutationSoftRemoveOptionArgs,
@@ -8,6 +9,7 @@ import type {
   MutationUpdateOptionArgs
 } from '@/api/shared/types/graphql';
 import { OptionService } from '@/business/option/option.service';
+import type { Option } from '@/persistence/entities/option';
 
 function createOption(_, { productId, input }: MutationCreateOptionArgs, ctx: ExecutionContext) {
   const optionService = new OptionService(ctx);
@@ -43,5 +45,11 @@ export const OptionResolver: GraphqlApiResolver = {
     updateOption: UseUserGuard(updateOption),
     softRemoveOption: UseUserGuard(softRemoveOption),
     softRemoveOptionValues: UseUserGuard(softRemoveOptionValues)
+  },
+  Option: {
+    ...CommonOptionFieldResolver,
+    translations: async (parent: Option, _, ctx: ExecutionContext) => {
+      return ctx.loaders.option.translations.load(parent.id);
+    }
   }
 };
