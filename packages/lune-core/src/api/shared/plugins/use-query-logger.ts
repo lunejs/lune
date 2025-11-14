@@ -22,7 +22,7 @@ export function useQueryLogger(): Plugin {
               const [error] = result.errors ?? [];
               const original = error.originalError;
 
-              LuneLogger.info(`${args.operationName}() in ${duration}ms: ${original.name}`);
+              LuneLogger.query(args.operationName, original.name, duration);
 
               return;
             }
@@ -31,9 +31,7 @@ export function useQueryLogger(): Plugin {
 
             const [apiError] = (result.data?.[operationName] as any)?.apiErrors ?? [];
 
-            LuneLogger.info(
-              `${args.operationName}() in ${duration}ms: ${apiError ? apiError.code : 'Ok'}`
-            );
+            LuneLogger.query(args.operationName, apiError ? apiError.code : 'OK', duration);
           } catch (error) {
             LuneLogger.error(error);
           }

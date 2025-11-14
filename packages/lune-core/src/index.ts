@@ -26,7 +26,7 @@ export * from './persistence/repositories/user-repository';
 /**
  * Logger
  */
-export * from './logger';
+export * from './logger/lune.logger';
 
 /**
  * Errors

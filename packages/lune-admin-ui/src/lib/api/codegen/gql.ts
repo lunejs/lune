@@ -44,6 +44,11 @@ type Documents = {
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateProductDocument;
   '\n  mutation RemoveProducts($ids: [ID!]!) {\n    softRemoveProducts(ids: $ids)\n  }\n': typeof types.RemoveProductsDocument;
   '\n  mutation AddProductTranslationMutation($id: ID!, $input: AddProductTranslationInput!) {\n    addProductTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.AddProductTranslationMutationDocument;
+  '\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n': typeof types.CommonShippingHandlersFragmentDoc;
+  '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n': typeof types.GetAllHandlersDocument;
+  '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n': typeof types.CreateShippingMethodDocument;
+  '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateShippingMethodDocument;
+  '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n': typeof types.RemoveShippingMethodDocument;
   '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    email\n    logo\n    socials {\n      facebook\n      twitter\n      instagram\n    }\n    phoneNumber\n    storefrontApiKey\n  }\n': typeof types.CommonShopFragmentDoc;
   '\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n': typeof types.CommonListShopFragmentDoc;
   '\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n': typeof types.GetShopsDocument;
@@ -123,6 +128,16 @@ const documents: Documents = {
     types.RemoveProductsDocument,
   '\n  mutation AddProductTranslationMutation($id: ID!, $input: AddProductTranslationInput!) {\n    addProductTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n':
     types.AddProductTranslationMutationDocument,
+  '\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n':
+    types.CommonShippingHandlersFragmentDoc,
+  '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n':
+    types.GetAllHandlersDocument,
+  '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n':
+    types.CreateShippingMethodDocument,
+  '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdateShippingMethodDocument,
+  '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n':
+    types.RemoveShippingMethodDocument,
   '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    email\n    logo\n    socials {\n      facebook\n      twitter\n      instagram\n    }\n    phoneNumber\n    storefrontApiKey\n  }\n':
     types.CommonShopFragmentDoc,
   '\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n':
@@ -348,6 +363,36 @@ export function graphql(
 export function graphql(
   source: '\n  mutation AddProductTranslationMutation($id: ID!, $input: AddProductTranslationInput!) {\n    addProductTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'
 ): (typeof documents)['\n  mutation AddProductTranslationMutation($id: ID!, $input: AddProductTranslationInput!) {\n    addProductTranslation(id: $id, input: $input) {\n      id\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n'
+): (typeof documents)['\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n'
+): (typeof documents)['\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): (typeof documents)['\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n'
+): (typeof documents)['\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

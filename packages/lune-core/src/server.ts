@@ -59,9 +59,9 @@ export class LuneServer {
 
     this.app.listen(app.port, () => {
       LuneLogger.ready(`Lune server (v0.0.1) running on port ${app.port}`);
-      LuneLogger.ready(`Admin UI:          http://localhost:${app.port}${adminUIServeUrl}`);
-      LuneLogger.ready(`Admin API:         http://localhost:${app.port}/admin-api`);
-      LuneLogger.ready(`Storefront API:    http://localhost:${app.port}/storefront-api`);
+      LuneLogger.info(`Admin UI → http://localhost:${app.port}${adminUIServeUrl}`);
+      LuneLogger.info(`Admin API → http://localhost:${app.port}/admin-api`);
+      LuneLogger.info(`Storefront API → http://localhost:${app.port}/storefront-api`);
     });
   }
 
@@ -88,7 +88,6 @@ export class LuneServer {
     for (const plugin of plugins) {
       if (typeof plugin.register === 'function') {
         plugin.register(this.app);
-        LuneLogger.info(`${plugin.name} initialized`);
       }
     }
   }

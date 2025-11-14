@@ -189,6 +189,8 @@ export type Country = {
   id: Scalars['ID']['output'];
   /** The country's name */
   name: Scalars['String']['output'];
+  /** The country states */
+  states: State[];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -224,7 +226,7 @@ export type CreateProductInput = {
 
 export type CreateShippingMethodInput = {
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  handler: ShippingMethodHandlerInput;
+  handler: HandlerConfigInput;
   name: Scalars['String']['input'];
   zoneId: Scalars['ID']['input'];
 };
@@ -326,6 +328,16 @@ export enum FulfillmentType {
 export type GenerateUserAccessTokenInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type HandlerConfig = {
+  args: Scalars['JSON']['output'];
+  code: Scalars['String']['output'];
+};
+
+export type HandlerConfigInput = {
+  args: Scalars['JSON']['input'];
+  code: Scalars['String']['input'];
 };
 
 /** Represents in-store pickup fulfillment configuration for a location */
@@ -938,6 +950,7 @@ export type ProductTranslation = {
 export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
+  countries: Country[];
   order?: Maybe<Order>;
   product?: Maybe<Product>;
   products: ProductList;
@@ -947,6 +960,7 @@ export type Query = {
    * fetching products from a discount metadata
    */
   productsByVariantIds: ProductList;
+  shippingHandlers: ShippingHandler[];
   shippingMethods: ShippingMethod[];
   /** Get shop by slug */
   shop?: Maybe<Shop>;
@@ -1028,13 +1042,27 @@ export type ShippingFulfillment = {
   updatedAt: Scalars['Date']['output'];
 };
 
+/** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
+export type ShippingHandler = {
+  /**
+   * Specific data for the shipping handler chosen
+   * Usually, this json stores the shipping integration keys
+   * Record<string, Arg>
+   */
+  args: Scalars['JSON']['output'];
+  /** The shipping handler's code (e.g. 'fedex') */
+  code: Scalars['String']['output'];
+  /** The shipping handler's name (e.g. 'Fedex') */
+  name: Scalars['String']['output'];
+};
+
 /** A shipping method defines a way to ship products to customers within a specific zone. */
 export type ShippingMethod = {
   createdAt: Scalars['Date']['output'];
   /** Whether the shipping method is enabled */
   enabled: Scalars['Boolean']['output'];
   /** The shipping method's handler configuration */
-  handler: ShippingMethodHandler;
+  handler: HandlerConfig;
   id: Scalars['ID']['output'];
   /** The shipping method's name */
   name: Scalars['String']['output'];
@@ -1048,16 +1076,6 @@ export enum ShippingMethodErrorCode {
 export type ShippingMethodErrorResult = {
   code: ShippingMethodErrorCode;
   message: Scalars['String']['output'];
-};
-
-export type ShippingMethodHandler = {
-  args: Scalars['JSON']['output'];
-  code: Scalars['String']['output'];
-};
-
-export type ShippingMethodHandlerInput = {
-  args: Scalars['JSON']['input'];
-  code: Scalars['String']['input'];
 };
 
 export type ShippingMethodResult = {
@@ -1663,6 +1681,42 @@ export type AddProductTranslationMutationMutationVariables = Exact<{
 }>;
 
 export type AddProductTranslationMutationMutation = { addProductTranslation: { id: string } };
+
+export type CommonShippingHandlersFragment = { name: string; code: string; args: any } & {
+  ' $fragmentName'?: 'CommonShippingHandlersFragment';
+};
+
+export type GetAllHandlersQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllHandlersQuery = {
+  shippingHandlers: {
+    ' $fragmentRefs'?: { CommonShippingHandlersFragment: CommonShippingHandlersFragment };
+  }[];
+};
+
+export type CreateShippingMethodMutationVariables = Exact<{
+  input: CreateShippingMethodInput;
+}>;
+
+export type CreateShippingMethodMutation = {
+  createShippingMethod: {
+    apiErrors: { code: ShippingMethodErrorCode; message: string }[];
+    shippingMethod?: { id: string } | null;
+  };
+};
+
+export type UpdateShippingMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateShippingMethodInput;
+}>;
+
+export type UpdateShippingMethodMutation = { updateShippingMethod: { id: string } };
+
+export type RemoveShippingMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemoveShippingMethodMutation = { removeShippingMethod: boolean };
 
 export type CommonShopFragment = {
   id: string;
@@ -2491,6 +2545,24 @@ export const CommonListProductFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonListProductFragment, unknown>;
+export const CommonShippingHandlersFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonShippingHandlers' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'ShippingHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonShippingHandlersFragment, unknown>;
 export const CommonShopFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -4348,6 +4420,193 @@ export const AddProductTranslationMutationDocument = {
   AddProductTranslationMutationMutation,
   AddProductTranslationMutationMutationVariables
 >;
+export const GetAllHandlersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllHandlers' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'shippingHandlers' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonShippingHandlers' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonShippingHandlers' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'ShippingHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllHandlersQuery, GetAllHandlersQueryVariables>;
+export const CreateShippingMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateShippingMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreateShippingMethodInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createShippingMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'apiErrors' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'message' } }
+                    ]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'shippingMethod' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CreateShippingMethodMutation, CreateShippingMethodMutationVariables>;
+export const UpdateShippingMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateShippingMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateShippingMethodInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateShippingMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<UpdateShippingMethodMutation, UpdateShippingMethodMutationVariables>;
+export const RemoveShippingMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveShippingMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeShippingMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<RemoveShippingMethodMutation, RemoveShippingMethodMutationVariables>;
 export const GetShopsDocument = {
   kind: 'Document',
   definitions: [

@@ -7,7 +7,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "rimraf dist && tsc -p build.tsconfig.json && tsc-alias && gulp -f ./scripts/post-build.ts postBuild",
-    "start": "node -r tsconfig-paths/register -r ts-node/register dist/index.js",
+    "start": "node -r tsconfig-paths/register -r ts-node/register dist/src/local.js",
     "dev": "nodemon",
     "test": "dotenv -e .env.test bash ./scripts/it-tests.sh",
     "lint:fix": "eslint . --fix",
