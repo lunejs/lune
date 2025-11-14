@@ -23,6 +23,12 @@ export class ShippingMethodService {
     return this.repository.findMany({ orderBy: { createdAt: SortKey.Desc } });
   }
 
+  async findHandlers() {
+    const handlers = getConfig().shipping.handlers;
+
+    return handlers.map(h => ({ name: h.name, code: h.code, args: h.args }));
+  }
+
   async create(input: CreateShippingMethodInput) {
     const handler = getConfig().shipping.handlers.find(s => s.code === input.handler.code);
 

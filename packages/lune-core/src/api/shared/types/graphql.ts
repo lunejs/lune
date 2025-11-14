@@ -209,6 +209,8 @@ export type Country = {
   id: Scalars['ID']['output'];
   /** The country's name */
   name: Scalars['String']['output'];
+  /** The country states */
+  states: Array<State>;
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -265,7 +267,7 @@ export type CreateProductInput = {
 
 export type CreateShippingMethodInput = {
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  handler: ShippingMethodHandler;
+  handler: HandlerConfigInput;
   name: Scalars['String']['input'];
   zoneId: Scalars['ID']['input'];
 };
@@ -371,6 +373,17 @@ export enum FulfillmentType {
 export type GenerateUserAccessTokenInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type HandlerConfig = {
+  __typename?: 'HandlerConfig';
+  args: Scalars['JSON']['output'];
+  code: Scalars['String']['output'];
+};
+
+export type HandlerConfigInput = {
+  args: Scalars['JSON']['input'];
+  code: Scalars['String']['input'];
 };
 
 /** Represents in-store pickup fulfillment configuration for a location */
@@ -1127,6 +1140,7 @@ export type Query = {
   __typename?: 'Query';
   collection?: Maybe<Collection>;
   collections: CollectionList;
+  countries: Array<Country>;
   order?: Maybe<Order>;
   product?: Maybe<Product>;
   products: ProductList;
@@ -1136,6 +1150,7 @@ export type Query = {
    * fetching products from a discount metadata
    */
   productsByVariantIds: ProductList;
+  shippingHandlers: Array<ShippingHandler>;
   shippingMethods: Array<ShippingMethod>;
   /** Get shop by slug */
   shop?: Maybe<Shop>;
@@ -1230,6 +1245,21 @@ export type ShippingFulfillment = {
   updatedAt: Scalars['Date']['output'];
 };
 
+/** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
+export type ShippingHandler = {
+  __typename?: 'ShippingHandler';
+  /**
+   * Specific data for the shipping handler chosen
+   * Usually, this json stores the shipping integration keys
+   * Record<string, Arg>
+   */
+  args: Scalars['JSON']['output'];
+  /** The shipping handler's code (e.g. 'fedex') */
+  code: Scalars['String']['output'];
+  /** The shipping handler's name (e.g. 'Fedex') */
+  name: Scalars['String']['output'];
+};
+
 /** A shipping method defines a way to ship products to customers within a specific zone. */
 export type ShippingMethod = {
   __typename?: 'ShippingMethod';
@@ -1237,13 +1267,11 @@ export type ShippingMethod = {
   /** Whether the shipping method is enabled */
   enabled: Scalars['Boolean']['output'];
   /** The shipping method's handler configuration */
-  handler: ShippingMethodHandler;
+  handler: HandlerConfig;
   id: Scalars['ID']['output'];
   /** The shipping method's name */
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
-  /** The zone this shipping method applies to */
-  zone: Zone;
 };
 
 export enum ShippingMethodErrorCode {
@@ -1254,12 +1282,6 @@ export type ShippingMethodErrorResult = {
   __typename?: 'ShippingMethodErrorResult';
   code: ShippingMethodErrorCode;
   message: Scalars['String']['output'];
-};
-
-export type ShippingMethodHandler = {
-  __typename?: 'ShippingMethodHandler';
-  args: Scalars['JSON']['output'];
-  code: Scalars['String']['output'];
 };
 
 export type ShippingMethodResult = {
@@ -1721,6 +1743,8 @@ export type ResolversTypes = {
   FulfillmentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']>;
   FulfillmentType: FulfillmentType;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
+  HandlerConfig: ResolverTypeWrapper<HandlerConfig>;
+  HandlerConfigInput: HandlerConfigInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   InStorePickup: ResolverTypeWrapper<InStorePickup>;
   InStorePickupFulfillment: ResolverTypeWrapper<InStorePickupFulfillment>;
@@ -1769,10 +1793,10 @@ export type ResolversTypes = {
   ProductTranslation: ResolverTypeWrapper<ProductTranslation>;
   Query: ResolverTypeWrapper<{}>;
   ShippingFulfillment: ResolverTypeWrapper<ShippingFulfillment>;
+  ShippingHandler: ResolverTypeWrapper<ShippingHandler>;
   ShippingMethod: ResolverTypeWrapper<ShippingMethod>;
   ShippingMethodErrorCode: ShippingMethodErrorCode;
   ShippingMethodErrorResult: ResolverTypeWrapper<ShippingMethodErrorResult>;
-  ShippingMethodHandler: ResolverTypeWrapper<ShippingMethodHandler>;
   ShippingMethodResult: ResolverTypeWrapper<ShippingMethodResult>;
   Shop: ResolverTypeWrapper<Shop>;
   ShopErrorCode: ShopErrorCode;
@@ -1854,6 +1878,8 @@ export type ResolversParentTypes = {
   Fulfillment: Omit<Fulfillment, 'details'> & { details: ResolversParentTypes['FulfillmentDetails'] };
   FulfillmentDetails: ResolversUnionTypes<ResolversParentTypes>['FulfillmentDetails'];
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
+  HandlerConfig: HandlerConfig;
+  HandlerConfigInput: HandlerConfigInput;
   ID: Scalars['ID']['output'];
   InStorePickup: InStorePickup;
   InStorePickupFulfillment: InStorePickupFulfillment;
@@ -1897,9 +1923,9 @@ export type ResolversParentTypes = {
   ProductTranslation: ProductTranslation;
   Query: {};
   ShippingFulfillment: ShippingFulfillment;
+  ShippingHandler: ShippingHandler;
   ShippingMethod: ShippingMethod;
   ShippingMethodErrorResult: ShippingMethodErrorResult;
-  ShippingMethodHandler: ShippingMethodHandler;
   ShippingMethodResult: ShippingMethodResult;
   Shop: Shop;
   ShopErrorResult: ShopErrorResult;
@@ -2013,6 +2039,7 @@ export type CountryResolvers<ContextType = ExecutionContext, ParentType extends 
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  states?: Resolver<Array<ResolversTypes['State']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2058,6 +2085,12 @@ export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType exte
 
 export type FulfillmentDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentDetails'] = ResolversParentTypes['FulfillmentDetails']> = {
   __resolveType: TypeResolveFn<'InStorePickupFulfillment' | 'ShippingFulfillment', ParentType, ContextType>;
+};
+
+export type HandlerConfigResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['HandlerConfig'] = ResolversParentTypes['HandlerConfig']> = {
+  args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type InStorePickupResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickup'] = ResolversParentTypes['InStorePickup']> = {
@@ -2379,10 +2412,12 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
+  countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
   products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
   productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
+  shippingHandlers?: Resolver<Array<ResolversTypes['ShippingHandler']>, ParentType, ContextType>;
   shippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'slug'>>;
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
@@ -2408,26 +2443,26 @@ export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ShippingHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingHandler'] = ResolversParentTypes['ShippingHandler']> = {
+  args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ShippingMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethod'] = ResolversParentTypes['ShippingMethod']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  handler?: Resolver<ResolversTypes['ShippingMethodHandler'], ParentType, ContextType>;
+  handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  zone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ShippingMethodErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodErrorResult'] = ResolversParentTypes['ShippingMethodErrorResult']> = {
   code?: Resolver<ResolversTypes['ShippingMethodErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ShippingMethodHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodHandler'] = ResolversParentTypes['ShippingMethodHandler']> = {
-  args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
-  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2600,6 +2635,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Dimensions?: DimensionsResolvers<ContextType>;
   Fulfillment?: FulfillmentResolvers<ContextType>;
   FulfillmentDetails?: FulfillmentDetailsResolvers<ContextType>;
+  HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;
   InStorePickupFulfillment?: InStorePickupFulfillmentResolvers<ContextType>;
   JSON?: GraphQLScalarType;
@@ -2632,9 +2668,9 @@ export type Resolvers<ContextType = ExecutionContext> = {
   ProductTranslation?: ProductTranslationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   ShippingFulfillment?: ShippingFulfillmentResolvers<ContextType>;
+  ShippingHandler?: ShippingHandlerResolvers<ContextType>;
   ShippingMethod?: ShippingMethodResolvers<ContextType>;
   ShippingMethodErrorResult?: ShippingMethodErrorResultResolvers<ContextType>;
-  ShippingMethodHandler?: ShippingMethodHandlerResolvers<ContextType>;
   ShippingMethodResult?: ShippingMethodResultResolvers<ContextType>;
   Shop?: ShopResolvers<ContextType>;
   ShopErrorResult?: ShopErrorResultResolvers<ContextType>;

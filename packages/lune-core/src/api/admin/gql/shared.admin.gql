@@ -1,4 +1,14 @@
+type HandlerConfig {
+  code: String!
+  args: JSON!
+}
+
 input AssetInEntity {
   id: ID!
   order: Int!
+}
+
+input HandlerConfigInput {
+  code: String!
+  args: JSON!
 }

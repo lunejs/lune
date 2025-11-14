@@ -15,6 +15,12 @@ async function shippingMethods(_, __, ctx: ExecutionContext) {
   return shippingMethodService.find();
 }
 
+async function shippingHandlers(_, __, ctx: ExecutionContext) {
+  const shippingMethodService = new ShippingMethodService(ctx);
+
+  return shippingMethodService.findHandlers();
+}
+
 async function createShippingMethod(
   _,
   { input }: MutationCreateShippingMethodArgs,
@@ -51,7 +57,8 @@ async function removeShippingMethod(
 
 export const ShippingMethodResolver: GraphqlApiResolver = {
   Query: {
-    shippingMethods: UseUserGuard(shippingMethods)
+    shippingMethods: UseUserGuard(shippingMethods),
+    shippingHandlers: UseUserGuard(shippingHandlers)
   },
   Mutation: {
     createShippingMethod: UseUserGuard(createShippingMethod),

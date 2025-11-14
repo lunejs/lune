@@ -1,6 +1,6 @@
 import type { LuneEntity, LuneTable } from './entity';
 
-export type ShippingMethodHandler = {
+export type HandlerConfig = {
   code: string;
   args: Record<string, string>;
 };
@@ -16,7 +16,7 @@ export interface ShippingMethod extends LuneEntity {
   /**
    * The shipping method's handler configuration.
    */
-  handler: ShippingMethodHandler;
+  handler: HandlerConfig;
   /**
    * Whether the shipping method is enabled.
    */
