@@ -11,6 +11,7 @@ import { LoginPage } from '@/lib/login/pages/login-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
+import { ShipmentsPage } from '@/lib/shipments/pages/shipments-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopDetails } from '@/lib/shop/pages/shop-details';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
@@ -62,6 +63,7 @@ export const App = () => {
 
                 <Route element={<SettingsLayout />}>
                   <Route path="/settings/shop" element={<ShopDetails />} />
+                  <Route path="/settings/shipments" element={<ShipmentsPage />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

@@ -48,7 +48,7 @@ export function SettingsSidebar({ ...props }: React.ComponentProps<typeof Sideba
             {SIDEBAR.general.map(item => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title} asChild>
-                  <Link to={item.url}>
+                  <Link to={`/settings${item.url}`}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </Link>

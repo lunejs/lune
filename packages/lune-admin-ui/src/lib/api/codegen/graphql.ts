@@ -30,6 +30,33 @@ export type AddProductTranslationInput = {
   options?: InputMaybe<OptionTranslationInput[]>;
 };
 
+/** A customer's saved address for shipping */
+export type Address = {
+  /** Address's city */
+  city: Scalars['String']['output'];
+  /** Address's country */
+  country: Country;
+  createdAt: Scalars['Date']['output'];
+  /** Full name of the recipient */
+  fullName: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  /** Whether this is the default address for the customer */
+  isDefault: Scalars['Boolean']['output'];
+  /** Phone number for delivery */
+  phoneNumber: Scalars['String']['output'];
+  /** Postal/ZIP code */
+  postalCode: Scalars['String']['output'];
+  /** Additional delivery references or instructions */
+  references?: Maybe<Scalars['String']['output']>;
+  /** Address's state/province/region */
+  state: State;
+  /** Street address line 1 */
+  streetLine1: Scalars['String']['output'];
+  /** Street address line 2 (apartment, suite, etc.) */
+  streetLine2?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type Asset = Node & {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
@@ -151,6 +178,20 @@ export type CollectionTranslationInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+/**
+ * A country is a representation of a country in the world.
+ * Indicating where shops can deliver their products
+ */
+export type Country = {
+  /** The country's ISO 3166-1 alpha-2 code (e.g., 'MX', 'US', 'CA') */
+  code: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The country's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type CreateCollectionInput = {
   assets?: InputMaybe<AssetInEntity[]>;
   contentType?: InputMaybe<CollectionContentType>;
@@ -179,6 +220,13 @@ export type CreateProductInput = {
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   tags?: InputMaybe<Scalars['ID']['input'][]>;
+};
+
+export type CreateShippingMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handler: ShippingMethodHandlerInput;
+  name: Scalars['String']['input'];
+  zoneId: Scalars['ID']['input'];
 };
 
 export type CreateShopInput = {
@@ -217,6 +265,28 @@ export type CreateVariantInput = {
   weight?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type CreateZoneInput = {
+  name: Scalars['String']['input'];
+  stateIds?: InputMaybe<Scalars['ID']['input'][]>;
+};
+
+/** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
+export type Customer = {
+  createdAt: Scalars['Date']['output'];
+  /** The customer's email address. Used to identify the customer in orders and admin */
+  email: Scalars['String']['output'];
+  /** Whether the customer is enabled. Disabled customers cannot login or place orders */
+  enabled: Scalars['Boolean']['output'];
+  /** The customer's first name */
+  firstName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  /** The customer's last name */
+  lastName?: Maybe<Scalars['String']['output']>;
+  /** The customer's phone number */
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type Dimensions = {
   height?: Maybe<Scalars['Float']['output']>;
   length?: Maybe<Scalars['Float']['output']>;
@@ -229,9 +299,59 @@ export type DimensionsInput = {
   width?: InputMaybe<Scalars['Float']['input']>;
 };
 
+/** A fulfillment represents how an order will be delivered to the customer */
+export type Fulfillment = Node & {
+  /** Total amount for this fulfillment (e.g., shipping cost) */
+  amount: Scalars['Int']['output'];
+  createdAt: Scalars['Date']['output'];
+  /** Union type which could be Shipping or InStorePickup */
+  details: FulfillmentDetails;
+  id: Scalars['ID']['output'];
+  /** Type of fulfillment (shipping or in-store pickup) */
+  type: FulfillmentType;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** Union type for fulfillment details - can be either shipping or in-store pickup */
+export type FulfillmentDetails = InStorePickupFulfillment | ShippingFulfillment;
+
+/** Fulfillment type enum */
+export enum FulfillmentType {
+  /** Customer will pick up the product at a physical store location */
+  InStorePickup = 'IN_STORE_PICKUP',
+  /** Product will be shipped to the customer's address */
+  Shipping = 'SHIPPING'
+}
+
 export type GenerateUserAccessTokenInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+/** Represents in-store pickup fulfillment configuration for a location */
+export type InStorePickup = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Special instructions for in-store pickup at this location */
+  instructions: Scalars['String']['output'];
+  /** Whether in-store pickup is available at this location */
+  isAvailable: Scalars['Boolean']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** Represents in-store pickup fulfillment details for an order */
+export type InStorePickupFulfillment = {
+  /** Address information stored as JSON */
+  address: Scalars['JSON']['output'];
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The location where the pickup will take place */
+  location: Location;
+  /** Date and time when the order was picked up */
+  pickedUpAt: Scalars['Date']['output'];
+  /** Date and time when the order is ready for pickup */
+  readyAt: Scalars['Date']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 /** A list of items with count, each result that expose a array of items should implement this interface */
@@ -254,25 +374,56 @@ export enum Locale {
   Fr = 'fr'
 }
 
+/** A physical location where customers can pick up their orders */
+export type Location = {
+  /** Location's city */
+  city: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  /**
+   * Whether this location is enabled or not
+   * This is used to show/hide location in the storefront
+   */
+  enabled: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  inStorePickup: InStorePickup;
+  /** Name of the location */
+  name: Scalars['String']['output'];
+  /** Location's phone number */
+  phoneNumber: Scalars['String']['output'];
+  /** Postal/ZIP code */
+  postalCode: Scalars['String']['output'];
+  /** Additional references or instructions for finding the location */
+  references?: Maybe<Scalars['String']['output']>;
+  /** Street address line 1 */
+  streetLine1: Scalars['String']['output'];
+  /** Street address line 2 (optional) */
+  streetLine2?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
   createCollection: Collection;
   createOption: Option[];
   createProduct: Product;
+  createShippingMethod: ShippingMethodResult;
   /** Create a new shop */
   createShop: ShopResult;
   createTags: CreateTagsResult;
   /** Create a new user */
   createUser: UserResult;
   createVariant: Maybe<Variant>[];
+  createZone: Zone;
   /**
    * Generate an access token for a user
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
+  removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
+  removeZone: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
@@ -280,12 +431,14 @@ export type Mutation = {
   updateCollection: Collection;
   updateOption: Option;
   updateProduct: Product;
+  updateShippingMethod: ShippingMethod;
   /** Update an existing shop details */
   updateShop: ShopResult;
   updateTag: TagResult;
   /** Update an existing user */
   updateUser: UserResult;
   updateVariant: Variant;
+  updateZone: Zone;
 };
 
 export type MutationAddCollectionTranslationArgs = {
@@ -311,6 +464,10 @@ export type MutationCreateProductArgs = {
   input: CreateProductInput;
 };
 
+export type MutationCreateShippingMethodArgs = {
+  input: CreateShippingMethodInput;
+};
+
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
 };
@@ -328,6 +485,10 @@ export type MutationCreateVariantArgs = {
   productId: Scalars['ID']['input'];
 };
 
+export type MutationCreateZoneArgs = {
+  input: CreateZoneInput;
+};
+
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
@@ -336,8 +497,16 @@ export type MutationRemoveCollectionsArgs = {
   ids: Scalars['ID']['input'][];
 };
 
+export type MutationRemoveShippingMethodArgs = {
+  id: Scalars['ID']['input'];
+};
+
 export type MutationRemoveTagsArgs = {
   ids: Scalars['ID']['input'][];
+};
+
+export type MutationRemoveZoneArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type MutationSoftRemoveOptionArgs = {
@@ -371,6 +540,11 @@ export type MutationUpdateProductArgs = {
   input: UpdateProductInput;
 };
 
+export type MutationUpdateShippingMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateShippingMethodInput;
+};
+
 export type MutationUpdateShopArgs = {
   input: UpdateShopInput;
   shopSlug: Scalars['String']['input'];
@@ -389,6 +563,11 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateVariantArgs = {
   id: Scalars['ID']['input'];
   input: UpdateVariantInput;
+};
+
+export type MutationUpdateZoneArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateZoneInput;
 };
 
 /** A node, each type that represents a entity should implement this interface */
@@ -459,14 +638,211 @@ export type OptionValueTranslationInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** An order represents a customer's purchase, including line items, shipping, and payment information */
+export type Order = Node & {
+  /** Unique order code generated after order is placed */
+  code?: Maybe<Scalars['String']['output']>;
+  /** The date and time when the order has been marked as completed (delivered and paid) */
+  completedAt?: Maybe<Scalars['Date']['output']>;
+  createdAt: Scalars['Date']['output'];
+  /** Customer who placed the order. Nullable for guest orders */
+  customer?: Maybe<Customer>;
+  /** Order's fulfillment */
+  fulfillment?: Maybe<Fulfillment>;
+  id: Scalars['ID']['output'];
+  /** Order lines for the order */
+  lines: OrderLineList;
+  payments: Payment[];
+  /** The date and time when the order has been marked as placed */
+  placedAt?: Maybe<Scalars['Date']['output']>;
+  /** Shipping address where the order has to be delivered */
+  shippingAddress?: Maybe<OrderAddressJson>;
+  /** Current state of the order */
+  state: OrderState;
+  /** Order lines total less discounts */
+  subtotal: Scalars['Int']['output'];
+  /** The price that will be sent to the payment provider. subtotal + shipping price */
+  total: Scalars['Int']['output'];
+  /** Total quantity of items across all order lines */
+  totalQuantity: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OrderAddressJson = {
+  /** Address's city */
+  city: Scalars['String']['output'];
+  /** Address's country */
+  country: Scalars['String']['output'];
+  /** Address's country code */
+  countryCode: Scalars['String']['output'];
+  /** Full name of the recipient */
+  fullName: Scalars['String']['output'];
+  /** Phone number for delivery */
+  phoneNumber: Scalars['String']['output'];
+  /** Postal/ZIP code */
+  postalCode: Scalars['String']['output'];
+  /** Additional delivery references or instructions */
+  references?: Maybe<Scalars['String']['output']>;
+  /** Address's state/province/region */
+  state: Scalars['String']['output'];
+  /** Address's state/province/region code */
+  stateCode: Scalars['String']['output'];
+  /** Street address line 1 */
+  streetLine1: Scalars['String']['output'];
+  /** Street address line 2 (apartment, suite, etc.) */
+  streetLine2?: Maybe<Scalars['String']['output']>;
+};
+
 export enum OrderBy {
   Asc = 'ASC',
   Desc = 'DESC'
 }
 
+/** An order cancellation records when an order is canceled */
+export type OrderCancellation = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The order that was canceled */
+  order: Order;
+  /** The reason why the order was canceled */
+  reason: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** An order line represents a single item in an order */
+export type OrderLine = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The line subtotal (unitPrice * quantity before adjustments) */
+  lineSubtotal: Scalars['Int']['output'];
+  /** The final line total after all adjustments */
+  lineTotal: Scalars['Int']['output'];
+  /** The line quantity */
+  quantity: Scalars['Int']['output'];
+  /** The price per unit at the time of purchase */
+  unitPrice: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+  /** The product variant being ordered */
+  variant: Variant;
+};
+
+export type OrderLineList = List & {
+  count: Scalars['Int']['output'];
+  items: OrderLine[];
+  pageInfo: PageInfo;
+};
+
+/** Order state enum */
+export enum OrderState {
+  /** Order has been cancelled */
+  Canceled = 'CANCELED',
+  /** Order is completed (delivered and fully paid) */
+  Completed = 'COMPLETED',
+  /** Order has been delivered to the customer */
+  Delivered = 'DELIVERED',
+  /** The order is being modified by the customer */
+  Modifying = 'MODIFYING',
+  /** A payment has been added to the order and cannot be modified anymore */
+  Placed = 'PLACED',
+  /** Order is being processed for shipment */
+  Processing = 'PROCESSING',
+  /** Order is ready for pick up at the location chosen by the customer */
+  ReadyForPickup = 'READY_FOR_PICKUP',
+  /** Order has been shipped via the carrier */
+  Shipped = 'SHIPPED'
+}
+
 export type PageInfo = {
   total: Scalars['Int']['output'];
 };
+
+/** A payment is a transaction between a customer and a shop, is assigned to an order */
+export type Payment = Node & {
+  /** The total amount of the payment */
+  amount: Scalars['Int']['output'];
+  createdAt: Scalars['Date']['output'];
+  /** Union type which will store details of the payment depending on the state */
+  details?: Maybe<PaymentDetails>;
+  id: Scalars['ID']['output'];
+  /** The payment method used (e.g., 'stripe', 'paypal') */
+  method: Scalars['String']['output'];
+  /** Payment method used for this payment */
+  paymentMethod: PaymentMethod;
+  /** Payment's state */
+  state: PaymentState;
+  /** The transaction ID from the payment provider (nullable if not processed yet) */
+  transactionId?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A payment cancellation records when a payment is canceled (voided) */
+export type PaymentCancellation = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The payment that was canceled */
+  payment: Payment;
+  /** The reason why the payment was canceled */
+  reason: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type PaymentDetails = PaymentCancellation | PaymentFailure | PaymentRejection;
+
+/** A payment failure records the reason why a payment attempt failed */
+export type PaymentFailure = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The payment that failed */
+  payment: Payment;
+  /** The reason why the payment failed */
+  reason: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A payment method is a way to pay for an order in your shop, like credit card, PayPal, etc. */
+export type PaymentMethod = Node & {
+  createdAt: Scalars['Date']['output'];
+  /** Whether the payment method is enabled. Disabled methods won't be shown in the storefront */
+  enabled: Scalars['Boolean']['output'];
+  /**
+   * Specific data for the payment handler chosen.
+   * Usually stores payment integration keys and the handler code
+   */
+  handler: Scalars['JSON']['output'];
+  id: Scalars['ID']['output'];
+  /** Payment method's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A payment rejection records when an admin manually rejects a payment (typically for bank transfers or submitted proofs) */
+export type PaymentRejection = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The payment that was rejected */
+  payment: Payment;
+  /** The reason why the payment was rejected */
+  reason: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** Payment state enum */
+export enum PaymentState {
+  /** Funds are reserved in the customer's account but have not been transferred yet. */
+  Authorized = 'AUTHORIZED',
+  /** The payment was canceled because the order could not be fulfilled or was voided before completion. */
+  Canceled = 'CANCELED',
+  /** Funds have been successfully transferred. */
+  Captured = 'CAPTURED',
+  /** The payment failed during processing by the provider. */
+  Failed = 'FAILED',
+  /** The payment record exists, but there is no evidence of it yet. */
+  Pending = 'PENDING',
+  /** The payment was manually rejected by an administrator. */
+  Rejected = 'REJECTED',
+  /** Evidence of the payment has been submitted but not yet verified. */
+  Submitted = 'SUBMITTED'
+}
 
 export type PriceRange = {
   max?: InputMaybe<Scalars['Int']['input']>;
@@ -562,6 +938,7 @@ export type ProductTranslation = {
 export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
+  order?: Maybe<Order>;
   product?: Maybe<Product>;
   products: ProductList;
   /**
@@ -570,6 +947,7 @@ export type Query = {
    * fetching products from a discount metadata
    */
   productsByVariantIds: ProductList;
+  shippingMethods: ShippingMethod[];
   /** Get shop by slug */
   shop?: Maybe<Shop>;
   /** Get a list of shops */
@@ -580,6 +958,8 @@ export type Query = {
   variant?: Maybe<Variant>;
   /** Get user in session */
   whoami?: Maybe<User>;
+  zone?: Maybe<Zone>;
+  zones: Zone[];
 };
 
 export type QueryCollectionArgs = {
@@ -589,6 +969,11 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+export type QueryOrderArgs = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type QueryProductArgs = {
@@ -619,6 +1004,65 @@ export type QueryTagsArgs = {
 
 export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type QueryZoneArgs = {
+  id: Scalars['ID']['input'];
+};
+
+/** Represents shipping fulfillment details for an order */
+export type ShippingFulfillment = {
+  /** Name of the shipping carrier */
+  carrier?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
+  /** Date and time when the order was delivered */
+  deliveredAt?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  /** The shipping method used to generate this fulfillment */
+  method: Scalars['String']['output'];
+  /** Date and time when the order was shipped */
+  shippedAt?: Maybe<Scalars['Date']['output']>;
+  shippingMethod: ShippingMethod;
+  /** Tracking code provided by the carrier */
+  trackingCode?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A shipping method defines a way to ship products to customers within a specific zone. */
+export type ShippingMethod = {
+  createdAt: Scalars['Date']['output'];
+  /** Whether the shipping method is enabled */
+  enabled: Scalars['Boolean']['output'];
+  /** The shipping method's handler configuration */
+  handler: ShippingMethodHandler;
+  id: Scalars['ID']['output'];
+  /** The shipping method's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export enum ShippingMethodErrorCode {
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type ShippingMethodErrorResult = {
+  code: ShippingMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type ShippingMethodHandler = {
+  args: Scalars['JSON']['output'];
+  code: Scalars['String']['output'];
+};
+
+export type ShippingMethodHandlerInput = {
+  args: Scalars['JSON']['input'];
+  code: Scalars['String']['input'];
+};
+
+export type ShippingMethodResult = {
+  apiErrors: ShippingMethodErrorResult[];
+  shippingMethod?: Maybe<ShippingMethod>;
 };
 
 /** A lune shop */
@@ -677,6 +1121,19 @@ export type ShopSocialsInput = {
   facebook?: InputMaybe<Scalars['String']['input']>;
   instagram?: InputMaybe<Scalars['String']['input']>;
   twitter?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A state is a Geographical Region in a country. */
+export type State = {
+  /** The state's code (e.g., 'JAL', 'CA', 'TX') */
+  code: Scalars['String']['output'];
+  /** The country this state belongs to */
+  country: Country;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The state's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type StringFilter = {
@@ -766,6 +1223,12 @@ export type UpdateProductInput = {
   tags?: InputMaybe<Scalars['ID']['input'][]>;
 };
 
+export type UpdateShippingMethodInput = {
+  args?: InputMaybe<Scalars['JSON']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateShopInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
@@ -794,6 +1257,11 @@ export type UpdateVariantInput = {
   sku?: InputMaybe<Scalars['String']['input']>;
   stock?: InputMaybe<Scalars['Int']['input']>;
   weight?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateZoneInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  stateIds?: InputMaybe<Scalars['ID']['input'][]>;
 };
 
 /** A lune customer */
@@ -889,6 +1357,19 @@ export type VariantList = List & {
   count: Scalars['Int']['output'];
   items: Variant[];
   pageInfo: PageInfo;
+};
+
+/** A zone represents a geographical area for shipping purposes. */
+export type Zone = Node & {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The zone's name */
+  name: Scalars['String']['output'];
+  /** The zone's shipping methods */
+  shippingMethods: ShippingMethod[];
+  /** The zone's states */
+  states: State[];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type CommonCollectionForTranslationFragment = {
@@ -1277,6 +1758,58 @@ export type SoftRemoveVariantMutationVariables = Exact<{
 }>;
 
 export type SoftRemoveVariantMutation = { softRemoveVariant: { id: string } };
+
+export type CommonZoneFragment = {
+  id: string;
+  name: string;
+  createdAt: any;
+  states: { id: string; name: string }[];
+  shippingMethods: {
+    id: string;
+    name: string;
+    enabled: boolean;
+    handler: { code: string; args: any };
+  }[];
+} & { ' $fragmentName'?: 'CommonZoneFragment' };
+
+export type CommonListZoneFragment = {
+  id: string;
+  name: string;
+  shippingMethods: { id: string }[];
+} & { ' $fragmentName'?: 'CommonListZoneFragment' };
+
+export type GetAllZonesQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllZonesQuery = {
+  zones: { ' $fragmentRefs'?: { CommonListZoneFragment: CommonListZoneFragment } }[];
+};
+
+export type GetZoneQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetZoneQuery = {
+  zone?: { ' $fragmentRefs'?: { CommonZoneFragment: CommonZoneFragment } } | null;
+};
+
+export type CreateZoneMutationVariables = Exact<{
+  input: CreateZoneInput;
+}>;
+
+export type CreateZoneMutation = { createZone: { id: string } };
+
+export type UpdateZoneMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateZoneInput;
+}>;
+
+export type UpdateZoneMutation = { updateZone: { id: string } };
+
+export type RemoveZoneMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemoveZoneMutation = { removeZone: boolean };
 
 export const CommonCollectionForTranslationFragmentDoc = {
   kind: 'Document',
@@ -2027,6 +2560,83 @@ export const CommonUserFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonUserFragment, unknown>;
+export const CommonZoneFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonZone' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Zone' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'states' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'shippingMethods' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'handler' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonZoneFragment, unknown>;
+export const CommonListZoneFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListZone' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Zone' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'shippingMethods' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonListZoneFragment, unknown>;
 export const GetAllCollectionsDocument = {
   kind: 'Document',
   definitions: [
@@ -4236,3 +4846,264 @@ export const SoftRemoveVariantDocument = {
     }
   ]
 } as unknown as DocumentNode<SoftRemoveVariantMutation, SoftRemoveVariantMutationVariables>;
+export const GetAllZonesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getAllZones' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'zones' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonListZone' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListZone' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Zone' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'shippingMethods' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllZonesQuery, GetAllZonesQueryVariables>;
+export const GetZoneDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetZone' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'zone' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonZone' } }]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonZone' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Zone' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'states' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'shippingMethods' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'handler' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetZoneQuery, GetZoneQueryVariables>;
+export const CreateZoneDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateZone' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreateZoneInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createZone' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CreateZoneMutation, CreateZoneMutationVariables>;
+export const UpdateZoneDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateZone' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateZoneInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateZone' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<UpdateZoneMutation, UpdateZoneMutationVariables>;
+export const RemoveZoneDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveZone' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removeZone' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<RemoveZoneMutation, RemoveZoneMutationVariables>;

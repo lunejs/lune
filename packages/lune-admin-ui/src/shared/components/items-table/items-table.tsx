@@ -7,6 +7,7 @@ import {
   Card,
   CardAction,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
   cn,
@@ -25,12 +26,12 @@ const Header = ({ children }: PropsWithChildren) => {
   return <CardHeader>{children}</CardHeader>;
 };
 
-const HeaderTitle = ({ children }: PropsWithChildren) => {
-  return (
-    <CardTitle className="col-start-1 row-span-2 row-start-1 self-start justify-self-start h-full flex items-center">
-      {children}
-    </CardTitle>
-  );
+const HeaderTitle = ({ children, className }: PropsWithChildren & { className?: string }) => {
+  return <CardTitle className={className}>{children}</CardTitle>;
+};
+
+const HeaderDescription = ({ children }: PropsWithChildren) => {
+  return <CardDescription>{children}</CardDescription>;
 };
 
 const HeaderAction = ({ children }: PropsWithChildren) => {
@@ -125,6 +126,7 @@ const ListItem = ({
 const ItemsTable = Object.assign(ItemsTableRoot, {
   Header,
   HeaderTitle,
+  HeaderDescription,
   HeaderAction,
   Content,
   Search,

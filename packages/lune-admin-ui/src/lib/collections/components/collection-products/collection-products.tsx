@@ -28,7 +28,9 @@ export const CollectionProductsCard = ({ collection }: Props) => {
   return (
     <ItemsTable>
       <ItemsTable.Header>
-        <ItemsTable.HeaderTitle>Products</ItemsTable.HeaderTitle>
+        <ItemsTable.HeaderTitle className="col-start-1 row-span-2 row-start-1 self-start justify-self-start h-full flex items-center">
+          Products
+        </ItemsTable.HeaderTitle>
         <ItemsTable.HeaderAction>
           <ProductsSelector
             collection={collection}
