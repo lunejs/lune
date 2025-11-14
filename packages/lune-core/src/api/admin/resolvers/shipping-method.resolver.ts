@@ -7,6 +7,7 @@ import type {
   MutationUpdateShippingMethodArgs
 } from '@/api/shared/types/graphql';
 import { ShippingMethodService } from '@/business/shipping-method/shipping-method.service';
+import { isErrorResult } from '@/utils/error-result';
 
 async function shippingMethods(_, __, ctx: ExecutionContext) {
   const shippingMethodService = new ShippingMethodService(ctx);
@@ -21,7 +22,11 @@ async function createShippingMethod(
 ) {
   const shippingMethodService = new ShippingMethodService(ctx);
 
-  return shippingMethodService.create(input);
+  const result = await shippingMethodService.create(input);
+
+  return isErrorResult(result)
+    ? { shippingMethod: null, apiErrors: [result] }
+    : { shippingMethod: result, apiErrors: [] };
 }
 
 async function updateShippingMethod(
@@ -31,7 +36,11 @@ async function updateShippingMethod(
 ) {
   const shippingMethodService = new ShippingMethodService(ctx);
 
-  return shippingMethodService.update(id, input);
+  const result = await shippingMethodService.update(id, input);
+
+  return isErrorResult(result)
+    ? { shippingMethod: null, apiErrors: [result] }
+    : { shippingMethod: result, apiErrors: [] };
 }
 
 async function removeShippingMethod(
