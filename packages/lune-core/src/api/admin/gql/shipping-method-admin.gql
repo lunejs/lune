@@ -5,7 +5,7 @@ extend type ShippingMethod {
   """
   The shipping method's handler configuration
   """
-  handler: JSON!
+  handler: ShippingMethodHandler!
 
   """
   Whether the shipping method is enabled
@@ -16,4 +16,46 @@ extend type ShippingMethod {
   The zone this shipping method applies to
   """
   zone: Zone!
+}
+
+type ShippingMethodHandler {
+  code: String!
+  args: JSON!
+}
+
+type Query {
+  shippingMethods: [ShippingMethod!]!
+}
+
+type Mutation {
+  createShippingMethod(input: CreateShippingMethodInput!): ShippingMethodResult!
+  updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
+  removeShippingMethod(id: ID!): Boolean!
+}
+
+input CreateShippingMethodInput {
+  name: String!
+  handler: ShippingMethodHandler!
+  enabled: Boolean
+  zoneId: ID!
+}
+
+input UpdateShippingMethodInput {
+  name: String
+  enabled: Boolean
+  args: JSON
+}
+
+type ShippingMethodResult {
+  apiErrors: [ShippingMethodErrorResult!]!
+  shippingMethod: ShippingMethod
+}
+
+type ShippingMethodErrorResult {
+  code: ShippingMethodErrorCode!
+  message: String!
+}
+
+enum ShippingMethodErrorCode {
+  HANDLER_NOT_FOUND
 }

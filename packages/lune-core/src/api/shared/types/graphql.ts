@@ -263,6 +263,13 @@ export type CreateProductInput = {
   tags?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type CreateShippingMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handler: ShippingMethodHandler;
+  name: Scalars['String']['input'];
+  zoneId: Scalars['ID']['input'];
+};
+
 export type CreateShopInput = {
   email: Scalars['String']['input'];
   logo?: InputMaybe<Scalars['String']['input']>;
@@ -454,6 +461,7 @@ export type Mutation = {
   createOption: Array<Option>;
   createOrder: OrderResult;
   createProduct: Product;
+  createShippingMethod: ShippingMethodResult;
   /** Create a new shop */
   createShop: ShopResult;
   createTags: CreateTagsResult;
@@ -468,6 +476,7 @@ export type Mutation = {
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
+  removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
   softRemoveOption: Option;
@@ -478,6 +487,7 @@ export type Mutation = {
   updateOption: Option;
   updateOrderLine: OrderResult;
   updateProduct: Product;
+  updateShippingMethod: ShippingMethod;
   /** Update an existing shop details */
   updateShop: ShopResult;
   updateTag: TagResult;
@@ -545,6 +555,11 @@ export type MutationCreateProductArgs = {
 };
 
 
+export type MutationCreateShippingMethodArgs = {
+  input: CreateShippingMethodInput;
+};
+
+
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
 };
@@ -583,6 +598,11 @@ export type MutationRemoveCollectionsArgs = {
 
 export type MutationRemoveOrderLineArgs = {
   lineId: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveShippingMethodArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -637,6 +657,12 @@ export type MutationUpdateOrderLineArgs = {
 export type MutationUpdateProductArgs = {
   id: Scalars['ID']['input'];
   input: UpdateProductInput;
+};
+
+
+export type MutationUpdateShippingMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateShippingMethodInput;
 };
 
 
@@ -1110,6 +1136,7 @@ export type Query = {
    * fetching products from a discount metadata
    */
   productsByVariantIds: ProductList;
+  shippingMethods: Array<ShippingMethod>;
   /** Get shop by slug */
   shop?: Maybe<Shop>;
   /** Get a list of shops */
@@ -1210,13 +1237,35 @@ export type ShippingMethod = {
   /** Whether the shipping method is enabled */
   enabled: Scalars['Boolean']['output'];
   /** The shipping method's handler configuration */
-  handler: Scalars['JSON']['output'];
+  handler: ShippingMethodHandler;
   id: Scalars['ID']['output'];
   /** The shipping method's name */
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
   /** The zone this shipping method applies to */
   zone: Zone;
+};
+
+export enum ShippingMethodErrorCode {
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type ShippingMethodErrorResult = {
+  __typename?: 'ShippingMethodErrorResult';
+  code: ShippingMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type ShippingMethodHandler = {
+  __typename?: 'ShippingMethodHandler';
+  args: Scalars['JSON']['output'];
+  code: Scalars['String']['output'];
+};
+
+export type ShippingMethodResult = {
+  __typename?: 'ShippingMethodResult';
+  apiErrors: Array<ShippingMethodErrorResult>;
+  shippingMethod?: Maybe<ShippingMethod>;
 };
 
 /** A lune shop */
@@ -1287,6 +1336,8 @@ export type State = {
   __typename?: 'State';
   /** The state's code (e.g., 'JAL', 'CA', 'TX') */
   code: Scalars['String']['output'];
+  /** The country this state belongs to */
+  country: Country;
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   /** The state's name */
@@ -1387,6 +1438,12 @@ export type UpdateProductInput = {
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+export type UpdateShippingMethodInput = {
+  args?: InputMaybe<Scalars['JSON']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateShopInput = {
@@ -1648,6 +1705,7 @@ export type ResolversTypes = {
   CreateOrderInput: CreateOrderInput;
   CreateOrderLineInput: CreateOrderLineInput;
   CreateProductInput: CreateProductInput;
+  CreateShippingMethodInput: CreateShippingMethodInput;
   CreateShopInput: CreateShopInput;
   CreateTagInput: CreateTagInput;
   CreateTagsResult: ResolverTypeWrapper<CreateTagsResult>;
@@ -1712,6 +1770,10 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ShippingFulfillment: ResolverTypeWrapper<ShippingFulfillment>;
   ShippingMethod: ResolverTypeWrapper<ShippingMethod>;
+  ShippingMethodErrorCode: ShippingMethodErrorCode;
+  ShippingMethodErrorResult: ResolverTypeWrapper<ShippingMethodErrorResult>;
+  ShippingMethodHandler: ResolverTypeWrapper<ShippingMethodHandler>;
+  ShippingMethodResult: ResolverTypeWrapper<ShippingMethodResult>;
   Shop: ResolverTypeWrapper<Shop>;
   ShopErrorCode: ShopErrorCode;
   ShopErrorResult: ResolverTypeWrapper<ShopErrorResult>;
@@ -1734,6 +1796,7 @@ export type ResolversTypes = {
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
   UpdateProductInput: UpdateProductInput;
+  UpdateShippingMethodInput: UpdateShippingMethodInput;
   UpdateShopInput: UpdateShopInput;
   UpdateTagInput: UpdateTagInput;
   UpdateUserInput: UpdateUserInput;
@@ -1776,6 +1839,7 @@ export type ResolversParentTypes = {
   CreateOrderInput: CreateOrderInput;
   CreateOrderLineInput: CreateOrderLineInput;
   CreateProductInput: CreateProductInput;
+  CreateShippingMethodInput: CreateShippingMethodInput;
   CreateShopInput: CreateShopInput;
   CreateTagInput: CreateTagInput;
   CreateTagsResult: CreateTagsResult;
@@ -1834,6 +1898,9 @@ export type ResolversParentTypes = {
   Query: {};
   ShippingFulfillment: ShippingFulfillment;
   ShippingMethod: ShippingMethod;
+  ShippingMethodErrorResult: ShippingMethodErrorResult;
+  ShippingMethodHandler: ShippingMethodHandler;
+  ShippingMethodResult: ShippingMethodResult;
   Shop: Shop;
   ShopErrorResult: ShopErrorResult;
   ShopList: ShopList;
@@ -1854,6 +1921,7 @@ export type ResolversParentTypes = {
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
   UpdateProductInput: UpdateProductInput;
+  UpdateShippingMethodInput: UpdateShippingMethodInput;
   UpdateShopInput: UpdateShopInput;
   UpdateTagInput: UpdateTagInput;
   UpdateUserInput: UpdateUserInput;
@@ -2050,6 +2118,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
+  createShippingMethod?: Resolver<ResolversTypes['ShippingMethodResult'], ParentType, ContextType, RequireFields<MutationCreateShippingMethodArgs, 'input'>>;
   createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
   createTags?: Resolver<ResolversTypes['CreateTagsResult'], ParentType, ContextType, RequireFields<MutationCreateTagsArgs, 'input'>>;
   createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
@@ -2058,6 +2127,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
+  removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
@@ -2068,6 +2138,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
+  updateShippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType, RequireFields<MutationUpdateShippingMethodArgs, 'id' | 'input'>>;
   updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
   updateTag?: Resolver<ResolversTypes['TagResult'], ParentType, ContextType, RequireFields<MutationUpdateTagArgs, 'id' | 'input'>>;
   updateUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id' | 'input'>>;
@@ -2312,6 +2383,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
   products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
   productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
+  shippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'slug'>>;
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
   tagList?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
@@ -2339,11 +2411,29 @@ export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentT
 export type ShippingMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethod'] = ResolversParentTypes['ShippingMethod']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  handler?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  handler?: Resolver<ResolversTypes['ShippingMethodHandler'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   zone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShippingMethodErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodErrorResult'] = ResolversParentTypes['ShippingMethodErrorResult']> = {
+  code?: Resolver<ResolversTypes['ShippingMethodErrorCode'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShippingMethodHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodHandler'] = ResolversParentTypes['ShippingMethodHandler']> = {
+  args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShippingMethodResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodResult'] = ResolversParentTypes['ShippingMethodResult']> = {
+  apiErrors?: Resolver<Array<ResolversTypes['ShippingMethodErrorResult']>, ParentType, ContextType>;
+  shippingMethod?: Resolver<Maybe<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2391,6 +2481,7 @@ export type ShopSocialsResolvers<ContextType = ExecutionContext, ParentType exte
 
 export type StateResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['State'] = ResolversParentTypes['State']> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  country?: Resolver<ResolversTypes['Country'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2542,6 +2633,9 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Query?: QueryResolvers<ContextType>;
   ShippingFulfillment?: ShippingFulfillmentResolvers<ContextType>;
   ShippingMethod?: ShippingMethodResolvers<ContextType>;
+  ShippingMethodErrorResult?: ShippingMethodErrorResultResolvers<ContextType>;
+  ShippingMethodHandler?: ShippingMethodHandlerResolvers<ContextType>;
+  ShippingMethodResult?: ShippingMethodResultResolvers<ContextType>;
   Shop?: ShopResolvers<ContextType>;
   ShopErrorResult?: ShopErrorResultResolvers<ContextType>;
   ShopList?: ShopListResolvers<ContextType>;
