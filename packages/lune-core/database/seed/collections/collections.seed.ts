@@ -38,12 +38,21 @@ export async function seedCollections(trx: Knex.Transaction, ctx: SeedContext) {
       })
       .returning('id');
 
-    // 2. Get all products from this shop to add to the collection
-    const products = await trx<ProductTable>(Tables.Product)
-      .where({ shop_id: ctx.shopId })
-      .select('id');
+    // 2. Get products by slugs if specified, otherwise get all
+    let products: { id: string }[];
 
-    // 3. Add all products to the collection
+    if (collection.productSlugs && collection.productSlugs.length > 0) {
+      products = await trx<ProductTable>(Tables.Product)
+        .whereIn('slug', collection.productSlugs)
+        .where({ shop_id: ctx.shopId })
+        .select('id');
+    } else {
+      products = await trx<ProductTable>(Tables.Product)
+        .where({ shop_id: ctx.shopId })
+        .select('id');
+    }
+
+    // 3. Add products to the collection
     if (products.length > 0) {
       await trx<CollectionProductTable>(Tables.CollectionProduct).insert(
         products.map(product => ({

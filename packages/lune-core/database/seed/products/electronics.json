@@ -1,0 +1,917 @@
+[
+  {
+    "name": "iPhone 17",
+    "slug": "iphone-17",
+    "description": "The latest iPhone 17 with cutting-edge technology, stunning display, and powerful performance. Featuring the new A19 Bionic chip, advanced camera system, and all-day battery life.",
+    "enabled": true,
+    "archived": false,
+    "collectionSlug": "apple",
+    "assets": [
+      {
+        "name": "iPhone 17 Front View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189331/lrehp3apslna5fgnloel.webp",
+        "providerId": "lrehp3apslna5fgnloel",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "iPhone 17 Back View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189331/kcpjzfpkn8nhv9ousdgb.webp",
+        "providerId": "kcpjzfpkn8nhv9ousdgb",
+        "type": "IMG",
+        "order": 1
+      },
+      {
+        "name": "iPhone 17 Side View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189331/piroa3yrb9rpddsk9uf5.webp",
+        "providerId": "piroa3yrb9rpddsk9uf5",
+        "type": "IMG",
+        "order": 2
+      }
+    ],
+    "options": [
+      {
+        "name": "Color",
+        "order": 0,
+        "values": [
+          {
+            "name": "Midnight Black",
+            "order": 0
+          },
+          {
+            "name": "Starlight Silver",
+            "order": 1
+          },
+          {
+            "name": "Deep Purple",
+            "order": 2
+          },
+          {
+            "name": "Pacific Blue",
+            "order": 3
+          },
+          {
+            "name": "Product Red",
+            "order": 4
+          }
+        ]
+      },
+      {
+        "name": "Storage",
+        "order": 1,
+        "values": [
+          {
+            "name": "128GB",
+            "order": 0
+          },
+          {
+            "name": "256GB",
+            "order": 1
+          },
+          {
+            "name": "512GB",
+            "order": 2
+          },
+          {
+            "name": "1TB",
+            "order": 3
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 999.00,
+        "comparisonPrice": 1099.00,
+        "costPerUnit": 450.00,
+        "stock": 50,
+        "sku": "IPHONE17-BLACK-128GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Midnight Black", "128GB"]
+      },
+      {
+        "salePrice": 1099.00,
+        "comparisonPrice": 1199.00,
+        "costPerUnit": 475.00,
+        "stock": 60,
+        "sku": "IPHONE17-BLACK-256GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Midnight Black", "256GB"]
+      },
+      {
+        "salePrice": 1299.00,
+        "comparisonPrice": 1399.00,
+        "costPerUnit": 525.00,
+        "stock": 45,
+        "sku": "IPHONE17-BLACK-512GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Midnight Black", "512GB"]
+      },
+      {
+        "salePrice": 1499.00,
+        "comparisonPrice": 1599.00,
+        "costPerUnit": 575.00,
+        "stock": 30,
+        "sku": "IPHONE17-BLACK-1TB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Midnight Black", "1TB"]
+      },
+      {
+        "salePrice": 999.00,
+        "comparisonPrice": 1099.00,
+        "costPerUnit": 450.00,
+        "stock": 55,
+        "sku": "IPHONE17-SILVER-128GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Starlight Silver", "128GB"]
+      },
+      {
+        "salePrice": 1099.00,
+        "comparisonPrice": 1199.00,
+        "costPerUnit": 475.00,
+        "stock": 65,
+        "sku": "IPHONE17-SILVER-256GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Starlight Silver", "256GB"]
+      },
+      {
+        "salePrice": 1299.00,
+        "comparisonPrice": 1399.00,
+        "costPerUnit": 525.00,
+        "stock": 50,
+        "sku": "IPHONE17-SILVER-512GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Starlight Silver", "512GB"]
+      },
+      {
+        "salePrice": 1499.00,
+        "comparisonPrice": 1599.00,
+        "costPerUnit": 575.00,
+        "stock": 35,
+        "sku": "IPHONE17-SILVER-1TB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Starlight Silver", "1TB"]
+      },
+      {
+        "salePrice": 999.00,
+        "comparisonPrice": 1099.00,
+        "costPerUnit": 450.00,
+        "stock": 48,
+        "sku": "IPHONE17-PURPLE-128GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Deep Purple", "128GB"]
+      },
+      {
+        "salePrice": 1099.00,
+        "comparisonPrice": 1199.00,
+        "costPerUnit": 475.00,
+        "stock": 58,
+        "sku": "IPHONE17-PURPLE-256GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Deep Purple", "256GB"]
+      },
+      {
+        "salePrice": 1299.00,
+        "comparisonPrice": 1399.00,
+        "costPerUnit": 525.00,
+        "stock": 42,
+        "sku": "IPHONE17-PURPLE-512GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Deep Purple", "512GB"]
+      },
+      {
+        "salePrice": 1499.00,
+        "comparisonPrice": 1599.00,
+        "costPerUnit": 575.00,
+        "stock": 28,
+        "sku": "IPHONE17-PURPLE-1TB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Deep Purple", "1TB"]
+      },
+      {
+        "salePrice": 999.00,
+        "comparisonPrice": 1099.00,
+        "costPerUnit": 450.00,
+        "stock": 52,
+        "sku": "IPHONE17-BLUE-128GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Pacific Blue", "128GB"]
+      },
+      {
+        "salePrice": 1099.00,
+        "comparisonPrice": 1199.00,
+        "costPerUnit": 475.00,
+        "stock": 62,
+        "sku": "IPHONE17-BLUE-256GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Pacific Blue", "256GB"]
+      },
+      {
+        "salePrice": 1299.00,
+        "comparisonPrice": 1399.00,
+        "costPerUnit": 525.00,
+        "stock": 47,
+        "sku": "IPHONE17-BLUE-512GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Pacific Blue", "512GB"]
+      },
+      {
+        "salePrice": 1499.00,
+        "comparisonPrice": 1599.00,
+        "costPerUnit": 575.00,
+        "stock": 32,
+        "sku": "IPHONE17-BLUE-1TB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Pacific Blue", "1TB"]
+      },
+      {
+        "salePrice": 999.00,
+        "comparisonPrice": 1099.00,
+        "costPerUnit": 450.00,
+        "stock": 45,
+        "sku": "IPHONE17-RED-128GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Product Red", "128GB"]
+      },
+      {
+        "salePrice": 1099.00,
+        "comparisonPrice": 1199.00,
+        "costPerUnit": 475.00,
+        "stock": 55,
+        "sku": "IPHONE17-RED-256GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Product Red", "256GB"]
+      },
+      {
+        "salePrice": 1299.00,
+        "comparisonPrice": 1399.00,
+        "costPerUnit": 525.00,
+        "stock": 40,
+        "sku": "IPHONE17-RED-512GB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Product Red", "512GB"]
+      },
+      {
+        "salePrice": 1499.00,
+        "comparisonPrice": 1599.00,
+        "costPerUnit": 575.00,
+        "stock": 25,
+        "sku": "IPHONE17-RED-1TB",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 15, "width": 7, "height": 0.8 },
+        "optionValues": ["Product Red", "1TB"]
+      }
+    ]
+  },
+  {
+    "name": "MacBook Air",
+    "slug": "macbook-air",
+    "description": "Supercharged by the M3 chip, the redesigned MacBook Air is incredibly thin and light. Featuring a stunning Liquid Retina display, all-day battery life, and a silent, fanless design.",
+    "enabled": true,
+    "archived": false,
+    "collectionSlug": "electronics",
+    "assets": [
+      {
+        "name": "MacBook Air Front View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/gn9pqvr5liufqakue4jy.jpg",
+        "providerId": "gn9pqvr5liufqakue4jy",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "MacBook Air Side View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/rcmqgfywewlqaryhtgr9.jpg",
+        "providerId": "rcmqgfywewlqaryhtgr9",
+        "type": "IMG",
+        "order": 1
+      },
+      {
+        "name": "MacBook Air Keyboard View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/iajsl3iloqbv9codsema.jpg",
+        "providerId": "iajsl3iloqbv9codsema",
+        "type": "IMG",
+        "order": 2
+      },
+      {
+        "name": "MacBook Air Ports View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/nxbsnlzx0wvdsa7ydgdw.jpg",
+        "providerId": "nxbsnlzx0wvdsa7ydgdw",
+        "type": "IMG",
+        "order": 3
+      },
+      {
+        "name": "MacBook Air Display View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/nflt3fexg51puqkv8dft.jpg",
+        "providerId": "nflt3fexg51puqkv8dft",
+        "type": "IMG",
+        "order": 4
+      },
+      {
+        "name": "MacBook Air Angled View",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189478/vmpnyxwvbdofvejdmnxn.jpg",
+        "providerId": "vmpnyxwvbdofvejdmnxn",
+        "type": "IMG",
+        "order": 5
+      }
+    ],
+    "options": [
+      {
+        "name": "Memory",
+        "order": 0,
+        "values": [
+          {
+            "name": "8GB",
+            "order": 0
+          },
+          {
+            "name": "16GB",
+            "order": 1
+          },
+          {
+            "name": "24GB",
+            "order": 2
+          }
+        ]
+      },
+      {
+        "name": "Storage",
+        "order": 1,
+        "values": [
+          {
+            "name": "256GB SSD",
+            "order": 0
+          },
+          {
+            "name": "512GB SSD",
+            "order": 1
+          },
+          {
+            "name": "1TB SSD",
+            "order": 2
+          },
+          {
+            "name": "2TB SSD",
+            "order": 3
+          }
+        ]
+      },
+      {
+        "name": "Power Adapter",
+        "order": 2,
+        "values": [
+          {
+            "name": "30W USB-C",
+            "order": 0
+          },
+          {
+            "name": "35W Dual USB-C",
+            "order": 1
+          },
+          {
+            "name": "67W USB-C",
+            "order": 2
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 1199.00,
+        "comparisonPrice": 1299.00,
+        "costPerUnit": 600.00,
+        "stock": 40,
+        "sku": "MBA-8GB-256GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "256GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1199.00,
+        "comparisonPrice": 1299.00,
+        "costPerUnit": 600.00,
+        "stock": 35,
+        "sku": "MBA-8GB-256GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "256GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1199.00,
+        "comparisonPrice": 1299.00,
+        "costPerUnit": 600.00,
+        "stock": 30,
+        "sku": "MBA-8GB-256GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "256GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 50,
+        "sku": "MBA-8GB-512GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "512GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 45,
+        "sku": "MBA-8GB-512GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "512GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 40,
+        "sku": "MBA-8GB-512GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "512GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 35,
+        "sku": "MBA-8GB-1TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "1TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 30,
+        "sku": "MBA-8GB-1TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "1TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 25,
+        "sku": "MBA-8GB-1TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "1TB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 20,
+        "sku": "MBA-8GB-2TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "2TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 18,
+        "sku": "MBA-8GB-2TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "2TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 15,
+        "sku": "MBA-8GB-2TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["8GB", "2TB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 45,
+        "sku": "MBA-16GB-256GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "256GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 40,
+        "sku": "MBA-16GB-256GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "256GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1399.00,
+        "comparisonPrice": 1499.00,
+        "costPerUnit": 650.00,
+        "stock": 35,
+        "sku": "MBA-16GB-256GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "256GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 55,
+        "sku": "MBA-16GB-512GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "512GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 50,
+        "sku": "MBA-16GB-512GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "512GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 45,
+        "sku": "MBA-16GB-512GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "512GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 40,
+        "sku": "MBA-16GB-1TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "1TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 35,
+        "sku": "MBA-16GB-1TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "1TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 30,
+        "sku": "MBA-16GB-1TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "1TB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 2199.00,
+        "comparisonPrice": 2299.00,
+        "costPerUnit": 850.00,
+        "stock": 25,
+        "sku": "MBA-16GB-2TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "2TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 2199.00,
+        "comparisonPrice": 2299.00,
+        "costPerUnit": 850.00,
+        "stock": 22,
+        "sku": "MBA-16GB-2TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "2TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 2199.00,
+        "comparisonPrice": 2299.00,
+        "costPerUnit": 850.00,
+        "stock": 20,
+        "sku": "MBA-16GB-2TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["16GB", "2TB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 35,
+        "sku": "MBA-24GB-256GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "256GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 30,
+        "sku": "MBA-24GB-256GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "256GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1599.00,
+        "comparisonPrice": 1699.00,
+        "costPerUnit": 700.00,
+        "stock": 28,
+        "sku": "MBA-24GB-256GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "256GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 45,
+        "sku": "MBA-24GB-512GB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "512GB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 42,
+        "sku": "MBA-24GB-512GB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "512GB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1799.00,
+        "comparisonPrice": 1899.00,
+        "costPerUnit": 750.00,
+        "stock": 38,
+        "sku": "MBA-24GB-512GB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "512GB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 35,
+        "sku": "MBA-24GB-1TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "1TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 32,
+        "sku": "MBA-24GB-1TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "1TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 1999.00,
+        "comparisonPrice": 2099.00,
+        "costPerUnit": 800.00,
+        "stock": 28,
+        "sku": "MBA-24GB-1TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "1TB SSD", "67W USB-C"]
+      },
+      {
+        "salePrice": 2399.00,
+        "comparisonPrice": 2499.00,
+        "costPerUnit": 900.00,
+        "stock": 22,
+        "sku": "MBA-24GB-2TB-30W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "2TB SSD", "30W USB-C"]
+      },
+      {
+        "salePrice": 2399.00,
+        "comparisonPrice": 2499.00,
+        "costPerUnit": 900.00,
+        "stock": 20,
+        "sku": "MBA-24GB-2TB-35W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "2TB SSD", "35W Dual USB-C"]
+      },
+      {
+        "salePrice": 2399.00,
+        "comparisonPrice": 2499.00,
+        "costPerUnit": 900.00,
+        "stock": 18,
+        "sku": "MBA-24GB-2TB-67W",
+        "requiresShipping": true,
+        "weight": 1.24,
+        "dimensions": { "length": 30, "width": 21, "height": 1.6 },
+        "optionValues": ["24GB", "2TB SSD", "67W USB-C"]
+      }
+    ]
+  },
+  {
+    "name": "AirPods Max",
+    "slug": "airpods-max",
+    "description": "Computational audio. Listen, it's powerful. The ultimate personal listening experience with high-fidelity audio, Adaptive EQ, and industry-leading Active Noise Cancellation.",
+    "enabled": true,
+    "archived": false,
+    "collectionSlug": "electronics",
+    "assets": [
+      {
+        "name": "AirPods Max",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763189762/mda59kqhj5hkgqs2ndvy.jpg",
+        "providerId": "mda59kqhj5hkgqs2ndvy",
+        "type": "IMG",
+        "order": 0
+      }
+    ],
+    "options": [
+      {
+        "name": "Color",
+        "order": 0,
+        "values": [
+          {
+            "name": "Azul",
+            "order": 0
+          },
+          {
+            "name": "Morado",
+            "order": 1
+          },
+          {
+            "name": "Color Media Noche",
+            "order": 2
+          },
+          {
+            "name": "Blanco Estelar",
+            "order": 3
+          },
+          {
+            "name": "Naranja",
+            "order": 4
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 549.00,
+        "comparisonPrice": 599.00,
+        "costPerUnit": 275.00,
+        "stock": 30,
+        "sku": "AIRPODS-MAX-BLUE",
+        "requiresShipping": true,
+        "weight": 0.386,
+        "dimensions": { "length": 18.6, "width": 16.8, "height": 8.3 },
+        "optionValues": ["Azul"]
+      },
+      {
+        "salePrice": 549.00,
+        "comparisonPrice": 599.00,
+        "costPerUnit": 275.00,
+        "stock": 25,
+        "sku": "AIRPODS-MAX-PURPLE",
+        "requiresShipping": true,
+        "weight": 0.386,
+        "dimensions": { "length": 18.6, "width": 16.8, "height": 8.3 },
+        "optionValues": ["Morado"]
+      },
+      {
+        "salePrice": 549.00,
+        "comparisonPrice": 599.00,
+        "costPerUnit": 275.00,
+        "stock": 35,
+        "sku": "AIRPODS-MAX-MIDNIGHT",
+        "requiresShipping": true,
+        "weight": 0.386,
+        "dimensions": { "length": 18.6, "width": 16.8, "height": 8.3 },
+        "optionValues": ["Color Media Noche"]
+      },
+      {
+        "salePrice": 549.00,
+        "comparisonPrice": 599.00,
+        "costPerUnit": 275.00,
+        "stock": 28,
+        "sku": "AIRPODS-MAX-STARLIGHT",
+        "requiresShipping": true,
+        "weight": 0.386,
+        "dimensions": { "length": 18.6, "width": 16.8, "height": 8.3 },
+        "optionValues": ["Blanco Estelar"]
+      },
+      {
+        "salePrice": 549.00,
+        "comparisonPrice": 599.00,
+        "costPerUnit": 275.00,
+        "stock": 20,
+        "sku": "AIRPODS-MAX-ORANGE",
+        "requiresShipping": true,
+        "weight": 0.386,
+        "dimensions": { "length": 18.6, "width": 16.8, "height": 8.3 },
+        "optionValues": ["Naranja"]
+      }
+    ]
+  }
+]

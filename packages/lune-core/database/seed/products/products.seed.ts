@@ -14,8 +14,11 @@ import type { ProductAssetTable } from '@/persistence/entities/product-asset';
 import type { SeedContext } from '../seed.types';
 
 import Products from './products.json';
+import ElectronicProducts from './electronics.json';
 
 const TIMESTAMP_OFFSET_SECONDS = 30;
+
+const ALL_PRODUCTS = [...Products, ...ElectronicProducts];
 
 export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
   let timestampOffset = 0;
@@ -26,7 +29,7 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
     return timestamp;
   };
 
-  for (const product of Products) {
+  for (const product of ALL_PRODUCTS) {
     // Calculate min and max sale prices from variants (convert to cents)
     const salePrices = product.variants.map(v => v.salePrice);
     const minSalePrice = Math.min(...salePrices);
@@ -153,5 +156,5 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
     }
   }
 
-  LuneLogger.info(`Products inserted: ${Products.length}`);
+  LuneLogger.info(`Products inserted: ${ALL_PRODUCTS.length}`);
 }

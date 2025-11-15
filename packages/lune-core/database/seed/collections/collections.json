@@ -5,6 +5,26 @@
     "description": "The complete Acme collection - premium quality products for everyone",
     "enabled": true,
     "contentType": "PRODUCTS",
-    "order": 0
+    "order": 0,
+    "productSlugs": [
+      "acme-baby-cap",
+      "acme-drawstring-bag",
+      "acme-cap",
+      "acme-dog-sweater",
+      "acme-circles-t-shirt"
+    ]
+  },
+  {
+    "name": "Electronics",
+    "slug": "electronics",
+    "description": "The latest Electronics products - Innovation at its finest",
+    "enabled": true,
+    "contentType": "PRODUCTS",
+    "order": 1,
+    "productSlugs": [
+      "iphone-17",
+      "macbook-air",
+      "airpods-max"
+    ]
   }
 ]
