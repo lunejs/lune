@@ -110,7 +110,7 @@ export const EntitySelector = <T,>({
             )}
 
             {!items.length && !isLoading && (
-              <div className="h-full flex items-center justify-center">
+              <div className="h-full flex items-center justify-center py-48">
                 <P className="text-muted-foreground text-center">No results.</P>
               </div>
             )}
@@ -120,7 +120,8 @@ export const EntitySelector = <T,>({
                 item,
                 rowId: getRowId(item),
                 isSelected: isSelected(item),
-                onSelect: value => onSelect(value, item)
+                onSelect: value => onSelect(value, item),
+                selected
               })
             )}
           </div>
@@ -235,4 +236,10 @@ export type EntitySelectorRow<T> = {
    * Handler to toggle selection state
    */
   onSelect: (value: boolean) => void;
+  /**
+   * @description
+   *
+   * All selection state
+   */
+  selected: T[];
 };

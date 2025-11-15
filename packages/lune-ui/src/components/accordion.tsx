@@ -24,10 +24,13 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
+  containerClassName,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+  containerClassName?: string;
+}) {
   return (
-    <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Header className={cn('flex', containerClassName)}>
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(

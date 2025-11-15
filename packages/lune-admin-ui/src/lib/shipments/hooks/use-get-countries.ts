@@ -5,10 +5,15 @@ import {
   GET_ALL_COUNTRIES_QUERY
 } from '@/lib/api/operations/country.operations';
 
-export const useGetCountries = () => {
-  const result = useGqlQuery(GET_ALL_COUNTRIES_QUERY);
+import { ShipmentCacheKeys } from '../constants/cache-keys';
 
-  const countries = result.data?.countries.map(c => getFragmentData(COMMON_COUNTRY_FRAGMENT, c));
+export const useGetCountries = () => {
+  const result = useGqlQuery(GET_ALL_COUNTRIES_QUERY, {
+    key: [ShipmentCacheKeys.Countries]
+  });
+
+  const countries =
+    result.data?.countries.map(c => getFragmentData(COMMON_COUNTRY_FRAGMENT, c)) ?? [];
 
   return {
     ...result,
