@@ -2,10 +2,12 @@ import { knex, type Knex } from 'knex';
 import { seedCountries } from './countries/countries.seed';
 import { seedUsers } from './users/users.seed';
 import { seedShops } from './shops/shops.seed';
+import { seedProducts } from './products/products.seed';
 import { resetDatabase } from './reset-database';
 import { LuneLogger } from '@/logger/lune.logger';
 import { Tables } from '@/persistence/tables';
 import type { UserTable } from '@/persistence/entities/user';
+import type { ShopTable } from '@/persistence/entities/shop';
 
 let trx: Knex.Transaction;
 let db: Knex;
@@ -34,6 +36,16 @@ async function main() {
   }
 
   await seedShops(trx, { userId: user.id, shopId: '' });
+
+  const shop = await trx<ShopTable>(Tables.Shop)
+    .where({ slug: 'lune-store' })
+    .first();
+
+  if (!shop) {
+    throw new Error("Shop 'lune-store' is not present");
+  }
+
+  await seedProducts(trx, { userId: user.id, shopId: shop.id });
 }
 
 main()

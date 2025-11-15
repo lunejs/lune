@@ -1,0 +1,695 @@
+[
+  {
+    "name": "Acme Baby Cap",
+    "slug": "acme-baby-cap",
+    "description": "100% combed ringspun cotton cap, perfect for everyday wear",
+    "enabled": true,
+    "archived": false,
+    "assets": [
+      {
+        "name": "Acme Baby Cap Black",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731824911/vendyx/or3hf1e2mptgf4prg1ma.webp",
+        "providerId": "or3hf1e2mptgf4prg1ma",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "Acme Baby Cap Gray",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731824915/vendyx/ldt6z3krwyijxfnlh6wb.webp",
+        "providerId": "ldt6z3krwyijxfnlh6wb",
+        "type": "IMG",
+        "order": 1
+      },
+      {
+        "name": "Acme Baby Cap White",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731824919/vendyx/kx18xnlfzlwkxeehzqe1.webp",
+        "providerId": "kx18xnlfzlwkxeehzqe1",
+        "type": "IMG",
+        "order": 2
+      }
+    ],
+    "options": [
+      {
+        "name": "Color",
+        "order": 0,
+        "values": [
+          {
+            "name": "Black",
+            "order": 0
+          },
+          {
+            "name": "Gray",
+            "order": 1
+          },
+          {
+            "name": "White",
+            "order": 2
+          }
+        ]
+      },
+      {
+        "name": "Size",
+        "order": 1,
+        "values": [
+          {
+            "name": "U",
+            "order": 0
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 10.00,
+        "comparisonPrice": 12.99,
+        "costPerUnit": 4.00,
+        "stock": 100,
+        "sku": "ACME-CAP-BLACK-U",
+        "requiresShipping": true,
+        "weight": 0.1,
+        "dimensions": { "length": 20, "width": 20, "height": 10 },
+        "optionValues": ["Black", "U"]
+      },
+      {
+        "salePrice": 10.00,
+        "comparisonPrice": 12.99,
+        "costPerUnit": 4.00,
+        "stock": 100,
+        "sku": "ACME-CAP-GRAY-U",
+        "requiresShipping": true,
+        "weight": 0.1,
+        "dimensions": { "length": 20, "width": 20, "height": 10 },
+        "optionValues": ["Gray", "U"]
+      },
+      {
+        "salePrice": 10.00,
+        "comparisonPrice": 12.99,
+        "costPerUnit": 4.00,
+        "stock": 100,
+        "sku": "ACME-CAP-WHITE-U",
+        "requiresShipping": true,
+        "weight": 0.1,
+        "dimensions": { "length": 20, "width": 20, "height": 10 },
+        "optionValues": ["White", "U"]
+      }
+    ]
+  },
+  {
+    "name": "Acme Drawstring Bag",
+    "slug": "acme-drawstring-bag",
+    "description": "Compact and versatile drawstring bag, perfect for storing small items or as a gift pouch. Available in multiple sizes.",
+    "enabled": true,
+    "archived": false,
+    "assets": [
+      {
+        "name": "Acme Drawstring Bag Black",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731824793/vendyx/vr5xd2whgfzarp7sivuk.webp",
+        "providerId": "vr5xd2whgfzarp7sivuk",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "Acme Drawstring Bag White",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731824796/vendyx/kebh5n634ecypbueipo0.webp",
+        "providerId": "kebh5n634ecypbueipo0",
+        "type": "IMG",
+        "order": 1
+      }
+    ],
+    "options": [
+      {
+        "name": "Color",
+        "order": 0,
+        "values": [
+          {
+            "name": "Black",
+            "order": 0
+          },
+          {
+            "name": "White",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "name": "Size",
+        "order": 1,
+        "values": [
+          {
+            "name": "6 x 8 Inch",
+            "order": 0
+          },
+          {
+            "name": "7 x 9 Inch",
+            "order": 1
+          },
+          {
+            "name": "8 x 11 Inch",
+            "order": 2
+          },
+          {
+            "name": "9 x 12 Inch",
+            "order": 3
+          },
+          {
+            "name": "10 x 15 Inch",
+            "order": 4
+          },
+          {
+            "name": "12 x 16 Inch",
+            "order": 5
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 80,
+        "sku": "ACME-BAG-BLACK-6X8",
+        "requiresShipping": true,
+        "weight": 0.05,
+        "dimensions": { "length": 6, "width": 8, "height": 1 },
+        "optionValues": ["Black", "6 x 8 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 90,
+        "sku": "ACME-BAG-BLACK-7X9",
+        "requiresShipping": true,
+        "weight": 0.06,
+        "dimensions": { "length": 7, "width": 9, "height": 1 },
+        "optionValues": ["Black", "7 x 9 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 100,
+        "sku": "ACME-BAG-BLACK-8X11",
+        "requiresShipping": true,
+        "weight": 0.07,
+        "dimensions": { "length": 8, "width": 11, "height": 1 },
+        "optionValues": ["Black", "8 x 11 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 85,
+        "sku": "ACME-BAG-BLACK-9X12",
+        "requiresShipping": true,
+        "weight": 0.08,
+        "dimensions": { "length": 9, "width": 12, "height": 1 },
+        "optionValues": ["Black", "9 x 12 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 75,
+        "sku": "ACME-BAG-BLACK-10X15",
+        "requiresShipping": true,
+        "weight": 0.09,
+        "dimensions": { "length": 10, "width": 15, "height": 1 },
+        "optionValues": ["Black", "10 x 15 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 70,
+        "sku": "ACME-BAG-BLACK-12X16",
+        "requiresShipping": true,
+        "weight": 0.1,
+        "dimensions": { "length": 12, "width": 16, "height": 1 },
+        "optionValues": ["Black", "12 x 16 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 80,
+        "sku": "ACME-BAG-WHITE-6X8",
+        "requiresShipping": true,
+        "weight": 0.05,
+        "dimensions": { "length": 6, "width": 8, "height": 1 },
+        "optionValues": ["White", "6 x 8 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 90,
+        "sku": "ACME-BAG-WHITE-7X9",
+        "requiresShipping": true,
+        "weight": 0.06,
+        "dimensions": { "length": 7, "width": 9, "height": 1 },
+        "optionValues": ["White", "7 x 9 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 100,
+        "sku": "ACME-BAG-WHITE-8X11",
+        "requiresShipping": true,
+        "weight": 0.07,
+        "dimensions": { "length": 8, "width": 11, "height": 1 },
+        "optionValues": ["White", "8 x 11 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 85,
+        "sku": "ACME-BAG-WHITE-9X12",
+        "requiresShipping": true,
+        "weight": 0.08,
+        "dimensions": { "length": 9, "width": 12, "height": 1 },
+        "optionValues": ["White", "9 x 12 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 75,
+        "sku": "ACME-BAG-WHITE-10X15",
+        "requiresShipping": true,
+        "weight": 0.09,
+        "dimensions": { "length": 10, "width": 15, "height": 1 },
+        "optionValues": ["White", "10 x 15 Inch"]
+      },
+      {
+        "salePrice": 12.00,
+        "comparisonPrice": 15.99,
+        "costPerUnit": 5.00,
+        "stock": 70,
+        "sku": "ACME-BAG-WHITE-12X16",
+        "requiresShipping": true,
+        "weight": 0.1,
+        "dimensions": { "length": 12, "width": 16, "height": 1 },
+        "optionValues": ["White", "12 x 16 Inch"]
+      }
+    ]
+  },
+  {
+    "name": "Acme Cap",
+    "slug": "acme-cap",
+    "description": "Premium quality cap made from 100% peach-washed cotton for ultimate comfort and style.",
+    "enabled": true,
+    "archived": false,
+    "assets": [
+      {
+        "name": "Acme Cap Front",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825150/vendyx/wzygeissph1oyqzuvror.webp",
+        "providerId": "wzygeissph1oyqzuvror",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "Acme Cap Side",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825150/vendyx/ndd51czdy7k0j4y9fcq0.webp",
+        "providerId": "ndd51czdy7k0j4y9fcq0",
+        "type": "IMG",
+        "order": 1
+      },
+      {
+        "name": "Acme Cap Detail",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825150/vendyx/yry1zdknlah8b7cg9rwe.webp",
+        "providerId": "yry1zdknlah8b7cg9rwe",
+        "type": "IMG",
+        "order": 2
+      }
+    ],
+    "options": [],
+    "variants": [
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 25.99,
+        "costPerUnit": 8.00,
+        "stock": 150,
+        "sku": "ACME-CAP-001",
+        "requiresShipping": true,
+        "weight": 0.12,
+        "dimensions": { "length": 22, "width": 22, "height": 12 },
+        "optionValues": []
+      }
+    ]
+  },
+  {
+    "name": "Acme Dog Sweater",
+    "slug": "acme-dog-sweater",
+    "description": "Keep your dog warm all winter long - When the cold weather hits, make sure your dog isn't shivering and stays warm with the soft and stretchy fleece dog sweater. Made with 90% polyester & 5% polyurethane to keep moisture out, freezing rain or snow, and to help keep warm air in, so your dog always stays warm. Our dog clothing is safe, durable, and made to last.",
+    "enabled": true,
+    "archived": false,
+    "assets": [
+      {
+        "name": "Acme Dog Sweater Front",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825083/vendyx/r4djqr9dxu6nuaxou41i.webp",
+        "providerId": "r4djqr9dxu6nuaxou41i",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "Acme Dog Sweater Side",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825083/vendyx/t7gplrecdovrxmllxyib.webp",
+        "providerId": "t7gplrecdovrxmllxyib",
+        "type": "IMG",
+        "order": 1
+      }
+    ],
+    "options": [
+      {
+        "name": "Size",
+        "order": 0,
+        "values": [
+          {
+            "name": "0 - 5 lbs",
+            "order": 0
+          },
+          {
+            "name": "5 - 20 lbs",
+            "order": 1
+          },
+          {
+            "name": "20 - 50 lbs",
+            "order": 2
+          },
+          {
+            "name": "50 - 75 lbs",
+            "order": 3
+          },
+          {
+            "name": "75+ lbs",
+            "order": 4
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 26.99,
+        "costPerUnit": 9.00,
+        "stock": 60,
+        "sku": "ACME-DOG-SWEATER-0-5LBS",
+        "requiresShipping": true,
+        "weight": 0.08,
+        "dimensions": { "length": 15, "width": 10, "height": 2 },
+        "optionValues": ["0 - 5 lbs"]
+      },
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 26.99,
+        "costPerUnit": 9.00,
+        "stock": 80,
+        "sku": "ACME-DOG-SWEATER-5-20LBS",
+        "requiresShipping": true,
+        "weight": 0.12,
+        "dimensions": { "length": 20, "width": 15, "height": 2 },
+        "optionValues": ["5 - 20 lbs"]
+      },
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 26.99,
+        "costPerUnit": 9.00,
+        "stock": 100,
+        "sku": "ACME-DOG-SWEATER-20-50LBS",
+        "requiresShipping": true,
+        "weight": 0.18,
+        "dimensions": { "length": 25, "width": 20, "height": 3 },
+        "optionValues": ["20 - 50 lbs"]
+      },
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 26.99,
+        "costPerUnit": 9.00,
+        "stock": 75,
+        "sku": "ACME-DOG-SWEATER-50-75LBS",
+        "requiresShipping": true,
+        "weight": 0.25,
+        "dimensions": { "length": 30, "width": 25, "height": 3 },
+        "optionValues": ["50 - 75 lbs"]
+      },
+      {
+        "salePrice": 20.00,
+        "comparisonPrice": 26.99,
+        "costPerUnit": 9.00,
+        "stock": 50,
+        "sku": "ACME-DOG-SWEATER-75PLUS",
+        "requiresShipping": true,
+        "weight": 0.3,
+        "dimensions": { "length": 35, "width": 30, "height": 4 },
+        "optionValues": ["75+ lbs"]
+      }
+    ]
+  },
+  {
+    "name": "Acme Circles T-Shirt",
+    "slug": "acme-circles-t-shirt",
+    "description": "A comfortable cotton t-shirt available in multiple colors and sizes",
+    "enabled": true,
+    "archived": false,
+    "assets": [
+      {
+        "name": "Acme Circles T-Shirt Blue",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825292/vendyx/h0y1fhnu31mdtpq3hzpr.webp",
+        "providerId": "h0y1fhnu31mdtpq3hzpr",
+        "type": "IMG",
+        "order": 0
+      },
+      {
+        "name": "Acme Circles T-Shirt White",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825289/vendyx/cn6i6xxqmdw9otmdmzeu.webp",
+        "providerId": "cn6i6xxqmdw9otmdmzeu",
+        "type": "IMG",
+        "order": 1
+      },
+      {
+        "name": "Acme Circles T-Shirt Black",
+        "source": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1731825285/vendyx/fz70bxkwbebh9obzen0p.webp",
+        "providerId": "fz70bxkwbebh9obzen0p",
+        "type": "IMG",
+        "order": 2
+      }
+    ],
+    "options": [
+      {
+        "name": "Color",
+        "order": 0,
+        "values": [
+          {
+            "name": "Blue",
+            "order": 0
+          },
+          {
+            "name": "White",
+            "order": 1
+          },
+          {
+            "name": "Black",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "name": "Size",
+        "order": 1,
+        "values": [
+          {
+            "name": "XS",
+            "order": 0
+          },
+          {
+            "name": "S",
+            "order": 1
+          },
+          {
+            "name": "M",
+            "order": 2
+          },
+          {
+            "name": "XL",
+            "order": 3
+          },
+          {
+            "name": "XLL",
+            "order": 4
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 50,
+        "sku": "ACME-CIRCLES-BLUE-XS",
+        "requiresShipping": true,
+        "weight": 0.15,
+        "dimensions": { "length": 28, "width": 23, "height": 2 },
+        "optionValues": ["Blue", "XS"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 75,
+        "sku": "ACME-CIRCLES-BLUE-S",
+        "requiresShipping": true,
+        "weight": 0.2,
+        "dimensions": { "length": 30, "width": 25, "height": 2 },
+        "optionValues": ["Blue", "S"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 100,
+        "sku": "ACME-CIRCLES-BLUE-M",
+        "requiresShipping": true,
+        "weight": 0.25,
+        "dimensions": { "length": 32, "width": 27, "height": 2 },
+        "optionValues": ["Blue", "M"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 80,
+        "sku": "ACME-CIRCLES-BLUE-XL",
+        "requiresShipping": true,
+        "weight": 0.3,
+        "dimensions": { "length": 34, "width": 29, "height": 2 },
+        "optionValues": ["Blue", "XL"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 40,
+        "sku": "ACME-CIRCLES-BLUE-XLL",
+        "requiresShipping": true,
+        "weight": 0.35,
+        "dimensions": { "length": 36, "width": 31, "height": 2 },
+        "optionValues": ["Blue", "XLL"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 60,
+        "sku": "ACME-CIRCLES-WHITE-XS",
+        "requiresShipping": true,
+        "weight": 0.15,
+        "dimensions": { "length": 28, "width": 23, "height": 2 },
+        "optionValues": ["White", "XS"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 85,
+        "sku": "ACME-CIRCLES-WHITE-S",
+        "requiresShipping": true,
+        "weight": 0.2,
+        "dimensions": { "length": 30, "width": 25, "height": 2 },
+        "optionValues": ["White", "S"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 110,
+        "sku": "ACME-CIRCLES-WHITE-M",
+        "requiresShipping": true,
+        "weight": 0.25,
+        "dimensions": { "length": 32, "width": 27, "height": 2 },
+        "optionValues": ["White", "M"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 70,
+        "sku": "ACME-CIRCLES-WHITE-XL",
+        "requiresShipping": true,
+        "weight": 0.3,
+        "dimensions": { "length": 34, "width": 29, "height": 2 },
+        "optionValues": ["White", "XL"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 35,
+        "sku": "ACME-CIRCLES-WHITE-XLL",
+        "requiresShipping": true,
+        "weight": 0.35,
+        "dimensions": { "length": 36, "width": 31, "height": 2 },
+        "optionValues": ["White", "XLL"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 55,
+        "sku": "ACME-CIRCLES-BLACK-XS",
+        "requiresShipping": true,
+        "weight": 0.15,
+        "dimensions": { "length": 28, "width": 23, "height": 2 },
+        "optionValues": ["Black", "XS"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 80,
+        "sku": "ACME-CIRCLES-BLACK-S",
+        "requiresShipping": true,
+        "weight": 0.2,
+        "dimensions": { "length": 30, "width": 25, "height": 2 },
+        "optionValues": ["Black", "S"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 105,
+        "sku": "ACME-CIRCLES-BLACK-M",
+        "requiresShipping": true,
+        "weight": 0.25,
+        "dimensions": { "length": 32, "width": 27, "height": 2 },
+        "optionValues": ["Black", "M"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 75,
+        "sku": "ACME-CIRCLES-BLACK-XL",
+        "requiresShipping": true,
+        "weight": 0.3,
+        "dimensions": { "length": 34, "width": 29, "height": 2 },
+        "optionValues": ["Black", "XL"]
+      },
+      {
+        "salePrice": 19.99,
+        "comparisonPrice": 24.99,
+        "costPerUnit": 8.00,
+        "stock": 30,
+        "sku": "ACME-CIRCLES-BLACK-XLL",
+        "requiresShipping": true,
+        "weight": 0.35,
+        "dimensions": { "length": 36, "width": 31, "height": 2 },
+        "optionValues": ["Black", "XLL"]
+      }
+    ]
+  }
+]

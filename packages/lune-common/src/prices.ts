@@ -17,7 +17,7 @@ export class LunePrice {
    * @warning This function only has to be called when storing prices in the database or make operations with them, displaying prices in the frontend should use floats.
    */
   static toCent(price: number) {
-    return price * 100;
+    return Math.round(price * 100);
   }
 
   /**

@@ -1,6 +1,6 @@
 import { type DeepPartial, useWatch } from 'react-hook-form';
 
-import { convertToCent, parsePrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 import { Button } from '@lune/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
@@ -59,9 +59,9 @@ const getVariantsHasChanged = (
     } = v;
 
     const inMemoryVariant = {
-      salePrice: convertToCent(parsePrice(salePrice || '0')) || 0,
+      salePrice: LunePrice.toCent(LunePrice.parse(salePrice || '0')) || 0,
       stock,
-      comparisonPrice: convertToCent(parsePrice(comparisonPrice || '0')) || 0,
+      comparisonPrice: LunePrice.toCent(LunePrice.parse(comparisonPrice || '0')) || 0,
       sku: sku ?? '',
       requiresShipping,
       weight: weight ?? null,
@@ -69,6 +69,11 @@ const getVariantsHasChanged = (
       height: height ?? undefined,
       length: length ?? undefined
     };
+
+    console.log({
+      inMemoryVariant,
+      persistedVariant
+    });
 
     return (
       inMemoryVariant.salePrice !== persistedVariant?.salePrice ||
