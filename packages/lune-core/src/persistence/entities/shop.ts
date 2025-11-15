@@ -1,4 +1,4 @@
-import type { LuneEntity, LuneTable } from './entity';
+import type { ID, LuneEntity, LuneTable } from './entity';
 
 /**
  * A lune shop
@@ -27,15 +27,15 @@ export interface Shop extends LuneEntity {
   /**
    * The shop's logo, used for emails and branding in admin and storefront
    */
-  logo?: string;
+  logo?: string | null;
   /**
    * The shop's storefront url, used for technical connections to the storefront
    */
-  storefrontUrl?: string;
+  storefrontUrl?: string | null;
   /**
    * The shop's socials, used for branding and social media links in emails and storefront
    */
-  socials?: ShopSocial;
+  socials?: ShopSocial | null;
 }
 
 export interface ShopTable extends LuneTable {
@@ -44,9 +44,9 @@ export interface ShopTable extends LuneTable {
   storefront_api_key: string;
   email: string;
   phone_number: string;
-  logo?: string;
-  socials?: ShopSocial;
-  storefront_url?: string;
+  logo?: string | null;
+  socials?: ShopSocial | null;
+  storefront_url?: string | null;
 
   owner_id: string; // Foreign key to users table
 }

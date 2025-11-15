@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Lune Store",
+    "slug": "lune-store",
+    "email": "contact@lunestore.com",
+    "phoneNumber": "+1234567890",
+    "logo": "https://res.cloudinary.com/dnvp4s8pe/image/upload/v1763182921/zfom9akgi5uu8yjcvu4i.png",
+    "storefrontUrl": "https://lunestore.com",
+    "socials": {
+      "facebook": "https://facebook.com/lunestore",
+      "twitter": "https://twitter.com/lunestore",
+      "instagram": "https://instagram.com/lunestore"
+    }
+  },
+  {
+    "name": "Tech Store",
+    "slug": "tech-store",
+    "email": "contact@techstore.com",
+    "phoneNumber": "+1234567890",
+    "logo": null,
+    "storefrontUrl": "https://techstore.com",
+    "socials": {
+      "facebook": "https://facebook.com/techstore",
+      "twitter": "https://twitter.com/techstore",
+      "instagram": "https://instagram.com/techstore"
+    }
+  }
+]
