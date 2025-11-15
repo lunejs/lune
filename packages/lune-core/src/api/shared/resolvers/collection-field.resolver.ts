@@ -16,8 +16,8 @@ export const CommonCollectionFieldResolver = {
   },
   products: async (parent: Collection, args: CollectionProductsArgs, ctx: ExecutionContext) => {
     const result = await ctx.loaders.collections.products.load({
-      collectionId: parent.id,
-      args
+      id: parent.id,
+      args: args.input
     });
 
     return new ListResponse(result.items, result.items.length, { total: result.total });
