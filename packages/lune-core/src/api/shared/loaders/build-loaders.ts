@@ -30,11 +30,7 @@ import { createZoneShippingMethodsLoader } from './zone/zone-shipping-methods.lo
 import { createZoneStatesLoader } from './zone/zone-states.loader';
 
 // TODO: standardize object keys (all plural or all singular)
-export const buildLoaders = (
-  trx: Transaction,
-  locale: Locale | null | undefined,
-  variables: Record<string, unknown> | undefined
-) => {
+export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
   return {
     product: {
       localization: createProductLocalizationLoader(trx, locale),
@@ -59,7 +55,7 @@ export const buildLoaders = (
     },
     collections: {
       assets: createCollectionAssetsLoader(trx),
-      products: createCollectionProductsLoader(trx, variables),
+      products: createCollectionProductsLoader(trx),
       subCollections: createCollectionSubCollectionsLoader(trx),
       translations: createCollectionTranslationsLoader(trx)
     },

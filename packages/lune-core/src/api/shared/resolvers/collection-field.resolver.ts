@@ -5,6 +5,7 @@ import type {
   CollectionProductsArgs,
   CollectionSubCollectionsArgs
 } from '../types/graphql';
+import { ListResponse } from '../utils/list-response';
 import { getPaginatedResult } from '../utils/pagination';
 
 export const CommonCollectionFieldResolver = {
@@ -13,15 +14,13 @@ export const CommonCollectionFieldResolver = {
 
     return getPaginatedResult(assets, input);
   },
-  // TODO: pass input to loaders in buildLoaders() getting input from req.body
-  products: async (
-    parent: Collection,
-    { input }: CollectionProductsArgs,
-    ctx: ExecutionContext
-  ) => {
-    const products = await ctx.loaders.collections.products.load(parent.id);
+  products: async (parent: Collection, args: CollectionProductsArgs, ctx: ExecutionContext) => {
+    const result = await ctx.loaders.collections.products.load({
+      collectionId: parent.id,
+      args
+    });
 
-    return getPaginatedResult(products, input);
+    return new ListResponse(result.items, result.items.length, { total: result.total });
   },
   subCollections: async (
     parent: Collection,

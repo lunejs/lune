@@ -27,7 +27,7 @@ export async function buildContext(input: Input): Promise<ExecutionContext> {
       ownerId,
       currentUser: userJWT ? { id: userJWT?.sub ?? '', email: userJWT?.email ?? '' } : null,
       repositories: buildRepositories(trx),
-      loaders: buildLoaders(trx, storefront?.locale, input.variables),
+      loaders: buildLoaders(trx, storefront?.locale),
       storefront
     };
   } catch (error) {

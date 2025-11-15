@@ -70,11 +70,6 @@ const getVariantsHasChanged = (
       length: length ?? undefined
     };
 
-    console.log({
-      inMemoryVariant,
-      persistedVariant
-    });
-
     return (
       inMemoryVariant.salePrice !== persistedVariant?.salePrice ||
       inMemoryVariant.stock !== persistedVariant?.stock ||

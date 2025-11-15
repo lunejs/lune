@@ -12,8 +12,6 @@ export function useErrorLogger(): Plugin {
         return;
       }
 
-      console.log(p.result?.errors);
-
       for (const error of p.result?.errors ?? []) {
         const original = error.originalError;
 
