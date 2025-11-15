@@ -3,8 +3,9 @@ import { seedCountries } from './countries/countries.seed';
 import { seedUsers } from './users/users.seed';
 import { seedShops } from './shops/shops.seed';
 import { resetDatabase } from './reset-database';
-import { UserRepository } from '@/persistence/repositories/user-repository';
 import { LuneLogger } from '@/logger/lune.logger';
+import { Tables } from '@/persistence/tables';
+import type { UserTable } from '@/persistence/entities/user';
 
 let trx: Knex.Transaction;
 let db: Knex;
@@ -24,8 +25,9 @@ async function main() {
   await seedCountries(trx);
   await seedUsers(trx);
 
-  const userRepository = new UserRepository(trx);
-  const user = await userRepository.findByEmail('admin@admin.com');
+  const user = await trx<UserTable>(Tables.Users)
+    .where({ email: 'admin@admin.com' })
+    .first();
 
   if (!user) {
     throw new Error("User 'admin@admin.com' is not present");

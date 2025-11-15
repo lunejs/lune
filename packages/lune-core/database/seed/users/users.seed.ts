@@ -1,18 +1,17 @@
 import type { Knex } from 'knex';
 import bcrypt from 'bcrypt';
 
-import { UserRepository } from '@/persistence/repositories/user-repository/user.repository';
 import { LuneLogger } from '@/logger/lune.logger';
+import { Tables } from '@/persistence/tables';
+import type { UserTable } from '@/persistence/entities/user';
 
 import Users from './users.json';
 
 export async function seedUsers(trx: Knex.Transaction) {
-  const userRepository = new UserRepository(trx);
-
   for (const user of Users) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
-    await userRepository.create({
+    await trx<UserTable>(Tables.Users).insert({
       email: user.email,
       password: hashedPassword
     });
