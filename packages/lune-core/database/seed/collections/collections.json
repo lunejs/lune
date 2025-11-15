@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Acme",
+    "slug": "acme",
+    "description": "The complete Acme collection - premium quality products for everyone",
+    "enabled": true,
+    "contentType": "PRODUCTS",
+    "order": 0
+  }
+]

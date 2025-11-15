@@ -3,6 +3,7 @@ import { seedCountries } from './countries/countries.seed';
 import { seedUsers } from './users/users.seed';
 import { seedShops } from './shops/shops.seed';
 import { seedProducts } from './products/products.seed';
+import { seedCollections } from './collections/collections.seed';
 import { resetDatabase } from './reset-database';
 import { LuneLogger } from '@/logger/lune.logger';
 import { Tables } from '@/persistence/tables';
@@ -46,6 +47,7 @@ async function main() {
   }
 
   await seedProducts(trx, { userId: user.id, shopId: shop.id });
+  await seedCollections(trx, { userId: user.id, shopId: shop.id });
 }
 
 main()
