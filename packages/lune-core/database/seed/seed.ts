@@ -1,5 +1,6 @@
 import { knex, type Knex } from 'knex';
 import { seedCountries } from './countries/countries.seed';
+import { seedUsers } from './users/users.seed';
 import { resetDatabase } from './reset-database';
 import { LuneLogger } from '@/index';
 
@@ -19,6 +20,7 @@ async function main() {
   trx = await db.transaction();
 
   await seedCountries(trx);
+  await seedUsers(trx);
 }
 
 main()
