@@ -5,5 +5,7 @@ export class RepositoryError extends LuneError {
     const message = error instanceof Error ? error.message : String(error);
 
     super(message);
+
+    this.name = 'RepositoryError';
   }
 }

@@ -11,7 +11,7 @@ export async function seedCountries(trx: Knex.Transaction) {
   for (const country of Countries) {
     const [countryCreated] = await trx<CountryTable>(Tables.Country)
       .insert({
-        name: country.code,
+        name: country.name,
         code: country.code
       })
       .returning('id');

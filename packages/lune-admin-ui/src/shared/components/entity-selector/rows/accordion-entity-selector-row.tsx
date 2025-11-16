@@ -19,7 +19,7 @@ export const AccordionEntitySelectorRow: FC<Props> = ({
       <AccordionItem value={`entity-${value}`}>
         <div className="flex items-center border-b pl-6 w-full sticky top-0 bg-background">
           <Checkbox checked={checked} onCheckedChange={onCheckedChange} />
-          <AccordionTrigger className="py-0 pr-6" containerClassName="w-full">
+          <AccordionTrigger className="py-0 pr-6 items-center">
             <div className="flex items-center gap-4 px-6 py-4 cursor-pointer">
               {image && <img src={image} alt={label} className="w-10 h-10 rounded object-cover" />}
               <p>{label}</p>
