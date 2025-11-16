@@ -1,6 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { CommonLocationFieldResolver } from '@/api/shared/resolvers/location-field.resolver';
 import type {
   MutationCreateLocationArgs,
   QueryLocationArgs,
@@ -13,12 +14,12 @@ import { isErrorResult } from '@/utils/error-result';
 async function locations(_, { input }: QueryLocationsArgs, ctx: ExecutionContext) {
   const locationService = new LocationService(ctx);
 
-  const [products, count] = await Promise.all([
+  const [locations, count] = await Promise.all([
     locationService.find(input ?? {}),
     locationService.count()
   ]);
 
-  return new ListResponse(products, products.length, { total: count });
+  return new ListResponse(locations, locations.length, { total: count });
 }
 
 async function location(_, { id }: QueryLocationArgs, ctx: ExecutionContext) {
@@ -44,5 +45,8 @@ export const LocationResolver: GraphqlApiResolver = {
   },
   Mutation: {
     createLocation: UseUserGuard(createLocation)
+  },
+  Location: {
+    ...CommonLocationFieldResolver
   }
 };

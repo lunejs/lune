@@ -31,9 +31,17 @@ type Location {
   Additional references or instructions for finding the location
   """
   references: String
+  """
+  Address's country
+  """
+  country: Country!
+  """
+  Address's state/province/region
+  """
+  state: State!
 }
 
-type LocationList implements List {
+type LocationList {
   items: [Location!]!
   count: Int!
   pageInfo: PageInfo!

@@ -11,6 +11,9 @@ import { createCollectionTranslationsLoader } from './collection/collection-tran
 import { createCountryStatesLoader } from './country/country-states.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
 import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
+import { createLocationCountryLoader } from './location/location-country.loader';
+import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
+import { createLocationStateLoader } from './location/location-state.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
@@ -80,6 +83,11 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     state: {
       country: createStateCountryLoader(trx)
+    },
+    location: {
+      country: createLocationCountryLoader(trx),
+      state: createLocationStateLoader(trx),
+      inStorePickup: createLocationInStorePickupLoader(trx)
     }
   };
 };
