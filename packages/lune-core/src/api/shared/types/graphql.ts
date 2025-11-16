@@ -452,6 +452,8 @@ export type Location = {
   __typename?: 'Location';
   /** Location's city */
   city: Scalars['String']['output'];
+  /** Address's country */
+  country: Country;
   createdAt: Scalars['Date']['output'];
   /**
    * Whether this location is enabled or not
@@ -469,6 +471,8 @@ export type Location = {
   postalCode: Scalars['String']['output'];
   /** Additional references or instructions for finding the location */
   references?: Maybe<Scalars['String']['output']>;
+  /** Address's state/province/region */
+  state: State;
   /** Street address line 1 */
   streetLine1: Scalars['String']['output'];
   /** Street address line 2 (optional) */
@@ -486,7 +490,7 @@ export type LocationErrorResult = {
   message: Scalars['String']['output'];
 };
 
-export type LocationList = List & {
+export type LocationList = {
   __typename?: 'LocationList';
   count: Scalars['Int']['output'];
   items: Array<Location>;
@@ -536,7 +540,7 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
-  updateInStorePickupPreferences: Location;
+  updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
   updateOption: Option;
   updateOrderLine: OrderResult;
@@ -1204,7 +1208,7 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
-  location: Location;
+  location?: Maybe<Location>;
   locations: LocationList;
   order?: Maybe<Order>;
   product?: Maybe<Product>;
@@ -1510,6 +1514,11 @@ export type UpdateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type UpdateInStorePickupPreferencesInput = {
+  instructions?: InputMaybe<Scalars['String']['input']>;
+  isAvailable?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type UpdateLocationInput = {
   city?: InputMaybe<Scalars['String']['input']>;
   countryId?: InputMaybe<Scalars['ID']['input']>;
@@ -1710,11 +1719,6 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-export type UpdateInStorePickupPreferencesInput = {
-  instructions?: InputMaybe<Scalars['String']['input']>;
-  isAvailable?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -1790,7 +1794,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( LocationList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
   Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
@@ -1916,6 +1920,7 @@ export type ResolversTypes = {
   TagListInput: TagListInput;
   TagResult: ResolverTypeWrapper<TagResult>;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
@@ -1936,7 +1941,6 @@ export type ResolversTypes = {
   Variant: ResolverTypeWrapper<Variant>;
   VariantList: ResolverTypeWrapper<VariantList>;
   Zone: ResolverTypeWrapper<Zone>;
-  updateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -2049,6 +2053,7 @@ export type ResolversParentTypes = {
   TagListInput: TagListInput;
   TagResult: TagResult;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
@@ -2068,7 +2073,6 @@ export type ResolversParentTypes = {
   Variant: Variant;
   VariantList: VariantList;
   Zone: Zone;
-  updateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
 };
 
 export type AddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
@@ -2226,7 +2230,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'LocationList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -2234,6 +2238,7 @@ export type ListResolvers<ContextType = ExecutionContext, ParentType extends Res
 
 export type LocationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  country?: Resolver<ResolversTypes['Country'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -2242,6 +2247,7 @@ export type LocationResolvers<ContextType = ExecutionContext, ParentType extends
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   references?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  state?: Resolver<ResolversTypes['State'], ParentType, ContextType>;
   streetLine1?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   streetLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2297,7 +2303,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
   updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
-  updateInStorePickupPreferences?: Resolver<ResolversTypes['Location'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
+  updateInStorePickupPreferences?: Resolver<ResolversTypes['InStorePickup'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
   updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>>;
@@ -2544,7 +2550,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
-  location?: Resolver<ResolversTypes['Location'], ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
+  location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;

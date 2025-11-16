@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     table.boolean('isAvailable').notNullable();
     table.text('instructions').notNullable();
 
-    table.uuid('location_id').notNullable().references('id').inTable('location');
+    table.uuid('location_id').notNullable().unique().references('id').inTable('location');
 
     table
       .uuid('shop_id')

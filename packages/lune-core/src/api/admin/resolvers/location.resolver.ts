@@ -6,6 +6,7 @@ import type {
   MutationCreateLocationArgs,
   MutationRemoveLocationArgs,
   MutationUpdateCollectionArgs,
+  MutationUpdateInStorePickupPreferencesArgs,
   QueryLocationArgs,
   QueryLocationsArgs
 } from '@/api/shared/types/graphql';
@@ -60,6 +61,16 @@ async function removeLocation(_, { id }: MutationRemoveLocationArgs, ctx: Execut
   return await locationService.remove(id);
 }
 
+async function updateInStorePickupPreferences(
+  _,
+  { locationId, input }: MutationUpdateInStorePickupPreferencesArgs,
+  ctx: ExecutionContext
+) {
+  const locationService = new LocationService(ctx);
+
+  return await locationService.updateInStorePickupPreferences(locationId, input);
+}
+
 export const LocationResolver: GraphqlApiResolver = {
   Query: {
     locations: UseUserGuard(locations),
@@ -68,7 +79,8 @@ export const LocationResolver: GraphqlApiResolver = {
   Mutation: {
     createLocation: UseUserGuard(createLocation),
     updateLocation: UseUserGuard(updateLocation),
-    removeLocation: UseUserGuard(removeLocation)
+    removeLocation: UseUserGuard(removeLocation),
+    updateInStorePickupPreferences: UseUserGuard(updateInStorePickupPreferences)
   },
   Location: {
     ...CommonLocationFieldResolver

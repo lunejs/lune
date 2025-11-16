@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   CreateLocationInput,
   ListInput,
+  UpdateInStorePickupPreferencesInput,
   UpdateLocationInput
 } from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
@@ -76,9 +77,18 @@ export class LocationService {
   }
 
   async remove(id: ID) {
-    await this.inStorePickupRepository.removeMany({ whereIn: 'locationId', values: [id] });
+    await this.inStorePickupRepository.remove({ where: { locationId: id } });
     await this.repository.remove({ where: { id } });
 
     return true;
+  }
+
+  async updateInStorePickupPreferences(locationId: ID, input: UpdateInStorePickupPreferencesInput) {
+    return await this.inStorePickupRepository.update({
+      where: { locationId },
+      data: {
+        ...clean(input)
+      }
+    });
   }
 }

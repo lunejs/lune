@@ -23,8 +23,8 @@ type Mutation {
   removeLocation(id: ID!): Boolean!
   updateInStorePickupPreferences(
     locationId: ID!
-    input: updateInStorePickupPreferencesInput!
-  ): Location!
+    input: UpdateInStorePickupPreferencesInput!
+  ): InStorePickup!
 }
 
 input CreateLocationInput {
@@ -55,7 +55,7 @@ input UpdateLocationInput {
   stateId: ID
 }
 
-input updateInStorePickupPreferencesInput {
+input UpdateInStorePickupPreferencesInput {
   isAvailable: Boolean
   instructions: String
 }
