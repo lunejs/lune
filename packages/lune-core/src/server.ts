@@ -93,6 +93,7 @@ export class LuneServer {
   }
 }
 
+// Ignore this
 export function makeKnexQueryCounter(knexOrDb: Knex | { knex?: Knex }) {
   const knex: Knex =
     (knexOrDb as any).knex && typeof (knexOrDb as any).knex.on === 'function'
@@ -112,7 +113,6 @@ export function makeKnexQueryCounter(knexOrDb: Knex | { knex?: Knex }) {
     const cleanup = () => {
       knex.off('query', onQuery);
       const elapsedMs = Number(process.hrtime.bigint() - started) / 1e6;
-      // ajusta tu logger si quieres más detalle
       console.log(
         `[SQL] ${req.method} ${req.originalUrl} -> queries=${count} in ${elapsedMs.toFixed(1)}ms`
       );

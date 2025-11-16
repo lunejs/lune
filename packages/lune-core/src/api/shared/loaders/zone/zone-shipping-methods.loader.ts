@@ -11,7 +11,9 @@ export function createZoneShippingMethodsLoader(trx: Transaction) {
   return new DataLoader<string, ShippingMethod[]>(async zoneIds => {
     const ids = zoneIds as string[];
 
-    const rows = await trx<ShippingMethodTable>(Tables.ShippingMethod).whereIn('zone_id', ids);
+    const rows = await trx<ShippingMethodTable>(Tables.ShippingMethod)
+      .whereIn('zone_id', ids)
+      .orderBy('created_at', 'asc');
 
     const byId = new Map<string, ShippingMethod[]>();
     for (const id of ids) byId.set(id, []);

@@ -1,9 +1,8 @@
 import { type FC } from 'react';
-import { CircleFadingPlusIcon, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -17,19 +16,19 @@ import {
   TableRow
 } from '@lune/ui';
 
-import type { CommonZoneFragment } from '@/lib/api/types';
+import type { CommonShippingHandlersFragment, CommonZoneFragment } from '@/lib/api/types';
 import { formatShippingMethodPreviewPrice } from '@/lib/shipments/utils/shipment.utils';
 
-export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
+import { AddShippingMethodButton } from './add-shipping-method-button';
+import { UpdateShippingMethodButton } from './update-shipping-method';
+
+export const ShippingMethodsTable: FC<Props> = ({ zone, handlers }) => {
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle>Shipping methods</CardTitle>
 
-        <Button variant={'outline'} type="button">
-          <CircleFadingPlusIcon />
-          <span className="hidden lg:inline">Add Shipping methods</span>
-        </Button>
+        <AddShippingMethodButton zone={zone} shippingHandlers={handlers} />
       </CardHeader>
 
       <CardContent>
@@ -43,7 +42,7 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {!shippingMethods.length && (
+            {!zone.shippingMethods.length && (
               <TableRow>
                 <TableCell colSpan={4}>
                   <div className="flex justify-center py-8 w-full">
@@ -52,9 +51,11 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
                 </TableCell>
               </TableRow>
             )}
-            {shippingMethods.map(method => (
+            {zone.shippingMethods.map(method => (
               <TableRow key={method.id}>
-                <TableCell>{method.name}</TableCell>
+                <TableCell>
+                  <UpdateShippingMethodButton method={method} zone={zone} handlers={handlers} />
+                </TableCell>
                 <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
                 <TableCell>
                   <Badge variant={method.enabled ? 'default' : 'secondary'}>
@@ -79,5 +80,6 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
 };
 
 type Props = {
-  shippingMethods: CommonZoneFragment['shippingMethods'];
+  zone: CommonZoneFragment;
+  handlers: CommonShippingHandlersFragment[];
 };

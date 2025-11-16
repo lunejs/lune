@@ -4,6 +4,7 @@ import { PageLoader } from '@/shared/components/loader/page-loader';
 
 import { ZoneDetails } from '../components/zone-details/zone-details';
 import { useGetCountries } from '../hooks/use-get-countries';
+import { useGetShippingHandlers } from '../hooks/use-get-shipping-handlers';
 import { useGetZone } from '../hooks/use-get-zone';
 
 export const ZoneDetailsPage = () => {
@@ -11,8 +12,9 @@ export const ZoneDetailsPage = () => {
 
   const { isLoading, zone } = useGetZone(id);
   const { isLoading: isLoadingCountries, countries } = useGetCountries();
+  const { isLoading: isLoadingHandlers, shippingHandlers } = useGetShippingHandlers();
 
-  if (isLoading && isLoadingCountries) return <PageLoader />;
+  if (isLoading && isLoadingCountries && isLoadingHandlers) return <PageLoader />;
 
-  return <ZoneDetails zone={zone} countries={countries} />;
+  return <ZoneDetails zone={zone} handlers={shippingHandlers} countries={countries} />;
 };

@@ -1,7 +1,11 @@
 import { formatDate } from '@lune/common';
 import { Form, FormInput } from '@lune/ui';
 
-import type { CommonCountryFragment, CommonZoneFragment } from '@/lib/api/types';
+import type {
+  CommonCountryFragment,
+  CommonShippingHandlersFragment,
+  CommonZoneFragment
+} from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 
 import { ZoneActions } from './actions/zone-actions';
@@ -10,7 +14,7 @@ import { useZoneDetailsForm } from './use-form/use-form';
 import { ZoneCountries } from './zone-countries/zone-countries';
 import { ShippingMethodsTable } from './zone-shipping-methods/shipping-methods-table';
 
-export const ZoneDetails = ({ countries, zone }: Props) => {
+export const ZoneDetails = ({ countries, zone, handlers }: Props) => {
   const form = useZoneDetailsForm(zone ?? null, countries);
 
   return (
@@ -39,7 +43,7 @@ export const ZoneDetails = ({ countries, zone }: Props) => {
               placeholder="International"
             />
             <ZoneCountries />
-            {zone && <ShippingMethodsTable shippingMethods={zone.shippingMethods} />}
+            {zone && handlers && <ShippingMethodsTable zone={zone} handlers={handlers} />}
           </div>
         </SettingsPageLayout>
       </form>
@@ -50,4 +54,5 @@ export const ZoneDetails = ({ countries, zone }: Props) => {
 type Props = {
   countries: CommonCountryFragment[];
   zone?: CommonZoneFragment | null;
+  handlers?: CommonShippingHandlersFragment[];
 };
