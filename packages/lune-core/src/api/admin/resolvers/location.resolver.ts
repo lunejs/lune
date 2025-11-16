@@ -4,6 +4,8 @@ import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { CommonLocationFieldResolver } from '@/api/shared/resolvers/location-field.resolver';
 import type {
   MutationCreateLocationArgs,
+  MutationRemoveLocationArgs,
+  MutationUpdateCollectionArgs,
   QueryLocationArgs,
   QueryLocationsArgs
 } from '@/api/shared/types/graphql';
@@ -38,13 +40,35 @@ async function createLocation(_, { input }: MutationCreateLocationArgs, ctx: Exe
     : { apiErrors: [], location: result };
 }
 
+async function updateLocation(
+  _,
+  { id, input }: MutationUpdateCollectionArgs,
+  ctx: ExecutionContext
+) {
+  const locationService = new LocationService(ctx);
+
+  const result = await locationService.update(id, input);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result], location: null }
+    : { apiErrors: [], location: result };
+}
+
+async function removeLocation(_, { id }: MutationRemoveLocationArgs, ctx: ExecutionContext) {
+  const locationService = new LocationService(ctx);
+
+  return await locationService.remove(id);
+}
+
 export const LocationResolver: GraphqlApiResolver = {
   Query: {
     locations: UseUserGuard(locations),
     location: UseUserGuard(location)
   },
   Mutation: {
-    createLocation: UseUserGuard(createLocation)
+    createLocation: UseUserGuard(createLocation),
+    updateLocation: UseUserGuard(updateLocation),
+    removeLocation: UseUserGuard(removeLocation)
   },
   Location: {
     ...CommonLocationFieldResolver
