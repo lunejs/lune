@@ -11,7 +11,7 @@ import {
   UserIcon,
   UsersIcon
 } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { Logo } from '../logo';
 
@@ -29,6 +29,8 @@ import {
 import { SidebarUser } from './sidebar-user';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -50,7 +52,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {SIDEBAR.navMain.map(item => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild>
+                <SidebarMenuButton
+                  variant={item.isActive?.(location.pathname) ? 'secondary' : 'default'}
+                  tooltip={item.title}
+                  asChild
+                >
                   <Link to={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
@@ -118,12 +124,14 @@ const SIDEBAR = {
     {
       title: 'Products',
       url: '/products',
-      icon: PackageIcon
+      icon: PackageIcon,
+      isActive: (pathname: string) => pathname.includes('products')
     },
     {
       title: 'Collections',
       url: '/collections',
-      icon: BoxesIcon
+      icon: BoxesIcon,
+      isActive: (pathname: string) => pathname.includes('collections')
     },
     {
       title: 'Assets',

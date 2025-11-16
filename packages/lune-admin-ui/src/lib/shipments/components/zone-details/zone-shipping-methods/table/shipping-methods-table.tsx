@@ -52,7 +52,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone, handlers }) => {
                 </TableRow>
               )}
               {zone.shippingMethods.map(method => (
-                <ShippingMethodTableRow method={method} />
+                <ShippingMethodTableRow key={method.id} method={method} />
               ))}
             </TableBody>
           </Table>

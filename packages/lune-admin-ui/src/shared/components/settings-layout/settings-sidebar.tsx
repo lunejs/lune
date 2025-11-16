@@ -9,7 +9,7 @@ import {
   TruckIcon,
   UsersIcon
 } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { Logo } from '../logo';
 import {
@@ -26,6 +26,8 @@ import {
 import { SidebarUser } from '../sidebar/sidebar-user';
 
 export function SettingsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -47,7 +49,32 @@ export function SettingsSidebar({ ...props }: React.ComponentProps<typeof Sideba
           <SidebarMenu>
             {SIDEBAR.general.map(item => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive?.(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
+                  <Link to={`/settings${item.url}`}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Fulfillment</SidebarGroupLabel>
+
+          <SidebarMenu>
+            {SIDEBAR.fulfillment.map(item => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive?.(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
                   <Link to={`/settings${item.url}`}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
@@ -85,13 +112,16 @@ const SIDEBAR = {
     {
       title: 'Shop details',
       url: '/shop',
-      icon: StoreIcon
+      icon: StoreIcon,
+      isActive: (pathname: string) => pathname.includes('shop')
     },
     {
       title: 'Users and permissions',
       url: '/users',
       icon: UsersIcon
-    },
+    }
+  ],
+  fulfillment: [
     {
       title: 'Payments',
       url: '/payments',
@@ -100,7 +130,8 @@ const SIDEBAR = {
     {
       title: 'Shipments',
       url: '/shipments',
-      icon: TruckIcon
+      icon: TruckIcon,
+      isActive: (pathname: string) => pathname.includes('shipments')
     },
     {
       title: 'Locations',

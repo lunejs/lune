@@ -11,7 +11,7 @@ export const ShippingMethodTableRow = ({ method }: Props) => {
   const { isRemoving, removeShippingMethod } = useRemoveShippingMethodButton();
 
   return (
-    <TableRow key={method.id} className={cn(isRemoving && 'opacity-40')}>
+    <TableRow className={cn(isRemoving && 'opacity-40')}>
       <TableCell>
         <UpdateShippingMethodButton method={method} />
       </TableCell>
