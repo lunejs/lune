@@ -1,7 +1,11 @@
 import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateLocationInput, ListInput } from '@/api/shared/types/graphql';
+import type {
+  CreateLocationInput,
+  ListInput,
+  UpdateLocationInput
+} from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
 import type { InStorePickupRepository } from '@/persistence/repositories/in-store-pickup-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
@@ -52,5 +56,22 @@ export class LocationService {
     });
 
     return location;
+  }
+
+  async update(locationId: ID, input: UpdateLocationInput) {
+    if (input.name) {
+      const nameAlreadyExists = await this.repository.findOne({ where: { name: input.name } });
+
+      if (nameAlreadyExists && nameAlreadyExists.id !== locationId) {
+        return new LocationNameAlreadyExistsError();
+      }
+    }
+
+    return await this.repository.update({
+      where: { id: locationId },
+      data: {
+        ...clean(input)
+      }
+    });
   }
 }
