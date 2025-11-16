@@ -2,15 +2,16 @@ import { useState } from 'react';
 
 import { notification, useDialogContext } from '@lune/ui';
 
-import type { CommonShippingHandlersFragment, CommonZoneFragment } from '@/lib/api/types';
+import type { CommonZoneFragment } from '@/lib/api/types';
 import { useCreateShippingMethod } from '@/lib/shipments/hooks/use-create-shipping-method';
 import { useUpdateShippingMethod } from '@/lib/shipments/hooks/use-update-shipping-method';
 
+import { useZoneShippingMethodContext } from '../zone-shipping-method-context';
+
 export const useShippingMethodForm = (
-  zone: CommonZoneFragment,
-  shippingHandlers: CommonShippingHandlersFragment[],
   methodToUpdate?: CommonZoneFragment['shippingMethods'][0]
 ) => {
+  const { zone, handlers } = useZoneShippingMethodContext();
   const { setIsOpen } = useDialogContext();
 
   const { createShippingMethod } = useCreateShippingMethod(zone.id);
@@ -19,7 +20,7 @@ export const useShippingMethodForm = (
   const isEditing = methodToUpdate;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [handler, setHandler] = useState(shippingHandlers[0]);
+  const [handler, setHandler] = useState(handlers[0]);
 
   const [method, setMethod] = useState<FormInput>({
     handlerCode: methodToUpdate?.handler.code ?? '',

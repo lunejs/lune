@@ -2,11 +2,11 @@ import { type FC } from 'react';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lune/ui';
 
-import type { CommonShippingHandlersFragment, CommonZoneFragment } from '@/lib/api/types';
+import type { CommonZoneFragment } from '@/lib/api/types';
 
-import { ShippingMethodForm } from './shipping-methods-form/shipping-method-form';
+import { ShippingMethodForm } from '../shipping-methods-form/shipping-method-form';
 
-export const UpdateShippingMethodButton: FC<Props> = ({ zone, handlers, method }) => {
+export const UpdateShippingMethodButton: FC<Props> = ({ method }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -16,14 +16,12 @@ export const UpdateShippingMethodButton: FC<Props> = ({ zone, handlers, method }
         <DialogHeader>
           <DialogTitle>{method.name}</DialogTitle>
         </DialogHeader>
-        <ShippingMethodForm zone={zone} shippingHandlers={handlers} methodToUpdate={method} />
+        <ShippingMethodForm methodToUpdate={method} />
       </DialogContent>
     </Dialog>
   );
 };
 
 type Props = {
-  zone: CommonZoneFragment;
   method: CommonZoneFragment['shippingMethods'][0];
-  handlers: CommonShippingHandlersFragment[];
 };

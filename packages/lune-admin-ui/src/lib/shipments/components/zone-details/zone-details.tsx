@@ -12,7 +12,7 @@ import { ZoneActions } from './actions/zone-actions';
 import { ZoneDetailsSubmitButton } from './use-form/submit-button';
 import { useZoneDetailsForm } from './use-form/use-form';
 import { ZoneCountries } from './zone-countries/zone-countries';
-import { ShippingMethodsTable } from './zone-shipping-methods/shipping-methods-table';
+import { ShippingMethodsTable } from './zone-shipping-methods/table/shipping-methods-table';
 
 export const ZoneDetails = ({ countries, zone, handlers }: Props) => {
   const form = useZoneDetailsForm(zone ?? null, countries);

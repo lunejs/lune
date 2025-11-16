@@ -13,13 +13,17 @@ import {
   SelectValue
 } from '@lune/ui';
 
-import type { Args, CommonShippingHandlersFragment, CommonZoneFragment } from '@/lib/api/types';
+import type { Args, CommonZoneFragment } from '@/lib/api/types';
+
+import { useZoneShippingMethodContext } from '../zone-shipping-method-context';
 
 import { useShippingMethodForm } from './use-shipping-method-form';
 
-export const ShippingMethodForm = ({ zone, shippingHandlers, methodToUpdate }: Props) => {
+export const ShippingMethodForm = ({ methodToUpdate }: Props) => {
+  const { handlers } = useZoneShippingMethodContext();
+
   const { method, setValue, handler, setHandler, isLoading, createShippingMethod } =
-    useShippingMethodForm(zone, shippingHandlers, methodToUpdate);
+    useShippingMethodForm(methodToUpdate);
 
   const form: Args = useMemo(() => handler.args, [handler]);
 
@@ -38,13 +42,13 @@ export const ShippingMethodForm = ({ zone, shippingHandlers, methodToUpdate }: P
           disabled={!!methodToUpdate}
           value={handler.code}
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          onValueChange={value => setHandler(shippingHandlers.find(h => h.code === value)!)}
+          onValueChange={value => setHandler(handlers.find(h => h.code === value)!)}
         >
           <SelectTrigger className="w-full">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {shippingHandlers.map(handlers => (
+            {handlers.map(handlers => (
               <SelectItem key={handlers.code} value={handlers.code}>
                 {handlers.name}
               </SelectItem>
@@ -113,8 +117,6 @@ export const ShippingMethodForm = ({ zone, shippingHandlers, methodToUpdate }: P
 };
 
 type Props = {
-  zone: CommonZoneFragment;
-  shippingHandlers: CommonShippingHandlersFragment[];
   /**
    * Optional prop to make the form update a shipping method instead of creating a new one
    */
