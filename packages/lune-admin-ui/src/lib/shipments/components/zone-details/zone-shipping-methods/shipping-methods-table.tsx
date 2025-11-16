@@ -27,7 +27,8 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
         <CardTitle>Shipping methods</CardTitle>
 
         <Button variant={'outline'} type="button">
-          <CircleFadingPlusIcon /> Add Shipping methods
+          <CircleFadingPlusIcon />
+          <span className="hidden lg:inline">Add Shipping methods</span>
         </Button>
       </CardHeader>
 
