@@ -9,6 +9,7 @@ import { CustomerRepository } from './customer-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
 import { InStorePickupFulfillmentRepository } from './in-store-pickup-fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
+import { LocationRepository } from './location-repository';
 import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
@@ -56,6 +57,7 @@ export function buildRepositories(trx: Transaction) {
     paymentFailure: new PaymentFailureRepository(trx),
     paymentRejection: new PaymentRejectionRepository(trx),
     paymentCancellation: new PaymentCancellationRepository(trx),
+    location: new LocationRepository(trx),
     inStorePickup: new InStorePickupRepository(trx),
     fulfillment: new FulfillmentRepository(trx),
     shippingFulfillment: new ShippingFulfillmentRepository(trx),
