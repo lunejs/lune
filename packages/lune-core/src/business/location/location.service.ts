@@ -74,4 +74,11 @@ export class LocationService {
       }
     });
   }
+
+  async remove(id: ID) {
+    await this.inStorePickupRepository.removeMany({ whereIn: 'locationId', values: [id] });
+    await this.repository.remove({ where: { id } });
+
+    return true;
+  }
 }
