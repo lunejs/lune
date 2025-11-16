@@ -10,6 +10,6 @@ export class CountryService {
   }
 
   async find() {
-    return await this.repository.findMany({ orderBy: { name: SortKey.Desc } });
+    return await this.repository.findMany({ orderBy: { name: SortKey.Asc } });
   }
 }
