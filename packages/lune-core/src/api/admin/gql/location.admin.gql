@@ -14,7 +14,7 @@ extend type Location {
 
 type Query {
   locations(input: ListInput): LocationList!
-  location(id: ID!): Location!
+  location(id: ID!): Location
 }
 
 type Mutation {
