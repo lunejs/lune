@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { CircleFadingPlusIcon } from 'lucide-react';
 
 import { Button } from '@lune/ui';
 
@@ -35,8 +34,8 @@ export const ZoneCountriesSelector = () => {
       title="Add countries"
       description="Add countries to your zone"
       trigger={
-        <Button variant={'outline'} type="button">
-          <CircleFadingPlusIcon /> Add countries
+        <Button variant={'ghost'} type="button">
+          Add countries
         </Button>
       }
       items={filteredCountries}

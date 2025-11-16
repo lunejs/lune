@@ -1066,6 +1066,8 @@ export type ShippingMethod = {
   id: Scalars['ID']['output'];
   /** The shipping method's name */
   name: Scalars['String']['output'];
+  /** The shipping method's price preview */
+  pricePreview: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -1846,6 +1848,7 @@ export type CommonZoneFragment = {
     id: string;
     name: string;
     enabled: boolean;
+    pricePreview: number;
     handler: { code: string; args: any };
   }[];
 } & { ' $fragmentName'?: 'CommonZoneFragment' };
@@ -2734,6 +2737,7 @@ export const CommonZoneFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pricePreview' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'handler' },
@@ -5375,6 +5379,7 @@ export const GetZoneDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pricePreview' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'handler' },

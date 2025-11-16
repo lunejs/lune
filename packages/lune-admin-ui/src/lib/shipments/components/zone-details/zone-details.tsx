@@ -7,6 +7,7 @@ import { SettingsPageLayout } from '@/shared/components/layout/settings-page-lay
 import { ZoneDetailsSubmitButton } from './use-form/submit-button';
 import { useZoneDetailsForm } from './use-form/use-form';
 import { ZoneCountries } from './zone-countries/zone-countries';
+import { ShippingMethodsTable } from './zone-shipping-methods/shipping-methods-table';
 
 export const ZoneDetails = ({ countries, zone }: Props) => {
   const form = useZoneDetailsForm(zone ?? null, countries);
@@ -32,6 +33,7 @@ export const ZoneDetails = ({ countries, zone }: Props) => {
               placeholder="International"
             />
             <ZoneCountries />
+            {zone && <ShippingMethodsTable shippingMethods={zone?.shippingMethods ?? []} />}
           </div>
         </SettingsPageLayout>
       </form>

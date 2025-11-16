@@ -65,7 +65,7 @@ type Documents = {
   '\n  mutation CreateVariant($productId: ID!, $input: [CreateVariantInput!]!) {\n    createVariant(productId: $productId, input: $input) {\n      id\n    }\n  }\n': typeof types.CreateVariantDocument;
   '\n  mutation UpdateVariant($id: ID!, $input: UpdateVariantInput!) {\n    updateVariant(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateVariantDocument;
   '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n': typeof types.SoftRemoveVariantDocument;
-  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      handler {\n        code\n        args\n      }\n    }\n  }\n': typeof types.CommonZoneFragmentDoc;
+  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      pricePreview\n      handler {\n        code\n        args\n      }\n    }\n  }\n': typeof types.CommonZoneFragmentDoc;
   '\n  fragment CommonListZone on Zone {\n    id\n    name\n    shippingMethods {\n      id\n    }\n  }\n': typeof types.CommonListZoneFragmentDoc;
   '\n  query getAllZones {\n    zones {\n      ...CommonListZone\n    }\n  }\n': typeof types.GetAllZonesDocument;
   '\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n': typeof types.GetZoneDocument;
@@ -172,7 +172,7 @@ const documents: Documents = {
     types.UpdateVariantDocument,
   '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n':
     types.SoftRemoveVariantDocument,
-  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      handler {\n        code\n        args\n      }\n    }\n  }\n':
+  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      pricePreview\n      handler {\n        code\n        args\n      }\n    }\n  }\n':
     types.CommonZoneFragmentDoc,
   '\n  fragment CommonListZone on Zone {\n    id\n    name\n    shippingMethods {\n      id\n    }\n  }\n':
     types.CommonListZoneFragmentDoc,
@@ -505,8 +505,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      handler {\n        code\n        args\n      }\n    }\n  }\n'
-): (typeof documents)['\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      handler {\n        code\n        args\n      }\n    }\n  }\n'];
+  source: '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      pricePreview\n      handler {\n        code\n        args\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n    }\n    shippingMethods {\n      id\n      name\n      enabled\n      pricePreview\n      handler {\n        code\n        args\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

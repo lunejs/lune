@@ -8,4 +8,9 @@ type ShippingMethod {
   The shipping method's name
   """
   name: String!
+
+  """
+  The shipping method's price preview
+  """
+  pricePreview: Int!
 }
