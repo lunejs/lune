@@ -42,8 +42,8 @@ describe('countries - Query', () => {
     expect(countries[0].id).toBe(CountryConstants.MxID);
     expect(countries[1].id).toBe(CountryConstants.UsID);
 
-    expect(countries[0].states).toHaveLength(50);
-    expect(countries[1].states).toHaveLength(32);
+    expect(countries[0].states).toHaveLength(32);
+    expect(countries[1].states).toHaveLength(50);
   });
 
   test('returns Authorization error when no token is provided', async () => {
