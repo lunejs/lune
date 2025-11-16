@@ -3,20 +3,21 @@ import { CircleFadingPlusIcon } from 'lucide-react';
 
 import { Button } from '@lune/ui';
 
-import type { CommonCountryFragment, CommonZoneFragment } from '@/lib/api/types';
-import { useGetCountries } from '@/lib/shipments/hooks/use-get-countries';
+import type { CommonCountryFragment } from '@/lib/api/types';
 import { useUpdateZone } from '@/lib/shipments/hooks/use-update-zone';
+import { isStateInCountry } from '@/lib/shipments/utils/shipment.utils';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';
 import { AccordionEntitySelectorRow } from '@/shared/components/entity-selector/rows/accordion-entity-selector-row';
+import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { useZoneFormDetailsContext } from '../use-form/use-form';
 
-export const ZoneCountrySelector = ({ defaultSelected, zone }: Props) => {
-  const { isLoading, countries } = useGetCountries();
+export const ZoneCountriesSelector = () => {
+  const { loading, success, failure } = useLoadingNotification();
+  const { setValue, watch, countries, zone } = useZoneFormDetailsContext();
   const { updateZone } = useUpdateZone();
 
   const [search, setSearch] = useState('');
-  const { setValue, watch } = useZoneFormDetailsContext();
   const states = watch('states');
 
   const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>(states);
@@ -26,23 +27,38 @@ export const ZoneCountrySelector = ({ defaultSelected, zone }: Props) => {
     [countries, search]
   );
 
+  const defaultSelected = zone?.states.map(s => s.id) ?? [];
+
   return (
     <EntitySelector
+      maxHeight
       title="Add countries"
       description="Add countries to your zone"
       trigger={
         <Button variant={'outline'} type="button">
-          <CircleFadingPlusIcon /> Add countries and states
+          <CircleFadingPlusIcon /> Add countries
         </Button>
       }
       items={filteredCountries}
-      isLoading={isLoading}
+      isLoading={false}
       defaultSelected={countries.filter(p => defaultSelected.includes(p.id))}
       onSearch={setSearch}
       getRowId={item => item.id}
       onDone={async () => {
         if (zone) {
-          updateZone({ id: zone.id, input: { stateIds: selectedStates.map(s => s.id) } });
+          loading('Saving...');
+
+          const result = await updateZone({
+            id: zone.id,
+            input: { stateIds: selectedStates.map(s => s.id) }
+          });
+
+          if (!result.isSuccess) {
+            failure(result.error);
+            return false;
+          }
+
+          success('Zone saved');
         } else {
           setValue('states', selectedStates);
         }
@@ -52,6 +68,7 @@ export const ZoneCountrySelector = ({ defaultSelected, zone }: Props) => {
       renderItem={({ item: country }) => {
         return (
           <AccordionEntitySelectorRow
+            key={country.id}
             value={country.id}
             checked={selectedStates.some(s => isStateInCountry(s, country))}
             onCheckedChange={checked => {
@@ -83,16 +100,4 @@ export const ZoneCountrySelector = ({ defaultSelected, zone }: Props) => {
       }}
     />
   );
-};
-
-type Props = {
-  zone: CommonZoneFragment | undefined;
-  defaultSelected: string[];
-};
-
-export const isStateInCountry = (
-  state: CommonCountryFragment['states'][0],
-  country: CommonCountryFragment
-) => {
-  return country.states.some(s => s.id === state.id);
 };

@@ -22,7 +22,7 @@ export function useQueryLogger(): Plugin {
               const [error] = result.errors ?? [];
               const original = error.originalError;
 
-              LuneLogger.query(args.operationName, original.name, duration);
+              LuneLogger.query(args.operationName, original?.name || error.name, duration);
 
               return;
             }

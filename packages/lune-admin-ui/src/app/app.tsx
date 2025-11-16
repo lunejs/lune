@@ -11,6 +11,7 @@ import { LoginPage } from '@/lib/login/pages/login-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
+import { NewZonePage } from '@/lib/shipments/pages/new-zone-page';
 import { ShipmentsPage } from '@/lib/shipments/pages/shipments-page';
 import { ZoneDetailsPage } from '@/lib/shipments/pages/zone-details-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
@@ -65,7 +66,8 @@ export const App = () => {
                 <Route element={<SettingsLayout />}>
                   <Route path="/settings/shop" element={<ShopDetails />} />
                   <Route path="/settings/shipments" element={<ShipmentsPage />} />
-                  <Route path="/settings/shipments/new" element={<ZoneDetailsPage />} />
+                  <Route path="/settings/shipments/new" element={<NewZonePage />} />
+                  <Route path="/settings/shipments/:id" element={<ZoneDetailsPage />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

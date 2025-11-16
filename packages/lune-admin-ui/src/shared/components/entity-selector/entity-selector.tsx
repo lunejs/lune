@@ -3,6 +3,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import {
   Button,
+  cn,
   Dialog,
   DialogClose,
   DialogContent,
@@ -67,6 +68,7 @@ export const EntitySelector = <T,>({
   isLoading,
   renderItem,
   items,
+  maxHeight,
   getRowId,
   defaultSelected,
   onDone
@@ -101,7 +103,12 @@ export const EntitySelector = <T,>({
             <Input placeholder="Search..." onChange={e => onQueryChange(e.target.value)} />
           </div>
 
-          <div className="border-t divide-y max-h-[calc(100svh-324px)] lg:max-h-[calc(100svh-274px)] overflow-y-auto">
+          <div
+            className={cn(
+              'border-t divide-y max-h-[calc(100svh-324px)] lg:max-h-[calc(100svh-274px)] overflow-y-auto',
+              maxHeight && 'h-screen'
+            )}
+          >
             {isLoading && (
               <div className="h-full flex items-center justify-center gap-2">
                 <SpinnerLoader />
@@ -176,6 +183,10 @@ export type EntitySelectorProps<T> = {
    * Array of items to display in the selector
    */
   items: T[];
+  /**
+   * By default, content will cover all height available
+   */
+  maxHeight?: boolean;
   /**
    * @description
    *

@@ -71,7 +71,7 @@ export const ZonesTable = () => {
             {zones.map(zone => (
               <TableRow key={zone.id}>
                 <TableCell>
-                  <Link to={`shipments/${zone.id}`} className="hover:underline">
+                  <Link to={`/settings/shipments/${zone.id}`} className="hover:underline">
                     <span>{zone.name}</span>
                   </Link>
                 </TableCell>

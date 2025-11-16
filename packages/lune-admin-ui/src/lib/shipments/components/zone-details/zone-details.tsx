@@ -1,16 +1,15 @@
-import { type FC } from 'react';
-
 import { formatDate } from '@lune/common';
-import { Button, Form, FormInput } from '@lune/ui';
+import { Form, FormInput } from '@lune/ui';
 
-import type { CommonZoneFragment } from '@/lib/api/types';
+import type { CommonCountryFragment, CommonZoneFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 
-import { ZoneCountrySelector } from './country-selector/zone-country-selector';
+import { ZoneDetailsSubmitButton } from './use-form/submit-button';
 import { useZoneDetailsForm } from './use-form/use-form';
+import { ZoneCountries } from './zone-countries/zone-countries';
 
-export const ZoneDetails: FC<Props> = ({ zone }) => {
-  const form = useZoneDetailsForm(zone);
+export const ZoneDetails = ({ countries, zone }: Props) => {
+  const form = useZoneDetailsForm(zone ?? null, countries);
 
   return (
     <Form {...form}>
@@ -23,7 +22,7 @@ export const ZoneDetails: FC<Props> = ({ zone }) => {
               ? `Created at ${formatDate(new Date(String(zone.createdAt)))}`
               : 'Create zones to add rates for places you want to deliver.'
           }
-          actions={<Button disabled={form.formState.isSubmitting}>Save</Button>}
+          actions={<ZoneDetailsSubmitButton />}
         >
           <div className="flex flex-col gap-4">
             <FormInput
@@ -32,7 +31,7 @@ export const ZoneDetails: FC<Props> = ({ zone }) => {
               label="Name"
               placeholder="International"
             />
-            <ZoneCountrySelector defaultSelected={zone?.states.map(s => s.id) ?? []} zone={zone} />
+            <ZoneCountries />
           </div>
         </SettingsPageLayout>
       </form>
@@ -41,5 +40,6 @@ export const ZoneDetails: FC<Props> = ({ zone }) => {
 };
 
 type Props = {
-  zone?: CommonZoneFragment;
+  countries: CommonCountryFragment[];
+  zone?: CommonZoneFragment | null;
 };
