@@ -28,6 +28,8 @@ export async function up(knex: Knex): Promise<void> {
       .defaultTo(knex.raw(`(current_setting('app.current_shop_id'::text))::uuid`))
       .references('id')
       .inTable('shop');
+
+    table.unique(['name', 'shop_id']);
   });
 }
 
