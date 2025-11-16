@@ -225,6 +225,19 @@ export type CreateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type CreateLocationInput = {
+  city: Scalars['String']['input'];
+  countryId: Scalars['ID']['input'];
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  postalCode: Scalars['String']['input'];
+  references?: InputMaybe<Scalars['String']['input']>;
+  stateId: Scalars['ID']['input'];
+  streetLine1: Scalars['String']['input'];
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -446,6 +459,7 @@ export type Location = {
    */
   enabled: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
+  /** In store pickup preferences */
   inStorePickup: InStorePickup;
   /** Name of the location */
   name: Scalars['String']['output'];
@@ -462,6 +476,29 @@ export type Location = {
   updatedAt: Scalars['Date']['output'];
 };
 
+export enum LocationErrorCode {
+  LocationNameAlreadyExists = 'LOCATION_NAME_ALREADY_EXISTS'
+}
+
+export type LocationErrorResult = {
+  __typename?: 'LocationErrorResult';
+  code: LocationErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type LocationList = List & {
+  __typename?: 'LocationList';
+  count: Scalars['Int']['output'];
+  items: Array<Location>;
+  pageInfo: PageInfo;
+};
+
+export type LocationResult = {
+  __typename?: 'LocationResult';
+  apiErrors: Array<LocationErrorResult>;
+  location?: Maybe<Location>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCollectionTranslation: CollectionTranslation;
@@ -471,6 +508,7 @@ export type Mutation = {
   addShippingAddressToOrder: OrderResult;
   addShippingFulfillmentToOrder: OrderResult;
   createCollection: Collection;
+  createLocation: LocationResult;
   createOption: Array<Option>;
   createOrder: OrderResult;
   createProduct: Product;
@@ -488,6 +526,7 @@ export type Mutation = {
    */
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
+  removeLocation: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
   removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
@@ -497,6 +536,8 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateInStorePickupPreferences: Location;
+  updateLocation: LocationResult;
   updateOption: Option;
   updateOrderLine: OrderResult;
   updateProduct: Product;
@@ -549,6 +590,11 @@ export type MutationAddShippingFulfillmentToOrderArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+
+export type MutationCreateLocationArgs = {
+  input: CreateLocationInput;
 };
 
 
@@ -609,6 +655,11 @@ export type MutationRemoveCollectionsArgs = {
 };
 
 
+export type MutationRemoveLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveOrderLineArgs = {
   lineId: Scalars['ID']['input'];
 };
@@ -652,6 +703,18 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateInStorePickupPreferencesArgs = {
+  input: UpdateInStorePickupPreferencesInput;
+  locationId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateLocationArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateLocationInput;
 };
 
 
@@ -1141,6 +1204,8 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
+  location: Location;
+  locations: LocationList;
   order?: Maybe<Order>;
   product?: Maybe<Product>;
   products: ProductList;
@@ -1176,6 +1241,16 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+
+export type QueryLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryLocationsArgs = {
+  input?: InputMaybe<ListInput>;
 };
 
 
@@ -1271,6 +1346,8 @@ export type ShippingMethod = {
   id: Scalars['ID']['output'];
   /** The shipping method's name */
   name: Scalars['String']['output'];
+  /** The shipping method's price preview */
+  pricePreview: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -1431,6 +1508,19 @@ export type UpdateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Array<Scalars['ID']['input']>>;
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+export type UpdateLocationInput = {
+  city?: InputMaybe<Scalars['String']['input']>;
+  countryId?: InputMaybe<Scalars['ID']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  references?: InputMaybe<Scalars['String']['input']>;
+  stateId?: InputMaybe<Scalars['ID']['input']>;
+  streetLine1?: InputMaybe<Scalars['String']['input']>;
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateOptionInput = {
@@ -1620,6 +1710,11 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type UpdateInStorePickupPreferencesInput = {
+  instructions?: InputMaybe<Scalars['String']['input']>;
+  isAvailable?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -1695,7 +1790,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  List: ( AssetList ) | ( CollectionList ) | ( LocationList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
   Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
@@ -1721,6 +1816,7 @@ export type ResolversTypes = {
   CollectionTranslationInput: CollectionTranslationInput;
   Country: ResolverTypeWrapper<Country>;
   CreateCollectionInput: CreateCollectionInput;
+  CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
   CreateOrderAddressInput: CreateOrderAddressInput;
@@ -1754,6 +1850,10 @@ export type ResolversTypes = {
   ListInput: ListInput;
   Locale: Locale;
   Location: ResolverTypeWrapper<Location>;
+  LocationErrorCode: LocationErrorCode;
+  LocationErrorResult: ResolverTypeWrapper<LocationErrorResult>;
+  LocationList: ResolverTypeWrapper<LocationList>;
+  LocationResult: ResolverTypeWrapper<LocationResult>;
   Mutation: ResolverTypeWrapper<{}>;
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
@@ -1816,6 +1916,7 @@ export type ResolversTypes = {
   TagListInput: TagListInput;
   TagResult: ResolverTypeWrapper<TagResult>;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
@@ -1835,6 +1936,7 @@ export type ResolversTypes = {
   Variant: ResolverTypeWrapper<Variant>;
   VariantList: ResolverTypeWrapper<VariantList>;
   Zone: ResolverTypeWrapper<Zone>;
+  updateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -1857,6 +1959,7 @@ export type ResolversParentTypes = {
   CollectionTranslationInput: CollectionTranslationInput;
   Country: Country;
   CreateCollectionInput: CreateCollectionInput;
+  CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
   CreateOrderAddressInput: CreateOrderAddressInput;
@@ -1888,6 +1991,9 @@ export type ResolversParentTypes = {
   List: ResolversInterfaceTypes<ResolversParentTypes>['List'];
   ListInput: ListInput;
   Location: Location;
+  LocationErrorResult: LocationErrorResult;
+  LocationList: LocationList;
+  LocationResult: LocationResult;
   Mutation: {};
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
@@ -1943,6 +2049,7 @@ export type ResolversParentTypes = {
   TagListInput: TagListInput;
   TagResult: TagResult;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
@@ -1961,6 +2068,7 @@ export type ResolversParentTypes = {
   Variant: Variant;
   VariantList: VariantList;
   Zone: Zone;
+  updateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
 };
 
 export type AddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
@@ -2118,7 +2226,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'LocationList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -2140,6 +2248,25 @@ export type LocationResolvers<ContextType = ExecutionContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type LocationErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationErrorResult'] = ResolversParentTypes['LocationErrorResult']> = {
+  code?: Resolver<ResolversTypes['LocationErrorCode'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LocationListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationList'] = ResolversParentTypes['LocationList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Location']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LocationResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationResult'] = ResolversParentTypes['LocationResult']> = {
+  apiErrors?: Resolver<Array<ResolversTypes['LocationErrorResult']>, ParentType, ContextType>;
+  location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
@@ -2148,6 +2275,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
   addShippingFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
+  createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
@@ -2159,6 +2287,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
+  removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
   removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
@@ -2168,6 +2297,8 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
   updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
+  updateInStorePickupPreferences?: Resolver<ResolversTypes['Location'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
+  updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
@@ -2413,6 +2544,8 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['Location'], ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
+  locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
   products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
@@ -2456,6 +2589,7 @@ export type ShippingMethodResolvers<ContextType = ExecutionContext, ParentType e
   handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  pricePreview?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2641,6 +2775,9 @@ export type Resolvers<ContextType = ExecutionContext> = {
   JSON?: GraphQLScalarType;
   List?: ListResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;
+  LocationErrorResult?: LocationErrorResultResolvers<ContextType>;
+  LocationList?: LocationListResolvers<ContextType>;
+  LocationResult?: LocationResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
   Option?: OptionResolvers<ContextType>;

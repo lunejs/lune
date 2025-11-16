@@ -6,6 +6,70 @@ extend type Location {
   This is used to show/hide location in the storefront
   """
   enabled: Boolean!
-
+  """
+  In store pickup preferences
+  """
   inStorePickup: InStorePickup!
+}
+
+type Query {
+  locations(input: ListInput): LocationList!
+  location(id: ID!): Location!
+}
+
+type Mutation {
+  createLocation(input: CreateLocationInput!): LocationResult!
+  updateLocation(id: ID!, input: UpdateLocationInput!): LocationResult!
+  removeLocation(id: ID!): Boolean!
+  updateInStorePickupPreferences(
+    locationId: ID!
+    input: updateInStorePickupPreferencesInput!
+  ): Location!
+}
+
+input CreateLocationInput {
+  name: String!
+
+  streetLine1: String!
+  streetLine2: String
+  city: String!
+  postalCode: String!
+  phoneNumber: String!
+  references: String
+  enabled: Boolean
+  countryId: ID!
+  stateId: ID!
+}
+
+input UpdateLocationInput {
+  name: String
+
+  streetLine1: String
+  streetLine2: String
+  city: String
+  postalCode: String
+  phoneNumber: String
+  references: String
+  enabled: Boolean
+  countryId: ID
+  stateId: ID
+}
+
+input updateInStorePickupPreferencesInput {
+  isAvailable: Boolean
+  instructions: String
+}
+
+type LocationResult {
+  location: Location
+  apiErrors: [LocationErrorResult!]!
+}
+
+type LocationErrorResult {
+  code: LocationErrorCode!
+  message: String!
+}
+
+enum LocationErrorCode {
+  LOCATION_NAME_ALREADY_EXISTS
 }

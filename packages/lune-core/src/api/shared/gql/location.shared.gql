@@ -32,3 +32,9 @@ type Location {
   """
   references: String
 }
+
+type LocationList implements List {
+  items: [Location!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
