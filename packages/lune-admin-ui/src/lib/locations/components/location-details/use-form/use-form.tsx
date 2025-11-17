@@ -20,7 +20,6 @@ export const useLocationDetailsForm = (
   const { updateLocation } = useUpdateLocation();
 
   const defaultCountry = countries.find(c => c.id === location?.country.id) ?? countries[0];
-  console.log({ countries, location, defaultCountry });
   const defaultState =
     defaultCountry.states.find(s => s.name === location?.state.name) ?? defaultCountry.states[0];
 

@@ -1,9 +1,10 @@
 import { formatDate } from '@lune/common';
-import { Form, FormInput } from '@lune/ui';
+import { Form, FormInput, Separator } from '@lune/ui';
 
 import type { CommonCountryFragment, CommonLocationFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 
+import { InStorePickupCard } from './in-store-pickup/in-store-pickup-card';
 import { LocationAddressDialog } from './location-address/dialog/location-address-dialog';
 import { LocationAddressForm } from './location-address/form/location-address-form';
 import { LocationSubmitButton } from './use-form/submit-button';
@@ -42,6 +43,12 @@ export const LocationDetails = ({ location, countries }: Props) => {
             />
             {location ? <LocationAddressDialog /> : <LocationAddressForm />}
 
+            {location && (
+              <>
+                <Separator />
+                <InStorePickupCard location={location} />
+              </>
+            )}
             {/* {location ? <LocationAddressDialog /> : <LocationAddressForm />}
             {location && <InStorePickupCard />}
             {location && (

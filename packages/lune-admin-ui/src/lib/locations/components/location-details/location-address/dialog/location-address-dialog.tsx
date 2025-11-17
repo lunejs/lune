@@ -12,17 +12,12 @@ import {
 } from '@lune/ui';
 
 import { LocationSubmitButton } from '../../use-form/submit-button';
-import { useLocationDetailsFormContext } from '../../use-form/use-form';
 import { LocationAddressForm } from '../form/location-address-form';
 
 import { LocationAddressSummary } from './location-address-summary';
 
 export const LocationAddressDialog = () => {
-  const { location } = useLocationDetailsFormContext();
-
   const [isOpen, setIsOpen] = useState(false);
-
-  if (!location) return null;
 
   return (
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
