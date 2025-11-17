@@ -270,6 +270,12 @@ export type CreateOrderLineInput = {
   quantity: Scalars['Int']['input'];
 };
 
+export type CreatePaymentMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handler: HandlerConfigInput;
+  name: Scalars['String']['input'];
+};
+
 export type CreateProductInput = {
   assets?: InputMaybe<Array<AssetInEntity>>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -515,6 +521,7 @@ export type Mutation = {
   createLocation: LocationResult;
   createOption: Array<Option>;
   createOrder: OrderResult;
+  createPaymentMethod: PaymentMethodResult;
   createProduct: Product;
   createShippingMethod: ShippingMethodResult;
   /** Create a new shop */
@@ -532,6 +539,7 @@ export type Mutation = {
   removeCollections: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
+  removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -544,6 +552,7 @@ export type Mutation = {
   updateLocation: LocationResult;
   updateOption: Option;
   updateOrderLine: OrderResult;
+  updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
   updateShippingMethod: ShippingMethod;
   /** Update an existing shop details */
@@ -613,6 +622,11 @@ export type MutationCreateOrderArgs = {
 };
 
 
+export type MutationCreatePaymentMethodArgs = {
+  input: CreatePaymentMethodInput;
+};
+
+
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
 };
@@ -666,6 +680,11 @@ export type MutationRemoveLocationArgs = {
 
 export type MutationRemoveOrderLineArgs = {
   lineId: Scalars['ID']['input'];
+};
+
+
+export type MutationRemovePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -731,6 +750,12 @@ export type MutationUpdateOptionArgs = {
 export type MutationUpdateOrderLineArgs = {
   input: UpdateOrderLineInput;
   lineId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdatePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdatePaymentMethodInput;
 };
 
 
@@ -1047,6 +1072,21 @@ export type PaymentFailure = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+/** A payment handler is a way to manage the payment of an order in your shop */
+export type PaymentHandler = {
+  __typename?: 'PaymentHandler';
+  /**
+   * Specific data for the payment handler chosen
+   * Usually, this json stores the payment integration keys
+   * Record<string, Arg>
+   */
+  args: Scalars['JSON']['output'];
+  /** The payment handler's code (e.g. 'stripe') */
+  code: Scalars['String']['output'];
+  /** The payment handler's name (e.g. 'Stripe') */
+  name: Scalars['String']['output'];
+};
+
 /** A payment method is a way to pay for an order in your shop, like credit card, PayPal, etc. */
 export type PaymentMethod = Node & {
   __typename?: 'PaymentMethod';
@@ -1057,11 +1097,27 @@ export type PaymentMethod = Node & {
    * Specific data for the payment handler chosen.
    * Usually stores payment integration keys and the handler code
    */
-  handler: Scalars['JSON']['output'];
+  handler: HandlerConfig;
   id: Scalars['ID']['output'];
   /** Payment method's name */
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+export enum PaymentMethodErrorCode {
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type PaymentMethodErrorResult = {
+  __typename?: 'PaymentMethodErrorResult';
+  code: PaymentMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type PaymentMethodResult = {
+  __typename?: 'PaymentMethodResult';
+  apiErrors: Array<PaymentMethodErrorResult>;
+  paymentMethod?: Maybe<PaymentMethod>;
 };
 
 /** A payment rejection records when an admin manually rejects a payment (typically for bank transfers or submitted proofs) */
@@ -1211,6 +1267,9 @@ export type Query = {
   location?: Maybe<Location>;
   locations: LocationList;
   order?: Maybe<Order>;
+  paymentHandlers: Array<PaymentHandler>;
+  paymentMethod?: Maybe<PaymentMethod>;
+  paymentMethods: Array<PaymentMethod>;
   product?: Maybe<Product>;
   products: ProductList;
   /**
@@ -1261,6 +1320,11 @@ export type QueryLocationsArgs = {
 export type QueryOrderArgs = {
   code?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryPaymentMethodArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1552,6 +1616,12 @@ export type UpdateOrderLineInput = {
   quantity: Scalars['Int']['input'];
 };
 
+export type UpdatePaymentMethodInput = {
+  args?: InputMaybe<Scalars['JSON']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   assets?: InputMaybe<Array<AssetInEntity>>;
@@ -1826,6 +1896,7 @@ export type ResolversTypes = {
   CreateOrderAddressInput: CreateOrderAddressInput;
   CreateOrderInput: CreateOrderInput;
   CreateOrderLineInput: CreateOrderLineInput;
+  CreatePaymentMethodInput: CreatePaymentMethodInput;
   CreateProductInput: CreateProductInput;
   CreateShippingMethodInput: CreateShippingMethodInput;
   CreateShopInput: CreateShopInput;
@@ -1885,7 +1956,11 @@ export type ResolversTypes = {
   PaymentCancellation: ResolverTypeWrapper<Omit<PaymentCancellation, 'payment'> & { payment: ResolversTypes['Payment'] }>;
   PaymentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['PaymentDetails']>;
   PaymentFailure: ResolverTypeWrapper<Omit<PaymentFailure, 'payment'> & { payment: ResolversTypes['Payment'] }>;
+  PaymentHandler: ResolverTypeWrapper<PaymentHandler>;
   PaymentMethod: ResolverTypeWrapper<PaymentMethod>;
+  PaymentMethodErrorCode: PaymentMethodErrorCode;
+  PaymentMethodErrorResult: ResolverTypeWrapper<PaymentMethodErrorResult>;
+  PaymentMethodResult: ResolverTypeWrapper<PaymentMethodResult>;
   PaymentRejection: ResolverTypeWrapper<Omit<PaymentRejection, 'payment'> & { payment: ResolversTypes['Payment'] }>;
   PaymentState: PaymentState;
   PriceRange: PriceRange;
@@ -1925,6 +2000,7 @@ export type ResolversTypes = {
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
+  UpdatePaymentMethodInput: UpdatePaymentMethodInput;
   UpdateProductInput: UpdateProductInput;
   UpdateShippingMethodInput: UpdateShippingMethodInput;
   UpdateShopInput: UpdateShopInput;
@@ -1969,6 +2045,7 @@ export type ResolversParentTypes = {
   CreateOrderAddressInput: CreateOrderAddressInput;
   CreateOrderInput: CreateOrderInput;
   CreateOrderLineInput: CreateOrderLineInput;
+  CreatePaymentMethodInput: CreatePaymentMethodInput;
   CreateProductInput: CreateProductInput;
   CreateShippingMethodInput: CreateShippingMethodInput;
   CreateShopInput: CreateShopInput;
@@ -2022,7 +2099,10 @@ export type ResolversParentTypes = {
   PaymentCancellation: Omit<PaymentCancellation, 'payment'> & { payment: ResolversParentTypes['Payment'] };
   PaymentDetails: ResolversUnionTypes<ResolversParentTypes>['PaymentDetails'];
   PaymentFailure: Omit<PaymentFailure, 'payment'> & { payment: ResolversParentTypes['Payment'] };
+  PaymentHandler: PaymentHandler;
   PaymentMethod: PaymentMethod;
+  PaymentMethodErrorResult: PaymentMethodErrorResult;
+  PaymentMethodResult: PaymentMethodResult;
   PaymentRejection: Omit<PaymentRejection, 'payment'> & { payment: ResolversParentTypes['Payment'] };
   PriceRange: PriceRange;
   Product: Product;
@@ -2058,6 +2138,7 @@ export type ResolversParentTypes = {
   UpdateOptionInput: UpdateOptionInput;
   UpdateOptionValueInput: UpdateOptionValueInput;
   UpdateOrderLineInput: UpdateOrderLineInput;
+  UpdatePaymentMethodInput: UpdatePaymentMethodInput;
   UpdateProductInput: UpdateProductInput;
   UpdateShippingMethodInput: UpdateShippingMethodInput;
   UpdateShopInput: UpdateShopInput;
@@ -2284,6 +2365,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
+  createPaymentMethod?: Resolver<ResolversTypes['PaymentMethodResult'], ParentType, ContextType, RequireFields<MutationCreatePaymentMethodArgs, 'input'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   createShippingMethod?: Resolver<ResolversTypes['ShippingMethodResult'], ParentType, ContextType, RequireFields<MutationCreateShippingMethodArgs, 'input'>>;
   createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
@@ -2295,6 +2377,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
+  removePaymentMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemovePaymentMethodArgs, 'id'>>;
   removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
@@ -2307,6 +2390,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
   updateOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>>;
+  updatePaymentMethod?: Resolver<ResolversTypes['PaymentMethod'], ParentType, ContextType, RequireFields<MutationUpdatePaymentMethodArgs, 'id' | 'input'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   updateShippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType, RequireFields<MutationUpdateShippingMethodArgs, 'id' | 'input'>>;
   updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
@@ -2490,13 +2574,32 @@ export type PaymentFailureResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PaymentHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentHandler'] = ResolversParentTypes['PaymentHandler']> = {
+  args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type PaymentMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethod'] = ResolversParentTypes['PaymentMethod']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  handler?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PaymentMethodErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethodErrorResult'] = ResolversParentTypes['PaymentMethodErrorResult']> = {
+  code?: Resolver<ResolversTypes['PaymentMethodErrorCode'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PaymentMethodResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethodResult'] = ResolversParentTypes['PaymentMethodResult']> = {
+  apiErrors?: Resolver<Array<ResolversTypes['PaymentMethodErrorResult']>, ParentType, ContextType>;
+  paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2553,6 +2656,9 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
+  paymentHandlers?: Resolver<Array<ResolversTypes['PaymentHandler']>, ParentType, ContextType>;
+  paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType, RequireFields<QueryPaymentMethodArgs, 'id'>>;
+  paymentMethods?: Resolver<Array<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
   products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
   productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
@@ -2804,7 +2910,10 @@ export type Resolvers<ContextType = ExecutionContext> = {
   PaymentCancellation?: PaymentCancellationResolvers<ContextType>;
   PaymentDetails?: PaymentDetailsResolvers<ContextType>;
   PaymentFailure?: PaymentFailureResolvers<ContextType>;
+  PaymentHandler?: PaymentHandlerResolvers<ContextType>;
   PaymentMethod?: PaymentMethodResolvers<ContextType>;
+  PaymentMethodErrorResult?: PaymentMethodErrorResultResolvers<ContextType>;
+  PaymentMethodResult?: PaymentMethodResultResolvers<ContextType>;
   PaymentRejection?: PaymentRejectionResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductList?: ProductListResolvers<ContextType>;

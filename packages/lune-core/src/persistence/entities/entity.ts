@@ -11,3 +11,8 @@ export interface LuneTable {
 }
 
 export type ID = string;
+
+export type HandlerConfig = {
+  code: string;
+  args: Record<string, string>;
+};

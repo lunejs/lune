@@ -1,9 +1,4 @@
-import type { LuneEntity, LuneTable } from './entity';
-
-export type HandlerConfig = {
-  code: string;
-  args: Record<string, string>;
-};
+import type { HandlerConfig, LuneEntity, LuneTable } from './entity';
 
 /**
  * A shipping method defines a way to ship products to customers within a specific zone.

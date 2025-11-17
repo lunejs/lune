@@ -22,6 +22,7 @@ import { CountryResolver } from './resolvers/country.resolver';
 import { LocationResolver } from './resolvers/location.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
+import { PaymentMethodResolver } from './resolvers/payment-method.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 import { ShippingMethodResolver } from './resolvers/shipping-method.resolver';
 import { ShopResolver } from './resolvers/shop.resolver';
@@ -55,7 +56,8 @@ export class AdminApi extends GraphqlApi {
         StateFieldResolver,
         ShippingMethodResolver,
         CountryResolver,
-        LocationResolver
+        LocationResolver,
+        PaymentMethodResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
