@@ -14,7 +14,7 @@ export const ZoneDetailsPage = () => {
   const { isLoading: isLoadingCountries, countries } = useGetCountries();
   const { isLoading: isLoadingHandlers, shippingHandlers } = useGetShippingHandlers();
 
-  if (isLoading && isLoadingCountries && isLoadingHandlers) return <PageLoader />;
+  if (isLoading || isLoadingCountries || isLoadingHandlers) return <PageLoader />;
 
   return <ZoneDetails zone={zone} handlers={shippingHandlers} countries={countries} />;
 };
