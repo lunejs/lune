@@ -68,7 +68,18 @@ const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/discounts/': [{ href: '/discounts', label: 'Discounts' }, { label: 'Discount details' }],
   '/discounts/new': [{ href: '/discounts', label: 'Discounts' }, { label: 'Create discount' }],
   '/wholesale': [{ href: '/wholesale', label: 'Wholesale' }, { label: 'All requests' }],
-  '/wholesale/': [{ href: '/wholesale', label: 'Wholesale' }, { label: 'Request' }]
+  '/wholesale/': [{ href: '/wholesale', label: 'Wholesale' }, { label: 'Request' }],
+
+  '/settings/shipments': [{ label: 'Shipments' }],
+  '/settings/shipments/new': [
+    { href: '/settings/shipments', label: 'Shipments' },
+    { label: 'Add zone' }
+  ],
+  '/settings/locations': [{ label: 'Locations' }],
+  '/settings/locations/new': [
+    { href: '/settings/locations', label: 'Locations' },
+    { label: 'Add location' }
+  ]
 };
 
 type TBreadcrumbItem = {
@@ -82,6 +93,12 @@ const getBreadcrumbItems = (pathname: string, id?: string) => {
   }
   if (pathname === `/collections/${id}`) {
     return [{ href: '/collections', label: 'Collections' }, { label: 'Collection details' }];
+  }
+  if (pathname === `/settings/shipments/${id}`) {
+    return [{ href: '/settings/shipments', label: 'Shipments' }, { label: 'Zone details' }];
+  }
+  if (pathname === `/settings/locations/${id}`) {
+    return [{ href: '/settings/locations', label: 'Locations' }, { label: 'Location details' }];
   }
 
   return BREADCRUMBS[pathname] ?? [];

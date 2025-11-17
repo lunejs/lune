@@ -7,6 +7,7 @@ import { CollectionDetailsPage } from '@/lib/collections/pages/collection-detail
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
+import { LocationsPage } from '@/lib/locations/pages/locations-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
@@ -73,6 +74,7 @@ export const App = () => {
                     path="/settings/shipments/in-store-pickup"
                     element={<InStorePickupLocationsPage />}
                   />
+                  <Route path="/settings/locations" element={<LocationsPage />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

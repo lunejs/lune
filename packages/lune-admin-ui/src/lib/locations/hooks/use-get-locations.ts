@@ -5,10 +5,10 @@ import {
   GET_ALL_LOCATIONS_QUERY
 } from '@/lib/api/operations/location.operations';
 
-import { ShipmentCacheKeys } from '../constants/cache-keys';
+import { LocationCacheKeys } from '../constants/cache-keys';
 
 export const useGetLocations = () => {
-  const result = useGqlQuery(GET_ALL_LOCATIONS_QUERY, { key: [ShipmentCacheKeys.Locations] });
+  const result = useGqlQuery(GET_ALL_LOCATIONS_QUERY, { key: [LocationCacheKeys.Locations] });
 
   const locations =
     result.data?.locations.items.map(l => getFragmentData(COMMON_LIST_LOCATION_FRAGMENT, l)) ?? [];

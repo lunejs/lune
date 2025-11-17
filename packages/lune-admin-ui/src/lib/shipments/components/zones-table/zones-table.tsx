@@ -1,4 +1,4 @@
-import { PlusIcon } from 'lucide-react';
+import { CircleFadingPlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import {
@@ -34,7 +34,7 @@ export const ZonesTable = () => {
         <div>
           <Link to="/settings/shipments/new">
             <Button variant="outline" size="sm" className="gap-2">
-              <PlusIcon size={16} />
+              <CircleFadingPlusIcon size={16} />
               Add Zone
             </Button>
           </Link>
