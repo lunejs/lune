@@ -94,29 +94,17 @@ export const UPDATE_LOCATION_MUTATION = graphql(`
 
 export const REMOVE_LOCATION_MUTATION = graphql(`
   mutation RemoveLocation($id: ID!) {
-    removeLocation(id: $id) {
-      apiErrors {
-        code
-        message
-      }
-      success
-    }
+    removeLocation(id: $id)
   }
 `);
 
 export const UPDATE_IN_STORE_PICKUP_PREFERENCE_MUTATION = graphql(`
   mutation UpdateInStorePickupPreferences(
     $locationId: ID!
-    $input: updateInStorePickupPreferencesInput!
+    $input: UpdateInStorePickupPreferencesInput!
   ) {
     updateInStorePickupPreferences(locationId: $locationId, input: $input) {
-      apiErrors {
-        code
-        message
-      }
-      location {
-        id
-      }
+      id
     }
   }
 `);
