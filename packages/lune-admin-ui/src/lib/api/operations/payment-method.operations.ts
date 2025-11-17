@@ -20,6 +20,14 @@ export const COMMON_PAYMENT_HANDLER_FRAGMENT = graphql(`
   }
 `);
 
+export const GET_ALL_PAYMENT_METHODS_QUERY = graphql(`
+  query GetAllPaymentMethods {
+    paymentMethods {
+      ...CommonPaymentMethod
+    }
+  }
+`);
+
 export const GET_ALL_PAYMENT_HANDLERS_QUERY = graphql(`
   query GetAllPaymentHandlers {
     paymentHandlers {

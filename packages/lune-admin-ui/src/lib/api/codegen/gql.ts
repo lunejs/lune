@@ -47,6 +47,7 @@ type Documents = {
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n': typeof types.RemoveOptionDocument;
   '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n': typeof types.CommonPaymentMethodFragmentDoc;
   '\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n': typeof types.CommonPaymentHandlerFragmentDoc;
+  '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n': typeof types.GetAllPaymentMethodsDocument;
   '\n  query GetAllPaymentHandlers {\n    paymentHandlers {\n      ...CommonPaymentHandler\n    }\n  }\n': typeof types.GetAllPaymentHandlersDocument;
   '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      paymentMethod {\n        id\n      }\n    }\n  }\n': typeof types.CreatePaymentMethodDocument;
   '\n  mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {\n    updatePaymentMethod(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdatePaymentMethodDocument;
@@ -152,6 +153,8 @@ const documents: Documents = {
     types.CommonPaymentMethodFragmentDoc,
   '\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n':
     types.CommonPaymentHandlerFragmentDoc,
+  '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n':
+    types.GetAllPaymentMethodsDocument,
   '\n  query GetAllPaymentHandlers {\n    paymentHandlers {\n      ...CommonPaymentHandler\n    }\n  }\n':
     types.GetAllPaymentHandlersDocument,
   '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      paymentMethod {\n        id\n      }\n    }\n  }\n':
@@ -435,6 +438,12 @@ export function graphql(
 export function graphql(
   source: '\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n'
 ): (typeof documents)['\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

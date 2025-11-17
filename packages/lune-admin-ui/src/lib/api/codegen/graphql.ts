@@ -1827,6 +1827,14 @@ export type CommonPaymentHandlerFragment = { name: string; code: string; args: a
   ' $fragmentName'?: 'CommonPaymentHandlerFragment';
 };
 
+export type GetAllPaymentMethodsQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllPaymentMethodsQuery = {
+  paymentMethods: {
+    ' $fragmentRefs'?: { CommonPaymentMethodFragment: CommonPaymentMethodFragment };
+  }[];
+};
+
 export type GetAllPaymentHandlersQueryVariables = Exact<Record<string, never>>;
 
 export type GetAllPaymentHandlersQuery = {
@@ -4721,6 +4729,55 @@ export const RemoveOptionDocument = {
     }
   ]
 } as unknown as DocumentNode<RemoveOptionMutation, RemoveOptionMutationVariables>;
+export const GetAllPaymentMethodsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllPaymentMethods' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'paymentMethods' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonPaymentMethod' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonPaymentMethod' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PaymentMethod' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'handler' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllPaymentMethodsQuery, GetAllPaymentMethodsQueryVariables>;
 export const GetAllPaymentHandlersDocument = {
   kind: 'Document',
   definitions: [
