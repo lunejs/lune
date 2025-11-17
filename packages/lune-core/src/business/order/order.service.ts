@@ -132,7 +132,8 @@ export class OrderService {
       lineSubtotal: newLinePrice,
       lineTotal: newLinePrice,
       unitPrice: variant.salePrice,
-      orderId
+      orderId,
+      appliedDiscounts: []
     });
 
     return await this.repository.update({

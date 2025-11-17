@@ -8,9 +8,10 @@ export const DefaultOrderFixture = (): OrderTable => ({
   state: 'MODIFYING' as any,
   total: 0,
   subtotal: 0,
+  total_quantity: 0,
+  applied_discounts: [],
   placed_at: null,
   completed_at: null,
-  total_quantity: 0,
   shipping_address: null,
   customer_id: null,
   shop_id: crypto.randomUUID()

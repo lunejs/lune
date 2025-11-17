@@ -1,3 +1,4 @@
+import type { AppliedDiscount } from './discount';
 import type { LuneEntity, LuneTable } from './entity';
 
 export enum OrderState {
@@ -56,6 +57,15 @@ export interface Order extends LuneEntity {
    */
   subtotal: number;
   /**
+   * Total quantity of items across all order lines
+   */
+  totalQuantity: number;
+  /**
+   * Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+   * Use this field to show data of current discounts applied to the order
+   */
+  appliedDiscounts: AppliedDiscount[];
+  /**
    * The date and time when the order has been marked as placed
    */
   placedAt?: Date | null;
@@ -63,10 +73,6 @@ export interface Order extends LuneEntity {
    * The date and time when the order has been marked as completed (delivered and paid)
    */
   completedAt?: Date | null;
-  /**
-   * Total quantity of items across all order lines
-   */
-  totalQuantity: number;
   /**
    * Shipping address where the order has to be delivered
    */
@@ -130,6 +136,7 @@ export interface OrderTable extends LuneTable {
   total: number;
   subtotal: number;
   total_quantity: number;
+  applied_discounts: AppliedDiscount[];
   placed_at?: Date | null;
   completed_at?: Date | null;
   shipping_address?: any | null;

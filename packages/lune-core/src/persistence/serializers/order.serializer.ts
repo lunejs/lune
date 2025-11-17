@@ -12,9 +12,10 @@ export class OrderSerializer extends Serializer<Order, OrderTable> {
       ['state', 'state'],
       ['total', 'total'],
       ['subtotal', 'subtotal'],
+      ['total_quantity', 'totalQuantity'],
+      ['applied_discounts', 'appliedDiscounts'],
       ['placed_at', 'placedAt'],
       ['completed_at', 'completedAt'],
-      ['total_quantity', 'totalQuantity'],
       ['shipping_address', 'shippingAddress'],
       ['customer_id', 'customerId']
     ]);

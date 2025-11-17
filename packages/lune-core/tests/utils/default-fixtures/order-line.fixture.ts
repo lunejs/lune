@@ -8,6 +8,7 @@ export const DefaultOrderLineFixture = (): OrderLineTable => ({
   line_total: 0,
   unit_price: 0,
   quantity: 0,
+  applied_discounts: [],
   variant_id: crypto.randomUUID(),
   order_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()

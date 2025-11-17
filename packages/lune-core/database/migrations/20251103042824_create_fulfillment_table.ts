@@ -10,7 +10,6 @@ export async function up(knex: Knex): Promise<void> {
 
     table.enum('type', ['SHIPPING', 'IN_STORE_PICKUP']).notNullable();
     table.integer('amount').notNullable();
-    table.jsonb('applied_discounts').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
 
     table.uuid('order_id').notNullable().references('id').inTable('orders');
 
