@@ -1,8 +1,14 @@
 import type { ID, LuneEntity, LuneTable } from './entity';
 
+/**
+ * Represents a discount that has been applied to an order at checkout.
+ */
 export interface OrderDiscount extends LuneEntity {
+  /** The amount discounted in cents */
   amount: number;
+  /** The discount that was used */
   discountId: ID;
+  /** The order this discount was applied to */
   orderId: ID;
 }
 

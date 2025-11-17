@@ -19,6 +19,7 @@ import { DefaultOptionValueFixture } from './option-value.fixture';
 import { DefaultOptionValueTranslationFixture } from './option-value-translation.fixture';
 import { DefaultOrderFixture } from './order.fixture';
 import { DefaultOrderCancellationFixture } from './order-cancellation.fixture';
+import { DefaultOrderDiscountFixture } from './order-discount.fixture';
 import { DefaultOrderLineFixture } from './order-line.fixture';
 import { DefaultPaymentFixture } from './payment.fixture';
 import { DefaultPaymentCancellationFixture } from './payment-cancellation.fixture';
@@ -83,5 +84,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Zone]: DefaultZoneFixture,
   [Tables.ZoneState]: DefaultZoneStateFixture,
   [Tables.ShippingMethod]: DefaultShippingMethodFixture,
-  [Tables.Discount]: DefaultDiscountFixture
+  [Tables.Discount]: DefaultDiscountFixture,
+  [Tables.OrderDiscount]: DefaultOrderDiscountFixture
 };

@@ -15,6 +15,7 @@ import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
 import { OptionValueTranslationRepository } from './option-value-translation-repository';
+import { OrderDiscountRepository } from './order-discount-repository';
 import { OrderLineRepository } from './order-line-repository';
 import { OrderRepository } from './order-repository';
 import { PaymentCancellationRepository } from './payment-cancellation-repository';
@@ -66,7 +67,8 @@ export function buildRepositories(trx: Transaction) {
     zone: new ZoneRepository(trx),
     zoneState: new ZoneStateRepository(trx),
     shippingMethod: new ShippingMethodRepository(trx),
-    discount: new DiscountRepository(trx)
+    discount: new DiscountRepository(trx),
+    orderDiscount: new OrderDiscountRepository(trx)
   };
 }
 
