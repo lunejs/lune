@@ -205,6 +205,19 @@ export type CreateCollectionInput = {
   subCollections?: InputMaybe<Scalars['ID']['input'][]>;
 };
 
+export type CreateLocationInput = {
+  city: Scalars['String']['input'];
+  countryId: Scalars['ID']['input'];
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  postalCode: Scalars['String']['input'];
+  references?: InputMaybe<Scalars['String']['input']>;
+  stateId: Scalars['ID']['input'];
+  streetLine1: Scalars['String']['input'];
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -390,6 +403,8 @@ export enum Locale {
 export type Location = {
   /** Location's city */
   city: Scalars['String']['output'];
+  /** Address's country */
+  country: Country;
   createdAt: Scalars['Date']['output'];
   /**
    * Whether this location is enabled or not
@@ -397,6 +412,7 @@ export type Location = {
    */
   enabled: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
+  /** In store pickup preferences */
   inStorePickup: InStorePickup;
   /** Name of the location */
   name: Scalars['String']['output'];
@@ -406,6 +422,8 @@ export type Location = {
   postalCode: Scalars['String']['output'];
   /** Additional references or instructions for finding the location */
   references?: Maybe<Scalars['String']['output']>;
+  /** Address's state/province/region */
+  state: State;
   /** Street address line 1 */
   streetLine1: Scalars['String']['output'];
   /** Street address line 2 (optional) */
@@ -413,10 +431,31 @@ export type Location = {
   updatedAt: Scalars['Date']['output'];
 };
 
+export enum LocationErrorCode {
+  LocationNameAlreadyExists = 'LOCATION_NAME_ALREADY_EXISTS'
+}
+
+export type LocationErrorResult = {
+  code: LocationErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type LocationList = {
+  count: Scalars['Int']['output'];
+  items: Location[];
+  pageInfo: PageInfo;
+};
+
+export type LocationResult = {
+  apiErrors: LocationErrorResult[];
+  location?: Maybe<Location>;
+};
+
 export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
   createCollection: Collection;
+  createLocation: LocationResult;
   createOption: Option[];
   createProduct: Product;
   createShippingMethod: ShippingMethodResult;
@@ -433,6 +472,7 @@ export type Mutation = {
    */
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
+  removeLocation: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -441,6 +481,8 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateInStorePickupPreferences: InStorePickup;
+  updateLocation: LocationResult;
   updateOption: Option;
   updateProduct: Product;
   updateShippingMethod: ShippingMethod;
@@ -465,6 +507,10 @@ export type MutationAddProductTranslationArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+export type MutationCreateLocationArgs = {
+  input: CreateLocationInput;
 };
 
 export type MutationCreateOptionArgs = {
@@ -509,6 +555,10 @@ export type MutationRemoveCollectionsArgs = {
   ids: Scalars['ID']['input'][];
 };
 
+export type MutationRemoveLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
 export type MutationRemoveShippingMethodArgs = {
   id: Scalars['ID']['input'];
 };
@@ -540,6 +590,16 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+export type MutationUpdateInStorePickupPreferencesArgs = {
+  input: UpdateInStorePickupPreferencesInput;
+  locationId: Scalars['ID']['input'];
+};
+
+export type MutationUpdateLocationArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateLocationInput;
 };
 
 export type MutationUpdateOptionArgs = {
@@ -951,6 +1011,8 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Country[];
+  location?: Maybe<Location>;
+  locations: LocationList;
   order?: Maybe<Order>;
   product?: Maybe<Product>;
   products: ProductList;
@@ -983,6 +1045,14 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+export type QueryLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type QueryLocationsArgs = {
+  input?: InputMaybe<ListInput>;
 };
 
 export type QueryOrderArgs = {
@@ -1216,6 +1286,24 @@ export type UpdateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Scalars['ID']['input'][]>;
   subCollections?: InputMaybe<Scalars['ID']['input'][]>;
+};
+
+export type UpdateInStorePickupPreferencesInput = {
+  instructions?: InputMaybe<Scalars['String']['input']>;
+  isAvailable?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type UpdateLocationInput = {
+  city?: InputMaybe<Scalars['String']['input']>;
+  countryId?: InputMaybe<Scalars['ID']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  references?: InputMaybe<Scalars['String']['input']>;
+  stateId?: InputMaybe<Scalars['ID']['input']>;
+  streetLine1?: InputMaybe<Scalars['String']['input']>;
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateOptionInput = {
@@ -1558,6 +1646,26 @@ export type GetCountriesForSelectorQuery = {
   countries: {
     ' $fragmentRefs'?: { CommonCountryForSelectorFragment: CommonCountryForSelectorFragment };
   }[];
+};
+
+export type CommonListLocationFragment = {
+  id: string;
+  name: string;
+  enabled: boolean;
+  streetLine1: string;
+  city: string;
+  postalCode: string;
+  inStorePickup: { isAvailable: boolean };
+  country: { name: string };
+  state: { name: string };
+} & { ' $fragmentName'?: 'CommonListLocationFragment' };
+
+export type GetAllLocationsQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllLocationsQuery = {
+  locations: {
+    items: { ' $fragmentRefs'?: { CommonListLocationFragment: CommonListLocationFragment } }[];
+  };
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -2287,6 +2395,51 @@ export const CommonCountryForSelectorFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonCountryForSelectorFragment, unknown>;
+export const CommonListLocationFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListLocation' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Location' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine1' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'city' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'postalCode' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'inStorePickup' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'isAvailable' } }]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'country' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'state' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonListLocationFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3718,6 +3871,83 @@ export const GetCountriesForSelectorDocument = {
     }
   ]
 } as unknown as DocumentNode<GetCountriesForSelectorQuery, GetCountriesForSelectorQueryVariables>;
+export const GetAllLocationsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllLocations' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'locations' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'CommonListLocation' }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListLocation' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Location' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine1' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'city' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'postalCode' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'inStorePickup' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'isAvailable' } }]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'country' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'state' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const CreateOptionDocument = {
   kind: 'Document',
   definitions: [
