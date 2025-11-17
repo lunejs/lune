@@ -1648,6 +1648,21 @@ export type GetCountriesForSelectorQuery = {
   }[];
 };
 
+export type CommonLocationFragment = {
+  id: string;
+  name: string;
+  createdAt: any;
+  enabled: boolean;
+  streetLine1: string;
+  streetLine2?: string | null;
+  city: string;
+  phoneNumber: string;
+  postalCode: string;
+  country: { id: string; name: string };
+  state: { id: string; name: string };
+  inStorePickup: { isAvailable: boolean; instructions: string };
+} & { ' $fragmentName'?: 'CommonLocationFragment' };
+
 export type CommonListLocationFragment = {
   id: string;
   name: string;
@@ -1666,6 +1681,14 @@ export type GetAllLocationsQuery = {
   locations: {
     items: { ' $fragmentRefs'?: { CommonListLocationFragment: CommonListLocationFragment } }[];
   };
+};
+
+export type GetLocationByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetLocationByIdQuery = {
+  location?: { ' $fragmentRefs'?: { CommonLocationFragment: CommonLocationFragment } } | null;
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -2395,6 +2418,63 @@ export const CommonCountryForSelectorFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonCountryForSelectorFragment, unknown>;
+export const CommonLocationFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonLocation' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Location' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine1' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine2' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'city' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'phoneNumber' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'postalCode' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'country' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'state' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'inStorePickup' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'isAvailable' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'instructions' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonLocationFragment, unknown>;
 export const CommonListLocationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3948,6 +4028,100 @@ export const GetAllLocationsDocument = {
     }
   ]
 } as unknown as DocumentNode<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
+export const GetLocationByIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetLocationById' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'location' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonLocation' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonLocation' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Location' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine1' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'streetLine2' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'city' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'phoneNumber' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'postalCode' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'country' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'state' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'inStorePickup' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'isAvailable' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'instructions' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetLocationByIdQuery, GetLocationByIdQueryVariables>;
 export const CreateOptionDocument = {
   kind: 'Document',
   definitions: [

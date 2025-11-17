@@ -34,8 +34,10 @@ type Documents = {
   '\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n': typeof types.CommonCountryForSelectorFragmentDoc;
   '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n': typeof types.GetCountriesDocument;
   '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n': typeof types.GetCountriesForSelectorDocument;
+  '\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n': typeof types.CommonLocationFragmentDoc;
   '\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n': typeof types.CommonListLocationFragmentDoc;
   '\n  query GetAllLocations {\n    locations {\n      items {\n        ...CommonListLocation\n      }\n    }\n  }\n': typeof types.GetAllLocationsDocument;
+  '\n  query GetLocationById($id: ID!) {\n    location(id: $id) {\n      ...CommonLocation\n    }\n  }\n': typeof types.GetLocationByIdDocument;
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CreateOptionDocument;
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.UpdateOptionDocument;
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n': typeof types.RemoveOptionDocument;
@@ -114,10 +116,14 @@ const documents: Documents = {
     types.GetCountriesDocument,
   '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n':
     types.GetCountriesForSelectorDocument,
+  '\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n':
+    types.CommonLocationFragmentDoc,
   '\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n':
     types.CommonListLocationFragmentDoc,
   '\n  query GetAllLocations {\n    locations {\n      items {\n        ...CommonListLocation\n      }\n    }\n  }\n':
     types.GetAllLocationsDocument,
+  '\n  query GetLocationById($id: ID!) {\n    location(id: $id) {\n      ...CommonLocation\n    }\n  }\n':
+    types.GetLocationByIdDocument,
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
@@ -325,6 +331,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n'
 ): (typeof documents)['\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n'];
 /**
@@ -333,6 +345,12 @@ export function graphql(
 export function graphql(
   source: '\n  query GetAllLocations {\n    locations {\n      items {\n        ...CommonListLocation\n      }\n    }\n  }\n'
 ): (typeof documents)['\n  query GetAllLocations {\n    locations {\n      items {\n        ...CommonListLocation\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetLocationById($id: ID!) {\n    location(id: $id) {\n      ...CommonLocation\n    }\n  }\n'
+): (typeof documents)['\n  query GetLocationById($id: ID!) {\n    location(id: $id) {\n      ...CommonLocation\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
