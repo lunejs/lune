@@ -4,6 +4,7 @@ export const DefaultShippingMethodFixture = (): ShippingMethodTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
+  deleted_at: null,
   name: '',
   handler: {},
   enabled: true,

@@ -64,7 +64,7 @@ export class PaymentMethodService {
   }
 
   async remove(id: ID) {
-    await this.repository.remove({ where: { id } });
+    await this.repository.softRemove({ where: { id } });
 
     return true;
   }

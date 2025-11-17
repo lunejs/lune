@@ -53,7 +53,7 @@ describe('removePaymentMethod - Mutation', () => {
       .where('id', PaymentMethodConstants.StripeID)
       .first();
 
-    expect(paymentMethod).toBeUndefined();
+    expect(paymentMethod.deleted_at).toBeDefined();
   });
 
   test('returns Authorization error when no token is provided', async () => {

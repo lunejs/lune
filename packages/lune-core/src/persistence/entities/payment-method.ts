@@ -4,6 +4,7 @@ import type { HandlerConfig, LuneEntity, LuneTable } from './entity';
  * A payment method is a way to pay for an order in your shop, like credit card, PayPal, etc.
  */
 export interface PaymentMethod extends LuneEntity {
+  deletedAt?: Date | null;
   /**
    * Payment method's name
    */
@@ -20,6 +21,7 @@ export interface PaymentMethod extends LuneEntity {
 }
 
 export interface PaymentMethodTable extends LuneTable {
+  deleted_at?: Date | null;
   name: string;
   enabled: boolean;
   handler: unknown;

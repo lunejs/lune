@@ -125,7 +125,8 @@ const SIDEBAR = {
     {
       title: 'Payments',
       url: '/payments',
-      icon: CreditCardIcon
+      icon: CreditCardIcon,
+      isActive: (pathname: string) => pathname.includes('payments')
     },
     {
       title: 'Shipments',

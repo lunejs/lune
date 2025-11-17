@@ -2,13 +2,13 @@ import { ChevronRightIcon, CircleFadingPlusIcon, MapPinIcon, MapPinOffIcon } fro
 import { Link } from 'react-router';
 
 import { add3dots } from '@lune/common';
-import { Badge, Button, Card, CardHeader, CardTitle, H4, Small } from '@lune/ui';
+import { Badge, Button, Card, CardHeader, CardTitle, cn, H4, Small } from '@lune/ui';
 
 import type { CommonListLocationFragment } from '@/lib/api/types';
 
 export const InStorePickupLocations = ({ locations }: Props) => {
   return (
-    <Card className="overflow-hidden pb-0">
+    <Card className={cn('overflow-hidden', locations.length && 'pb-0')}>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Your locations</CardTitle>
         <Link to={`/settings/locations`}>

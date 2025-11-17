@@ -251,5 +251,7 @@ const TABLES_WITH_DELETED_AT = [
   Tables.Variant,
   Tables.Option,
   Tables.OptionValue,
+  Tables.ShippingMethod,
+  Tables.PaymentMethod,
   'test_table'
 ];

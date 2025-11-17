@@ -58,7 +58,7 @@ describe('removeShippingMethod - Mutation', () => {
       .where('id', ShippingMethodConstants.ExpressLocalID)
       .first();
 
-    expect(shippingMethod).toBeUndefined();
+    expect(shippingMethod.deleted_at).toBeDefined();
   });
 
   test('returns Authorization error when no token is provided', async () => {

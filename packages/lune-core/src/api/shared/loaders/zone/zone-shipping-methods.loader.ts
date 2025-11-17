@@ -13,7 +13,10 @@ export function createZoneShippingMethodsLoader(trx: Transaction) {
 
     const rows = await trx<ShippingMethodTable>(Tables.ShippingMethod)
       .whereIn('zone_id', ids)
+      .whereNull('deleted_at')
       .orderBy('created_at', 'asc');
+
+    console.log({ rows });
 
     const byId = new Map<string, ShippingMethod[]>();
     for (const id of ids) byId.set(id, []);
