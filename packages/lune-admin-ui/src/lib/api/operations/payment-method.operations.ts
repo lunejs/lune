@@ -3,6 +3,7 @@ import { graphql } from '../codegen';
 export const COMMON_PAYMENT_METHOD_FRAGMENT = graphql(`
   fragment CommonPaymentMethod on PaymentMethod {
     id
+    createdAt
     name
     enabled
     handler {
@@ -23,6 +24,14 @@ export const COMMON_PAYMENT_HANDLER_FRAGMENT = graphql(`
 export const GET_ALL_PAYMENT_METHODS_QUERY = graphql(`
   query GetAllPaymentMethods {
     paymentMethods {
+      ...CommonPaymentMethod
+    }
+  }
+`);
+
+export const GET_PAYMENT_METHOD_QUERY = graphql(`
+  query GetPaymentMethods($id: ID!) {
+    paymentMethod(id: $id) {
       ...CommonPaymentMethod
     }
   }

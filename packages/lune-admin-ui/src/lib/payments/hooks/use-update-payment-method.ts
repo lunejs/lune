@@ -13,9 +13,14 @@ export const useUpdatePaymentMethod = () => {
     try {
       const result = await updatePaymentMethod(input);
 
-      await queryClient.refetchQueries({
-        queryKey: [PaymentCacheKeys.PaymentMethods]
-      });
+      await Promise.all([
+        await queryClient.refetchQueries({
+          queryKey: [PaymentCacheKeys.PaymentMethods]
+        }),
+        await queryClient.refetchQueries({
+          queryKey: [PaymentCacheKeys.PaymentMethod(input.id)]
+        })
+      ]);
 
       return { isSuccess: true, data: { id: result.id } };
     } catch (error) {

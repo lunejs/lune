@@ -45,9 +45,10 @@ type Documents = {
   '\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CreateOptionDocument;
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n': typeof types.UpdateOptionDocument;
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n': typeof types.RemoveOptionDocument;
-  '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n': typeof types.CommonPaymentMethodFragmentDoc;
+  '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n': typeof types.CommonPaymentMethodFragmentDoc;
   '\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n': typeof types.CommonPaymentHandlerFragmentDoc;
   '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n': typeof types.GetAllPaymentMethodsDocument;
+  '\n  query GetPaymentMethods($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n': typeof types.GetPaymentMethodsDocument;
   '\n  query GetAllPaymentHandlers {\n    paymentHandlers {\n      ...CommonPaymentHandler\n    }\n  }\n': typeof types.GetAllPaymentHandlersDocument;
   '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      paymentMethod {\n        id\n      }\n    }\n  }\n': typeof types.CreatePaymentMethodDocument;
   '\n  mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {\n    updatePaymentMethod(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdatePaymentMethodDocument;
@@ -149,12 +150,14 @@ const documents: Documents = {
     types.UpdateOptionDocument,
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n':
     types.RemoveOptionDocument,
-  '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n':
+  '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n':
     types.CommonPaymentMethodFragmentDoc,
   '\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n':
     types.CommonPaymentHandlerFragmentDoc,
   '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n':
     types.GetAllPaymentMethodsDocument,
+  '\n  query GetPaymentMethods($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n':
+    types.GetPaymentMethodsDocument,
   '\n  query GetAllPaymentHandlers {\n    paymentHandlers {\n      ...CommonPaymentHandler\n    }\n  }\n':
     types.GetAllPaymentHandlersDocument,
   '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      paymentMethod {\n        id\n      }\n    }\n  }\n':
@@ -430,8 +433,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n'
-): (typeof documents)['\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n'];
+  source: '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -444,6 +447,12 @@ export function graphql(
 export function graphql(
   source: '\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n'
 ): (typeof documents)['\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPaymentMethods($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n'
+): (typeof documents)['\n  query GetPaymentMethods($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

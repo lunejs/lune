@@ -23,8 +23,12 @@ export class PaymentMethodService {
     return this.repository.findMany({ orderBy: { createdAt: SortKey.Desc } });
   }
 
+  async findById(id: ID) {
+    return this.repository.findOne({ where: { id } });
+  }
+
   async findHandlers() {
-    const handlers = getConfig().shipping.handlers;
+    const handlers = getConfig().payments.handlers;
 
     return handlers.map(h => ({ name: h.name, code: h.code, args: h.args }));
   }

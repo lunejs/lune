@@ -2,6 +2,8 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { Order } from '@/persistence/entities/order';
 import type { PaymentState } from '@/persistence/entities/payment';
 
+import type { Args } from '../common/args.config';
+
 export interface PaymentHandler {
   /**
    * @description
@@ -29,6 +31,13 @@ export interface PaymentHandler {
    * @waring this code is send to your storefront.
    */
   code: string;
+
+  /**
+   * @description
+   * This is used to display inputs in the admin UI and get their values, then these values are passed to the calculator.
+   * This could be useful for an specific shipping calculator that needs some external configuration like a shipping calculator based on a static price.
+   */
+  args: Args;
 
   /**
    * @description

@@ -4,10 +4,17 @@ import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
   MutationCreatePaymentMethodArgs,
   MutationRemovePaymentMethodArgs,
-  MutationUpdatePaymentMethodArgs
+  MutationUpdatePaymentMethodArgs,
+  QueryPaymentMethodArgs
 } from '@/api/shared/types/graphql';
-import { PaymentMethodService } from '@/business/payment-method/payment.service';
+import { PaymentMethodService } from '@/business/payment-method/payment-method.service';
 import { isErrorResult } from '@/utils/error-result';
+
+async function paymentMethod(_, { id }: QueryPaymentMethodArgs, ctx: ExecutionContext) {
+  const paymentMethodService = new PaymentMethodService(ctx);
+
+  return paymentMethodService.findById(id);
+}
 
 async function paymentMethods(_, __, ctx: ExecutionContext) {
   const paymentMethodService = new PaymentMethodService(ctx);
@@ -57,6 +64,7 @@ async function removePaymentMethod(
 
 export const PaymentMethodResolver: GraphqlApiResolver = {
   Query: {
+    paymentMethod: UseUserGuard(paymentMethod),
     paymentMethods: UseUserGuard(paymentMethods),
     paymentHandlers: UseUserGuard(paymentHandlers)
   },

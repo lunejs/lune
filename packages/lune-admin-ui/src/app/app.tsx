@@ -11,6 +11,8 @@ import LocationDetailsPage from '@/lib/locations/pages/location-details-page';
 import { LocationsPage } from '@/lib/locations/pages/locations-page';
 import NewLocationPage from '@/lib/locations/pages/new-location-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
+import { NewPaymentMethodPage } from '@/lib/payments/pages/new-payment-method-page';
+import { PaymentMethodDetailsPage } from '@/lib/payments/pages/payment-method-details-page';
 import { PaymentMethodsPage } from '@/lib/payments/pages/payment-methods-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
@@ -87,8 +89,8 @@ export const App = () => {
                   <Route path="/settings/locations/:id" element={<LocationDetailsPage />} />
 
                   <Route path="/settings/payments" element={<PaymentMethodsPage />} />
-                  <Route path="/settings/payments/new" element={<NewZonePage />} />
-                  <Route path="/settings/payments/:id" element={<ZoneDetailsPage />} />
+                  <Route path="/settings/payments/new" element={<NewPaymentMethodPage />} />
+                  <Route path="/settings/payments/:id" element={<PaymentMethodDetailsPage />} />
                 </Route>
                 <Route path="/" element={<DashboardPage />} />
               </Route>

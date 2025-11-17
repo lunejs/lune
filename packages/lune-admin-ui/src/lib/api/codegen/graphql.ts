@@ -1818,6 +1818,7 @@ export type RemoveOptionMutation = { softRemoveOption: { id: string } };
 
 export type CommonPaymentMethodFragment = {
   id: string;
+  createdAt: any;
   name: string;
   enabled: boolean;
   handler: { code: string; args: any };
@@ -1833,6 +1834,16 @@ export type GetAllPaymentMethodsQuery = {
   paymentMethods: {
     ' $fragmentRefs'?: { CommonPaymentMethodFragment: CommonPaymentMethodFragment };
   }[];
+};
+
+export type GetPaymentMethodsQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetPaymentMethodsQuery = {
+  paymentMethod?: {
+    ' $fragmentRefs'?: { CommonPaymentMethodFragment: CommonPaymentMethodFragment };
+  } | null;
 };
 
 export type GetAllPaymentHandlersQueryVariables = Exact<Record<string, never>>;
@@ -2683,6 +2694,7 @@ export const CommonPaymentMethodFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
           { kind: 'Field', name: { kind: 'Name', value: 'name' } },
           { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
           {
@@ -4760,6 +4772,7 @@ export const GetAllPaymentMethodsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
           { kind: 'Field', name: { kind: 'Name', value: 'name' } },
           { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
           {
@@ -4778,6 +4791,73 @@ export const GetAllPaymentMethodsDocument = {
     }
   ]
 } as unknown as DocumentNode<GetAllPaymentMethodsQuery, GetAllPaymentMethodsQueryVariables>;
+export const GetPaymentMethodsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPaymentMethods' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'paymentMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonPaymentMethod' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonPaymentMethod' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PaymentMethod' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'handler' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetPaymentMethodsQuery, GetPaymentMethodsQueryVariables>;
 export const GetAllPaymentHandlersDocument = {
   kind: 'Document',
   definitions: [
