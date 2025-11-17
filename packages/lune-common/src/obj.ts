@@ -15,3 +15,7 @@ export function clean<T extends object>(obj: T): NullToUndefined<T> {
 
   return result as NullToUndefined<T>;
 }
+
+export function equals(obj1: Record<any, any>, obj2: Record<any, any>) {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
