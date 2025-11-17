@@ -16,7 +16,10 @@ export const LocationSubmitButton = () => {
     Boolean(values.streetLine1?.length);
 
   return (
-    <Button type="submit" disabled={!form.formState.isDirty || !withRequiredFields}>
+    <Button
+      type="submit"
+      disabled={!form.formState.isDirty || !withRequiredFields || form.formState.isSubmitting}
+    >
       Save
     </Button>
   );

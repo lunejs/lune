@@ -60,6 +60,8 @@ export const useLocationDetailsForm = (
         return;
       }
 
+      form.reset(values);
+
       success('Location updated');
       return;
     }
