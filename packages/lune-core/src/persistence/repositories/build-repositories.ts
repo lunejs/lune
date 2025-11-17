@@ -6,6 +6,7 @@ import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
 import { CustomerRepository } from './customer-repository';
+import { DiscountRepository } from './discount-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
 import { InStorePickupFulfillmentRepository } from './in-store-pickup-fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
@@ -64,7 +65,8 @@ export function buildRepositories(trx: Transaction) {
     inStorePickupFulfillment: new InStorePickupFulfillmentRepository(trx),
     zone: new ZoneRepository(trx),
     zoneState: new ZoneStateRepository(trx),
-    shippingMethod: new ShippingMethodRepository(trx)
+    shippingMethod: new ShippingMethodRepository(trx),
+    discount: new DiscountRepository(trx)
   };
 }
 

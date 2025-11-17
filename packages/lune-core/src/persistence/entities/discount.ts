@@ -34,6 +34,7 @@ export type AppliedDiscount = Pick<Discount, 'handle' | 'applicationMode' | 'app
  * A discount is a way to apply price discounts to your customer orders via a code or automatic rules.
  */
 export interface Discount extends LuneEntity {
+  deletedAt?: Date | null;
   /** A human friendly unique identifier for the discount. could be used as a code or title. */
   handle: string;
   /** How the discount is applied to the order */
@@ -57,10 +58,11 @@ export interface Discount extends LuneEntity {
 }
 
 export interface DiscountTable extends LuneTable {
+  deleted_at?: Date | null;
   handle: string;
   application_mode: ApplicationMode;
   application_level: ApplicationLevel;
-  perCustomer_limit?: number | null;
+  per_customer_limit?: number | null;
   starts_at: Date;
   ends_at?: Date | null;
   enabled: boolean;

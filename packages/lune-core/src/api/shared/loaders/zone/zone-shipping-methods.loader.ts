@@ -16,8 +16,6 @@ export function createZoneShippingMethodsLoader(trx: Transaction) {
       .whereNull('deleted_at')
       .orderBy('created_at', 'asc');
 
-    console.log({ rows });
-
     const byId = new Map<string, ShippingMethod[]>();
     for (const id of ids) byId.set(id, []);
 
