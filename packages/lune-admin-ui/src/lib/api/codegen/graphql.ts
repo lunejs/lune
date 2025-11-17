@@ -229,6 +229,12 @@ export type CreateOptionValueInput = {
   order: Scalars['Int']['input'];
 };
 
+export type CreatePaymentMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handler: HandlerConfigInput;
+  name: Scalars['String']['input'];
+};
+
 export type CreateProductInput = {
   assets?: InputMaybe<AssetInEntity[]>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -457,6 +463,7 @@ export type Mutation = {
   createCollection: Collection;
   createLocation: LocationResult;
   createOption: Option[];
+  createPaymentMethod: PaymentMethodResult;
   createProduct: Product;
   createShippingMethod: ShippingMethodResult;
   /** Create a new shop */
@@ -473,6 +480,7 @@ export type Mutation = {
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
+  removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -484,6 +492,7 @@ export type Mutation = {
   updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
   updateOption: Option;
+  updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
   updateShippingMethod: ShippingMethod;
   /** Update an existing shop details */
@@ -516,6 +525,10 @@ export type MutationCreateLocationArgs = {
 export type MutationCreateOptionArgs = {
   input: CreateOptionInput[];
   productId: Scalars['ID']['input'];
+};
+
+export type MutationCreatePaymentMethodArgs = {
+  input: CreatePaymentMethodInput;
 };
 
 export type MutationCreateProductArgs = {
@@ -556,6 +569,10 @@ export type MutationRemoveCollectionsArgs = {
 };
 
 export type MutationRemoveLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type MutationRemovePaymentMethodArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -605,6 +622,11 @@ export type MutationUpdateLocationArgs = {
 export type MutationUpdateOptionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateOptionInput;
+};
+
+export type MutationUpdatePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdatePaymentMethodInput;
 };
 
 export type MutationUpdateProductArgs = {
@@ -871,6 +893,20 @@ export type PaymentFailure = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+/** A payment handler is a way to manage the payment of an order in your shop */
+export type PaymentHandler = {
+  /**
+   * Specific data for the payment handler chosen
+   * Usually, this json stores the payment integration keys
+   * Record<string, Arg>
+   */
+  args: Scalars['JSON']['output'];
+  /** The payment handler's code (e.g. 'stripe') */
+  code: Scalars['String']['output'];
+  /** The payment handler's name (e.g. 'Stripe') */
+  name: Scalars['String']['output'];
+};
+
 /** A payment method is a way to pay for an order in your shop, like credit card, PayPal, etc. */
 export type PaymentMethod = Node & {
   createdAt: Scalars['Date']['output'];
@@ -880,11 +916,25 @@ export type PaymentMethod = Node & {
    * Specific data for the payment handler chosen.
    * Usually stores payment integration keys and the handler code
    */
-  handler: Scalars['JSON']['output'];
+  handler: HandlerConfig;
   id: Scalars['ID']['output'];
   /** Payment method's name */
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+export enum PaymentMethodErrorCode {
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type PaymentMethodErrorResult = {
+  code: PaymentMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type PaymentMethodResult = {
+  apiErrors: PaymentMethodErrorResult[];
+  paymentMethod?: Maybe<PaymentMethod>;
 };
 
 /** A payment rejection records when an admin manually rejects a payment (typically for bank transfers or submitted proofs) */
@@ -1014,6 +1064,9 @@ export type Query = {
   location?: Maybe<Location>;
   locations: LocationList;
   order?: Maybe<Order>;
+  paymentHandlers: PaymentHandler[];
+  paymentMethod?: Maybe<PaymentMethod>;
+  paymentMethods: PaymentMethod[];
   product?: Maybe<Product>;
   products: ProductList;
   /**
@@ -1058,6 +1111,10 @@ export type QueryLocationsArgs = {
 export type QueryOrderArgs = {
   code?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type QueryPaymentMethodArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type QueryProductArgs = {
@@ -1320,6 +1377,12 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdatePaymentMethodInput = {
+  args?: InputMaybe<Scalars['JSON']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateProductInput = {
@@ -1752,6 +1815,49 @@ export type RemoveOptionMutationVariables = Exact<{
 }>;
 
 export type RemoveOptionMutation = { softRemoveOption: { id: string } };
+
+export type CommonPaymentMethodFragment = {
+  id: string;
+  name: string;
+  enabled: boolean;
+  handler: { code: string; args: any };
+} & { ' $fragmentName'?: 'CommonPaymentMethodFragment' };
+
+export type CommonPaymentHandlerFragment = { name: string; code: string; args: any } & {
+  ' $fragmentName'?: 'CommonPaymentHandlerFragment';
+};
+
+export type GetAllPaymentHandlersQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllPaymentHandlersQuery = {
+  paymentHandlers: {
+    ' $fragmentRefs'?: { CommonPaymentHandlerFragment: CommonPaymentHandlerFragment };
+  }[];
+};
+
+export type CreatePaymentMethodMutationVariables = Exact<{
+  input: CreatePaymentMethodInput;
+}>;
+
+export type CreatePaymentMethodMutation = {
+  createPaymentMethod: {
+    apiErrors: { code: PaymentMethodErrorCode; message: string }[];
+    paymentMethod?: { id: string } | null;
+  };
+};
+
+export type UpdatePaymentMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdatePaymentMethodInput;
+}>;
+
+export type UpdatePaymentMethodMutation = { updatePaymentMethod: { id: string } };
+
+export type RemovePaymentMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemovePaymentMethodMutation = { removePaymentMethod: boolean };
 
 export type CommonProductForTranslationFragment = {
   id: string;
@@ -2558,6 +2664,53 @@ export const CommonListLocationFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonListLocationFragment, unknown>;
+export const CommonPaymentMethodFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonPaymentMethod' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PaymentMethod' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'handler' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonPaymentMethodFragment, unknown>;
+export const CommonPaymentHandlerFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonPaymentHandler' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PaymentHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonPaymentHandlerFragment, unknown>;
 export const CommonProductForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -4568,6 +4721,193 @@ export const RemoveOptionDocument = {
     }
   ]
 } as unknown as DocumentNode<RemoveOptionMutation, RemoveOptionMutationVariables>;
+export const GetAllPaymentHandlersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllPaymentHandlers' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'paymentHandlers' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonPaymentHandler' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonPaymentHandler' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PaymentHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllPaymentHandlersQuery, GetAllPaymentHandlersQueryVariables>;
+export const CreatePaymentMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreatePaymentMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreatePaymentMethodInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createPaymentMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'apiErrors' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'message' } }
+                    ]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'paymentMethod' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CreatePaymentMethodMutation, CreatePaymentMethodMutationVariables>;
+export const UpdatePaymentMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdatePaymentMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdatePaymentMethodInput' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updatePaymentMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<UpdatePaymentMethodMutation, UpdatePaymentMethodMutationVariables>;
+export const RemovePaymentMethodDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemovePaymentMethod' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'removePaymentMethod' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<RemovePaymentMethodMutation, RemovePaymentMethodMutationVariables>;
 export const GetProductsDocument = {
   kind: 'Document',
   definitions: [
