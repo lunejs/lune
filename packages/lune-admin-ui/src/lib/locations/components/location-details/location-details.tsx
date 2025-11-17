@@ -19,7 +19,7 @@ export const LocationDetails = ({ location, countries }: Props) => {
           title={location ? location.name : 'Add location'}
           subtitle={
             location
-              ? formatDate(location.createdAt)
+              ? formatDate(new Date(location.createdAt))
               : 'Add a location to your store to start receiving in-store pickup orders.'
           }
           backUrl="/settings/locations"
@@ -58,6 +58,6 @@ export const LocationDetails = ({ location, countries }: Props) => {
 };
 
 type Props = {
-  location?: CommonLocationFragment;
+  location?: CommonLocationFragment | null;
   countries: CommonCountryFragment[];
 };

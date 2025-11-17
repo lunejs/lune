@@ -1,10 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 import type { z } from 'zod';
 
-import { notification } from '@lune/ui';
-
 import type { CommonCountryFragment, CommonLocationFragment } from '@/lib/api/types';
+import { useCreateLocation } from '@/lib/locations/hooks/use-create-location';
+import { useUpdateLocation } from '@/lib/locations/hooks/use-update-location';
+import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { LocationDetailsSchema as schema } from './form-schema';
 
@@ -12,6 +14,11 @@ export const useLocationDetailsForm = (
   location: CommonLocationFragment | null,
   countries: CommonCountryFragment[]
 ) => {
+  const navigate = useNavigate();
+  const { loading, failure, success } = useLoadingNotification();
+  const { createLocation } = useCreateLocation();
+  const { updateLocation } = useUpdateLocation();
+
   const defaultCountry = countries.find(c => c.name === location?.country.name) ?? countries[0];
   const defaultState =
     defaultCountry.states.find(s => s.name === location?.state.name) ?? defaultCountry.states[0];
@@ -31,20 +38,52 @@ export const useLocationDetailsForm = (
   });
 
   async function onSubmit(values: LocationDetailsFormValues) {
-    const country = countries.find(c => c.id === values.country);
-    const state = country?.states.find(s => s.id === values.province);
+    if (location) {
+      loading('Saving...');
 
-    if (!country) {
-      notification.error('Invalid country selected');
+      const result = await updateLocation({
+        id: location.id,
+        input: {
+          name: values.name,
+          city: values.city,
+          countryId: values.country,
+          phoneNumber: values.phoneNumber,
+          postalCode: values.postalCode,
+          stateId: values.province,
+          streetLine1: values.streetLine1,
+          streetLine2: values.streetLine2
+        }
+      });
+
+      if (!result.isSuccess) {
+        failure(result.error);
+        return;
+      }
+
+      success('Location updated');
       return;
     }
 
-    if (!state) {
-      notification.error('Invalid state selected');
+    loading('Saving...');
+
+    const result = await createLocation({
+      name: values.name,
+      city: values.city,
+      countryId: values.country,
+      phoneNumber: values.phoneNumber,
+      postalCode: values.postalCode,
+      stateId: values.province,
+      streetLine1: values.streetLine1,
+      streetLine2: values.streetLine2
+    });
+
+    if (!result.isSuccess) {
+      failure(result.error);
       return;
     }
 
-    console.log(values);
+    success('Location created');
+    navigate(`/settings/locations/${result.data.id}`);
   }
 
   return {
