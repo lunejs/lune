@@ -11,7 +11,7 @@ export const InStorePickupLocationsPage = () => {
 
   return (
     <SettingsPageLayout
-      title="Pickup in store"
+      title="In Store Pickup"
       subtitle="Let customers pick up their orders at your locations"
       backUrl="/settings/shipments"
     >

@@ -8,7 +8,7 @@ import type { CommonListLocationFragment } from '@/lib/api/types';
 
 export const InStorePickupLocations = ({ locations }: Props) => {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden pb-0">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Your locations</CardTitle>
         <Link to={`/settings/locations`}>
@@ -39,7 +39,7 @@ export const InStorePickupLocations = ({ locations }: Props) => {
         const description = `${location.streetLine1}, ${location.postalCode} ${location.city}, ${location.state.name}, ${location.country.name}`;
         return (
           <Link
-            to={`pickup-in-store/${location.id}`}
+            to={`/settings/shipments/in-store-pickup/${location.id}`}
             className="p-4 border-t flex items-center justify-between gap-4 hover:bg-muted/50 transition-colors"
             key={location.id}
           >

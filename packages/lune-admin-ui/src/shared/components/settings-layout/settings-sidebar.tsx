@@ -136,7 +136,8 @@ const SIDEBAR = {
     {
       title: 'Locations',
       url: '/locations',
-      icon: MapPinIcon
+      icon: MapPinIcon,
+      isActive: (pathname: string) => pathname.includes('location')
     }
   ]
 };

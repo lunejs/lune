@@ -15,6 +15,7 @@ import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
 import { InStorePickupLocationsPage } from '@/lib/shipments/pages/in-store-pickup-locations-page';
+import { InStorePickupPreferencesPage } from '@/lib/shipments/pages/in-store-pickup-preferences-page';
 import { NewZonePage } from '@/lib/shipments/pages/new-zone-page';
 import { ShipmentsPage } from '@/lib/shipments/pages/shipments-page';
 import { ZoneDetailsPage } from '@/lib/shipments/pages/zone-details-page';
@@ -75,6 +76,10 @@ export const App = () => {
                   <Route
                     path="/settings/shipments/in-store-pickup"
                     element={<InStorePickupLocationsPage />}
+                  />
+                  <Route
+                    path="/settings/shipments/in-store-pickup/:id"
+                    element={<InStorePickupPreferencesPage />}
                   />
                   <Route path="/settings/locations" element={<LocationsPage />} />
                   <Route path="/settings/locations/new" element={<NewLocationPage />} />

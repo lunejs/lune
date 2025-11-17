@@ -75,6 +75,10 @@ const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
     { href: '/settings/shipments', label: 'Shipments' },
     { label: 'Add zone' }
   ],
+  '/settings/shipments/in-store-pickup': [
+    { href: '/settings/shipments', label: 'Shipments' },
+    { label: 'In Store Pickup' }
+  ],
   '/settings/locations': [{ label: 'Locations' }],
   '/settings/locations/new': [
     { href: '/settings/locations', label: 'Locations' },
@@ -99,6 +103,13 @@ const getBreadcrumbItems = (pathname: string, id?: string) => {
   }
   if (pathname === `/settings/locations/${id}`) {
     return [{ href: '/settings/locations', label: 'Locations' }, { label: 'Location details' }];
+  }
+  if (pathname === `/settings/shipments/in-store-pickup/${id}`) {
+    return [
+      { href: '/settings/shipments', label: 'Shipments' },
+      { href: '/settings/shipments/in-store-pickup', label: 'In Store Pickup' },
+      { label: 'Preferences' }
+    ];
   }
 
   return BREADCRUMBS[pathname] ?? [];
