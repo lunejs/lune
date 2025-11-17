@@ -1,7 +1,15 @@
 import { ChevronRight, StoreIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button, Card, CardDescription, CardHeader, CardTitle } from '@lune/ui';
+import {
+  Button,
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle
+} from '@lune/ui';
 
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 
@@ -15,25 +23,24 @@ export const ShipmentsPage = () => {
       className="flex flex-col gap-4"
     >
       <ZonesTable />
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-3">
-            <StoreIcon size={20} className="shrink-0" />
-            <div className="flex flex-col gap-1">
-              <CardTitle>In store pickup</CardTitle>
-              <CardDescription>
-                Let customers pick up their online orders in your store.
-              </CardDescription>
-            </div>
-          </div>
-
+      <Item variant="outline" size="default">
+        <ItemMedia variant={'icon'}>
+          <StoreIcon size={20} />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>In Store Pickup</ItemTitle>
+          <ItemDescription>
+            Let customers pick up their online orders in your store.
+          </ItemDescription>
+        </ItemContent>
+        <ItemActions>
           <Link to="/settings/shipments/in-store-pickup">
             <Button variant={'link'} className="group">
               Settings <ChevronRight />
             </Button>
           </Link>
-        </CardHeader>
-      </Card>
+        </ItemActions>
+      </Item>
     </SettingsPageLayout>
   );
 };

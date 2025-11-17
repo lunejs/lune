@@ -10,7 +10,7 @@ import { LocationCacheKeys } from '../constants/cache-keys';
 export const useGetLocation = (id: string) => {
   const result = useGqlQuery(GET_LOCATION_BY_ID_QUERY, {
     variables: { id },
-    key: [LocationCacheKeys.Locations]
+    key: [LocationCacheKeys.Location(id)]
   });
 
   const location = getFragmentData(COMMON_LOCATION_FRAGMENT, result.data?.location);

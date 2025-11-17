@@ -12,7 +12,7 @@ export default function LocationDetailsPage() {
   const { isLoading, location } = useGetLocation(id);
   const { isLoading: isLoadingCountries, countries } = useGetCountries();
 
-  if (isLoading && isLoadingCountries) return <PageLoader />;
+  if (isLoading || isLoadingCountries) return <PageLoader />;
 
   return <LocationDetails location={location} countries={countries} />;
 }

@@ -60,7 +60,7 @@ export const LocationsTable = ({ locations }: Props) => {
               <TableRow key={location.id}>
                 <TableCell>
                   <Link
-                    to={`locations/${location.id}`}
+                    to={`/settings/locations/${location.id}`}
                     className="flex flex-col gap-1 w-full text-nowrap"
                   >
                     <span className="text-sm font-normal">{location.name}</span>
