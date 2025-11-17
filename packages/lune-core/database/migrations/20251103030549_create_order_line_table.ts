@@ -12,6 +12,7 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('line_subtotal').notNullable();
     table.integer('line_total').notNullable();
     table.integer('quantity').notNullable();
+    table.jsonb('applied_discounts').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
 
     table.uuid('order_id').notNullable().references('id').inTable('orders');
     table.uuid('variant_id').notNullable().references('id').inTable('variant');

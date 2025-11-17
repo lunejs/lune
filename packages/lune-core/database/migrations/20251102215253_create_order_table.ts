@@ -28,6 +28,7 @@ export async function up(knex: Knex): Promise<void> {
     table.jsonb('shipping_address').nullable();
     table.timestamp('placed_at', { useTz: true }).nullable();
     table.timestamp('completed_at', { useTz: true }).nullable();
+    table.jsonb('applied_discounts').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
 
     table.uuid('customer_id').nullable().references('id').inTable('customer');
 

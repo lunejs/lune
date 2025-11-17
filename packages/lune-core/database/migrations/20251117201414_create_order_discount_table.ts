@@ -1,17 +1,15 @@
 import type { Knex } from 'knex';
 
-const TABLE_NAME = 'fulfillment';
+const TABLE_NAME = 'order_discount';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, table => {
     table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
-    table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.enum('type', ['SHIPPING', 'IN_STORE_PICKUP']).notNullable();
-    table.integer('amount').notNullable();
-    table.jsonb('applied_discounts').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
+    table.string('amount').notNullable();
 
+    table.uuid('discount_id').notNullable().references('id').inTable('discount');
     table.uuid('order_id').notNullable().references('id').inTable('orders');
 
     table
