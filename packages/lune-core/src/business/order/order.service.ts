@@ -9,10 +9,13 @@ import type {
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
+import type { AppliedDiscount } from '@/persistence/entities/discount';
+import { ApplicationLevel } from '@/persistence/entities/discount';
 import type { ID } from '@/persistence/entities/entity';
 import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
+import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -44,6 +47,7 @@ export class OrderService {
   private readonly shippingMethodRepository: ShippingMethodRepository;
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
+  private readonly discountRepository: DiscountRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -57,6 +61,7 @@ export class OrderService {
     this.shippingMethodRepository = ctx.repositories.shippingMethod;
     this.fulfillmentRepository = ctx.repositories.fulfillment;
     this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
+    this.discountRepository = ctx.repositories.discount;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -356,4 +361,92 @@ export class OrderService {
       }
     });
   }
+
+  async addDiscountCode(orderId: ID, code: string) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!this.validator.canModifyDiscounts(order.state)) {
+      throw new Error('Forbidden');
+    }
+
+    const discount = await this.discountRepository.findOne({ where: { handle: code } });
+
+    if (!discount?.enabled) {
+      throw new Error('Invalid discount code');
+    }
+
+    const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
+
+    if (!handler) throw new Error('Handler not found');
+
+    const isEligible = await handler.check(this.ctx, order, discount.handler.args);
+
+    if (!isEligible) throw new Error('Invalid discount code');
+
+    const result = await handler.apply(this.ctx, order, discount.handler.args);
+
+    const appliedDiscount: AppliedDiscount = {
+      handle: discount.handle,
+      applicationMode: discount.applicationMode,
+      applicationLevel: discount.applicationLevel,
+      amount: result.discountedAmount
+    };
+
+    if (discount.applicationLevel === ApplicationLevel.Order) {
+      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+
+      const orderSubtotal = order.subtotal - result.discountedAmount;
+
+      return await this.repository.update({
+        where: { id: order.id },
+        data: {
+          subtotal: orderSubtotal,
+          total: orderSubtotal + (fulfillment?.amount ?? 0),
+          appliedDiscounts: [appliedDiscount]
+        }
+      });
+    }
+
+    if (discount.applicationLevel === ApplicationLevel.OrderLine) {
+      const orderLines = await this.lineRepository.findMany({ where: { orderId } });
+
+      if (!result.affectedLines?.length) return order;
+
+      for (const lineToUpdate of result.affectedLines) {
+        const line = orderLines.find(l => l.id === lineToUpdate.lineId);
+
+        if (!line) continue;
+
+        line.lineTotal = line.lineTotal - lineToUpdate.discountedAmount;
+
+        await this.lineRepository.update({
+          where: { id: line.id },
+          data: {
+            lineTotal: line.lineTotal - lineToUpdate.discountedAmount,
+            appliedDiscounts: [{ ...appliedDiscount, amount: lineToUpdate.discountedAmount }]
+          }
+        });
+      }
+
+      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+      const newSubtotal = orderLines.reduce((acc, line) => acc + line.lineTotal, 0);
+
+      return await this.repository.update({
+        where: { id: orderId },
+        data: {
+          subtotal: newSubtotal,
+          total: newSubtotal + (fulfillment?.amount ?? 0)
+        }
+      });
+    }
+
+    // TODO: hacer esto pero primero probar los otros caoss
+    // if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+
+    // }
+  }
 }
+
+// trato de hacer las interfaces de los desxcuentos, asi como sus flujos, batallo en saber si debo regresar el preico descontado o el precio despues de aplicar el descuento
+// tamien en entender el flujo
+// tambien en eso del as OrderDiscountHandler, estaria bien tener solo un tipo

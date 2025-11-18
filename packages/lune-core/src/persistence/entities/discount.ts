@@ -1,4 +1,4 @@
-import type { ID, LuneEntity, LuneTable } from './entity';
+import type { HandlerConfig, ID, LuneEntity, LuneTable } from './entity';
 
 /**
  * Defines how the discount is applied to the customer
@@ -52,9 +52,7 @@ export interface Discount extends LuneEntity {
   /** Whether this discount can be combined with other discounts */
   combinable: boolean;
   /** JSONB configuration of discount actions */
-  actions: any;
-  /** JSONB configuration of discount conditions */
-  conditions: any;
+  handler: HandlerConfig;
 }
 
 export interface DiscountTable extends LuneTable {
@@ -67,7 +65,6 @@ export interface DiscountTable extends LuneTable {
   ends_at?: Date | null;
   enabled: boolean;
   combinable: boolean;
-  actions: any;
-  conditions: any;
+  handler: any;
   shop_id: ID;
 }

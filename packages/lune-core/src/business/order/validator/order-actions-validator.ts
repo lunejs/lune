@@ -14,6 +14,10 @@ export class OrderActionsValidator {
     return state === OrderState.Modifying;
   }
 
+  canModifyDiscounts(state: OrderState) {
+    return state === OrderState.Modifying;
+  }
+
   canAddCustomer(state: OrderState) {
     return state === OrderState.Modifying;
   }

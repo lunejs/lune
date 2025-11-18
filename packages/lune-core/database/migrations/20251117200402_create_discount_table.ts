@@ -17,8 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('ends_at', { useTz: true }).nullable();
     table.boolean('enabled').notNullable().defaultTo(true);
     table.boolean('combinable').notNullable().defaultTo(false);
-    table.jsonb('actions').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
-    table.jsonb('conditions').notNullable().defaultTo(knex.raw(`'[]'::jsonb`));
+    table.jsonb('handler').notNullable();
 
     table
       .uuid('shop_id')

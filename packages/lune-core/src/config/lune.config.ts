@@ -1,6 +1,7 @@
 import type { LuneLoggerLevel } from '@/logger/lune.logger';
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
+import type { DiscountHandler } from './discounts/discount-handler';
 import type { ImageProcessor } from './image-processor/image-processor';
 import type { PaymentHandler } from './payment-handler/payment-handler';
 import type { ShippingHandler } from './shipping-handler/shipping-handler';
@@ -27,6 +28,9 @@ export interface LuneConfig {
   };
   payments: {
     handlers: PaymentHandler[];
+  };
+  discounts: {
+    handlers: DiscountHandler[];
   };
   plugins: LunePlugin[];
   logger?: {

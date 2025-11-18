@@ -43,4 +43,8 @@ type Arg =
       defaultValue?: number;
       placeholder?: string;
       conditions?: { min?: number; max?: number };
+    }
+  | {
+      type: 'custom';
+      component: 'enhanced-radio-buttons' | 'entity-selector';
     };
