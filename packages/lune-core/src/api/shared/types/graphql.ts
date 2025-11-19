@@ -955,6 +955,8 @@ export type OrderCancellation = Node & {
 
 /**  Utils  */
 export enum OrderErrorCode {
+  DiscountCodeNotApplicable = 'DISCOUNT_CODE_NOT_APPLICABLE',
+  DiscountHandlerNotFound = 'DISCOUNT_HANDLER_NOT_FOUND',
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
   InvalidCustomerEmail = 'INVALID_CUSTOMER_EMAIL',
   InvalidQuantity = 'INVALID_QUANTITY',

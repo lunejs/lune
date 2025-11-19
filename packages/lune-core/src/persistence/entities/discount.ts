@@ -25,8 +25,8 @@ export enum ApplicationLevel {
 /**
  * Represents a discount that has been applied to an order, order line, or fulfillment.
  */
-export type AppliedDiscount = Pick<Discount, 'handle' | 'applicationMode' | 'applicationLevel'> & {
-  /** The amount discounted in cents (e.g., 2000 = $20.00) */
+export type AppliedDiscount = Pick<Discount, 'code' | 'applicationMode' | 'applicationLevel'> & {
+  /** The amount discounted */
   amount: number;
 };
 
@@ -35,8 +35,11 @@ export type AppliedDiscount = Pick<Discount, 'handle' | 'applicationMode' | 'app
  */
 export interface Discount extends LuneEntity {
   deletedAt?: Date | null;
-  /** A human friendly unique identifier for the discount. could be used as a code or title. */
-  handle: string;
+  /**
+   * The discount coupon code.
+   * For automatic discount this will work as a discount name
+   */
+  code: string;
   /** How the discount is applied to the order */
   applicationMode: ApplicationMode;
   /** At what order level the discount is applied */

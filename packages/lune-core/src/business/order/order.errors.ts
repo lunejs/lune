@@ -66,3 +66,21 @@ export class MissingShippingAddress extends OrderErrorResult {
     super(OrderErrorCode.MissingShippingAddress, 'There is no shipping address in the order');
   }
 }
+
+/**
+ * Error thrown when trying to add a discount code which is not applicable due to validation rules
+ */
+export class DiscountCodeNotApplicable extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.DiscountCodeNotApplicable, 'Discount code not applicable');
+  }
+}
+
+/**
+ * Error thrown when the discount handler is not found in lune config
+ */
+export class DiscountHandlerNotFound extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.DiscountHandlerNotFound, 'Discount handler not found');
+  }
+}

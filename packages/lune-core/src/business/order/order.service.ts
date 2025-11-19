@@ -9,6 +9,9 @@ import type {
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
+import type { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
+import type { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
+import type { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 import type { AppliedDiscount } from '@/persistence/entities/discount';
 import { ApplicationLevel } from '@/persistence/entities/discount';
 import type { ID } from '@/persistence/entities/entity';
@@ -27,6 +30,8 @@ import { isValidEmail } from '@/utils/validators';
 
 import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
+  DiscountCodeNotApplicable,
+  DiscountHandlerNotFound,
   ForbiddenOrderActionError,
   InvalidCustomerEmailError,
   InvalidQuantityError,
@@ -334,6 +339,7 @@ export class OrderService {
       create: {
         orderId,
         amount: shippingPrice,
+        total: shippingPrice,
         type: FulfillmentType.SHIPPING
       },
       update: {
@@ -366,36 +372,36 @@ export class OrderService {
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     if (!this.validator.canModifyDiscounts(order.state)) {
-      throw new Error('Forbidden');
+      return new ForbiddenOrderActionError(order.state);
     }
 
-    const discount = await this.discountRepository.findOne({ where: { handle: code } });
+    const discount = await this.discountRepository.findOne({ where: { code } });
 
-    if (!discount?.enabled) {
-      throw new Error('Invalid discount code');
-    }
+    if (!discount?.enabled) return new DiscountCodeNotApplicable();
 
     const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 
-    if (!handler) throw new Error('Handler not found');
-
-    const isEligible = await handler.check(this.ctx, order, discount.handler.args);
-
-    if (!isEligible) throw new Error('Invalid discount code');
-
-    const result = await handler.apply(this.ctx, order, discount.handler.args);
-
-    const appliedDiscount: AppliedDiscount = {
-      handle: discount.handle,
-      applicationMode: discount.applicationMode,
-      applicationLevel: discount.applicationLevel,
-      amount: result.discountedAmount
-    };
+    if (!handler) return new DiscountHandlerNotFound();
 
     if (discount.applicationLevel === ApplicationLevel.Order) {
+      const discountHandler = handler as OrderDiscountHandler;
+
+      const canApply = await discountHandler.check(this.ctx, order, discount.handler.args);
+
+      if (!canApply) return new DiscountCodeNotApplicable();
+
+      const discountedAmount = await discountHandler.apply(this.ctx, order, discount.handler.args);
+
+      const appliedDiscount: AppliedDiscount = {
+        code: discount.code,
+        applicationMode: discount.applicationMode,
+        applicationLevel: discount.applicationLevel,
+        amount: discountedAmount
+      };
+
       const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
 
-      const orderSubtotal = order.subtotal - result.discountedAmount;
+      const orderSubtotal = order.subtotal - discountedAmount;
 
       return await this.repository.update({
         where: { id: order.id },
@@ -408,22 +414,38 @@ export class OrderService {
     }
 
     if (discount.applicationLevel === ApplicationLevel.OrderLine) {
+      const discountHandler = handler as OrderLineDiscountHandler;
+
       const orderLines = await this.lineRepository.findMany({ where: { orderId } });
 
-      if (!result.affectedLines?.length) return order;
+      for (const line of orderLines) {
+        const canApply = await discountHandler.check(this.ctx, order, line, discount.handler.args);
 
-      for (const lineToUpdate of result.affectedLines) {
-        const line = orderLines.find(l => l.id === lineToUpdate.lineId);
+        if (!canApply) continue;
 
-        if (!line) continue;
+        const discountedAmount = await discountHandler.apply(
+          this.ctx,
+          order,
+          line,
+          discount.handler.args
+        );
 
-        line.lineTotal = line.lineTotal - lineToUpdate.discountedAmount;
+        const appliedDiscount: AppliedDiscount = {
+          code: discount.code,
+          applicationMode: discount.applicationMode,
+          applicationLevel: discount.applicationLevel,
+          amount: discountedAmount
+        };
+
+        const newTotal = line.lineTotal - discountedAmount;
+
+        line.lineTotal = newTotal;
 
         await this.lineRepository.update({
           where: { id: line.id },
           data: {
-            lineTotal: line.lineTotal - lineToUpdate.discountedAmount,
-            appliedDiscounts: [{ ...appliedDiscount, amount: lineToUpdate.discountedAmount }]
+            lineTotal: newTotal,
+            appliedDiscounts: [appliedDiscount]
           }
         });
       }
@@ -440,13 +462,59 @@ export class OrderService {
       });
     }
 
-    // TODO: hacer esto pero primero probar los otros caoss
-    // if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+    if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+      const discountHandler = handler as FulfillmentDiscountHandler;
 
-    // }
+      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+
+      const appliedDiscount: AppliedDiscount = {
+        code: discount.code,
+        applicationMode: discount.applicationMode,
+        applicationLevel: discount.applicationLevel,
+        amount: 0
+      };
+
+      if (!fulfillment) {
+        return await this.repository.update({
+          where: { id: order.id },
+          data: {
+            appliedDiscounts: [appliedDiscount]
+          }
+        });
+      }
+
+      const canApply = await discountHandler.check(
+        this.ctx,
+        order,
+        fulfillment,
+        discount.handler.args
+      );
+
+      if (!canApply) return new DiscountCodeNotApplicable();
+
+      const discountedAmount = await discountHandler.apply(
+        this.ctx,
+        order,
+        fulfillment,
+        discount.handler.args
+      );
+
+      const newFulfillmentTotal = fulfillment.amount - discountedAmount;
+
+      await this.fulfillmentRepository.update({
+        where: { id: fulfillment.id },
+        data: {
+          total: newFulfillmentTotal
+        }
+      });
+
+      return await this.repository.update({
+        where: { id: order.id },
+        data: {
+          total: order.subtotal + newFulfillmentTotal,
+          appliedDiscounts: [{ ...appliedDiscount, amount: discountedAmount }]
+        }
+      });
+    }
   }
 }
-
-// trato de hacer las interfaces de los desxcuentos, asi como sus flujos, batallo en saber si debo regresar el preico descontado o el precio despues de aplicar el descuento
-// tamien en entender el flujo
-// tambien en eso del as OrderDiscountHandler, estaria bien tener solo un tipo

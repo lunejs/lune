@@ -49,7 +49,7 @@ export interface Order extends LuneEntity {
    */
   state: OrderState;
   /**
-   * The price that will be sent to the payment provider. subtotal + shipping price
+   * The price that will be sent to the payment provider. (subtotal + fulfillment price)
    */
   total: number;
   /**

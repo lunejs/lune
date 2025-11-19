@@ -20,9 +20,13 @@ export interface Fulfillment extends LuneEntity {
    */
   type: FulfillmentType;
   /**
-   * Total amount for this fulfillment (e.g., shipping cost)
+   * Fulfillment amount before discounts
    */
   amount: number;
+  /**
+   * Fulfillment amount after discounts
+   */
+  total: number;
   /**
    * Order which this fulfillment belongs to
    */
@@ -32,6 +36,7 @@ export interface Fulfillment extends LuneEntity {
 export interface FulfillmentTable extends LuneTable {
   type: FulfillmentType;
   amount: number;
+  total: number;
   order_id: ID;
   shop_id: string;
 }
