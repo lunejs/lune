@@ -19,6 +19,7 @@ import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
+import type { DiscountUsageRepository } from '@/persistence/repositories/discount-usage-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -53,6 +54,7 @@ export class OrderService {
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
   private readonly discountRepository: DiscountRepository;
+  private readonly discountUsageRepository: DiscountUsageRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -378,6 +380,24 @@ export class OrderService {
     const discount = await this.discountRepository.findOne({ where: { code } });
 
     if (!discount?.enabled) return new DiscountCodeNotApplicable();
+
+    const hasFinished = discount.endsAt ? discount.endsAt < new Date() : false;
+    const hasStarted = discount.startsAt <= new Date();
+    const isActive = hasStarted && !hasFinished;
+
+    if (!isActive) return new DiscountCodeNotApplicable();
+
+    if (order.customerId && discount.perCustomerLimit) {
+      const customer = await this.customerRepository.findOneOrThrow({
+        where: { id: order.customerId }
+      });
+
+      const usages = await this.discountUsageRepository.count({
+        where: { customerId: customer.id, discountId: discount.id }
+      });
+
+      if (usages > discount.perCustomerLimit) return new DiscountCodeNotApplicable();
+    }
 
     const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 
