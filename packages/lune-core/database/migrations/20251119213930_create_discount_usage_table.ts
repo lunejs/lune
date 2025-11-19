@@ -1,16 +1,13 @@
 import type { Knex } from 'knex';
 
-const TABLE_NAME = 'order_discount';
+const TABLE_NAME = 'discount_usage';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, table => {
-    table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
-    table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
-
-    table.integer('amount').notNullable();
+    table.timestamp('applied_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
     table.uuid('discount_id').notNullable().references('id').inTable('discount');
-    table.uuid('order_id').notNullable().references('id').inTable('orders');
+    table.uuid('customer_id').notNullable().references('id').inTable('customer');
 
     table
       .uuid('shop_id')

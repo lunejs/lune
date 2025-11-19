@@ -26,7 +26,7 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('shop');
 
-    table.unique(['shop_id', 'handle']);
+    table.unique(['shop_id', 'code']);
   });
 }
 
