@@ -1,3 +1,5 @@
+import { isArray } from '@lune/common';
+
 import { LuneError } from '@/errors/lune.error';
 import type { RepositoryInput } from '@/persistence/repositories/repository';
 
@@ -81,9 +83,15 @@ export class Serializer<Entity, Table> {
       const result: Partial<Table> = {};
 
       for (const [from, to] of this.fields) {
-        const value = data[to as keyof RepositoryInput<Entity>];
+        let value: any = data[to as keyof RepositoryInput<Entity>];
 
         if (value === undefined) continue;
+
+        // Knex does not handle arrays values in json columns, so we need to stringify the array ourselves
+        // https://knexjs.org/guide/schema-builder.html#json
+        if (isArray(value)) {
+          value = JSON.stringify(value);
+        }
 
         result[from] = value as unknown as Table[typeof from];
       }

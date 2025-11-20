@@ -16,7 +16,8 @@ describe('User Serializer', () => {
         createdAt: new Date('2023-01-01T00:00:00Z'),
         updatedAt: new Date('2023-01-02T00:00:00Z'),
         email: 'ellie.williams@us.com',
-        password: 'hashed_password'
+        password: 'hashed_password',
+        followers: '[]'
       });
     });
 
@@ -47,7 +48,8 @@ describe('User Serializer', () => {
       expect(deserialized).toEqual({
         id: '123',
         createdAt: new Date('2023-01-01T00:00:00Z'),
-        email: 'alison.madden@gmail.com'
+        email: 'alison.madden@gmail.com',
+        followers: '[]'
       });
     });
   });
@@ -63,7 +65,8 @@ describe('User Serializer', () => {
         created_at: new Date('2023-01-01T00:00:00Z'),
         updated_at: new Date('2023-01-02T00:00:00Z'),
         email: 'joel.miller@us.com',
-        password: 'hashed_password'
+        password: 'hashed_password',
+        followers: '[]'
       });
     });
 

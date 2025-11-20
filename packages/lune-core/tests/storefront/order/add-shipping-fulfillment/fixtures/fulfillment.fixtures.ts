@@ -21,6 +21,7 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
       {
         id: FulfillmentConstants.ID,
         amount: LunePrice.toCent(50),
+        total: LunePrice.toCent(50),
         order_id: OrderConstants.WithFulfillmentID,
         shop_id: ShopConstants.ID,
         type: FulfillmentType.SHIPPING

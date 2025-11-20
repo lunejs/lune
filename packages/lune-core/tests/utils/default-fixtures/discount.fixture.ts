@@ -11,7 +11,7 @@ export const DefaultDiscountFixture = (): DiscountTable => ({
   created_at: new Date(),
   updated_at: new Date(),
   deleted_at: null,
-  handle: 'DISCOUNT10',
+  code: 'DISCOUNT10',
   application_mode: ApplicationMode.Code,
   application_level: ApplicationLevel.Order,
   per_customer_limit: null,
@@ -19,7 +19,6 @@ export const DefaultDiscountFixture = (): DiscountTable => ({
   ends_at: null,
   enabled: true,
   combinable: true,
-  actions: {},
-  conditions: {},
+  handler: {},
   shop_id: crypto.randomUUID()
 });

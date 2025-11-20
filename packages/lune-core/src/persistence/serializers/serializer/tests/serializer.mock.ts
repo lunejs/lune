@@ -6,6 +6,7 @@ type TestEntity = {
   updatedAt: Date;
   email: string;
   password: string;
+  followers: { user: string; photo: string }[];
 };
 
 type TestTable = {
@@ -14,6 +15,7 @@ type TestTable = {
   updated_at: Date;
   email: string;
   password: string;
+  followers: string;
 };
 
 const MockedTestRow: Partial<TestTable> = {
@@ -21,13 +23,15 @@ const MockedTestRow: Partial<TestTable> = {
   created_at: new Date('2023-01-01T00:00:00Z'),
   updated_at: new Date('2023-01-02T00:00:00Z'),
   email: 'ellie.williams@us.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  followers: '[]'
 };
 
 const MockedPartialTestRow: Partial<TestTable> = {
   id: '123',
   created_at: new Date('2023-01-01T00:00:00Z'),
-  email: 'alison.madden@gmail.com'
+  email: 'alison.madden@gmail.com',
+  followers: '[]'
 };
 
 const MockedTestEntity: Partial<TestEntity> = {
@@ -35,7 +39,8 @@ const MockedTestEntity: Partial<TestEntity> = {
   createdAt: new Date('2023-01-01T00:00:00Z'),
   updatedAt: new Date('2023-01-02T00:00:00Z'),
   email: 'joel.miller@us.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  followers: []
 };
 
 const MockedPartialTestEntity: Partial<TestEntity> = {
@@ -51,7 +56,8 @@ export class TestSerializer extends Serializer<TestEntity, TestTable> {
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
       ['email', 'email'],
-      ['password', 'password']
+      ['password', 'password'],
+      ['followers', 'followers']
     ]);
   }
 }

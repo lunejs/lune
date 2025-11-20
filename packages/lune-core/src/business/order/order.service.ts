@@ -12,10 +12,12 @@ import { getConfig } from '@/config/config';
 import type { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 import type { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
 import type { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
-import type { AppliedDiscount } from '@/persistence/entities/discount';
+import type { Discount } from '@/persistence/entities/discount';
+import { ApplicationMode, type AppliedDiscount } from '@/persistence/entities/discount';
 import { ApplicationLevel } from '@/persistence/entities/discount';
 import type { ID } from '@/persistence/entities/entity';
 import { FulfillmentType } from '@/persistence/entities/fulfillment';
+import type { Order } from '@/persistence/entities/order';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
@@ -38,7 +40,8 @@ import {
   InvalidQuantityError,
   InvalidShippingMethodError,
   MissingShippingAddress,
-  NotEnoughStockError
+  NotEnoughStockError,
+  OrderErrorResult
 } from './order.errors';
 
 export class OrderService {
@@ -135,7 +138,7 @@ export class OrderService {
         }
       });
 
-      return orderUpdated;
+      return this.applyAutomaticDiscounts(orderUpdated);
     }
 
     await this.lineRepository.create({
@@ -148,7 +151,7 @@ export class OrderService {
       appliedDiscounts: []
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         subtotal: order.subtotal + newLinePrice,
@@ -156,6 +159,8 @@ export class OrderService {
         totalQuantity: order.totalQuantity + input.quantity
       }
     });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
@@ -175,7 +180,7 @@ export class OrderService {
     if (input.quantity <= 0) {
       await this.lineRepository.remove({ where: { id: lineId } });
 
-      return await this.repository.update({
+      const orderUpdated = await this.repository.update({
         where: { id: order.id },
         data: {
           subtotal: order.subtotal - line.lineTotal,
@@ -183,6 +188,8 @@ export class OrderService {
           totalQuantity: order.totalQuantity - line.quantity
         }
       });
+
+      return this.applyAutomaticDiscounts(orderUpdated);
     }
 
     if (variant.stock < input.quantity) {
@@ -202,7 +209,7 @@ export class OrderService {
       }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: order.id },
       data: {
         total: order.total - line.lineTotal + linePrice,
@@ -210,6 +217,8 @@ export class OrderService {
         totalQuantity: order.totalQuantity - line.quantity + input.quantity
       }
     });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async removeLine(lineId: ID) {
@@ -222,7 +231,7 @@ export class OrderService {
 
     await this.lineRepository.remove({ where: { id: lineId } });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: order.id },
       data: {
         total: order.total - line.lineTotal,
@@ -230,6 +239,8 @@ export class OrderService {
         totalQuantity: order.totalQuantity - line.quantity
       }
     });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async addCustomer(orderId: ID, input: AddCustomerToOrderInput) {
@@ -252,12 +263,14 @@ export class OrderService {
       }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         customerId: customerUpsert.id
       }
     });
+
+    return await this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async addShippingAddress(orderId: ID, input: CreateOrderAddressInput) {
@@ -275,7 +288,7 @@ export class OrderService {
       where: { code: input.stateCode, countryId: country.id }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         shippingAddress: {
@@ -288,6 +301,8 @@ export class OrderService {
         }
       }
     });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async addShippingFulfillment(orderId: ID, input: AddShippingFulfillmentInput) {
@@ -345,7 +360,8 @@ export class OrderService {
         type: FulfillmentType.SHIPPING
       },
       update: {
-        amount: shippingPrice
+        amount: shippingPrice,
+        total: shippingPrice
       }
     });
 
@@ -362,12 +378,14 @@ export class OrderService {
       }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
-        total: order.total - (orderFulfillment?.amount ?? 0) + shippingPrice
+        total: order.total - (orderFulfillment?.total ?? 0) + shippingPrice
       }
     });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
   }
 
   async addDiscountCode(orderId: ID, code: string) {
@@ -396,13 +414,165 @@ export class OrderService {
         where: { customerId: customer.id, discountId: discount.id }
       });
 
-      if (usages > discount.perCustomerLimit) return new DiscountCodeNotApplicable();
+      if (usages >= discount.perCustomerLimit) return new DiscountCodeNotApplicable();
     }
 
     const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 
     if (!handler) return new DiscountHandlerNotFound();
 
+    return await this.applyDiscount(order, discount, handler);
+  }
+
+  private async applyAutomaticDiscounts(order: Order) {
+    const hasDiscountCodeApplied = order.appliedDiscounts.find(
+      d => d.applicationMode === ApplicationMode.Code
+    );
+
+    if (hasDiscountCodeApplied) return order;
+
+    const discounts = await this.discountRepository.findMany({
+      where: { applicationMode: ApplicationMode.Automatic }
+    });
+
+    if (!discounts.length) return order;
+
+    const applicableDiscounts: { discount: Discount; discountedAmount: number }[] = [];
+
+    for (const discount of discounts) {
+      if (!discount?.enabled) continue;
+
+      const hasFinished = discount.endsAt ? discount.endsAt < new Date() : false;
+      const hasStarted = discount.startsAt <= new Date();
+      const isActive = hasStarted && !hasFinished;
+
+      if (!isActive) continue;
+
+      if (order.customerId && discount.perCustomerLimit) {
+        const customer = await this.customerRepository.findOneOrThrow({
+          where: { id: order.customerId }
+        });
+
+        const usages = await this.discountUsageRepository.count({
+          where: { customerId: customer.id, discountId: discount.id }
+        });
+
+        if (usages >= discount.perCustomerLimit) continue;
+      }
+
+      const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
+
+      if (!handler) continue;
+
+      if (discount.applicationLevel === ApplicationLevel.Order) {
+        const discountHandler = handler as OrderDiscountHandler;
+
+        const canApply = await discountHandler.check(this.ctx, order, discount.handler.args);
+
+        if (!canApply) continue;
+
+        const discountedAmount = await discountHandler.apply(
+          this.ctx,
+          order,
+          discount.handler.args
+        );
+
+        applicableDiscounts.push({ discount, discountedAmount: discountedAmount });
+      }
+
+      if (discount.applicationLevel === ApplicationLevel.OrderLine) {
+        const discountHandler = handler as OrderLineDiscountHandler;
+
+        const orderLines = await this.lineRepository.findMany({ where: { orderId: order.id } });
+
+        let atLeastOneApply = false;
+        let accDiscountedAmount = 0;
+
+        for (const line of orderLines) {
+          const canApply = await discountHandler.check(
+            this.ctx,
+            order,
+            line,
+            discount.handler.args
+          );
+
+          if (!canApply) continue;
+
+          atLeastOneApply = true;
+
+          const discountedAmount = await discountHandler.apply(
+            this.ctx,
+            order,
+            line,
+            discount.handler.args
+          );
+
+          accDiscountedAmount += discountedAmount;
+        }
+
+        if (!atLeastOneApply) continue;
+
+        applicableDiscounts.push({ discount, discountedAmount: accDiscountedAmount });
+      }
+
+      if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+        const discountHandler = handler as FulfillmentDiscountHandler;
+
+        const fulfillment = await this.fulfillmentRepository.findOne({
+          where: { orderId: order.id }
+        });
+
+        if (!fulfillment) {
+          applicableDiscounts.push({ discount, discountedAmount: 0 });
+          continue;
+        }
+
+        const canApply = await discountHandler.check(
+          this.ctx,
+          order,
+          fulfillment,
+          discount.handler.args
+        );
+
+        if (!canApply) continue;
+
+        const discountedAmount = await discountHandler.apply(
+          this.ctx,
+          order,
+          fulfillment,
+          discount.handler.args
+        );
+
+        applicableDiscounts.push({ discount, discountedAmount });
+      }
+    }
+
+    if (!applicableDiscounts.length) return order;
+
+    const [{ discount }] = applicableDiscounts.sort(
+      (a, b) => b.discountedAmount - a.discountedAmount
+    );
+
+    const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
+
+    // we should return an error? no but what to do when there is no handler?
+    if (!handler) return order;
+
+    const result = await this.applyDiscount(order, discount, handler);
+
+    if (result instanceof OrderErrorResult) return order;
+
+    return result;
+  }
+
+  private async applyDiscount(
+    order: Order,
+    discount: Discount,
+    handler:
+      | OrderDiscountHandler<Record<string, any>>
+      | FulfillmentDiscountHandler<Record<string, any>>
+      | OrderLineDiscountHandler<Record<string, any>>
+  ) {
     if (discount.applicationLevel === ApplicationLevel.Order) {
       const discountHandler = handler as OrderDiscountHandler;
 
@@ -419,7 +589,9 @@ export class OrderService {
         amount: discountedAmount
       };
 
-      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+      const fulfillment = await this.fulfillmentRepository.findOne({
+        where: { orderId: order.id }
+      });
 
       const orderSubtotal = order.subtotal - discountedAmount;
 
@@ -427,7 +599,7 @@ export class OrderService {
         where: { id: order.id },
         data: {
           subtotal: orderSubtotal,
-          total: orderSubtotal + (fulfillment?.amount ?? 0),
+          total: orderSubtotal + (fulfillment?.total ?? 0),
           appliedDiscounts: [appliedDiscount]
         }
       });
@@ -436,7 +608,7 @@ export class OrderService {
     if (discount.applicationLevel === ApplicationLevel.OrderLine) {
       const discountHandler = handler as OrderLineDiscountHandler;
 
-      const orderLines = await this.lineRepository.findMany({ where: { orderId } });
+      const orderLines = await this.lineRepository.findMany({ where: { orderId: order.id } });
 
       for (const line of orderLines) {
         const canApply = await discountHandler.check(this.ctx, order, line, discount.handler.args);
@@ -470,14 +642,16 @@ export class OrderService {
         });
       }
 
-      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+      const fulfillment = await this.fulfillmentRepository.findOne({
+        where: { orderId: order.id }
+      });
       const newSubtotal = orderLines.reduce((acc, line) => acc + line.lineTotal, 0);
 
       return await this.repository.update({
-        where: { id: orderId },
+        where: { id: order.id },
         data: {
           subtotal: newSubtotal,
-          total: newSubtotal + (fulfillment?.amount ?? 0)
+          total: newSubtotal + (fulfillment?.total ?? 0)
         }
       });
     }
@@ -485,7 +659,9 @@ export class OrderService {
     if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
       const discountHandler = handler as FulfillmentDiscountHandler;
 
-      const fulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+      const fulfillment = await this.fulfillmentRepository.findOne({
+        where: { orderId: order.id }
+      });
 
       const appliedDiscount: AppliedDiscount = {
         code: discount.code,

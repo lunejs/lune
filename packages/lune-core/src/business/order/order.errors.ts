@@ -3,7 +3,7 @@ import type { ID } from '@/persistence/entities/entity';
 import type { OrderState } from '@/persistence/entities/order';
 import { ErrorResult } from '@/utils/error-result';
 
-abstract class OrderErrorResult extends ErrorResult<OrderErrorCode> {
+export abstract class OrderErrorResult extends ErrorResult<OrderErrorCode> {
   constructor(code: OrderErrorCode, message: string, metadata?: any) {
     super('OrderService', code, message, metadata);
   }

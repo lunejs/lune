@@ -60,7 +60,7 @@ export interface Discount extends LuneEntity {
 
 export interface DiscountTable extends LuneTable {
   deleted_at?: Date | null;
-  handle: string;
+  code: string;
   application_mode: ApplicationMode;
   application_level: ApplicationLevel;
   per_customer_limit?: number | null;

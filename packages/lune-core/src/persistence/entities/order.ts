@@ -136,7 +136,7 @@ export interface OrderTable extends LuneTable {
   total: number;
   subtotal: number;
   total_quantity: number;
-  applied_discounts: AppliedDiscount[];
+  applied_discounts: string;
   placed_at?: Date | null;
   completed_at?: Date | null;
   shipping_address?: any | null;

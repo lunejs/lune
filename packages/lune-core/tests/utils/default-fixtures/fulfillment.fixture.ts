@@ -6,6 +6,7 @@ export const DefaultFulfillmentFixture = (): FulfillmentTable => ({
   updated_at: new Date(),
   type: 'SHIPPING' as any,
   amount: 10_00,
+  total: 10_00,
   order_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

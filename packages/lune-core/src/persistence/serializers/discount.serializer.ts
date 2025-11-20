@@ -9,7 +9,7 @@ export class DiscountSerializer extends Serializer<Discount, DiscountTable> {
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
       ['deleted_at', 'deletedAt'],
-      ['handle', 'handle'],
+      ['code', 'code'],
       ['application_mode', 'applicationMode'],
       ['application_level', 'applicationLevel'],
       ['per_customer_limit', 'perCustomerLimit'],
@@ -17,8 +17,7 @@ export class DiscountSerializer extends Serializer<Discount, DiscountTable> {
       ['ends_at', 'endsAt'],
       ['enabled', 'enabled'],
       ['combinable', 'combinable'],
-      ['actions', 'actions'],
-      ['conditions', 'conditions']
+      ['handler', 'handler']
     ]);
   }
 }
