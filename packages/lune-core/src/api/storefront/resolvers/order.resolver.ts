@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
   MutationAddCustomerToOrderArgs,
+  MutationAddDiscountCodeToOrderArgs,
   MutationAddLineToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
   MutationAddShippingFulfillmentToOrderArgs,
@@ -88,6 +89,18 @@ async function addShippingFulfillmentToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addDiscountCodeToOrder(
+  _,
+  { orderId, code }: MutationAddDiscountCodeToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addDiscountCode(orderId, code);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
@@ -98,6 +111,7 @@ export const OrderResolver: GraphqlApiResolver = {
     removeOrderLine,
     addCustomerToOrder,
     addShippingAddressToOrder,
-    addShippingFulfillmentToOrder
+    addShippingFulfillmentToOrder,
+    addDiscountCodeToOrder
   }
 };

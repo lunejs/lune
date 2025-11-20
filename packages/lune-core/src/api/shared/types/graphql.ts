@@ -513,6 +513,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addCollectionTranslation: CollectionTranslation;
   addCustomerToOrder: OrderResult;
+  addDiscountCodeToOrder: OrderResult;
   addLineToOrder: OrderResult;
   addProductTranslation: ProductTranslation;
   addShippingAddressToOrder: OrderResult;
@@ -573,6 +574,12 @@ export type MutationAddCollectionTranslationArgs = {
 
 export type MutationAddCustomerToOrderArgs = {
   input: AddCustomerToOrderInput;
+  orderId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddDiscountCodeToOrderArgs = {
+  code: Scalars['String']['input'];
   orderId: Scalars['ID']['input'];
 };
 
@@ -2359,6 +2366,7 @@ export type LocationResultResolvers<ContextType = ExecutionContext, ParentType e
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
+  addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
   addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
