@@ -1,6 +1,8 @@
 import { OrderDiscountHandler } from '../order-discount-handler';
 
 export const OrderPriceDiscountHandler = new OrderDiscountHandler({
+  name: 'Order Discount',
+  description: 'Apply a discount to the entire order',
   code: 'order-discount',
   args: {
     discountValue: {

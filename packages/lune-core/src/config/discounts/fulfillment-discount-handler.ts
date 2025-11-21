@@ -9,6 +9,8 @@ import type { Args, InferArgs } from '../common/args.config';
  * Creates fulfillment-level discounts
  */
 export class FulfillmentDiscountHandler<TArgs extends Args = Args> {
+  name: string;
+  description: string;
   code: string;
   args: TArgs;
   check: Config<TArgs>['check'];
@@ -23,6 +25,16 @@ export class FulfillmentDiscountHandler<TArgs extends Args = Args> {
 }
 
 type Config<TArgs> = {
+  /**
+   * @description
+   * Name for the handler
+   */
+  name: string;
+  /**
+   * @description
+   * Description for the handler
+   */
+  description: string;
   /**
    * @description
    * Unique identifier for this handler ej. 'black-friday-discount'

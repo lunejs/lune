@@ -1,6 +1,8 @@
 import { FulfillmentDiscountHandler } from '../fulfillment-discount-handler';
 
 export const FreeShippingDiscountHandler = new FulfillmentDiscountHandler({
+  name: 'Free Shipping',
+  description: 'Offer free shipping on an order',
   code: 'free-shipping',
   args: {
     orderRequirements: {

@@ -3,6 +3,8 @@ import { LunePrice } from '@lune/common';
 import { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
 
 export const TestOrderPriceDiscountHandler = new OrderDiscountHandler({
+  name: '',
+  description: '',
   code: 'order-discount',
   args: {
     applies: {
