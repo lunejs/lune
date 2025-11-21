@@ -22,6 +22,11 @@ type OrderLine implements Node {
   """
   quantity: Int!
   """
+  Array of all order-line-level discounts applied to the order populated every time order is modified.
+  Use this field to show data of current discounts applied to the order-line
+  """
+  appliedDiscounts: [AppliedDiscount!]!
+  """
   The product variant being ordered
   """
   variant: Variant!

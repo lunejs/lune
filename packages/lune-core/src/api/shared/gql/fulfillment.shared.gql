@@ -29,10 +29,13 @@ type Fulfillment implements Node {
   """
   type: FulfillmentType!
   """
-  Total amount for this fulfillment (e.g., shipping cost)
+  Fulfillment amount before discounts
   """
   amount: Int!
-
+  """
+  Fulfillment amount after discounts
+  """
+  total: Int!
   """
   Union type which could be Shipping or InStorePickup
   """

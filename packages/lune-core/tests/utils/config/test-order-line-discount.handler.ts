@@ -1,7 +1,9 @@
+import { LunePrice } from '@lune/common';
+
 import { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 
-export const ProductDiscountHandler = new OrderLineDiscountHandler({
-  code: 'product-discount',
+export const TestOrderLineDiscountHandler = new OrderLineDiscountHandler({
+  code: 'order-line-discount',
   args: {
     variants: {
       type: 'entity-selector',
@@ -16,6 +18,6 @@ export const ProductDiscountHandler = new OrderLineDiscountHandler({
     return true;
   },
   async apply() {
-    return 100;
+    return LunePrice.toCent(300);
   }
 });

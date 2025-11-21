@@ -29,7 +29,7 @@ export interface OrderLineTable extends LuneTable {
   line_subtotal: number;
   line_total: number;
   quantity: number;
-  applied_discounts: AppliedDiscount[];
+  applied_discounts: string;
   variant_id: ID;
   order_id: ID;
   shop_id: ID;

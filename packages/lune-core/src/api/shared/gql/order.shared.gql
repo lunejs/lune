@@ -72,6 +72,11 @@ type Order implements Node {
   """
   totalQuantity: Int!
   """
+  Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+  Use this field to show data of current discounts applied to the order
+  """
+  appliedDiscounts: [AppliedDiscount!]!
+  """
   Shipping address where the order has to be delivered
   """
   shippingAddress: OrderAddressJson

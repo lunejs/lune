@@ -7,7 +7,6 @@ import { CollectionTranslationRepository } from './collection-translation-reposi
 import { CountryRepository } from './country-repository';
 import { CustomerRepository } from './customer-repository';
 import { DiscountRepository } from './discount-repository';
-import { DiscountUsageRepository } from './discount-usage-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
 import { InStorePickupFulfillmentRepository } from './in-store-pickup-fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
@@ -69,8 +68,7 @@ export function buildRepositories(trx: Transaction) {
     zoneState: new ZoneStateRepository(trx),
     shippingMethod: new ShippingMethodRepository(trx),
     discount: new DiscountRepository(trx),
-    orderDiscount: new OrderDiscountRepository(trx),
-    discountUsages: new DiscountUsageRepository(trx)
+    orderDiscount: new OrderDiscountRepository(trx)
   };
 }
 

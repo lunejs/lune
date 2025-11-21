@@ -7,7 +7,6 @@ export class OrderDiscountSerializer extends Serializer<OrderDiscount, OrderDisc
     super([
       ['id', 'id'],
       ['created_at', 'createdAt'],
-      ['updated_at', 'updatedAt'],
       ['amount', 'amount'],
       ['discount_id', 'discountId'],
       ['order_id', 'orderId']

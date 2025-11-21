@@ -1,7 +1,9 @@
+import { LunePrice } from '@lune/common';
+
 import { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 
-export const FreeShippingDiscountHandler = new FulfillmentDiscountHandler({
-  code: 'shipping-discount',
+export const TestFulfillmentDiscountHandler = new FulfillmentDiscountHandler({
+  code: 'fulfillment-discount',
   args: {
     applies: {
       type: 'boolean'
@@ -13,6 +15,6 @@ export const FreeShippingDiscountHandler = new FulfillmentDiscountHandler({
     return applies;
   },
   async apply() {
-    return 100;
+    return LunePrice.toCent(50);
   }
 });

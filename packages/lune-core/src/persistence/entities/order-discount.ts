@@ -3,7 +3,7 @@ import type { ID, LuneEntity, LuneTable } from './entity';
 /**
  * Represents a discount that has been applied to an order at checkout.
  */
-export interface OrderDiscount extends LuneEntity {
+export interface OrderDiscount extends Omit<LuneEntity, 'updatedAt'> {
   /** The amount discounted in cents */
   amount: number;
   /** The discount that was used */
@@ -12,7 +12,7 @@ export interface OrderDiscount extends LuneEntity {
   orderId: ID;
 }
 
-export interface OrderDiscountTable extends LuneTable {
+export interface OrderDiscountTable extends Omit<LuneTable, 'updated_at'> {
   amount: number;
   discount_id: ID;
   order_id: ID;

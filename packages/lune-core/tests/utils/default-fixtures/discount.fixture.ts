@@ -18,7 +18,7 @@ export const DefaultDiscountFixture = (): DiscountTable => ({
   starts_at: subDays(new Date(), 1),
   ends_at: null,
   enabled: true,
-  combinable: true,
+  combinable: false,
   handler: {},
   shop_id: crypto.randomUUID()
 });

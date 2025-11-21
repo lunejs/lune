@@ -21,8 +21,8 @@ import type { Order } from '@/persistence/entities/order';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
-import type { DiscountUsageRepository } from '@/persistence/repositories/discount-usage-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
+import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
 import type { ShippingFulfillmentRepository } from '@/persistence/repositories/shipping-fulfillment-repository';
@@ -57,7 +57,7 @@ export class OrderService {
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
   private readonly discountRepository: DiscountRepository;
-  private readonly discountUsageRepository: DiscountUsageRepository;
+  private readonly orderDiscountRepository: OrderDiscountRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -72,6 +72,7 @@ export class OrderService {
     this.fulfillmentRepository = ctx.repositories.fulfillment;
     this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
     this.discountRepository = ctx.repositories.discount;
+    this.orderDiscountRepository = ctx.repositories.orderDiscount;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -406,13 +407,10 @@ export class OrderService {
     if (!isActive) return new DiscountCodeNotApplicable();
 
     if (order.customerId && discount.perCustomerLimit) {
-      const customer = await this.customerRepository.findOneOrThrow({
-        where: { id: order.customerId }
-      });
-
-      const usages = await this.discountUsageRepository.count({
-        where: { customerId: customer.id, discountId: discount.id }
-      });
+      const usages = await this.orderDiscountRepository.countByCustomerIdAndDiscountId(
+        order.customerId,
+        discount.id
+      );
 
       if (usages >= discount.perCustomerLimit) return new DiscountCodeNotApplicable();
     }
@@ -449,13 +447,10 @@ export class OrderService {
       if (!isActive) continue;
 
       if (order.customerId && discount.perCustomerLimit) {
-        const customer = await this.customerRepository.findOneOrThrow({
-          where: { id: order.customerId }
-        });
-
-        const usages = await this.discountUsageRepository.count({
-          where: { customerId: customer.id, discountId: discount.id }
-        });
+        const usages = await this.orderDiscountRepository.countByCustomerIdAndDiscountId(
+          order.customerId,
+          discount.id
+        );
 
         if (usages >= discount.perCustomerLimit) continue;
       }
@@ -610,10 +605,14 @@ export class OrderService {
 
       const orderLines = await this.lineRepository.findMany({ where: { orderId: order.id } });
 
+      let atLeastOneApplied = false;
+
       for (const line of orderLines) {
         const canApply = await discountHandler.check(this.ctx, order, line, discount.handler.args);
 
         if (!canApply) continue;
+
+        atLeastOneApplied = true;
 
         const discountedAmount = await discountHandler.apply(
           this.ctx,
@@ -642,9 +641,12 @@ export class OrderService {
         });
       }
 
+      if (!atLeastOneApplied) return new DiscountCodeNotApplicable();
+
       const fulfillment = await this.fulfillmentRepository.findOne({
         where: { orderId: order.id }
       });
+
       const newSubtotal = orderLines.reduce((acc, line) => acc + line.lineTotal, 0);
 
       return await this.repository.update({

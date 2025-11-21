@@ -1,0 +1,17 @@
+enum DiscountApplicationMode {
+  CODE
+  AUTOMATIC
+}
+
+enum DiscountApplicationLevel {
+  ORDER
+  ORDER_LINE
+  FULFILLMENT
+}
+
+type AppliedDiscount {
+  code: String!
+  applicationMode: DiscountApplicationMode!
+  applicationLevel: DiscountApplicationLevel!
+  amount: Int!
+}

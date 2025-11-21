@@ -3,6 +3,9 @@ import { TestPaymentHandler } from '@/config/payment-handler/test-payment-handle
 import { FlatShippingHandler } from '@/config/shipping-handler/flat-shipping-handler';
 
 import { TestImageProcessor } from './config/test-image-processor';
+import { TestOrderPriceDiscountHandler } from './config/test-order-discount.handler';
+import { TestOrderLineDiscountHandler } from './config/test-order-line-discount.handler';
+import { TestFulfillmentDiscountHandler } from './config/test-shipping-discount.handler';
 import { TestStorageProvider } from './config/test-storage-provider';
 
 export const TEST_LUNE_CONFIG: LuneConfig = {
@@ -28,7 +31,11 @@ export const TEST_LUNE_CONFIG: LuneConfig = {
     handlers: [new TestPaymentHandler()]
   },
   discounts: {
-    handlers: []
+    handlers: [
+      TestOrderPriceDiscountHandler,
+      TestOrderLineDiscountHandler,
+      TestFulfillmentDiscountHandler
+    ]
   },
   plugins: [],
   logger: {
