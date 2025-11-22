@@ -9,7 +9,7 @@ import { ShopsList } from '../shops-list';
 
 import { SHOPS_MOCK } from './shops-list.mock';
 
-vi.mock('@/lib/shared/cookies', () => ({
+vi.mock('@/shared/cookies', () => ({
   setCookie: vi.fn()
 }));
 

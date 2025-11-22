@@ -13,7 +13,7 @@ import {
   SUCCESS_CREATE_SHOP_RESPONSE
 } from './create-shop-form.mock';
 
-vi.mock('@/lib/shared/cookies', () => ({
+vi.mock('@/shared/cookies', () => ({
   setCookie: vi.fn()
 }));
 

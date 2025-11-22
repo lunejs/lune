@@ -13,7 +13,7 @@ import {
   SUCCESS_GENERATE_USER_ACCESS_TOKEN_RESPONSE
 } from './login-form.mock';
 
-vi.mock('@/lib/shared/cookies', () => ({
+vi.mock('@/shared/cookies', () => ({
   setCookie: vi.fn()
 }));
 
@@ -63,7 +63,7 @@ describe('Login Form', () => {
     const navigateSpy = vi.fn();
     navigateMock.mockReturnValue(navigateSpy);
 
-    gqlFetcherMock.mockRejectedValueOnce(new Error('Network Error'));
+    gqlFetcherMock.mockRejectedValueOnce(Error('Network Error'));
 
     render(<LoginForm />);
 
