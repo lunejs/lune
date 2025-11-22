@@ -1,6 +1,6 @@
 import { notification } from '@lune/ui';
 
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_OPTION_MUTATION } from '@/lib/api/operations/option.operations';
 import { CREATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import { CREATE_VARIANT_MUTATION } from '@/lib/api/operations/variant.operations';
@@ -9,9 +9,9 @@ import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 
 export const useCreateProduct = () => {
   const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: createProduct } = useGqlMutation(CREATE_PRODUCT_MUTATION);
-  const { mutateAsync: createVariants } = useGqlMutation(CREATE_VARIANT_MUTATION);
-  const { mutateAsync: createOptions } = useGqlMutation(CREATE_OPTION_MUTATION);
+  const { mutateAsync: createProduct } = useGqlMutationDEPRECATED(CREATE_PRODUCT_MUTATION);
+  const { mutateAsync: createVariants } = useGqlMutationDEPRECATED(CREATE_VARIANT_MUTATION);
+  const { mutateAsync: createOptions } = useGqlMutationDEPRECATED(CREATE_OPTION_MUTATION);
 
   const create = async (input: CreateProductInput) => {
     let images: Omit<LuneAsset, 'order'>[] = [];

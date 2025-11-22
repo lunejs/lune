@@ -17,7 +17,7 @@ type ExtractApiError<T> = T extends { apiErrors: (infer E)[] }
 /**
  * A wrapper around react-query's `useMutation` that uses graphql-request to fetch admin api.
  */
-export const useGqlMutation = <R extends Record<string, any>, V>(
+export const useGqlMutationDEPRECATED = <R extends Record<string, any>, V>(
   document: TypedDocumentNode<R, V>,
   getErrorFn?: (error: ExtractApiError<ExtractRootField<R>>) => string
 ): UseMutationResult<

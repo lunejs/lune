@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { UPDATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
@@ -10,7 +10,7 @@ import { ProductCacheKeys } from '../constants/cache-keys';
 export const useProductAsset = () => {
   const { loading, success, failure } = useLoadingNotification();
   const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: updateProduct } = useGqlMutation(UPDATE_PRODUCT_MUTATION);
+  const { mutateAsync: updateProduct } = useGqlMutationDEPRECATED(UPDATE_PRODUCT_MUTATION);
 
   const upload = async (product: CommonProductFragment, files: File[]) => {
     try {

@@ -1,7 +1,7 @@
 import { isUUID } from '@lune/common';
 
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import {
   CREATE_OPTION_MUTATION,
   REMOVE_OPTION_MUTATION,
@@ -17,13 +17,13 @@ import {
 import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useUpdateProduct = () => {
-  const { mutateAsync: updateProduct } = useGqlMutation(UPDATE_PRODUCT_MUTATION);
-  const { mutateAsync: updateVariant } = useGqlMutation(UPDATE_VARIANT_MUTATION);
-  const { mutateAsync: removeVariant } = useGqlMutation(REMOVE_VARIANT_MUTATION);
-  const { mutateAsync: createVariants } = useGqlMutation(CREATE_VARIANT_MUTATION);
-  const { mutateAsync: updateOptions } = useGqlMutation(UPDATE_OPTION_MUTATION);
-  const { mutateAsync: createOptions } = useGqlMutation(CREATE_OPTION_MUTATION);
-  const { mutateAsync: removeOption } = useGqlMutation(REMOVE_OPTION_MUTATION);
+  const { mutateAsync: updateProduct } = useGqlMutationDEPRECATED(UPDATE_PRODUCT_MUTATION);
+  const { mutateAsync: updateVariant } = useGqlMutationDEPRECATED(UPDATE_VARIANT_MUTATION);
+  const { mutateAsync: removeVariant } = useGqlMutationDEPRECATED(REMOVE_VARIANT_MUTATION);
+  const { mutateAsync: createVariants } = useGqlMutationDEPRECATED(CREATE_VARIANT_MUTATION);
+  const { mutateAsync: updateOptions } = useGqlMutationDEPRECATED(UPDATE_OPTION_MUTATION);
+  const { mutateAsync: createOptions } = useGqlMutationDEPRECATED(CREATE_OPTION_MUTATION);
+  const { mutateAsync: removeOption } = useGqlMutationDEPRECATED(REMOVE_OPTION_MUTATION);
 
   const update = async (productId: string, input: UpdateProductInput) => {
     const optionsToCreate = input.options?.filter(o => !isUUID(o.id));

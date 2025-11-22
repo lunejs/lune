@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { REMOVE_PAYMENT_METHOD_MUTATION } from '@/lib/api/operations/payment-method.operations';
 import type { MutationRemovePaymentMethodArgs } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -7,7 +7,9 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { PaymentCacheKeys } from '../constants/cache-keys';
 
 export const useRemovePaymentMethod = () => {
-  const { mutateAsync: removePaymentMethod } = useGqlMutation(REMOVE_PAYMENT_METHOD_MUTATION);
+  const { mutateAsync: removePaymentMethod } = useGqlMutationDEPRECATED(
+    REMOVE_PAYMENT_METHOD_MUTATION
+  );
 
   const exec = async (input: Input): Promise<RemovePaymentMethodResult> => {
     try {

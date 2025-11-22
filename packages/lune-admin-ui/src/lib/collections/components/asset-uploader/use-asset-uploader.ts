@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { UPDATE_COLLECTION_MUTATION } from '@/lib/api/operations/collection.operations';
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
@@ -10,7 +10,7 @@ import { CollectionsCacheKeys } from '../../constants/cache-keys';
 export const useCollectionAssetUploader = () => {
   const { loading, success, failure } = useLoadingNotification();
   const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: updateCollection } = useGqlMutation(UPDATE_COLLECTION_MUTATION);
+  const { mutateAsync: updateCollection } = useGqlMutationDEPRECATED(UPDATE_COLLECTION_MUTATION);
 
   const upload = async (collection: CommonCollectionFragment, files: File) => {
     try {

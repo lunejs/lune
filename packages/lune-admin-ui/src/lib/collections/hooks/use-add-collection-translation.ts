@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { ADD_TRANSLATION_TO_COLLECTION } from '@/lib/api/operations/collection.operations';
 import type { CollectionTranslationInput } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -7,7 +7,7 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { CollectionsCacheKeys } from '../constants/cache-keys';
 
 export const useAddCollectionTranslation = () => {
-  const { mutateAsync: addTranslation } = useGqlMutation(ADD_TRANSLATION_TO_COLLECTION);
+  const { mutateAsync: addTranslation } = useGqlMutationDEPRECATED(ADD_TRANSLATION_TO_COLLECTION);
 
   const exec = async (id: string, input: CollectionTranslationInput): Promise<ActionResult> => {
     try {

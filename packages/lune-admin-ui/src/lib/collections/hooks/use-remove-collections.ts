@@ -1,12 +1,12 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { REMOVE_COLLECTIONS_MUTATION } from '@/lib/api/operations/collection.operations';
 import type { ActionResult } from '@/shared/utils/result.utils';
 
 import { CollectionsCacheKeys } from '../constants/cache-keys';
 
 export const useRemoveCollections = () => {
-  const { mutateAsync } = useGqlMutation(REMOVE_COLLECTIONS_MUTATION);
+  const { mutateAsync } = useGqlMutationDEPRECATED(REMOVE_COLLECTIONS_MUTATION);
 
   const removeCollections = async (ids: string[]): Promise<ActionResult> => {
     try {

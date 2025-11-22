@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { ADD_TRANSLATION_TO_PRODUCT } from '@/lib/api/operations/product.operations';
 import type { AddProductTranslationInput } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -7,7 +7,7 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useAddProductTranslation = () => {
-  const { mutateAsync: addTranslation } = useGqlMutation(ADD_TRANSLATION_TO_PRODUCT);
+  const { mutateAsync: addTranslation } = useGqlMutationDEPRECATED(ADD_TRANSLATION_TO_PRODUCT);
 
   const exec = async (id: string, input: AddProductTranslationInput): Promise<ActionResult> => {
     try {

@@ -1,12 +1,12 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { REMOVE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import type { ActionResult } from '@/shared/utils/result.utils';
 
 import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useRemoveProducts = () => {
-  const { mutateAsync } = useGqlMutation(REMOVE_PRODUCT_MUTATION);
+  const { mutateAsync } = useGqlMutationDEPRECATED(REMOVE_PRODUCT_MUTATION);
 
   const removeProducts = async (ids: string[]): Promise<ActionResult> => {
     try {

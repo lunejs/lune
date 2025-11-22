@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_COLLECTION_MUTATION } from '@/lib/api/operations/collection.operations';
 import type { LuneAsset } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
@@ -10,7 +10,7 @@ import { CollectionsCacheKeys } from '../constants/cache-keys';
 
 export const useCreateCollection = () => {
   const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: createCollection } = useGqlMutation(CREATE_COLLECTION_MUTATION);
+  const { mutateAsync: createCollection } = useGqlMutationDEPRECATED(CREATE_COLLECTION_MUTATION);
 
   const exec = async (input: CollectionDetailsFormValues): Promise<CreateCollectionResult> => {
     try {

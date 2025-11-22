@@ -1,5 +1,5 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { UPDATE_ZONE_MUTATION } from '@/lib/api/operations/zone.operations';
 import type { MutationUpdateZoneArgs } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -7,7 +7,7 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { ShipmentCacheKeys } from '../constants/cache-keys';
 
 export const useUpdateZone = () => {
-  const { mutateAsync: updateZone } = useGqlMutation(UPDATE_ZONE_MUTATION);
+  const { mutateAsync: updateZone } = useGqlMutationDEPRECATED(UPDATE_ZONE_MUTATION);
 
   const exec = async (input: Input): Promise<UpdateZoneResult> => {
     try {

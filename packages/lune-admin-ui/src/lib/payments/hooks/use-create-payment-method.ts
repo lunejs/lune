@@ -1,6 +1,6 @@
 import { queryClient } from '@/app/app';
 import { getPaymentMethodError } from '@/lib/api/errors/payment-method.errors';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_PAYMENT_METHOD_MUTATION } from '@/lib/api/operations/payment-method.operations';
 import type { MutationCreatePaymentMethodArgs } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -8,7 +8,7 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { PaymentCacheKeys } from '../constants/cache-keys';
 
 export const useCreatePaymentMethod = () => {
-  const { mutateAsync: createPaymentMethod } = useGqlMutation(
+  const { mutateAsync: createPaymentMethod } = useGqlMutationDEPRECATED(
     CREATE_PAYMENT_METHOD_MUTATION,
     getPaymentMethodError
   );

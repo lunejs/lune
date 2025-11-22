@@ -1,6 +1,6 @@
 import { queryClient } from '@/app/app';
 import { getLocationError } from '@/lib/api/errors/location.errors';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { UPDATE_LOCATION_MUTATION } from '@/lib/api/operations/location.operations';
 import type { MutationUpdateLocationArgs } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
@@ -8,7 +8,7 @@ import type { ActionResult } from '@/shared/utils/result.utils';
 import { LocationCacheKeys } from '../constants/cache-keys';
 
 export const useUpdateLocation = () => {
-  const { mutateAsync: updateLocation } = useGqlMutation(
+  const { mutateAsync: updateLocation } = useGqlMutationDEPRECATED(
     UPDATE_LOCATION_MUTATION,
     getLocationError
   );

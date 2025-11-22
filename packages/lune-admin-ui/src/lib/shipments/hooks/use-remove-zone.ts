@@ -1,12 +1,12 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { REMOVE_ZONE_MUTATION } from '@/lib/api/operations/zone.operations';
 import type { ActionResult } from '@/shared/utils/result.utils';
 
 import { ShipmentCacheKeys } from '../constants/cache-keys';
 
 export const useRemoveZone = () => {
-  const { mutateAsync: removeZone } = useGqlMutation(REMOVE_ZONE_MUTATION);
+  const { mutateAsync: removeZone } = useGqlMutationDEPRECATED(REMOVE_ZONE_MUTATION);
 
   const exec = async (id: string): Promise<RemoveZoneResult> => {
     try {
