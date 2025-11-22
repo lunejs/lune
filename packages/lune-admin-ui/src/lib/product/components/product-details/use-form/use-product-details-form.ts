@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router';
 import type z from 'zod';
 
 import type { CommonProductFragment } from '@/lib/api/types';
-import { buildDefaultValues } from '@/lib/product/utils/product.utils';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
-import { ProductDetailsSchema } from './product-details-schema';
-import { useProductDetailsCreate } from './use-product-details-create';
-import { useProductDetailsUpdate } from './use-product-details-update';
+import { buildDefaultValues } from './build-defaults';
+import { ProductDetailsSchema as schema } from './product-details-schema';
+import { useProductDetailsCreate } from './use-create';
+import { useProductDetailsUpdate } from './use-update';
 
 export const useProductDetailsForm = (product?: CommonProductFragment | null) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
   const { createProduct } = useProductDetailsCreate();
 
   const form = useForm<ProductDetailsFormInput>({
-    resolver: zodResolver(ProductDetailsSchema) as any,
+    resolver: zodResolver(schema) as any,
     defaultValues: buildDefaultValues(product)
   });
 
@@ -56,7 +56,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null) =>
   };
 };
 
-export type ProductDetailsFormInput = z.infer<typeof ProductDetailsSchema>;
+export type ProductDetailsFormInput = z.infer<typeof schema>;
 
 export const useProductDetailsFormContext = (): HookReturn => {
   return useFormContext<ProductDetailsFormInput>() as HookReturn;
