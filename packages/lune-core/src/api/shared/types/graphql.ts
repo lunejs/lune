@@ -68,6 +68,14 @@ export type Address = {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type AppliedDiscount = {
+  __typename?: 'AppliedDiscount';
+  amount: Scalars['Int']['output'];
+  applicationLevel: DiscountApplicationLevel;
+  applicationMode: DiscountApplicationMode;
+  code: Scalars['String']['output'];
+};
+
 export type Asset = Node & {
   __typename?: 'Asset';
   createdAt: Scalars['Date']['output'];
@@ -225,6 +233,17 @@ export type CreateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type CreateDiscountInput = {
+  applicationLevel: DiscountApplicationLevel;
+  applicationMode: DiscountApplicationMode;
+  code: Scalars['String']['input'];
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  handler: HandlerConfig;
+  perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
+  startsAt: Scalars['Date']['input'];
+};
+
 export type CreateLocationInput = {
   city: Scalars['String']['input'];
   countryId: Scalars['ID']['input'];
@@ -364,15 +383,97 @@ export type DimensionsInput = {
   width?: InputMaybe<Scalars['Float']['input']>;
 };
 
+/** A discount is a way to apply price discounts to your customer orders via a code or automatic rules. */
+export type Discount = {
+  __typename?: 'Discount';
+  /** At what order level the discount is applied */
+  applicationLevel: DiscountApplicationLevel;
+  /** How the discount is applied to the order */
+  applicationMode: DiscountApplicationMode;
+  /**
+   * The discount coupon code.
+   * For automatic discount this will work as a discount name
+   */
+  code: Scalars['String']['output'];
+  /** Whether this discount can be combined with other discounts */
+  combinable: Scalars['Boolean']['output'];
+  /** Whether the discount is enabled or not. Disabled discounts can't be applied to orders */
+  enabled: Scalars['Boolean']['output'];
+  /** Date when the discount stops to be applicable (null = never expires) */
+  endsAt?: Maybe<Scalars['Date']['output']>;
+  /** JSONB configuration of discount actions */
+  handler: HandlerConfig;
+  /** Maximum times a customer can use this discount (null = unlimited) */
+  perCustomerLimit?: Maybe<Scalars['Int']['output']>;
+  /** Date when the discount starts to be applicable */
+  startsAt: Scalars['Date']['output'];
+};
+
+export enum DiscountApplicationLevel {
+  Fulfillment = 'FULFILLMENT',
+  Order = 'ORDER',
+  OrderLine = 'ORDER_LINE'
+}
+
+export enum DiscountApplicationMode {
+  Automatic = 'AUTOMATIC',
+  Code = 'CODE'
+}
+
+export enum DiscountErrorCode {
+  CodeAlreadyExists = 'CODE_ALREADY_EXISTS'
+}
+
+export type DiscountErrorResult = {
+  __typename?: 'DiscountErrorResult';
+  code: DiscountErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type DiscountFilters = {
+  active?: InputMaybe<BooleanFilter>;
+  code?: InputMaybe<StringFilter>;
+};
+
+export type DiscountHandler = {
+  __typename?: 'DiscountHandler';
+  applicationLevel: DiscountApplicationMode;
+  args?: Maybe<Scalars['JSON']['output']>;
+  code: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type DiscountList = List & {
+  __typename?: 'DiscountList';
+  count: Scalars['Int']['output'];
+  items: Array<Discount>;
+  pageInfo: PageInfo;
+};
+
+export type DiscountListInput = {
+  filters?: InputMaybe<DiscountFilters>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type DiscountResult = {
+  __typename?: 'DiscountResult';
+  apiErrors: Array<DiscountErrorResult>;
+  discount?: Maybe<Discount>;
+};
+
 /** A fulfillment represents how an order will be delivered to the customer */
 export type Fulfillment = Node & {
   __typename?: 'Fulfillment';
-  /** Total amount for this fulfillment (e.g., shipping cost) */
+  /** Fulfillment amount before discounts */
   amount: Scalars['Int']['output'];
   createdAt: Scalars['Date']['output'];
   /** Union type which could be Shipping or InStorePickup */
   details: FulfillmentDetails;
   id: Scalars['ID']['output'];
+  /** Fulfillment amount after discounts */
+  total: Scalars['Int']['output'];
   /** Type of fulfillment (shipping or in-store pickup) */
   type: FulfillmentType;
   updatedAt: Scalars['Date']['output'];
@@ -519,6 +620,7 @@ export type Mutation = {
   addShippingAddressToOrder: OrderResult;
   addShippingFulfillmentToOrder: OrderResult;
   createCollection: Collection;
+  createDiscount: DiscountResult;
   createLocation: LocationResult;
   createOption: Array<Option>;
   createOrder: OrderResult;
@@ -538,6 +640,7 @@ export type Mutation = {
    */
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
+  removeDiscounts: DiscountResult;
   removeLocation: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
   removePaymentMethod: Scalars['Boolean']['output'];
@@ -549,6 +652,7 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateDiscount: DiscountResult;
   updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
   updateOption: Option;
@@ -610,6 +714,11 @@ export type MutationAddShippingFulfillmentToOrderArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+
+export type MutationCreateDiscountArgs = {
+  input: CreateDiscountInput;
 };
 
 
@@ -680,6 +789,11 @@ export type MutationRemoveCollectionsArgs = {
 };
 
 
+export type MutationRemoveDiscountsArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
+
 export type MutationRemoveLocationArgs = {
   id: Scalars['ID']['input'];
 };
@@ -733,6 +847,11 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateDiscountArgs = {
+  input: UpdateDiscountInput;
 };
 
 
@@ -889,6 +1008,11 @@ export type OptionValueTranslationInput = {
 /** An order represents a customer's purchase, including line items, shipping, and payment information */
 export type Order = Node & {
   __typename?: 'Order';
+  /**
+   * Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+   * Use this field to show data of current discounts applied to the order
+   */
+  appliedDiscounts: Array<AppliedDiscount>;
   /** Unique order code generated after order is placed */
   code?: Maybe<Scalars['String']['output']>;
   /** The date and time when the order has been marked as completed (delivered and paid) */
@@ -981,6 +1105,11 @@ export type OrderErrorResult = {
 /** An order line represents a single item in an order */
 export type OrderLine = Node & {
   __typename?: 'OrderLine';
+  /**
+   * Array of all order-line-level discounts applied to the order populated every time order is modified.
+   * Use this field to show data of current discounts applied to the order-line
+   */
+  appliedDiscounts: Array<AppliedDiscount>;
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   /** The line subtotal (unitPrice * quantity before adjustments) */
@@ -1273,6 +1402,9 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
+  discount?: Maybe<Discount>;
+  discountHandlers: Array<DiscountHandler>;
+  discounts: DiscountList;
   location?: Maybe<Location>;
   locations: LocationList;
   order?: Maybe<Order>;
@@ -1313,6 +1445,16 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+
+export type QueryDiscountArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryDiscountsArgs = {
+  input: ListInput;
 };
 
 
@@ -1585,6 +1727,15 @@ export type UpdateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Array<Scalars['ID']['input']>>;
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+export type UpdateDiscountInput = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  handler?: InputMaybe<HandlerConfig>;
+  perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
+  startsAt?: InputMaybe<Scalars['Date']['input']>;
 };
 
 export type UpdateInStorePickupPreferencesInput = {
@@ -1873,7 +2024,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
   Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
@@ -1883,6 +2034,7 @@ export type ResolversTypes = {
   AddProductTranslationInput: AddProductTranslationInput;
   AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: ResolverTypeWrapper<Address>;
+  AppliedDiscount: ResolverTypeWrapper<AppliedDiscount>;
   Asset: ResolverTypeWrapper<Asset>;
   AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
@@ -1899,6 +2051,7 @@ export type ResolversTypes = {
   CollectionTranslationInput: CollectionTranslationInput;
   Country: ResolverTypeWrapper<Country>;
   CreateCollectionInput: CreateCollectionInput;
+  CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
@@ -1918,6 +2071,16 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Dimensions: ResolverTypeWrapper<Dimensions>;
   DimensionsInput: DimensionsInput;
+  Discount: ResolverTypeWrapper<Discount>;
+  DiscountApplicationLevel: DiscountApplicationLevel;
+  DiscountApplicationMode: DiscountApplicationMode;
+  DiscountErrorCode: DiscountErrorCode;
+  DiscountErrorResult: ResolverTypeWrapper<DiscountErrorResult>;
+  DiscountFilters: DiscountFilters;
+  DiscountHandler: ResolverTypeWrapper<DiscountHandler>;
+  DiscountList: ResolverTypeWrapper<DiscountList>;
+  DiscountListInput: DiscountListInput;
+  DiscountResult: ResolverTypeWrapper<DiscountResult>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Fulfillment: ResolverTypeWrapper<Omit<Fulfillment, 'details'> & { details: ResolversTypes['FulfillmentDetails'] }>;
   FulfillmentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']>;
@@ -2004,6 +2167,7 @@ export type ResolversTypes = {
   TagListInput: TagListInput;
   TagResult: ResolverTypeWrapper<TagResult>;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
@@ -2034,6 +2198,7 @@ export type ResolversParentTypes = {
   AddProductTranslationInput: AddProductTranslationInput;
   AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: Address;
+  AppliedDiscount: AppliedDiscount;
   Asset: Asset;
   AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
@@ -2048,6 +2213,7 @@ export type ResolversParentTypes = {
   CollectionTranslationInput: CollectionTranslationInput;
   Country: Country;
   CreateCollectionInput: CreateCollectionInput;
+  CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
   CreateOptionValueInput: CreateOptionValueInput;
@@ -2067,6 +2233,13 @@ export type ResolversParentTypes = {
   Date: Scalars['Date']['output'];
   Dimensions: Dimensions;
   DimensionsInput: DimensionsInput;
+  Discount: Discount;
+  DiscountErrorResult: DiscountErrorResult;
+  DiscountFilters: DiscountFilters;
+  DiscountHandler: DiscountHandler;
+  DiscountList: DiscountList;
+  DiscountListInput: DiscountListInput;
+  DiscountResult: DiscountResult;
   Float: Scalars['Float']['output'];
   Fulfillment: Omit<Fulfillment, 'details'> & { details: ResolversParentTypes['FulfillmentDetails'] };
   FulfillmentDetails: ResolversUnionTypes<ResolversParentTypes>['FulfillmentDetails'];
@@ -2142,6 +2315,7 @@ export type ResolversParentTypes = {
   TagListInput: TagListInput;
   TagResult: TagResult;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOptionInput: UpdateOptionInput;
@@ -2179,6 +2353,14 @@ export type AddressResolvers<ContextType = ExecutionContext, ParentType extends 
   streetLine1?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   streetLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AppliedDiscountResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['AppliedDiscount'] = ResolversParentTypes['AppliedDiscount']> = {
+  amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
+  applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2275,11 +2457,53 @@ export type DimensionsResolvers<ContextType = ExecutionContext, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DiscountResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Discount'] = ResolversParentTypes['Discount']> = {
+  applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
+  applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  combinable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  endsAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
+  perCustomerLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  startsAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DiscountErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountErrorResult'] = ResolversParentTypes['DiscountErrorResult']> = {
+  code?: Resolver<ResolversTypes['DiscountErrorCode'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DiscountHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountHandler'] = ResolversParentTypes['DiscountHandler']> = {
+  applicationLevel?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
+  args?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DiscountListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountList'] = ResolversParentTypes['DiscountList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DiscountResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountResult'] = ResolversParentTypes['DiscountResult']> = {
+  apiErrors?: Resolver<Array<ResolversTypes['DiscountErrorResult']>, ParentType, ContextType>;
+  discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']> = {
   amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   details?: Resolver<ResolversTypes['FulfillmentDetails'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['FulfillmentType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2320,7 +2544,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -2372,6 +2596,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
   addShippingFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
+  createDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationCreateDiscountArgs, 'input'>>;
   createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
   createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
   createOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
@@ -2385,6 +2610,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
+  removeDiscounts?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationRemoveDiscountsArgs, 'ids'>>;
   removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
   removePaymentMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemovePaymentMethodArgs, 'id'>>;
@@ -2396,6 +2622,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
   updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
+  updateDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationUpdateDiscountArgs, 'input'>>;
   updateInStorePickupPreferences?: Resolver<ResolversTypes['InStorePickup'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
   updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;
   updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
@@ -2471,6 +2698,7 @@ export type OptionValueTranslationResolvers<ContextType = ExecutionContext, Pare
 };
 
 export type OrderResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
+  appliedDiscounts?: Resolver<Array<ResolversTypes['AppliedDiscount']>, ParentType, ContextType>;
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2520,6 +2748,7 @@ export type OrderErrorResultResolvers<ContextType = ExecutionContext, ParentType
 };
 
 export type OrderLineResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderLine'] = ResolversParentTypes['OrderLine']> = {
+  appliedDiscounts?: Resolver<Array<ResolversTypes['AppliedDiscount']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lineSubtotal?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -2663,6 +2892,9 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
+  discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
+  discountHandlers?: Resolver<Array<ResolversTypes['DiscountHandler']>, ParentType, ContextType>;
+  discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, RequireFields<QueryDiscountsArgs, 'input'>>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
@@ -2879,6 +3111,7 @@ export type ZoneResolvers<ContextType = ExecutionContext, ParentType extends Res
 
 export type Resolvers<ContextType = ExecutionContext> = {
   Address?: AddressResolvers<ContextType>;
+  AppliedDiscount?: AppliedDiscountResolvers<ContextType>;
   Asset?: AssetResolvers<ContextType>;
   AssetList?: AssetListResolvers<ContextType>;
   Collection?: CollectionResolvers<ContextType>;
@@ -2889,6 +3122,11 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Customer?: CustomerResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Dimensions?: DimensionsResolvers<ContextType>;
+  Discount?: DiscountResolvers<ContextType>;
+  DiscountErrorResult?: DiscountErrorResultResolvers<ContextType>;
+  DiscountHandler?: DiscountHandlerResolvers<ContextType>;
+  DiscountList?: DiscountListResolvers<ContextType>;
+  DiscountResult?: DiscountResultResolvers<ContextType>;
   Fulfillment?: FulfillmentResolvers<ContextType>;
   FulfillmentDetails?: FulfillmentDetailsResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;

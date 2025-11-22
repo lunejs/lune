@@ -1,0 +1,115 @@
+"""
+A discount is a way to apply price discounts to your customer orders via a code or automatic rules.
+"""
+type Discount implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The discount coupon code.
+  For automatic discount this will work as a discount name
+  """
+  code: String!
+  """
+  How the discount is applied to the order
+  """
+  applicationMode: DiscountApplicationMode!
+  """
+  At what order level the discount is applied
+  """
+  applicationLevel: DiscountApplicationLevel!
+  """
+  Maximum times a customer can use this discount (null = unlimited)
+  """
+  perCustomerLimit: Int
+  """
+  Date when the discount starts to be applicable
+  """
+  startsAt: Date!
+  """
+  Date when the discount stops to be applicable (null = never expires)
+  """
+  endsAt: Date
+  """
+  Whether the discount is enabled or not. Disabled discounts can't be applied to orders
+  """
+  enabled: Boolean!
+  # combinable: Boolean!
+  """
+  JSONB configuration of discount actions
+  """
+  handler: HandlerConfig!
+}
+
+type DiscountHandler {
+  name: String!
+  description: String!
+  code: String!
+  applicationLevel: DiscountApplicationMode!
+  args: JSON
+}
+
+type Query {
+  discounts(input: ListInput!): DiscountList!
+  discount(id: ID!): Discount
+  discountHandlers: [DiscountHandler!]!
+}
+
+type Mutation {
+  createDiscount(input: CreateDiscountInput!): DiscountResult!
+  updateDiscount(input: UpdateDiscountInput!): DiscountResult!
+  removeDiscounts(ids: [ID!]!): DiscountResult!
+}
+
+type DiscountList implements List {
+  items: [Discount!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+input DiscountListInput {
+  skip: Int
+  take: Int
+  filters: DiscountFilters
+}
+
+input DiscountFilters {
+  code: StringFilter
+  active: BooleanFilter
+}
+
+input CreateDiscountInput {
+  code: String!
+  applicationMode: DiscountApplicationMode!
+  applicationLevel: DiscountApplicationLevel!
+  perCustomerLimit: Int
+  startsAt: Date!
+  endsAt: Date
+  enabled: Boolean
+  # combinable: Boolean
+  handler: HandlerConfigInput!
+}
+
+input UpdateDiscountInput {
+  code: String
+  perCustomerLimit: Int
+  startsAt: Date
+  endsAt: Date
+  enabled: Boolean
+  # combinable: Boolean
+  handler: HandlerConfigInput
+}
+
+type DiscountResult {
+  discount: Discount
+  apiErrors: [DiscountErrorResult!]!
+}
+
+type DiscountErrorResult {
+  code: DiscountErrorCode!
+  message: String!
+}
+
+enum DiscountErrorCode {
+  CODE_ALREADY_EXISTS
+}
