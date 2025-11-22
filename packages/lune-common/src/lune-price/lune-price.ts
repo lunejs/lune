@@ -47,7 +47,7 @@ export class LunePrice {
    * ```ts
    * const priceInCents = 1099;
    * const priceFormatted = LunePrice.format(priceInCents);
-   * // priceFormatted = $10.99
+   * // priceFormatted = '$10.99'
    * ```
    */
   static format(price: number) {
@@ -61,7 +61,7 @@ export class LunePrice {
    * Convert formatted price to number
    *
    * @example
-   * LunePrice.parse('$1,234.56') // 123456
+   * LunePrice.parse('$1,234.56') // 1234.56
    */
   static parse(price: string) {
     const parsedPrice = price;

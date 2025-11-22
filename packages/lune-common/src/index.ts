@@ -1,5 +1,5 @@
 export * from './obj';
-export * from './prices';
+export * from './lune-price';
 export * from './types';
 export * from './validators';
 export * from './timers';
