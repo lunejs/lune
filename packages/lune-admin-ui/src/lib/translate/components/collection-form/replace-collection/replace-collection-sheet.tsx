@@ -16,7 +16,7 @@ export const ReplaceCollectionSheet = () => {
         <SheetHeader>
           <SheetTitle>Select collection</SheetTitle>
         </SheetHeader>
-        <CollectionTranslateList className="w-full flex!" />
+        <CollectionTranslateList className={{ root: 'w-full flex!' }} />
       </SheetContent>
     </Sheet>
   );

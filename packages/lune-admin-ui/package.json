@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint .",
     "gen:types": "yarn graphql-codegen && bash ./scripts/format-codegen.sh",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
