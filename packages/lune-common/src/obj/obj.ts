@@ -1,4 +1,4 @@
-import { NullToUndefined } from './types';
+import { NullToUndefined } from '../types';
 
 /**
  * Replace null values with undefined for the given object
@@ -16,6 +16,10 @@ export function clean<T extends object>(obj: T): NullToUndefined<T> {
   return result as NullToUndefined<T>;
 }
 
+/**
+ * Returns true if both of the provided objects are deep equal,
+ * returns false otherwise
+ */
 export function equals(obj1: Record<any, any>, obj2: Record<any, any>) {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 }

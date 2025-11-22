@@ -1,6 +1,6 @@
 import { isArray, isFirst, isLast } from './arrays';
 
-describe('Array', () => {
+describe('Arrays', () => {
   describe('isLast', () => {
     test('returns true when provided index is in fact the last index of the array', () => {
       expect(isLast(3, [1, 2, 3, 4])).toBe(true);

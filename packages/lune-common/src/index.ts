@@ -1,4 +1,4 @@
-export * from './obj';
+export * from './obj/obj';
 export * from './lune-price';
 export * from './types';
 export * from './validators';
