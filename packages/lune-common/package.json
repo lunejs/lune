@@ -16,12 +16,14 @@
     }
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "tsup": "^8.5.0"
+    "tsup": "^8.5.0",
+    "vitest": "^4.0.13"
   }
 }
