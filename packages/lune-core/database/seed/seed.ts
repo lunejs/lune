@@ -2,6 +2,7 @@ import { knex, type Knex } from 'knex';
 import { seedCountries } from './countries/countries.seed';
 import { seedUsers } from './users/users.seed';
 import { seedShops } from './shops/shops.seed';
+import { seedOptionPresets } from './option-presets/option-presets.seed';
 import { seedProducts } from './products/products.seed';
 import { seedCollections } from './collections/collections.seed';
 import { resetDatabase } from './reset-database';
@@ -46,6 +47,7 @@ async function main() {
     throw new Error("Shop 'lune-store' is not present");
   }
 
+  await seedOptionPresets(trx, { userId: user.id, shopId: shop.id });
   await seedProducts(trx, { userId: user.id, shopId: shop.id });
   await seedCollections(trx, { userId: user.id, shopId: shop.id });
 }

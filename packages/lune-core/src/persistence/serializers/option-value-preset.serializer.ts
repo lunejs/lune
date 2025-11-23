@@ -12,7 +12,6 @@ export class OptionValuePresetSerializer extends Serializer<
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
       ['name', 'name'],
-      ['order', 'order'],
       ['metadata', 'metadata'],
       ['option_preset_id', 'optionPresetId']
     ]);

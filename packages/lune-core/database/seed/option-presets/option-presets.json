@@ -1,0 +1,116 @@
+[
+  {
+    "name": "Color",
+    "values": [
+      {
+        "name": "Black",
+        "metadata": {
+          "hex": "#000000"
+        }
+      },
+      {
+        "name": "White",
+        "metadata": {
+          "hex": "#FFFFFF"
+        }
+      },
+      {
+        "name": "Red",
+        "metadata": {
+          "hex": "#FF0000"
+        }
+      },
+      {
+        "name": "Blue",
+        "metadata": {
+          "hex": "#0000FF"
+        }
+      },
+      {
+        "name": "Green",
+        "metadata": {
+          "hex": "#00FF00"
+        }
+      },
+      {
+        "name": "Yellow",
+        "metadata": {
+          "hex": "#FFFF00"
+        }
+      },
+      {
+        "name": "Pink",
+        "metadata": {
+          "hex": "#FFC0CB"
+        }
+      },
+      {
+        "name": "Purple",
+        "metadata": {
+          "hex": "#800080"
+        }
+      },
+      {
+        "name": "Orange",
+        "metadata": {
+          "hex": "#FFA500"
+        }
+      },
+      {
+        "name": "Gray",
+        "metadata": {
+          "hex": "#808080"
+        }
+      },
+      {
+        "name": "Brown",
+        "metadata": {
+          "hex": "#8B4513"
+        }
+      },
+      {
+        "name": "Beige",
+        "metadata": {
+          "hex": "#F5F5DC"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Size",
+    "values": [
+      {
+        "name": "XXS",
+        "metadata": null
+      },
+      {
+        "name": "XS",
+        "metadata": null
+      },
+      {
+        "name": "S",
+        "metadata": null
+      },
+      {
+        "name": "M",
+        "metadata": null
+      },
+      {
+        "name": "L",
+        "metadata": null
+      },
+      {
+        "name": "XL",
+        "metadata": null
+      },
+      {
+        "name": "XXL",
+        "metadata": null
+      },
+      {
+        "name": "XXXL",
+        "metadata": null
+      }
+    ]
+  }
+]

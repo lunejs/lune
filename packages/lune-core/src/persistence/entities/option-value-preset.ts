@@ -9,10 +9,6 @@ export interface OptionValuePreset extends LuneEntity {
    */
   name: string;
   /**
-   * The value's order
-   */
-  order: number;
-  /**
    * Additional metadata (e.g., hex color for Color option)
    */
   metadata?: Record<string, any> | null;
@@ -24,7 +20,6 @@ export interface OptionValuePreset extends LuneEntity {
 
 export interface OptionValuePresetTable extends LuneTable {
   name: string;
-  order: number;
   metadata?: Record<string, any> | null;
   option_preset_id: ID;
   shop_id: ID;
