@@ -29,13 +29,13 @@ export class LuneLogger {
     console.log(`${yellow('debug')}:`, message);
   }
 
-  static error(error: Error) {
+  static error(error: Error | unknown) {
     if (!this.canLog('error')) return;
 
     console.log(`${red('error')}:`, error);
   }
 
-  static fatal(error: Error) {
+  static fatal(error: Error | unknown) {
     if (!this.canLog('fatal')) return;
 
     console.log(`${red('FATAL')}:`, error);

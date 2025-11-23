@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
+import { LuneLogger } from '@lune/common';
 import { ThemeProvider, Toaster } from '@lune/ui';
 
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';
@@ -43,6 +44,8 @@ export const queryClient = new QueryClient({
 });
 
 export const App = () => {
+  LuneLogger.setLevels(['*']);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary fallback={<p>Something went wrong</p>}>

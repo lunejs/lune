@@ -1,3 +1,5 @@
+import { LuneLogger } from '@lune/common';
+
 import { GENERIC_ERROR } from '@/lib/api/errors/common.errors';
 import { getUserError } from '@/lib/api/errors/user.errors';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation-v2';
@@ -26,7 +28,7 @@ export const useLogin = () => {
 
       return { isSuccess: true };
     } catch (error) {
-      console.error(error);
+      LuneLogger.error(error);
       return { isSuccess: false, error: GENERIC_ERROR };
     }
   };
