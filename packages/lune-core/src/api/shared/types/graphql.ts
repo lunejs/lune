@@ -239,7 +239,7 @@ export type CreateDiscountInput = {
   code: Scalars['String']['input'];
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   endsAt?: InputMaybe<Scalars['Date']['input']>;
-  handler: HandlerConfig;
+  handler: HandlerConfigInput;
   perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
   startsAt: Scalars['Date']['input'];
 };
@@ -384,7 +384,7 @@ export type DimensionsInput = {
 };
 
 /** A discount is a way to apply price discounts to your customer orders via a code or automatic rules. */
-export type Discount = {
+export type Discount = Node & {
   __typename?: 'Discount';
   /** At what order level the discount is applied */
   applicationLevel: DiscountApplicationLevel;
@@ -395,18 +395,19 @@ export type Discount = {
    * For automatic discount this will work as a discount name
    */
   code: Scalars['String']['output'];
-  /** Whether this discount can be combined with other discounts */
-  combinable: Scalars['Boolean']['output'];
+  createdAt: Scalars['Date']['output'];
   /** Whether the discount is enabled or not. Disabled discounts can't be applied to orders */
   enabled: Scalars['Boolean']['output'];
   /** Date when the discount stops to be applicable (null = never expires) */
   endsAt?: Maybe<Scalars['Date']['output']>;
   /** JSONB configuration of discount actions */
   handler: HandlerConfig;
+  id: Scalars['ID']['output'];
   /** Maximum times a customer can use this discount (null = unlimited) */
   perCustomerLimit?: Maybe<Scalars['Int']['output']>;
   /** Date when the discount starts to be applicable */
   startsAt: Scalars['Date']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export enum DiscountApplicationLevel {
@@ -951,6 +952,29 @@ export type OptionList = List & {
   pageInfo: PageInfo;
 };
 
+export type OptionPreset = {
+  __typename?: 'OptionPreset';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The preset's name */
+  name: Scalars['String']['output'];
+  /** Option values for this preset */
+  optionValues: OptionValuePresetList;
+  updatedAt: Scalars['Date']['output'];
+};
+
+
+export type OptionPresetOptionValuesArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+export type OptionPresetList = {
+  __typename?: 'OptionPresetList';
+  count: Scalars['Int']['output'];
+  items: Array<OptionPreset>;
+  pageInfo: PageInfo;
+};
+
 export type OptionTranslation = {
   __typename?: 'OptionTranslation';
   createdAt: Scalars['Date']['output'];
@@ -989,6 +1013,24 @@ export type OptionValueMetadata = {
 
 export type OptionValueMetadataInput = {
   color?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OptionValuePreset = {
+  __typename?: 'OptionValuePreset';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Additional metadata (e.g., hex color for Color option) */
+  metadata?: Maybe<Scalars['JSON']['output']>;
+  /** The preset's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionValuePresetList = {
+  __typename?: 'OptionValuePresetList';
+  count: Scalars['Int']['output'];
+  items: Array<OptionValuePreset>;
+  pageInfo: PageInfo;
 };
 
 export type OptionValueTranslation = {
@@ -1407,6 +1449,7 @@ export type Query = {
   discounts: DiscountList;
   location?: Maybe<Location>;
   locations: LocationList;
+  optionPresets: OptionPresetList;
   order?: Maybe<Order>;
   paymentHandlers: Array<PaymentHandler>;
   paymentMethod?: Maybe<PaymentMethod>;
@@ -1464,6 +1507,11 @@ export type QueryLocationArgs = {
 
 
 export type QueryLocationsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+
+export type QueryOptionPresetsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
@@ -1733,7 +1781,7 @@ export type UpdateDiscountInput = {
   code?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   endsAt?: InputMaybe<Scalars['Date']['input']>;
-  handler?: InputMaybe<HandlerConfig>;
+  handler?: InputMaybe<HandlerConfigInput>;
   perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
   startsAt?: InputMaybe<Scalars['Date']['input']>;
 };
@@ -2025,7 +2073,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2105,12 +2153,16 @@ export type ResolversTypes = {
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
   OptionList: ResolverTypeWrapper<OptionList>;
+  OptionPreset: ResolverTypeWrapper<OptionPreset>;
+  OptionPresetList: ResolverTypeWrapper<OptionPresetList>;
   OptionTranslation: ResolverTypeWrapper<OptionTranslation>;
   OptionTranslationInput: OptionTranslationInput;
   OptionValue: ResolverTypeWrapper<OptionValue>;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: ResolverTypeWrapper<OptionValueMetadata>;
   OptionValueMetadataInput: OptionValueMetadataInput;
+  OptionValuePreset: ResolverTypeWrapper<OptionValuePreset>;
+  OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
   Order: ResolverTypeWrapper<Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<ResolversTypes['Fulfillment']>, payments: Array<ResolversTypes['Payment']> }>;
@@ -2261,12 +2313,16 @@ export type ResolversParentTypes = {
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
   OptionList: OptionList;
+  OptionPreset: OptionPreset;
+  OptionPresetList: OptionPresetList;
   OptionTranslation: OptionTranslation;
   OptionTranslationInput: OptionTranslationInput;
   OptionValue: OptionValue;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: OptionValueMetadata;
   OptionValueMetadataInput: OptionValueMetadataInput;
+  OptionValuePreset: OptionValuePreset;
+  OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
   Order: Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, payments: Array<ResolversParentTypes['Payment']> };
@@ -2461,12 +2517,14 @@ export type DiscountResolvers<ContextType = ExecutionContext, ParentType extends
   applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  combinable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   endsAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   perCustomerLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   startsAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2638,7 +2696,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Discount' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2658,6 +2716,22 @@ export type OptionResolvers<ContextType = ExecutionContext, ParentType extends R
 export type OptionListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionList'] = ResolversParentTypes['OptionList']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type OptionPresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPreset'] = ResolversParentTypes['OptionPreset']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  optionValues?: Resolver<ResolversTypes['OptionValuePresetList'], ParentType, ContextType, Partial<OptionPresetOptionValuesArgs>>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type OptionPresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPresetList'] = ResolversParentTypes['OptionPresetList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['OptionPreset']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2685,6 +2759,22 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
 
 export type OptionValueMetadataResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueMetadata'] = ResolversParentTypes['OptionValueMetadata']> = {
   color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type OptionValuePresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePreset'] = ResolversParentTypes['OptionValuePreset']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type OptionValuePresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePresetList'] = ResolversParentTypes['OptionValuePresetList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['OptionValuePreset']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2897,6 +2987,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, RequireFields<QueryDiscountsArgs, 'input'>>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
+  optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   paymentHandlers?: Resolver<Array<ResolversTypes['PaymentHandler']>, ParentType, ContextType>;
   paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType, RequireFields<QueryPaymentMethodArgs, 'id'>>;
@@ -3142,9 +3233,13 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Node?: NodeResolvers<ContextType>;
   Option?: OptionResolvers<ContextType>;
   OptionList?: OptionListResolvers<ContextType>;
+  OptionPreset?: OptionPresetResolvers<ContextType>;
+  OptionPresetList?: OptionPresetListResolvers<ContextType>;
   OptionTranslation?: OptionTranslationResolvers<ContextType>;
   OptionValue?: OptionValueResolvers<ContextType>;
   OptionValueMetadata?: OptionValueMetadataResolvers<ContextType>;
+  OptionValuePreset?: OptionValuePresetResolvers<ContextType>;
+  OptionValuePresetList?: OptionValuePresetListResolvers<ContextType>;
   OptionValueTranslation?: OptionValueTranslationResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   OrderAddressJson?: OrderAddressJsonResolvers<ContextType>;
