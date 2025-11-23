@@ -15,6 +15,7 @@ import { createLocationCountryLoader } from './location/location-country.loader'
 import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
 import { createLocationStateLoader } from './location/location-state.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
+import { createOptionValuePresetsLoader } from './option-preset/option-value-preset.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
 import { createOrderCustomersLoader } from './order/order-customers.loader';
@@ -88,6 +89,9 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       country: createLocationCountryLoader(trx),
       state: createLocationStateLoader(trx),
       inStorePickup: createLocationInStorePickupLoader(trx)
+    },
+    optionPreset: {
+      optionValues: createOptionValuePresetsLoader(trx)
     }
   };
 };
