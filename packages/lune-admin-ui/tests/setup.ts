@@ -16,6 +16,14 @@ Object.defineProperty(window, 'matchMedia', {
   }))
 });
 
+const ResizeObserverMock = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn()
+}));
+
+vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+
 vi.mock('@/lib/api/fetchers/gql-fetcher', () => ({
   gqlFetcher: vi.fn()
 }));
