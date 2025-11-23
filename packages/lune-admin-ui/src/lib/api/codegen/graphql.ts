@@ -57,6 +57,13 @@ export type Address = {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type AppliedDiscount = {
+  amount: Scalars['Int']['output'];
+  applicationLevel: DiscountApplicationLevel;
+  applicationMode: DiscountApplicationMode;
+  code: Scalars['String']['output'];
+};
+
 export type Asset = Node & {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
@@ -205,6 +212,17 @@ export type CreateCollectionInput = {
   subCollections?: InputMaybe<Scalars['ID']['input'][]>;
 };
 
+export type CreateDiscountInput = {
+  applicationLevel: DiscountApplicationLevel;
+  applicationMode: DiscountApplicationMode;
+  code: Scalars['String']['input'];
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  handler: HandlerConfigInput;
+  perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
+  startsAt: Scalars['Date']['input'];
+};
+
 export type CreateLocationInput = {
   city: Scalars['String']['input'];
   countryId: Scalars['ID']['input'];
@@ -320,14 +338,92 @@ export type DimensionsInput = {
   width?: InputMaybe<Scalars['Float']['input']>;
 };
 
+/** A discount is a way to apply price discounts to your customer orders via a code or automatic rules. */
+export type Discount = Node & {
+  /** At what order level the discount is applied */
+  applicationLevel: DiscountApplicationLevel;
+  /** How the discount is applied to the order */
+  applicationMode: DiscountApplicationMode;
+  /**
+   * The discount coupon code.
+   * For automatic discount this will work as a discount name
+   */
+  code: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  /** Whether the discount is enabled or not. Disabled discounts can't be applied to orders */
+  enabled: Scalars['Boolean']['output'];
+  /** Date when the discount stops to be applicable (null = never expires) */
+  endsAt?: Maybe<Scalars['Date']['output']>;
+  /** JSONB configuration of discount actions */
+  handler: HandlerConfig;
+  id: Scalars['ID']['output'];
+  /** Maximum times a customer can use this discount (null = unlimited) */
+  perCustomerLimit?: Maybe<Scalars['Int']['output']>;
+  /** Date when the discount starts to be applicable */
+  startsAt: Scalars['Date']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export enum DiscountApplicationLevel {
+  Fulfillment = 'FULFILLMENT',
+  Order = 'ORDER',
+  OrderLine = 'ORDER_LINE'
+}
+
+export enum DiscountApplicationMode {
+  Automatic = 'AUTOMATIC',
+  Code = 'CODE'
+}
+
+export enum DiscountErrorCode {
+  CodeAlreadyExists = 'CODE_ALREADY_EXISTS'
+}
+
+export type DiscountErrorResult = {
+  code: DiscountErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type DiscountFilters = {
+  active?: InputMaybe<BooleanFilter>;
+  code?: InputMaybe<StringFilter>;
+};
+
+export type DiscountHandler = {
+  applicationLevel: DiscountApplicationMode;
+  args?: Maybe<Scalars['JSON']['output']>;
+  code: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type DiscountList = List & {
+  count: Scalars['Int']['output'];
+  items: Discount[];
+  pageInfo: PageInfo;
+};
+
+export type DiscountListInput = {
+  filters?: InputMaybe<DiscountFilters>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type DiscountResult = {
+  apiErrors: DiscountErrorResult[];
+  discount?: Maybe<Discount>;
+};
+
 /** A fulfillment represents how an order will be delivered to the customer */
 export type Fulfillment = Node & {
-  /** Total amount for this fulfillment (e.g., shipping cost) */
+  /** Fulfillment amount before discounts */
   amount: Scalars['Int']['output'];
   createdAt: Scalars['Date']['output'];
   /** Union type which could be Shipping or InStorePickup */
   details: FulfillmentDetails;
   id: Scalars['ID']['output'];
+  /** Fulfillment amount after discounts */
+  total: Scalars['Int']['output'];
   /** Type of fulfillment (shipping or in-store pickup) */
   type: FulfillmentType;
   updatedAt: Scalars['Date']['output'];
@@ -461,6 +557,7 @@ export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
   createCollection: Collection;
+  createDiscount: DiscountResult;
   createLocation: LocationResult;
   createOption: Option[];
   createPaymentMethod: PaymentMethodResult;
@@ -479,6 +576,7 @@ export type Mutation = {
    */
   generateUserAccessToken: UserAccessTokenResult;
   removeCollections: Scalars['Boolean']['output'];
+  removeDiscounts: DiscountResult;
   removeLocation: Scalars['Boolean']['output'];
   removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
@@ -489,6 +587,7 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateDiscount: DiscountResult;
   updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
   updateOption: Option;
@@ -516,6 +615,10 @@ export type MutationAddProductTranslationArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+export type MutationCreateDiscountArgs = {
+  input: CreateDiscountInput;
 };
 
 export type MutationCreateLocationArgs = {
@@ -568,6 +671,10 @@ export type MutationRemoveCollectionsArgs = {
   ids: Scalars['ID']['input'][];
 };
 
+export type MutationRemoveDiscountsArgs = {
+  ids: Scalars['ID']['input'][];
+};
+
 export type MutationRemoveLocationArgs = {
   id: Scalars['ID']['input'];
 };
@@ -607,6 +714,10 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+export type MutationUpdateDiscountArgs = {
+  input: UpdateDiscountInput;
 };
 
 export type MutationUpdateInStorePickupPreferencesArgs = {
@@ -687,6 +798,26 @@ export type OptionList = List & {
   pageInfo: PageInfo;
 };
 
+export type OptionPreset = {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The preset's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+  /** Option values for this preset */
+  values: OptionValuePresetList;
+};
+
+export type OptionPresetValuesArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+export type OptionPresetList = {
+  count: Scalars['Int']['output'];
+  items: OptionPreset[];
+  pageInfo: PageInfo;
+};
+
 export type OptionTranslation = {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
@@ -719,6 +850,22 @@ export type OptionValueMetadataInput = {
   color?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type OptionValuePreset = {
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Additional metadata (e.g., hex color for Color option) */
+  metadata?: Maybe<Scalars['JSON']['output']>;
+  /** The preset's name */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OptionValuePresetList = {
+  count: Scalars['Int']['output'];
+  items: OptionValuePreset[];
+  pageInfo: PageInfo;
+};
+
 export type OptionValueTranslation = {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
@@ -734,6 +881,11 @@ export type OptionValueTranslationInput = {
 
 /** An order represents a customer's purchase, including line items, shipping, and payment information */
 export type Order = Node & {
+  /**
+   * Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+   * Use this field to show data of current discounts applied to the order
+   */
+  appliedDiscounts: AppliedDiscount[];
   /** Unique order code generated after order is placed */
   code?: Maybe<Scalars['String']['output']>;
   /** The date and time when the order has been marked as completed (delivered and paid) */
@@ -805,6 +957,11 @@ export type OrderCancellation = Node & {
 
 /** An order line represents a single item in an order */
 export type OrderLine = Node & {
+  /**
+   * Array of all order-line-level discounts applied to the order populated every time order is modified.
+   * Use this field to show data of current discounts applied to the order-line
+   */
+  appliedDiscounts: AppliedDiscount[];
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   /** The line subtotal (unitPrice * quantity before adjustments) */
@@ -1061,8 +1218,12 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Country[];
+  discount?: Maybe<Discount>;
+  discountHandlers: DiscountHandler[];
+  discounts: DiscountList;
   location?: Maybe<Location>;
   locations: LocationList;
+  optionPresets: OptionPresetList;
   order?: Maybe<Order>;
   paymentHandlers: PaymentHandler[];
   paymentMethod?: Maybe<PaymentMethod>;
@@ -1100,11 +1261,23 @@ export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
 };
 
+export type QueryDiscountArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type QueryDiscountsArgs = {
+  input: ListInput;
+};
+
 export type QueryLocationArgs = {
   id: Scalars['ID']['input'];
 };
 
 export type QueryLocationsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+export type QueryOptionPresetsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
@@ -1343,6 +1516,15 @@ export type UpdateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Scalars['ID']['input'][]>;
   subCollections?: InputMaybe<Scalars['ID']['input'][]>;
+};
+
+export type UpdateDiscountInput = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  handler?: InputMaybe<HandlerConfigInput>;
+  perCustomerLimit?: InputMaybe<Scalars['Int']['input']>;
+  startsAt?: InputMaybe<Scalars['Date']['input']>;
 };
 
 export type UpdateInStorePickupPreferencesInput = {
@@ -1790,6 +1972,22 @@ export type UpdateInStorePickupPreferencesMutationVariables = Exact<{
 
 export type UpdateInStorePickupPreferencesMutation = {
   updateInStorePickupPreferences: { id: string };
+};
+
+export type CommonOptionPresetFragment = {
+  id: string;
+  name: string;
+  values: { items: { id: string; name: string; metadata?: any | null }[] };
+} & { ' $fragmentName'?: 'CommonOptionPresetFragment' };
+
+export type GetAllOptionPresetsQueryVariables = Exact<{
+  input?: InputMaybe<ListInput>;
+}>;
+
+export type GetAllOptionPresetsQuery = {
+  optionPresets: {
+    items: { ' $fragmentRefs'?: { CommonOptionPresetFragment: CommonOptionPresetFragment } }[];
+  };
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -2683,6 +2881,44 @@ export const CommonListLocationFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonListLocationFragment, unknown>;
+export const CommonOptionPresetFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonOptionPreset' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OptionPreset' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'values' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'metadata' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonOptionPresetFragment, unknown>;
 export const CommonPaymentMethodFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -4561,6 +4797,90 @@ export const UpdateInStorePickupPreferencesDocument = {
   UpdateInStorePickupPreferencesMutation,
   UpdateInStorePickupPreferencesMutationVariables
 >;
+export const GetAllOptionPresetsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllOptionPresets' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'optionPresets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'CommonOptionPreset' }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonOptionPreset' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OptionPreset' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'values' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'metadata' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllOptionPresetsQuery, GetAllOptionPresetsQueryVariables>;
 export const CreateOptionDocument = {
   kind: 'Document',
   definitions: [

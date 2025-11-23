@@ -13,6 +13,7 @@ export type VariantContext = {
   options: {
     id: string;
     isEditing: boolean;
+    presetId?: string;
     name: string;
     values: { name: string; id: string }[];
   }[];
@@ -27,7 +28,7 @@ export type VariantContext = {
   product?: CommonProductFragment;
   updateVariants: (variants: VariantContext['variants']) => void;
   removeVariants: (ids: string[]) => void;
-  appendOption: (option?: VariantContext['options'][0]) => void;
+  appendOption: (presetId?: string) => void;
   updateOption: (id: string, input: VariantContext['options'][0]) => void;
   removeOption: (id: string) => void;
 };
@@ -136,24 +137,23 @@ export const VariantContextProvider = ({
     setOptions(newOptions);
   };
 
-  const appendOption = (option?: VariantContext['options'][0]) => {
+  const appendOption = (presetId?: string) => {
     if (options.length === MAX_OPTIONS_ALLOWED) return;
 
-    if (!option) {
-      setOptions([
-        ...options,
-        {
-          id: Math.random().toString(),
-          isEditing: true,
-          name: '',
-          values: [{ id: Math.random().toString(), name: '' }]
-        }
-      ]);
+    setOptions([
+      ...options,
+      {
+        id: Math.random().toString(),
+        isEditing: true,
+        presetId,
+        name: '',
+        values: [{ id: Math.random().toString(), name: '' }]
+      }
+    ]);
 
-      return;
-    }
+    return;
 
-    setOptions([...options, option]);
+    // setOptions([...options, option]);
   };
 
   const updateOption = (id: string, input: VariantContext['options'][0]) => {
