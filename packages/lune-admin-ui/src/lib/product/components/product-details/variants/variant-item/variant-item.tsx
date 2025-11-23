@@ -4,8 +4,6 @@ import { Checkbox, cn, Input } from '@lune/ui';
 
 import { useVariantContext, type VariantContext } from '../variants.context';
 
-import { VariantItemDialogWrapper } from './variant-item-dialog-wrapper';
-
 export const VariantItem: FC<Props> = ({ variant, groupName }) => {
   const { variants, updateVariants } = useVariantContext();
 
@@ -42,9 +40,7 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
             addVariantImage([variant.id], file);
           }}
         /> */}
-        <VariantItemDialogWrapper variant={variant}>
-          <span className="hover:underline w-full cursor-pointer">{variantName}</span>
-        </VariantItemDialogWrapper>
+        <span className="hover:underline w-full cursor-pointer">{variantName}</span>
       </div>
       <div className="flex items-center gap-2 w-full">
         <Input

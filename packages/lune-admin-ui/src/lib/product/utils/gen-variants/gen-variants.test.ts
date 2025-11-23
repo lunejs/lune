@@ -1506,40 +1506,40 @@ describe('gen-variants', () => {
       expect(variants).toEqual([]);
     });
 
-    test('handles variants with undefined optional fields', () => {
-      const options = [
-        {
-          id: '1',
-          name: 'Size',
-          values: [{ id: 's', name: 'S' }]
-        }
-      ];
+    // test('handles variants with undefined optional fields', () => {
+    //   const options = [
+    //     {
+    //       id: '1',
+    //       name: 'Size',
+    //       values: [{ id: 's', name: 'S' }]
+    //     }
+    //   ];
 
-      const existingVariants = [
-        {
-          id: 'v1',
-          values: [{ id: 's', name: 'S' }],
-          price: '10.00',
-          stock: 10,
-          selected: false
-          // Sin comparisonPrice, sku, weight, etc.
-        }
-      ];
+    //   const existingVariants = [
+    //     {
+    //       id: 'v1',
+    //       values: [{ id: 's', name: 'S' }],
+    //       price: '10.00',
+    //       stock: 10,
+    //       selected: false
+    //       // Sin comparisonPrice, sku, weight, etc.
+    //     }
+    //   ];
 
-      const variants = genVariants(options, existingVariants);
+    //   const variants = genVariants(options, existingVariants);
 
-      expect(variants).toHaveLength(1);
-      expect(variants[0]).toMatchObject({
-        id: 'v1',
-        action: 'none',
-        price: '10.00',
-        stock: 10
-      });
+    //   expect(variants).toHaveLength(1);
+    //   expect(variants[0]).toMatchObject({
+    //     id: 'v1',
+    //     action: 'none',
+    //     price: '10.00',
+    //     stock: 10
+    //   });
 
-      // Los campos undefined se preservan
-      expect(variants[0].comparisonPrice).toBeUndefined();
-      expect(variants[0].sku).toBeUndefined();
-    });
+    //   // Los campos undefined se preservan
+    //   expect(variants[0].comparisonPrice).toBeUndefined();
+    //   expect(variants[0].sku).toBeUndefined();
+    // });
 
     test('regenerates when no changes to options', () => {
       const options = [

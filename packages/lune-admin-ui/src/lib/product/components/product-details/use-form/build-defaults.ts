@@ -1,4 +1,4 @@
-import { formatPrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 
@@ -23,9 +23,9 @@ const buildDefaultVariant = (product: CommonProductFragment | null | undefined) 
   const defaultVariant = product?.variants.items[0];
 
   return {
-    salePrice: defaultVariant?.salePrice ? formatPrice(defaultVariant.salePrice) : '',
+    salePrice: defaultVariant?.salePrice ? LunePrice.format(defaultVariant.salePrice) : '',
     comparisonPrice: defaultVariant?.comparisonPrice
-      ? formatPrice(defaultVariant.comparisonPrice)
+      ? LunePrice.format(defaultVariant.comparisonPrice)
       : '',
     stock: defaultVariant?.stock,
     sku: defaultVariant?.sku ?? '',
@@ -42,15 +42,8 @@ const buildDefaultVariants = (product: CommonProductFragment | null | undefined)
     product?.variants.items
       .map(variant => ({
         id: variant.id,
-        salePrice: variant.salePrice ? formatPrice(variant.salePrice) : '',
-        comparisonPrice: variant.comparisonPrice ? formatPrice(variant.comparisonPrice) : '',
+        salePrice: variant.salePrice ? LunePrice.format(variant.salePrice) : '',
         stock: variant.stock,
-        sku: variant.sku ?? '',
-        requiresShipping: variant.requiresShipping ?? false,
-        weight: (variant.weight ?? '') as number,
-        length: (variant.dimensions?.length ?? '') as number,
-        width: (variant.dimensions?.width ?? '') as number,
-        height: (variant.dimensions?.height ?? '') as number,
         optionValues: variant.optionValues
       }))
       .filter(v => v.optionValues.length) ?? []

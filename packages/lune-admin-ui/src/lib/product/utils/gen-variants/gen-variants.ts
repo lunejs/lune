@@ -5,8 +5,6 @@
 type OptionValue = {
   id: string;
   name: string;
-  color?: string;
-  translation?: string;
 };
 
 type Option = {
@@ -19,15 +17,7 @@ type Variant = {
   id: string;
   values: OptionValue[];
   price: string;
-  comparisonPrice?: string;
   stock: number;
-  sku?: string;
-  requiresShipping?: boolean;
-  weight?: number | '';
-  length?: number | '';
-  width?: number | '';
-  height?: number | '';
-  image?: string;
   selected: boolean;
 };
 
@@ -101,8 +91,6 @@ export function genVariants(options: Option[], existingVariants: Variant[]): Var
         values: combo,
         price: '',
         stock: 0,
-        sku: '',
-        requiresShipping: true,
         selected: false
       };
     }

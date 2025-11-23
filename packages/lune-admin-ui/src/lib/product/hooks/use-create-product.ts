@@ -66,19 +66,23 @@ export const useCreateProduct = () => {
       }))
     });
 
-    const newVariants = attachOptionValues(options, input.variants);
+    // Map option values: variant value names → real DB IDs
+    const optionValueIdMap = new Map<string, string>();
+    options.forEach(option => {
+      option.values.forEach(value => {
+        optionValueIdMap.set(value.name, value.id);
+      });
+    });
 
     await createVariants({
       productId: id,
-      input: newVariants.map(variant => ({
+      input: input.variants.map(variant => ({
         salePrice: variant.salePrice,
-        comparisonPrice: variant.comparisonPrice,
         stock: variant.stock,
-        sku: variant.sku,
-        requiresShipping: variant.requiresShipping,
-        weight: variant.weight,
-        dimensions: { height: variant.height, width: variant.width, length: variant.length },
-        optionValues: variant.optionValues?.map(value => value.id)
+        // Map variant option values from names to real DB IDs
+        optionValues: variant.optionValues
+          ?.map(v => optionValueIdMap.get(v.name) ?? v.id)
+          .filter(Boolean) as string[]
       }))
     });
 
@@ -90,30 +94,6 @@ export const useCreateProduct = () => {
   };
 };
 
-const attachOptionValues = (
-  options: CreateProductInput['options'],
-  variants: CreateProductInput['variants']
-) => {
-  return variants.map(variant => {
-    const variantOptionValues = variant.optionValues ?? [];
-
-    const valuesIds = options
-      .map(option => {
-        const value = option.values.find(value =>
-          variantOptionValues.map(variantValue => variantValue.name).includes(value.name)
-        );
-
-        return value?.id ?? '';
-      })
-      .filter(Boolean);
-
-    return {
-      ...variant,
-      optionValues: valuesIds.map(id => ({ id, name: '' }))
-    };
-  });
-};
-
 type CreateProductInput = {
   name: string;
   description?: string;
@@ -122,18 +102,20 @@ type CreateProductInput = {
   options: {
     id: string;
     name: string;
-    values: { id: string; name: string; color?: string; translation?: string }[];
+    values: { id: string; name: string }[];
   }[];
   variants: {
     salePrice: number;
-    comparisonPrice?: number;
     stock?: number;
+    // Fields only for default variant (when no options)
+    comparisonPrice?: number;
     sku?: string;
     requiresShipping?: boolean;
     weight?: number;
     length?: number;
     width?: number;
     height?: number;
-    optionValues?: { id: string; name: string; color?: string; translation?: string }[];
+    // Fields only for variants with options
+    optionValues?: { id: string; name: string }[];
   }[];
 };

@@ -1,4 +1,4 @@
-import { parsePrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useUpdateProduct } from '@/lib/product/hooks/use-update-product';
@@ -22,29 +22,24 @@ export const useProductDetailsUpdate = () => {
       variants: variants.length
         ? variants.map(v => ({
             id: v?.id as string,
-            salePrice: v.salePrice ? parsePrice(v.salePrice) : 0,
-            comparisonPrice: v.comparisonPrice ? parsePrice(v.comparisonPrice) : 0,
+            action: v.action as any,
+            salePrice: v.salePrice ? LunePrice.parse(v.salePrice) : 0,
             stock: v.stock || 0,
-            sku: v.sku,
-            weight: v.weight as number,
-            length: v.length as number,
-            width: v.width as number,
-            height: v.height as number,
-            requiresShipping: v.requiresShipping,
             optionValues: v.optionValues
           }))
         : [
             {
               id: defaultVariant?.id as string,
-              salePrice: input.salePrice ? parsePrice(input.salePrice) : 0,
-              comparisonPrice: input.comparisonPrice ? parsePrice(input.comparisonPrice) : 0,
+              salePrice: input.salePrice ? LunePrice.parse(input.salePrice) : 0,
+              comparisonPrice: input.comparisonPrice ? LunePrice.parse(input.comparisonPrice) : 0,
               stock: input.stock || 0,
               sku: input.sku,
               weight: input.weight as number,
               length: input.length as number,
               width: input.width as number,
               height: input.height as number,
-              requiresShipping: input.requiresShipping
+              requiresShipping: input.requiresShipping,
+              action: 'none'
             }
           ],
       variantsToRemove:

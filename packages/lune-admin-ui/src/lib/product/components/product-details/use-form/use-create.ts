@@ -1,4 +1,4 @@
-import { parsePrice } from '@lune/common';
+import { LunePrice } from '@lune/common';
 
 import { useCreateProduct } from '@/lib/product/hooks/use-create-product';
 
@@ -18,21 +18,14 @@ export const useProductDetailsCreate = () => {
       options,
       variants: variants.length
         ? variants.map(v => ({
-            salePrice: v.salePrice ? parsePrice(v.salePrice) : 0,
-            comparisonPrice: v.comparisonPrice ? parsePrice(v.comparisonPrice) : 0,
+            salePrice: v.salePrice ? LunePrice.parse(v.salePrice) : 0,
             stock: v.stock || 0,
-            sku: v.sku,
-            weight: v.weight as number,
-            length: v.length as number,
-            width: v.width as number,
-            height: v.height as number,
-            requiresShipping: v.requiresShipping,
             optionValues: v.optionValues
           }))
         : [
             {
-              salePrice: input.salePrice ? parsePrice(input.salePrice) : 0,
-              comparisonPrice: input.comparisonPrice ? parsePrice(input.comparisonPrice) : 0,
+              salePrice: input.salePrice ? LunePrice.parse(input.salePrice) : 0,
+              comparisonPrice: input.comparisonPrice ? LunePrice.parse(input.comparisonPrice) : 0,
               stock: input.stock || 0,
               sku: input.sku,
               weight: input.weight as number,

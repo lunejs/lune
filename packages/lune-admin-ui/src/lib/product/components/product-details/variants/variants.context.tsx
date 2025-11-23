@@ -14,22 +14,15 @@ export type VariantContext = {
     id: string;
     isEditing: boolean;
     name: string;
-    values: { name: string; id: string; color?: string; translation?: string }[];
+    values: { name: string; id: string }[];
   }[];
   variants: {
     id: string;
-    values: { name: string; id: string; color?: string; translation?: string }[];
+    values: { name: string; id: string }[];
     price: string;
-    comparisonPrice?: string;
     stock: number;
-    sku?: string;
-    requiresShipping?: boolean;
-    weight?: number | '';
-    length?: number | '';
-    width?: number | '';
-    height?: number | '';
-    image?: string;
     selected: boolean;
+    action: 'create' | 'update' | 'none'; // ← SOLO ESTE CAMPO
   }[];
   product?: CommonProductFragment;
   updateVariants: (variants: VariantContext['variants']) => void;
@@ -66,8 +59,6 @@ export const VariantContextProvider = ({
       values: o.values.map(v => ({
         id: v.id,
         name: v.name
-        // color: v.metadata?.color,
-        // translation: v.translation ?? ''
       }))
     })) ?? [];
 
@@ -78,20 +69,11 @@ export const VariantContextProvider = ({
         values: v.optionValues.map(v => ({
           id: v.id,
           name: v.name
-          // color: v.metadata?.color,
-          // translation: v.translation ?? ''
         })),
         price: v.salePrice ? formatPrice(v.salePrice) : '',
-        comparisonPrice: v.comparisonPrice ? formatPrice(v.comparisonPrice) : '',
-        sku: v.sku ? v.sku : '',
         stock: v.stock,
-        requiresShipping: v.requiresShipping,
-        weight: v.weight ?? undefined,
-        length: v.dimensions?.length ?? undefined,
-        width: v.dimensions?.width ?? undefined,
-        height: v.dimensions?.height ?? undefined,
-        image: v.assets.items[0]?.source ?? undefined,
-        selected: false
+        selected: false,
+        action: 'none' as const
       }))
       .filter(v => v.values.length) ?? [];
 
@@ -127,14 +109,8 @@ export const VariantContextProvider = ({
           id: v.id,
           stock: v.stock,
           salePrice: v.price,
-          comparisonPrice: v.comparisonPrice,
-          sku: v.sku,
-          requiresShipping: v.requiresShipping ?? false,
-          weight: v.weight,
-          length: v.length,
-          width: v.width,
-          height: v.height,
-          optionValues: v.values
+          optionValues: v.values,
+          action: v.action
         }))
       );
     },

@@ -44,7 +44,7 @@ export const useUpdateProduct = () => {
                 values: option.values.map((value, i) => ({
                   id: isUUID(value.id) ? value.id : '',
                   name: value.name,
-                  order: isUUID(value.id) ? undefined : i
+                  order: i
                 }))
               }
             })
@@ -69,7 +69,23 @@ export const useUpdateProduct = () => {
     await Promise.all(input.optionsToRemove.map(optionId => removeOption({ id: optionId })));
 
     const newOptions = [...optionsUpdated, ...optionsCreated];
-    const newVariants = attachOptionValues(newOptions, input.variants);
+
+    // Map option values: variant value names → real DB IDs
+    const optionValueIdMap = new Map<string, string>();
+    newOptions.forEach(option => {
+      option.values.forEach(value => {
+        optionValueIdMap.set(value.name, value.id);
+      });
+    });
+
+    // Map variants with real DB IDs for option values
+    const newVariants = input.variants.map(variant => ({
+      ...variant,
+      optionValues:
+        variant.optionValues
+          ?.map(v => ({ id: optionValueIdMap.get(v.name) ?? v.id, name: v.name }))
+          .filter(v => v.id) ?? []
+    }));
 
     await updateProduct({
       id: productId,
@@ -80,8 +96,8 @@ export const useUpdateProduct = () => {
       }
     });
 
-    const variantsToUpdate = newVariants.filter(variant => isUUID(variant.id ?? ''));
-    const variantsToCreate = newVariants.filter(variant => !isUUID(variant.id ?? ''));
+    const variantsToUpdate = newVariants.filter(variant => variant.action === 'none');
+    const variantsToCreate = newVariants.filter(variant => variant.action === 'create');
 
     await Promise.all(
       variantsToUpdate.map(
@@ -90,12 +106,7 @@ export const useUpdateProduct = () => {
             id: variant.id,
             input: {
               salePrice: variant.salePrice,
-              comparisonPrice: variant.comparisonPrice,
               stock: variant.stock,
-              sku: variant.sku,
-              requiresShipping: variant.requiresShipping,
-              weight: variant.weight,
-              dimensions: { height: variant.height, width: variant.width, length: variant.length },
               optionValues: variant.optionValues?.map(value => value.id)
             }
           })
@@ -106,12 +117,7 @@ export const useUpdateProduct = () => {
         productId: productId,
         input: variantsToCreate.map(variant => ({
           salePrice: variant.salePrice,
-          comparisonPrice: variant.comparisonPrice,
           stock: variant.stock,
-          sku: variant.sku,
-          requiresShipping: variant.requiresShipping,
-          weight: variant.weight,
-          dimensions: { height: variant.height, width: variant.width, length: variant.length },
           optionValues: variant.optionValues?.map(value => value.id)
         }))
       });
@@ -129,30 +135,6 @@ export const useUpdateProduct = () => {
   };
 };
 
-const attachOptionValues = (
-  options: UpdateProductInput['options'],
-  variants: UpdateProductInput['variants']
-) => {
-  return variants.map(variant => {
-    const variantOptionValues = variant.optionValues ?? [];
-
-    const valuesIds = options
-      .map(option => {
-        const value = option.values.find(value =>
-          variantOptionValues.map(variantValue => variantValue.name).includes(value.name)
-        );
-
-        return value;
-      })
-      .filter(Boolean);
-
-    return {
-      ...variant,
-      optionValues: valuesIds.map(id => ({ id: id?.id ?? '', name: id?.name ?? '' }))
-    };
-  });
-};
-
 type UpdateProductInput = {
   name: string;
   description?: string;
@@ -161,20 +143,22 @@ type UpdateProductInput = {
   options: {
     id: string;
     name: string;
-    values: { id: string; name: string; color?: string; translation?: string }[];
+    values: { id: string; name: string }[];
   }[];
   variants: {
     id: string;
+    action?: 'create' | 'update' | 'none';
     salePrice: number;
-    comparisonPrice?: number;
     stock?: number;
+    optionValues?: { id: string; name: string }[];
+    // Fields only for default variant (when no options)
+    comparisonPrice?: number;
     sku?: string;
     requiresShipping?: boolean;
     weight?: number;
     length?: number;
     width?: number;
     height?: number;
-    optionValues?: { id: string; name: string }[];
   }[];
 
   variantsToRemove: string[];

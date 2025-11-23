@@ -3,10 +3,50 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { isUUID } from '@lune/common';
 
-import { generateVariants } from '@/lib/product/utils/variant.utils';
+import { genVariants } from '@/lib/product/utils/gen-variants/gen-variants';
 
 import type { ProductDetailsFormInput } from '../../use-form/use-product-details-form';
 import { useVariantContext, type VariantContext } from '../../variants/variants.context';
+
+/**
+ * Helper to generate variants using the new genVariants algorithm
+ * and apply formValues defaults to new variants
+ */
+const generateVariantsWithDefaults = (
+  options: VariantContext['options'],
+  existingVariants: VariantContext['variants'],
+  formValues: any
+) => {
+  // Map VariantContext types to genVariants types
+  const mappedOptions = options.map(o => ({
+    id: o.id,
+    name: o.name,
+    values: o.values.map(v => ({ id: v.id, name: v.name }))
+  }));
+
+  const mappedVariants = existingVariants.map(v => ({
+    id: v.id,
+    values: v.values,
+    price: v.price,
+    stock: v.stock,
+    selected: v.selected
+  }));
+
+  // Generate variants
+  const generated = genVariants(mappedOptions, mappedVariants);
+
+  // Apply formValues to new variants (action: 'create')
+  return generated.map(v => {
+    if (v.action === 'create') {
+      return {
+        ...v,
+        price: formValues?.salePrice ?? '',
+        stock: Number(formValues?.stock ?? 0)
+      };
+    }
+    return v;
+  });
+};
 
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
@@ -64,7 +104,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       });
 
       // generate variants with the latest options and the variants already in db (to determine which ones to create and update)
-      newVariants = generateVariants(newOptions, variants, formValues);
+      newVariants = generateVariantsWithDefaults(newOptions, variants, formValues);
     }
 
     // whether the variants have been regenerated or not,
@@ -107,7 +147,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const onRemove = () => {
     const newOptions = options.filter(o => o.id !== option.id);
 
-    const generatedVariants = generateVariants(newOptions, variants, formValues);
+    const generatedVariants = generateVariantsWithDefaults(newOptions, variants, formValues);
 
     removeOption(option.id);
     updateVariants(generatedVariants);
@@ -129,7 +169,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     });
 
     // Generate the new variants with this new option
-    const generatedVariants = generateVariants(newOptions, variants, formValues);
+    const generatedVariants = generateVariantsWithDefaults(newOptions, variants, formValues);
 
     // Update the state in VariantsContext adding the new option and variants
     updateOption(option.id, {

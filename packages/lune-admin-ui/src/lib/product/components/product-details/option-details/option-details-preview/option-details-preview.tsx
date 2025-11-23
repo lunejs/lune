@@ -23,9 +23,9 @@ export const OptionDetailsPreview: FC<Props> = ({ option }) => {
       <div className="flex items-center gap-2 flex-wrap">
         {option.values.map(value => (
           <Badge key={value.id} variant="secondary">
-            {value.color && (
+            {/* {value.color && (
               <div className="h-4 w-4 rounded mr-2" style={{ background: `#${value.color}` }} />
-            )}
+            )} */}
             {value.name}
           </Badge>
         ))}

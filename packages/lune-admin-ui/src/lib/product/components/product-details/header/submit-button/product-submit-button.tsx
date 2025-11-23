@@ -1,6 +1,6 @@
 import { type DeepPartial, useWatch } from 'react-hook-form';
 
-import { LunePrice } from '@lune/common';
+import { equals, LunePrice } from '@lune/common';
 import { Button } from '@lune/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
@@ -16,6 +16,11 @@ export const ProductSubmitButton = () => {
 
   const variantsHasChanged = getVariantsHasChanged(values, product);
   const optionsHasChanged = getOptionsHasChanged(values, product);
+
+  console.log({
+    variantsHasChanged,
+    optionsHasChanged
+  });
 
   return (
     <Button
@@ -46,41 +51,18 @@ const getVariantsHasChanged = (
     if (!v) return false;
 
     const persistedVariant = product?.variants.items.find(dv => dv.id === v?.id);
-    const {
-      salePrice,
-      stock,
-      comparisonPrice,
-      requiresShipping,
-      sku,
-      weight,
-      width,
-      height,
-      length
-    } = v;
 
-    const inMemoryVariant = {
-      salePrice: LunePrice.toCent(LunePrice.parse(salePrice || '0')) || 0,
-      stock,
-      comparisonPrice: LunePrice.toCent(LunePrice.parse(comparisonPrice || '0')) || 0,
-      sku: sku ?? '',
-      requiresShipping,
-      weight: weight ?? null,
-      width: width ?? undefined,
-      height: height ?? undefined,
-      length: length ?? undefined
+    const persisted = {
+      salePrice: persistedVariant?.salePrice,
+      stock: persistedVariant?.stock
     };
 
-    return (
-      inMemoryVariant.salePrice !== persistedVariant?.salePrice ||
-      inMemoryVariant.stock !== persistedVariant?.stock ||
-      inMemoryVariant.comparisonPrice !== persistedVariant?.comparisonPrice ||
-      inMemoryVariant.requiresShipping !== persistedVariant?.requiresShipping ||
-      inMemoryVariant.sku !== persistedVariant?.sku ||
-      inMemoryVariant.weight !== persistedVariant?.weight ||
-      inMemoryVariant.width !== persistedVariant?.dimensions?.width ||
-      inMemoryVariant.height !== persistedVariant?.dimensions?.height ||
-      inMemoryVariant.length !== persistedVariant?.dimensions?.length
-    );
+    const inMemoryVariant = {
+      salePrice: LunePrice.toCent(LunePrice.parse(v.salePrice || '0')) || 0,
+      stock: v.stock
+    };
+
+    return !equals(inMemoryVariant, persisted);
   });
 };
 
