@@ -22,6 +22,7 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
     <div className="flex items-center px-6 py-4 hover:bg-muted/50">
       <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
         <Checkbox
+          aria-label={`Select variant "${variantName}"`}
           checked={variant.selected}
           onCheckedChange={checked =>
             updateVariants(

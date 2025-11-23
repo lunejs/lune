@@ -64,7 +64,7 @@ export const VariantItemDialogWrapper: FC<Props> = ({ variant, children }) => {
 
   return (
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{variant.values.map(v => v.name).join(' / ')}</DialogTitle>

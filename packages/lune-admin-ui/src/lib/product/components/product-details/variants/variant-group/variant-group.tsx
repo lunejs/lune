@@ -66,7 +66,9 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
             <div className="aspect-square"></div>
 
             <div className="flex flex-col gap-2 items-start">
-              <p className="w-fit">{groupName}</p>
+              <p className="w-fit" data-testid={`group-name-${groupName}`}>
+                {groupName}
+              </p>
               <AccordionTrigger className="py-0">
                 <p className="w-fit text-nowrap">{variants.length} variants</p>
               </AccordionTrigger>
