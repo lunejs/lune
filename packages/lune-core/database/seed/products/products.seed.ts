@@ -7,7 +7,6 @@ import type { ProductTable } from '@/persistence/entities/product';
 import type { VariantTable } from '@/persistence/entities/variant';
 import type { OptionTable } from '@/persistence/entities/option';
 import type { OptionValueTable } from '@/persistence/entities/option_value';
-import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 import type { AssetTable } from '@/persistence/entities/asset';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
@@ -88,6 +87,7 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
           name: option.name,
           order: option.order,
           shop_id: ctx.shopId,
+          product_id: productCreated.id,
           created_at: optionTimestamp,
           updated_at: optionTimestamp
         })
@@ -111,12 +111,6 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
 
         optionValueMap.set(value.name, optionValueCreated.id);
       }
-
-      // THEN create product-option relationship
-      await trx<ProductOptionTable>(Tables.ProductOption).insert({
-        product_id: productCreated.id,
-        option_id: optionCreated.id
-      });
     }
 
     // 4. Create variants

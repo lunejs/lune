@@ -10,7 +10,8 @@ export class OptionSerializer extends Serializer<Option, OptionTable> {
       ['updated_at', 'updatedAt'],
       ['deleted_at', 'deletedAt'],
       ['name', 'name'],
-      ['order', 'order']
+      ['order', 'order'],
+      ['product_id', 'productId']
     ]);
   }
 }

@@ -3,6 +3,7 @@ import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestHelper } from '@/tests/utils/test-helper';
 
+import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionConstants = {
@@ -20,22 +21,26 @@ export class OptionFixtures implements Fixture<OptionTable> {
       {
         id: OptionConstants.ColorOptionID,
         name: 'Color',
-        shop_id: ShopConstants.ID
+        shop_id: ShopConstants.ID,
+        product_id: ProductConstants.ShirtID
       },
       {
         id: OptionConstants.SizeOptionID,
         name: 'Size',
-        shop_id: ShopConstants.ID
+        shop_id: ShopConstants.ID,
+        product_id: ProductConstants.ShirtID
       },
       {
         id: OptionConstants.MaterialOptionID,
         name: 'Material',
-        shop_id: ShopConstants.ID
+        shop_id: ShopConstants.ID,
+        product_id: ProductConstants.JacketID
       },
       {
         id: OptionConstants.JacketColorOptionID,
         name: 'Color',
-        shop_id: ShopConstants.ID
+        shop_id: ShopConstants.ID,
+        product_id: ProductConstants.JacketID
       }
     ];
   }

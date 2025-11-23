@@ -7,7 +7,6 @@ export const DefaultOptionValueFixture = (): OptionValueTable => ({
   deleted_at: null,
   name: '',
   order: 0,
-  metadata: {},
   shop_id: crypto.randomUUID(),
   option_id: crypto.randomUUID()
 });

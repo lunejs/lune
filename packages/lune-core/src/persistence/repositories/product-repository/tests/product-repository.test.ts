@@ -2,8 +2,8 @@ import { LunePrice } from '@lune/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
+import type { OptionTable } from '@/persistence/entities/option';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
-import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
@@ -16,7 +16,6 @@ import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
-import { ProductOptionFixtures } from './fixtures/product-option.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 import { ProductTranslationFixtures } from './fixtures/product-translation.fixtures';
 import { ShopFixtures } from './fixtures/shop.fixtures';
@@ -47,7 +46,6 @@ describe('Product repository', () => {
       new VariantOptionValueFixtures(),
       new AssetFixtures(),
       new ProductAssetFixtures(),
-      new ProductOptionFixtures(),
       new ProductTranslationFixtures()
     ]);
   });
@@ -435,19 +433,19 @@ describe('Product repository', () => {
 
   describe('removeAllOptions', () => {
     test('removes all product options for the given product ids', async () => {
-      const mockedOptions = await trx<ProductOptionTable>(Tables.ProductOption).whereIn(
-        'product_id',
-        [ProductConstants.ShirtID, ProductConstants.JacketID]
-      );
+      const mockedOptions = await trx<OptionTable>(Tables.Option).whereIn('product_id', [
+        ProductConstants.ShirtID,
+        ProductConstants.JacketID
+      ]);
 
       expect(mockedOptions).toHaveLength(4);
 
       await repository.removeAllOptions([ProductConstants.ShirtID, ProductConstants.JacketID]);
 
-      const optionsAfterRemoval = await trx<ProductOptionTable>(Tables.ProductOption).whereIn(
-        'product_id',
-        [ProductConstants.ShirtID, ProductConstants.JacketID]
-      );
+      const optionsAfterRemoval = await trx<OptionTable>(Tables.Option).whereIn('product_id', [
+        ProductConstants.ShirtID,
+        ProductConstants.JacketID
+      ]);
       expect(optionsAfterRemoval).toHaveLength(0);
     });
   });

@@ -15,7 +15,6 @@ import {
 import { OptionValueConstants, OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OptionValueTranslationFixtures } from './fixtures/option-value-translation.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import { ProductOptionFixtures } from './fixtures/product-option.fixtures';
 import {
   ProductTranslationConstants,
   ProductTranslationFixtures
@@ -37,7 +36,6 @@ describe('addProductTranslation - Mutation', () => {
       new ProductTranslationFixtures(),
       new OptionFixtures(),
       new OptionValueFixtures(),
-      new ProductOptionFixtures(),
       new OptionTranslationFixtures(),
       new OptionValueTranslationFixtures()
     ]);

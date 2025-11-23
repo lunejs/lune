@@ -2,9 +2,9 @@ import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
 import type { Asset } from '@/persistence/entities/asset';
 import type { ID } from '@/persistence/entities/entity';
+import type { OptionTable } from '@/persistence/entities/option';
 import type { Product, ProductTable } from '@/persistence/entities/product';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
-import type { ProductOptionTable } from '@/persistence/entities/product-option';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import type { Tag, TagTable } from '@/persistence/entities/tag';
@@ -166,11 +166,12 @@ export class ProductRepository extends Repository<Product, ProductTable> {
   }
 
   async removeAllOptions(productIds: ID[]) {
-    const optionsToDelete = await this.trx(Tables.ProductOption)
-      .select('option_id')
-      .whereIn('product_id', productIds);
+    const optionsToDelete = await this.trx<OptionTable>(Tables.Option).whereIn(
+      'product_id',
+      productIds
+    );
 
-    const optionIds = optionsToDelete.map(o => o.option_id);
+    const optionIds = optionsToDelete.map(o => o.id);
 
     if (optionIds.length === 0) return;
 
@@ -181,8 +182,6 @@ export class ProductRepository extends Repository<Product, ProductTable> {
       .del();
 
     await this.trx(Tables.OptionValue).whereIn('option_id', optionIds).del();
-
-    await this.trx(Tables.ProductOption).whereIn('product_id', productIds).del();
 
     await this.trx(Tables.Option).whereIn('id', optionIds).del();
   }
@@ -199,17 +198,6 @@ export class ProductRepository extends Repository<Product, ProductTable> {
     await this.trx<ProductTranslationTable>(Tables.ProductTranslation)
       .whereIn('product_id', productIds)
       .del();
-  }
-
-  async addOptions(productId: ID, ids: ID[]) {
-    await Promise.all(
-      ids.map(id =>
-        this.trx<ProductOptionTable>(Tables.ProductOption).insert({
-          product_id: productId,
-          option_id: id
-        })
-      )
-    );
   }
 
   async countDuplicatedSlug(slug: string) {

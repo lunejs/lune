@@ -1,9 +1,11 @@
 import request from 'supertest';
 
 import type { ID } from '@/index';
+import type { OptionTable } from '@/persistence/entities/option';
 import type { OptionValueTable } from '@/persistence/entities/option_value';
 import type { ProductTable } from '@/persistence/entities/product';
-import type { ProductOptionTable } from '@/persistence/entities/product-option';
+import type { ProductTagTable } from '@/persistence/entities/product-tag';
+import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -12,7 +14,6 @@ import { TestHelper } from '@/tests/utils/test-helper';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import { ProductOptionFixtures } from './fixtures/product-option.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 import { ProductTranslationFixtures } from './fixtures/product-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
@@ -38,7 +39,6 @@ describe('product - Query', () => {
       new OptionValueFixtures(),
       new VariantFixtures(),
       new VariantOptionValueFixtures(),
-      new ProductOptionFixtures(),
       new ProductTranslationFixtures()
     ]);
   });
@@ -177,22 +177,22 @@ const getProduct = async (testHelper: TestHelper, productId: ID) => {
     .first();
 
   const options = await testHelper
-    .getQueryBuilder()<ProductOptionTable>(Tables.ProductOption)
+    .getQueryBuilder()<OptionTable>(Tables.Option)
     .where('product_id', productId);
 
   const optionValues = await testHelper
     .getQueryBuilder()<OptionValueTable>(Tables.OptionValue)
     .whereIn(
       'option_id',
-      options.map(po => po.option_id)
+      options.map(po => po.id)
     );
 
   const translations = await testHelper
-    .getQueryBuilder()<ProductOptionTable>(Tables.ProductTranslation)
+    .getQueryBuilder()<ProductTranslationTable>(Tables.ProductTranslation)
     .where('product_id', productId);
 
   const tags = await testHelper
-    .getQueryBuilder()<ProductOptionTable>(Tables.ProductTag)
+    .getQueryBuilder()<ProductTagTable>(Tables.ProductTag)
     .where('product_id', productId);
 
   return {

@@ -25,13 +25,11 @@ export class OptionService {
   async create(productId: ID, input: CreateOptionInput[]) {
     const promises = input.map(async optionInput => {
       const { values, ...baseOption } = optionInput;
-      const option = await this.repository.create(baseOption);
+      const option = await this.repository.create({ ...baseOption, productId });
 
       if (values.length) {
         await this.createOptionValues(option.id, values);
       }
-
-      await this.productRepository.addOptions(productId, [option.id]);
 
       return option;
     });

@@ -9,24 +9,26 @@ export interface OptionValue extends LuneEntity {
   /**
    * The option value's name
    */
-  name: string;
+  name?: string | null;
   /**
    * The option value's order
    */
   order: number;
   /**
-   * The option value's metadata (e.g. color hex)
+   * The option this value belongs to
    */
-  metadata?: Record<string, any> | null;
-
   optionId: ID;
+  /**
+   * The option value preset this value has
+   */
+  optionValuePresetId?: ID | null;
 }
 
 export interface OptionValueTable extends LuneTable {
   deleted_at?: Date | null;
-  name: string;
+  name?: string | null;
   order: number;
-  metadata?: Record<string, any> | null;
   option_id: string;
   shop_id: string;
+  option_value_preset_id?: ID | null;
 }

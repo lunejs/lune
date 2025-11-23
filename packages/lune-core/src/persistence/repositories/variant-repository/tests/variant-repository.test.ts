@@ -10,7 +10,6 @@ import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueConstants, OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductFixtures } from './fixtures/product.fixtures';
-import { ProductOptionFixtures } from './fixtures/product-option.fixtures';
 import { ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
@@ -34,8 +33,7 @@ describe('Variant repository', () => {
       new OptionValueFixtures(),
       new VariantFixtures(),
       new VariantOptionValueFixtures(),
-      new AssetFixtures(),
-      new ProductOptionFixtures()
+      new AssetFixtures()
     ]);
   });
 

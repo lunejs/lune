@@ -11,8 +11,8 @@ export class OptionValueSerializer extends Serializer<OptionValue, OptionValueTa
       ['deleted_at', 'deletedAt'],
       ['name', 'name'],
       ['order', 'order'],
-      ['metadata', 'metadata'],
-      ['option_id', 'optionId']
+      ['option_id', 'optionId'],
+      ['option_value_preset_id', 'optionValuePresetId']
     ]);
   }
 }

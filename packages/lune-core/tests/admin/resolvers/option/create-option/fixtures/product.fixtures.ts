@@ -8,7 +8,8 @@ import { TestHelper } from '@/tests/utils/test-helper';
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestHelper.generateUUID(),
+  WithNoOptions: TestHelper.generateUUID()
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
@@ -19,6 +20,15 @@ export class ProductFixtures implements Fixture<ProductTable> {
       {
         created_at: new Date(),
         id: ProductConstants.ID,
+        name: 'MacBook Pro 16',
+        enabled: true,
+        min_sale_price: convertToCent(23_000),
+        max_sale_price: convertToCent(32_000),
+        shop_id: ShopConstants.ID
+      },
+      {
+        created_at: new Date(),
+        id: ProductConstants.WithNoOptions,
         name: 'MacBook Pro 16',
         enabled: true,
         min_sale_price: convertToCent(23_000),

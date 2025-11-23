@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 const TABLE_NAME = 'option_preset';
-const OPTION_TABLE = 'option';
+const OPTION_TABLE_NAME = 'option';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable(TABLE_NAME, table => {
@@ -21,17 +21,11 @@ export async function up(knex: Knex): Promise<void> {
     table.unique(['name', 'shop_id']);
   });
 
-  await knex.schema.alterTable(OPTION_TABLE, table => {
-    table.uuid('option_preset_id').nullable().references('id').inTable(TABLE_NAME);
-    table.string('name').nullable().alter();
+  await knex.schema.alterTable(OPTION_TABLE_NAME, table => {
+    table.uuid('product_id').notNullable().references('id').inTable('product');
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.alterTable(OPTION_TABLE, table => {
-    table.dropColumn('option_preset_id');
-    table.string('name').notNullable().alter();
-  });
-
   await knex.schema.dropTableIfExists(TABLE_NAME);
 }

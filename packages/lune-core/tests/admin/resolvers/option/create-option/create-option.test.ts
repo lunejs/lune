@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import type { ProductOptionTable } from '@/persistence/entities/product-option';
+import type { OptionTable } from '@/persistence/entities/option';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -69,7 +69,7 @@ describe('createOption - Mutation', () => {
       .send({
         query: CREATE_OPTION_MUTATION,
         variables: {
-          productId: ProductConstants.ID,
+          productId: ProductConstants.WithNoOptions,
           input: [
             {
               order: 0,
@@ -106,8 +106,8 @@ describe('createOption - Mutation', () => {
     });
 
     const productOptions = await testHelper
-      .getQueryBuilder()<ProductOptionTable>(Tables.ProductOption)
-      .where({ product_id: ProductConstants.ID });
+      .getQueryBuilder()<OptionTable>(Tables.Option)
+      .where({ product_id: ProductConstants.WithNoOptions });
 
     expect(productOptions).toHaveLength(2);
   });

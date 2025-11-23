@@ -7,5 +7,6 @@ export const DefaultOptionFixture = (): OptionTable => ({
   deleted_at: null,
   name: '',
   order: 0,
+  product_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });
