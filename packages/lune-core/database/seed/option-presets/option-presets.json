@@ -5,73 +5,73 @@
       {
         "name": "Black",
         "metadata": {
-          "hex": "#000000"
+          "hex": "#1F2937"
         }
       },
       {
         "name": "White",
         "metadata": {
-          "hex": "#FFFFFF"
+          "hex": "#F9FAFB"
         }
       },
       {
         "name": "Red",
         "metadata": {
-          "hex": "#FF0000"
+          "hex": "#EF4444"
         }
       },
       {
         "name": "Blue",
         "metadata": {
-          "hex": "#0000FF"
+          "hex": "#3B82F6"
         }
       },
       {
         "name": "Green",
         "metadata": {
-          "hex": "#00FF00"
+          "hex": "#10B981"
         }
       },
       {
         "name": "Yellow",
         "metadata": {
-          "hex": "#FFFF00"
+          "hex": "#F59E0B"
         }
       },
       {
         "name": "Pink",
         "metadata": {
-          "hex": "#FFC0CB"
+          "hex": "#EC4899"
         }
       },
       {
         "name": "Purple",
         "metadata": {
-          "hex": "#800080"
+          "hex": "#8B5CF6"
         }
       },
       {
         "name": "Orange",
         "metadata": {
-          "hex": "#FFA500"
+          "hex": "#F97316"
         }
       },
       {
         "name": "Gray",
         "metadata": {
-          "hex": "#808080"
+          "hex": "#6B7280"
         }
       },
       {
         "name": "Brown",
         "metadata": {
-          "hex": "#8B4513"
+          "hex": "#92400E"
         }
       },
       {
         "name": "Beige",
         "metadata": {
-          "hex": "#F5F5DC"
+          "hex": "#E7E5E4"
         }
       }
     ]

@@ -10,7 +10,7 @@ type OptionPreset {
   """
   Option values for this preset
   """
-  optionValues(input: ListInput): OptionValuePresetList!
+  values(input: ListInput): OptionValuePresetList!
 }
 
 type OptionValuePreset {

@@ -25,12 +25,17 @@ export const OptionPresetsResolver: GraphqlApiResolver = {
     optionPresets: UseUserGuard(optionPresets)
   },
   OptionPreset: {
-    optionValues: async (
+    values: async (
       parent: OptionPreset,
       args: OptionPresetOptionValuesArgs,
       ctx: ExecutionContext
     ) => {
-      return ctx.loaders.optionPreset.optionValues.load({ id: parent.id, args: args.input });
+      const result = await ctx.loaders.optionPreset.optionValues.load({
+        id: parent.id,
+        args: args.input
+      });
+
+      return new ListResponse(result.items, result.items.length, { total: result.total });
     }
   }
 };
