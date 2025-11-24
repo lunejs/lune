@@ -28,7 +28,8 @@ export const ProductDetailsSchema = z.object({
       values: z.array(
         z.object({
           id: z.string(),
-          name: z.string()
+          name: z.string(),
+          presetId: z.string().optional()
         })
       )
     })

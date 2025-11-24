@@ -4,7 +4,8 @@ import { createContext, type ReactNode, useContext, useEffect, useState } from '
 
 import { formatPrice } from '@lune/common';
 
-import type { CommonProductFragment } from '@/lib/api/types';
+import type { CommonOptionPresetFragment, CommonProductFragment } from '@/lib/api/types';
+import { useGetOptionPresets } from '@/lib/option-preset/hooks/use-get-option-presets';
 import { getUnusedOptionValues } from '@/lib/product/utils/variant.utils';
 
 import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
@@ -15,7 +16,7 @@ export type VariantContext = {
     isEditing: boolean;
     presetId?: string;
     name: string;
-    values: { name: string; id: string }[];
+    values: { name: string; id: string; presetId?: string }[];
   }[];
   variants: {
     id: string;
@@ -26,6 +27,7 @@ export type VariantContext = {
     action: 'create' | 'update' | 'none'; // ← SOLO ESTE CAMPO
   }[];
   product?: CommonProductFragment;
+  presets: CommonOptionPresetFragment[];
   updateVariants: (variants: VariantContext['variants']) => void;
   removeVariants: (ids: string[]) => void;
   appendOption: (presetId?: string) => void;
@@ -37,6 +39,7 @@ const Context = createContext<VariantContext>({
   options: [],
   variants: [],
   product: undefined,
+  presets: [],
   updateVariants: () => {},
   removeVariants: () => {},
   appendOption: () => {},
@@ -51,6 +54,7 @@ export const VariantContextProvider = ({
   children: ReactNode;
   product: CommonProductFragment | undefined;
 }) => {
+  const { optionPresets } = useGetOptionPresets();
   const { setValue } = useProductDetailsFormContext();
   const baseOptions: VariantContext['options'] =
     product?.options.map(o => ({
@@ -140,13 +144,15 @@ export const VariantContextProvider = ({
   const appendOption = (presetId?: string) => {
     if (options.length === MAX_OPTIONS_ALLOWED) return;
 
+    const preset = optionPresets.find(p => p.id === presetId);
+
     setOptions([
       ...options,
       {
         id: Math.random().toString(),
         isEditing: true,
         presetId,
-        name: '',
+        name: preset?.name ?? '',
         values: [{ id: Math.random().toString(), name: '' }]
       }
     ]);
@@ -172,6 +178,7 @@ export const VariantContextProvider = ({
     <Context.Provider
       value={{
         options,
+        presets: optionPresets,
         appendOption,
         updateOption,
         removeOption,

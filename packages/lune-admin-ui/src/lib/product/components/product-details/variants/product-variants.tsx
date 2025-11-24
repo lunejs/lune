@@ -1,4 +1,6 @@
-import { Card, CardAction, CardContent, CardHeader, CardTitle, cn } from '@lune/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
+
+import { Button, Card, CardAction, CardContent, CardHeader, CardTitle, cn } from '@lune/ui';
 
 import { OptionsListing } from '../option-details/options-listing';
 
@@ -10,14 +12,18 @@ export const ProductVariants = () => {
   const { options } = useVariantContext();
 
   return (
-    <Card className={cn('overflow-hidden', options.length && 'pb-0')}>
+    <Card className={cn('', options.length && 'pb-0')}>
       <CardHeader>
         <CardTitle className="col-start-1 row-span-2 row-start-1 self-start justify-self-start h-full flex items-center">
           Variant
         </CardTitle>
         {!options.length && (
           <CardAction>
-            <OptionPresetSelector />
+            <OptionPresetSelector>
+              <Button variant={'outline'} type="button">
+                <CircleFadingPlusIcon /> Add options
+              </Button>
+            </OptionPresetSelector>
           </CardAction>
         )}
       </CardHeader>

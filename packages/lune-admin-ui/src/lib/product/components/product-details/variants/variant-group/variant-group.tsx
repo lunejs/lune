@@ -1,11 +1,13 @@
 import { type FC } from 'react';
 
+import { isLast } from '@lune/common';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
   Checkbox,
+  cn,
   Input
 } from '@lune/ui';
 
@@ -96,8 +98,13 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
         </div>
 
         <AccordionContent className="flex flex-col border-t pb-0 divide-y">
-          {variants.map(variant => (
-            <VariantItem key={variant.id} variant={variant} groupName={groupName} />
+          {variants.map((variant, idx) => (
+            <VariantItem
+              className={cn(isLast(idx, variants) && 'rounded-b-md')}
+              key={variant.id}
+              variant={variant}
+              groupName={groupName}
+            />
           ))}
         </AccordionContent>
       </AccordionItem>

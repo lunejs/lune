@@ -1,4 +1,5 @@
-import { Button, Checkbox, Label } from '@lune/ui';
+import { isLast } from '@lune/common';
+import { Button, Checkbox, cn, Label } from '@lune/ui';
 
 import { getVariantsGroupedByOption } from '@/lib/product/utils/variant.utils';
 
@@ -49,8 +50,12 @@ export const VariantsListing = () => {
       </header>
       {optionsSaved.length === 1 ? (
         <div className="flex flex-col divide-y">
-          {variants.map(variant => (
-            <VariantItem key={variant.id} variant={variant} />
+          {variants.map((variant, idx) => (
+            <VariantItem
+              className={cn(isLast(idx, variants) && 'rounded-b-md')}
+              key={variant.id}
+              variant={variant}
+            />
           ))}
         </div>
       ) : (

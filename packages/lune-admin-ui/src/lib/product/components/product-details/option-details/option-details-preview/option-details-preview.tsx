@@ -1,11 +1,14 @@
 import { type FC } from 'react';
+import { WorkflowIcon } from 'lucide-react';
 
-import { Badge, Label } from '@lune/ui';
+import { Badge, Label, Tooltip, TooltipContent, TooltipTrigger } from '@lune/ui';
 
 import { useVariantContext, type VariantContext } from '../../variants/variants.context';
 
 export const OptionDetailsPreview: FC<Props> = ({ option }) => {
-  const { updateOption } = useVariantContext();
+  const { updateOption, presets } = useVariantContext();
+
+  const optionPreset = presets.find(p => p.id === option.presetId);
 
   return (
     <button
@@ -19,16 +22,34 @@ export const OptionDetailsPreview: FC<Props> = ({ option }) => {
         })
       }
     >
-      <Label className="text-left">{option.name}</Label>
+      <div className="flex items-center justify-between relative">
+        <Label className="text-left">{option.name}</Label>
+        {optionPreset && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="p-1 bg-distinct/20 rounded-sm absolute right-0">
+                <WorkflowIcon className="text-distinct" size={14} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              Connected to <span className="font-semibold">{optionPreset.name}</span>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
       <div className="flex items-center gap-2 flex-wrap">
-        {option.values.map(value => (
-          <Badge key={value.id} variant="secondary">
-            {/* {value.color && (
-              <div className="h-4 w-4 rounded mr-2" style={{ background: `#${value.color}` }} />
-            )} */}
-            {value.name}
-          </Badge>
-        ))}
+        {option.values.map(value => {
+          const presetValue = optionPreset?.values.items.find(p => p.id === value.presetId);
+
+          return (
+            <Badge key={value.id} variant="secondary" className="items-center">
+              {presetValue?.metadata?.hex && (
+                <div className="h-3 w-3 rounded" style={{ background: presetValue.metadata.hex }} />
+              )}
+              {value.name}
+            </Badge>
+          );
+        })}
       </div>
     </button>
   );

@@ -54,9 +54,9 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const formValues = useWatch({ defaultValue: form.getValues() });
 
   const [name, setName] = useState(option.name);
-  const [values, setValues] = useState<
-    { name: string; id: string; color?: string; translation?: string }[]
-  >(option.values);
+  const [values, setValues] = useState<{ name: string; id: string; presetId?: string }[]>(
+    option.values
+  );
 
   const isOptionNameRepeated = useMemo(
     () => getOptionNameIsRepeated(options, name, option),
@@ -132,7 +132,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   };
 
   const onCancel = () => {
-    if (!option.name) {
+    if (!option.name || option.values.every(ov => !ov.name)) {
       removeOption(option.id);
       return;
     }

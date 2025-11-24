@@ -4,7 +4,7 @@ import { Checkbox, cn, Input } from '@lune/ui';
 
 import { useVariantContext, type VariantContext } from '../variants.context';
 
-export const VariantItem: FC<Props> = ({ variant, groupName }) => {
+export const VariantItem: FC<Props> = ({ variant, groupName, className }) => {
   const { variants, updateVariants } = useVariantContext();
 
   const inGroup = Boolean(groupName);
@@ -17,7 +17,7 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
     : variant.values.map(v => v.name).join(' / ');
 
   return (
-    <div className="flex items-center px-6 py-4 hover:bg-muted/50">
+    <div className={cn('flex items-center px-6 py-4 hover:bg-muted/50', className)}>
       <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
         <Checkbox
           aria-label={`Select variant "${variantName}"`}
@@ -73,4 +73,5 @@ type Props = {
    * Determines if the variant is being rendered inside a group
    */
   groupName?: string;
+  className?: string;
 };

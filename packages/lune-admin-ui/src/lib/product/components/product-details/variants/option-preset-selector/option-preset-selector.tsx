@@ -1,7 +1,7 @@
+import { type ReactNode, useState } from 'react';
 import { CircleFadingPlusIcon } from 'lucide-react';
 
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -18,18 +18,14 @@ import { useGetOptionPresets } from '@/lib/option-preset/hooks/use-get-option-pr
 
 import { useVariantContext } from '../variants.context';
 
-export const OptionPresetSelector = () => {
+export const OptionPresetSelector = ({ children }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { optionPresets } = useGetOptionPresets();
-
   const { appendOption } = useVariantContext();
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant={'outline'} type="button">
-          <CircleFadingPlusIcon /> Add options
-        </Button>
-      </PopoverTrigger>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
           <CommandInput placeholder="Search..." />
@@ -37,14 +33,26 @@ export const OptionPresetSelector = () => {
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {optionPresets?.map(preset => (
-                <CommandItem value={preset.id} onSelect={() => appendOption()}>
+                <CommandItem
+                  value={preset.id}
+                  onSelect={() => {
+                    appendOption(preset.id);
+                    setIsOpen(false);
+                  }}
+                >
                   {preset.name}
                 </CommandItem>
               ))}
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup>
-              <CommandItem value={'custom'} onSelect={() => appendOption()}>
+              <CommandItem
+                value={'custom'}
+                onSelect={() => {
+                  appendOption();
+                  setIsOpen(false);
+                }}
+              >
                 <CircleFadingPlusIcon />
                 Create custom
               </CommandItem>
@@ -54,4 +62,8 @@ export const OptionPresetSelector = () => {
       </PopoverContent>
     </Popover>
   );
+};
+
+type Props = {
+  children: ReactNode;
 };

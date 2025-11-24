@@ -62,6 +62,10 @@ export const SidebarUser = () => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>Account</DropdownMenuItem>
+              {/* <DropdownMenuItem onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+                {theme === 'dark' ? <MoonIcon /> : <SunIcon />}{' '}
+                {theme === 'dark' ? 'Dark' : 'Light'}
+              </DropdownMenuItem> */}
               <DropdownMenuItem asChild>
                 <Link to={'/shops'}>Shops</Link>
               </DropdownMenuItem>
