@@ -88,11 +88,14 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
                       name: ''
                     }
                   ]
-                : items.map(i => ({
-                    id: Math.random().toString(),
-                    name: i.label,
-                    presetId: i.value
-                  }))
+                : items.map(i => {
+                    const existing = values.find(v => v.presetId === i.value);
+                    return {
+                      id: existing?.id ?? Math.random().toString(),
+                      name: i.label,
+                      presetId: i.value
+                    };
+                  })
             );
           }}
         />
