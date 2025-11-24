@@ -19,6 +19,9 @@ export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
       values {
         id
         name
+        preset {
+          id
+        }
         translations {
           id
           locale

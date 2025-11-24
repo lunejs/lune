@@ -2093,6 +2093,7 @@ export type CommonProductForTranslationFragment = {
     values: {
       id: string;
       name: string;
+      preset?: { id: string } | null;
       translations: { id: string; locale: Locale; name?: string | null }[];
     }[];
   }[];
@@ -3022,6 +3023,14 @@ export const CommonProductForTranslationFragmentDoc = {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'preset' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                        }
+                      },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'translations' },
@@ -5819,6 +5828,14 @@ export const GetProductForTranslationDocument = {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'preset' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'id' } }]
+                        }
+                      },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'translations' },

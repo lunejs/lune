@@ -11,7 +11,6 @@ import { useVariantContext, type VariantContext } from '../../variants/variants.
 import { useOptionDetailsForm } from './use-option-details-form';
 
 export const OptionDetailsForm: FC<Props> = ({ option }) => {
-  console.log({ form: option });
   const id = useId();
 
   const { presets } = useVariantContext();
@@ -30,8 +29,6 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
   } = useOptionDetailsForm(option);
 
   const optionPreset = presets.find(preset => preset.id === option.presetId);
-  console.log({ presets });
-  console.log({ optionPreset });
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -79,7 +76,6 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
             })
             .filter(isTruthy)}
           onSelectionChange={items => {
-            console.log({ items });
             setValues(
               items.length === 0
                 ? [

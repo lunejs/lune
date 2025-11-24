@@ -65,8 +65,6 @@ export const VariantContextProvider = ({
           preset.values.items.map(pv => pv.id).some(pvId => presetValueIds.includes(pvId))
         );
 
-        console.log({ optionPresets: optionPresets.length, preset });
-
         return {
           id: o.id,
           isEditing: false,
