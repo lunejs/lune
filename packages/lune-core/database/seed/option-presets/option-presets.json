@@ -15,9 +15,9 @@
         }
       },
       {
-        "name": "Red",
+        "name": "Gray",
         "metadata": {
-          "hex": "#EF4444"
+          "hex": "#6B7280"
         }
       },
       {
@@ -27,45 +27,9 @@
         }
       },
       {
-        "name": "Green",
+        "name": "Tan",
         "metadata": {
-          "hex": "#10B981"
-        }
-      },
-      {
-        "name": "Yellow",
-        "metadata": {
-          "hex": "#F59E0B"
-        }
-      },
-      {
-        "name": "Pink",
-        "metadata": {
-          "hex": "#EC4899"
-        }
-      },
-      {
-        "name": "Purple",
-        "metadata": {
-          "hex": "#8B5CF6"
-        }
-      },
-      {
-        "name": "Orange",
-        "metadata": {
-          "hex": "#F97316"
-        }
-      },
-      {
-        "name": "Gray",
-        "metadata": {
-          "hex": "#6B7280"
-        }
-      },
-      {
-        "name": "Brown",
-        "metadata": {
-          "hex": "#92400E"
+          "hex": "#D2B48C"
         }
       },
       {
@@ -80,7 +44,7 @@
     "name": "Size",
     "values": [
       {
-        "name": "XXS",
+        "name": "U",
         "metadata": null
       },
       {

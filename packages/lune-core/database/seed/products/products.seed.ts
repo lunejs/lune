@@ -10,6 +10,8 @@ import type { OptionValueTable } from '@/persistence/entities/option_value';
 import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 import type { AssetTable } from '@/persistence/entities/asset';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
+import type { OptionPresetTable } from '@/persistence/entities/option-preset';
+import type { OptionValuePresetTable } from '@/persistence/entities/option-value-preset';
 import type { SeedContext } from '../seed.types';
 
 import Products from './products.json';
@@ -27,6 +29,26 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
     timestampOffset += TIMESTAMP_OFFSET_SECONDS;
     return timestamp;
   };
+
+  // Load option presets and their values
+  const optionPresets = await trx<OptionPresetTable>(Tables.OptionPreset)
+    .where({ shop_id: ctx.shopId })
+    .select('*');
+
+  const presetValuesMap = new Map<string, Map<string, string>>(); // preset name -> (value name -> value preset id)
+
+  for (const preset of optionPresets) {
+    const presetValues = await trx<OptionValuePresetTable>(Tables.OptionValuePreset)
+      .where({ option_preset_id: preset.id })
+      .select('*');
+
+    const valuesMap = new Map<string, string>();
+    presetValues.forEach(pv => {
+      valuesMap.set(pv.name, pv.id);
+    });
+
+    presetValuesMap.set(preset.name, valuesMap);
+  }
 
   for (const product of ALL_PRODUCTS) {
     // Calculate min and max sale prices from variants (convert to cents)
@@ -80,6 +102,10 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
     const optionValueMap = new Map<string, string>(); // option value name -> option value id
 
     for (const option of product.options) {
+      // Determine if this option should use presets
+      const presetValues = presetValuesMap.get(option.name);
+      const shouldUsePreset = presetValues && option.values.every(v => presetValues.has(v.name));
+
       // Create option
       const optionTimestamp = getTimestamp();
       const [optionCreated] = await trx<OptionTable>(Tables.Option)
@@ -98,10 +124,15 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
       // Create option values FIRST
       for (const value of option.values) {
         const optionValueTimestamp = getTimestamp();
+
+        // Get preset value ID if using preset
+        const presetValueId = shouldUsePreset ? presetValues?.get(value.name) : undefined;
+
         const [optionValueCreated] = await trx<OptionValueTable>(Tables.OptionValue)
           .insert({
-            name: value.name,
+            name: shouldUsePreset ? null : value.name,
             order: value.order,
+            option_value_preset_id: presetValueId,
             option_id: optionCreated.id,
             shop_id: ctx.shopId,
             created_at: optionValueTimestamp,
