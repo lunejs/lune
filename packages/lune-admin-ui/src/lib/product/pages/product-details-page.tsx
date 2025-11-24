@@ -11,7 +11,7 @@ export const ProductDetailsPage = () => {
   const { isLoading, product } = useGetProduct(params.id ?? '');
 
   return (
-    <PageLayout className="max-w-[900px] mx-auto w-full" isLoading={isLoading}>
+    <PageLayout className="max-w-5xl mx-auto w-full" isLoading={isLoading}>
       <ProductDetails product={product} />
     </PageLayout>
   );

@@ -4,7 +4,7 @@ import { CollectionDetails } from '../components/collection-details/collection-d
 
 export const NewCollectionPage = () => {
   return (
-    <PageLayout className="max-w-[900px] mx-auto w-full">
+    <PageLayout className="max-w-5xl mx-auto w-full">
       <CollectionDetails />
     </PageLayout>
   );

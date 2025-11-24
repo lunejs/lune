@@ -11,7 +11,7 @@ export const CollectionDetailsPage = () => {
   const { isLoading, collection } = useGetCollection(params.id ?? '');
 
   return (
-    <PageLayout className="max-w-[900px] mx-auto w-full" isLoading={isLoading}>
+    <PageLayout className="max-w-5xl mx-auto w-full" isLoading={isLoading}>
       <CollectionDetails collection={collection} />
     </PageLayout>
   );
