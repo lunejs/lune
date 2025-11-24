@@ -243,8 +243,9 @@ export type CreateOptionInput = {
 };
 
 export type CreateOptionValueInput = {
-  name: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
   order: Scalars['Int']['input'];
+  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type CreatePaymentMethodInput = {
@@ -838,6 +839,7 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
+  preset?: Maybe<OptionValuePreset>;
   translations: OptionValueTranslation[];
   updatedAt: Scalars['Date']['output'];
 };
@@ -1559,6 +1561,7 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdatePaymentMethodInput = {
@@ -2125,7 +2128,15 @@ export type CommonProductFragment = {
       assets: { items: { id: string; source: string }[] };
     }[];
   };
-  options: { id: string; name: string; values: { id: string; name: string }[] }[];
+  options: {
+    id: string;
+    name: string;
+    values: {
+      id: string;
+      name: string;
+      preset?: { id: string; name: string; metadata?: any | null } | null;
+    }[];
+  }[];
   assets: { items: { id: string; source: string; order: number }[] };
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
@@ -3185,7 +3196,19 @@ export const CommonProductFragmentDoc = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'preset' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'metadata' } }
+                          ]
+                        }
+                      }
                     ]
                   }
                 }
@@ -5670,7 +5693,19 @@ export const GetProductDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'preset' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'metadata' } }
+                          ]
+                        }
+                      }
                     ]
                   }
                 }

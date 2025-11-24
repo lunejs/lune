@@ -84,6 +84,11 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
       values {
         id
         name
+        preset {
+          id
+          name
+          metadata
+        }
       }
     }
     assets {

@@ -43,7 +43,8 @@ export const useUpdateProduct = () => {
                 name: option.name,
                 values: option.values.map((value, i) => ({
                   id: isUUID(value.id) ? value.id : '',
-                  name: value.name,
+                  name: value.presetId ? null : value.name,
+                  presetId: value.presetId,
                   order: i
                 }))
               }
@@ -59,7 +60,8 @@ export const useUpdateProduct = () => {
             order: optionsToUpdate.length + i,
             name: option.name,
             values: option.values.map((value, i) => ({
-              name: value.name,
+              name: value.presetId ? null : value.name,
+              presetId: value.presetId,
               order: i
             }))
           }))
@@ -143,7 +145,7 @@ type UpdateProductInput = {
   options: {
     id: string;
     name: string;
-    values: { id: string; name: string }[];
+    values: { id: string; name: string; presetId?: string }[];
   }[];
   variants: {
     id: string;

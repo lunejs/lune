@@ -86,7 +86,7 @@ export class OptionService {
       valuesToUpdate.map(v => {
         return this.optionValueRepository.update({
           where: { id: v.id ?? '' },
-          data: { name: v.name, order: v.order ?? undefined, presetId: v.presetId }
+          data: { name: v.name, order: v.order ?? undefined }
         });
       })
     );

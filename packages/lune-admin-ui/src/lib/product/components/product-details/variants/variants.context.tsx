@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
-import { formatPrice } from '@lune/common';
+import { formatPrice, isTruthy } from '@lune/common';
 
 import type { CommonOptionPresetFragment, CommonProductFragment } from '@/lib/api/types';
 import { useGetOptionPresets } from '@/lib/option-preset/hooks/use-get-option-presets';
@@ -56,16 +56,31 @@ export const VariantContextProvider = ({
 }) => {
   const { optionPresets } = useGetOptionPresets();
   const { setValue } = useProductDetailsFormContext();
-  const baseOptions: VariantContext['options'] =
-    product?.options.map(o => ({
-      id: o.id,
-      isEditing: false,
-      name: o.name,
-      values: o.values.map(v => ({
-        id: v.id,
-        name: v.name
-      }))
-    })) ?? [];
+  const baseOptions: VariantContext['options'] = useMemo(() => {
+    return (
+      product?.options.map(o => {
+        const presetValueIds = o.values.map(ov => ov.preset?.id).filter(isTruthy);
+
+        const preset = optionPresets.find(preset =>
+          preset.values.items.map(pv => pv.id).some(pvId => presetValueIds.includes(pvId))
+        );
+
+        console.log({ optionPresets: optionPresets.length, preset });
+
+        return {
+          id: o.id,
+          isEditing: false,
+          name: o.name,
+          presetId: preset?.id,
+          values: o.values.map(v => ({
+            id: v.id,
+            name: v.name,
+            presetId: v.preset?.id
+          }))
+        };
+      }) ?? []
+    );
+  }, [product?.options, optionPresets]);
 
   const baseVariants: VariantContext['variants'] =
     product?.variants.items
@@ -93,6 +108,15 @@ export const VariantContextProvider = ({
       setVariants(baseVariants);
     },
     [product]
+  );
+
+  useEffect(
+    function setBaseValuesWhenProductIsRefetch() {
+      if (!product) return;
+
+      setOptions(baseOptions);
+    },
+    [baseOptions]
   );
 
   useEffect(

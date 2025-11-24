@@ -17,11 +17,6 @@ export const ProductSubmitButton = () => {
   const variantsHasChanged = getVariantsHasChanged(values, product);
   const optionsHasChanged = getOptionsHasChanged(values, product);
 
-  console.log({
-    variantsHasChanged,
-    optionsHasChanged
-  });
-
   return (
     <Button
       type="submit"
