@@ -1,7 +1,7 @@
 import { type FC, useId } from 'react';
 import { Trash2Icon } from 'lucide-react';
 
-import { isFirst, isLast } from '@lune/common';
+import { isFirst, isLast, isTruthy } from '@lune/common';
 import { Button, Input, Label } from '@lune/ui';
 
 import { MultiSelect } from '@/shared/components/multi-select/multi-select';
@@ -11,6 +11,7 @@ import { useVariantContext, type VariantContext } from '../../variants/variants.
 import { useOptionDetailsForm } from './use-option-details-form';
 
 export const OptionDetailsForm: FC<Props> = ({ option }) => {
+  console.log({ form: option });
   const id = useId();
 
   const { presets } = useVariantContext();
@@ -29,6 +30,8 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
   } = useOptionDetailsForm(option);
 
   const optionPreset = presets.find(preset => preset.id === option.presetId);
+  console.log({ presets });
+  console.log({ optionPreset });
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -56,8 +59,27 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
               />
             )
           }))}
-          defaultSelected={values.filter(v => v.name).map(v => ({ label: v.name, value: v.id }))}
+          defaultSelected={values
+            .filter(v => v.name)
+            .map(v => {
+              const valuePreset = optionPreset.values.items.find(p => p.id === v.presetId);
+
+              if (!valuePreset) return;
+
+              return {
+                label: valuePreset.name,
+                value: valuePreset.id,
+                leading: valuePreset.metadata?.hex && (
+                  <div
+                    className="h-3 w-3 rounded-xs"
+                    style={{ backgroundColor: `${valuePreset.metadata.hex}` }}
+                  />
+                )
+              };
+            })
+            .filter(isTruthy)}
           onSelectionChange={items => {
+            console.log({ items });
             setValues(
               items.length === 0
                 ? [

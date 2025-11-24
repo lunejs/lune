@@ -26,12 +26,12 @@ export function MultiSelect({
     setMounted(true);
   }, []);
 
-  const handleUnselect = useCallback((option: Item) => {
+  const handleUnselect = (option: Item) => {
     const newSelected = selected.filter(s => s.value !== option.value);
 
     setSelected(newSelected);
-    onSelectionChange?.(selected);
-  }, []);
+    onSelectionChange?.(newSelected);
+  };
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     const input = inputRef.current;
