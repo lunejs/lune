@@ -264,8 +264,9 @@ export type CreateOptionInput = {
 };
 
 export type CreateOptionValueInput = {
-  name: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
   order: Scalars['Int']['input'];
+  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type CreateOrderAddressInput = {
@@ -958,13 +959,13 @@ export type OptionPreset = {
   id: Scalars['ID']['output'];
   /** The preset's name */
   name: Scalars['String']['output'];
-  /** Option values for this preset */
-  optionValues: OptionValuePresetList;
   updatedAt: Scalars['Date']['output'];
+  /** Option values for this preset */
+  values: OptionValuePresetList;
 };
 
 
-export type OptionPresetOptionValuesArgs = {
+export type OptionPresetValuesArgs = {
   input?: InputMaybe<ListInput>;
 };
 
@@ -1818,6 +1819,7 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdateOrderLineInput = {
@@ -2724,8 +2726,8 @@ export type OptionPresetResolvers<ContextType = ExecutionContext, ParentType ext
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  optionValues?: Resolver<ResolversTypes['OptionValuePresetList'], ParentType, ContextType, Partial<OptionPresetOptionValuesArgs>>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  values?: Resolver<ResolversTypes['OptionValuePresetList'], ParentType, ContextType, Partial<OptionPresetValuesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -7,13 +7,13 @@ import { BaseFilter } from '@/persistence/filters/base.filter';
 import { OptionValuePresetSerializer } from '@/persistence/serializers/option-value-preset.serializer';
 import { Tables } from '@/persistence/tables';
 
-import type { OptionPresetOptionValuesArgs } from '../../types/graphql';
+import type { OptionPresetValuesArgs } from '../../types/graphql';
 import { loaderFactory } from '../loader-factory';
 
 export function createOptionValuePresetsLoader(trx: Transaction) {
   const serializer = new OptionValuePresetSerializer();
 
-  return loaderFactory<OptionValuePreset, OptionPresetOptionValuesArgs['input']>({
+  return loaderFactory<OptionValuePreset, OptionPresetValuesArgs['input']>({
     async getItemsFn(keyIds, keyArgs) {
       const itemsQuery = trx<OptionValuePresetTable>(Tables.OptionValuePreset).whereIn(
         'option_preset_id',

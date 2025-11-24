@@ -16,6 +16,7 @@ import { createLocationInStorePickupLoader } from './location/location-in-store-
 import { createLocationStateLoader } from './location/location-state.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
 import { createOptionValuePresetsLoader } from './option-preset/option-value-preset.loader';
+import { createOptionValuePresetLoader } from './option-value/option-value-preset.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
 import { createOrderCustomersLoader } from './order/order-customers.loader';
@@ -55,7 +56,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     optionValues: {
       localization: createOptionValueLocalizationLoader(trx, locale),
-      translations: createOptionValuesTranslationsLoader(trx)
+      translations: createOptionValuesTranslationsLoader(trx),
+      preset: createOptionValuePresetLoader(trx)
     },
     collections: {
       assets: createCollectionAssetsLoader(trx),

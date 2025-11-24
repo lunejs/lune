@@ -21,7 +21,7 @@ export interface OptionValue extends LuneEntity {
   /**
    * The option value preset this value has
    */
-  optionValuePresetId?: ID | null;
+  presetId?: ID | null;
 }
 
 export interface OptionValueTable extends LuneTable {

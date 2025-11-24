@@ -1,10 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
-import type {
-  OptionPresetOptionValuesArgs,
-  QueryOptionPresetsArgs
-} from '@/api/shared/types/graphql';
+import type { OptionPresetValuesArgs, QueryOptionPresetsArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { OptionPresetService } from '@/business/option-preset/option-preset.service';
 import type { OptionPreset } from '@/persistence/entities/option-preset';
@@ -25,11 +22,7 @@ export const OptionPresetsResolver: GraphqlApiResolver = {
     optionPresets: UseUserGuard(optionPresets)
   },
   OptionPreset: {
-    values: async (
-      parent: OptionPreset,
-      args: OptionPresetOptionValuesArgs,
-      ctx: ExecutionContext
-    ) => {
+    values: async (parent: OptionPreset, args: OptionPresetValuesArgs, ctx: ExecutionContext) => {
       const result = await ctx.loaders.optionPreset.optionValues.load({
         id: parent.id,
         args: args.input

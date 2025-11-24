@@ -73,8 +73,9 @@ export class OptionService {
   private async createOptionValues(optionId: ID, optionValues: UpdateOptionValueInput[]) {
     await this.optionValueRepository.createMany(
       optionValues.map(v => ({
-        name: v.name ?? '',
+        name: v.name,
         order: v.order ?? 0,
+        presetId: v.presetId,
         optionId
       }))
     );
@@ -85,7 +86,7 @@ export class OptionService {
       valuesToUpdate.map(v => {
         return this.optionValueRepository.update({
           where: { id: v.id ?? '' },
-          data: { name: v.name ?? '', order: v.order ?? undefined }
+          data: { name: v.name, order: v.order ?? undefined, presetId: v.presetId }
         });
       })
     );
