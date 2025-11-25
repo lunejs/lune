@@ -57,11 +57,13 @@ type Documents = {
   '\n  mutation RemovePaymentMethod($id: ID!) {\n    removePaymentMethod(id: $id)\n  }\n': typeof types.RemovePaymentMethodDocument;
   '\n  fragment CommonProductForTranslation on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    options {\n      id\n      name\n      translations {\n        id\n        locale\n        name\n      }\n      values {\n        id\n        name\n        preset {\n          id\n        }\n        translations {\n          id\n          locale\n          name\n        }\n      }\n    }\n    translations {\n      name\n      slug\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n': typeof types.CommonProductForTranslationFragmentDoc;
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        weight\n        dimensions {\n          length\n          width\n          height\n        }\n        optionValues {\n          id\n          name\n        }\n        assets {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n    options {\n      id\n      name\n      values {\n        id\n        name\n        preset {\n          id\n          name\n          metadata\n        }\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n': typeof types.CommonProductFragmentDoc;
+  '\n  fragment CommonVariant on Variant {\n    id\n    salePrice\n    sku\n    stock\n    comparisonPrice\n    costPerUnit\n    requiresShipping\n    weight\n    dimensions {\n      length\n      width\n      height\n    }\n    optionValues {\n      id\n      name\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n': typeof types.CommonVariantFragmentDoc;
   '\n  fragment CommonListProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n': typeof types.CommonListProductFragmentDoc;
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListProduct\n      }\n    }\n  }\n': typeof types.GetProductsDocument;
   '\n  query GetProductsExists {\n    products(input: { take: 1 }) {\n      count\n    }\n  }\n': typeof types.GetProductsExistsDocument;
   '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n': typeof types.GetProductDocument;
   '\n  query GetProductForTranslation($id: ID) {\n    product(id: $id) {\n      ...CommonProductForTranslation\n    }\n  }\n': typeof types.GetProductForTranslationDocument;
+  '\n  query GetProductForVariants($id: ID) {\n    product(id: $id) {\n      id\n      name\n      slug\n      variants {\n        items {\n          ...CommonVariant\n        }\n      }\n    }\n  }\n': typeof types.GetProductForVariantsDocument;
   '\n  mutation CreateProduct($input: CreateProductInput!) {\n    createProduct(input: $input) {\n      id\n    }\n  }\n': typeof types.CreateProductDocument;
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n': typeof types.UpdateProductDocument;
   '\n  mutation RemoveProducts($ids: [ID!]!) {\n    softRemoveProducts(ids: $ids)\n  }\n': typeof types.RemoveProductsDocument;
@@ -176,6 +178,8 @@ const documents: Documents = {
     types.CommonProductForTranslationFragmentDoc,
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        weight\n        dimensions {\n          length\n          width\n          height\n        }\n        optionValues {\n          id\n          name\n        }\n        assets {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n    options {\n      id\n      name\n      values {\n        id\n        name\n        preset {\n          id\n          name\n          metadata\n        }\n      }\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n':
     types.CommonProductFragmentDoc,
+  '\n  fragment CommonVariant on Variant {\n    id\n    salePrice\n    sku\n    stock\n    comparisonPrice\n    costPerUnit\n    requiresShipping\n    weight\n    dimensions {\n      length\n      width\n      height\n    }\n    optionValues {\n      id\n      name\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n':
+    types.CommonVariantFragmentDoc,
   '\n  fragment CommonListProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n':
     types.CommonListProductFragmentDoc,
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListProduct\n      }\n    }\n  }\n':
@@ -186,6 +190,8 @@ const documents: Documents = {
     types.GetProductDocument,
   '\n  query GetProductForTranslation($id: ID) {\n    product(id: $id) {\n      ...CommonProductForTranslation\n    }\n  }\n':
     types.GetProductForTranslationDocument,
+  '\n  query GetProductForVariants($id: ID) {\n    product(id: $id) {\n      id\n      name\n      slug\n      variants {\n        items {\n          ...CommonVariant\n        }\n      }\n    }\n  }\n':
+    types.GetProductForVariantsDocument,
   '\n  mutation CreateProduct($input: CreateProductInput!) {\n    createProduct(input: $input) {\n      id\n    }\n  }\n':
     types.CreateProductDocument,
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n':
@@ -511,6 +517,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  fragment CommonVariant on Variant {\n    id\n    salePrice\n    sku\n    stock\n    comparisonPrice\n    costPerUnit\n    requiresShipping\n    weight\n    dimensions {\n      length\n      width\n      height\n    }\n    optionValues {\n      id\n      name\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonVariant on Variant {\n    id\n    salePrice\n    sku\n    stock\n    comparisonPrice\n    costPerUnit\n    requiresShipping\n    weight\n    dimensions {\n      length\n      width\n      height\n    }\n    optionValues {\n      id\n      name\n    }\n    assets {\n      items {\n        id\n        source\n        order\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  fragment CommonListProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n'
 ): (typeof documents)['\n  fragment CommonListProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    enabled\n    minSalePrice\n    variants {\n      items {\n        id\n        sku\n        stock\n        salePrice\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n'];
 /**
@@ -537,6 +549,12 @@ export function graphql(
 export function graphql(
   source: '\n  query GetProductForTranslation($id: ID) {\n    product(id: $id) {\n      ...CommonProductForTranslation\n    }\n  }\n'
 ): (typeof documents)['\n  query GetProductForTranslation($id: ID) {\n    product(id: $id) {\n      ...CommonProductForTranslation\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetProductForVariants($id: ID) {\n    product(id: $id) {\n      id\n      name\n      slug\n      variants {\n        items {\n          ...CommonVariant\n        }\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query GetProductForVariants($id: ID) {\n    product(id: $id) {\n      id\n      name\n      slug\n      variants {\n        items {\n          ...CommonVariant\n        }\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

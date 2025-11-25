@@ -95,6 +95,13 @@ const getBreadcrumbItems = (pathname: string, id?: string) => {
   if (pathname === `/products/${id}`) {
     return [{ href: '/products', label: 'Products' }, { label: 'Product details' }];
   }
+  if (pathname.includes(`/products/${id}/variants`)) {
+    return [
+      { href: '/products', label: 'Products' },
+      { href: `/products/${id}`, label: 'Product details' },
+      { label: 'Variants' }
+    ];
+  }
   if (pathname === `/collections/${id}`) {
     return [{ href: '/collections', label: 'Collections' }, { label: 'Collection details' }];
   }

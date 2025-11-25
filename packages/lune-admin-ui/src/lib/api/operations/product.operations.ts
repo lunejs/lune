@@ -104,6 +104,35 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
   }
 `);
 
+export const COMMON_VARIANT_FRAGMENT = graphql(`
+  fragment CommonVariant on Variant {
+    id
+    salePrice
+    sku
+    stock
+    comparisonPrice
+    costPerUnit
+    requiresShipping
+    weight
+    dimensions {
+      length
+      width
+      height
+    }
+    optionValues {
+      id
+      name
+    }
+    assets {
+      items {
+        id
+        source
+        order
+      }
+    }
+  }
+`);
+
 export const COMMON_LIST_PRODUCT_FRAGMENT = graphql(`
   fragment CommonListProduct on Product {
     id
@@ -163,6 +192,21 @@ export const GET_PRODUCT_BY_ID_FOR_TRANSLATION_QUERY = graphql(`
   query GetProductForTranslation($id: ID) {
     product(id: $id) {
       ...CommonProductForTranslation
+    }
+  }
+`);
+
+export const GET_PRODUCT_FOR_VARIANTS_QUERY = graphql(`
+  query GetProductForVariants($id: ID) {
+    product(id: $id) {
+      id
+      name
+      slug
+      variants {
+        items {
+          ...CommonVariant
+        }
+      }
     }
   }
 `);

@@ -52,7 +52,7 @@ export const useDropzone = (
     if (value) {
       setPreviewsSelected(prev => [...prev, preview]);
     } else {
-      setSelected(prev => prev.filter(_file => _file.id !== preview.id));
+      setPreviewsSelected(prev => prev.filter(_file => _file.id !== preview.id));
     }
   };
 

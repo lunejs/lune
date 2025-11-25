@@ -1,11 +1,12 @@
 import { type FC } from 'react';
+import { Link } from 'react-router';
 
 import { Checkbox, cn, Input } from '@lune/ui';
 
 import { useVariantContext, type VariantContext } from '../variants.context';
 
 export const VariantItem: FC<Props> = ({ variant, groupName, className }) => {
-  const { variants, updateVariants } = useVariantContext();
+  const { product, variants, updateVariants } = useVariantContext();
 
   const inGroup = Boolean(groupName);
 
@@ -40,7 +41,12 @@ export const VariantItem: FC<Props> = ({ variant, groupName, className }) => {
             addVariantImage([variant.id], file);
           }}
         /> */}
-        <span className="hover:underline w-full cursor-pointer">{variantName}</span>
+        <Link
+          to={`/products/${product?.id}/variants/${variant.id}`}
+          className="hover:underline w-full cursor-pointer"
+        >
+          {variantName}
+        </Link>
       </div>
       <div className="flex items-center gap-2 w-full">
         <Input

@@ -1,18 +1,14 @@
-import { queryClient } from '@/app/app';
-import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
-import { UPDATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
-import type { CommonProductFragment } from '@/lib/api/types';
+import type { CommonVariantFragment } from '@/lib/api/types';
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
+import { useUpdateVariant } from '@/lib/product/hooks/use-update-variant';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
-import { ProductCacheKeys } from '../constants/cache-keys';
-
-export const useProductAsset = () => {
+export const useVariantAsset = (productId: string) => {
   const { loading, success, failure } = useLoadingNotification();
   const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: updateProduct } = useGqlMutationDEPRECATED(UPDATE_PRODUCT_MUTATION);
+  const { updateVariant } = useUpdateVariant(productId);
 
-  const upload = async (product: CommonProductFragment, files: File[]) => {
+  const upload = async (variant: CommonVariantFragment, files: File[]) => {
     try {
       loading('Uploading...');
 
@@ -24,20 +20,18 @@ export const useProductAsset = () => {
         return;
       }
 
-      await updateProduct({
-        id: product.id,
+      await updateVariant({
+        id: variant.id,
         input: {
           assets: [
-            ...product.assets.items.map(asset => ({ id: asset.id, order: asset.order })),
+            ...variant.assets.items.map(asset => ({ id: asset.id, order: asset.order })),
             ...result.data.map((newAsset, index) => ({
               id: newAsset.id,
-              order: product.assets.items.length + index
+              order: variant.assets.items.length + index
             }))
           ]
         }
       });
-
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(product.id)] });
 
       success('Images uploaded');
     } catch (error) {
@@ -46,22 +40,20 @@ export const useProductAsset = () => {
     }
   };
 
-  const remove = async (product: CommonProductFragment, assetsToRemove: string[]) => {
+  const remove = async (variant: CommonVariantFragment, assetsToRemove: string[]) => {
     try {
       loading('Removing...');
 
-      const newAssets = product.assets.items
+      const newAssets = variant.assets.items
         .filter(asset => !assetsToRemove.includes(asset.id))
         .map((asset, index) => ({ id: asset.id, order: index }));
 
-      await updateProduct({
-        id: product.id,
+      await updateVariant({
+        id: variant.id,
         input: {
           assets: newAssets
         }
       });
-
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(product.id)] });
 
       success('Images removed');
     } catch (error) {

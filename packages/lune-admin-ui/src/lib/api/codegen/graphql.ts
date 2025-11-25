@@ -2141,6 +2141,20 @@ export type CommonProductFragment = {
   assets: { items: { id: string; source: string; order: number }[] };
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
+export type CommonVariantFragment = {
+  id: string;
+  salePrice: number;
+  sku?: string | null;
+  stock: number;
+  comparisonPrice?: number | null;
+  costPerUnit?: number | null;
+  requiresShipping: boolean;
+  weight?: number | null;
+  dimensions?: { length?: number | null; width?: number | null; height?: number | null } | null;
+  optionValues: { id: string; name: string }[];
+  assets: { items: { id: string; source: string; order: number }[] };
+} & { ' $fragmentName'?: 'CommonVariantFragment' };
+
 export type CommonListProductFragment = {
   id: string;
   createdAt: any;
@@ -2183,6 +2197,21 @@ export type GetProductForTranslationQueryVariables = Exact<{
 export type GetProductForTranslationQuery = {
   product?: {
     ' $fragmentRefs'?: { CommonProductForTranslationFragment: CommonProductForTranslationFragment };
+  } | null;
+};
+
+export type GetProductForVariantsQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+export type GetProductForVariantsQuery = {
+  product?: {
+    id: string;
+    name: string;
+    slug: string;
+    variants: {
+      items: { ' $fragmentRefs'?: { CommonVariantFragment: CommonVariantFragment } }[];
+    };
   } | null;
 };
 
@@ -3250,6 +3279,73 @@ export const CommonProductFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonProductFragment, unknown>;
+export const CommonVariantFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonVariant' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Variant' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'salePrice' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'sku' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'stock' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'comparisonPrice' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'costPerUnit' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'requiresShipping' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'weight' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'dimensions' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'length' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'width' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'height' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'optionValues' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'order' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonVariantFragment, unknown>;
 export const CommonListProductFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -5909,6 +6005,131 @@ export const GetProductForTranslationDocument = {
     }
   ]
 } as unknown as DocumentNode<GetProductForTranslationQuery, GetProductForTranslationQueryVariables>;
+export const GetProductForVariantsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetProductForVariants' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'product' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'variants' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'FragmentSpread',
+                              name: { kind: 'Name', value: 'CommonVariant' }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonVariant' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Variant' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'salePrice' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'sku' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'stock' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'comparisonPrice' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'costPerUnit' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'requiresShipping' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'weight' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'dimensions' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'length' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'width' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'height' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'optionValues' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'source' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'order' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetProductForVariantsQuery, GetProductForVariantsQueryVariables>;
 export const CreateProductDocument = {
   kind: 'Document',
   definitions: [

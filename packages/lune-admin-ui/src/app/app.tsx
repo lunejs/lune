@@ -18,6 +18,7 @@ import { PaymentMethodsPage } from '@/lib/payments/pages/payment-methods-page';
 import { NewProductPage } from '@/lib/product/pages/new-product-page';
 import { ProductDetailsPage } from '@/lib/product/pages/product-details-page';
 import { ProductsPage } from '@/lib/product/pages/products-page';
+import { VariantsPage } from '@/lib/product/pages/variatns-page';
 import { InStorePickupLocationsPage } from '@/lib/shipments/pages/in-store-pickup-locations-page';
 import { InStorePickupPreferencesPage } from '@/lib/shipments/pages/in-store-pickup-preferences-page';
 import { NewZonePage } from '@/lib/shipments/pages/new-zone-page';
@@ -29,6 +30,7 @@ import { ShopsPage } from '@/lib/shop/pages/shops-page';
 import { TranslateCollectionsPage } from '@/lib/translate/pages/translate-collections-page';
 import { TranslateProductsPage } from '@/lib/translate/pages/translate-products-page';
 import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
+import ScrollToTop from '@/shared/components/scroll-to-top';
 import { SettingsLayout } from '@/shared/components/settings-layout/settings-layout';
 
 import { AuthWrapper } from './auth-wrapper';
@@ -52,6 +54,7 @@ export const App = () => {
         <ThemeProvider defaultTheme="dark" storageKey="lune-ui-theme">
           <Toaster />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route element={<AuthWrapper />}>
                 <Route path="/login" element={<LoginPage />} />
@@ -68,6 +71,7 @@ export const App = () => {
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/products/new" element={<NewProductPage />} />
                   <Route path="/products/:id" element={<ProductDetailsPage />} />
+                  <Route path="/products/:id/variants/:variantId" element={<VariantsPage />} />
 
                   <Route path="/collections" element={<CollectionsPage />} />
                   <Route path="/collections/new" element={<NewCollectionPage />} />
