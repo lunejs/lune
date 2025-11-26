@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Checkbox, cn } from '@lune/ui';
 
-export const DropzoneItem = ({ preview, onCheckedChange }: Props) => {
+export const AssetUploaderItem = ({ preview, onCheckedChange }: Props) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (

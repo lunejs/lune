@@ -7,8 +7,8 @@ import { Button, Label } from '@lune/ui';
 
 import { getPreview } from '@/shared/utils/files.utils';
 
-import { DropzoneEmptyState } from './empty-state/dropzone-empty-state';
-import { DropzoneItem } from './item/dropzone-item';
+import { AssetUploaderEmptyState } from './empty-state/asset-uploader-empty-state';
+import { AssetUploaderItem } from './item/asset-uploader-item';
 import { DropzoneContextProvider, type Preview } from './asset-uploader.context';
 import { useDropzone } from './use-asser-uploader';
 
@@ -39,7 +39,7 @@ import { useDropzone } from './use-asser-uploader';
  * />
  */
 export const AssetUploader = ({
-  accept = DEFAULT_ACCEPT,
+  accept = DEFAULT_FILE_ACCEPT,
   persistenceMode = false,
   onFilesChange,
   onPreviewsRemoved,
@@ -66,7 +66,7 @@ export const AssetUploader = ({
   });
 
   if (!files.length && !previews?.length) {
-    return <DropzoneEmptyState inputProps={getInputProps()} rootProps={getRootProps()} />;
+    return <AssetUploaderEmptyState inputProps={getInputProps()} rootProps={getRootProps()} />;
   }
 
   return (
@@ -104,7 +104,7 @@ export const AssetUploader = ({
             {previews?.map((preview, i) => {
               return (
                 <Fragment key={preview.id}>
-                  <DropzoneItem
+                  <AssetUploaderItem
                     preview={preview.source}
                     onCheckedChange={value => {
                       togglePreview(value, preview);
@@ -125,7 +125,7 @@ export const AssetUploader = ({
             {files.map((file, i) => {
               return (
                 <Fragment key={file.file.name}>
-                  <DropzoneItem
+                  <AssetUploaderItem
                     preview={getPreview(file.file)}
                     onCheckedChange={value => {
                       toggleFile(value, file);
@@ -171,6 +171,6 @@ type Props = {
   max?: number;
 };
 
-const DEFAULT_ACCEPT = {
+export const DEFAULT_FILE_ACCEPT = {
   'image/*': []
 };

@@ -3,7 +3,7 @@ import { ImageIcon, UploadIcon } from 'lucide-react';
 
 import { Button, Label, Muted, Small } from '@lune/ui';
 
-export const DropzoneEmptyState = ({ inputProps, rootProps }: Props) => {
+export const AssetUploaderEmptyState = ({ inputProps, rootProps }: Props) => {
   const inputId = useId();
 
   return (
