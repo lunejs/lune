@@ -9,15 +9,15 @@ import { getPreview } from '@/shared/utils/files.utils';
 
 import { DropzoneEmptyState } from './empty-state/dropzone-empty-state';
 import { DropzoneItem } from './item/dropzone-item';
-import { DropzoneContextProvider, type Preview } from './dropzone.context';
-import { useDropzone } from './use-dropzone';
+import { DropzoneContextProvider, type Preview } from './asset-uploader.context';
+import { useDropzone } from './use-asser-uploader';
 
 /**
- * A dropzone component which can manage in memory and persisted files
+ * An Asset Uploader component which can manage in memory and persisted files
  *
  * @example
  *
- * <Dropzone
+ * <AssetUploader
  *   persistenceMode={!!entity}
  *   previews={entity.assets}
  *   onFilesChange={files => {
@@ -38,7 +38,7 @@ import { useDropzone } from './use-dropzone';
  *   }}
  * />
  */
-export const Dropzone = ({
+export const AssetUploader = ({
   accept = DEFAULT_ACCEPT,
   persistenceMode = false,
   onFilesChange,

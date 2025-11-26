@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, FormInput, FormTextarea } from '@lune/ui';
 
-import { CollectionAssetUploader } from '../../asset-uploader/asset-uploader';
+import { CollectionAssetUploader } from '../../asset-uploader/collection-asset-uploader';
 import { useCollectionDetailsFormContext } from '../use-form/use-form';
 
 export const CollectionGeneralCard = () => {

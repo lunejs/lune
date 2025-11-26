@@ -1,5 +1,5 @@
 import type { CommonProductFragment } from '@/lib/api/types';
-import { Dropzone } from '@/shared/components/dropzone/dropzone';
+import { AssetUploader } from '@/shared/components/asset-uploader/asset-uploader';
 
 import { useProductAsset } from '../../hooks/use-product-asset';
 import { useProductDetailsFormContext } from '../product-details/use-form/use-product-details-form';
@@ -10,7 +10,7 @@ export const ProductAssetUploader = ({ product }: Props) => {
   const { upload, remove } = useProductAsset();
 
   return (
-    <Dropzone
+    <AssetUploader
       persistenceMode={!!product}
       previews={product?.assets.items}
       onFilesChange={files => {

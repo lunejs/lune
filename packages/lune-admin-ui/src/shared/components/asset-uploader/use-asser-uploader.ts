@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { FileState, Preview } from './dropzone.context';
+import type { FileState, Preview } from './asset-uploader.context';
 
 export const useDropzone = (
   onFilesChange: (files: File[]) => void,

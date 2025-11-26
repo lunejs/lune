@@ -1,5 +1,5 @@
 import type { CommonCollectionFragment } from '@/lib/api/types';
-import { Dropzone } from '@/shared/components/dropzone/dropzone';
+import { AssetUploader } from '@/shared/components/asset-uploader/asset-uploader';
 
 import { useCollectionDetailsFormContext } from '../collection-details/use-form/use-form';
 
@@ -11,7 +11,7 @@ export const CollectionAssetUploader = ({ collection }: Props) => {
   const { upload, remove } = useCollectionAssetUploader();
 
   return (
-    <Dropzone
+    <AssetUploader
       max={1}
       persistenceMode={!!collection}
       previews={collection?.assets.items}
