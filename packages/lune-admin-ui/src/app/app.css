@@ -168,6 +168,6 @@
   }
 }
 
-.card-fade-in {
+.fade-in {
   animation: 0.3s fadeIn;
 }
