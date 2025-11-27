@@ -8,10 +8,11 @@ export class AssetSerializer extends Serializer<Asset, AssetTable> {
       ['id', 'id'],
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
-      ['name', 'name'],
+      ['filename', 'filename'],
+      ['ext', 'ext'],
       ['source', 'source'],
       ['provider_id', 'providerId'],
-      ['type', 'type']
+      ['mime_type', 'mimeType']
     ]);
   }
 }

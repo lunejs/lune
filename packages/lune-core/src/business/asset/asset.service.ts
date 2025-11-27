@@ -1,6 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { AssetType } from '@/persistence/entities/asset';
+import type { Asset } from '@/persistence/entities/asset';
 import type { AssetRepository } from '@/persistence/repositories/asset-repository';
+import type { RepositoryInput } from '@/persistence/repositories/repository';
 
 export class AssetService {
   private repository: AssetRepository;
@@ -9,14 +10,7 @@ export class AssetService {
     this.repository = ctx.repositories.asset;
   }
 
-  async create(input: Input) {
+  async create(input: RepositoryInput<Asset>) {
     return await this.repository.create(input);
   }
 }
-
-type Input = {
-  name: string;
-  providerId: string;
-  source: string;
-  type: AssetType;
-};

@@ -1,4 +1,5 @@
 import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
 import multer from 'multer';
 
@@ -6,7 +7,6 @@ import { AssetService } from '@/business/asset/asset.service';
 import { getConfig } from '@/config/config';
 import { LuneLogger } from '@/logger/lune.logger';
 import type { Asset } from '@/persistence/entities/asset';
-import { AssetType } from '@/persistence/entities/asset';
 
 import type { ExecutionContext } from '../shared/context/types';
 import { userMiddleware } from '../shared/middlewares/user.middleware';
@@ -38,10 +38,11 @@ const upload: RestApiHandler = async (req, res) => {
         if (!result) continue;
 
         const asset = await assetService.create({
-          name: file.originalname,
+          filename: file.originalname,
           providerId: result.providerId,
           source: result.source,
-          type: AssetType.IMG
+          mimeType: file.mimetype,
+          ext: path.extname(file.originalname)
         });
 
         assets.push(asset);

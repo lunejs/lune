@@ -18,25 +18,28 @@ export class AssetFixtures implements Fixture<AssetTable> {
     return [
       {
         id: AssetConstants.ImageID,
-        name: 'Image.jpg',
+        filename: 'Image.jpg',
         source: '',
-        type: 'IMG',
+        ext: 'jpg',
+        mime_type: 'image/jpeg',
         provider_id: '',
         shop_id: ShopConstants.ID
       },
       {
         id: AssetConstants.MeImageID,
-        name: 'Me.jpg',
+        filename: 'Me.jpg',
         source: '',
-        type: 'IMG',
+        ext: 'jpg',
+        mime_type: 'image/jpeg',
         provider_id: '',
         shop_id: ShopConstants.ID
       },
       {
         id: AssetConstants.AlreadyStoredImageID,
-        name: 'AlreadyStored.jpg',
+        filename: 'AlreadyStored.jpg',
         source: '',
-        type: 'IMG',
+        ext: 'jpg',
+        mime_type: 'image/jpeg',
         provider_id: '',
         shop_id: ShopConstants.ID
       }

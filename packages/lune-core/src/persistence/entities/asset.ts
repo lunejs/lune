@@ -1,11 +1,5 @@
 import type { LuneEntity, LuneTable } from './entity';
 
-// TODO: convert keys to PascalCase
-export enum AssetType {
-  IMG = 'IMG',
-  FILE = 'FILE'
-}
-
 /**
  * Represents a file or media asset such as an image, PDF, etc.
  */
@@ -13,7 +7,11 @@ export interface Asset extends LuneEntity {
   /**
    * Asset's name
    */
-  name: string;
+  filename: string;
+  /**
+   * Asset's extension file
+   */
+  ext: string;
   /**
    * Asset's source URL or path
    */
@@ -23,15 +21,16 @@ export interface Asset extends LuneEntity {
    */
   providerId: string;
   /**
-   * Asset type
+   * Asset mime type
    */
-  type: AssetType;
+  mimeType: string;
 }
 
 export interface AssetTable extends LuneTable {
-  name: string;
+  filename: string;
+  ext: string;
   source: string;
   provider_id: string;
-  type: string;
+  mime_type: string;
   shop_id: string;
 }

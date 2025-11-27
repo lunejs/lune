@@ -4,9 +4,10 @@ export const DefaultAssetFixture = (): AssetTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
-  name: '',
-  type: 'IMG',
-  source: crypto.randomUUID(),
-  provider_id: '',
+  filename: 'test-image.jpg',
+  ext: 'jpg',
+  mime_type: 'image/jpeg',
+  source: `https://example.com/${crypto.randomUUID()}.jpg`,
+  provider_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

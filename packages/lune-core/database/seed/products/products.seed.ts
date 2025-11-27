@@ -79,10 +79,11 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
         const assetTimestamp = getTimestamp();
         const [assetCreated] = await trx<AssetTable>(Tables.Asset)
           .insert({
-            name: asset.name,
+            filename: asset.name,
+            ext: asset.type === 'image' ? 'jpg' : asset.type,
             source: asset.source,
             provider_id: asset.providerId,
-            type: asset.type,
+            mime_type: asset.type === 'image' ? 'image/jpeg' : `application/${asset.type}`,
             shop_id: ctx.shopId,
             created_at: assetTimestamp,
             updated_at: assetTimestamp

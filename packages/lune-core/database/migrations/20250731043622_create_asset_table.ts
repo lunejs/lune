@@ -8,10 +8,11 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.timestamp('updated_at').defaultTo(knex.fn.now()).notNullable();
 
-    table.string('name').notNullable();
+    table.string('filename').notNullable();
+    table.string('ext').notNullable();
     table.string('source').notNullable();
     table.string('provider_id').notNullable();
-    table.string('type', 100).notNullable();
+    table.string('mime_type').notNullable();
 
     table
       .uuid('shop_id')
