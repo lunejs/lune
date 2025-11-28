@@ -1,4 +1,5 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
+import type { AssetFilters, AssetListInput } from '@/api/shared/types/graphql';
 import type { Asset } from '@/persistence/entities/asset';
 import type { AssetRepository } from '@/persistence/repositories/asset-repository';
 import type { RepositoryInput } from '@/persistence/repositories/repository';
@@ -8,6 +9,14 @@ export class AssetService {
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.asset;
+  }
+
+  async find(input: AssetListInput) {
+    return await this.repository.findByFilters(input);
+  }
+
+  async count(input: AssetFilters) {
+    return await this.repository.countByFilters(input);
   }
 
   async create(input: RepositoryInput<Asset>) {

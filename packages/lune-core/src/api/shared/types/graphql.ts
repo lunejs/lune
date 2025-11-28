@@ -79,12 +79,18 @@ export type AppliedDiscount = {
 export type Asset = Node & {
   __typename?: 'Asset';
   createdAt: Scalars['Date']['output'];
+  ext: Scalars['String']['output'];
+  filename: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  mimeType: Scalars['String']['output'];
   order: Scalars['Int']['output'];
+  providerId: Scalars['String']['output'];
   source: Scalars['String']['output'];
-  type: AssetType;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type AssetFilters = {
+  filename?: InputMaybe<StringFilter>;
 };
 
 export type AssetInEntity = {
@@ -104,10 +110,14 @@ export type AssetList = List & {
   pageInfo: PageInfo;
 };
 
-export enum AssetType {
-  Image = 'IMAGE',
-  Pdf = 'PDF'
-}
+export type AssetListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<AssetFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
 
 export type BooleanFilter = {
   /** Filter by exact match */
@@ -998,6 +1008,7 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
+  preset?: Maybe<OptionValuePreset>;
   translations: Array<OptionValueTranslation>;
   updatedAt: Scalars['Date']['output'];
 };
@@ -1442,6 +1453,7 @@ export type ProductTranslation = {
 
 export type Query = {
   __typename?: 'Query';
+  assets: AssetList;
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
@@ -1478,6 +1490,11 @@ export type Query = {
   whoami?: Maybe<User>;
   zone?: Maybe<Zone>;
   zones: Array<Zone>;
+};
+
+
+export type QueryAssetsArgs = {
+  input: AssetListInput;
 };
 
 
@@ -2086,10 +2103,11 @@ export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
   AppliedDiscount: ResolverTypeWrapper<AppliedDiscount>;
   Asset: ResolverTypeWrapper<Asset>;
+  AssetFilters: AssetFilters;
   AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
   AssetList: ResolverTypeWrapper<AssetList>;
-  AssetType: AssetType;
+  AssetListInput: AssetListInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   BooleanFilter: BooleanFilter;
   Collection: ResolverTypeWrapper<Collection>;
@@ -2254,9 +2272,11 @@ export type ResolversParentTypes = {
   Address: Address;
   AppliedDiscount: AppliedDiscount;
   Asset: Asset;
+  AssetFilters: AssetFilters;
   AssetInEntity: AssetInEntity;
   AssetInVariantInput: AssetInVariantInput;
   AssetList: AssetList;
+  AssetListInput: AssetListInput;
   Boolean: Scalars['Boolean']['output'];
   BooleanFilter: BooleanFilter;
   Collection: Collection;
@@ -2424,11 +2444,13 @@ export type AppliedDiscountResolvers<ContextType = ExecutionContext, ParentType 
 
 export type AssetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Asset'] = ResolversParentTypes['Asset']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  ext?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mimeType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  providerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   source?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['AssetType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2754,6 +2776,7 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   option?: Resolver<ResolversTypes['Option'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  preset?: Resolver<Maybe<ResolversTypes['OptionValuePreset']>, ParentType, ContextType>;
   translations?: Resolver<Array<ResolversTypes['OptionValueTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2981,6 +3004,7 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 };
 
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, RequireFields<QueryAssetsArgs, 'input'>>;
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
