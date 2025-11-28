@@ -18,4 +18,10 @@ export class AssetFilter extends BaseFilter<AssetTable> {
 
     return this;
   }
+
+  applySort() {
+    this.query.orderBy('created_at', 'desc');
+
+    return this;
+  }
 }

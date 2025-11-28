@@ -18,6 +18,7 @@ export class AssetRepository extends Repository<Asset, AssetTable> {
     const result = await new AssetFilter(query)
       .applyPagination(input)
       .applyFilters(input.filters ?? {})
+      .applySort()
       .build();
 
     return result.map(asset => this.serializer.deserialize(asset) as Asset);

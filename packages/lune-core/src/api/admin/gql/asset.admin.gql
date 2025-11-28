@@ -1,5 +1,5 @@
 type Query {
-  assets(input: AssetListInput!): AssetList!
+  assets(input: AssetListInput): AssetList!
 }
 
 input AssetListInput {
