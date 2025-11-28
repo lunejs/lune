@@ -77,13 +77,19 @@ export async function seedProducts(trx: Knex.Transaction, ctx: SeedContext) {
     if (product.assets && product.assets.length > 0) {
       for (const asset of product.assets) {
         const assetTimestamp = getTimestamp();
+        // Extract extension from source URL
+        const urlParts = asset.source.split('.');
+        const ext = urlParts[urlParts.length - 1].split('?')[0] || 'jpg';
+        const mimeType =
+          asset.type === 'IMG' ? `image/${ext}` : `application/${asset.type.toLowerCase()}`;
+
         const [assetCreated] = await trx<AssetTable>(Tables.Asset)
           .insert({
             filename: asset.name,
-            ext: asset.type === 'image' ? 'jpg' : asset.type,
+            ext,
             source: asset.source,
             provider_id: asset.providerId,
-            mime_type: asset.type === 'image' ? 'image/jpeg' : `application/${asset.type}`,
+            mime_type: mimeType,
             shop_id: ctx.shopId,
             created_at: assetTimestamp,
             updated_at: assetTimestamp

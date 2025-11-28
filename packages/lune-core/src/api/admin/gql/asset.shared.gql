@@ -1,0 +1,24 @@
+type Query {
+  assets(input: AssetListInput!): AssetList!
+}
+
+input AssetListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: AssetFilters
+}
+
+input AssetFilters {
+  filename: StringFilter
+}

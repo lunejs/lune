@@ -1,16 +1,13 @@
-enum AssetType {
-  IMAGE
-  PDF
-}
-
 type Asset implements Node {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
 
-  name: String!
+  filename: String!
+  ext: String!
   source: String!
-  type: AssetType!
+  providerId: String!
+  mimeType: String!
   order: Int!
 }
 
