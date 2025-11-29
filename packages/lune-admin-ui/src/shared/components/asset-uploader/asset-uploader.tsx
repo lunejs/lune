@@ -1,11 +1,13 @@
 import { UploadIcon } from 'lucide-react';
 import { Fragment } from 'react/jsx-runtime';
-import { type Accept, useDropzone as useReactDropzone } from 'react-dropzone';
+import { type Accept } from 'react-dropzone';
 
 import { isLast } from '@lune/common';
 import { Button, Label } from '@lune/ui';
 
 import { getPreview } from '@/shared/utils/files.utils';
+
+import { AssetSelector } from '../asset-selector/asset-selector';
 
 import { AssetUploaderEmptyState } from './empty-state/asset-uploader-empty-state';
 import { AssetUploaderItem } from './item/asset-uploader-item';
@@ -39,7 +41,6 @@ import { useDropzone } from './use-asser-uploader';
  * />
  */
 export const AssetUploader = ({
-  accept = DEFAULT_FILE_ACCEPT,
   persistenceMode = false,
   onFilesChange,
   onPreviewsRemoved,
@@ -57,16 +58,16 @@ export const AssetUploader = ({
     removePreviews
   } = useDropzone(onFilesChange, onPreviewsRemoved, persistenceMode);
 
-  const { getInputProps, getRootProps } = useReactDropzone({
-    accept,
-    onDrop(acceptedFiles) {
-      addFiles(acceptedFiles);
-    },
-    maxFiles: max
-  });
+  // const { getInputProps, getRootProps } = useReactDropzone({
+  //   accept,
+  //   onDrop(acceptedFiles) {
+  //     addFiles(acceptedFiles);
+  //   },
+  //   maxFiles: max
+  // });
 
   if (!files.length && !previews?.length) {
-    return <AssetUploaderEmptyState inputProps={getInputProps()} rootProps={getRootProps()} />;
+    return <AssetUploaderEmptyState />;
   }
 
   return (
@@ -111,13 +112,11 @@ export const AssetUploader = ({
                     }}
                   />
                   {isLast(i, previews) && !files.length && previews.length < max && (
-                    <div
-                      className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted"
-                      {...getRootProps()}
-                    >
-                      <UploadIcon className="text-muted-foreground" />
-                      <input type="file" {...getInputProps()} />
-                    </div>
+                    <AssetSelector onDone={selected => console.log({ selected })}>
+                      <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
+                        <UploadIcon className="text-muted-foreground" />
+                      </div>
+                    </AssetSelector>
                   )}
                 </Fragment>
               );
@@ -132,13 +131,11 @@ export const AssetUploader = ({
                     }}
                   />
                   {isLast(i, files) && files.length < max && (
-                    <div
-                      className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted"
-                      {...getRootProps()}
-                    >
-                      <UploadIcon className="text-muted-foreground" />
-                      <input type="file" {...getInputProps()} />
-                    </div>
+                    <AssetSelector onDone={selected => console.log({ selected })}>
+                      <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
+                        <UploadIcon className="text-muted-foreground" />
+                      </div>
+                    </AssetSelector>
                   )}
                 </Fragment>
               );

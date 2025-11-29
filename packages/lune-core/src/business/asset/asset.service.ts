@@ -11,11 +11,11 @@ export class AssetService {
     this.repository = ctx.repositories.asset;
   }
 
-  async find(input: AssetListInput) {
+  async find(input?: AssetListInput) {
     return await this.repository.findByFilters(input);
   }
 
-  async count(input: AssetFilters) {
+  async count(input?: AssetFilters) {
     return await this.repository.countByFilters(input);
   }
 

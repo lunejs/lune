@@ -10,9 +10,8 @@ export const useGetAssets = (input?: AssetListInput) => {
     key: [AssetCacheKeys.all]
   });
 
-  const assets = result.data?.assets.items.map(asset =>
-    getFragmentData(COMMON_ASSET_FRAGMENT, asset)
-  );
+  const assets =
+    result.data?.assets.items.map(asset => getFragmentData(COMMON_ASSET_FRAGMENT, asset)) ?? [];
 
   return {
     ...result,

@@ -12,22 +12,22 @@ export class AssetRepository extends Repository<Asset, AssetTable> {
     super(Tables.Asset, trx, new AssetSerializer());
   }
 
-  async findByFilters(input: AssetListInput) {
+  async findByFilters(input?: AssetListInput) {
     const query = this.q();
 
     const result = await new AssetFilter(query)
-      .applyPagination(input)
-      .applyFilters(input.filters ?? {})
+      .applyPagination(input ?? {})
+      .applyFilters(input?.filters ?? {})
       .applySort()
       .build();
 
     return result.map(asset => this.serializer.deserialize(asset) as Asset);
   }
 
-  async countByFilters(filters: AssetFilters) {
+  async countByFilters(filters?: AssetFilters) {
     const query = this.q();
 
-    new AssetFilter(query).applyFilters(filters);
+    new AssetFilter(query).applyFilters(filters ?? {});
 
     const [{ count }] = await query.count({ count: '*' });
 

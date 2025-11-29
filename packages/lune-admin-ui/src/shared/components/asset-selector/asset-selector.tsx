@@ -1,0 +1,53 @@
+import { type FC, type ReactNode, useState } from 'react';
+
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@lune/ui';
+
+import type { CommonAssetFragment } from '@/lib/api/types';
+
+import { AssetSelectorList } from './list/asset-selector-list';
+
+export const AssetSelector: FC<Props> = ({ onDone, children }) => {
+  const [selected, setSelected] = useState<CommonAssetFragment[]>([]);
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent forceMount className="flex flex-col h-[85vh] max-w-[980px]! gap-0 w-full p-0">
+        <DialogHeader className="pt-6 px-6 mb-4 h-fit">
+          <DialogTitle>Select Assets</DialogTitle>
+        </DialogHeader>
+
+        <AssetSelectorList setSelected={setSelected} />
+
+        <DialogFooter className="border-t p-6 h-fit shrink-0">
+          <DialogClose asChild>
+            <Button variant={'outline'}>Cancel</Button>
+          </DialogClose>
+          <Button onClick={() => onDone(selected)}>Done</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+type Props = {
+  children: ReactNode;
+  onDone: (assets: CommonAssetFragment[]) => void;
+};
+
+// TODO: hacer que funcione el search bar
+// hacer que los assets seleccionados se agregen a la entidad
+// implementar una arquitectura poara optimizacion de imagenes on the fly
+//
+// save 1 image in storage
+// ask for that image (asset.source) but applying variations `${asset.source}?q=80`
+// add a cache layer between client and asset processor on the fly

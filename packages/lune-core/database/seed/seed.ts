@@ -29,9 +29,7 @@ async function main() {
   await seedCountries(trx);
   await seedUsers(trx);
 
-  const user = await trx<UserTable>(Tables.Users)
-    .where({ email: 'admin@admin.com' })
-    .first();
+  const user = await trx<UserTable>(Tables.Users).where({ email: 'admin@admin.com' }).first();
 
   if (!user) {
     throw new Error("User 'admin@admin.com' is not present");
@@ -39,17 +37,17 @@ async function main() {
 
   await seedShops(trx, { userId: user.id, shopId: '' });
 
-  const shop = await trx<ShopTable>(Tables.Shop)
-    .where({ slug: 'lune-store' })
-    .first();
+  // const shop = await trx<ShopTable>(Tables.Shop)
+  //   .where({ slug: 'lune-store' })
+  //   .first();
 
-  if (!shop) {
-    throw new Error("Shop 'lune-store' is not present");
-  }
+  // if (!shop) {
+  //   throw new Error("Shop 'lune-store' is not present");
+  // }
 
-  await seedOptionPresets(trx, { userId: user.id, shopId: shop.id });
-  await seedProducts(trx, { userId: user.id, shopId: shop.id });
-  await seedCollections(trx, { userId: user.id, shopId: shop.id });
+  // await seedOptionPresets(trx, { userId: user.id, shopId: shop.id });
+  // await seedProducts(trx, { userId: user.id, shopId: shop.id });
+  // await seedCollections(trx, { userId: user.id, shopId: shop.id });
 }
 
 main()

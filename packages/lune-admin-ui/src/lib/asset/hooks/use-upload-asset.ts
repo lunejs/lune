@@ -1,10 +1,18 @@
+import { useState } from 'react';
+
+import { queryClient } from '@/app/app';
 import { restFetcher } from '@/lib/api/fetchers/rest-fetcher';
 import type { LuneAsset } from '@/lib/api/types';
 
-export const useUploadAsset = () => {
-  const uploadAsset = async (images: File[]) => {
-    const formData = new FormData();
+import { AssetCacheKeys } from '../constants/cache-keys';
 
+export const useUploadAsset = () => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const uploadAsset = async (images: File[]) => {
+    setIsUploading(true);
+
+    const formData = new FormData();
     images.forEach(img => formData.append('files', img, img.name));
 
     const result = await restFetcher<{ success: boolean; data: Omit<LuneAsset, 'order'>[] }>(
@@ -15,10 +23,15 @@ export const useUploadAsset = () => {
       }
     );
 
+    await queryClient.refetchQueries({ queryKey: [AssetCacheKeys.all] });
+
+    setIsUploading(false);
+
     return result;
   };
 
   return {
+    isUploading,
     uploadAsset
   };
 };
