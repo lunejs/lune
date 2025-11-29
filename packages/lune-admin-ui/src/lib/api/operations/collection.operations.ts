@@ -13,7 +13,7 @@ export const COMMON_COLLECTION_FOR_TRANSLATION_FRAGMENT = graphql(`
     assets(input: { take: 1 }) {
       items {
         id
-        name
+        filename
         source
       }
     }
@@ -36,7 +36,7 @@ export const COMMON_COLLECTION_FRAGMENT = graphql(`
     assets(input: { take: 1 }) {
       items {
         id
-        name
+        filename
         source
       }
     }

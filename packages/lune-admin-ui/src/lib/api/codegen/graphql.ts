@@ -66,12 +66,18 @@ export type AppliedDiscount = {
 
 export type Asset = Node & {
   createdAt: Scalars['Date']['output'];
+  ext: Scalars['String']['output'];
+  filename: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
+  mimeType: Scalars['String']['output'];
   order: Scalars['Int']['output'];
+  providerId: Scalars['String']['output'];
   source: Scalars['String']['output'];
-  type: AssetType;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type AssetFilters = {
+  filename?: InputMaybe<StringFilter>;
 };
 
 export type AssetInEntity = {
@@ -90,10 +96,14 @@ export type AssetList = List & {
   pageInfo: PageInfo;
 };
 
-export enum AssetType {
-  Image = 'IMAGE',
-  Pdf = 'PDF'
-}
+export type AssetListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<AssetFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
 
 export type BooleanFilter = {
   /** Filter by exact match */
@@ -1217,6 +1227,7 @@ export type ProductTranslation = {
 };
 
 export type Query = {
+  assets: AssetList;
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Country[];
@@ -1252,6 +1263,10 @@ export type Query = {
   whoami?: Maybe<User>;
   zone?: Maybe<Zone>;
   zones: Zone[];
+};
+
+export type QueryAssetsArgs = {
+  input?: InputMaybe<AssetListInput>;
 };
 
 export type QueryCollectionArgs = {
@@ -1728,12 +1743,28 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type CommonAssetFragment = {
+  id: string;
+  createdAt: any;
+  filename: string;
+  ext: string;
+  source: string;
+} & { ' $fragmentName'?: 'CommonAssetFragment' };
+
+export type GetAllAssetsQueryQueryVariables = Exact<{
+  input?: InputMaybe<AssetListInput>;
+}>;
+
+export type GetAllAssetsQueryQuery = {
+  assets: { items: { ' $fragmentRefs'?: { CommonAssetFragment: CommonAssetFragment } }[] };
+};
+
 export type CommonCollectionForTranslationFragment = {
   id: string;
   name: string;
   description?: string | null;
   translations: { name?: string | null; description?: string | null; locale: Locale }[];
-  assets: { items: { id: string; name: string; source: string }[] };
+  assets: { items: { id: string; filename: string; source: string }[] };
 } & { ' $fragmentName'?: 'CommonCollectionForTranslationFragment' };
 
 export type CommonCollectionFragment = {
@@ -1744,7 +1775,7 @@ export type CommonCollectionFragment = {
   contentType: CollectionContentType;
   order: number;
   products: { items: { id: string }[] };
-  assets: { items: { id: string; name: string; source: string }[] };
+  assets: { items: { id: string; filename: string; source: string }[] };
 } & { ' $fragmentName'?: 'CommonCollectionFragment' };
 
 export type CommonListCollectionFragment = {
@@ -2425,6 +2456,26 @@ export type RemoveZoneMutationVariables = Exact<{
 
 export type RemoveZoneMutation = { removeZone: boolean };
 
+export const CommonAssetFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonAsset' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Asset' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'ext' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonAssetFragment, unknown>;
 export const CommonCollectionForTranslationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -2479,7 +2530,7 @@ export const CommonCollectionForTranslationFragmentDoc = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'source' } }
                     ]
                   }
@@ -2554,7 +2605,7 @@ export const CommonCollectionFragmentDoc = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'source' } }
                     ]
                   }
@@ -3590,6 +3641,69 @@ export const CommonListZoneFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonListZoneFragment, unknown>;
+export const GetAllAssetsQueryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllAssetsQuery' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'AssetListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'assets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonAsset' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonAsset' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Asset' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'ext' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'source' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllAssetsQueryQuery, GetAllAssetsQueryQueryVariables>;
 export const GetAllCollectionsDocument = {
   kind: 'Document',
   definitions: [
@@ -3878,7 +3992,7 @@ export const GetCollectionDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'source' } }
                     ]
                   }
@@ -4231,7 +4345,7 @@ export const GetCollectionForTranslationDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'filename' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'source' } }
                     ]
                   }

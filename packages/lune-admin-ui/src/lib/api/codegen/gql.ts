@@ -15,8 +15,10 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionForTranslationFragmentDoc;
-  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionFragmentDoc;
+  '\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n  }\n': typeof types.CommonAssetFragmentDoc;
+  '\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n': typeof types.GetAllAssetsQueryDocument;
+  '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionForTranslationFragmentDoc;
+  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionFragmentDoc;
   '\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n': typeof types.CommonListCollectionFragmentDoc;
   '\n  fragment CommonCollectionProduct on Product {\n    id\n    name\n    slug\n    enabled\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionProductFragmentDoc;
   '\n  fragment CommonCollectionSubCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n': typeof types.CommonCollectionSubCollectionFragmentDoc;
@@ -94,9 +96,13 @@ type Documents = {
   '\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id)\n  }\n': typeof types.RemoveZoneDocument;
 };
 const documents: Documents = {
-  '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n':
+  '\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n  }\n':
+    types.CommonAssetFragmentDoc,
+  '\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n':
+    types.GetAllAssetsQueryDocument,
+  '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n':
     types.CommonCollectionForTranslationFragmentDoc,
-  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n':
+  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n':
     types.CommonCollectionFragmentDoc,
   '\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n':
     types.CommonListCollectionFragmentDoc,
@@ -265,14 +271,26 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'
-): (typeof documents)['\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'];
+  source: '\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n  }\n'
+): (typeof documents)['\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'
-): (typeof documents)['\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n'];
+  source: '\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
