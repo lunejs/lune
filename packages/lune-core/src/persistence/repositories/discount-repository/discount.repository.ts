@@ -12,20 +12,20 @@ export class DiscountRepository extends Repository<Discount, DiscountTable> {
     super(Tables.Discount, trx, new DiscountSerializer());
   }
 
-  async findByFilters(input: DiscountListInput) {
+  async findByFilters(input?: DiscountListInput) {
     const query = this.q();
 
     this.applyDeletedAtClause(query);
 
     const result = await new DiscountFilter(query)
-      .applyPagination(input)
-      .applyFilters(input.filters ?? {})
+      .applyPagination(input ?? {})
+      .applyFilters(input?.filters ?? {})
       .build();
 
     return result.map(item => this.serializer.deserialize(item) as Discount);
   }
 
-  async countByFilters(filters: DiscountListInput['filters']) {
+  async countByFilters(filters?: DiscountListInput['filters']) {
     const query = this.q();
 
     this.applyDeletedAtClause(query);

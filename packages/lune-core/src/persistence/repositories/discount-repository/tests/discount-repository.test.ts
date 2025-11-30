@@ -173,7 +173,7 @@ describe('Discount repository', () => {
     });
 
     test('returns all discounts when no filters provided', async () => {
-      const result = await repository.findByFilters({});
+      const result = await repository.findByFilters();
       const totalDiscounts = (await new DiscountFixtures().build()).length;
 
       expect(result).toHaveLength(totalDiscounts);
