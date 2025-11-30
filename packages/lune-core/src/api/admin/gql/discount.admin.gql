@@ -45,7 +45,6 @@ type DiscountHandler {
   name: String!
   description: String!
   code: String!
-  applicationLevel: DiscountApplicationMode!
   args: JSON
 }
 

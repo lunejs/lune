@@ -53,7 +53,6 @@ export function MultiSelect({
     const html = document.documentElement;
     const prevOverflow = html.style.overflow;
 
-    // opcional: compensar el ancho del scrollbar para que no brinque el layout
     const prevPaddingRight = html.style.paddingRight;
     const scrollbarWidth = window.innerWidth - html.clientWidth;
 

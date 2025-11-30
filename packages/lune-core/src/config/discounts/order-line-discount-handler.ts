@@ -17,6 +17,8 @@ export class OrderLineDiscountHandler<TArgs extends Args = Args> {
   apply: Config<TArgs>['apply'];
 
   constructor(config: Config<TArgs>) {
+    this.name = config.name;
+    this.description = config.description;
     this.code = config.code;
     this.args = config.args;
     this.check = config.check;

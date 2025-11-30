@@ -22,9 +22,16 @@ async function discount(_, { id }: QueryDiscountArgs, ctx: ExecutionContext) {
   return discountService.findById(id);
 }
 
+async function discountHandlers(_, __, ctx: ExecutionContext) {
+  const discountService = new DiscountService(ctx);
+
+  return discountService.findHandlers();
+}
+
 export const DiscountResolver: GraphqlApiResolver = {
   Query: {
     discounts: UseUserGuard(discounts),
-    discount: UseUserGuard(discount)
+    discount: UseUserGuard(discount),
+    discountHandlers: UseUserGuard(discountHandlers)
   }
 };
