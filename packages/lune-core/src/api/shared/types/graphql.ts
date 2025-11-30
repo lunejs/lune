@@ -445,6 +445,7 @@ export type DiscountErrorResult = {
 export type DiscountFilters = {
   active?: InputMaybe<BooleanFilter>;
   code?: InputMaybe<StringFilter>;
+  enabled?: InputMaybe<BooleanFilter>;
 };
 
 export type DiscountHandler = {
@@ -1494,7 +1495,7 @@ export type Query = {
 
 
 export type QueryAssetsArgs = {
-  input: AssetListInput;
+  input?: InputMaybe<AssetListInput>;
 };
 
 
@@ -1515,7 +1516,7 @@ export type QueryDiscountArgs = {
 
 
 export type QueryDiscountsArgs = {
-  input: ListInput;
+  input: DiscountListInput;
 };
 
 
@@ -3004,7 +3005,7 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 };
 
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, RequireFields<QueryAssetsArgs, 'input'>>;
+  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<QueryAssetsArgs>>;
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;

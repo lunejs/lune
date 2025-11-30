@@ -50,7 +50,7 @@ type DiscountHandler {
 }
 
 type Query {
-  discounts(input: ListInput!): DiscountList!
+  discounts(input: DiscountListInput!): DiscountList!
   discount(id: ID!): Discount
   discountHandlers: [DiscountHandler!]!
 }
@@ -76,6 +76,7 @@ input DiscountListInput {
 input DiscountFilters {
   code: StringFilter
   active: BooleanFilter
+  enabled: BooleanFilter
 }
 
 input CreateDiscountInput {
