@@ -253,5 +253,6 @@ const TABLES_WITH_DELETED_AT = [
   Tables.OptionValue,
   Tables.ShippingMethod,
   Tables.PaymentMethod,
+  Tables.Discount,
   'test_table'
 ];

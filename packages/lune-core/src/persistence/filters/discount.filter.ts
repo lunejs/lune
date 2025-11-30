@@ -25,5 +25,7 @@ export class DiscountFilter extends BaseFilter<DiscountTable> {
         qb.whereNull('ends_at').orWhere('ends_at', '>=', now);
       });
     }
+
+    return this;
   }
 }
