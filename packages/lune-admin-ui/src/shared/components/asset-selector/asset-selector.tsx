@@ -15,6 +15,15 @@ import type { CommonAssetFragment } from '@/lib/api/types';
 
 import { AssetSelectorList } from './list/asset-selector-list';
 
+/**
+ * @description
+ * A dialog where you can select available assets in the store
+ *
+ * @example
+ * <AssetSelector onDone={assets => saveInEntity(assets)}>
+ *  <Button>Upload</Button>
+ * </AssetSelector>
+ */
 export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }) => {
   const [selected, setSelected] = useState<CommonAssetFragment[]>([]);
 

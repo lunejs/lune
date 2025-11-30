@@ -11,10 +11,10 @@ import { AssetUploaderItem } from './item/asset-uploader-item';
 import { useAssetUploader } from './use-asset-uploader';
 
 /**
- * An Asset Uploader component which can manage in memory and persisted files
+ * @description
+ * Manage the assets of your entity.
  *
  * @example
- *
  * <AssetUploader
  *   persistenceMode={!!entity}
  *   defaultAssets={entity.assets}
