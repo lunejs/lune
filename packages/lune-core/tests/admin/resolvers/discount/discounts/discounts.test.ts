@@ -354,9 +354,7 @@ describe('discounts - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_DISCOUNTS_QUERY,
-        variables: {
-          input: {}
-        }
+        variables: {}
       });
 
     const { discounts } = res.body.data;
@@ -365,10 +363,19 @@ describe('discounts - Query', () => {
     expect(discounts.count).toBe(8);
     expect(discounts.pageInfo.total).toBe(8);
   });
+
+  test('returns Authorization error when no token is provided', async () => {
+    const response = await request(app).post('/admin-api').send({
+      query: GET_DISCOUNTS_QUERY,
+      variables: {}
+    });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const GET_DISCOUNTS_QUERY = /* GraphQL */ `
-  query Discounts($input: DiscountListInput!) {
+  query Discounts($input: DiscountListInput) {
     discounts(input: $input) {
       items {
         id
