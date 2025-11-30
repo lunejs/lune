@@ -9,7 +9,7 @@ async function discounts(_, { input }: QueryDiscountsArgs, ctx: ExecutionContext
   const discountService = new DiscountService(ctx);
 
   const [discounts, count] = await Promise.all([
-    discountService.find(input),
+    discountService.find(input ?? {}),
     discountService.count(input?.filters)
   ]);
 

@@ -1516,7 +1516,7 @@ export type QueryDiscountArgs = {
 
 
 export type QueryDiscountsArgs = {
-  input: DiscountListInput;
+  input?: InputMaybe<DiscountListInput>;
 };
 
 
@@ -3011,7 +3011,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
   discountHandlers?: Resolver<Array<ResolversTypes['DiscountHandler']>, ParentType, ContextType>;
-  discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, RequireFields<QueryDiscountsArgs, 'input'>>;
+  discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, Partial<QueryDiscountsArgs>>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;

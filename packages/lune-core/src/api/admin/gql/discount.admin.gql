@@ -50,7 +50,7 @@ type DiscountHandler {
 }
 
 type Query {
-  discounts(input: DiscountListInput!): DiscountList!
+  discounts(input: DiscountListInput): DiscountList!
   discount(id: ID!): Discount
   discountHandlers: [DiscountHandler!]!
 }

@@ -9,7 +9,7 @@ async function assets(_, { input }: QueryAssetsArgs, ctx: ExecutionContext) {
   const assetService = new AssetService(ctx);
 
   const [assets, count] = await Promise.all([
-    assetService.find(input),
+    assetService.find(input ?? {}),
     assetService.count(input?.filters ?? {})
   ]);
 
