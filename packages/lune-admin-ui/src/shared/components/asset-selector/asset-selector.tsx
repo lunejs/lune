@@ -17,11 +17,30 @@ import { AssetSelectorList } from './list/asset-selector-list';
 
 /**
  * @description
- * A dialog where you can select available assets in the store
+ * A dialog component that allows users to select one or multiple assets from the store's asset library.
  *
  * @example
+ * // Uncontrolled usage with trigger button
  * <AssetSelector onDone={assets => saveInEntity(assets)}>
- *  <Button>Upload</Button>
+ *   <Button>Select Assets</Button>
+ * </AssetSelector>
+ *
+ * @example
+ * // Controlled usage
+ * const [isOpen, setIsOpen] = useState(false);
+ * <AssetSelector
+ *   isOpen={isOpen}
+ *   setIsOpen={setIsOpen}
+ *   onDone={(assets) => {
+ *     console.log('Selected assets:', assets);
+ *     setIsOpen(false);
+ *   }}
+ * />
+ *
+ * @example
+ * // Using in a form field
+ * <AssetSelector onDone={(assets) => setValue('productImages', assets)}>
+ *   <Button variant="outline">Choose Product Images</Button>
  * </AssetSelector>
  */
 export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }) => {
@@ -49,8 +68,18 @@ export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }
 };
 
 type Props = {
+  /**
+   * Optional trigger element that opens the asset selector when clicked.
+   * Typically a button or other interactive element.
+   */
   children?: ReactNode;
+
+  /** Callback invoked when the user confirms their asset selection by clicking "Done". */
   onDone: (assets: CommonAssetFragment[]) => void;
+
+  /** Controls the dialog's open state. Use together with `setIsOpen` for controlled behavior. */
   isOpen?: boolean;
+
+  /** Callback to update the dialog's open state. Use together with `isOpen` for controlled behavior. */
   setIsOpen?: (isOpen: boolean) => void;
 };
