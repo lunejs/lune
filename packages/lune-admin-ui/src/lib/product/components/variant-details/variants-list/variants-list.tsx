@@ -34,7 +34,7 @@ const Root = ({
 
       return name.toLowerCase().includes(query.toLowerCase());
     });
-  }, [query]);
+  }, [query, allVariants]);
 
   return (
     <Context.Provider value={{ variants, onQueryChange }}>

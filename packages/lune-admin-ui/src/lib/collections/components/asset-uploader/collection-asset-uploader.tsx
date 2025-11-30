@@ -8,25 +8,23 @@ import { useCollectionAssetUploader } from './use-asset-uploader';
 export const CollectionAssetUploader = ({ collection }: Props) => {
   const form = useCollectionDetailsFormContext();
 
-  const { upload, remove } = useCollectionAssetUploader();
+  const { updateCollectionAssets } = useCollectionAssetUploader();
 
   return (
     <AssetUploader
       max={1}
+      defaultAssets={collection?.assets.items ?? []}
       persistenceMode={!!collection}
-      previews={collection?.assets.items}
-      onFilesChange={files => {
+      onAssetsChange={assets => {
         if (!collection) {
-          form.setValue('image', files[0]);
+          form.setValue('image', assets.map(({ id }) => id)[0]);
           return;
         }
 
-        upload(collection, files[0]);
-      }}
-      onPreviewsRemoved={async () => {
-        if (!collection) return;
-
-        await remove(collection);
+        updateCollectionAssets(
+          collection,
+          assets.map(({ id }) => id)
+        );
       }}
     />
   );

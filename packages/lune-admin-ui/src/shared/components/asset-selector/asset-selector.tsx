@@ -15,12 +15,12 @@ import type { CommonAssetFragment } from '@/lib/api/types';
 
 import { AssetSelectorList } from './list/asset-selector-list';
 
-export const AssetSelector: FC<Props> = ({ onDone, children }) => {
+export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }) => {
   const [selected, setSelected] = useState<CommonAssetFragment[]>([]);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent forceMount className="flex flex-col h-[85vh] max-w-[980px]! gap-0 w-full p-0">
         <DialogHeader className="pt-6 px-6 mb-4 h-fit">
           <DialogTitle>Select Assets</DialogTitle>
@@ -40,8 +40,10 @@ export const AssetSelector: FC<Props> = ({ onDone, children }) => {
 };
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
   onDone: (assets: CommonAssetFragment[]) => void;
+  isOpen?: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
 };
 
 // TODO: hacer que funcione el search bar

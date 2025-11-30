@@ -1,38 +1,20 @@
-import { notification } from '@lune/ui';
-
 import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
 import { CREATE_OPTION_MUTATION } from '@/lib/api/operations/option.operations';
 import { CREATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import { CREATE_VARIANT_MUTATION } from '@/lib/api/operations/variant.operations';
-import type { LuneAsset } from '@/lib/api/types';
-import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 
 export const useCreateProduct = () => {
-  const { uploadAsset } = useUploadAsset();
   const { mutateAsync: createProduct } = useGqlMutationDEPRECATED(CREATE_PRODUCT_MUTATION);
   const { mutateAsync: createVariants } = useGqlMutationDEPRECATED(CREATE_VARIANT_MUTATION);
   const { mutateAsync: createOptions } = useGqlMutationDEPRECATED(CREATE_OPTION_MUTATION);
 
   const create = async (input: CreateProductInput) => {
-    let images: Omit<LuneAsset, 'order'>[] = [];
-
-    if (input.images?.length) {
-      const result = await uploadAsset(input.images);
-
-      if (!result.success) {
-        notification.error('Error during uploading images');
-        return;
-      }
-
-      images = result.data;
-    }
-
     const { id } = await createProduct({
       input: {
         name: input.name,
         description: input.description,
         enabled: input.enabled,
-        assets: images.map((image, i) => ({ id: image.id, order: i }))
+        assets: input.images?.map((image, i) => ({ id: image, order: i }))
       }
     });
 
@@ -99,7 +81,7 @@ type CreateProductInput = {
   name: string;
   description?: string;
   enabled?: boolean;
-  images?: File[];
+  images?: string[];
   options: {
     id: string;
     name: string;

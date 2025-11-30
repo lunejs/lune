@@ -7,26 +7,24 @@ import { useProductDetailsFormContext } from '../product-details/use-form/use-pr
 export const ProductAssetUploader = ({ product }: Props) => {
   const form = useProductDetailsFormContext();
 
-  const { upload, remove } = useProductAsset();
+  const { updateAssets } = useProductAsset();
 
   return (
     <AssetUploader
       persistenceMode={!!product}
-      previews={product?.assets.items}
-      onFilesChange={files => {
+      defaultAssets={product?.assets.items ?? []}
+      onAssetsChange={assets => {
         if (!product) {
-          form.setValue('images', files);
+          form.setValue(
+            'images',
+            assets.map(({ id }) => id)
+          );
           return;
         }
 
-        upload(product, files);
-      }}
-      onPreviewsRemoved={async previews => {
-        if (!product) return;
-
-        await remove(
+        updateAssets(
           product,
-          previews.map(p => p.id)
+          assets.map(a => a.id)
         );
       }}
     />

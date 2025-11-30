@@ -6,7 +6,7 @@ export const ProductDetailsSchema = z.object({
   // general
   name: z.string().min(1, FormMessages.required),
   description: z.string().optional(),
-  images: z.array(z.instanceof(File)).optional(),
+  images: z.array(z.string()).optional(),
   enabled: z.boolean(),
 
   // default variant

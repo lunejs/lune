@@ -1,37 +1,26 @@
 import { queryClient } from '@/app/app';
-import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';
+import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation-v2';
 import { UPDATE_PRODUCT_MUTATION } from '@/lib/api/operations/product.operations';
 import type { CommonProductFragment } from '@/lib/api/types';
-import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useProductAsset = () => {
   const { loading, success, failure } = useLoadingNotification();
-  const { uploadAsset } = useUploadAsset();
-  const { mutateAsync: updateProduct } = useGqlMutationDEPRECATED(UPDATE_PRODUCT_MUTATION);
+  const { mutateAsync: updateProduct } = useGqlMutation(UPDATE_PRODUCT_MUTATION);
 
-  const upload = async (product: CommonProductFragment, files: File[]) => {
+  const updateAssets = async (product: CommonProductFragment, assetIds: string[]) => {
     try {
-      loading('Uploading...');
-
-      const result = await uploadAsset(files);
-
-      if (!result.success) {
-        failure('Unable to upload images');
-
-        return;
-      }
+      loading('Saving...');
 
       await updateProduct({
         id: product.id,
         input: {
           assets: [
-            ...product.assets.items.map(asset => ({ id: asset.id, order: asset.order })),
-            ...result.data.map((newAsset, index) => ({
-              id: newAsset.id,
-              order: product.assets.items.length + index
+            ...assetIds.map((newAsset, index) => ({
+              id: newAsset,
+              order: index
             }))
           ]
         }
@@ -39,39 +28,14 @@ export const useProductAsset = () => {
 
       await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(product.id)] });
 
-      success('Images uploaded');
+      success('Product updated');
     } catch (error) {
       console.error(error);
-      failure('Unable to upload images');
-    }
-  };
-
-  const remove = async (product: CommonProductFragment, assetsToRemove: string[]) => {
-    try {
-      loading('Removing...');
-
-      const newAssets = product.assets.items
-        .filter(asset => !assetsToRemove.includes(asset.id))
-        .map((asset, index) => ({ id: asset.id, order: index }));
-
-      await updateProduct({
-        id: product.id,
-        input: {
-          assets: newAssets
-        }
-      });
-
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(product.id)] });
-
-      success('Images removed');
-    } catch (error) {
-      console.error(error);
-      failure('Unable to remove images');
+      failure('Unable to update product');
     }
   };
 
   return {
-    upload,
-    remove
+    updateAssets
   };
 };

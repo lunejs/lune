@@ -1,18 +1,14 @@
 import { UploadIcon } from 'lucide-react';
 import { Fragment } from 'react/jsx-runtime';
-import { type Accept } from 'react-dropzone';
 
 import { isLast } from '@lune/common';
 import { Button, Label } from '@lune/ui';
-
-import { getPreview } from '@/shared/utils/files.utils';
 
 import { AssetSelector } from '../asset-selector/asset-selector';
 
 import { AssetUploaderEmptyState } from './empty-state/asset-uploader-empty-state';
 import { AssetUploaderItem } from './item/asset-uploader-item';
-import { DropzoneContextProvider, type Preview } from './asset-uploader.context';
-import { useDropzone } from './use-asser-uploader';
+import { useAssetUploader } from './use-asset-uploader';
 
 /**
  * An Asset Uploader component which can manage in memory and persisted files
@@ -21,129 +17,72 @@ import { useDropzone } from './use-asser-uploader';
  *
  * <AssetUploader
  *   persistenceMode={!!entity}
- *   previews={entity.assets}
- *   onFilesChange={files => {
+ *   defaultAssets={entity.assets}
+ *   onAssetsChange={assets => {
  *     if (!entity) {
- *        form.setValue('images', files);
+ *        form.setValue('assets', assets.map(a => a.id));
  *        return;
  *      }
  *
- *      uploadImages(entity, files);
+ *      updateEntityAssets(entity, assets);
  *    }}
- *    onPreviewsRemoved={async previews => {
- *      if (!entity) return;
- *
- *     await removeImages(
- *       entity,
- *       previews.map(p => p.id)
- *     );
- *   }}
  * />
  */
 export const AssetUploader = ({
+  onAssetsChange,
+  defaultAssets = [],
   persistenceMode = false,
-  onFilesChange,
-  onPreviewsRemoved,
-  previews,
   max = 50
 }: Props) => {
-  const {
-    files,
-    selected,
-    previewsSelected,
-    addFiles,
-    removeFiles,
-    toggleFile,
-    togglePreview,
-    removePreviews
-  } = useDropzone(onFilesChange, onPreviewsRemoved, persistenceMode);
+  const { assets, selected, addSelectedAssets, toggleAsset, onRemoveAssets } = useAssetUploader(
+    onAssetsChange,
+    defaultAssets,
+    persistenceMode,
+    max
+  );
 
-  // const { getInputProps, getRootProps } = useReactDropzone({
-  //   accept,
-  //   onDrop(acceptedFiles) {
-  //     addFiles(acceptedFiles);
-  //   },
-  //   maxFiles: max
-  // });
-
-  if (!files.length && !previews?.length) {
-    return <AssetUploaderEmptyState />;
+  if (!assets.length) {
+    return <AssetUploaderEmptyState onAssetsAdd={addSelectedAssets} />;
   }
 
   return (
-    <DropzoneContextProvider value={{ files, selected, addFiles }}>
-      <div className="flex flex-col gap-2">
-        <header className="flex items-center justify-between">
-          <Label>Assets</Label>
-          {!!selected.length && (
-            <Button
-              type="button"
-              size={'sm'}
-              variant={'link'}
-              className="text-destructive h-fit leading-none"
-              onClick={removeFiles}
-            >
-              Remove
-            </Button>
-          )}
-          {!!previewsSelected.length && (
-            <Button
-              type="button"
-              size={'sm'}
-              variant={'link'}
-              className="text-destructive h-fit leading-none"
-              onClick={() => {
-                removePreviews();
-              }}
-            >
-              Remove
-            </Button>
-          )}
-        </header>
-        <div className="w-full h-full flex flex-col gap-2.5">
-          <div className="grid grid-cols-4 gap-2">
-            {previews?.map((preview, i) => {
-              return (
-                <Fragment key={preview.id}>
-                  <AssetUploaderItem
-                    preview={preview.source}
-                    onCheckedChange={value => {
-                      togglePreview(value, preview);
-                    }}
-                  />
-                  {isLast(i, previews) && !files.length && previews.length < max && (
-                    <AssetSelector onDone={selected => console.log({ selected })}>
-                      <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
-                        <UploadIcon className="text-muted-foreground" />
-                      </div>
-                    </AssetSelector>
-                  )}
-                </Fragment>
-              );
-            })}
-            {files.map((file, i) => {
-              return (
-                <Fragment key={file.file.name}>
-                  <AssetUploaderItem
-                    preview={getPreview(file.file)}
-                    onCheckedChange={value => {
-                      toggleFile(value, file);
-                    }}
-                  />
-                  {isLast(i, files) && files.length < max && (
-                    <AssetSelector onDone={selected => console.log({ selected })}>
-                      <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
-                        <UploadIcon className="text-muted-foreground" />
-                      </div>
-                    </AssetSelector>
-                  )}
-                </Fragment>
-              );
-            })}
-          </div>
+    <div className="flex flex-col gap-2">
+      <header className="flex items-center justify-between">
+        <Label>Assets</Label>
+        {!!selected.length && (
+          <Button
+            type="button"
+            size={'sm'}
+            variant={'link'}
+            className="text-destructive h-fit leading-none"
+            onClick={onRemoveAssets}
+          >
+            Remove
+          </Button>
+        )}
+      </header>
+      <div className="w-full h-full flex flex-col gap-2.5">
+        <div className="grid grid-cols-4 gap-2">
+          {assets.map((asset, i) => {
+            return (
+              <Fragment key={asset.id}>
+                <AssetUploaderItem
+                  preview={asset.source}
+                  onCheckedChange={value => toggleAsset(value, asset)}
+                />
+                {isLast(i, assets) && assets.length < max && (
+                  <AssetSelector onDone={addSelectedAssets}>
+                    <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
+                      <UploadIcon className="text-muted-foreground" />
+                    </div>
+                  </AssetSelector>
+                )}
+              </Fragment>
+            );
+          })}
         </div>
       </div>
-    </DropzoneContextProvider>
+    </div>
   );
 };
 
@@ -151,11 +90,7 @@ type Props = {
   /**
    * Function that reacts every time a file or multiple files are uploaded or removed
    */
-  onFilesChange: (files: File[]) => void;
-  /**
-   * Function that reacts every time a preview or multiple previews are removed
-   */
-  onPreviewsRemoved: (previews: Preview[]) => Promise<void> | void;
+  onAssetsChange: (files: AssetUploaderAsset[]) => void;
   /**
    * If true, internal file state wont be updated when uploaded
    */
@@ -163,11 +98,12 @@ type Props = {
   /**
    * an array of default previews to be showed in the component
    */
-  previews?: Preview[];
-  accept?: Accept;
+  defaultAssets: AssetUploaderAsset[];
   max?: number;
 };
 
 export const DEFAULT_FILE_ACCEPT = {
   'image/*': []
 };
+
+export type AssetUploaderAsset = { id: string; source: string };

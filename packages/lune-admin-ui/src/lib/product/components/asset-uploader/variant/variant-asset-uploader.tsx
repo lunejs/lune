@@ -4,21 +4,16 @@ import { AssetUploader } from '@/shared/components/asset-uploader/asset-uploader
 import { useVariantAsset } from './use-variant-asset';
 
 export const VariantAssetUploader = ({ productId, variant }: Props) => {
-  const { upload, remove } = useVariantAsset(productId);
+  const { updateVariantAssets } = useVariantAsset(productId);
 
   return (
     <AssetUploader
       persistenceMode={!!variant}
-      previews={variant?.assets.items}
-      onFilesChange={files => {
-        upload(variant, files);
-      }}
-      onPreviewsRemoved={async previews => {
-        if (!variant) return;
-
-        await remove(
+      defaultAssets={variant?.assets.items}
+      onAssetsChange={assets => {
+        updateVariantAssets(
           variant,
-          previews.map(p => p.id)
+          assets.map(({ id }) => id)
         );
       }}
     />
