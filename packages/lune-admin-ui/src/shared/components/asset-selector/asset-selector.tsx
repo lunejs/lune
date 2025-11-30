@@ -45,11 +45,3 @@ type Props = {
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
 };
-
-// TODO: hacer que funcione el search bar
-// hacer que los assets seleccionados se agregen a la entidad
-// implementar una arquitectura poara optimizacion de imagenes on the fly
-//
-// save 1 image in storage
-// ask for that image (asset.source) but applying variations `${asset.source}?q=80`
-// add a cache layer between client and asset processor on the fly
