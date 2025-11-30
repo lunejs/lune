@@ -5,11 +5,19 @@ import { DEFAULT_FILE_ACCEPT } from '../asset-uploader/asset-uploader';
 
 /**
  * @description
- * A wrapper around `react-dropzone` providing minimal but practical api for uploading assets in lune
+ * A wrapper around `react-dropzone` that enhances any child element with drag-and-drop file upload capabilities.
  *
- * @param onDrop Function that reacts every time a file or multiple files are dropped
- * @param accept type of file that file input accepts
- * @param disabled weather the input is disabled or not
+ * @param onDrop - Callback invoked when files are successfully dropped or selected. Only valid files matching the `accept` criteria are passed.
+ * @param children - A single React element that will be enhanced with dropzone functionality. Must be a valid React element.
+ * @param accept - File type restrictions following the HTML accept attribute format. Defaults to `{'image/*': []}` (all image types).
+ * @param disabled - When true, prevents file selection and drag-and-drop interactions.
+ *
+ * @example
+ * <Dropzone onDrop={(files) => uploadFiles(files)}>
+ *   <div className="border-dashed border-2 p-4">
+ *     Drop files here or click to select
+ *   </div>
+ * </Dropzone>
  */
 export const Dropzone = ({ onDrop, children, accept = DEFAULT_FILE_ACCEPT, disabled }: Props) => {
   const { getRootProps, getInputProps } = useDropzone({
@@ -47,10 +55,50 @@ export const Dropzone = ({ onDrop, children, accept = DEFAULT_FILE_ACCEPT, disab
 
 type Props = {
   /**
-   * Function that reacts every time a file or multiple files are dropped
+   * Callback invoked when files are successfully dropped or selected through the file dialog.
+   * Only receives files that pass the validation criteria specified in the `accept` prop.
+   * Rejected files (wrong type, too large, etc.) are automatically filtered out by react-dropzone.
+   *
+   * @param acceptedFiles - Array of File objects that passed validation
    */
   onDrop: (acceptedFiles: File[]) => void;
+
+  /**
+   * A single valid React element that will be enhanced with dropzone functionality.
+   * The component clones this element and injects drag-and-drop props while preserving
+   * its original appearance and behavior.
+   *
+   * @example
+   * <Dropzone onDrop={handleDrop}>
+   *   <Button>Upload Files</Button>
+   * </Dropzone>
+   */
   children: ReactElement;
+
+  /**
+   * File type restrictions using the react-dropzone Accept format.
+   * Specifies which file MIME types and extensions are allowed.
+   *
+   * @default { 'image/*': [] } - Accepts all image types
+   *
+   * @example
+   * // Accept only PNG and JPEG images
+   * accept={{ 'image/png': ['.png'], 'image/jpeg': ['.jpg', '.jpeg'] }}
+   *
+   * @example
+   * // Accept PDFs and Word documents
+   * accept={{
+   *   'application/pdf': ['.pdf'],
+   *   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
+   * }}
+   */
   accept?: Accept;
+
+  /**
+   * When true, disables all dropzone functionality including drag-and-drop and click-to-select.
+   * Useful during upload operations or when the component should be temporarily inactive.
+   *
+   * @default false
+   */
   disabled?: boolean;
 };
