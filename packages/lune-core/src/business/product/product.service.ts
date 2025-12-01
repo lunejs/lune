@@ -12,6 +12,7 @@ import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
 import type { Product } from '@/persistence/entities/product';
+import type { CollectionRepository } from '@/persistence/repositories/collection-repository';
 import type { OptionTranslationRepository } from '@/persistence/repositories/option-translation-repository';
 import type { OptionValueTranslationRepository } from '@/persistence/repositories/option-value-translation-repository';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
@@ -23,12 +24,14 @@ export class ProductService {
   private translationRepository: ProductTranslationRepository;
   private optionTranslationRepository: OptionTranslationRepository;
   private optionValueTranslationRepository: OptionValueTranslationRepository;
+  private collectionRepository: CollectionRepository;
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.product;
     this.translationRepository = ctx.repositories.productTranslation;
     this.optionTranslationRepository = ctx.repositories.optionTranslation;
     this.optionValueTranslationRepository = ctx.repositories.optionValueTranslation;
+    this.collectionRepository = ctx.repositories.collection;
   }
 
   async find(input?: ProductListInput) {
@@ -148,12 +151,12 @@ export class ProductService {
     });
   }
 
-  // TODO: remove from product_collection table when implemented
   async softRemove(ids: ID[]) {
     await this.repository.removeAllOptions(ids);
     await this.repository.removeAllAssets(ids);
     await this.repository.removeAllTags(ids);
     await this.repository.removeAllTranslations(ids);
+    await this.repository.removeAllCollections(ids);
 
     await Promise.all(ids.map(id => this.repository.softRemove({ where: { id } })));
 

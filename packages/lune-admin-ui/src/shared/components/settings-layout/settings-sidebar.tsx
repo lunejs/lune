@@ -42,7 +42,7 @@ export function SettingsSidebar({ ...props }: React.ComponentProps<typeof Sideba
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="fade-in">
         <SidebarGroup>
           <SidebarGroupLabel>General </SidebarGroupLabel>
 

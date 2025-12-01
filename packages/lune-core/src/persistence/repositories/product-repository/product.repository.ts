@@ -1,6 +1,7 @@
 import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
 import type { Asset } from '@/persistence/entities/asset';
+import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { ID } from '@/persistence/entities/entity';
 import type { OptionTable } from '@/persistence/entities/option';
 import type { Product, ProductTable } from '@/persistence/entities/product';
@@ -188,6 +189,12 @@ export class ProductRepository extends Repository<Product, ProductTable> {
 
   async removeAllAssets(productIds: ID[]) {
     await this.trx<ProductAssetTable>(Tables.ProductAsset).whereIn('product_id', productIds).del();
+  }
+
+  async removeAllCollections(productIds: ID[]) {
+    await this.trx<CollectionProductTable>(Tables.CollectionProduct)
+      .whereIn('product_id', productIds)
+      .del();
   }
 
   async removeAllTags(productIds: ID[]) {

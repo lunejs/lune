@@ -45,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="fade-in">
         <SidebarGroup>
           <SidebarGroupLabel>Catalog</SidebarGroupLabel>
 

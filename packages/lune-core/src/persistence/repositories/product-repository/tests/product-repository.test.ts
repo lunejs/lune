@@ -2,6 +2,7 @@ import { LunePrice } from '@lune/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
+import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { OptionTable } from '@/persistence/entities/option';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
@@ -12,6 +13,8 @@ import { TestHelper } from '@/tests/utils/test-helper';
 import { ProductRepository } from '../product.repository';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
+import { CollectionFixtures } from './fixtures/collection.fixtures';
+import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
@@ -46,7 +49,9 @@ describe('Product repository', () => {
       new VariantOptionValueFixtures(),
       new AssetFixtures(),
       new ProductAssetFixtures(),
-      new ProductTranslationFixtures()
+      new ProductTranslationFixtures(),
+      new CollectionFixtures(),
+      new CollectionProductFixtures()
     ]);
   });
 
@@ -506,6 +511,27 @@ describe('Product repository', () => {
       ).whereIn('product_id', [ProductConstants.JacketID, ProductConstants.ShirtID]);
 
       expect(translationsAfterRemoval).toHaveLength(0);
+    });
+  });
+
+  describe('removeAllCollections', () => {
+    test('removes all collection associations for the given product ids', async () => {
+      const mockedCollectionProducts = await trx<CollectionProductTable>(
+        Tables.CollectionProduct
+      ).whereIn('product_id', [ProductConstants.MacBookPro16ID, ProductConstants.ShirtID]);
+
+      expect(mockedCollectionProducts).toHaveLength(2);
+
+      await repository.removeAllCollections([
+        ProductConstants.MacBookPro16ID,
+        ProductConstants.ShirtID
+      ]);
+
+      const collectionProductsAfterRemoval = await trx<CollectionProductTable>(
+        Tables.CollectionProduct
+      ).whereIn('product_id', [ProductConstants.MacBookPro16ID, ProductConstants.ShirtID]);
+
+      expect(collectionProductsAfterRemoval).toHaveLength(0);
     });
   });
 });
