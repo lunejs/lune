@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { Card, CardContent, CardTitle } from '@lune/ui';
 
 import { PageLayout } from '@/shared/components/layout/page-layout';
+import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { VariantDetails } from '../components/variant-details/variant-details';
 import { VariantsList } from '../components/variant-details/variants-list/variants-list';
@@ -19,7 +20,7 @@ export const VariantsPage = () => {
   );
 
   // TODO: add not found
-  if (!product.id) return null;
+  if (!product.id) return <NotFound />;
 
   return (
     <PageLayout
