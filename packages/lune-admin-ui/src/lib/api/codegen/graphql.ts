@@ -398,10 +398,10 @@ export type DiscountErrorResult = {
 export type DiscountFilters = {
   active?: InputMaybe<BooleanFilter>;
   code?: InputMaybe<StringFilter>;
+  enabled?: InputMaybe<BooleanFilter>;
 };
 
 export type DiscountHandler = {
-  applicationLevel: DiscountApplicationMode;
   args?: Maybe<Scalars['JSON']['output']>;
   code: Scalars['String']['output'];
   description: Scalars['String']['output'];
@@ -1283,7 +1283,7 @@ export type QueryDiscountArgs = {
 };
 
 export type QueryDiscountsArgs = {
-  input: ListInput;
+  input?: InputMaybe<DiscountListInput>;
 };
 
 export type QueryLocationArgs = {
@@ -1924,6 +1924,43 @@ export type GetCountriesForSelectorQueryVariables = Exact<Record<string, never>>
 export type GetCountriesForSelectorQuery = {
   countries: {
     ' $fragmentRefs'?: { CommonCountryForSelectorFragment: CommonCountryForSelectorFragment };
+  }[];
+};
+
+export type CommonDiscountHandlerFragment = {
+  code: string;
+  name: string;
+  description: string;
+  args?: any | null;
+} & { ' $fragmentName'?: 'CommonDiscountHandlerFragment' };
+
+export type CommonListDiscountFragment = {
+  id: string;
+  code: string;
+  applicationMode: DiscountApplicationMode;
+  applicationLevel: DiscountApplicationLevel;
+  startsAt: any;
+  endsAt?: any | null;
+  enabled: boolean;
+} & { ' $fragmentName'?: 'CommonListDiscountFragment' };
+
+export type GetAllDiscountsQueryVariables = Exact<{
+  input?: InputMaybe<DiscountListInput>;
+}>;
+
+export type GetAllDiscountsQuery = {
+  discounts: {
+    count: number;
+    pageInfo: { total: number };
+    items: { ' $fragmentRefs'?: { CommonListDiscountFragment: CommonListDiscountFragment } }[];
+  };
+};
+
+export type GetAllDiscountHandlersQueryVariables = Exact<Record<string, never>>;
+
+export type GetAllDiscountHandlersQuery = {
+  discountHandlers: {
+    ' $fragmentRefs'?: { CommonDiscountHandlerFragment: CommonDiscountHandlerFragment };
   }[];
 };
 
@@ -2871,6 +2908,47 @@ export const CommonCountryForSelectorFragmentDoc = {
     }
   ]
 } as unknown as DocumentNode<CommonCountryForSelectorFragment, unknown>;
+export const CommonDiscountHandlerFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonDiscountHandler' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DiscountHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonDiscountHandlerFragment, unknown>;
+export const CommonListDiscountFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListDiscount' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Discount' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'applicationMode' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'applicationLevel' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'startsAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'endsAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<CommonListDiscountFragment, unknown>;
 export const CommonLocationFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -4640,6 +4718,122 @@ export const GetCountriesForSelectorDocument = {
     }
   ]
 } as unknown as DocumentNode<GetCountriesForSelectorQuery, GetCountriesForSelectorQueryVariables>;
+export const GetAllDiscountsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllDiscounts' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'input' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'DiscountListInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'discounts' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'input' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'input' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'total' } }]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'CommonListDiscount' }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonListDiscount' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Discount' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'applicationMode' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'applicationLevel' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'startsAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'endsAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'enabled' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllDiscountsQuery, GetAllDiscountsQueryVariables>;
+export const GetAllDiscountHandlersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllDiscountHandlers' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'discountHandlers' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommonDiscountHandler' } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CommonDiscountHandler' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DiscountHandler' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'args' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<GetAllDiscountHandlersQuery, GetAllDiscountHandlersQueryVariables>;
 export const GetAllLocationsDocument = {
   kind: 'Document',
   definitions: [

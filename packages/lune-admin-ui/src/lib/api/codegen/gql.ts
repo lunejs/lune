@@ -36,6 +36,10 @@ type Documents = {
   '\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n': typeof types.CommonCountryForSelectorFragmentDoc;
   '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n': typeof types.GetCountriesDocument;
   '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n': typeof types.GetCountriesForSelectorDocument;
+  '\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n': typeof types.CommonDiscountHandlerFragmentDoc;
+  '\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n': typeof types.CommonListDiscountFragmentDoc;
+  '\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n': typeof types.GetAllDiscountsDocument;
+  '\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n': typeof types.GetAllDiscountHandlersDocument;
   '\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n': typeof types.CommonLocationFragmentDoc;
   '\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n': typeof types.CommonListLocationFragmentDoc;
   '\n  query GetAllLocations {\n    locations {\n      items {\n        ...CommonListLocation\n      }\n    }\n  }\n': typeof types.GetAllLocationsDocument;
@@ -138,6 +142,14 @@ const documents: Documents = {
     types.GetCountriesDocument,
   '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n':
     types.GetCountriesForSelectorDocument,
+  '\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n':
+    types.CommonDiscountHandlerFragmentDoc,
+  '\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n':
+    types.CommonListDiscountFragmentDoc,
+  '\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n':
+    types.GetAllDiscountsDocument,
+  '\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n':
+    types.GetAllDiscountHandlersDocument,
   '\n  fragment CommonLocation on Location {\n    id\n    name\n    createdAt\n    enabled\n    streetLine1\n    streetLine2\n    city\n    phoneNumber\n    postalCode\n    country {\n      id\n      name\n    }\n    state {\n      id\n      name\n    }\n    inStorePickup {\n      isAvailable\n      instructions\n    }\n  }\n':
     types.CommonLocationFragmentDoc,
   '\n  fragment CommonListLocation on Location {\n    id\n    name\n    enabled\n    streetLine1\n    city\n    postalCode\n    inStorePickup {\n      isAvailable\n    }\n    country {\n      name\n    }\n    state {\n      name\n    }\n  }\n':
@@ -393,6 +405,30 @@ export function graphql(
 export function graphql(
   source: '\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n'
 ): (typeof documents)['\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n'
+): (typeof documents)['\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n'
+): (typeof documents)['\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

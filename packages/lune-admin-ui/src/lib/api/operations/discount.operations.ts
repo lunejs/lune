@@ -22,7 +22,7 @@ export const COMMON_LIST_DISCOUNT_FRAGMENT = graphql(`
 `);
 
 export const GET_ALL_DISCOUNTS_QUERY = graphql(`
-  query GetAllDiscounts($input: DiscountListInput!) {
+  query GetAllDiscounts($input: DiscountListInput) {
     discounts(input: $input) {
       count
       pageInfo {
