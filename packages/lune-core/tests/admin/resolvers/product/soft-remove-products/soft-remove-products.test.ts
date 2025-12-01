@@ -1,6 +1,7 @@
 import request from 'supertest';
 
 import type { ID } from '@/index';
+import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { OptionTable } from '@/persistence/entities/option';
 import type { OptionValueTable } from '@/persistence/entities/option_value';
 import type { ProductTable } from '@/persistence/entities/product';
@@ -11,6 +12,8 @@ import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestHelper } from '@/tests/utils/test-helper';
 
+import { CollectionFixtures } from './fixtures/collection.fixtures';
+import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
@@ -39,7 +42,9 @@ describe('product - Query', () => {
       new OptionValueFixtures(),
       new VariantFixtures(),
       new VariantOptionValueFixtures(),
-      new ProductTranslationFixtures()
+      new ProductTranslationFixtures(),
+      new CollectionFixtures(),
+      new CollectionProductFixtures()
     ]);
   });
 
@@ -59,6 +64,7 @@ describe('product - Query', () => {
     expect(prevProduct.optionValues.length).toBe(6);
     expect(prevProduct.translations.length).toBe(1);
     expect(prevProduct.tags.length).toBe(1);
+    expect(prevProduct.collections.length).toBe(1);
 
     const res = await request(app)
       .post('/admin-api')
@@ -82,6 +88,7 @@ describe('product - Query', () => {
     expect(afterProduct.optionValues.length).toBe(0);
     expect(afterProduct.translations.length).toBe(0);
     expect(afterProduct.tags.length).toBe(0);
+    expect(afterProduct.collections.length).toBe(0);
   });
 
   test('remove multiple products with different data', async () => {
@@ -95,16 +102,19 @@ describe('product - Query', () => {
     expect(prevProduct1.optionValues.length).toBe(6);
     expect(prevProduct1.translations.length).toBe(1);
     expect(prevProduct1.tags.length).toBe(1);
+    expect(prevProduct1.collections.length).toBe(1);
 
     expect(prevProduct2.options.length).toBe(2);
     expect(prevProduct2.optionValues.length).toBe(4);
     expect(prevProduct2.translations.length).toBe(0);
     expect(prevProduct2.tags.length).toBe(1);
+    expect(prevProduct2.collections.length).toBe(1);
 
     expect(prevProduct3.options.length).toBe(0);
     expect(prevProduct3.optionValues.length).toBe(0);
     expect(prevProduct3.translations.length).toBe(0);
     expect(prevProduct3.tags.length).toBe(1);
+    expect(prevProduct3.collections.length).toBe(1);
 
     const res = await request(app)
       .post('/admin-api')
@@ -136,18 +146,21 @@ describe('product - Query', () => {
     expect(afterProduct1.optionValues.length).toBe(0);
     expect(afterProduct1.translations.length).toBe(0);
     expect(afterProduct1.tags.length).toBe(0);
+    expect(afterProduct1.collections.length).toBe(0);
 
     expect(afterProduct2.product?.deleted_at).not.toBeNull();
     expect(afterProduct2.options.length).toBe(0);
     expect(afterProduct2.optionValues.length).toBe(0);
     expect(afterProduct2.translations.length).toBe(0);
     expect(afterProduct2.tags.length).toBe(0);
+    expect(afterProduct2.collections.length).toBe(0);
 
     expect(afterProduct3.product?.deleted_at).not.toBeNull();
     expect(afterProduct3.options.length).toBe(0);
     expect(afterProduct3.optionValues.length).toBe(0);
     expect(afterProduct3.translations.length).toBe(0);
     expect(afterProduct3.tags.length).toBe(0);
+    expect(afterProduct3.collections.length).toBe(0);
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -195,11 +208,16 @@ const getProduct = async (testHelper: TestHelper, productId: ID) => {
     .getQueryBuilder()<ProductTagTable>(Tables.ProductTag)
     .where('product_id', productId);
 
+  const collections = await testHelper
+    .getQueryBuilder()<CollectionProductTable>(Tables.CollectionProduct)
+    .where('product_id', productId);
+
   return {
     product,
     options,
     optionValues,
     translations,
-    tags
+    tags,
+    collections
   };
 };
