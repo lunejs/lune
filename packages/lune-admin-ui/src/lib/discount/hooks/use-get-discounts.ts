@@ -15,9 +15,11 @@ export const useGetDiscounts = (input?: DiscountListInput) => {
 
   const discounts =
     result.data?.discounts.items.map(d => getFragmentData(COMMON_LIST_DISCOUNT_FRAGMENT, d)) ?? [];
+  const { count, pageInfo } = result.data?.discounts ?? {};
 
   return {
     discounts,
+    pagination: { count, pageInfo },
     ...result
   };
 };

@@ -73,9 +73,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {SIDEBAR.sales.map(item => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive?.(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
+                  <Link to={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -143,12 +149,14 @@ const SIDEBAR = {
     {
       title: 'Orders',
       url: '#',
-      icon: ShoppingCartIcon
+      icon: ShoppingCartIcon,
+      isActive: (pathname: string) => pathname.includes('orders')
     },
     {
-      title: 'Coupons',
-      url: '#',
-      icon: TagIcon
+      title: 'Discounts',
+      url: '/discounts',
+      icon: TagIcon,
+      isActive: (pathname: string) => pathname.includes('discounts')
     }
   ],
   customers: [
