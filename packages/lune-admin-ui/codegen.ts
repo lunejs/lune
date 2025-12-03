@@ -11,7 +11,8 @@ const config: CodegenConfig = {
         fragmentMasking: { unmaskFunctionName: 'getFragmentData' }
       },
       config: {
-        skipTypename: true
+        skipTypename: true,
+        useTypeImports: true
       }
     }
   }

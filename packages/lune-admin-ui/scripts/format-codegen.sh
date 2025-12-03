@@ -1,10 +1,11 @@
 #!/bin/bash
-find src/lib/api/codegen -type f -name '*.ts' -exec sed -i '' '/\/\* eslint-disable \*\//d' {} +
 
-npx eslint --fix src/lib/api/codegen/fragment-masking.ts \
-  src/lib/api/codegen/graphql.ts \
-  src/lib/api/codegen/gql.ts > /dev/null 2>&1
+# Remove old eslint-disable comments
+sed -i '' '/\/\* eslint-disable \*\//d' src/lib/api/codegen/*.ts
 
-find src/lib/api/codegen -type f -name '*.ts' -exec sed -i '' '1s;^;/* eslint-disable */\n;' {} +
+# Add eslint-disable at the beginning of all files
+for file in src/lib/api/codegen/*.ts; do
+  sed -i '' '1s;^;/* eslint-disable */\n;' "$file"
+done
 
 echo -e "\033[32m✔\033[0m Formatted"
