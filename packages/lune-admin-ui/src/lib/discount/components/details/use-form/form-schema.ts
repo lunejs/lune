@@ -14,5 +14,6 @@ export const DiscountDetailsSchema = z.object({
   applicationMode: z.enum([DiscountApplicationMode.Automatic, DiscountApplicationMode.Code]),
   startsAt: z.date(),
   endsAt: z.date().optional(),
-  enabled: z.boolean()
+  enabled: z.boolean(),
+  metadata: z.record(z.string(), z.any()).optional()
 });

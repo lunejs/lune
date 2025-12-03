@@ -17,7 +17,7 @@ export type Args = Record<string, Arg>;
 type Arg =
   | {
       type: 'text';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: string;
       placeholder?: string;
@@ -25,7 +25,7 @@ type Arg =
     }
   | {
       type: 'number';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: number;
       placeholder?: string;
@@ -33,28 +33,36 @@ type Arg =
     }
   | {
       type: 'boolean';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
       type: 'select';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: string;
       options: { label: string; value: string }[];
     }
   | {
       type: 'checkbox';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
       type: 'price';
-      required: boolean;
+      required?: boolean;
       label?: string;
       defaultValue?: number;
       placeholder?: string;
       conditions?: { min?: number; max?: number };
+    }
+  | {
+      type: 'entity-selector';
+      entity: 'product' | 'countries' | 'variants';
+    }
+  | {
+      type: 'custom';
+      component: 'discount-value' | 'discount-order-requirements';
     };
