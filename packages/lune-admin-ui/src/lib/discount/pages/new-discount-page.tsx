@@ -17,7 +17,7 @@ export const NewDiscountPage = () => {
   if (!isLoading && !handler) return <NotFound />;
 
   return (
-    <PageLayout isLoading={isLoading}>
+    <PageLayout className="max-w-5xl mx-auto w-full" isLoading={isLoading}>
       <DiscountDetails handler={handler as DiscountHandler} />
     </PageLayout>
   );
