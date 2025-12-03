@@ -35,7 +35,7 @@ type Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": typeof types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": typeof types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": typeof types.GetCountriesForSelectorDocument,
-    "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n": typeof types.CommonDiscountHandlerFragmentDoc,
+    "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": typeof types.CommonDiscountHandlerFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": typeof types.CommonListDiscountFragmentDoc,
     "\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n": typeof types.GetAllDiscountsDocument,
     "\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n": typeof types.GetAllDiscountHandlersDocument,
@@ -120,7 +120,7 @@ const documents: Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": types.GetCountriesForSelectorDocument,
-    "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n": types.CommonDiscountHandlerFragmentDoc,
+    "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": types.CommonDiscountHandlerFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": types.CommonListDiscountFragmentDoc,
     "\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n": types.GetAllDiscountsDocument,
     "\n  query GetAllDiscountHandlers {\n    discountHandlers {\n      ...CommonDiscountHandler\n    }\n  }\n": types.GetAllDiscountHandlersDocument,
@@ -285,7 +285,7 @@ export function graphql(source: "\n  query GetCountriesForSelector {\n    countr
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n"): (typeof documents)["\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n  }\n"];
+export function graphql(source: "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n"): (typeof documents)["\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

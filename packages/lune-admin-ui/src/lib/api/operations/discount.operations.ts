@@ -6,6 +6,7 @@ export const COMMON_DISCOUNT_HANDLER_FRAGMENT = graphql(`
     name
     description
     args
+    applicationLevel
   }
 `);
 

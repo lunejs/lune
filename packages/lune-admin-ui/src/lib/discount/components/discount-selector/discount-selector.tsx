@@ -1,4 +1,4 @@
-import { ChevronRightIcon, ShoppingCartIcon } from 'lucide-react';
+import { ChevronRightIcon, PackageIcon, ShoppingCartIcon, TruckIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
@@ -10,6 +10,8 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@lune/ui';
+
+import { DiscountApplicationLevel } from '@/lib/api/types';
 
 import { useGetDiscountHandlers } from '../../hooks/use-get-discount-handlers';
 
@@ -34,8 +36,13 @@ export const DiscountSelector = ({ children }: Props) => {
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-normal">{handler.name}</h3>
-                    {/* <Icon size={type === DiscountType.BuyXGetY ? 20 : 18} /> */}
-                    <ShoppingCartIcon size={16} />
+                    {handler.applicationLevel === DiscountApplicationLevel.Order ? (
+                      <ShoppingCartIcon size={18} />
+                    ) : handler.applicationLevel === DiscountApplicationLevel.OrderLine ? (
+                      <PackageIcon size={18} />
+                    ) : handler.applicationLevel === DiscountApplicationLevel.Fulfillment ? (
+                      <TruckIcon size={18} />
+                    ) : null}
                   </div>
                   <p className="font-normal text-muted-foreground text-sm">{handler.description}</p>
                 </div>
