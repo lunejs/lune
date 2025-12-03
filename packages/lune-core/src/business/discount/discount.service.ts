@@ -1,5 +1,5 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import { type DiscountHandler, type DiscountListInput } from '@/api/shared/types/graphql';
+import { type DiscountListInput } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
 import type { ID } from '@/persistence/entities/entity';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
@@ -24,13 +24,6 @@ export class DiscountService {
   }
 
   findHandlers() {
-    return getConfig().discounts.handlers.map(
-      (d): DiscountHandler => ({
-        name: d.name,
-        description: d.description,
-        code: d.code,
-        args: d.args
-      })
-    );
+    return getConfig().discounts.handlers;
   }
 }

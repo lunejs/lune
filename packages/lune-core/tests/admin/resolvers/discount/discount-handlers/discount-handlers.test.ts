@@ -58,6 +58,7 @@ const GET_DISCOUNTS_HANDLERS_QUERY = /* GraphQL */ `
       description
       code
       args
+      applicationLevel
     }
   }
 `;

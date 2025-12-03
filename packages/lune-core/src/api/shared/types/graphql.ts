@@ -450,6 +450,7 @@ export type DiscountFilters = {
 
 export type DiscountHandler = {
   __typename?: 'DiscountHandler';
+  applicationLevel: DiscountApplicationLevel;
   args?: Maybe<Scalars['JSON']['output']>;
   code: Scalars['String']['output'];
   description: Scalars['String']['output'];
@@ -2559,6 +2560,7 @@ export type DiscountErrorResultResolvers<ContextType = ExecutionContext, ParentT
 };
 
 export type DiscountHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountHandler'] = ResolversParentTypes['DiscountHandler']> = {
+  applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   args?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

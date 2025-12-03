@@ -1,9 +1,17 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
-import type { QueryDiscountArgs, QueryDiscountsArgs } from '@/api/shared/types/graphql';
+import {
+  DiscountApplicationLevel,
+  type DiscountHandler,
+  type QueryDiscountArgs,
+  type QueryDiscountsArgs
+} from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { DiscountService } from '@/business/discount/discount.service';
+import { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
+import { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
+import { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 
 async function discounts(_, { input }: QueryDiscountsArgs, ctx: ExecutionContext) {
   const discountService = new DiscountService(ctx);
@@ -33,5 +41,12 @@ export const DiscountResolver: GraphqlApiResolver = {
     discounts: UseUserGuard(discounts),
     discount: UseUserGuard(discount),
     discountHandlers: UseUserGuard(discountHandlers)
+  },
+  DiscountHandler: {
+    applicationLevel: async (parent: DiscountHandler) => {
+      if (parent instanceof OrderDiscountHandler) return DiscountApplicationLevel.Order;
+      if (parent instanceof OrderLineDiscountHandler) return DiscountApplicationLevel.OrderLine;
+      if (parent instanceof FulfillmentDiscountHandler) return DiscountApplicationLevel.Fulfillment;
+    }
   }
 };
