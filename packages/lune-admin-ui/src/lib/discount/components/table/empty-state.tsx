@@ -1,9 +1,10 @@
 import { TagIcon } from 'lucide-react';
-import { Link } from 'react-router';
 
 import { Button } from '@lune/ui';
 
 import { DataTableEmptyState } from '@/shared/components/data-table/data-table-empty-state';
+
+import { DiscountSelector } from '../discount-selector/discount-selector';
 
 export const DiscountsTableEmptyState = () => {
   return (
@@ -13,9 +14,9 @@ export const DiscountsTableEmptyState = () => {
       icon={<TagIcon />}
       actions={
         <>
-          <Link to="/discounts/new">
+          <DiscountSelector>
             <Button>Add discount</Button>
-          </Link>
+          </DiscountSelector>
           <Button variant={'outline'}>Import</Button>
         </>
       }

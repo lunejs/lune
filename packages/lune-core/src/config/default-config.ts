@@ -1,3 +1,6 @@
+import { FreeShippingDiscountHandler } from './discounts/handlers/free-shipping-discount.handler';
+import { OrderPriceDiscountHandler } from './discounts/handlers/order-price-discount.handler';
+import { ProductDiscountHandler } from './discounts/handlers/product-discount.handler';
 import { DefaultImageProcessor } from './image-processor/default-image-processor';
 import { TestPaymentHandler } from './payment-handler/test-payment-handler';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
@@ -28,7 +31,7 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
     handlers: [new TestPaymentHandler()]
   },
   discounts: {
-    handlers: []
+    handlers: [OrderPriceDiscountHandler, ProductDiscountHandler, FreeShippingDiscountHandler]
   },
   plugins: [new AssetServerPlugin()],
   logger: {
