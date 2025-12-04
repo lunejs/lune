@@ -57,8 +57,8 @@ type Query {
 
 type Mutation {
   createDiscount(input: CreateDiscountInput!): DiscountResult!
-  updateDiscount(input: UpdateDiscountInput!): DiscountResult!
-  removeDiscounts(ids: [ID!]!): DiscountResult!
+  updateDiscount(id: ID!, input: UpdateDiscountInput!): DiscountResult!
+  removeDiscounts(ids: [ID!]!): Boolean!
 }
 
 type DiscountList implements List {
