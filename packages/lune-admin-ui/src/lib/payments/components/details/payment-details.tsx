@@ -112,7 +112,7 @@ export const PaymentDetails = ({ method: defaultMethod, handlers }: Props) => {
               </div>
             ) : (
               <div key={key} className="flex flex-col gap-2">
-                <Label>{arg.label}</Label>
+                {/* <Label>{arg.label}</Label> */}
                 <Input
                   type={arg.type}
                   defaultValue={method.args[key]}

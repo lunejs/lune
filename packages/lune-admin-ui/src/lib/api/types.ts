@@ -14,9 +14,35 @@ export type LuneAsset = {
 
 export type Args = Record<string, Arg>;
 
-type Arg =
+export enum ArgType {
+  Text = 'text',
+  Number = 'number',
+  Boolean = 'boolean',
+  Select = 'select',
+  Checkbox = 'checkbox',
+  Price = 'price'
+}
+
+export enum EnhancedArgType {
+  EntitySelector = 'entity-selector',
+  Custom = 'custom'
+}
+
+export enum ArgComponent {
+  DiscountValue = 'discount-value',
+  DiscountOrderRequirements = 'discount-order-requirements'
+}
+
+export enum ArgEntity {
+  Product = 'product',
+  // TODO: pass to singular
+  Variant = 'variants',
+  Countries = 'countries'
+}
+
+export type Arg =
   | {
-      type: 'text';
+      type: ArgType.Text;
       required?: boolean;
       label?: string;
       defaultValue?: string;
@@ -24,7 +50,7 @@ type Arg =
       conditions?: { min?: number; max?: number };
     }
   | {
-      type: 'number';
+      type: ArgType.Number;
       required?: boolean;
       label?: string;
       defaultValue?: number;
@@ -32,37 +58,39 @@ type Arg =
       conditions?: { min?: number; max?: number };
     }
   | {
-      type: 'boolean';
+      type: ArgType.Boolean;
       required?: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
-      type: 'select';
+      type: ArgType.Select;
       required?: boolean;
       label?: string;
       defaultValue?: string;
       options: { label: string; value: string }[];
     }
   | {
-      type: 'checkbox';
+      type: ArgType.Checkbox;
       required?: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
-      type: 'price';
+      type: ArgType.Price;
       required?: boolean;
       label?: string;
       defaultValue?: number;
       placeholder?: string;
       conditions?: { min?: number; max?: number };
+    };
+
+export type EnhancedArg =
+  | {
+      type: EnhancedArgType.EntitySelector;
+      entity: ArgEntity.Product | ArgEntity.Countries | ArgEntity.Variant;
     }
   | {
-      type: 'entity-selector';
-      entity: 'product' | 'countries' | 'variants';
-    }
-  | {
-      type: 'custom';
-      component: 'discount-value' | 'discount-order-requirements';
+      type: EnhancedArgType.Custom;
+      component: ArgComponent.DiscountValue | ArgComponent.DiscountOrderRequirements;
     };
