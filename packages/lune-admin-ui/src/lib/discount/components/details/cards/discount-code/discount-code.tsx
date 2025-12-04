@@ -7,9 +7,9 @@ import { DiscountApplicationMode } from '@/lib/api/types';
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 
 export const DiscountCode = () => {
-  const { control, getValues, setValue } = useDiscountDetailsFormContext();
+  const { control, watch, setValue } = useDiscountDetailsFormContext();
 
-  const applicationMode = getValues('applicationMode');
+  const applicationMode = watch('applicationMode');
 
   const onGenerate = () => {
     const code = generateDiscountCode();

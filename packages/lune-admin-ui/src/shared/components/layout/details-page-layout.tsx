@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { cn, H1 } from '@lune/ui';
 
 export const Root = ({ className, ...props }: ComponentProps<'div'>) => {
-  return <div className={cn('p-4 lg:p-6 h-full flex flex-col gap-6', className)} {...props} />;
+  return <div className={cn('flex flex-col gap-6', className)} {...props} />;
 };
 
 export const Header = ({ className, ...props }: ComponentProps<'header'>) => {

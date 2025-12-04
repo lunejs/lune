@@ -27,7 +27,7 @@ export const DiscountGeneralCard = () => {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        {discount && (
+        {!discount && (
           <FormRadioGroup
             className="flex-row"
             control={control}
