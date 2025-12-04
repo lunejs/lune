@@ -1,24 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle, FormInput, FormRadioGroup } from '@lune/ui';
 
-import {
-  ArgComponent,
-  DiscountApplicationMode,
-  type EnhancedArg,
-  EnhancedArgType
-} from '@/lib/api/types';
+import { ArgComponent, DiscountApplicationMode } from '@/lib/api/types';
 
+import { DiscountArg } from '../args/discount-arg';
 import { useDiscountDetailsFormContext } from '../use-form/use-form';
 
 import { DiscountCode } from './discount-code/discount-code';
-import { DiscountValue } from './discount-value/discount-value';
 
 export const DiscountGeneralCard = () => {
-  const { discount, handler, control } = useDiscountDetailsFormContext();
-
-  const args = Object.values(handler.args as EnhancedArg);
-  const hasDiscountValueArg = args.find(
-    a => a.type === EnhancedArgType.Custom && a.component === ArgComponent.DiscountValue
-  );
+  const { discount, control } = useDiscountDetailsFormContext();
 
   return (
     <Card>
@@ -54,8 +44,7 @@ export const DiscountGeneralCard = () => {
             className="w-fit h-fit"
           />
         </div>
-        {hasDiscountValueArg && <DiscountValue />}
-        {/* <DiscountValue /> */}
+        <DiscountArg component={ArgComponent.DiscountValue} />
       </CardContent>
     </Card>
   );
