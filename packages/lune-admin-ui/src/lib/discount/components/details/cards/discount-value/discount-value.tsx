@@ -48,12 +48,12 @@ export const DiscountValue = () => {
       </div>
       {value.type === 'percentage' ? (
         <InputGroupRoot>
-          <InputGroupInput />
+          <InputGroupInput onChange={e => setValue({ ...value, value: Number(e.target.value) })} />
           <InputGroupAddon align={'inline-end'}>%</InputGroupAddon>
         </InputGroupRoot>
       ) : (
         <InputGroupRoot>
-          <InputGroupInput />
+          <InputGroupInput onChange={e => setValue({ ...value, value: Number(e.target.value) })} />
           <InputGroupAddon align={'inline-end'}>$</InputGroupAddon>
         </InputGroupRoot>
       )}
