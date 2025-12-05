@@ -1,23 +1,29 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { CollectionContentType } from '@/lib/api/types';
+import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
+import { useCollectionsCount } from '../../hooks/use-count-collections';
 import { useGetCollections } from '../../hooks/use-get-collections';
-import { useGetCollectionsExists } from '../../hooks/use-get-collections-extist';
 
 import type { CollectionsTableRow } from './collections-table';
 
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
+
 export const useCollectionsTable = () => {
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [page, setPage] = useState(DEFAULT_PAGE);
+  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
 
-  const { isLoading: isLoadingCollectionsExist, hasCollections } = useGetCollectionsExists();
+  const { isLoading: isLoadingCollectionCount, count } = useCollectionsCount();
 
   const {
     isLoading,
-    collections: collectionsRaw,
+    isRefetching,
+    collections: allCollections,
     pagination,
     refetch
   } = useGetCollections({
@@ -29,9 +35,19 @@ export const useCollectionsTable = () => {
     take: size
   });
 
+  useEffect(() => {
+    refetch();
+  }, [search, page, size]);
+
+  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
+    if (input.search !== undefined) setSearch(input.search);
+    if (input.page) setPage(input.page);
+    if (input.size) setSize(input.size);
+  }, TYPING_DEBOUNCE_DELAY);
+
   const collections: CollectionsTableRow[] = useMemo(
     (): CollectionsTableRow[] =>
-      collectionsRaw?.map(c => ({
+      allCollections?.map(c => ({
         id: c.id,
         image: c.assets.items[0]?.source,
         name: c.name,
@@ -42,23 +58,18 @@ export const useCollectionsTable = () => {
             : c.subCollections.count,
         contentType: c.contentType
       })) ?? [],
-    [collectionsRaw]
+    [allCollections]
   );
 
-  useEffect(() => {
-    refetch();
-  }, [search, page, size]);
-
-  const onUpdate = (input: OnUpdateInput) => {
-    if (input.search !== undefined) setSearch(input.search);
-    if (input.page) setPage(input.page);
-    if (input.size) setSize(input.size);
-  };
+  const shouldRenderEmptyState = useMemo(() => {
+    return !isLoading && !isLoadingCollectionCount && !count;
+  }, [isLoading, isLoadingCollectionCount, count]);
 
   return {
     onUpdate,
-    isLoading: isLoading || isLoadingCollectionsExist,
-    hasCollections,
+    isLoading,
+    isRefetching,
+    shouldRenderEmptyState,
     collections,
     pagination
   };

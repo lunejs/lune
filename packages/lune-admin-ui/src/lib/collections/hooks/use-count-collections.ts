@@ -3,13 +3,13 @@ import { GET_COLLECTIONS_EXISTS } from '@/lib/api/operations/collection.operatio
 
 import { CollectionsCacheKeys } from '../constants/cache-keys';
 
-export const useGetCollectionsExists = () => {
+export const useCollectionsCount = () => {
   const { data, ...rest } = useGqlQuery(GET_COLLECTIONS_EXISTS, {
     key: [CollectionsCacheKeys.CollectionsExists]
   });
 
   return {
-    hasCollections: !!data?.collections.count,
+    count: !!data?.collections.count,
     ...rest
   };
 };

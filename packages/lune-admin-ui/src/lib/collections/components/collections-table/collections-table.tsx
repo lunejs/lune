@@ -12,13 +12,14 @@ import { CollectionsTableEmptyState } from './empty-state';
 import { useCollectionsTable } from './use-collections-table';
 
 export const CollectionsTable = () => {
-  const { isLoading, hasCollections, onUpdate, collections, pagination } = useCollectionsTable();
+  const { isLoading, isRefetching, shouldRenderEmptyState, onUpdate, collections, pagination } =
+    useCollectionsTable();
 
-  if (!hasCollections && !isLoading) return <CollectionsTableEmptyState />;
+  if (shouldRenderEmptyState) return <CollectionsTableEmptyState />;
 
   return (
     <DataTable
-      isLoading={isLoading}
+      isLoading={isLoading || isRefetching}
       data={collections}
       columns={CollectionsTableColumns}
       searchPlaceholder="Search collections..."

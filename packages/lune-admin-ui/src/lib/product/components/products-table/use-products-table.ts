@@ -86,7 +86,7 @@ export const useProductsTable = () => {
   }, [search, page, size, status, archived]);
 
   const shouldRenderEmptyState = useMemo(() => {
-    return !isFetched && !isLoading && !hasFiltersApplied && !products.length;
+    return isFetched && !isLoading && !hasFiltersApplied && !products.length;
   }, [isFetched, isLoading, hasFiltersApplied, products.length]);
 
   return {
