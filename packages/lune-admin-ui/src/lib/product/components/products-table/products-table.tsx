@@ -11,10 +11,10 @@ import { ProductsTableEmptyState } from './empty-state';
 import { useProductsTable } from './use-products-table';
 
 export const ProductsTable = () => {
-  const { isLoading, isRefetching, hasNoProducts, products, pagination, onUpdate } =
+  const { isLoading, isRefetching, shouldRenderEmptyState, products, pagination, onUpdate } =
     useProductsTable();
 
-  if (hasNoProducts && !isLoading) return <ProductsTableEmptyState />;
+  if (shouldRenderEmptyState) return <ProductsTableEmptyState />;
 
   return (
     <DataTable
