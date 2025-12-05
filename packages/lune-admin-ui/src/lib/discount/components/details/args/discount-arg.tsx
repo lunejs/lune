@@ -8,21 +8,33 @@ import { DiscountOrderRequirements } from './order-requirements/discount-order-r
 export const DiscountArg = ({ component }: Props) => {
   const { handler } = useDiscountDetailsFormContext();
 
-  const args = Object.values(handler.args as EnhancedArg);
+  const [key, arg] = findCustomArg(handler.args, component);
 
-  const hasCustomComponentArg = findCustomArg(args, component);
+  if (!key || !arg) return null;
 
-  if (!hasCustomComponentArg) return null;
-
-  if (component === ArgComponent.DiscountValue) return <DiscountValue />;
-  if (component === ArgComponent.DiscountOrderRequirements) return <DiscountOrderRequirements />;
+  if (component === ArgComponent.DiscountValue) return <DiscountValue argKey={key} />;
+  if (component === ArgComponent.DiscountOrderRequirements)
+    return <DiscountOrderRequirements argKey={key} />;
 
   // TODO: add warn log no discount component support
   return null;
 };
 
-const findCustomArg = (args: EnhancedArg[], component: ArgComponent) => {
-  return args.find(a => a.type === EnhancedArgType.Custom && a.component === component);
+const findCustomArg = (
+  args: Record<string, EnhancedArg>,
+  component: ArgComponent
+): [string | null, EnhancedArg | null] => {
+  for (const [key, arg] of Object.entries(args)) {
+    if (typeof arg !== 'object' || !arg) continue;
+
+    if (arg.type !== EnhancedArgType.Custom || arg.component !== component) {
+      continue;
+    }
+
+    return [key, arg];
+  }
+
+  return [null, null];
 };
 
 type Props = {

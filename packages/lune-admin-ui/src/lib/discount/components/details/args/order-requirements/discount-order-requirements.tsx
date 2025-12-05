@@ -1,30 +1,35 @@
 import { useEffect, useState } from 'react';
 
+import { LunePrice } from '@lune/common';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
+  FormMessage,
   Input,
   Label,
   RadioGroup,
   RadioGroupItem
 } from '@lune/ui';
 
+import { FormMessages } from '@/shared/forms/form-messages';
+
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 
-export const DiscountOrderRequirements = () => {
+export const DiscountOrderRequirements = ({ argKey }: Props) => {
   const { setValue: setFormValue, getValues } = useDiscountDetailsFormContext();
 
+  const [error, setError] = useState<null | string>(null);
   const [value, setValue] = useState<Value>({
     type: ValueType.None,
-    value: ''
+    value: 0
   });
 
   useEffect(() => {
     setFormValue('metadata', {
       ...getValues('metadata'),
-      orderRequirements: value
+      [argKey]: value
     });
   }, [value]);
 
@@ -57,10 +62,22 @@ export const DiscountOrderRequirements = () => {
               </Label>
             </div>
             {value.type === ValueType.MinimumAmount && (
-              <Input
-                placeholder="$0.00"
-                onChange={e => setValue({ ...value, value: e.target.value })}
-              />
+              <>
+                <Input
+                  placeholder="$0.00"
+                  onChange={e => {
+                    const input = LunePrice.parse(e.target.value);
+
+                    if (Number.isNaN(input)) {
+                      setError('Must be a number');
+                      return;
+                    }
+
+                    setValue({ ...value, value: LunePrice.toCent(input) });
+                  }}
+                />
+                {error && <FormMessage>{error}</FormMessage>}
+              </>
             )}
           </div>
 
@@ -72,11 +89,29 @@ export const DiscountOrderRequirements = () => {
               </Label>
             </div>
             {value.type === ValueType.MinimumItems && (
-              <Input
-                placeholder="0"
-                type="number"
-                onChange={e => setValue({ ...value, value: e.target.value })}
-              />
+              <>
+                <Input
+                  placeholder="0"
+                  type="number"
+                  onChange={e => {
+                    const input = Number(e.target.value);
+
+                    if (Number.isNaN(input)) {
+                      setError('Must be a number');
+                      return;
+                    }
+
+                    if (input < 0) {
+                      setError(FormMessages.greater(0));
+                      return;
+                    }
+
+                    setError(null);
+                    setValue({ ...value, value: input });
+                  }}
+                />
+                {error && <FormMessage>{error}</FormMessage>}
+              </>
             )}
           </div>
         </RadioGroup>
@@ -87,7 +122,7 @@ export const DiscountOrderRequirements = () => {
 
 type Value = {
   type: ValueType;
-  value: string;
+  value: number;
 };
 
 enum ValueType {
@@ -95,3 +130,7 @@ enum ValueType {
   MinimumItems = 'minimum_items',
   MinimumAmount = 'minimum_amount'
 }
+
+type Props = {
+  argKey: string;
+};

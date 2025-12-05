@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import { LunePrice } from '@lune/common';
 import {
+  FormMessage,
   InputGroupAddon,
   InputGroupInput,
   InputGroupRoot,
@@ -14,9 +16,10 @@ import {
 
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 
-export const DiscountValue = () => {
+export const DiscountValue = ({ argKey }: Props) => {
   const { getValues, setValue: setFormValue } = useDiscountDetailsFormContext();
 
+  const [error, setError] = useState<null | string>(null);
   const [value, setValue] = useState<Value>({
     type: 'percentage',
     value: 0
@@ -25,12 +28,12 @@ export const DiscountValue = () => {
   useEffect(() => {
     setFormValue('metadata', {
       ...getValues('metadata'),
-      discountValue: value
+      [argKey]: value
     });
   }, [value]);
 
   return (
-    <div className="flex items-end gap-4">
+    <div className="flex gap-4">
       <div className="flex flex-col gap-2">
         <Label>Discount value</Label>
         <Select
@@ -46,17 +49,55 @@ export const DiscountValue = () => {
           </SelectContent>
         </Select>
       </div>
-      {value.type === 'percentage' ? (
-        <InputGroupRoot>
-          <InputGroupInput onChange={e => setValue({ ...value, value: Number(e.target.value) })} />
-          <InputGroupAddon align={'inline-end'}>%</InputGroupAddon>
-        </InputGroupRoot>
-      ) : (
-        <InputGroupRoot>
-          <InputGroupInput onChange={e => setValue({ ...value, value: Number(e.target.value) })} />
-          <InputGroupAddon align={'inline-end'}>$</InputGroupAddon>
-        </InputGroupRoot>
-      )}
+      <div className="flex flex-col gap-2 w-full">
+        <div className="h-3.5" />
+
+        {value.type === 'percentage' ? (
+          <InputGroupRoot>
+            <InputGroupInput
+              onChange={e => {
+                const input = Number(e.target.value);
+
+                if (Number.isNaN(input)) {
+                  setError('Must be a number');
+                  return;
+                }
+
+                if (!Number.isInteger(input)) {
+                  setError('Must be an integer');
+                  return;
+                }
+
+                if (input < 0 || input > 100) {
+                  setError('Must be between 0 and 100');
+                  return;
+                }
+
+                setError(null);
+                setValue({ ...value, value: Number(input / 100) });
+              }}
+            />
+            <InputGroupAddon align={'inline-end'}>%</InputGroupAddon>
+          </InputGroupRoot>
+        ) : (
+          <InputGroupRoot>
+            <InputGroupInput
+              onChange={e => {
+                const input = LunePrice.parse(e.target.value);
+
+                if (Number.isNaN(input)) {
+                  setError('Must be a number');
+                  return;
+                }
+
+                setValue({ ...value, value: LunePrice.toCent(input) });
+              }}
+            />
+            <InputGroupAddon align={'inline-end'}>$</InputGroupAddon>
+          </InputGroupRoot>
+        )}
+        {error && <FormMessage>{error}</FormMessage>}
+      </div>
     </div>
   );
 };
@@ -67,3 +108,7 @@ type Value = {
 };
 
 type ValueType = 'percentage' | 'fixed';
+
+type Props = {
+  argKey: string;
+};
