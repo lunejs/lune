@@ -39,7 +39,7 @@ export const DiscountValue = ({ argKey }: Props) => {
   }, [value]);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col gap-4 sm:flex-row">
       <div className="flex flex-col gap-2">
         <Label>Discount value</Label>
         <Select
@@ -56,7 +56,7 @@ export const DiscountValue = ({ argKey }: Props) => {
             })
           }
         >
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-full sm:w-48">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -66,7 +66,7 @@ export const DiscountValue = ({ argKey }: Props) => {
         </Select>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        <div className="h-3.5" />
+        <div className="hidden sm:block h-3.5" />
 
         {value.type === 'percentage' ? (
           <InputGroupRoot>

@@ -15,7 +15,7 @@ export const DiscountDurationCard = () => {
         <CardTitle>Duration</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex items-start gap-4">
+      <CardContent className="flex flex-col items-start gap-4 sm:flex-row">
         <FormDatePicker
           control={control}
           name="startsAt"

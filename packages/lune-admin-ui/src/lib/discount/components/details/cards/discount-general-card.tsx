@@ -34,14 +34,14 @@ export const DiscountGeneralCard = () => {
             ]}
           />
         )}
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <DiscountCode />
           <FormInput
             control={control}
             type="number"
             name="perCustomerLimit"
             label="Per customer limit"
-            className="w-fit h-fit"
+            className="w-full h-fit sm:w-fit"
           />
         </div>
         <DiscountArgComponent component={ArgComponent.DiscountValue} />
