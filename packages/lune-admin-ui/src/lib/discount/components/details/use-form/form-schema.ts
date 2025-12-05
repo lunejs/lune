@@ -4,7 +4,7 @@ import { DiscountApplicationMode } from '@/lib/api/types';
 import { FormMessages } from '@/shared/forms/form-messages';
 
 export const DiscountDetailsSchema = z.object({
-  code: z.string().min(0, FormMessages.required),
+  code: z.string().min(1, FormMessages.required),
   perCustomerLimit: z.coerce
     .number()
     .int()
