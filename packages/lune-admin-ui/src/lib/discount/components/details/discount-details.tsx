@@ -8,6 +8,7 @@ import {
 } from '@/lib/api/types';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
+import { DiscountActions } from './actions/discount-actions';
 import { DiscountArgComponent } from './args/discount-arg-component';
 import { DiscountArgEntitySelector } from './args/discount-arg-entity-selector';
 import { DiscountDurationCard } from './cards/discount-duration-card';
@@ -26,6 +27,7 @@ export const DiscountDetails = ({ discount, handler }: Props) => {
           <DetailsPageLayout.Header>
             <DetailsPageLayout.Title>Create discount</DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
+              {discount && <DiscountActions discount={discount} />}
               <DiscountDetailsSubmitButton />
             </DetailsPageLayout.Actions>
           </DetailsPageLayout.Header>
