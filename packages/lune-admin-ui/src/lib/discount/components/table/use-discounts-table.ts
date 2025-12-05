@@ -4,6 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
+import { useCountDiscounts } from '../../hooks/use-count-discounts';
 import { useGetDiscounts } from '../../hooks/use-get-discounts';
 
 import type { DiscountsTableRow } from './discounts-table';
@@ -13,13 +14,14 @@ const DEFAULT_PAGE_SIZE = 10;
 
 export const useDiscountsTable = () => {
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [page, setPage] = useState(DEFAULT_PAGE);
+  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
+
+  const { isLoading: isLoadingCount, count } = useCountDiscounts();
 
   const {
     isLoading,
     isRefetching,
-    isFetched,
     discounts: allDiscounts,
     pagination,
     refetch
@@ -37,13 +39,9 @@ export const useDiscountsTable = () => {
     refetch();
   }, [query, page, size]);
 
-  const hasFiltersApplied = useMemo(() => {
-    return !!query || page !== DEFAULT_PAGE || size !== DEFAULT_PAGE_SIZE;
-  }, [query, page, size]);
-
   const shouldRenderEmptyState = useMemo(() => {
-    return !isFetched && !isLoading && !hasFiltersApplied && !discounts.length;
-  }, [isFetched, isLoading, hasFiltersApplied, discounts.length]);
+    return !isLoading && !isLoadingCount && !count;
+  }, [isLoading, isLoadingCount, count]);
 
   const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
     if (input.query !== undefined) setQuery(input.query);
