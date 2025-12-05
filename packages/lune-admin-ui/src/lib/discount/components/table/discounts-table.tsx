@@ -1,10 +1,11 @@
 import { PlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
 
 import { Button } from '@lune/ui';
 
 import type { DiscountApplicationLevel, DiscountApplicationMode } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
+
+import { DiscountSelector } from '../discount-selector/discount-selector';
 
 import { DiscountsTableColumns } from './columns';
 import { DiscountsTableEmptyState } from './empty-state';
@@ -31,12 +32,12 @@ export const DiscountsTable = () => {
           <Button size="sm" variant="outline" className="hidden lg:flex">
             Import
           </Button>
-          <Link to="/discounts/new">
+          <DiscountSelector>
             <Button size="sm">
               <PlusIcon className="lg:hidden" />
-              <span className="hidden lg:inline">Add Product</span>
+              <span className="hidden lg:inline">Add Discount</span>
             </Button>
-          </Link>
+          </DiscountSelector>
         </>
       }
       // onSelectRender={rows => <ProductTableActions rows={rows} />}

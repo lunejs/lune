@@ -21,7 +21,7 @@ export const DiscountSelector = ({ children }: Props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="px-0 pb-0">
+      <DialogContent className="px-0 pb-0 overflow-hidden">
         <DialogHeader className="px-6">
           <DialogTitle>Select discount type</DialogTitle>
           <DialogDescription>Choose the type of discount you want to create</DialogDescription>
