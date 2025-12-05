@@ -10,7 +10,8 @@ import { OrderConstants } from './order.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const FulfillmentConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestHelper.generateUUID(),
+  InStorePickupID: TestHelper.generateUUID()
 };
 
 export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
@@ -25,6 +26,14 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         order_id: OrderConstants.WithFulfillmentID,
         shop_id: ShopConstants.ID,
         type: FulfillmentType.SHIPPING
+      },
+      {
+        id: FulfillmentConstants.InStorePickupID,
+        amount: LunePrice.toCent(0),
+        total: LunePrice.toCent(0),
+        order_id: OrderConstants.WithInStorePickupFulfillmentID,
+        shop_id: ShopConstants.ID,
+        type: FulfillmentType.IN_STORE_PICKUP
       }
     ];
   }

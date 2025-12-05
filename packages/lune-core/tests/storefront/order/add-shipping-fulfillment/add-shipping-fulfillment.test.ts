@@ -4,6 +4,7 @@ import { LunePrice } from '@lune/common';
 
 import { FulfillmentType } from '@/api/shared/types/graphql';
 import type { FulfillmentTable } from '@/persistence/entities/fulfillment';
+import type { InStorePickupFulfillmentTable } from '@/persistence/entities/in-store-pickup-fulfillment';
 import type { ShippingFulfillmentTable } from '@/persistence/entities/shipping-fulfillment';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
@@ -12,6 +13,8 @@ import { TestHelper } from '@/tests/utils/test-helper';
 
 import { CountryFixtures } from './fixtures/country.fixtures';
 import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
+import { InStorePickupFulfillmentFixtures } from './fixtures/in-store-pickup-fulfillment.fixtures';
+import { LocationFixtures } from './fixtures/location.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
 import { ShippingFulfillmentFixtures } from './fixtures/shipping-fulfillment.fixtures';
 import {
@@ -40,8 +43,10 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
       new ZoneStateFixtures(),
       new ShippingMethodFixtures(),
       new OrderFixtures(),
+      new LocationFixtures(),
       new FulfillmentFixtures(),
-      new ShippingFulfillmentFixtures()
+      new ShippingFulfillmentFixtures(),
+      new InStorePickupFulfillmentFixtures()
     ]);
   });
 
@@ -140,6 +145,76 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
       .where({ fulfillment_id: orderFulfillments[0].id });
 
     expect(orderShippingFulfillments).toHaveLength(1);
+  });
+
+  test('replaces in-store pickup fulfillment with shipping fulfillment', async () => {
+    const fulfillmentAlreadyCreated = await testHelper
+      .getQueryBuilder()<FulfillmentTable>(Tables.Fulfillment)
+      .where({ order_id: OrderConstants.WithInStorePickupFulfillmentID })
+      .first();
+
+    const inStorePickupFulfillmentBefore = await testHelper
+      .getQueryBuilder()<InStorePickupFulfillmentTable>(Tables.InStorePickupFulfillment)
+      .where({ fulfillment_id: fulfillmentAlreadyCreated?.id })
+      .first();
+
+    expect(fulfillmentAlreadyCreated).toBeDefined();
+    expect(fulfillmentAlreadyCreated?.type).toBe(FulfillmentType.InStorePickup);
+    expect(inStorePickupFulfillmentBefore).toBeDefined();
+
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.WithInStorePickupFulfillmentID,
+          input: {
+            methodId: ShippingMethodConstants.StandardInternationalID
+          }
+        }
+      });
+
+    const {
+      addShippingFulfillmentToOrder: { order }
+    } = res.body.data;
+
+    expect(order.id).toBe(OrderConstants.WithInStorePickupFulfillmentID);
+    expect(order.total).toBe(LunePrice.toCent(250));
+
+    const { fulfillment } = order;
+    expect(fulfillment.type).toBe(FulfillmentType.Shipping);
+    expect(fulfillment.amount).toBe(LunePrice.toCent(50));
+
+    const { details } = fulfillment;
+    expect(details.method).toBe('Standard International');
+
+    const { shippingMethod } = details;
+    expect(shippingMethod.id).toBe(ShippingMethodConstants.StandardInternationalID);
+    expect(shippingMethod.name).toBe('Standard International');
+
+    // Verify that only one fulfillment exists for the order
+    const orderFulfillments = await testHelper
+      .getQueryBuilder()<FulfillmentTable>(Tables.Fulfillment)
+      .where({ order_id: OrderConstants.WithInStorePickupFulfillmentID });
+
+    expect(orderFulfillments).toHaveLength(1);
+    expect(orderFulfillments[0].type).toBe(FulfillmentType.Shipping);
+
+    // Verify that shipping fulfillment was created
+    const orderShippingFulfillments = await testHelper
+      .getQueryBuilder()<ShippingFulfillmentTable>(Tables.ShippingFulfillment)
+      .where({ fulfillment_id: orderFulfillments[0].id });
+
+    expect(orderShippingFulfillments).toHaveLength(1);
+
+    // Verify that in-store pickup fulfillment was deleted
+    const inStorePickupFulfillmentAfter = await testHelper
+      .getQueryBuilder()<InStorePickupFulfillmentTable>(Tables.InStorePickupFulfillment)
+      .where({ id: inStorePickupFulfillmentBefore?.id });
+
+    expect(inStorePickupFulfillmentAfter).toHaveLength(0);
   });
 
   test('returns MISSING_SHIPPING_ADDRESS error when provided order has no shipping address', async () => {

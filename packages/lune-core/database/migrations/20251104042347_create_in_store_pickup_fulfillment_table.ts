@@ -9,8 +9,8 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
     table.jsonb('address').notNullable();
-    table.timestamp('ready_at', { useTz: true }).notNullable();
-    table.timestamp('picked_up_at', { useTz: true }).notNullable();
+    table.timestamp('ready_at', { useTz: true }).nullable();
+    table.timestamp('picked_up_at', { useTz: true }).nullable();
 
     table.uuid('fulfillment_id').notNullable().references('id').inTable('fulfillment');
     table.uuid('location_id').notNullable().references('id').inTable('location');

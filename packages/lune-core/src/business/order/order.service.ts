@@ -22,6 +22,7 @@ import type { CountryRepository } from '@/persistence/repositories/country-repos
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
+import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -56,6 +57,7 @@ export class OrderService {
   private readonly shippingMethodRepository: ShippingMethodRepository;
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
+  private readonly inStorePickupFulfillmentRepository: InStorePickupFulfillmentRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
 
@@ -71,6 +73,7 @@ export class OrderService {
     this.shippingMethodRepository = ctx.repositories.shippingMethod;
     this.fulfillmentRepository = ctx.repositories.fulfillment;
     this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
+    this.inStorePickupFulfillmentRepository = ctx.repositories.inStorePickupFulfillment;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
   }
@@ -362,9 +365,18 @@ export class OrderService {
       },
       update: {
         amount: shippingPrice,
-        total: shippingPrice
+        total: shippingPrice,
+        type: FulfillmentType.SHIPPING
       }
     });
+
+    if (orderFulfillment) {
+      if (orderFulfillment.type === FulfillmentType.IN_STORE_PICKUP) {
+        await this.inStorePickupFulfillmentRepository.remove({
+          where: { fulfillmentId: orderFulfillment.id }
+        });
+      }
+    }
 
     await this.shippingFulfillmentRepository.upsert({
       where: { fulfillmentId: orderFulfillment?.id },

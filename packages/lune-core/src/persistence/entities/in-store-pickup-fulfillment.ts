@@ -11,11 +11,11 @@ export interface InStorePickupFulfillment extends LuneEntity {
   /**
    * Date and time when the order is ready for pickup
    */
-  readyAt: Date;
+  readyAt?: Date | undefined;
   /**
    * Date and time when the order was picked up
    */
-  pickedUpAt: Date;
+  pickedUpAt?: Date | undefined;
   /**
    * The fulfillment this pickup belongs to
    */
@@ -28,8 +28,8 @@ export interface InStorePickupFulfillment extends LuneEntity {
 
 export interface InStorePickupFulfillmentTable extends LuneTable {
   address: any;
-  ready_at: Date;
-  picked_up_at: Date;
+  ready_at?: Date | null;
+  picked_up_at?: Date | null;
   fulfillment_id: ID;
   location_id: ID;
   shop_id: string;
