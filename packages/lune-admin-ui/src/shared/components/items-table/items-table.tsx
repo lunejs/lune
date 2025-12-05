@@ -76,12 +76,14 @@ const ListItem = ({
   href,
   image,
   title,
+  subtitle,
   enabled,
   onRemove
 }: {
   href: string;
   image: string | undefined;
   title: string;
+  subtitle?: string;
   enabled: boolean;
   onRemove: () => Promise<void>;
 }) => {
@@ -94,13 +96,16 @@ const ListItem = ({
         isRemoving && 'opacity-40'
       )}
     >
-      <Link to={href} className="flex items-center gap-2 hover:underline">
+      <Link to={href} className="flex items-center gap-2 group">
         {image ? (
           <img className="w-10 h-10 object-cover rounded-md" src={image} />
         ) : (
           <ImagePlaceholder className="w-10 h-10" initial={title} />
         )}
-        <span>{title}</span>
+        <div className="flex flex-col gap-1">
+          <span className="group-hover:underline">{title}</span>
+          {subtitle && <span className="text-muted-foreground text-sm">{subtitle}</span>}
+        </div>
       </Link>
       <div className="flex items-center gap-4">
         <Badge variant={enabled ? 'default' : 'secondary'}>

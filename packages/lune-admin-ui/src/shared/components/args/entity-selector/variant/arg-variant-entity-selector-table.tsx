@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { LunePrice } from '@lune/common';
 import { P } from '@lune/ui';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
@@ -50,18 +51,37 @@ export const ArgVariantEntitySelectorTable = ({ onValueChange, defaultSelected }
               <P className="text-muted-foreground">No results</P>
             </div>
           )}
-          {products?.map(product => (
-            <ItemsTable.ListItem
-              key={product.id}
-              title={product.name}
-              image={product.assets.items[0]?.source}
-              enabled={product.enabled}
-              href={`/products/${product.id}`}
-              onRemove={async () => {
-                console.log('remove');
-              }}
-            />
-          ))}
+          {products?.map(product => {
+            const variants = product.variants.items;
+            const variantsInProduct = variants.filter(v => selected.includes(v.id));
+
+            const isDefaultVariant =
+              variantsInProduct.length === 1 && variantsInProduct[0].optionValues.length === 0;
+
+            return (
+              <ItemsTable.ListItem
+                key={product.id}
+                title={product.name}
+                subtitle={
+                  isDefaultVariant
+                    ? LunePrice.format(variantsInProduct[0].salePrice)
+                    : `${variantsInProduct.length} of ${variants.length} ${variants.length > 1 ? 'variants' : 'variant'}`
+                }
+                image={product.assets.items[0]?.source}
+                enabled={product.enabled}
+                href={`/products/${product.id}`}
+                onRemove={async () => {
+                  const variantsIds = product.variants.items.map(v => v.id);
+                  const newSelected = selected.filter(
+                    selectedVariant => !variantsIds.includes(selectedVariant)
+                  );
+
+                  setSelected(newSelected);
+                  setValue(newSelected);
+                }}
+              />
+            );
+          })}
         </ItemsTable.List>
       </ItemsTable.Content>
     </ItemsTable>
