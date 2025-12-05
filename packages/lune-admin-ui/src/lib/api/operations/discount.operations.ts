@@ -43,3 +43,37 @@ export const GET_ALL_DISCOUNT_HANDLERS_QUERY = graphql(`
     }
   }
 `);
+
+export const CREATE_DISCOUNT_MUTATION = graphql(`
+  mutation CreateDiscount($input: CreateDiscountInput!) {
+    createDiscount(input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      discount {
+        id
+      }
+    }
+  }
+`);
+
+export const UPDATE_DISCOUNT_MUTATION = graphql(`
+  mutation UpdateDiscount($id: ID!, $input: UpdateDiscountInput!) {
+    updateDiscount(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      discount {
+        id
+      }
+    }
+  }
+`);
+
+export const REMOVE_DISCOUNT_MUTATION = graphql(`
+  mutation RemoveDiscount($ids: [ID!]!) {
+    removeDiscounts(ids: $ids)
+  }
+`);
