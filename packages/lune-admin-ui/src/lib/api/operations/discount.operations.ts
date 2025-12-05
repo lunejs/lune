@@ -10,6 +10,22 @@ export const COMMON_DISCOUNT_HANDLER_FRAGMENT = graphql(`
   }
 `);
 
+export const COMMON_DISCOUNT_FRAGMENT = graphql(`
+  fragment CommonDiscount on Discount {
+    id
+    code
+    applicationMode
+    applicationLevel
+    startsAt
+    endsAt
+    enabled
+    handler {
+      code
+      args
+    }
+  }
+`);
+
 export const COMMON_LIST_DISCOUNT_FRAGMENT = graphql(`
   fragment CommonListDiscount on Discount {
     id
@@ -19,6 +35,14 @@ export const COMMON_LIST_DISCOUNT_FRAGMENT = graphql(`
     startsAt
     endsAt
     enabled
+  }
+`);
+
+export const GET_DISCOUNT_BY_ID_QUERY = graphql(`
+  query GetDiscount($id: ID!) {
+    discount(id: $id) {
+      ...CommonDiscount
+    }
   }
 `);
 
