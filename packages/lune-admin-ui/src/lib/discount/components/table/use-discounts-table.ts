@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
+import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetDiscounts } from '../../hooks/use-get-discounts';
@@ -15,7 +17,7 @@ export const useDiscountsTable = () => {
   const [size, setSize] = useState(10);
 
   const hasFiltersApplied = useMemo(() => {
-    return !!query && page !== DEFAULT_PAGE && size !== DEFAULT_PAGE_SIZE;
+    return !!query || page !== DEFAULT_PAGE || size !== DEFAULT_PAGE_SIZE;
   }, [query, page, size]);
 
   const {
@@ -37,11 +39,11 @@ export const useDiscountsTable = () => {
     refetch();
   }, [query, page, size]);
 
-  const onUpdate = (input: OnUpdateInput) => {
+  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
     if (input.query !== undefined) setQuery(input.query);
     if (input.page) setPage(input.page);
     if (input.size) setSize(input.size);
-  };
+  }, TYPING_DEBOUNCE_DELAY);
 
   return {
     hasFiltersApplied,
