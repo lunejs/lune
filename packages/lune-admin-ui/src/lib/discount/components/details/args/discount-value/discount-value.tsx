@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { LunePrice } from '@lune/common';
 import {
   FormMessage,
+  InputGroup,
   InputGroupAddon,
   InputGroupInput,
-  InputGroupRoot,
   Label,
   Select,
   SelectContent,
@@ -69,7 +69,7 @@ export const DiscountValue = ({ argKey }: Props) => {
         <div className="hidden sm:block h-3.5" />
 
         {value.type === 'percentage' ? (
-          <InputGroupRoot>
+          <InputGroup>
             <InputGroupInput
               key={1}
               defaultValue={
@@ -98,9 +98,9 @@ export const DiscountValue = ({ argKey }: Props) => {
               }}
             />
             <InputGroupAddon align={'inline-end'}>%</InputGroupAddon>
-          </InputGroupRoot>
+          </InputGroup>
         ) : (
-          <InputGroupRoot>
+          <InputGroup>
             <InputGroupInput
               key={2}
               defaultValue={
@@ -118,7 +118,7 @@ export const DiscountValue = ({ argKey }: Props) => {
               }}
             />
             <InputGroupAddon align={'inline-end'}>$</InputGroupAddon>
-          </InputGroupRoot>
+          </InputGroup>
         )}
         {error && <FormMessage>{error}</FormMessage>}
       </div>

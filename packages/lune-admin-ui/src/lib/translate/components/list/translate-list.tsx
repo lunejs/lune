@@ -9,7 +9,9 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  InputGroup
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
 } from '@lune/ui';
 
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
@@ -36,7 +38,14 @@ export const TranslateList = <T,>({
   return (
     <aside className={cn('flex w-80 divide-y h-full flex-col shrink-0', className?.root)}>
       <header className="flex items-center gap-3 p-4">
-        <InputGroup placeholder="Search..." onChange={e => OnQueryChange(e.target.value)} />
+        <InputGroup>
+          <InputGroupInput placeholder="Search..." onChange={e => OnQueryChange(e.target.value)} />
+          {isLoading && (
+            <InputGroupAddon align={'inline-end'}>
+              <SpinnerLoader />
+            </InputGroupAddon>
+          )}
+        </InputGroup>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

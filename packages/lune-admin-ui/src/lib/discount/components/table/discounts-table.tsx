@@ -13,13 +13,14 @@ import { DiscountsTableEmptyState } from './empty-state';
 import { useDiscountsTable } from './use-discounts-table';
 
 export const DiscountsTable = () => {
-  const { isLoading, discounts, hasFiltersApplied, onUpdate, pagination } = useDiscountsTable();
+  const { shouldRenderEmptyState, isLoading, isRefetching, discounts, onUpdate, pagination } =
+    useDiscountsTable();
 
-  if (!isLoading && !hasFiltersApplied && !discounts.length) return <DiscountsTableEmptyState />;
+  if (shouldRenderEmptyState) return <DiscountsTableEmptyState />;
 
   return (
     <DataTable
-      isLoading={isLoading}
+      isLoading={isLoading || isRefetching}
       data={discounts}
       columns={DiscountsTableColumns}
       onSearch={async query => onUpdate({ query })}

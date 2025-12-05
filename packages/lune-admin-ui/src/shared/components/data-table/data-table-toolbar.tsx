@@ -1,6 +1,8 @@
 import type { Table } from '@tanstack/react-table';
 
-import { Input } from '@lune/ui';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@lune/ui';
+
+import { SpinnerLoader } from '../loader/spinner-loader';
 
 import { type DataTableProps } from './data-table';
 import { DataTableFilter } from './data-table-filter';
@@ -11,6 +13,7 @@ export function DataTableToolbar<TData, TValue>({
   actions,
   filters,
   table,
+  isLoading,
   onSelectRender
 }: Props<TData, TValue>) {
   const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
@@ -18,11 +21,18 @@ export function DataTableToolbar<TData, TValue>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
-        <Input
-          placeholder={searchPlaceholder || 'Search...'}
-          onChange={event => onSearch(event.target.value)}
-          className="text-sm h-8 w-[150px] lg:w-[250px]"
-        />
+        <InputGroup className="w-[150px] lg:w-[250px]">
+          <InputGroupInput
+            placeholder={searchPlaceholder || 'Search...'}
+            onChange={event => onSearch(event.target.value)}
+            className="text-sm h-8"
+          />
+          {isLoading && (
+            <InputGroupAddon className="quick-fade-in" align={'inline-end'}>
+              <SpinnerLoader />
+            </InputGroupAddon>
+          )}
+        </InputGroup>
 
         <div className="hidden lg:block">
           {filters?.map(filter => (

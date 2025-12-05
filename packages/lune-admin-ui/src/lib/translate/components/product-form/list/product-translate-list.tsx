@@ -10,7 +10,9 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  InputGroup
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
 } from '@lune/ui';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
@@ -44,11 +46,17 @@ export const ProductTranslateList = ({ className }: Props) => {
   return (
     <aside className={cn('flex w-80 divide-y h-full flex-col shrink-0', className?.root)}>
       <header className="flex items-center gap-3 p-4">
-        <InputGroup
-          placeholder="Search products..."
-          onChange={e => debouncedOnQueryChange(e.target.value)}
-          rightAddon={isRefetching && <SpinnerLoader />}
-        />
+        <InputGroup>
+          <InputGroupInput
+            placeholder="Search products..."
+            onChange={e => debouncedOnQueryChange(e.target.value)}
+          />
+          {isRefetching && (
+            <InputGroupAddon className="quick-fade-in" align={'inline-end'}>
+              <SpinnerLoader />
+            </InputGroupAddon>
+          )}
+        </InputGroup>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -17,6 +17,7 @@ export const useProductsTable = () => {
 
   const {
     isLoading,
+    isRefetching,
     hasNoProducts,
     products: productsRaw,
     pagination,
@@ -72,6 +73,7 @@ export const useProductsTable = () => {
   return {
     onUpdate,
     isLoading,
+    isRefetching,
     hasNoProducts,
     products,
     pagination

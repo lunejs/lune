@@ -61,6 +61,14 @@ export const GET_ALL_DISCOUNTS_QUERY = graphql(`
   }
 `);
 
+export const COUNT_DISCOUNTS_QUERY = graphql(`
+  query CountDiscounts {
+    discounts {
+      count
+    }
+  }
+`);
+
 export const GET_ALL_DISCOUNT_HANDLERS_QUERY = graphql(`
   query GetAllDiscountHandlers {
     discountHandlers {

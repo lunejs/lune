@@ -11,13 +11,14 @@ import { ProductsTableEmptyState } from './empty-state';
 import { useProductsTable } from './use-products-table';
 
 export const ProductsTable = () => {
-  const { isLoading, hasNoProducts, products, pagination, onUpdate } = useProductsTable();
+  const { isLoading, isRefetching, hasNoProducts, products, pagination, onUpdate } =
+    useProductsTable();
 
   if (hasNoProducts && !isLoading) return <ProductsTableEmptyState />;
 
   return (
     <DataTable
-      isLoading={isLoading}
+      isLoading={isLoading || isRefetching}
       data={products}
       columns={ProductsTableColumns}
       onSearch={async q => onUpdate({ search: q })}

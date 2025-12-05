@@ -16,12 +16,10 @@ export const useDiscountsTable = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
 
-  const hasFiltersApplied = useMemo(() => {
-    return !!query || page !== DEFAULT_PAGE || size !== DEFAULT_PAGE_SIZE;
-  }, [query, page, size]);
-
   const {
     isLoading,
+    isRefetching,
+    isFetched,
     discounts: allDiscounts,
     pagination,
     refetch
@@ -39,6 +37,14 @@ export const useDiscountsTable = () => {
     refetch();
   }, [query, page, size]);
 
+  const hasFiltersApplied = useMemo(() => {
+    return !!query || page !== DEFAULT_PAGE || size !== DEFAULT_PAGE_SIZE;
+  }, [query, page, size]);
+
+  const shouldRenderEmptyState = useMemo(() => {
+    return !isFetched && !isLoading && !hasFiltersApplied && !discounts.length;
+  }, [isFetched, isLoading, hasFiltersApplied, discounts.length]);
+
   const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
     if (input.query !== undefined) setQuery(input.query);
     if (input.page) setPage(input.page);
@@ -46,9 +52,10 @@ export const useDiscountsTable = () => {
   }, TYPING_DEBOUNCE_DELAY);
 
   return {
-    hasFiltersApplied,
+    shouldRenderEmptyState,
     discounts,
     onUpdate,
+    isRefetching,
     isLoading,
     pagination
   };

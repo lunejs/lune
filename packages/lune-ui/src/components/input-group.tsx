@@ -9,7 +9,7 @@ import { Button } from './button';
 import { Input } from './input';
 import { Textarea } from './textarea';
 
-function InputGroupRoot({ className, ...props }: React.ComponentProps<'div'>) {
+function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="input-group"
@@ -150,23 +150,10 @@ function InputGroupTextarea({ className, ...props }: React.ComponentProps<'texta
 }
 
 export {
+  InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-  InputGroupRoot,
   InputGroupText,
   InputGroupTextarea
-};
-
-export const InputGroup = ({ rightAddon, ...rest }: Props) => {
-  return (
-    <InputGroupRoot>
-      <InputGroupInput {...rest} />
-      <InputGroupAddon align="inline-end">{rightAddon}</InputGroupAddon>
-    </InputGroupRoot>
-  );
-};
-
-type Props = React.ComponentProps<'input'> & {
-  rightAddon?: React.ReactNode;
 };

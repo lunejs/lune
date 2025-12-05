@@ -171,3 +171,7 @@
 .fade-in {
   animation: 0.3s fadeIn;
 }
+
+.quick-fade-in {
+  animation: 0.1s fadeIn;
+}

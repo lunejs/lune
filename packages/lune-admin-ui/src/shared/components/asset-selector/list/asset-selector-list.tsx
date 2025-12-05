@@ -6,9 +6,9 @@ import {
   Button,
   Checkbox,
   cn,
+  InputGroup,
   InputGroupAddon,
   InputGroupInput,
-  InputGroupRoot,
   Muted,
   P,
   useTheme
@@ -70,7 +70,7 @@ export const AssetSelectorList = ({ setSelected }: Props) => {
               isScrolled && theme === 'dark' && 'border-b-border'
             )}
           >
-            <InputGroupRoot className="max-w-80 w-full">
+            <InputGroup className="max-w-80 w-full">
               <InputGroupInput
                 placeholder="Search by filename or ext"
                 onChange={e => onQueryChange(e.target.value)}
@@ -81,7 +81,7 @@ export const AssetSelectorList = ({ setSelected }: Props) => {
               >
                 <SpinnerLoader />
               </InputGroupAddon>
-            </InputGroupRoot>
+            </InputGroup>
             <Dropzone onDrop={acceptedFiles => uploadAsset(acceptedFiles)}>
               <Button isLoading={isUploading} variant={'outline'} className="shrink-0">
                 {!isUploading && <UploadCloudIcon />} Upload
