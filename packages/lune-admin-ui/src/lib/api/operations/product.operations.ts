@@ -147,6 +147,10 @@ export const COMMON_LIST_PRODUCT_FRAGMENT = graphql(`
         sku
         stock
         salePrice
+        optionValues {
+          id
+          name
+        }
       }
     }
     assets(input: { take: 1 }) {

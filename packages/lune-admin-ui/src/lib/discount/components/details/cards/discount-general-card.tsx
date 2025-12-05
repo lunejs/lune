@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, FormInput, FormRadioGroup } f
 
 import { ArgComponent, DiscountApplicationMode } from '@/lib/api/types';
 
-import { DiscountArg } from '../args/discount-arg';
+import { DiscountArgComponent } from '../args/discount-arg-component';
 import { useDiscountDetailsFormContext } from '../use-form/use-form';
 
 import { DiscountCode } from './discount-code/discount-code';
@@ -44,7 +44,7 @@ export const DiscountGeneralCard = () => {
             className="w-fit h-fit"
           />
         </div>
-        <DiscountArg component={ArgComponent.DiscountValue} />
+        <DiscountArgComponent component={ArgComponent.DiscountValue} />
       </CardContent>
     </Card>
   );

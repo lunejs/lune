@@ -5,7 +5,7 @@ import { useDiscountDetailsFormContext } from '../use-form/use-form';
 import { DiscountValue } from './discount-value/discount-value';
 import { DiscountOrderRequirements } from './order-requirements/discount-order-requirements';
 
-export const DiscountArg = ({ component }: Props) => {
+export const DiscountArgComponent = ({ component }: Props) => {
   const { handler } = useDiscountDetailsFormContext();
 
   const [key, arg] = findCustomArg(handler.args, component);

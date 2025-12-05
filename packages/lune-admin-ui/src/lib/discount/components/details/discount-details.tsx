@@ -1,9 +1,10 @@
 import { Button, Form } from '@lune/ui';
 
-import { ArgComponent, type DiscountHandler } from '@/lib/api/types';
+import { ArgComponent, ArgEntity, type DiscountHandler } from '@/lib/api/types';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
-import { DiscountArg } from './args/discount-arg';
+import { DiscountArgComponent } from './args/discount-arg-component';
+import { DiscountArgEntitySelector } from './args/discount-arg-entity-selector';
 import { DiscountDurationCard } from './cards/discount-duration-card';
 import { DiscountGeneralCard } from './cards/discount-general-card';
 import { DiscountStatusCard } from './cards/discount-status-card';
@@ -27,7 +28,8 @@ export const DiscountDetails = ({ handler }: Props) => {
             <div className="col-span-4 flex flex-col gap-6">
               <DiscountGeneralCard />
               <DiscountDurationCard />
-              <DiscountArg component={ArgComponent.DiscountOrderRequirements} />
+              <DiscountArgEntitySelector entity={ArgEntity.Variant} />
+              <DiscountArgComponent component={ArgComponent.DiscountOrderRequirements} />
             </div>
             <div className="col-span-2 flex flex-col gap-6">
               <DiscountStatusCard />
