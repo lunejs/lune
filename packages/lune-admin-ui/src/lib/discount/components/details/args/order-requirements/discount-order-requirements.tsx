@@ -24,15 +24,13 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
     formState: { defaultValues }
   } = useDiscountDetailsFormContext();
 
-  const defaultValue = (defaultValues?.metadata ?? {})[argKey] as Value;
+  const defaultValue = (defaultValues?.metadata ?? {})[argKey] as Value | undefined;
 
   const [error, setError] = useState<null | string>(null);
-  const [value, setValue] = useState<Value>(
-    defaultValue ?? {
-      type: ValueType.None,
-      value: 0
-    }
-  );
+  const [value, setValue] = useState<Value>({
+    type: defaultValue?.type ?? ValueType.None,
+    value: defaultValue?.value ?? 0
+  });
 
   useEffect(() => {
     setFormValue('metadata', {
@@ -51,16 +49,16 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
         <RadioGroup
           onValueChange={(type: ValueType) =>
             setValue({
+              type,
               value:
-                defaultValue.type == type
-                  ? defaultValue.value
+                defaultValue?.type == type
+                  ? defaultValue?.value
                   : type === ValueType.None
                     ? 0
-                    : value.value,
-              type
+                    : value.value
             })
           }
-          defaultValue={defaultValue.type}
+          defaultValue={value.type}
           className={'flex flex-col gap-4'}
         >
           <div className="flex flex-col gap-2">
@@ -83,8 +81,8 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
               <>
                 <Input
                   defaultValue={
-                    defaultValue.type === ValueType.MinimumAmount
-                      ? LunePrice.format(defaultValue.value)
+                    defaultValue?.type === ValueType.MinimumAmount
+                      ? LunePrice.format(defaultValue?.value)
                       : undefined
                   }
                   placeholder="$0.00"
@@ -115,7 +113,7 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
               <>
                 <Input
                   defaultValue={
-                    defaultValue.type === ValueType.MinimumItems ? defaultValue.value : undefined
+                    defaultValue?.type === ValueType.MinimumItems ? defaultValue?.value : undefined
                   }
                   placeholder="0"
                   type="number"

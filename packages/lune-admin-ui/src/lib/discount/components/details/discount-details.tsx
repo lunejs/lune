@@ -1,4 +1,4 @@
-import { Button, Form } from '@lune/ui';
+import { Form } from '@lune/ui';
 
 import {
   ArgComponent,
@@ -13,6 +13,7 @@ import { DiscountArgEntitySelector } from './args/discount-arg-entity-selector';
 import { DiscountDurationCard } from './cards/discount-duration-card';
 import { DiscountGeneralCard } from './cards/discount-general-card';
 import { DiscountStatusCard } from './cards/discount-status-card';
+import { DiscountDetailsSubmitButton } from './use-form/submit-button';
 import { useDiscountDetailsForm } from './use-form/use-form';
 
 export const DiscountDetails = ({ discount, handler }: Props) => {
@@ -25,7 +26,7 @@ export const DiscountDetails = ({ discount, handler }: Props) => {
           <DetailsPageLayout.Header>
             <DetailsPageLayout.Title>Create discount</DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
-              <Button>Save</Button>
+              <DiscountDetailsSubmitButton />
             </DetailsPageLayout.Actions>
           </DetailsPageLayout.Header>
 

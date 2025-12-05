@@ -25,7 +25,7 @@ export const DiscountArgEntitySelector = ({ entity }: Props) => {
 
   if (!key || !arg) return null;
 
-  const defaultEntities = (defaultValues?.metadata ?? {})[key] as string[];
+  const defaultEntities = ((defaultValues?.metadata ?? {})[key] ?? []) as string[];
 
   if (entity === ArgEntity.Variant)
     return (

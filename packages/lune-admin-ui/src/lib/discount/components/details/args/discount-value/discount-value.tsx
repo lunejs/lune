@@ -23,15 +23,13 @@ export const DiscountValue = ({ argKey }: Props) => {
     formState: { defaultValues }
   } = useDiscountDetailsFormContext();
 
-  const defaultValue = (defaultValues?.metadata ?? {})[argKey] as Value;
+  const defaultValue = (defaultValues?.metadata ?? {})[argKey] as Value | undefined;
 
   const [error, setError] = useState<null | string>(null);
-  const [value, setValue] = useState<Value>(
-    defaultValue ?? {
-      type: 'percentage',
-      value: 0
-    }
-  );
+  const [value, setValue] = useState<Value>({
+    type: defaultValue?.type ?? 'percentage',
+    value: defaultValue?.value ?? 0
+  });
 
   useEffect(() => {
     setFormValue('metadata', {
@@ -45,16 +43,16 @@ export const DiscountValue = ({ argKey }: Props) => {
       <div className="flex flex-col gap-2">
         <Label>Discount value</Label>
         <Select
-          defaultValue={defaultValue.type}
+          defaultValue={value.type}
           onValueChange={type =>
             setValue({
+              type: type as ValueType,
               value:
-                defaultValue.type === type
-                  ? defaultValue.type === 'percentage'
-                    ? defaultValue.value * 100
-                    : defaultValue.value
-                  : 0,
-              type: type as ValueType
+                defaultValue?.type === type
+                  ? defaultValue?.type === 'percentage'
+                    ? defaultValue?.value * 100
+                    : defaultValue?.value
+                  : 0
             })
           }
         >
@@ -75,7 +73,7 @@ export const DiscountValue = ({ argKey }: Props) => {
             <InputGroupInput
               key={1}
               defaultValue={
-                defaultValue.type === 'percentage' ? defaultValue.value * 100 : undefined
+                defaultValue?.type === 'percentage' ? defaultValue?.value * 100 : undefined
               }
               onChange={e => {
                 const input = Number(e.target.value);
@@ -106,7 +104,7 @@ export const DiscountValue = ({ argKey }: Props) => {
             <InputGroupInput
               key={2}
               defaultValue={
-                defaultValue.type === 'fixed' ? LunePrice.format(defaultValue.value) : undefined
+                defaultValue?.type === 'fixed' ? LunePrice.format(defaultValue?.value) : undefined
               }
               onChange={e => {
                 const input = LunePrice.parse(e.target.value);

@@ -31,7 +31,7 @@ export const useDiscountDetailsForm = (
       applicationMode: discount?.applicationMode ?? DiscountApplicationMode.Code,
       code: discount?.code ?? '',
       enabled: discount?.enabled ?? true,
-      startsAt: new Date(discount?.startsAt) ?? new Date(),
+      startsAt: discount?.startsAt ? new Date(discount?.startsAt) : new Date(),
       perCustomerLimit: discount?.perCustomerLimit ?? undefined,
       endsAt: discount?.endsAt ?? undefined,
       metadata: discount?.handler.args
@@ -102,5 +102,5 @@ export type FormValues = z.infer<typeof Schema>;
 export const useDiscountDetailsFormContext = () =>
   useFormContext() as UseFormReturn<FormValues> & {
     handler: DiscountHandler;
-    discount: any | null;
+    discount: CommonDiscountFragment | null;
   };

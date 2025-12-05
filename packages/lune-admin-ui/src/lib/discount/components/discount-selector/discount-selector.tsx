@@ -30,6 +30,7 @@ export const DiscountSelector = ({ children }: Props) => {
           {discountHandlers.map(handler => {
             return (
               <Link
+                key={handler.code}
                 to={`/discounts/new?code=${handler.code}`}
                 className="group py-3 px-6 flex justify-between items-center hover:bg-muted/50"
               >
