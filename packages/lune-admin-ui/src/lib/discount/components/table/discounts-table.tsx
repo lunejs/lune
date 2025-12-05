@@ -7,6 +7,7 @@ import { DataTable } from '@/shared/components/data-table/data-table';
 
 import { DiscountSelector } from '../discount-selector/discount-selector';
 
+import { DiscountsTableActions } from './actions/discount-table-actions';
 import { DiscountsTableColumns } from './columns';
 import { DiscountsTableEmptyState } from './empty-state';
 import { useDiscountsTable } from './use-discounts-table';
@@ -29,9 +30,6 @@ export const DiscountsTable = () => {
       defaultPagination={{ page: 1, pageSize: 10 }}
       actions={
         <>
-          <Button size="sm" variant="outline" className="hidden lg:flex">
-            Import
-          </Button>
           <DiscountSelector>
             <Button size="sm">
               <PlusIcon className="lg:hidden" />
@@ -40,7 +38,7 @@ export const DiscountsTable = () => {
           </DiscountSelector>
         </>
       }
-      // onSelectRender={rows => <ProductTableActions rows={rows} />}
+      onSelectRender={rows => <DiscountsTableActions rows={rows} />}
     />
   );
 };
