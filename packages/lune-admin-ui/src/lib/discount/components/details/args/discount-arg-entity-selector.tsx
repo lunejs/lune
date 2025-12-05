@@ -5,7 +5,12 @@ import { ArgVariantEntitySelectorTable } from '@/shared/components/args/entity-s
 import { useDiscountDetailsFormContext } from '../use-form/use-form';
 
 export const DiscountArgEntitySelector = ({ entity }: Props) => {
-  const { setValue, getValues, handler } = useDiscountDetailsFormContext();
+  const {
+    setValue,
+    getValues,
+    handler,
+    formState: { defaultValues }
+  } = useDiscountDetailsFormContext();
 
   const [key, arg] = findCustomArg(handler.args, entity);
 
@@ -20,8 +25,12 @@ export const DiscountArgEntitySelector = ({ entity }: Props) => {
 
   if (!key || !arg) return null;
 
+  const defaultEntities = (defaultValues?.metadata ?? {})[key] as string[];
+
   if (entity === ArgEntity.Variant)
-    return <ArgVariantEntitySelectorTable defaultSelected={[]} onValueChange={onChange} />;
+    return (
+      <ArgVariantEntitySelectorTable defaultSelected={defaultEntities} onValueChange={onChange} />
+    );
 
   // TODO: add warn log no discount component support
   return null;

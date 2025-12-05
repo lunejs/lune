@@ -36,7 +36,7 @@ type Documents = {
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": typeof types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": typeof types.GetCountriesForSelectorDocument,
     "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": typeof types.CommonDiscountHandlerFragmentDoc,
-    "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonDiscountFragmentDoc,
+    "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonDiscountFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": typeof types.CommonListDiscountFragmentDoc,
     "\n  query GetDiscount($id: ID!) {\n    discount(id: $id) {\n      ...CommonDiscount\n    }\n  }\n": typeof types.GetDiscountDocument,
     "\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n": typeof types.GetAllDiscountsDocument,
@@ -126,7 +126,7 @@ const documents: Documents = {
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": types.GetCountriesForSelectorDocument,
     "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": types.CommonDiscountHandlerFragmentDoc,
-    "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonDiscountFragmentDoc,
+    "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonDiscountFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": types.CommonListDiscountFragmentDoc,
     "\n  query GetDiscount($id: ID!) {\n    discount(id: $id) {\n      ...CommonDiscount\n    }\n  }\n": types.GetDiscountDocument,
     "\n  query GetAllDiscounts($input: DiscountListInput) {\n    discounts(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListDiscount\n      }\n    }\n  }\n": types.GetAllDiscountsDocument,
@@ -299,7 +299,7 @@ export function graphql(source: "\n  fragment CommonDiscountHandler on DiscountH
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n"): (typeof documents)["\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n"];
+export function graphql(source: "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n"): (typeof documents)["\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,6 +1,11 @@
 import { Button, Form } from '@lune/ui';
 
-import { ArgComponent, ArgEntity, type DiscountHandler } from '@/lib/api/types';
+import {
+  ArgComponent,
+  ArgEntity,
+  type CommonDiscountFragment,
+  type DiscountHandler
+} from '@/lib/api/types';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
 import { DiscountArgComponent } from './args/discount-arg-component';
@@ -10,8 +15,8 @@ import { DiscountGeneralCard } from './cards/discount-general-card';
 import { DiscountStatusCard } from './cards/discount-status-card';
 import { useDiscountDetailsForm } from './use-form/use-form';
 
-export const DiscountDetails = ({ handler }: Props) => {
-  const form = useDiscountDetailsForm(handler, null);
+export const DiscountDetails = ({ discount, handler }: Props) => {
+  const form = useDiscountDetailsForm(handler, discount ?? null);
 
   return (
     <Form {...form}>
@@ -42,5 +47,6 @@ export const DiscountDetails = ({ handler }: Props) => {
 };
 
 type Props = {
+  discount?: CommonDiscountFragment | null;
   handler: DiscountHandler;
 };

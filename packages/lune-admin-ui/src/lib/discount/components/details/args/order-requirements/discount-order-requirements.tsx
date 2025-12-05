@@ -18,13 +18,21 @@ import { FormMessages } from '@/shared/forms/form-messages';
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 
 export const DiscountOrderRequirements = ({ argKey }: Props) => {
-  const { setValue: setFormValue, getValues } = useDiscountDetailsFormContext();
+  const {
+    setValue: setFormValue,
+    getValues,
+    formState: { defaultValues }
+  } = useDiscountDetailsFormContext();
+
+  const defaultValue = (defaultValues?.metadata ?? {})[argKey] as Value;
 
   const [error, setError] = useState<null | string>(null);
-  const [value, setValue] = useState<Value>({
-    type: ValueType.None,
-    value: 0
-  });
+  const [value, setValue] = useState<Value>(
+    defaultValue ?? {
+      type: ValueType.None,
+      value: 0
+    }
+  );
 
   useEffect(() => {
     setFormValue('metadata', {
@@ -41,8 +49,18 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
 
       <CardContent className="flex gap-4">
         <RadioGroup
-          onValueChange={(type: ValueType) => setValue({ ...value, type })}
-          defaultValue={ValueType.None}
+          onValueChange={(type: ValueType) =>
+            setValue({
+              value:
+                defaultValue.type == type
+                  ? defaultValue.value
+                  : type === ValueType.None
+                    ? 0
+                    : value.value,
+              type
+            })
+          }
+          defaultValue={defaultValue.type}
           className={'flex flex-col gap-4'}
         >
           <div className="flex flex-col gap-2">
@@ -64,6 +82,11 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
             {value.type === ValueType.MinimumAmount && (
               <>
                 <Input
+                  defaultValue={
+                    defaultValue.type === ValueType.MinimumAmount
+                      ? LunePrice.format(defaultValue.value)
+                      : undefined
+                  }
                   placeholder="$0.00"
                   onChange={e => {
                     const input = LunePrice.parse(e.target.value);
@@ -91,6 +114,9 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
             {value.type === ValueType.MinimumItems && (
               <>
                 <Input
+                  defaultValue={
+                    defaultValue.type === ValueType.MinimumItems ? defaultValue.value : undefined
+                  }
                   placeholder="0"
                   type="number"
                   onChange={e => {

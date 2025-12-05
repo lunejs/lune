@@ -8,6 +8,7 @@ import { CollectionDetailsPage } from '@/lib/collections/pages/collection-detail
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
+import { DiscountDetailsPage } from '@/lib/discount/pages/discount-details-page';
 import { DiscountsPage } from '@/lib/discount/pages/discounts-page';
 import { NewDiscountPage } from '@/lib/discount/pages/new-discount-page';
 import LocationDetailsPage from '@/lib/locations/pages/location-details-page';
@@ -81,6 +82,7 @@ export const App = () => {
 
                   <Route path="/discounts" element={<DiscountsPage />} />
                   <Route path="/discounts/new" element={<NewDiscountPage />} />
+                  <Route path="/discounts/:id" element={<DiscountDetailsPage />} />
                 </Route>
 
                 <Route element={<SettingsLayout />}>

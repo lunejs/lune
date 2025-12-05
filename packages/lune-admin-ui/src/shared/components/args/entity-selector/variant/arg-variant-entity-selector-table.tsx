@@ -11,7 +11,7 @@ export const ArgVariantEntitySelectorTable = ({ onValueChange, defaultSelected }
   const { isLoading, products: allProducts } = useGetProducts();
 
   const [selected, setSelected] = useState<string[]>(defaultSelected);
-  const [value, setValue] = useState<string[]>([]);
+  const [value, setValue] = useState<string[]>(defaultSelected);
 
   const products = allProducts.filter(product =>
     product.variants.items.some(v => selected.includes(v.id))

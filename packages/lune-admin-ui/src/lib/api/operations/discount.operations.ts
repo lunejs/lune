@@ -19,6 +19,7 @@ export const COMMON_DISCOUNT_FRAGMENT = graphql(`
     startsAt
     endsAt
     enabled
+    perCustomerLimit
     handler {
       code
       args
