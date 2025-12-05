@@ -7,6 +7,7 @@ import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetProducts } from '../../hooks/use-get-products';
+import { useProductsCount } from '../../hooks/use-products-count';
 
 import type { TableProduct } from './products-table';
 
@@ -20,8 +21,9 @@ export const useProductsTable = () => {
   const [status, setStatus] = useState<boolean | undefined>();
   const [archived, setArchived] = useState<boolean | undefined>();
 
+  const { isLoading: isLoadingCount, count } = useProductsCount();
+
   const {
-    isFetched,
     isLoading,
     isRefetching,
     products: allProducts,
@@ -75,19 +77,9 @@ export const useProductsTable = () => {
     [allProducts]
   );
 
-  const hasFiltersApplied = useMemo(() => {
-    return (
-      !!search ||
-      page !== DEFAULT_PAGE ||
-      size !== DEFAULT_PAGE_SIZE ||
-      status !== undefined ||
-      archived !== undefined
-    );
-  }, [search, page, size, status, archived]);
-
   const shouldRenderEmptyState = useMemo(() => {
-    return isFetched && !isLoading && !hasFiltersApplied && !products.length;
-  }, [isFetched, isLoading, hasFiltersApplied, products.length]);
+    return !isLoading && !isLoadingCount && !count;
+  }, [isLoading, isLoadingCount, count]);
 
   return {
     onUpdate,
