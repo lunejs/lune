@@ -10,11 +10,15 @@ type InStorePickupFulfillment {
   """
   Date and time when the order is ready for pickup
   """
-  readyAt: Date!
+  readyAt: Date
   """
   Date and time when the order was picked up
   """
-  pickedUpAt: Date!
+  pickedUpAt: Date
+  """
+  Address location
+  """
+  location: Location!
 }
 
 type InStorePickupFulfillmentAddress {

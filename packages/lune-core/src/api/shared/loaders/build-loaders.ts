@@ -10,6 +10,7 @@ import { createCollectionProductsLoader } from './collection/collection-product.
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
+import { createFulfillmentLocationLoader } from './fulfillment/fulfillment-location.loader';
 import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
 import { createLocationCountryLoader } from './location/location-country.loader';
 import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
@@ -75,7 +76,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     fulfillment: {
       details: createFulfillmentDetailsLoader(trx),
-      shippingMethod: createFulfillmentShippingMethodLoader(trx)
+      shippingMethod: createFulfillmentShippingMethodLoader(trx),
+      location: createFulfillmentLocationLoader(trx)
     },
     zone: {
       states: createZoneStatesLoader(trx),

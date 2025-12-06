@@ -79,7 +79,7 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
     } = res.body.data;
 
     expect(order.id).toBe(OrderConstants.WithShippingAddressID);
-    expect(order.total).toBe(LunePrice.toCent(170));
+    expect(order.total).toBe(LunePrice.toCent(170)); // $120 subtotal + $50 shipping
     expect(order.subtotal).toBe(LunePrice.toCent(120));
 
     const { fulfillment } = order;
@@ -95,6 +95,7 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
   });
 
   test('adds shipping fulfillment to order with already a fulfillment', async () => {
+    // Verify order already has a fulfillment (SHIPPING type)
     const fulfillmentAlreadyCreated = await testHelper
       .getQueryBuilder()<FulfillmentTable>(Tables.Fulfillment)
       .where({ order_id: OrderConstants.WithFulfillmentID })
@@ -121,12 +122,14 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
     } = res.body.data;
 
     expect(order.id).toBe(OrderConstants.WithFulfillmentID);
-    expect(order.total).toBe(LunePrice.toCent(350));
+    expect(order.total).toBe(LunePrice.toCent(350)); // $300 subtotal + $100 express shipping (updated)
 
+    // Verify fulfillment was updated with new shipping method and amount
     const { fulfillment } = order;
     expect(fulfillment.type).toBe(FulfillmentType.Shipping);
-    expect(fulfillment.amount).toBe(LunePrice.toCent(100));
+    expect(fulfillment.amount).toBe(LunePrice.toCent(100)); // Express is more expensive than Standard
 
+    // Verify shipping method was updated
     const { details } = fulfillment;
     expect(details.method).toBe('Express International');
 
@@ -134,17 +137,19 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
     expect(shippingMethod.id).toBe(ShippingMethodConstants.ExpressInternationalID);
     expect(shippingMethod.name).toBe('Express International');
 
+    // Verify DB: still only one fulfillment exists (updated, not created new)
     const orderFulfillments = await testHelper
       .getQueryBuilder()<FulfillmentTable>(Tables.Fulfillment)
       .where({ order_id: OrderConstants.WithFulfillmentID });
 
-    expect(orderFulfillments).toHaveLength(1);
+    expect(orderFulfillments).toHaveLength(1); // Same fulfillment, just updated
 
+    // Verify DB: still only one shipping_fulfillment record (updated, not created new)
     const orderShippingFulfillments = await testHelper
       .getQueryBuilder()<ShippingFulfillmentTable>(Tables.ShippingFulfillment)
       .where({ fulfillment_id: orderFulfillments[0].id });
 
-    expect(orderShippingFulfillments).toHaveLength(1);
+    expect(orderShippingFulfillments).toHaveLength(1); // Same record, just updated
   });
 
   test('replaces in-store pickup fulfillment with shipping fulfillment', async () => {
@@ -158,6 +163,7 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
       .where({ fulfillment_id: fulfillmentAlreadyCreated?.id })
       .first();
 
+    // Verify initial state: order has IN_STORE_PICKUP fulfillment
     expect(fulfillmentAlreadyCreated).toBeDefined();
     expect(fulfillmentAlreadyCreated?.type).toBe(FulfillmentType.InStorePickup);
     expect(inStorePickupFulfillmentBefore).toBeDefined();
@@ -181,40 +187,44 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
     } = res.body.data;
 
     expect(order.id).toBe(OrderConstants.WithInStorePickupFulfillmentID);
-    expect(order.total).toBe(LunePrice.toCent(250));
+    expect(order.total).toBe(LunePrice.toCent(250)); // $200 subtotal + $50 shipping
 
+    // Verify fulfillment type changed to SHIPPING
     const { fulfillment } = order;
     expect(fulfillment.type).toBe(FulfillmentType.Shipping);
     expect(fulfillment.amount).toBe(LunePrice.toCent(50));
 
+    // Verify shipping fulfillment details are present
     const { details } = fulfillment;
     expect(details.method).toBe('Standard International');
+    expect(details.shippingMethod).toBeDefined();
+    expect(details.location).toBeUndefined(); // Should not have InStorePickup fields
 
     const { shippingMethod } = details;
     expect(shippingMethod.id).toBe(ShippingMethodConstants.StandardInternationalID);
     expect(shippingMethod.name).toBe('Standard International');
 
-    // Verify that only one fulfillment exists for the order
+    // Verify DB: only one fulfillment exists for the order
     const orderFulfillments = await testHelper
       .getQueryBuilder()<FulfillmentTable>(Tables.Fulfillment)
       .where({ order_id: OrderConstants.WithInStorePickupFulfillmentID });
 
-    expect(orderFulfillments).toHaveLength(1);
-    expect(orderFulfillments[0].type).toBe(FulfillmentType.Shipping);
+    expect(orderFulfillments).toHaveLength(1); // Only one fulfillment record
+    expect(orderFulfillments[0].type).toBe(FulfillmentType.Shipping); // Type updated to SHIPPING
 
-    // Verify that shipping fulfillment was created
+    // Verify DB: shipping_fulfillment record was created
     const orderShippingFulfillments = await testHelper
       .getQueryBuilder()<ShippingFulfillmentTable>(Tables.ShippingFulfillment)
       .where({ fulfillment_id: orderFulfillments[0].id });
 
-    expect(orderShippingFulfillments).toHaveLength(1);
+    expect(orderShippingFulfillments).toHaveLength(1); // New shipping_fulfillment created
 
-    // Verify that in-store pickup fulfillment was deleted
+    // Verify DB: in_store_pickup_fulfillment record was deleted
     const inStorePickupFulfillmentAfter = await testHelper
       .getQueryBuilder()<InStorePickupFulfillmentTable>(Tables.InStorePickupFulfillment)
       .where({ id: inStorePickupFulfillmentBefore?.id });
 
-    expect(inStorePickupFulfillmentAfter).toHaveLength(0);
+    expect(inStorePickupFulfillmentAfter).toHaveLength(0); // Old pickup fulfillment deleted
   });
 
   test('returns MISSING_SHIPPING_ADDRESS error when provided order has no shipping address', async () => {
@@ -288,8 +298,9 @@ describe('addShippingFulfillmentToOrder - Mutation', () => {
 
     const [error] = apiErrors;
 
-    expect(error.code).toBe('INVALID_SHIPPING_METHOD');
-    expect(order).toBeNull();
+    // Verify error is returned and order is null
+    expect(error.code).toBe('INVALID_SHIPPING_METHOD'); // Shipping method not available for this address
+    expect(order).toBeNull(); // No order returned on error
   });
 });
 
@@ -322,6 +333,17 @@ const ADD_SHIPPING_FULFILLMENT_TO_ORDER_MUTATION = /* GraphQL */ `
               id
               method
               shippingMethod {
+                id
+                name
+              }
+            }
+            ... on InStorePickupFulfillment {
+              id
+              address {
+                name
+                city
+              }
+              location {
                 id
                 name
               }
