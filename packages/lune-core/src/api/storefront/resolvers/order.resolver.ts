@@ -7,6 +7,7 @@ import type {
   MutationAddDiscountCodeToOrderArgs,
   MutationAddInStorePickupFulfillmentToOrderArgs,
   MutationAddLineToOrderArgs,
+  MutationAddPaymentToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
   MutationAddShippingFulfillmentToOrderArgs,
   MutationRemoveOrderLineArgs,
@@ -114,6 +115,18 @@ async function addDiscountCodeToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addPaymentToOrder(
+  _,
+  { orderId, input }: MutationAddPaymentToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addPayment(orderId, input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order
@@ -126,6 +139,7 @@ export const OrderResolver: GraphqlApiResolver = {
     addShippingAddressToOrder,
     addShippingFulfillmentToOrder,
     addInStorePickupFulfillmentToOrder,
-    addDiscountCodeToOrder
+    addDiscountCodeToOrder,
+    addPaymentToOrder
   }
 };

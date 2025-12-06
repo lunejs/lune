@@ -56,6 +56,10 @@ export interface Payment extends LuneEntity {
    * Payment method used for this payment
    */
   paymentMethodId: ID;
+  /**
+   * Order this payment belongs to
+   */
+  orderId: ID;
 }
 
 export interface PaymentTable extends LuneTable {
@@ -64,5 +68,6 @@ export interface PaymentTable extends LuneTable {
   method: string;
   state: PaymentState;
   payment_method_id: ID;
+  order_id: ID;
   shop_id: string;
 }

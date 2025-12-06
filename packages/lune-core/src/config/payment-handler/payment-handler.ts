@@ -94,7 +94,7 @@ export type CreatePaymentResult =
        * ```json
        * apiErrors: [
        *   {
-       *     code: 'PAYMENT_DECLINED',
+       *     code: 'PAYMENT_FAILED',
        *     message: 'error from payment.error'
        *   }
        * ]

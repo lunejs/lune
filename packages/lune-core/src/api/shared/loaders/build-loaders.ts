@@ -23,6 +23,7 @@ import { createOptionValuesTranslationsLoader } from './option-value/option-valu
 import { createOrderCustomersLoader } from './order/order-customers.loader';
 import { createOrderFulfillmentsLoader } from './order/order-fulfillments.loader';
 import { createOrderLineLoader } from './order/order-lines.loader';
+import { createOrderPaymentsLoader } from './order/order-payments.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
 import { createProductOptionsLoader } from './product/product-options.loader';
@@ -69,7 +70,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     order: {
       lines: createOrderLineLoader(trx),
       customers: createOrderCustomersLoader(trx),
-      fulfillment: createOrderFulfillmentsLoader(trx)
+      fulfillment: createOrderFulfillmentsLoader(trx),
+      payments: createOrderPaymentsLoader(trx)
     },
     orderLine: {
       variant: createOrderLineVariantsLoader(trx)

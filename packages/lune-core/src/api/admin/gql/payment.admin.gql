@@ -34,25 +34,12 @@ enum PaymentState {
 
 union PaymentDetails = PaymentFailure | PaymentRejection | PaymentCancellation
 
-"""
-A payment is a transaction between a customer and a shop, is assigned to an order
-"""
-type Payment implements Node {
-  id: ID!
-  createdAt: Date!
+extend type Payment {
   updatedAt: Date!
   """
   The transaction ID from the payment provider (nullable if not processed yet)
   """
   transactionId: String
-  """
-  The total amount of the payment
-  """
-  amount: Int!
-  """
-  The payment method used (e.g., 'stripe', 'paypal')
-  """
-  method: String!
   """
   Payment's state
   """
@@ -61,7 +48,6 @@ type Payment implements Node {
   Payment method used for this payment
   """
   paymentMethod: PaymentMethod!
-
   """
   Union type which will store details of the payment depending on the state
   """

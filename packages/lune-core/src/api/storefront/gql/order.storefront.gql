@@ -10,6 +10,8 @@ type Mutation {
     orderId: ID!
     input: AddInStorePickupFulfillmentInput!
   ): OrderResult!
+  addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
+
   addDiscountCodeToOrder(orderId: ID!, code: String!): OrderResult!
 }
 
@@ -53,6 +55,10 @@ input AddInStorePickupFulfillmentInput {
   locationId: ID!
 }
 
+input AddPaymentToOrderInput {
+  methodId: ID!
+}
+
 " Results "
 type OrderResult {
   order: Order
@@ -74,4 +80,6 @@ enum OrderErrorCode {
   MISSING_SHIPPING_ADDRESS
   DISCOUNT_CODE_NOT_APPLICABLE
   DISCOUNT_HANDLER_NOT_FOUND
+  PAYMENT_HANDLER_NOT_FOUND
+  PAYMENT_FAILED
 }

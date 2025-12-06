@@ -92,6 +92,10 @@ type Order implements Node {
   Order's fulfillment
   """
   fulfillment: Fulfillment
+  """
+  Orders's payment
+  """
+  payments: [Payment]
 }
 
 type Query {

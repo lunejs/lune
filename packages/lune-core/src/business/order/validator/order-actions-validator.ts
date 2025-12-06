@@ -1,3 +1,4 @@
+import type { ID } from '@/persistence/entities/entity';
 import type { Order } from '@/persistence/entities/order';
 import { OrderState } from '@/persistence/entities/order';
 
@@ -32,5 +33,9 @@ export class OrderActionsValidator {
 
   canAddInStorePickupFulfillment(state: OrderState) {
     return state === OrderState.Modifying;
+  }
+
+  canAddPayment(order: Order, fulfillmentId: ID | undefined) {
+    return !!order.customerId && !!fulfillmentId && order.state === OrderState.Modifying;
   }
 }

@@ -84,3 +84,21 @@ export class DiscountHandlerNotFound extends OrderErrorResult {
     super(OrderErrorCode.DiscountHandlerNotFound, 'Discount handler not found');
   }
 }
+
+/**
+ * Error thrown when the payment handler is not found in lune config
+ */
+export class PaymentHandlerNotFound extends OrderErrorResult {
+  constructor() {
+    super(OrderErrorCode.PaymentHandlerNotFound, 'Payment handler not found in configuration');
+  }
+}
+
+/**
+ * Error thrown when payment processing fails
+ */
+export class PaymentFailedError extends OrderErrorResult {
+  constructor(message: string) {
+    super(OrderErrorCode.PaymentFailed, message);
+  }
+}

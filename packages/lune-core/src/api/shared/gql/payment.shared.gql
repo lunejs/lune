@@ -1,0 +1,15 @@
+"""
+A payment is a transaction between a customer and a shop, is assigned to an order
+"""
+type Payment {
+  id: ID!
+  createdAt: Date!
+  """
+  The total amount of the payment
+  """
+  amount: Int!
+  """
+  The payment method used (e.g., 'stripe', 'paypal')
+  """
+  method: String!
+}

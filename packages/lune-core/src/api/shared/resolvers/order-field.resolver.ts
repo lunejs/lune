@@ -18,5 +18,10 @@ export const CommonOrderFieldResolver = {
     const fulfillment = await ctx.loaders.order.fulfillment.load(parent.id);
 
     return fulfillment;
+  },
+  payments: async (parent: Order, _, ctx: ExecutionContext) => {
+    const payments = await ctx.loaders.order.payments.load(parent.id);
+
+    return payments;
   }
 };

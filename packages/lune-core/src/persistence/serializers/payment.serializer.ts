@@ -12,7 +12,8 @@ export class PaymentSerializer extends Serializer<Payment, PaymentTable> {
       ['amount', 'amount'],
       ['method', 'method'],
       ['state', 'state'],
-      ['payment_method_id', 'paymentMethodId']
+      ['payment_method_id', 'paymentMethodId'],
+      ['order_id', 'orderId']
     ]);
   }
 }

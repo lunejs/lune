@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddCustomerToOrderInput,
   AddInStorePickupFulfillmentInput,
+  AddPaymentToOrderInput,
   AddShippingFulfillmentInput,
   CreateOrderAddressInput,
   CreateOrderLineInput,
@@ -19,6 +20,8 @@ import { ApplicationLevel } from '@/persistence/entities/discount';
 import type { ID } from '@/persistence/entities/entity';
 import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { Order } from '@/persistence/entities/order';
+import { OrderState } from '@/persistence/entities/order';
+import { PaymentState } from '@/persistence/entities/payment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
@@ -28,6 +31,8 @@ import type { LocationRepository } from '@/persistence/repositories/location-rep
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
+import type { PaymentMethodRepository } from '@/persistence/repositories/payment-method-repository';
+import type { PaymentRepository } from '@/persistence/repositories/payment-repository';
 import type { ShippingFulfillmentRepository } from '@/persistence/repositories/shipping-fulfillment-repository';
 import type { ShippingMethodRepository } from '@/persistence/repositories/shipping-method-repository';
 import type { StateRepository } from '@/persistence/repositories/state-repository';
@@ -44,7 +49,9 @@ import {
   InvalidShippingMethodError,
   MissingShippingAddress,
   NotEnoughStockError,
-  OrderErrorResult
+  OrderErrorResult,
+  PaymentFailedError,
+  PaymentHandlerNotFound
 } from './order.errors';
 
 export class OrderService {
@@ -63,6 +70,8 @@ export class OrderService {
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
   private readonly locationRepository: LocationRepository;
+  private readonly paymentRepository: PaymentRepository;
+  private readonly paymentMethodRepository: PaymentMethodRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -80,6 +89,8 @@ export class OrderService {
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
     this.locationRepository = ctx.repositories.location;
+    this.paymentRepository = ctx.repositories.payment;
+    this.paymentMethodRepository = ctx.repositories.paymentMethod;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -491,6 +502,104 @@ export class OrderService {
     });
 
     return this.applyAutomaticDiscounts(orderUpdated);
+  }
+
+  async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
+    // 1. Fetch orden
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    const fulfillment = await this.fulfillmentRepository.findOne({
+      where: { orderId: order.id },
+      fields: ['id']
+    });
+
+    // 2. Validar estado
+    if (!this.validator.canAddPayment(order, fulfillment?.id)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    // 5. Validar payment method
+    const paymentMethod = await this.paymentMethodRepository.findOneOrThrow({
+      where: { id: input.methodId }
+    });
+
+    // 6. Obtener handler
+    const handler = getConfig().payments.handlers.find(h => h.code === paymentMethod.handler.code);
+
+    if (!handler) {
+      return new PaymentHandlerNotFound();
+    }
+
+    // 7. Validar stock
+    const orderLines = await this.lineRepository.findMany({ where: { orderId } });
+
+    const variants = await Promise.all(
+      orderLines.map(line =>
+        this.variantRepository.findOneOrThrow({ where: { id: line.variantId } })
+      )
+    );
+
+    const variantsWithNotEnoughStock = orderLines.filter(line => {
+      const variant = variants.find(v => v.id === line.variantId);
+
+      // could not happen
+      if (!variant) return false;
+
+      return variant.stock < line.quantity;
+    });
+
+    if (variantsWithNotEnoughStock.length > 0) {
+      return new NotEnoughStockError(variantsWithNotEnoughStock.map(v => v.id));
+    }
+
+    // 8. Ejecutar handler
+    const paymentResult = await handler.createPayment(order, order.total, this.ctx);
+
+    // 9. Manejar fallo
+    if (paymentResult.status === PaymentState.Failed) {
+      return new PaymentFailedError(paymentResult.error);
+    }
+
+    // 10. Decrementar stock
+    await Promise.all(
+      orderLines.map(line => {
+        const variant = variants.find(v => v.id === line.variantId);
+
+        if (!variant) return null;
+
+        this.variantRepository.update({
+          where: { id: variant.id },
+          data: {
+            stock: variant.stock - line.quantity
+          }
+        });
+      })
+    );
+
+    // 11. Crear payment
+    await this.paymentRepository.create({
+      orderId,
+      transactionId: 'transactionId' in paymentResult ? paymentResult.transactionId : null,
+      amount: paymentResult.amount,
+      method: paymentMethod.name,
+      state: paymentResult.status,
+      paymentMethodId: paymentMethod.id
+    });
+
+    // 12. Generar order code
+    const placedCount = await this.repository.countPlaced();
+
+    // 13. Actualizar orden a PLACED
+    const orderUpdated = await this.repository.update({
+      where: { id: orderId },
+      data: {
+        state: OrderState.Placed,
+        code: String(placedCount),
+        placedAt: new Date()
+      }
+    });
+
+    return orderUpdated;
   }
 
   async addDiscountCode(orderId: ID, code: string) {
