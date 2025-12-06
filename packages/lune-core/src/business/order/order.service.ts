@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddCustomerToOrderInput,
+  AddInStorePickupFulfillmentInput,
   AddShippingFulfillmentInput,
   CreateOrderAddressInput,
   CreateOrderLineInput,
@@ -23,6 +24,7 @@ import type { CustomerRepository } from '@/persistence/repositories/customer-rep
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
+import type { LocationRepository } from '@/persistence/repositories/location-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -60,6 +62,7 @@ export class OrderService {
   private readonly inStorePickupFulfillmentRepository: InStorePickupFulfillmentRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
+  private readonly locationRepository: LocationRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator();
@@ -76,6 +79,7 @@ export class OrderService {
     this.inStorePickupFulfillmentRepository = ctx.repositories.inStorePickupFulfillment;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
+    this.locationRepository = ctx.repositories.location;
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {
@@ -355,6 +359,14 @@ export class OrderService {
 
     const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
 
+    if (orderFulfillment) {
+      if (orderFulfillment.type === FulfillmentType.IN_STORE_PICKUP) {
+        await this.inStorePickupFulfillmentRepository.remove({
+          where: { fulfillmentId: orderFulfillment.id }
+        });
+      }
+    }
+
     const fulfillment = await this.fulfillmentRepository.upsert({
       where: { id: orderFulfillment?.id },
       create: {
@@ -369,14 +381,6 @@ export class OrderService {
         type: FulfillmentType.SHIPPING
       }
     });
-
-    if (orderFulfillment) {
-      if (orderFulfillment.type === FulfillmentType.IN_STORE_PICKUP) {
-        await this.inStorePickupFulfillmentRepository.remove({
-          where: { fulfillmentId: orderFulfillment.id }
-        });
-      }
-    }
 
     await this.shippingFulfillmentRepository.upsert({
       where: { fulfillmentId: orderFulfillment?.id },
@@ -395,6 +399,94 @@ export class OrderService {
       where: { id: orderId },
       data: {
         total: order.total - (orderFulfillment?.total ?? 0) + shippingPrice
+      }
+    });
+
+    return this.applyAutomaticDiscounts(orderUpdated);
+  }
+
+  async addInStorePickupFulfillment(orderId: ID, input: AddInStorePickupFulfillmentInput) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!this.validator.canAddInStorePickupFulfillment(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const location = await this.locationRepository.findOneOrThrow({
+      where: { id: input.locationId }
+    });
+
+    const [country, state] = await Promise.all([
+      this.countryRepository.findOneOrThrow({ where: { id: location.countryId } }),
+      this.stateRepository.findOneOrThrow({ where: { id: location.stateId } })
+    ]);
+
+    const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+
+    if (orderFulfillment) {
+      if (orderFulfillment.type === FulfillmentType.SHIPPING) {
+        await this.shippingFulfillmentRepository.remove({
+          where: { fulfillmentId: orderFulfillment.id }
+        });
+      }
+    }
+
+    const fulfillment = await this.fulfillmentRepository.upsert({
+      where: { id: orderFulfillment?.id },
+      create: {
+        orderId,
+        amount: 0,
+        total: 0,
+        type: FulfillmentType.IN_STORE_PICKUP
+      },
+      update: {
+        amount: 0,
+        total: 0,
+        type: FulfillmentType.IN_STORE_PICKUP
+      }
+    });
+
+    await this.inStorePickupFulfillmentRepository.upsert({
+      where: { fulfillmentId: orderFulfillment?.id },
+      create: {
+        fulfillmentId: fulfillment.id,
+        locationId: input.locationId,
+        address: {
+          name: location.name,
+          streetLine1: location.streetLine1,
+          streetLine2: location.streetLine2,
+          city: location.city,
+          postalCode: location.postalCode,
+          phoneNumber: location.phoneNumber,
+          references: location.references,
+          country: country.name,
+          countryCode: country.code,
+          state: state.name,
+          stateCode: state.code
+        }
+      },
+      update: {
+        locationId: input.locationId,
+        address: {
+          name: location.name,
+          streetLine1: location.streetLine1,
+          streetLine2: location.streetLine2,
+          city: location.city,
+          postalCode: location.postalCode,
+          phoneNumber: location.phoneNumber,
+          references: location.references,
+          country: country.name,
+          countryCode: country.code,
+          state: state.name,
+          stateCode: state.code
+        }
+      }
+    });
+
+    const orderUpdated = await this.repository.update({
+      where: { id: orderId },
+      data: {
+        total: order.total - (orderFulfillment?.total ?? 0)
       }
     });
 

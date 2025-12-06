@@ -29,4 +29,8 @@ export class OrderActionsValidator {
   canAddShippingFulfillment(order: Order) {
     return !!order.shippingAddress && order.state === OrderState.Modifying;
   }
+
+  canAddInStorePickupFulfillment(state: OrderState) {
+    return state === OrderState.Modifying;
+  }
 }

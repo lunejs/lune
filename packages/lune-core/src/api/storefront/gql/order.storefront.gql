@@ -6,6 +6,10 @@ type Mutation {
   addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
   addShippingAddressToOrder(orderId: ID!, input: CreateOrderAddressInput!): OrderResult!
   addShippingFulfillmentToOrder(orderId: ID!, input: AddShippingFulfillmentInput!): OrderResult!
+  addInStorePickupFulfillmentToOrder(
+    orderId: ID!
+    input: AddInStorePickupFulfillmentInput!
+  ): OrderResult!
   addDiscountCodeToOrder(orderId: ID!, code: String!): OrderResult!
 }
 
@@ -43,6 +47,10 @@ input CreateOrderAddressInput {
 
 input AddShippingFulfillmentInput {
   methodId: ID!
+}
+
+input AddInStorePickupFulfillmentInput {
+  locationId: ID!
 }
 
 " Results "

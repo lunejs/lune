@@ -6,7 +6,7 @@ type InStorePickupFulfillment {
   """
   Address information stored as JSON
   """
-  address: JSON!
+  address: InStorePickupFulfillmentAddress!
   """
   Date and time when the order is ready for pickup
   """
@@ -15,4 +15,51 @@ type InStorePickupFulfillment {
   Date and time when the order was picked up
   """
   pickedUpAt: Date!
+}
+
+type InStorePickupFulfillmentAddress {
+  """
+  Name of the location
+  """
+  name: String!
+  """
+  Street address line 1
+  """
+  streetLine1: String!
+  """
+  Street address line 2 (optional)
+  """
+  streetLine2: String
+  """
+  Location's city
+  """
+  city: String!
+  """
+  Postal/ZIP code
+  """
+  postalCode: String!
+  """
+  Location's phone number
+  """
+  phoneNumber: String!
+  """
+  Additional references or instructions for finding the location
+  """
+  references: String
+  """
+  Address's country
+  """
+  country: String!
+  """
+  Address's country code
+  """
+  countryCode: String!
+  """
+  Address's state/province/region
+  """
+  state: String!
+  """
+  Address's state/province/region code
+  """
+  stateCode: String!
 }

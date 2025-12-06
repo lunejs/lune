@@ -5,6 +5,7 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
   MutationAddCustomerToOrderArgs,
   MutationAddDiscountCodeToOrderArgs,
+  MutationAddInStorePickupFulfillmentToOrderArgs,
   MutationAddLineToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
   MutationAddShippingFulfillmentToOrderArgs,
@@ -89,6 +90,18 @@ async function addShippingFulfillmentToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
+async function addInStorePickupFulfillmentToOrder(
+  _,
+  { orderId, input }: MutationAddInStorePickupFulfillmentToOrderArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.addInStorePickupFulfillment(orderId, input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+}
+
 async function addDiscountCodeToOrder(
   _,
   { orderId, code }: MutationAddDiscountCodeToOrderArgs,
@@ -112,6 +125,7 @@ export const OrderResolver: GraphqlApiResolver = {
     addCustomerToOrder,
     addShippingAddressToOrder,
     addShippingFulfillmentToOrder,
+    addInStorePickupFulfillmentToOrder,
     addDiscountCodeToOrder
   }
 };

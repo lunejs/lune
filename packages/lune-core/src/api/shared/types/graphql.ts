@@ -28,6 +28,10 @@ export type AddCustomerToOrderInput = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AddInStorePickupFulfillmentInput = {
+  locationId: Scalars['ID']['input'];
+};
+
 export type AddProductTranslationInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   locale: Locale;
@@ -628,6 +632,7 @@ export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addCustomerToOrder: OrderResult;
   addDiscountCodeToOrder: OrderResult;
+  addInStorePickupFulfillmentToOrder: OrderResult;
   addLineToOrder: OrderResult;
   addProductTranslation: ProductTranslation;
   addShippingAddressToOrder: OrderResult;
@@ -697,6 +702,12 @@ export type MutationAddCustomerToOrderArgs = {
 
 export type MutationAddDiscountCodeToOrderArgs = {
   code: Scalars['String']['input'];
+  orderId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddInStorePickupFulfillmentToOrderArgs = {
+  input: AddInStorePickupFulfillmentInput;
   orderId: Scalars['ID']['input'];
 };
 
@@ -2100,6 +2111,7 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
+  AddInStorePickupFulfillmentInput: AddInStorePickupFulfillmentInput;
   AddProductTranslationInput: AddProductTranslationInput;
   AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: ResolverTypeWrapper<Address>;
@@ -2269,6 +2281,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
+  AddInStorePickupFulfillmentInput: AddInStorePickupFulfillmentInput;
   AddProductTranslationInput: AddProductTranslationInput;
   AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: Address;
@@ -2675,6 +2688,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
   addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
+  addInStorePickupFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddInStorePickupFulfillmentToOrderArgs, 'input' | 'orderId'>>;
   addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
