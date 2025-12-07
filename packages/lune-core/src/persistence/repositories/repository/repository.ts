@@ -51,7 +51,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
   async findOneOrThrow(input: FindOneOptions<T>): Promise<T> {
     const result = await this.findOne(input);
 
-    if (!result) throw new Error(`Entity not found in ${this.tableName}`);
+    if (!result) throw new RepositoryError(`Entity not found in ${this.tableName}`);
 
     return result;
   }

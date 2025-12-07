@@ -95,7 +95,7 @@ type Order implements Node {
   """
   Orders's payment
   """
-  payments: [Payment]
+  payments: [Payment!]!
 }
 
 type Query {

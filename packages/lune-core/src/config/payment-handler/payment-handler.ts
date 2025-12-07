@@ -2,9 +2,27 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { Order } from '@/persistence/entities/order';
 import type { PaymentState } from '@/persistence/entities/payment';
 
-import type { Args } from '../common/args.config';
+import type { Args, InferArgs } from '../common/args.config';
 
-export interface PaymentHandler {
+/**
+ * @description
+ * Creates payment handler
+ */
+export class PaymentHandler<TArgs extends Args = Args> {
+  name: string;
+  code: string;
+  args: TArgs;
+  createPayment: Config<TArgs>['createPayment'];
+
+  constructor(config: Config<TArgs>) {
+    this.name = config.name;
+    this.code = config.code;
+    this.args = config.args;
+    this.createPayment = config.createPayment;
+  }
+}
+
+type Config<TArgs> = {
   /**
    * @description
    * This is used to display the provider name to the administrator.
@@ -16,7 +34,6 @@ export interface PaymentHandler {
    * ```
    */
   name: string;
-
   /**
    * @description
    * This is used to identify the provider and should be unique. it's mainly used in admin ui but also it can be used in the storefront,
@@ -31,14 +48,12 @@ export interface PaymentHandler {
    * @waring this code is send to your storefront.
    */
   code: string;
-
   /**
    * @description
    * This is used to display inputs in the admin UI and get their values, then these values are passed to the calculator.
    * This could be useful for an specific shipping calculator that needs some external configuration like a shipping calculator based on a static price.
    */
-  args: Args;
-
+  args: TArgs;
   /**
    * @description
    * This method is called when the addPaymentToOrder mutation is called.
@@ -47,9 +62,10 @@ export interface PaymentHandler {
   createPayment(
     order: Order,
     totalAmount: number,
+    args: InferArgs<TArgs>,
     ctx: ExecutionContext
   ): Promise<CreatePaymentResult>;
-}
+};
 
 export type CreatePaymentResult =
   | {

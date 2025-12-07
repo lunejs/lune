@@ -9,5 +9,6 @@ export const DefaultPaymentFixture = (): PaymentTable => ({
   state: 'PENDING' as any,
   amount: 100_00,
   method: 'stripe',
+  order_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

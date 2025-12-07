@@ -505,7 +505,6 @@ export class OrderService {
   }
 
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
-    // 1. Fetch orden
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     const fulfillment = await this.fulfillmentRepository.findOne({
@@ -513,24 +512,20 @@ export class OrderService {
       fields: ['id']
     });
 
-    // 2. Validar estado
     if (!this.validator.canAddPayment(order, fulfillment?.id)) {
       return new ForbiddenOrderActionError(order.state);
     }
 
-    // 5. Validar payment method
     const paymentMethod = await this.paymentMethodRepository.findOneOrThrow({
-      where: { id: input.methodId }
+      where: { id: input.methodId, enabled: true }
     });
 
-    // 6. Obtener handler
     const handler = getConfig().payments.handlers.find(h => h.code === paymentMethod.handler.code);
 
     if (!handler) {
       return new PaymentHandlerNotFound();
     }
 
-    // 7. Validar stock
     const orderLines = await this.lineRepository.findMany({ where: { orderId } });
 
     const variants = await Promise.all(
@@ -542,7 +537,6 @@ export class OrderService {
     const variantsWithNotEnoughStock = orderLines.filter(line => {
       const variant = variants.find(v => v.id === line.variantId);
 
-      // could not happen
       if (!variant) return false;
 
       return variant.stock < line.quantity;
@@ -552,15 +546,17 @@ export class OrderService {
       return new NotEnoughStockError(variantsWithNotEnoughStock.map(v => v.id));
     }
 
-    // 8. Ejecutar handler
-    const paymentResult = await handler.createPayment(order, order.total, this.ctx);
+    const paymentResult = await handler.createPayment(
+      order,
+      order.total,
+      paymentMethod.handler.args,
+      this.ctx
+    );
 
-    // 9. Manejar fallo
     if (paymentResult.status === PaymentState.Failed) {
       return new PaymentFailedError(paymentResult.error);
     }
 
-    // 10. Decrementar stock
     await Promise.all(
       orderLines.map(line => {
         const variant = variants.find(v => v.id === line.variantId);
@@ -576,20 +572,18 @@ export class OrderService {
       })
     );
 
-    // 11. Crear payment
     await this.paymentRepository.create({
       orderId,
-      transactionId: 'transactionId' in paymentResult ? paymentResult.transactionId : null,
+      transactionId:
+        paymentResult.status === PaymentState.Captured ? paymentResult.transactionId : null,
       amount: paymentResult.amount,
       method: paymentMethod.name,
       state: paymentResult.status,
       paymentMethodId: paymentMethod.id
     });
 
-    // 12. Generar order code
     const placedCount = await this.repository.countPlaced();
 
-    // 13. Actualizar orden a PLACED
     const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
