@@ -32,7 +32,7 @@ import type { StateRepository } from '@/persistence/repositories/state-repositor
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
 import { isValidEmail } from '@/utils/validators';
 
-import { OrderDiscountApplication } from './discount-application/discount-application';
+import { OrderDiscountApplication } from './discount-application/order-discount-application';
 import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
   DiscountCodeNotApplicable,
@@ -602,22 +602,11 @@ export class OrderService {
 
     const discount = await this.discountRepository.findOne({ where: { code } });
 
-    if (!discount?.enabled) return new DiscountCodeNotApplicable();
+    if (!discount) return new DiscountCodeNotApplicable();
 
-    const hasFinished = discount.endsAt ? discount.endsAt < new Date() : false;
-    const hasStarted = discount.startsAt <= new Date();
-    const isActive = hasStarted && !hasFinished;
+    const isValid = await this.discounts.isValid(discount, order);
 
-    if (!isActive) return new DiscountCodeNotApplicable();
-
-    if (order.customerId && discount.perCustomerLimit) {
-      const usages = await this.orderDiscountRepository.countByCustomerIdAndDiscountId(
-        order.customerId,
-        discount.id
-      );
-
-      if (usages >= discount.perCustomerLimit) return new DiscountCodeNotApplicable();
-    }
+    if (!isValid) return new DiscountCodeNotApplicable();
 
     const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 

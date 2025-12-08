@@ -50,22 +50,9 @@ export class OrderDiscountApplication {
     const applicableDiscounts: ApplicableDiscount[] = [];
 
     for (const discount of discounts) {
-      if (!discount?.enabled) continue;
+      const isValid = await this.isValid(discount, order);
 
-      const hasFinished = discount.endsAt ? discount.endsAt < new Date() : false;
-      const hasStarted = discount.startsAt <= new Date();
-      const isActive = hasStarted && !hasFinished;
-
-      if (!isActive) continue;
-
-      if (order.customerId && discount.perCustomerLimit) {
-        const usages = await this.orderDiscountRepository.countByCustomerIdAndDiscountId(
-          order.customerId,
-          discount.id
-        );
-
-        if (usages >= discount.perCustomerLimit) continue;
-      }
+      if (!isValid) continue;
 
       const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 
@@ -333,6 +320,27 @@ export class OrderDiscountApplication {
         }
       });
     }
+  }
+
+  async isValid(discount: Discount, order: Order) {
+    if (!discount?.enabled) return false;
+
+    const hasFinished = discount.endsAt ? discount.endsAt < new Date() : false;
+    const hasStarted = discount.startsAt <= new Date();
+    const isActive = hasStarted && !hasFinished;
+
+    if (!isActive) return false;
+
+    if (order.customerId && discount.perCustomerLimit) {
+      const usages = await this.orderDiscountRepository.countByCustomerIdAndDiscountId(
+        order.customerId,
+        discount.id
+      );
+
+      if (usages >= discount.perCustomerLimit) return false;
+    }
+
+    return true;
   }
 
   async clean(orderId: ID) {

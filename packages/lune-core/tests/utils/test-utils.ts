@@ -81,7 +81,7 @@ export class TestUtils {
   }
 
   async buildContext(shopId: string, userJWT: UserJWT) {
-    buildContext({
+    return buildContext({
       database: this.db,
       jwtService: new JwtService({ expiresIn: Infinity, secretKey: 'secret' }),
       shopId,
