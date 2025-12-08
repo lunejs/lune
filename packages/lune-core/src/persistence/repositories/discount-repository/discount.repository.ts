@@ -36,4 +36,10 @@ export class DiscountRepository extends Repository<Discount, DiscountTable> {
 
     return Number(count);
   }
+
+  async findManyByCodes(codes: string[]): Promise<Discount[]> {
+    const result = await this.q().whereIn('code', codes);
+
+    return result.map(r => this.serializer.deserialize(r) as Discount);
+  }
 }

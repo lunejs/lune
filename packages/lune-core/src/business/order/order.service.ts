@@ -1,4 +1,4 @@
-import { clean } from '@lune/common';
+import { clean, isTruthy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
@@ -157,7 +157,7 @@ export class OrderService {
         }
       });
 
-      return this.applyAutomaticDiscounts(orderUpdated);
+      return this.applyDiscounts(orderUpdated);
     }
 
     await this.lineRepository.create({
@@ -179,7 +179,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
@@ -208,7 +208,7 @@ export class OrderService {
         }
       });
 
-      return this.applyAutomaticDiscounts(orderUpdated);
+      return this.applyDiscounts(orderUpdated);
     }
 
     if (variant.stock < input.quantity) {
@@ -237,7 +237,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async removeLine(lineId: ID) {
@@ -259,7 +259,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async addCustomer(orderId: ID, input: AddCustomerToOrderInput) {
@@ -289,7 +289,7 @@ export class OrderService {
       }
     });
 
-    return await this.applyAutomaticDiscounts(orderUpdated);
+    return await this.applyDiscounts(orderUpdated);
   }
 
   async addShippingAddress(orderId: ID, input: CreateOrderAddressInput) {
@@ -321,7 +321,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async addShippingFulfillment(orderId: ID, input: AddShippingFulfillmentInput) {
@@ -413,7 +413,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async addInStorePickupFulfillment(orderId: ID, input: AddInStorePickupFulfillmentInput) {
@@ -501,7 +501,7 @@ export class OrderService {
       }
     });
 
-    return this.applyAutomaticDiscounts(orderUpdated);
+    return this.applyDiscounts(orderUpdated);
   }
 
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
@@ -631,20 +631,22 @@ export class OrderService {
     return await this.applyDiscount(order, discount, handler);
   }
 
-  private async applyAutomaticDiscounts(order: Order) {
-    const hasDiscountCodeApplied = order.appliedDiscounts.find(
-      d => d.applicationMode === ApplicationMode.Code
-    );
+  private async applyDiscounts(order: Order) {
+    const alreadyInOrderDiscountCodes = await this.getAlreadyInOrderDiscountCodes(order);
 
-    if (hasDiscountCodeApplied) return order;
-
-    const discounts = await this.discountRepository.findMany({
+    const automaticDiscounts = await this.discountRepository.findMany({
       where: { applicationMode: ApplicationMode.Automatic }
     });
 
+    const discounts = [...alreadyInOrderDiscountCodes, ...automaticDiscounts];
+
     if (!discounts.length) return order;
 
-    const applicableDiscounts: { discount: Discount; discountedAmount: number }[] = [];
+    await this.cleanDiscounts(order.id);
+
+    order = await this.repository.findOneOrThrow({ where: { id: order.id } });
+
+    const applicableDiscounts: ApplicableDiscount[] = [];
 
     for (const discount of discounts) {
       if (!discount?.enabled) continue;
@@ -753,9 +755,16 @@ export class OrderService {
 
     if (!applicableDiscounts.length) return order;
 
-    const [{ discount }] = applicableDiscounts.sort(
+    const bestDiscountsFirst = applicableDiscounts.sort(
       (a, b) => b.discountedAmount - a.discountedAmount
     );
+
+    const [{ discount: bestAutomaticDiscount }] = bestDiscountsFirst;
+    const bestDiscountCode = bestDiscountsFirst.find(
+      d => d.discount.applicationMode === ApplicationMode.Code
+    )?.discount;
+
+    const discount = bestDiscountCode ?? bestAutomaticDiscount;
 
     const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
 
@@ -965,4 +974,26 @@ export class OrderService {
       }
     });
   }
+
+  private async getAlreadyInOrderDiscountCodes(order: Order) {
+    const lines = await this.lineRepository.findMany({ where: { orderId: order.id } });
+
+    const orderLevel: AppliedDiscount[] = order.appliedDiscounts.filter(
+      d => d.applicationMode === ApplicationMode.Code
+    );
+    const orderLineLevel: AppliedDiscount[] = lines
+      .flatMap(l => l.appliedDiscounts.find(d => d.applicationMode === ApplicationMode.Code))
+      .filter(isTruthy);
+
+    const discounts = await this.discountRepository.findManyByCodes(
+      [...orderLevel, ...orderLineLevel].map(d => d.code)
+    );
+
+    return discounts;
+  }
 }
+
+type ApplicableDiscount = {
+  discount: Discount;
+  discountedAmount: number;
+};
