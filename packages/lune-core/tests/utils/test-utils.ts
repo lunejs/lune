@@ -2,6 +2,9 @@ import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import knex from 'knex';
 
+import { buildContext } from '@/api/shared/context/build-context';
+import type { UserJWT } from '@/api/shared/types/api.types';
+import { JwtService } from '@/libs/jwt';
 import type { Database, Transaction } from '@/persistence/connection';
 
 import { FixtureDefaults } from './default-fixtures';
@@ -75,6 +78,15 @@ export class TestUtils {
 
       await this.db(fixture.table).insert(entitiesWithDefaults);
     }
+  }
+
+  async buildContext(shopId: string, userJWT: UserJWT) {
+    buildContext({
+      database: this.db,
+      jwtService: new JwtService({ expiresIn: Infinity, secretKey: 'secret' }),
+      shopId,
+      userJWT
+    });
   }
 
   static generateJWT(payload: Record<string, any>): string {
