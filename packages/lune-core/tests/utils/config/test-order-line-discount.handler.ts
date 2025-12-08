@@ -10,6 +10,9 @@ export const TestOrderLineDiscountHandler = new OrderLineDiscountHandler({
     variants: {
       type: 'entity-selector',
       entity: 'variants'
+    },
+    amountToDiscount: {
+      type: 'price'
     }
   },
   async check(_, __, line, args) {
@@ -19,7 +22,7 @@ export const TestOrderLineDiscountHandler = new OrderLineDiscountHandler({
 
     return true;
   },
-  async apply() {
-    return LunePrice.toCent(300);
+  async apply(_, __, ___, args) {
+    return args.amountToDiscount ?? LunePrice.toCent(300);
   }
 });

@@ -9,6 +9,9 @@ export const TestFulfillmentDiscountHandler = new FulfillmentDiscountHandler({
   args: {
     applies: {
       type: 'boolean'
+    },
+    amountToDiscount: {
+      type: 'price'
     }
   },
   async check(_, __, ___, args) {
@@ -16,7 +19,7 @@ export const TestFulfillmentDiscountHandler = new FulfillmentDiscountHandler({
 
     return applies;
   },
-  async apply() {
-    return LunePrice.toCent(50);
+  async apply(_, __, ___, args) {
+    return args.amountToDiscount ?? LunePrice.toCent(50);
   }
 });
