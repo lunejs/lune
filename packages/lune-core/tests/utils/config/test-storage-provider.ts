@@ -1,12 +1,12 @@
 import type { StorageProvider, UploadOptions, UploadReturn } from '@/config/storage/storage';
 
-import { TestHelper } from '../test-helper';
+import { TestUtils } from '../test-utils';
 
 export class TestStorageProvider implements StorageProvider {
   upload(_: string, __?: UploadOptions): Promise<UploadReturn | null> {
     return Promise.resolve({
-      providerId: TestHelper.generateUUID(),
-      source: `http://example.com/${TestHelper.generateUUID()}.jpg`
+      providerId: TestUtils.generateUUID(),
+      source: `http://example.com/${TestUtils.generateUUID()}.jpg`
     });
   }
 

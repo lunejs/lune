@@ -1,14 +1,14 @@
 import type { ShippingFulfillmentTable } from '@/persistence/entities/shipping-fulfillment';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { FulfillmentConstants } from './fulfillment.fixtures';
 import { ShippingMethodConstants } from './shipping-method.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const ShippingFulfillmentConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID()
 };
 
 export class ShippingFulfillmentFixtures implements Fixture<ShippingFulfillmentTable> {

@@ -2,13 +2,13 @@ import { Locale } from '@/persistence/entities/locale';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductTranslationConstants = {
-  ID: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
   Name: 'MacBook Pro 16',
   Slug: 'mac-pro-16',
   Description: 'The best computer ever made'

@@ -1,16 +1,16 @@
 import { OrderState, type OrderTable } from '@/persistence/entities/order';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryConstants } from './country.fixtures';
 import { ShopConstants } from './shop.fixtures';
 import { StateConstants } from './state.fixtures';
 
 export const OrderConstants = {
-  ID: TestHelper.generateUUID(),
-  WithShippingAddressId: TestHelper.generateUUID(),
-  PlacedID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID(),
+  WithShippingAddressId: TestUtils.generateUUID(),
+  PlacedID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {

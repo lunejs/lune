@@ -5,7 +5,7 @@ import { LunePrice } from '@lune/common';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerFixtures } from './fixtures/customer.fixtures';
 import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
@@ -24,7 +24,7 @@ import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixt
 // TODO: add tests for when discount code is already in order, stops being applicable (by conditions met) and then comes back to being applicable
 // TODO: add tests for when discount code is already in order, stops being applicable (by admin options (disabled, expired, per customer limit, etc)) and the comes back to being applicable
 describe('addDiscountCode - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

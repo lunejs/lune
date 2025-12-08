@@ -6,7 +6,7 @@ import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
@@ -19,7 +19,7 @@ import { VariantAssetFixtures } from './fixtures/variant-asset.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('updateVariant - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

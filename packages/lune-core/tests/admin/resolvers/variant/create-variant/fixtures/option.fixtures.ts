@@ -1,15 +1,15 @@
 import type { OptionTable } from '@/persistence/entities/option';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionConstants = {
-  ColorOptionID: TestHelper.generateUUID(),
-  SizeOptionID: TestHelper.generateUUID(),
-  MaterialOptionID: TestHelper.generateUUID()
+  ColorOptionID: TestUtils.generateUUID(),
+  SizeOptionID: TestUtils.generateUUID(),
+  MaterialOptionID: TestUtils.generateUUID()
 };
 
 export class OptionFixtures implements Fixture<OptionTable> {

@@ -2,14 +2,14 @@ import request from 'supertest';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { PaymentMethodFixtures } from './fixtures/payment-method.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('paymentMethods - Query', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

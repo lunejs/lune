@@ -1,14 +1,14 @@
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
-  MacBookPro16ID: TestHelper.generateUUID(),
-  iPhone14ProMaxID: TestHelper.generateUUID(),
-  AppleWatchSeries8ID: TestHelper.generateUUID(),
+  MacBookPro16ID: TestUtils.generateUUID(),
+  iPhone14ProMaxID: TestUtils.generateUUID(),
+  AppleWatchSeries8ID: TestUtils.generateUUID(),
 
   MacBookPro16Slug: 'mac-pro-16',
   iPhone14ProMaxSlug: 'iphone-14-pro-max',

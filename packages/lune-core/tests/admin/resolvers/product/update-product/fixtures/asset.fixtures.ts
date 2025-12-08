@@ -1,14 +1,14 @@
 import type { AssetTable } from '@/persistence/entities/asset';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const AssetConstants = {
-  ImageID: TestHelper.generateUUID(),
-  MeImageID: TestHelper.generateUUID(),
-  AlreadyStoredImageID: TestHelper.generateUUID()
+  ImageID: TestUtils.generateUUID(),
+  MeImageID: TestUtils.generateUUID(),
+  AlreadyStoredImageID: TestUtils.generateUUID()
 };
 
 export class AssetFixtures implements Fixture<AssetTable> {

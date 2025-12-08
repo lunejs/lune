@@ -1,5 +1,5 @@
 import type { Transaction } from '@/persistence/connection';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { DiscountRepository } from '../discount.repository';
 
@@ -8,7 +8,7 @@ import { ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('Discount repository', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   let repository: DiscountRepository;
   let trx: Transaction;

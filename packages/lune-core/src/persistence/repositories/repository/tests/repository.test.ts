@@ -1,5 +1,5 @@
 import type { Transaction } from '@/persistence/connection';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { RepositoryError } from '../../repository.error';
 import { SortKey } from '../repository';
@@ -13,7 +13,7 @@ describe('Repository', () => {
   let trx: Transaction;
   let repository: TestRepository;
 
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
   const q = testHelper.getQueryBuilder();
 
   beforeAll(async () => {

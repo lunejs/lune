@@ -5,14 +5,14 @@ import type { DiscountTable } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('removeDiscounts - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();
@@ -118,7 +118,7 @@ const REMOVE_DISCOUNTS_MUTATION = /* GraphQL */ `
   }
 `;
 
-const getDiscount = async (testHelper: TestHelper, discountId: ID) => {
+const getDiscount = async (testHelper: TestUtils, discountId: ID) => {
   return await testHelper
     .getQueryBuilder()<DiscountTable>(Tables.Discount)
     .where('id', discountId)

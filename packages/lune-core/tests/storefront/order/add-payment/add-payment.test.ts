@@ -5,7 +5,7 @@ import { LunePrice } from '@lune/common';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerFixtures } from './fixtures/customer.fixtures';
 import { DiscountFixtures } from './fixtures/discount.fixtures';
@@ -23,7 +23,7 @@ import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('addPaymentToOrder - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();
@@ -129,7 +129,7 @@ describe('addPaymentToOrder - Mutation', () => {
 
     expect(payment).toBeDefined();
     expect(payment.transaction_id).toBeDefined();
-    expect(payment.transaction_id).toMatch(TestHelper.Regex.UUID);
+    expect(payment.transaction_id).toMatch(TestUtils.Regex.UUID);
     expect(payment.amount).toBe(LunePrice.toCent(2_300));
     expect(payment.method).toBe('Stripe');
     expect(payment.state).toBe('CAPTURED');

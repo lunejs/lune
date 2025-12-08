@@ -4,15 +4,15 @@ import type { FulfillmentTable } from '@/persistence/entities/fulfillment';
 import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OrderConstants } from './order.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const FulfillmentConstants = {
-  ID: TestHelper.generateUUID(),
-  WithoutCustomerID: TestHelper.generateUUID(),
-  LowStockID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID(),
+  WithoutCustomerID: TestUtils.generateUUID(),
+  LowStockID: TestUtils.generateUUID()
 };
 
 export class FulfillmentFixtures implements Fixture<FulfillmentTable> {

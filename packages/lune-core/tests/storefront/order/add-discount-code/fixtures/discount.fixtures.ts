@@ -4,13 +4,13 @@ import type { DiscountTable } from '@/persistence/entities/discount';
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 import { VariantConstants } from './variant.fixtures';
 
 export const DiscountConstants = {
-  OrderDiscountID: TestHelper.generateUUID(),
+  OrderDiscountID: TestUtils.generateUUID(),
   OrderDiscountCode: 'ORDER_DISCOUNT',
   OrderDiscountDoesNotApplyCode: 'ORDER_DISCOUNT_DOES_NOT_APPLY',
 
@@ -24,7 +24,7 @@ export const DiscountConstants = {
   PrematureDiscount: 'PREMATURE_DISCOUNT',
   ExpiredDiscount: 'EXPIRED_DISCOUNT',
 
-  AlreadyUsedID: TestHelper.generateUUID(),
+  AlreadyUsedID: TestUtils.generateUUID(),
   AlreadyUsedCode: 'ALREADY_USED'
 };
 

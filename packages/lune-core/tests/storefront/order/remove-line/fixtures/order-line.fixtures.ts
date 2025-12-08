@@ -3,16 +3,16 @@ import { LunePrice } from '@lune/common';
 import type { OrderLineTable } from '@/persistence/entities/order-line';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OrderConstants } from './order.fixtures';
 import { ShopConstants } from './shop.fixtures';
 import { VariantConstants } from './variant.fixtures';
 
 export const OrderLineConstants = {
-  ID: TestHelper.generateUUID(),
-  SecondID: TestHelper.generateUUID(),
-  InPlacedOrderID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID(),
+  SecondID: TestUtils.generateUUID(),
+  InPlacedOrderID: TestUtils.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {

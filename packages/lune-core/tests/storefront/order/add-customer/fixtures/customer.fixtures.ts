@@ -1,18 +1,18 @@
 import type { CustomerTable } from '@/persistence/entities/customer';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const CustomerConstants = {
-  ID: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
   Email: 'ellie@williams.com',
   FirstName: 'Ellie',
   LastName: 'Williams',
   PhoneNumber: '+5266716524352',
 
-  AlreadyInOrderID: TestHelper.generateUUID(),
+  AlreadyInOrderID: TestUtils.generateUUID(),
   AlreadyInOrderEmail: 'joel@miller.com',
   AlreadyInOrderFirstName: 'Joel',
   AlreadyInOrderLastName: 'Miller',

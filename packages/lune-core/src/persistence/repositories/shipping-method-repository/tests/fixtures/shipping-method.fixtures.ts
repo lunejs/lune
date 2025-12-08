@@ -1,19 +1,19 @@
 import type { ShippingMethodTable } from '@/persistence/entities/shipping-method';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 import { ZoneConstants } from './zone.fixtures';
 
 export const ShippingMethodConstants = {
-  ExpressLocalID: TestHelper.generateUUID(),
-  StandardLocalID: TestHelper.generateUUID(),
-  DisabledLocalID: TestHelper.generateUUID(),
+  ExpressLocalID: TestUtils.generateUUID(),
+  StandardLocalID: TestUtils.generateUUID(),
+  DisabledLocalID: TestUtils.generateUUID(),
 
-  ExpressInternationalID: TestHelper.generateUUID(),
-  StandardInternationalID: TestHelper.generateUUID(),
-  DisabledInternationalID: TestHelper.generateUUID()
+  ExpressInternationalID: TestUtils.generateUUID(),
+  StandardInternationalID: TestUtils.generateUUID(),
+  DisabledInternationalID: TestUtils.generateUUID()
 };
 
 export class ShippingMethodFixtures implements Fixture<ShippingMethodTable> {

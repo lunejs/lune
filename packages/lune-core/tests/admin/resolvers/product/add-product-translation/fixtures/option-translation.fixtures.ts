@@ -5,15 +5,15 @@ import type {
 } from '@/persistence/entities/option-translation';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionConstants } from './option.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionTranslationConstants = {
-  ColorID: TestHelper.generateUUID(),
+  ColorID: TestUtils.generateUUID(),
   ColorTranslatedName: 'Color en',
-  SizeID: TestHelper.generateUUID(),
+  SizeID: TestUtils.generateUUID(),
   SizeTranslatedName: 'Size en'
 };
 

@@ -2,7 +2,7 @@ import type { Transaction } from '@/persistence/connection';
 import type { VariantAssetTable } from '@/persistence/entities/variant-asset';
 import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 import { Tables } from '@/persistence/tables';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { VariantRepository } from '../variant.repository';
 
@@ -16,7 +16,7 @@ import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('Variant repository', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   let repository: VariantRepository;
   let trx: Transaction;

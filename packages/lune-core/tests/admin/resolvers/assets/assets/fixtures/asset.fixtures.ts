@@ -3,17 +3,17 @@ import { subMinutes } from 'date-fns';
 import type { AssetTable } from '@/persistence/entities/asset';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const AssetConstants = {
-  ImageID: TestHelper.generateUUID(),
-  MeImageID: TestHelper.generateUUID(),
-  JoelImageID: TestHelper.generateUUID(),
-  EllieImageID: TestHelper.generateUUID(),
-  ElizabethID: TestHelper.generateUUID(),
-  ElixirID: TestHelper.generateUUID()
+  ImageID: TestUtils.generateUUID(),
+  MeImageID: TestUtils.generateUUID(),
+  JoelImageID: TestUtils.generateUUID(),
+  EllieImageID: TestUtils.generateUUID(),
+  ElizabethID: TestUtils.generateUUID(),
+  ElixirID: TestUtils.generateUUID()
 };
 
 const TODAY = new Date();

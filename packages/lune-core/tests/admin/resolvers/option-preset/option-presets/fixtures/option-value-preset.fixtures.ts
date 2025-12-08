@@ -1,19 +1,19 @@
 import type { OptionValuePresetTable } from '@/persistence/entities/option-value-preset';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionPresetConstants } from './option-preset.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionValuePresetConstants = {
-  RedOptionValueID: TestHelper.generateUUID(),
-  GreenOptionValueID: TestHelper.generateUUID(),
-  BlueOptionValueID: TestHelper.generateUUID(),
-  YellowOptionValueID: TestHelper.generateUUID(),
-  SmallOptionValueID: TestHelper.generateUUID(),
-  MediumOptionValueID: TestHelper.generateUUID(),
-  LargeOptionValueID: TestHelper.generateUUID()
+  RedOptionValueID: TestUtils.generateUUID(),
+  GreenOptionValueID: TestUtils.generateUUID(),
+  BlueOptionValueID: TestUtils.generateUUID(),
+  YellowOptionValueID: TestUtils.generateUUID(),
+  SmallOptionValueID: TestUtils.generateUUID(),
+  MediumOptionValueID: TestUtils.generateUUID(),
+  LargeOptionValueID: TestUtils.generateUUID()
 };
 
 export class OptionValuePresetFixtures implements Fixture<OptionValuePresetTable> {

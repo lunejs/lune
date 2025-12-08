@@ -2,13 +2,13 @@ import type { CollectionTranslationTable } from '@/persistence/entities/collecti
 import { Locale } from '@/persistence/entities/locale';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionConstants } from './collection.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const CollectionTranslationConstants = {
-  ID: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
   Name: 'Joel Collection ES',
   Slug: 'joel-es',
   Description: 'Colección de Joel en español'

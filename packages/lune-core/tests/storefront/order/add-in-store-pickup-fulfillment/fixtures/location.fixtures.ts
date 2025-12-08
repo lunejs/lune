@@ -1,15 +1,15 @@
 import type { LocationTable } from '@/persistence/entities/location';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryConstants } from './country.fixtures';
 import { ShopConstants } from './shop.fixtures';
 import { StateConstants } from './state.fixtures';
 
 export const LocationConstants = {
-  ID: TestHelper.generateUUID(),
-  SecondLocationID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID(),
+  SecondLocationID: TestUtils.generateUUID()
 };
 
 export class LocationFixtures implements Fixture<LocationTable> {

@@ -2,7 +2,7 @@ import { CollectionContentType } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection';
 import type { CollectionTable } from '@/persistence/entities/collection';
 import { Tables } from '@/persistence/tables';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionRepository } from '../collection.repository';
 
@@ -15,7 +15,7 @@ import { ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('Collection repository', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   let repository: CollectionRepository;
   let trx: Transaction;

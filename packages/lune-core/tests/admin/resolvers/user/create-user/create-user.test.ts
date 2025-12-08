@@ -4,12 +4,12 @@ import request from 'supertest';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('createUser - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
   const q = testHelper.getQueryBuilder();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
@@ -42,7 +42,7 @@ describe('createUser - Mutation', () => {
 
     expect(apiErrors).toEqual([]);
     expect(user.email).toBe('newemail@gmail.com');
-    expect(user.id).toMatch(TestHelper.Regex.UUID);
+    expect(user.id).toMatch(TestUtils.Regex.UUID);
   });
 
   test('creates user with hashed password', async () => {

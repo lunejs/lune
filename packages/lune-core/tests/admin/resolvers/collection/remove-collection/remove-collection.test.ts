@@ -8,7 +8,7 @@ import type { CollectionTranslationTable } from '@/persistence/entities/collecti
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { AssetFixtures } from './fixtures/asset.fixtures';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
@@ -20,7 +20,7 @@ import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('removeCollection - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();
@@ -183,7 +183,7 @@ const REMOVE_COLLECTION_MUTATION = /* GraphQL */ `
   }
 `;
 
-const getCollection = async (testHelper: TestHelper, collectionId: ID) => {
+const getCollection = async (testHelper: TestUtils, collectionId: ID) => {
   const collection = await testHelper
     .getQueryBuilder()<CollectionTable>(Tables.Collection)
     .where('id', collectionId)

@@ -5,16 +5,16 @@ import {
 } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const DiscountConstants = {
-  Summer2025ID: TestHelper.generateUUID(),
+  Summer2025ID: TestUtils.generateUUID(),
   Summer2025Code: 'SUMMER2025',
-  Winter2025ID: TestHelper.generateUUID(),
+  Winter2025ID: TestUtils.generateUUID(),
   Winter2025Code: 'WINTER2025',
-  DuplicateID: TestHelper.generateUUID(),
+  DuplicateID: TestUtils.generateUUID(),
   DuplicateCode: 'DUPLICATE50'
 };
 

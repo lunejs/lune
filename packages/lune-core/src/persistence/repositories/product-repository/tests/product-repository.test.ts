@@ -8,7 +8,7 @@ import type { ProductAssetTable } from '@/persistence/entities/product-asset';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ProductRepository } from '../product.repository';
 
@@ -28,7 +28,7 @@ import { VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('Product repository', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   let repository: ProductRepository;
   let trx: Transaction;

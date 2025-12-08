@@ -1,25 +1,25 @@
 import type { VariantTable } from '@/persistence/entities/variant';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const VariantConstants = {
-  RedSmallShirtID: TestHelper.generateUUID(),
-  GreenSmallShirtID: TestHelper.generateUUID(),
-  BlueSmallShirtID: TestHelper.generateUUID(),
-  RedMediumShirtID: TestHelper.generateUUID(),
-  GreenMediumShirtID: TestHelper.generateUUID(),
-  BlueMediumShirtID: TestHelper.generateUUID(),
-  RedLargeShirtID: TestHelper.generateUUID(),
-  GreenLargeShirtID: TestHelper.generateUUID(),
-  BlueLargeShirtID: TestHelper.generateUUID(),
+  RedSmallShirtID: TestUtils.generateUUID(),
+  GreenSmallShirtID: TestUtils.generateUUID(),
+  BlueSmallShirtID: TestUtils.generateUUID(),
+  RedMediumShirtID: TestUtils.generateUUID(),
+  GreenMediumShirtID: TestUtils.generateUUID(),
+  BlueMediumShirtID: TestUtils.generateUUID(),
+  RedLargeShirtID: TestUtils.generateUUID(),
+  GreenLargeShirtID: TestUtils.generateUUID(),
+  BlueLargeShirtID: TestUtils.generateUUID(),
 
-  CottonRedJacketID: TestHelper.generateUUID(),
-  PolyesterRedJacketID: TestHelper.generateUUID(),
-  LeatherRedJacketID: TestHelper.generateUUID()
+  CottonRedJacketID: TestUtils.generateUUID(),
+  PolyesterRedJacketID: TestUtils.generateUUID(),
+  LeatherRedJacketID: TestUtils.generateUUID()
 };
 
 export class VariantFixtures implements Fixture<VariantTable> {

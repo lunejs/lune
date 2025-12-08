@@ -8,7 +8,7 @@ import { FixtureDefaults } from './default-fixtures';
 import type { Fixture } from './fixtures';
 import { TEST_LUNE_CONFIG } from './test-config';
 
-export class TestHelper {
+export class TestUtils {
   private db: Database;
   private trx: Transaction;
 

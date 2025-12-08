@@ -1,16 +1,16 @@
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
-  ID: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
   Name: 'MacBook Pro 16',
   Slug: 'mac-pro-16',
 
-  AlreadyTranslatedID: TestHelper.generateUUID(),
+  AlreadyTranslatedID: TestUtils.generateUUID(),
   AlreadyTranslatedName: 'T-Shirt',
   AlreadyTranslatedSlug: 't-shirt'
 };

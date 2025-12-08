@@ -5,25 +5,25 @@ import { convertToCent } from '@lune/common';
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 const TODAY = new Date();
 
 export const ProductConstants = {
-  MacBookPro16ID: TestHelper.generateUUID(),
-  iPhone14ProMaxID: TestHelper.generateUUID(),
-  AppleWatchSeries8ID: TestHelper.generateUUID(),
-  AirPodsPro2ndGenID: TestHelper.generateUUID(),
+  MacBookPro16ID: TestUtils.generateUUID(),
+  iPhone14ProMaxID: TestUtils.generateUUID(),
+  AppleWatchSeries8ID: TestUtils.generateUUID(),
+  AirPodsPro2ndGenID: TestUtils.generateUUID(),
 
-  ShirtID: TestHelper.generateUUID(),
-  JeansID: TestHelper.generateUUID(),
-  JacketID: TestHelper.generateUUID(),
-  SneakersID: TestHelper.generateUUID(),
-  BeachShirtID: TestHelper.generateUUID(),
+  ShirtID: TestUtils.generateUUID(),
+  JeansID: TestUtils.generateUUID(),
+  JacketID: TestUtils.generateUUID(),
+  SneakersID: TestUtils.generateUUID(),
+  BeachShirtID: TestUtils.generateUUID(),
 
-  SoftRemovedProduct: TestHelper.generateUUID()
+  SoftRemovedProduct: TestUtils.generateUUID()
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {

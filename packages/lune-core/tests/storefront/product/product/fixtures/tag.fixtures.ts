@@ -1,14 +1,14 @@
 import type { TagTable } from '@/persistence/entities/tag';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const TagConstants = {
-  ElectronicsID: TestHelper.generateUUID(),
-  DomesticsID: TestHelper.generateUUID(),
-  ClothingID: TestHelper.generateUUID()
+  ElectronicsID: TestUtils.generateUUID(),
+  DomesticsID: TestUtils.generateUUID(),
+  ClothingID: TestUtils.generateUUID()
 };
 
 export class TagFixtures implements Fixture<TagTable> {

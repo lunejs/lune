@@ -1,12 +1,12 @@
 import type { OptionPresetTable } from '@/persistence/entities/option-preset';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionPresetConstants = {
-  ColorPresetID: TestHelper.generateUUID()
+  ColorPresetID: TestUtils.generateUUID()
 };
 
 export class OptionPresetFixtures implements Fixture<OptionPresetTable> {

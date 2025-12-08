@@ -2,12 +2,12 @@ import request from 'supertest';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('generateUserAccessToken - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();
@@ -38,7 +38,7 @@ describe('generateUserAccessToken - Mutation', () => {
     const { apiErrors, accessToken } = res.body.data.generateUserAccessToken;
 
     expect(apiErrors).toEqual([]);
-    expect(accessToken).toMatch(TestHelper.Regex.JWT);
+    expect(accessToken).toMatch(TestUtils.Regex.JWT);
   });
 
   test('returns INVALID_CREDENTIALS when email is incorrect', async () => {

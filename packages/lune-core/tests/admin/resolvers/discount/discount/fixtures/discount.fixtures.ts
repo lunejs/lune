@@ -5,13 +5,13 @@ import {
 } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const DiscountConstants = {
-  ActiveCodeDiscountID: TestHelper.generateUUID(),
-  AutomaticDiscountID: TestHelper.generateUUID()
+  ActiveCodeDiscountID: TestUtils.generateUUID(),
+  AutomaticDiscountID: TestUtils.generateUUID()
 };
 
 export class DiscountFixtures implements Fixture<DiscountTable> {

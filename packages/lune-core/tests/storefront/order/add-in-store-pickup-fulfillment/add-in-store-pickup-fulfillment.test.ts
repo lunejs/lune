@@ -9,7 +9,7 @@ import type { ShippingFulfillmentTable } from '@/persistence/entities/shipping-f
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryFixtures } from './fixtures/country.fixtures';
 import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
@@ -25,7 +25,7 @@ import { ZoneFixtures } from './fixtures/zone.fixtures';
 import { ZoneStateFixtures } from './fixtures/zone-state.fixtures';
 
 describe('addInStorePickupFulfillmentToOrder - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

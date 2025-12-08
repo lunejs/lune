@@ -1,5 +1,5 @@
 import type { Transaction } from '@/persistence/connection';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShippingMethodRepository } from '../shipping-method.repository';
 
@@ -15,7 +15,7 @@ import { ZoneFixtures } from './fixtures/zone.fixtures';
 import { ZoneStateFixtures } from './fixtures/zone-state.fixtures';
 
 describe('ShippingMethod repository', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   let repository: ShippingMethodRepository;
   let trx: Transaction;

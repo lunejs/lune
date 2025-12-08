@@ -5,19 +5,19 @@ import {
 } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const DiscountConstants = {
-  ActiveCodeDiscountID: TestHelper.generateUUID(),
-  InactiveCodeDiscountID: TestHelper.generateUUID(),
-  ExpiredDiscountID: TestHelper.generateUUID(),
-  FutureDiscountID: TestHelper.generateUUID(),
-  AutomaticDiscountID: TestHelper.generateUUID(),
-  DisabledDiscountID: TestHelper.generateUUID(),
-  OrderLevelDiscountID: TestHelper.generateUUID(),
-  FulfillmentLevelDiscountID: TestHelper.generateUUID()
+  ActiveCodeDiscountID: TestUtils.generateUUID(),
+  InactiveCodeDiscountID: TestUtils.generateUUID(),
+  ExpiredDiscountID: TestUtils.generateUUID(),
+  FutureDiscountID: TestUtils.generateUUID(),
+  AutomaticDiscountID: TestUtils.generateUUID(),
+  DisabledDiscountID: TestUtils.generateUUID(),
+  OrderLevelDiscountID: TestUtils.generateUUID(),
+  FulfillmentLevelDiscountID: TestUtils.generateUUID()
 };
 
 export class DiscountFixtures implements Fixture<DiscountTable> {

@@ -4,7 +4,7 @@ import { LunePrice } from '@lune/common';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
@@ -16,7 +16,7 @@ import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
 
 describe('addLineToOrder - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

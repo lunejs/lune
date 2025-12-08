@@ -1,13 +1,13 @@
 import type { ZoneTable } from '@/persistence/entities/zone';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const ZoneConstants = {
-  LocalID: TestHelper.generateUUID(),
-  InternationalID: TestHelper.generateUUID()
+  LocalID: TestUtils.generateUUID(),
+  InternationalID: TestUtils.generateUUID()
 };
 
 export class ZoneFixtures implements Fixture<ZoneTable> {

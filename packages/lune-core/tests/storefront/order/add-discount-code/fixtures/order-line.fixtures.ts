@@ -3,28 +3,28 @@ import { LunePrice } from '@lune/common';
 import type { OrderLineTable } from '@/persistence/entities/order-line';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OrderConstants } from './order.fixtures';
 import { ShopConstants } from './shop.fixtures';
 import { VariantConstants } from './variant.fixtures';
 
 export const OrderLineConstants = {
-  ID: TestHelper.generateUUID(),
-  ID2: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
+  ID2: TestUtils.generateUUID(),
 
-  WithoutFulfillmentID: TestHelper.generateUUID(),
-  WithoutFulfillmentID2: TestHelper.generateUUID(),
+  WithoutFulfillmentID: TestUtils.generateUUID(),
+  WithoutFulfillmentID2: TestUtils.generateUUID(),
 
-  WithoutCustomerID: TestHelper.generateUUID(),
-  WithoutCustomerID2: TestHelper.generateUUID(),
+  WithoutCustomerID: TestUtils.generateUUID(),
+  WithoutCustomerID2: TestUtils.generateUUID(),
 
-  WithOrderLevelDiscountID: TestHelper.generateUUID(),
+  WithOrderLevelDiscountID: TestUtils.generateUUID(),
 
-  WithOrderLineLevelDiscountID: TestHelper.generateUUID(),
-  WithOrderLineLevelDiscountID2: TestHelper.generateUUID(),
+  WithOrderLineLevelDiscountID: TestUtils.generateUUID(),
+  WithOrderLineLevelDiscountID2: TestUtils.generateUUID(),
 
-  WithFulfillmentLevelDiscountID: TestHelper.generateUUID()
+  WithFulfillmentLevelDiscountID: TestUtils.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {

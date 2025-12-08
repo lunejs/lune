@@ -3,17 +3,17 @@ import { LunePrice } from '@lune/common';
 import type { VariantTable } from '@/persistence/entities/variant';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const VariantConstants = {
-  ID: TestHelper.generateUUID(),
+  ID: TestUtils.generateUUID(),
 
-  AlreadyInLineID: TestHelper.generateUUID(),
+  AlreadyInLineID: TestUtils.generateUUID(),
 
-  LowStockID: TestHelper.generateUUID()
+  LowStockID: TestUtils.generateUUID()
 };
 
 export class VariantFixtures implements Fixture<VariantTable> {

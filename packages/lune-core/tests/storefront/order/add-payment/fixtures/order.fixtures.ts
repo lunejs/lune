@@ -3,18 +3,18 @@ import { LunePrice } from '@lune/common';
 import { OrderState, type OrderTable } from '@/persistence/entities/order';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerConstants } from './customer.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OrderConstants = {
-  ID: TestHelper.generateUUID(),
-  WithoutFulfillmentID: TestHelper.generateUUID(),
-  WithoutCustomerID: TestHelper.generateUUID(),
-  PlacedID: TestHelper.generateUUID(),
-  PlacedID2: TestHelper.generateUUID(),
-  WithLowStockID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID(),
+  WithoutFulfillmentID: TestUtils.generateUUID(),
+  WithoutCustomerID: TestUtils.generateUUID(),
+  PlacedID: TestUtils.generateUUID(),
+  PlacedID2: TestUtils.generateUUID(),
+  WithLowStockID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {

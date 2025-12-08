@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryFixtures } from './fixtures/country.fixtures';
 import { ShippingMethodFixtures } from './fixtures/shipping-method.fixtures';
@@ -13,7 +13,7 @@ import { ZoneFixtures } from './fixtures/zone.fixtures';
 import { ZoneStateFixtures } from './fixtures/zone-state.fixtures';
 
 describe('createZone - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

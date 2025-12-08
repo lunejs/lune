@@ -5,7 +5,7 @@ import type { LocationTable } from '@/persistence/entities/location';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryFixtures } from './fixtures/country.fixtures';
 import { InStorePickupFixtures } from './fixtures/in-store-pickup.fixtures';
@@ -15,7 +15,7 @@ import { StateFixtures } from './fixtures/state.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
 describe('removeLocation - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

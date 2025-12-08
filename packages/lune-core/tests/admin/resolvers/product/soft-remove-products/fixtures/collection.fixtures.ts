@@ -2,13 +2,13 @@ import type { CollectionTable } from '@/persistence/entities/collection';
 import { CollectionContentType } from '@/persistence/entities/collection';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const CollectionConstants = {
-  ElectronicsCollectionID: TestHelper.generateUUID(),
-  ClothingCollectionID: TestHelper.generateUUID()
+  ElectronicsCollectionID: TestUtils.generateUUID(),
+  ClothingCollectionID: TestUtils.generateUUID()
 };
 
 export class CollectionFixtures implements Fixture<CollectionTable> {

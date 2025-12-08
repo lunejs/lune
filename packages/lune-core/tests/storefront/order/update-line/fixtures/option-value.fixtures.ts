@@ -1,14 +1,14 @@
 import type { OptionValueTable } from '@/persistence/entities/option_value';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionConstants } from './option.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionValueConstants = {
-  SmallOptionValueID: TestHelper.generateUUID(),
-  MediumOptionValueID: TestHelper.generateUUID()
+  SmallOptionValueID: TestUtils.generateUUID(),
+  MediumOptionValueID: TestUtils.generateUUID()
 };
 
 export class OptionValueFixtures implements Fixture<OptionValueTable> {

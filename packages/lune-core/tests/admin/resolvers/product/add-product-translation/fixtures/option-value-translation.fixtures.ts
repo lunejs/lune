@@ -5,18 +5,18 @@ import type {
 } from '@/persistence/entities/option-value-translation';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionValueConstants } from './option-value.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionValueTranslationConstants = {
-  BlueID: TestHelper.generateUUID(),
-  GreenID: TestHelper.generateUUID(),
-  RedID: TestHelper.generateUUID(),
-  SmallID: TestHelper.generateUUID(),
-  MediumID: TestHelper.generateUUID(),
-  LargeID: TestHelper.generateUUID()
+  BlueID: TestUtils.generateUUID(),
+  GreenID: TestUtils.generateUUID(),
+  RedID: TestUtils.generateUUID(),
+  SmallID: TestUtils.generateUUID(),
+  MediumID: TestUtils.generateUUID(),
+  LargeID: TestUtils.generateUUID()
 };
 
 export class OptionValueTranslationFixtures implements Fixture<OptionValueTranslation> {

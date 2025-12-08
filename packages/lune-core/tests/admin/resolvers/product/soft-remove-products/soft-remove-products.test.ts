@@ -10,7 +10,7 @@ import type { ProductTranslationTable } from '@/persistence/entities/product-tra
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionFixtures } from './fixtures/collection.fixtures';
 import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
@@ -26,7 +26,7 @@ import { VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('product - Query', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();
@@ -183,7 +183,7 @@ const SOFT_REMOVE_PRODUCTS = /* GraphQL */ `
   }
 `;
 
-const getProduct = async (testHelper: TestHelper, productId: ID) => {
+const getProduct = async (testHelper: TestUtils, productId: ID) => {
   const product = await testHelper
     .getQueryBuilder()<ProductTable>(Tables.Product)
     .where('id', productId)

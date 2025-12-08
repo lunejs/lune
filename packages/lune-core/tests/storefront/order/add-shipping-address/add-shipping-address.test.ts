@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CountryConstants, CountryFixtures } from './fixtures/country.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
@@ -11,7 +11,7 @@ import { StateConstants, StateFixtures } from './fixtures/state.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('addShippingAddressToOrder - Mutation', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

@@ -1,14 +1,14 @@
 import type { PaymentMethodTable } from '@/persistence/entities/payment-method';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const PaymentMethodConstants = {
-  StripeID: TestHelper.generateUUID(),
-  PaypalID: TestHelper.generateUUID(),
-  DisabledID: TestHelper.generateUUID()
+  StripeID: TestUtils.generateUUID(),
+  PaypalID: TestUtils.generateUUID(),
+  DisabledID: TestUtils.generateUUID()
 };
 
 export class PaymentMethodFixtures implements Fixture<PaymentMethodTable> {

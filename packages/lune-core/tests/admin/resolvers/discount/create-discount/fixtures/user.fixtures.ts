@@ -1,15 +1,15 @@
 import type { UserTable } from '@/persistence/entities/user';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
-const ID = TestHelper.generateUUID();
+const ID = TestUtils.generateUUID();
 const Email = 'discount@test.com';
 
 export const UserConstants = {
   ID,
   Email,
-  AccessToken: TestHelper.generateJWT({ sub: ID, email: Email })
+  AccessToken: TestUtils.generateJWT({ sub: ID, email: Email })
 };
 
 export class UserFixtures implements Fixture<UserTable> {

@@ -1,12 +1,12 @@
 import type { CustomerTable } from '@/persistence/entities/customer';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const CustomerConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID()
 };
 
 export class CustomerFixtures implements Fixture<CustomerTable> {

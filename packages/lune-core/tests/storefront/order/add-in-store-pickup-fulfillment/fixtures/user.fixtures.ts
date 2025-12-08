@@ -1,10 +1,10 @@
 import type { UserTable } from '@/persistence/entities/user';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 export const UserConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID()
 };
 
 export class UserFixtures implements Fixture<UserTable> {

@@ -1,7 +1,7 @@
-import { TestHelper } from './test-helper';
+import { TestUtils } from './test-utils';
 
 async function main() {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
   const q = testHelper.getQueryBuilder();
 
   console.log('🔧 Setting up app_user...');

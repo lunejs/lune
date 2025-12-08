@@ -3,7 +3,7 @@ import request from 'supertest';
 import { Locale } from '@/persistence/entities/locale';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { AssetFixtures } from './fixtures/asset.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
@@ -18,7 +18,7 @@ import { TagFixtures } from './fixtures/tag.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
 describe('product - Query', () => {
-  const testHelper = new TestHelper();
+  const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
   const app = luneServer.getApp();

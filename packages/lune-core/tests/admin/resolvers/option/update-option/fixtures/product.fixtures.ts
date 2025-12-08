@@ -3,12 +3,12 @@ import { convertToCent } from '@lune/common';
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
-import { TestHelper } from '@/tests/utils/test-helper';
+import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductConstants = {
-  ID: TestHelper.generateUUID()
+  ID: TestUtils.generateUUID()
 };
 
 export class ProductFixtures implements Fixture<ProductTable> {
