@@ -11,7 +11,10 @@ import { ShopConstants } from './shop.fixtures';
 
 export const FulfillmentConstants = {
   ID: TestHelper.generateUUID(),
-  WithoutCustomerID: TestHelper.generateUUID()
+  WithoutCustomerID: TestHelper.generateUUID(),
+  WithOrderLevelDiscountID: TestHelper.generateUUID(),
+  WithOrderLineLevelDiscountID: TestHelper.generateUUID(),
+  WithFulfillmentLevelDiscountID: TestHelper.generateUUID()
 };
 
 export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
@@ -32,6 +35,30 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         amount: LunePrice.toCent(200),
         total: LunePrice.toCent(200),
         order_id: OrderConstants.WithoutCustomerID,
+        shop_id: ShopConstants.ID,
+        type: FulfillmentType.SHIPPING
+      },
+      {
+        id: FulfillmentConstants.WithOrderLevelDiscountID,
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(200),
+        order_id: OrderConstants.WithOrderLevelDiscountID,
+        shop_id: ShopConstants.ID,
+        type: FulfillmentType.SHIPPING
+      },
+      {
+        id: FulfillmentConstants.WithOrderLineLevelDiscountID,
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(200),
+        order_id: OrderConstants.WithOrderLineLevelDiscountID,
+        shop_id: ShopConstants.ID,
+        type: FulfillmentType.SHIPPING
+      },
+      {
+        id: FulfillmentConstants.WithFulfillmentLevelDiscountID,
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(150), // 200 - 50 discount
+        order_id: OrderConstants.WithFulfillmentLevelDiscountID,
         shop_id: ShopConstants.ID,
         type: FulfillmentType.SHIPPING
       }

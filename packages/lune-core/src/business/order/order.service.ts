@@ -597,6 +597,8 @@ export class OrderService {
   }
 
   async addDiscountCode(orderId: ID, code: string) {
+    await this.cleanDiscounts(orderId);
+
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     if (!this.validator.canModifyDiscounts(order.state)) {
@@ -921,5 +923,46 @@ export class OrderService {
         }
       });
     }
+  }
+
+  private async cleanDiscounts(orderId: ID) {
+    const [lines, fulfillment] = await Promise.all([
+      this.lineRepository.findMany({ where: { orderId } }),
+      this.fulfillmentRepository.findOne({ where: { orderId } })
+    ]);
+
+    await Promise.all(
+      lines.map(line =>
+        this.lineRepository.update({
+          where: { id: line.id },
+          data: {
+            lineTotal: line.lineSubtotal,
+            appliedDiscounts: []
+          }
+        })
+      )
+    );
+
+    const newSubtotal = lines.reduce((acc, line) => acc + line.lineSubtotal, 0);
+
+    let fulfillmentTotal = 0;
+
+    if (fulfillment) {
+      await this.fulfillmentRepository.update({
+        where: { id: fulfillment.id },
+        data: { total: fulfillment.amount }
+      });
+
+      fulfillmentTotal = fulfillment.amount;
+    }
+
+    return await this.repository.update({
+      where: { id: orderId },
+      data: {
+        subtotal: newSubtotal,
+        total: newSubtotal + fulfillmentTotal,
+        appliedDiscounts: []
+      }
+    });
   }
 }

@@ -21,6 +21,8 @@ import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
 import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
+// TODO: add tests for when discount code is already in order, stops being applicable (by conditions met) and then comes back to being applicable
+// TODO: add tests for when discount code is already in order, stops being applicable (by admin options (disabled, expired, per customer limit, etc)) and the comes back to being applicable
 describe('addDiscountCode - Mutation', () => {
   const testHelper = new TestHelper();
 
@@ -261,7 +263,7 @@ describe('addDiscountCode - Mutation', () => {
       id: OrderConstants.WithoutFulfillmentID,
       state: 'MODIFYING',
       subtotal: LunePrice.toCent(2_100),
-      total: LunePrice.toCent(2_300),
+      total: LunePrice.toCent(2_100),
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
@@ -350,6 +352,176 @@ describe('addDiscountCode - Mutation', () => {
             unitPrice: LunePrice.toCent(1_300),
             lineSubtotal: LunePrice.toCent(1_300),
             lineTotal: LunePrice.toCent(1_300),
+            quantity: 1,
+            variant: {
+              id: VariantConstants.ID
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  test('replaces order-level discount with order-line-level discount', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_DISCOUNT_CODE_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithOrderLevelDiscountID,
+          code: DiscountConstants.OrderLineDiscountCode
+        }
+      });
+
+    const {
+      addDiscountCodeToOrder: { order }
+    } = res.body.data;
+
+    expect(order).toMatchObject({
+      id: OrderConstants.WithOrderLevelDiscountID,
+      state: 'MODIFYING',
+      subtotal: LunePrice.toCent(700), // 1000 - 300 discount on line
+      total: LunePrice.toCent(900), // 700 + 200 fulfillment
+      placedAt: null,
+      completedAt: null,
+      totalQuantity: 1,
+      fulfillment: {
+        amount: LunePrice.toCent(200)
+      },
+      appliedDiscounts: [], // ORDER_LINE discounts go on lines, not order
+      lines: {
+        items: [
+          {
+            unitPrice: LunePrice.toCent(1_000),
+            lineSubtotal: LunePrice.toCent(1_000),
+            lineTotal: LunePrice.toCent(700), // 1000 - 300 discount
+            quantity: 1,
+            appliedDiscounts: [
+              {
+                code: DiscountConstants.OrderLineDiscountCode,
+                applicationMode: 'CODE',
+                applicationLevel: 'ORDER_LINE',
+                amount: LunePrice.toCent(300)
+              }
+            ],
+            variant: {
+              id: VariantConstants.ID
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  test('replaces order-line-level discount with fulfillment-level discount', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_DISCOUNT_CODE_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithOrderLineLevelDiscountID,
+          code: DiscountConstants.FulfillmentDiscountCode
+        }
+      });
+
+    const {
+      addDiscountCodeToOrder: { order }
+    } = res.body.data;
+
+    expect(order).toMatchObject({
+      id: OrderConstants.WithOrderLineLevelDiscountID,
+      state: 'MODIFYING',
+      subtotal: LunePrice.toCent(1_800), // 800 + 1000 (no line discount anymore)
+      total: LunePrice.toCent(1_950), // 1800 + 150 (200 - 50 fulfillment discount)
+      placedAt: null,
+      completedAt: null,
+      totalQuantity: 2,
+      fulfillment: {
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(150) // 200 - 50 discount
+      },
+      appliedDiscounts: [
+        {
+          code: DiscountConstants.FulfillmentDiscountCode,
+          applicationMode: 'CODE',
+          applicationLevel: 'FULFILLMENT',
+          amount: LunePrice.toCent(50)
+        }
+      ],
+      lines: {
+        items: [
+          {
+            unitPrice: LunePrice.toCent(800),
+            lineSubtotal: LunePrice.toCent(800),
+            lineTotal: LunePrice.toCent(800),
+            quantity: 1,
+            appliedDiscounts: [],
+            variant: {
+              id: VariantConstants.AlreadyInLineID
+            }
+          },
+          {
+            unitPrice: LunePrice.toCent(1_000),
+            lineSubtotal: LunePrice.toCent(1_000),
+            lineTotal: LunePrice.toCent(1_000), // 1000 (no discount anymore)
+            appliedDiscounts: [],
+            quantity: 1,
+            variant: {
+              id: VariantConstants.ID
+            }
+          }
+        ]
+      }
+    });
+  });
+
+  test('replaces fulfillment-level discount with order-level discount', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_DISCOUNT_CODE_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithFulfillmentLevelDiscountID,
+          code: DiscountConstants.OrderDiscountCode
+        }
+      });
+
+    const {
+      addDiscountCodeToOrder: { order }
+    } = res.body.data;
+
+    expect(order).toMatchObject({
+      id: OrderConstants.WithFulfillmentLevelDiscountID,
+      state: 'MODIFYING',
+      subtotal: LunePrice.toCent(900), // 1000 - 100 order discount
+      total: LunePrice.toCent(1_100), // 900 + 200 (no fulfillment discount anymore)
+      placedAt: null,
+      completedAt: null,
+      totalQuantity: 1,
+      fulfillment: {
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(200) // 200 (no discount anymore)
+      },
+      appliedDiscounts: [
+        {
+          code: DiscountConstants.OrderDiscountCode,
+          applicationMode: 'CODE',
+          applicationLevel: 'ORDER',
+          amount: LunePrice.toCent(100)
+        }
+      ],
+      lines: {
+        items: [
+          {
+            unitPrice: LunePrice.toCent(1_000),
+            lineSubtotal: LunePrice.toCent(1_000),
+            lineTotal: LunePrice.toCent(1_000),
             quantity: 1,
             variant: {
               id: VariantConstants.ID

@@ -17,7 +17,14 @@ export const OrderLineConstants = {
   WithoutFulfillmentID2: TestHelper.generateUUID(),
 
   WithoutCustomerID: TestHelper.generateUUID(),
-  WithoutCustomerID2: TestHelper.generateUUID()
+  WithoutCustomerID2: TestHelper.generateUUID(),
+
+  WithOrderLevelDiscountID: TestHelper.generateUUID(),
+
+  WithOrderLineLevelDiscountID: TestHelper.generateUUID(),
+  WithOrderLineLevelDiscountID2: TestHelper.generateUUID(),
+
+  WithFulfillmentLevelDiscountID: TestHelper.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {
@@ -87,6 +94,60 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         quantity: 1,
         unit_price: LunePrice.toCent(1_300),
         shop_id: ShopConstants.ID
+      },
+      // Order with order-level discount (1 line)
+      {
+        id: OrderLineConstants.WithOrderLevelDiscountID,
+        order_id: OrderConstants.WithOrderLevelDiscountID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(1_000),
+        line_subtotal: LunePrice.toCent(1_000),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_000),
+        shop_id: ShopConstants.ID,
+        applied_discounts: JSON.stringify([])
+      },
+      // Order with order-line-level discount (2 lines, discount on second line)
+      {
+        id: OrderLineConstants.WithOrderLineLevelDiscountID,
+        order_id: OrderConstants.WithOrderLineLevelDiscountID,
+        variant_id: VariantConstants.AlreadyInLineID,
+        line_total: LunePrice.toCent(800),
+        line_subtotal: LunePrice.toCent(800),
+        quantity: 1,
+        unit_price: LunePrice.toCent(800),
+        shop_id: ShopConstants.ID,
+        applied_discounts: JSON.stringify([])
+      },
+      {
+        id: OrderLineConstants.WithOrderLineLevelDiscountID2,
+        order_id: OrderConstants.WithOrderLineLevelDiscountID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(700), // 1000 - 300 discount
+        line_subtotal: LunePrice.toCent(1_000),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_000),
+        shop_id: ShopConstants.ID,
+        applied_discounts: JSON.stringify([
+          {
+            code: 'AUTOMATIC_ORDER_LINE_DISCOUNT',
+            applicationMode: 'AUTOMATIC',
+            applicationLevel: 'ORDER_LINE',
+            amount: LunePrice.toCent(300)
+          }
+        ])
+      },
+      // Order with fulfillment-level discount (1 line)
+      {
+        id: OrderLineConstants.WithFulfillmentLevelDiscountID,
+        order_id: OrderConstants.WithFulfillmentLevelDiscountID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(1_000),
+        line_subtotal: LunePrice.toCent(1_000),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_000),
+        shop_id: ShopConstants.ID,
+        applied_discounts: JSON.stringify([])
       }
     ];
   }
