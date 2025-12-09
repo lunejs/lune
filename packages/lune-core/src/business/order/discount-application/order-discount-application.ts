@@ -320,6 +320,9 @@ export class OrderDiscountApplication {
         }
       });
     }
+
+    // TODO: add warn log for when application level does not match
+    return order;
   }
 
   async isValid(discount: Discount, order: Order) {

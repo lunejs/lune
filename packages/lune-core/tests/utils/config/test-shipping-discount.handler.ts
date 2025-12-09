@@ -12,10 +12,17 @@ export const TestFulfillmentDiscountHandler = new FulfillmentDiscountHandler({
     },
     amountToDiscount: {
       type: 'price'
+    },
+    appliesToOrderId: {
+      type: 'text'
     }
   },
-  async check(_, __, ___, args) {
-    const { applies } = args;
+  async check(_, order, ___, args) {
+    const { applies, appliesToOrderId } = args;
+
+    if (appliesToOrderId && order.id !== appliesToOrderId) {
+      return false;
+    }
 
     return applies;
   },

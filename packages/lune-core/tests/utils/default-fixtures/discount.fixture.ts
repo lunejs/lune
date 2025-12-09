@@ -15,7 +15,7 @@ export const DefaultDiscountFixture = (): DiscountTable => ({
   application_mode: ApplicationMode.Code,
   application_level: ApplicationLevel.Order,
   per_customer_limit: null,
-  starts_at: subDays(new Date(), 1),
+  starts_at: subDays(new Date(), 7),
   ends_at: null,
   enabled: true,
   combinable: false,
