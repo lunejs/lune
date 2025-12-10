@@ -24,7 +24,7 @@ async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
   return orderService.findUnique(clean(input));
 }
 
-async function create(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
+async function createOrder(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
   const result = await orderService.create(input);
@@ -141,7 +141,7 @@ export const OrderResolver: GraphqlApiResolver = {
     order
   },
   Mutation: {
-    create,
+    createOrder,
     addLineToOrder,
     updateOrderLine,
     removeOrderLine,
