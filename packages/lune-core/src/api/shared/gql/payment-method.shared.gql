@@ -1,0 +1,10 @@
+"""
+A payment method is a way to pay for an order in your shop, like credit card, PayPal, etc.
+"""
+type PaymentMethod {
+  id: ID!
+  """
+  Payment method's name
+  """
+  name: String!
+}

@@ -1507,6 +1507,7 @@ export type ProductTranslation = {
 export type Query = {
   __typename?: 'Query';
   assets: AssetList;
+  availablePaymentMethods: Array<PaymentMethod>;
   availablePickupLocations: Array<Location>;
   collection?: Maybe<Collection>;
   collections: CollectionList;
@@ -3082,6 +3083,7 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<QueryAssetsArgs>>;
+  availablePaymentMethods?: Resolver<Array<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
   availablePickupLocations?: Resolver<Array<ResolversTypes['Location']>, ParentType, ContextType>;
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;

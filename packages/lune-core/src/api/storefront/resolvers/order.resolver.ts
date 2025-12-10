@@ -30,6 +30,12 @@ async function availablePickupLocations(_, __, ctx: ExecutionContext) {
   return orderService.findAvailablePickupLocations();
 }
 
+async function availablePaymentMethods(_, __, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  return orderService.findAvailablePaymentMethods();
+}
+
 async function createOrder(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
@@ -145,7 +151,8 @@ async function addPaymentToOrder(
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order,
-    availablePickupLocations
+    availablePickupLocations,
+    availablePaymentMethods
   },
   Mutation: {
     createOrder,

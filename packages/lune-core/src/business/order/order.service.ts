@@ -28,6 +28,7 @@ import type { OrderLineRepository } from '@/persistence/repositories/order-line-
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
 import type { PaymentMethodRepository } from '@/persistence/repositories/payment-method-repository';
 import type { PaymentRepository } from '@/persistence/repositories/payment-repository';
+import { SortKey } from '@/persistence/repositories/repository';
 import type { ShippingFulfillmentRepository } from '@/persistence/repositories/shipping-fulfillment-repository';
 import type { ShippingMethodRepository } from '@/persistence/repositories/shipping-method-repository';
 import type { StateRepository } from '@/persistence/repositories/state-repository';
@@ -104,6 +105,13 @@ export class OrderService {
 
   async findAvailablePickupLocations() {
     return this.locationRepository.findEnabledAndAvailableForInStorePickup();
+  }
+
+  async findAvailablePaymentMethods() {
+    return this.paymentMethodRepository.findMany({
+      where: { enabled: true },
+      orderBy: { createdAt: SortKey.Desc }
+    });
   }
 
   async create(input: CreateOrderInput) {
