@@ -1,8 +1,6 @@
 import { LunePrice } from '@lune/common';
 
-import { setConfig } from '@/config/config';
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
-import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OrderDiscountApplication } from '../order-discount-application';
@@ -23,9 +21,9 @@ import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixt
 
 describe('DiscountApplication', () => {
   const testUtils = new TestUtils();
-  setConfig(TEST_LUNE_CONFIG);
 
   let ctx: Awaited<ReturnType<typeof testUtils.buildContext>>;
+  let discountApplication: OrderDiscountApplication;
 
   beforeEach(async () => {
     await testUtils.loadFixtures([
@@ -44,10 +42,14 @@ describe('DiscountApplication', () => {
       new OrderDiscountFixtures()
     ]);
 
+    testUtils.initTestConfig();
+
     ctx = await testUtils.buildContext(ShopConstants.ID, {
       email: 'test@example.com',
       sub: CustomerConstants.ID
     });
+
+    discountApplication = new OrderDiscountApplication(ctx);
   });
 
   afterEach(async () => {
@@ -61,8 +63,6 @@ describe('DiscountApplication', () => {
 
   describe('applyAvailable', () => {
     test('applies the best discount (ORDER LEVEL) when multiple available', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.ID }
       });
@@ -88,8 +88,6 @@ describe('DiscountApplication', () => {
     });
 
     test('applies the best discount (ORDER LINE LEVEL) when it gives more discount', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.ForOrderLineLevelID }
       });
@@ -138,8 +136,6 @@ describe('DiscountApplication', () => {
     });
 
     test('applies the best discount (FULFILLMENT LEVEL) when it gives more discount', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.ForFulfillmentLevelID }
       });
@@ -175,8 +171,6 @@ describe('DiscountApplication', () => {
     });
 
     test('applies ORDER level discount when FULFILLMENT discount exists but order has no fulfillment', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithoutFulfillmentID }
       });
@@ -201,8 +195,6 @@ describe('DiscountApplication', () => {
     });
 
     test('applies already stored discount code over any automatic discount', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithCodeDiscountID }
       });
@@ -225,8 +217,6 @@ describe('DiscountApplication', () => {
     });
 
     test('removes applied discount when does not exists', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithNonExistentDiscountID }
       });
@@ -249,8 +239,6 @@ describe('DiscountApplication', () => {
     });
 
     test('removes applied discount when is disabled', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithDisabledDiscountID }
       });
@@ -273,8 +261,6 @@ describe('DiscountApplication', () => {
     });
 
     test('removes applied discount when is premature to today date', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithPrematureDiscountID }
       });
@@ -295,9 +281,8 @@ describe('DiscountApplication', () => {
         ]
       });
     });
-    test('removes applied discount when is expired', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
 
+    test('removes applied discount when is expired', async () => {
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithExpiredDiscountID }
       });
@@ -320,8 +305,6 @@ describe('DiscountApplication', () => {
     });
 
     test('removes applied discount when exceeds per customer limit', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithLimitExceededDiscountID }
       });
@@ -346,8 +329,6 @@ describe('DiscountApplication', () => {
 
   describe('isValid', () => {
     test('returns true when provided discount is valid', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { code: DiscountConstants.OrderAutomaticDiscountCode }
       });
@@ -362,8 +343,6 @@ describe('DiscountApplication', () => {
     });
 
     test('returns false when provided discount is disabled', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { id: DiscountConstants.DisabledDiscountID }
       });
@@ -378,8 +357,6 @@ describe('DiscountApplication', () => {
     });
 
     test('returns false when provided discount is premature to today date', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { id: DiscountConstants.PrematureDiscountID }
       });
@@ -394,8 +371,6 @@ describe('DiscountApplication', () => {
     });
 
     test('returns false when provided discount is expired', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { id: DiscountConstants.ExpiredDiscountID }
       });
@@ -410,8 +385,6 @@ describe('DiscountApplication', () => {
     });
 
     test('returns false when provided discount exceeds per customer limit', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { id: DiscountConstants.LimitExceededDiscountID }
       });
@@ -426,8 +399,6 @@ describe('DiscountApplication', () => {
     });
 
     test('returns true when order has no customer and discount has perCustomerLimit', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const discount = await ctx.repositories.discount.findOneOrThrow({
         where: { id: DiscountConstants.LimitExceededDiscountID }
       });
@@ -444,8 +415,6 @@ describe('DiscountApplication', () => {
 
   describe('clean', () => {
     test('removes all applied discounts from an order and resets values', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const result = await discountApplication.clean(OrderConstants.WithCodeDiscountID);
 
       expect(result).toMatchObject({
@@ -474,8 +443,6 @@ describe('DiscountApplication', () => {
     });
 
     test('removes all applied discounts from an order without fulfillment', async () => {
-      const discountApplication = new OrderDiscountApplication(ctx);
-
       const order = await ctx.repositories.order.findOneOrThrow({
         where: { id: OrderConstants.WithoutFulfillmentID }
       });
