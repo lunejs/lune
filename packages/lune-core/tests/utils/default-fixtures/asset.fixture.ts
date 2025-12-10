@@ -8,6 +8,7 @@ export const DefaultAssetFixture = (): AssetTable => ({
   ext: 'jpg',
   mime_type: 'image/jpeg',
   source: `https://example.com/${crypto.randomUUID()}.jpg`,
+  size: 1024,
   provider_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });
