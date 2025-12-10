@@ -1,9 +1,7 @@
-import { ReplaceIcon, Trash2Icon } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { filesize } from '@lune/common';
 import {
-  Button,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -27,7 +25,7 @@ export const AssetDetails = ({ asset, children }: Props) => {
         </SheetHeader>
         <div className="px-4 flex flex-col gap-4">
           <img src={asset.source} alt={asset.filename} className="rounded-md" />
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Button variant={'outline'}>
               <ReplaceIcon />
               Replace
@@ -36,7 +34,7 @@ export const AssetDetails = ({ asset, children }: Props) => {
               <Trash2Icon />
               Remove
             </Button>
-          </div>
+          </div> */}
         </div>
       </SheetContent>
     </Sheet>

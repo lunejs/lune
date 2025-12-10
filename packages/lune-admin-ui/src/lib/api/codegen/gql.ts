@@ -17,6 +17,7 @@ type Documents = {
     "\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n    size\n  }\n": typeof types.CommonAssetFragmentDoc,
     "\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n": typeof types.GetAllAssetsQueryDocument,
     "\n  query CountAssetsQuery {\n    assets {\n      count\n    }\n  }\n": typeof types.CountAssetsQueryDocument,
+    "\n  mutation RemoveAssetsMutation($ids: [ID!]!) {\n    removeAssets(ids: $ids)\n  }\n": typeof types.RemoveAssetsMutationDocument,
     "\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n": typeof types.CommonCollectionForTranslationFragmentDoc,
     "\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n": typeof types.CommonCollectionFragmentDoc,
     "\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n": typeof types.CommonListCollectionFragmentDoc,
@@ -109,6 +110,7 @@ const documents: Documents = {
     "\n  fragment CommonAsset on Asset {\n    id\n    createdAt\n    filename\n    ext\n    source\n    size\n  }\n": types.CommonAssetFragmentDoc,
     "\n  query GetAllAssetsQuery($input: AssetListInput) {\n    assets(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonAsset\n      }\n    }\n  }\n": types.GetAllAssetsQueryDocument,
     "\n  query CountAssetsQuery {\n    assets {\n      count\n    }\n  }\n": types.CountAssetsQueryDocument,
+    "\n  mutation RemoveAssetsMutation($ids: [ID!]!) {\n    removeAssets(ids: $ids)\n  }\n": types.RemoveAssetsMutationDocument,
     "\n  fragment CommonCollectionForTranslation on Collection {\n    id\n    name\n    description\n    translations {\n      name\n      description\n      locale\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n": types.CommonCollectionForTranslationFragmentDoc,
     "\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    contentType\n    order\n    products {\n      items {\n        id\n      }\n    }\n    assets(input: { take: 1 }) {\n      items {\n        id\n        filename\n        source\n      }\n    }\n  }\n": types.CommonCollectionFragmentDoc,
     "\n  fragment CommonListCollection on Collection {\n    id\n    name\n    slug\n    enabled\n    contentType\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n    subCollections {\n      count\n      items {\n        id\n        name\n      }\n    }\n    products {\n      count\n      items {\n        id\n        name\n      }\n    }\n  }\n": types.CommonListCollectionFragmentDoc,
@@ -224,6 +226,10 @@ export function graphql(source: "\n  query GetAllAssetsQuery($input: AssetListIn
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query CountAssetsQuery {\n    assets {\n      count\n    }\n  }\n"): (typeof documents)["\n  query CountAssetsQuery {\n    assets {\n      count\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveAssetsMutation($ids: [ID!]!) {\n    removeAssets(ids: $ids)\n  }\n"): (typeof documents)["\n  mutation RemoveAssetsMutation($ids: [ID!]!) {\n    removeAssets(ids: $ids)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

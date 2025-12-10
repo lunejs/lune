@@ -4,6 +4,7 @@ import { Button } from '@lune/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 
+import { AssetsTableActions } from './actions/assets-table-actions';
 import { AssetsTableColumns } from './columns';
 import { AssetsTableEmptyState } from './empty-state';
 import { useAssetsTable } from './use-assets-table';
@@ -31,7 +32,7 @@ export const AssetsTable = () => {
           <span className="hidden lg:inline">Upload</span>
         </Button>
       }
-      // onSelectRender={rows => <ProductTableActions rows={rows} />}
+      onSelectRender={rows => <AssetsTableActions rows={rows} />}
     />
   );
 };

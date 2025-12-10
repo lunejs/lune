@@ -32,3 +32,9 @@ export const COUNT_ASSETS_QUERY = graphql(`
     }
   }
 `);
+
+export const REMOVE_ASSETS_MUTATION = graphql(`
+  mutation RemoveAssetsMutation($ids: [ID!]!) {
+    removeAssets(ids: $ids)
+  }
+`);
