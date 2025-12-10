@@ -51,7 +51,9 @@ export const AssetsTableColumns: ColumnDef<AssetsTableRow>[] = [
         )}
         <div>
           <P className="text-nowrap">{row.original.filename}</P>
-          <Small className="text-nowrap">{row.original.ext.toUpperCase()}</Small>
+          <Small className="text-nowrap text-muted-foreground">
+            {row.original.ext.toUpperCase()}
+          </Small>
         </div>
       </Link>
     ),

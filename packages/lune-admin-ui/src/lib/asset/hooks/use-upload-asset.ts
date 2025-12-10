@@ -23,7 +23,10 @@ export const useUploadAsset = () => {
       }
     );
 
-    await queryClient.refetchQueries({ queryKey: [AssetCacheKeys.all] });
+    await Promise.all([
+      queryClient.refetchQueries({ queryKey: [AssetCacheKeys.all] }),
+      queryClient.refetchQueries({ queryKey: [AssetCacheKeys.Count] })
+    ]);
 
     setIsUploading(false);
 

@@ -12,7 +12,8 @@ export class AssetSerializer extends Serializer<Asset, AssetTable> {
       ['ext', 'ext'],
       ['source', 'source'],
       ['provider_id', 'providerId'],
-      ['mime_type', 'mimeType']
+      ['mime_type', 'mimeType'],
+      ['size', 'size']
     ]);
   }
 }

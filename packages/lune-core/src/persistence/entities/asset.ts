@@ -36,5 +36,6 @@ export interface AssetTable extends LuneTable {
   source: string;
   provider_id: string;
   mime_type: string;
+  size: number;
   shop_id: string;
 }
