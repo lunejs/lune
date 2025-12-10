@@ -141,7 +141,7 @@ const SIDEBAR = {
     },
     {
       title: 'Assets',
-      url: '#',
+      url: '/assets',
       icon: ImagesIcon
     }
   ],

@@ -6,3 +6,4 @@ export * from './timers';
 export * from './arrays';
 export * from './formatters';
 export * from './logger';
+export * from './files';

@@ -1,3 +1,4 @@
 export const AssetCacheKeys = {
-  all: 'assets'
+  all: 'assets',
+  Count: 'count'
 };

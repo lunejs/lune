@@ -93,6 +93,7 @@ export type Asset = Node & {
   mimeType: Scalars['String']['output'];
   order: Scalars['Int']['output'];
   providerId: Scalars['String']['output'];
+  size: Scalars['Int']['output'];
   source: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
 };
@@ -2517,6 +2518,7 @@ export type AssetResolvers<ContextType = ExecutionContext, ParentType extends Re
   mimeType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   providerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   source?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

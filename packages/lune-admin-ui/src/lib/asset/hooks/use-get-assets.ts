@@ -12,9 +12,11 @@ export const useGetAssets = (input?: AssetListInput) => {
 
   const assets =
     result.data?.assets.items.map(asset => getFragmentData(COMMON_ASSET_FRAGMENT, asset)) ?? [];
+  const { count, pageInfo } = result.data?.assets ?? {};
 
   return {
     ...result,
-    assets
+    assets,
+    pagination: { count, pageInfo }
   };
 };
