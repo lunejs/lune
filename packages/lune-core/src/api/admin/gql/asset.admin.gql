@@ -2,6 +2,10 @@ type Query {
   assets(input: AssetListInput): AssetList!
 }
 
+type Mutation {
+  removeAssets(ids: [ID!]!): Boolean!
+}
+
 input AssetListInput {
   """
   Skip the first n results
