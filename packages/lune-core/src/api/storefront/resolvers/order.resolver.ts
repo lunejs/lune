@@ -24,6 +24,12 @@ async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
   return orderService.findUnique(clean(input));
 }
 
+async function availablePickupLocations(_, __, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  return orderService.findAvailablePickupLocations();
+}
+
 async function createOrder(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
@@ -138,7 +144,8 @@ async function addPaymentToOrder(
 
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
-    order
+    order,
+    availablePickupLocations
   },
   Mutation: {
     createOrder,

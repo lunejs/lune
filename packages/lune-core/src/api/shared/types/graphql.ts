@@ -1129,6 +1129,7 @@ export type Order = Node & {
   id: Scalars['ID']['output'];
   /** Order lines for the order */
   lines: OrderLineList;
+  /** Orders's payment */
   payments: Array<Payment>;
   /** The date and time when the order has been marked as placed */
   placedAt?: Maybe<Scalars['Date']['output']>;
@@ -1196,13 +1197,10 @@ export enum OrderErrorCode {
   InvalidCustomerEmail = 'INVALID_CUSTOMER_EMAIL',
   InvalidQuantity = 'INVALID_QUANTITY',
   InvalidShippingMethod = 'INVALID_SHIPPING_METHOD',
-  MissingCustomer = 'MISSING_CUSTOMER',
-  MissingFulfillment = 'MISSING_FULFILLMENT',
   MissingShippingAddress = 'MISSING_SHIPPING_ADDRESS',
   NotEnoughStock = 'NOT_ENOUGH_STOCK',
   PaymentFailed = 'PAYMENT_FAILED',
-  PaymentHandlerNotFound = 'PAYMENT_HANDLER_NOT_FOUND',
-  PaymentMethodNotFound = 'PAYMENT_METHOD_NOT_FOUND'
+  PaymentHandlerNotFound = 'PAYMENT_HANDLER_NOT_FOUND'
 }
 
 export type OrderErrorResult = {
@@ -1274,7 +1272,7 @@ export type PageInfo = {
 };
 
 /** A payment is a transaction between a customer and a shop, is assigned to an order */
-export type Payment = Node & {
+export type Payment = {
   __typename?: 'Payment';
   /** The total amount of the payment */
   amount: Scalars['Int']['output'];
@@ -1509,6 +1507,7 @@ export type ProductTranslation = {
 export type Query = {
   __typename?: 'Query';
   assets: AssetList;
+  availablePickupLocations: Array<Location>;
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
@@ -2147,7 +2146,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<Payment, 'details'> & { details?: Maybe<_RefType['PaymentDetails']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( PaymentMethod ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2798,7 +2797,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Discount' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'Payment' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Discount' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentMethod' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3083,6 +3082,7 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
 
 export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<QueryAssetsArgs>>;
+  availablePickupLocations?: Resolver<Array<ResolversTypes['Location']>, ParentType, ContextType>;
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;

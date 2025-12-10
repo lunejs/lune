@@ -21,6 +21,7 @@ import type { CustomerRepository } from '@/persistence/repositories/customer-rep
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
+import type { InStorePickupRepository } from '@/persistence/repositories/in-store-pickup-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
@@ -61,6 +62,7 @@ export class OrderService {
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
   private readonly inStorePickupFulfillmentRepository: InStorePickupFulfillmentRepository;
+  private readonly inStorePickupRepository: InStorePickupRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
   private readonly locationRepository: LocationRepository;
@@ -82,6 +84,7 @@ export class OrderService {
     this.fulfillmentRepository = ctx.repositories.fulfillment;
     this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
     this.inStorePickupFulfillmentRepository = ctx.repositories.inStorePickupFulfillment;
+    this.inStorePickupRepository = ctx.repositories.inStorePickup;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
     this.locationRepository = ctx.repositories.location;
@@ -97,6 +100,10 @@ export class OrderService {
     if (code) {
       return this.repository.findOne({ where: { code } });
     }
+  }
+
+  async findAvailablePickupLocations() {
+    return this.locationRepository.findEnabledAndAvailableForInStorePickup();
   }
 
   async create(input: CreateOrderInput) {
