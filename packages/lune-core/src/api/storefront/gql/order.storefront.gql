@@ -18,6 +18,7 @@ type Mutation {
 type Query {
   availablePickupLocations: [Location!]!
   availablePaymentMethods: [PaymentMethod!]!
+  availableShippingMethods(orderId: ID!): [ShippingMethod!]!
 }
 
 input CreateOrderInput {

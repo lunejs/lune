@@ -114,6 +114,22 @@ export class OrderService {
     });
   }
 
+  async findAvailableShippingMethods(orderId: ID) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+    const { shippingAddress } = order;
+
+    if (!shippingAddress) return [];
+
+    const country = await this.countryRepository.findOneOrThrow({
+      where: { code: shippingAddress?.countryCode }
+    });
+    const state = await this.stateRepository.findOneOrThrow({
+      where: { code: shippingAddress?.stateCode, countryId: country.id }
+    });
+
+    return await this.shippingMethodRepository.findEnabledByState(state.id);
+  }
+
   async create(input: CreateOrderInput) {
     const { line } = input;
 

@@ -26,4 +26,16 @@ export class ShippingMethodRepository extends Repository<ShippingMethod, Shippin
 
     return result ? (this.serializer.deserialize(result) as ShippingMethod) : null;
   }
+
+  async findEnabledByState(stateId: ID): Promise<ShippingMethod[]> {
+    const results = await this.trx(Tables.ShippingMethod)
+      .where('shipping_method.enabled', true)
+      .join('zone', 'shipping_method.zone_id', 'zone.id')
+      .join('zone_state', 'zone.id', 'zone_state.zone_id')
+      .where('zone_state.state_id', stateId)
+      .select('shipping_method.*')
+      .orderBy('shipping_method.created_at', 'desc');
+
+    return results.map(result => this.serializer.deserialize(result) as ShippingMethod);
+  }
 }

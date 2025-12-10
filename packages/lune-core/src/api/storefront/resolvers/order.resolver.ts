@@ -13,6 +13,7 @@ import type {
   MutationCreateOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
+  QueryAvailableShippingMethodsArgs,
   QueryOrderArgs
 } from '@/api/shared/types/graphql';
 import { OrderService } from '@/business/order/order.service';
@@ -34,6 +35,16 @@ async function availablePaymentMethods(_, __, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
   return orderService.findAvailablePaymentMethods();
+}
+
+async function availableShippingMethods(
+  _,
+  { orderId }: QueryAvailableShippingMethodsArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  return orderService.findAvailableShippingMethods(orderId);
 }
 
 async function createOrder(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
@@ -152,7 +163,8 @@ export const OrderResolver: GraphqlApiResolver = {
   Query: {
     order,
     availablePickupLocations,
-    availablePaymentMethods
+    availablePaymentMethods,
+    availableShippingMethods
   },
   Mutation: {
     createOrder,
