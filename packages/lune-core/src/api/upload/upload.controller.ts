@@ -42,7 +42,8 @@ const upload: RestApiHandler = async (req, res) => {
           providerId: result.providerId,
           source: result.source,
           mimeType: file.mimetype,
-          ext: path.extname(file.originalname)
+          ext: path.extname(file.originalname),
+          size: file.size
         });
 
         assets.push(asset);

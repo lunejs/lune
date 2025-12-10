@@ -24,6 +24,10 @@ export interface Asset extends LuneEntity {
    * Asset mime type
    */
   mimeType: string;
+  /**
+   * Asset size
+   */
+  size: number;
 }
 
 export interface AssetTable extends LuneTable {
