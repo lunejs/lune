@@ -1,11 +1,12 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { Link } from 'react-router';
 
 import { filesize, formatDate } from '@lune/common';
 import { Checkbox, P, Small } from '@lune/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
+
+import { AssetDetails } from '../details/asset-details';
 
 import type { AssetsTableRow } from './assets-table';
 
@@ -37,25 +38,27 @@ export const AssetsTableColumns: ColumnDef<AssetsTableRow>[] = [
     accessorKey: 'filename',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Asset" />,
     cell: ({ row }) => (
-      <Link to={`/products/${row.original.id ?? ''}`} className="flex items-center gap-2 w-max">
-        {row.original.source ? (
-          <img
-            src={row.original.source}
-            alt={row.original.filename}
-            className="h-12 w-12 object-cover rounded-md shrink-0"
-          />
-        ) : (
-          <>
-            <ImagePlaceholder initial={row.original.filename} className="shrink-0" />
-          </>
-        )}
-        <div>
-          <P className="text-nowrap">{row.original.filename}</P>
-          <Small className="text-nowrap text-muted-foreground">
-            {row.original.ext.toUpperCase()}
-          </Small>
-        </div>
-      </Link>
+      <AssetDetails asset={row.original}>
+        <button className="flex items-center gap-2 w-max cursor-pointer">
+          {row.original.source ? (
+            <img
+              src={row.original.source}
+              alt={row.original.filename}
+              className="h-12 w-12 object-cover rounded-md shrink-0"
+            />
+          ) : (
+            <>
+              <ImagePlaceholder initial={row.original.filename} className="shrink-0" />
+            </>
+          )}
+          <div className="flex flex-col items-start">
+            <P className="text-nowrap">{row.original.filename}</P>
+            <Small className="text-nowrap text-muted-foreground">
+              {row.original.ext.toUpperCase()}
+            </Small>
+          </div>
+        </button>
+      </AssetDetails>
     ),
     enableSorting: false,
     enableHiding: false
