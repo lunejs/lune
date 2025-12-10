@@ -10,6 +10,7 @@ import type {
   MutationAddPaymentToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
   MutationAddShippingFulfillmentToOrderArgs,
+  MutationCreateOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
   QueryOrderArgs
@@ -21,6 +22,14 @@ async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
   return orderService.findUnique(clean(input));
+}
+
+async function create(_, { input }: MutationCreateOrderArgs, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.create(input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
 async function addLineToOrder(
@@ -132,6 +141,7 @@ export const OrderResolver: GraphqlApiResolver = {
     order
   },
   Mutation: {
+    create,
     addLineToOrder,
     updateOrderLine,
     removeOrderLine,

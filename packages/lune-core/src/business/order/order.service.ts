@@ -7,6 +7,7 @@ import type {
   AddPaymentToOrderInput,
   AddShippingFulfillmentInput,
   CreateOrderAddressInput,
+  CreateOrderInput,
   CreateOrderLineInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
@@ -96,6 +97,51 @@ export class OrderService {
     if (code) {
       return this.repository.findOne({ where: { code } });
     }
+  }
+
+  async create(input: CreateOrderInput) {
+    const { line } = input;
+
+    if (!line || line.quantity <= 0) {
+      return this.repository.create({
+        subtotal: 0,
+        total: 0,
+        totalQuantity: 0,
+        state: OrderState.Modifying,
+        appliedDiscounts: []
+      });
+    }
+
+    const variant = await this.variantRepository.findOneOrThrow({
+      where: { id: line.productVariantId }
+    });
+
+    if (variant.stock < line.quantity) {
+      return new NotEnoughStockError([variant.id]);
+    }
+
+    const unitPrice = variant.salePrice;
+    const linePrice = unitPrice * line.quantity;
+
+    const order = await this.repository.create({
+      subtotal: linePrice,
+      total: linePrice,
+      totalQuantity: line.quantity,
+      state: OrderState.Modifying,
+      appliedDiscounts: []
+    });
+
+    await this.lineRepository.create({
+      orderId: order.id,
+      variantId: variant.id,
+      quantity: line.quantity,
+      unitPrice,
+      lineSubtotal: linePrice,
+      lineTotal: linePrice,
+      appliedDiscounts: []
+    });
+
+    return this.discounts.applyAvailable(order);
   }
 
   async addLine(orderId: ID, input: CreateOrderLineInput) {
