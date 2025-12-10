@@ -14,7 +14,8 @@ export const OrderConstants = {
   WithoutCustomerID: TestUtils.generateUUID(),
   PlacedID: TestUtils.generateUUID(),
   PlacedID2: TestUtils.generateUUID(),
-  WithLowStockID: TestUtils.generateUUID()
+  WithLowStockID: TestUtils.generateUUID(),
+  WithDiscountCodeID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {
@@ -64,6 +65,22 @@ export class OrderFixtures implements Fixture<OrderTable> {
         total: LunePrice.toCent(700),
         total_quantity: 1,
         customer_id: CustomerConstants.ID
+      },
+      {
+        shop_id: ShopConstants.ID,
+        id: OrderConstants.WithDiscountCodeID,
+        subtotal: LunePrice.toCent(2100),
+        total: LunePrice.toCent(2300),
+        total_quantity: 2,
+        customer_id: CustomerConstants.ID,
+        applied_discounts: JSON.stringify([
+          {
+            code: 'ORDER_DISCOUNT',
+            applicationMode: 'CODE',
+            applicationLevel: 'ORDER',
+            amount: 0
+          }
+        ])
       }
     ];
   }

@@ -2,25 +2,22 @@ import request from 'supertest';
 
 import { LunePrice } from '@lune/common';
 
+import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerFixtures } from './fixtures/customer.fixtures';
-import { DiscountFixtures } from './fixtures/discount.fixtures';
+import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
 import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
-import { OptionFixtures } from './fixtures/option.fixtures';
-import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
-import { OrderDiscountFixtures } from './fixtures/order-discount.fixtures';
 import { OrderLineFixtures } from './fixtures/order-line.fixtures';
 import { PaymentMethodConstants, PaymentMethodFixtures } from './fixtures/payment-method.fixtures';
 import { ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
-import { VariantOptionValueFixtures } from './fixtures/variant-option-value.fixtures';
 
 describe('addPaymentToOrder - Mutation', () => {
   const testHelper = new TestUtils();
@@ -35,14 +32,10 @@ describe('addPaymentToOrder - Mutation', () => {
       new CustomerFixtures(),
       new ProductFixtures(),
       new VariantFixtures(),
-      new OptionFixtures(),
-      new OptionValueFixtures(),
-      new VariantOptionValueFixtures(),
       new OrderFixtures(),
       new OrderLineFixtures(),
       new FulfillmentFixtures(),
       new DiscountFixtures(),
-      new OrderDiscountFixtures(),
       new PaymentMethodFixtures()
     ]);
   });
@@ -134,6 +127,54 @@ describe('addPaymentToOrder - Mutation', () => {
     expect(payment.method).toBe('Stripe');
     expect(payment.state).toBe('CAPTURED');
     expect(payment.payment_method_id).toBe(PaymentMethodConstants.CapturedID);
+  });
+
+  test('recalculates discount code and pays with discounted total', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_PAYMENT_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithDiscountCodeID,
+          input: { methodId: PaymentMethodConstants.CapturedID }
+        }
+      });
+
+    const {
+      addPaymentToOrder: { order }
+    } = res.body.data;
+
+    // Discount of $100 applied to subtotal: 2100 - 100 = 2000
+    // Total: 2000 + 200 (fulfillment) = 2200
+    expect(order).toMatchObject({
+      id: OrderConstants.WithDiscountCodeID,
+      subtotal: LunePrice.toCent(2_000),
+      total: LunePrice.toCent(2_200),
+      appliedDiscounts: [
+        {
+          code: DiscountConstants.OrderDiscountCode,
+          amount: LunePrice.toCent(100),
+          applicationMode: ApplicationMode.Code,
+          applicationLevel: ApplicationLevel.Order
+        }
+      ],
+      payments: [
+        {
+          amount: LunePrice.toCent(2_200),
+          method: 'Stripe'
+        }
+      ]
+    });
+
+    // Verify payment in DB reflects discounted total
+    const db = testHelper.getQueryBuilder();
+    const payment = await db(Tables.Payment)
+      .where('order_id', OrderConstants.WithDiscountCodeID)
+      .first();
+
+    expect(payment.amount).toBe(LunePrice.toCent(2_200));
   });
 
   test('returns FORBIDDEN_ORDER_ACTION when order has no customer', async () => {

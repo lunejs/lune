@@ -19,7 +19,10 @@ export const OrderLineConstants = {
   WithoutCustomerID: TestUtils.generateUUID(),
   WithoutCustomerID2: TestUtils.generateUUID(),
 
-  LowStockID: TestUtils.generateUUID()
+  LowStockID: TestUtils.generateUUID(),
+
+  WithDiscountCodeID: TestUtils.generateUUID(),
+  WithDiscountCodeID2: TestUtils.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {
@@ -99,6 +102,27 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         line_subtotal: LunePrice.toCent(500),
         quantity: 1,
         unit_price: LunePrice.toCent(500),
+        shop_id: ShopConstants.ID
+      },
+      // with discount code
+      {
+        id: OrderLineConstants.WithDiscountCodeID,
+        order_id: OrderConstants.WithDiscountCodeID,
+        variant_id: VariantConstants.AlreadyInLineID,
+        line_total: LunePrice.toCent(800),
+        line_subtotal: LunePrice.toCent(800),
+        quantity: 1,
+        unit_price: LunePrice.toCent(800),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: OrderLineConstants.WithDiscountCodeID2,
+        order_id: OrderConstants.WithDiscountCodeID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(1_300),
+        line_subtotal: LunePrice.toCent(1_300),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_300),
         shop_id: ShopConstants.ID
       }
     ];

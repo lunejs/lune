@@ -12,7 +12,8 @@ import { ShopConstants } from './shop.fixtures';
 export const FulfillmentConstants = {
   ID: TestUtils.generateUUID(),
   WithoutCustomerID: TestUtils.generateUUID(),
-  LowStockID: TestUtils.generateUUID()
+  LowStockID: TestUtils.generateUUID(),
+  WithDiscountCodeID: TestUtils.generateUUID()
 };
 
 export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
@@ -41,6 +42,14 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         amount: LunePrice.toCent(200),
         total: LunePrice.toCent(200),
         order_id: OrderConstants.WithLowStockID,
+        shop_id: ShopConstants.ID,
+        type: FulfillmentType.SHIPPING
+      },
+      {
+        id: FulfillmentConstants.WithDiscountCodeID,
+        amount: LunePrice.toCent(200),
+        total: LunePrice.toCent(200),
+        order_id: OrderConstants.WithDiscountCodeID,
         shop_id: ShopConstants.ID,
         type: FulfillmentType.SHIPPING
       }

@@ -500,7 +500,9 @@ export class OrderService {
   }
 
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
-    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+    const currentOrder = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    const order = await this.discounts.applyAvailable(currentOrder);
 
     const fulfillment = await this.fulfillmentRepository.findOne({
       where: { orderId: order.id },
