@@ -2,7 +2,7 @@ import { ChevronRightIcon, CircleFadingPlusIcon, MapPinIcon, MapPinOffIcon } fro
 import { Link } from 'react-router';
 
 import { add3dots } from '@lune/common';
-import { Badge, Button, Card, CardHeader, CardTitle, cn, H4, Small } from '@lune/ui';
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, cn, H4, Small } from '@lune/ui';
 
 import type { CommonListLocationFragment } from '@/lib/api/types';
 
@@ -17,53 +17,55 @@ export const InStorePickupLocations = ({ locations }: Props) => {
           </Button>
         </Link>
       </CardHeader>
-      {!locations.length && (
-        <div className="h-full w-full flex items-center justify-center flex-col gap-4 border-t pt-4">
-          <Button size="icon" variant="outline">
-            <MapPinOffIcon />
-          </Button>
-          <div className="flex flex-col gap-2 items-center">
-            <H4>No Locations found</H4>
-            <Small className="text-muted-foreground">
-              Locations are use it to show in store pickup shipping.
-            </Small>
-          </div>
-          <Link to={'/settings/locations/new'}>
-            <Button variant={'outline'}>
-              <CircleFadingPlusIcon /> Add location
+      <CardContent className="p-0">
+        {!locations.length && (
+          <div className="h-full w-full flex items-center justify-center flex-col gap-4 border-t pt-4">
+            <Button size="icon" variant="outline">
+              <MapPinOffIcon />
             </Button>
-          </Link>
-        </div>
-      )}
-      {locations.map(location => {
-        const description = `${location.streetLine1}, ${location.postalCode} ${location.city}, ${location.state.name}, ${location.country.name}`;
-        return (
-          <Link
-            to={`/settings/shipments/in-store-pickup/${location.id}`}
-            className="p-4 border-t flex items-center justify-between gap-4 hover:bg-muted/50 transition-colors"
-            key={location.id}
-          >
-            <div className="flex items-center gap-3">
-              <MapPinIcon size={20} />
+            <div className="flex flex-col gap-2 items-center">
+              <H4>No Locations found</H4>
+              <Small className="text-muted-foreground">
+                Locations are use it to show in store pickup shipping.
+              </Small>
+            </div>
+            <Link to={'/settings/locations/new'}>
+              <Button variant={'outline'}>
+                <CircleFadingPlusIcon /> Add location
+              </Button>
+            </Link>
+          </div>
+        )}
+        {locations.map(location => {
+          const description = `${location.streetLine1}, ${location.postalCode} ${location.city}, ${location.state.name}, ${location.country.name}`;
+          return (
+            <Link
+              to={`/settings/shipments/in-store-pickup/${location.id}`}
+              className="p-4 border-t flex items-center justify-between gap-4 hover:bg-muted/50 transition-colors"
+              key={location.id}
+            >
+              <div className="flex items-center gap-3">
+                <MapPinIcon size={20} />
 
-              <div>
-                <p>{location.name}</p>
-                <p className="text-muted-foreground text-sm">{add3dots(description, 60)}</p>
+                <div>
+                  <p>{location.name}</p>
+                  <p className="text-muted-foreground text-sm">{add3dots(description, 60)}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {location.inStorePickup.isAvailable ? (
-                <Badge className="text-nowrap">Offers pickup</Badge>
-              ) : (
-                <Badge variant="secondary" className="text-nowrap">
-                  Doesn&apos;t offers pickup
-                </Badge>
-              )}
-              <ChevronRightIcon size={20} />
-            </div>
-          </Link>
-        );
-      })}
+              <div className="flex items-center gap-2">
+                {location.inStorePickup.isAvailable ? (
+                  <Badge className="text-nowrap">Offers pickup</Badge>
+                ) : (
+                  <Badge variant="secondary" className="text-nowrap">
+                    Doesn&apos;t offers pickup
+                  </Badge>
+                )}
+                <ChevronRightIcon size={20} />
+              </div>
+            </Link>
+          );
+        })}
+      </CardContent>
     </Card>
   );
 };

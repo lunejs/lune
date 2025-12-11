@@ -1,6 +1,7 @@
 import { useParams } from 'react-router';
 
 import { PageLoader } from '@/shared/components/loader/page-loader';
+import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { PaymentDetails } from '../components/details/payment-details';
 import { useGetPaymentHandlers } from '../hooks/use-get-payment-handlers';
@@ -15,7 +16,7 @@ export const PaymentMethodDetailsPage = () => {
   if (isLoading || isLoadingHandlers) return <PageLoader />;
 
   // TODO: add 404
-  if (!paymentMethod) return null;
+  if (!paymentMethod) return <NotFound />;
 
   return <PaymentDetails method={paymentMethod} handlers={paymentHandlers} />;
 };
