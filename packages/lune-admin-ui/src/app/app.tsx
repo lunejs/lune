@@ -16,6 +16,7 @@ import LocationDetailsPage from '@/lib/locations/pages/location-details-page';
 import { LocationsPage } from '@/lib/locations/pages/locations-page';
 import NewLocationPage from '@/lib/locations/pages/new-location-page';
 import { LoginPage } from '@/lib/login/pages/login-page';
+import { OrderDetailsPage } from '@/lib/order/pages/order-details-page';
 import { OrdersPage } from '@/lib/order/pages/orders-page';
 import { NewPaymentMethodPage } from '@/lib/payments/pages/new-payment-method-page';
 import { PaymentMethodDetailsPage } from '@/lib/payments/pages/payment-method-details-page';
@@ -86,6 +87,7 @@ export const App = () => {
                   <Route path="/assets" element={<AssetsPage />} />
 
                   <Route path="/orders" element={<OrdersPage />} />
+                  <Route path="/orders/:id" element={<OrderDetailsPage />} />
 
                   <Route path="/discounts" element={<DiscountsPage />} />
                   <Route path="/discounts/new" element={<NewDiscountPage />} />
