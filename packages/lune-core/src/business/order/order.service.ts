@@ -9,6 +9,7 @@ import type {
   CreateOrderAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
+  OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
@@ -91,6 +92,14 @@ export class OrderService {
     this.locationRepository = ctx.repositories.location;
     this.paymentRepository = ctx.repositories.payment;
     this.paymentMethodRepository = ctx.repositories.paymentMethod;
+  }
+
+  async find(input?: OrderListInput) {
+    return this.repository.findByFilters(input ?? {});
+  }
+
+  async count(input?: OrderListInput['filters']) {
+    return this.repository.countByFilters(input ?? {});
   }
 
   async findUnique({ id, code }: { id?: ID; code?: string }) {

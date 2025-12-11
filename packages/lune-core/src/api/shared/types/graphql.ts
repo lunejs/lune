@@ -1216,6 +1216,15 @@ export type OrderErrorResult = {
   message: Scalars['String']['output'];
 };
 
+export type OrderFilters = {
+  /** Filter by order code */
+  code?: InputMaybe<StringFilter>;
+  /** Filter by customer first name, last name, or email. When combined with code, uses OR logic. */
+  customer?: InputMaybe<StringFilter>;
+  /** Filter by order state */
+  state?: InputMaybe<OrderState>;
+};
+
 /** An order line represents a single item in an order */
 export type OrderLine = Node & {
   __typename?: 'OrderLine';
@@ -1244,6 +1253,22 @@ export type OrderLineList = List & {
   count: Scalars['Int']['output'];
   items: Array<OrderLine>;
   pageInfo: PageInfo;
+};
+
+export type OrderList = List & {
+  __typename?: 'OrderList';
+  count: Scalars['Int']['output'];
+  items: Array<Order>;
+  pageInfo: PageInfo;
+};
+
+export type OrderListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<OrderFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /**  Results  */
@@ -1527,6 +1552,7 @@ export type Query = {
   locations: LocationList;
   optionPresets: OptionPresetList;
   order?: Maybe<Order>;
+  orders: OrderList;
   paymentHandlers: Array<PaymentHandler>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
@@ -1605,6 +1631,11 @@ export type QueryOptionPresetsArgs = {
 export type QueryOrderArgs = {
   code?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryOrdersArgs = {
+  input?: InputMaybe<OrderListInput>;
 };
 
 
@@ -2159,7 +2190,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
   Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
@@ -2262,8 +2293,11 @@ export type ResolversTypes = {
   OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
   OrderErrorCode: OrderErrorCode;
   OrderErrorResult: ResolverTypeWrapper<OrderErrorResult>;
+  OrderFilters: OrderFilters;
   OrderLine: ResolverTypeWrapper<OrderLine>;
   OrderLineList: ResolverTypeWrapper<OrderLineList>;
+  OrderList: ResolverTypeWrapper<Omit<OrderList, 'items'> & { items: Array<ResolversTypes['Order']> }>;
+  OrderListInput: OrderListInput;
   OrderResult: ResolverTypeWrapper<Omit<OrderResult, 'order'> & { order?: Maybe<ResolversTypes['Order']> }>;
   OrderState: OrderState;
   PageInfo: ResolverTypeWrapper<PageInfo>;
@@ -2425,8 +2459,11 @@ export type ResolversParentTypes = {
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
+  OrderFilters: OrderFilters;
   OrderLine: OrderLine;
   OrderLineList: OrderLineList;
+  OrderList: Omit<OrderList, 'items'> & { items: Array<ResolversParentTypes['Order']> };
+  OrderListInput: OrderListInput;
   OrderResult: Omit<OrderResult, 'order'> & { order?: Maybe<ResolversParentTypes['Order']> };
   PageInfo: PageInfo;
   Payment: Omit<Payment, 'details'> & { details?: Maybe<ResolversParentTypes['PaymentDetails']> };
@@ -2716,7 +2753,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -2975,6 +3012,13 @@ export type OrderLineListResolvers<ContextType = ExecutionContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type OrderListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderList'] = ResolversParentTypes['OrderList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type OrderResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderResult'] = ResolversParentTypes['OrderResult']> = {
   apiErrors?: Resolver<Array<ResolversTypes['OrderErrorResult']>, ParentType, ContextType>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType>;
@@ -3111,6 +3155,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
+  orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<QueryOrdersArgs>>;
   paymentHandlers?: Resolver<Array<ResolversTypes['PaymentHandler']>, ParentType, ContextType>;
   paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType, RequireFields<QueryPaymentMethodArgs, 'id'>>;
   paymentMethods?: Resolver<Array<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
@@ -3370,6 +3415,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   OrderErrorResult?: OrderErrorResultResolvers<ContextType>;
   OrderLine?: OrderLineResolvers<ContextType>;
   OrderLineList?: OrderLineListResolvers<ContextType>;
+  OrderList?: OrderListResolvers<ContextType>;
   OrderResult?: OrderResultResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Payment?: PaymentResolvers<ContextType>;

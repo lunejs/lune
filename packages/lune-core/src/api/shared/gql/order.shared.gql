@@ -98,10 +98,6 @@ type Order implements Node {
   payments: [Payment!]!
 }
 
-type Query {
-  order(id: ID, code: String): Order
-}
-
 type OrderAddressJson {
   """
   Full name of the recipient
@@ -147,4 +143,21 @@ type OrderAddressJson {
   Address's state/province/region code
   """
   stateCode: String!
+}
+
+type OrderList implements List {
+  items: [Order!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+input OrderFilters {
+  """
+  Filter by order code
+  """
+  code: StringFilter
+}
+
+type Query {
+  order(id: ID, code: String): Order
 }

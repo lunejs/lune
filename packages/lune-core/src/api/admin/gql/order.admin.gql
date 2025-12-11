@@ -1,3 +1,35 @@
 extend type Order {
   payments: [Payment!]!
 }
+
+type Query {
+  orders(input: OrderListInput): OrderList!
+}
+
+input OrderListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: OrderFilters
+}
+
+extend input OrderFilters {
+  """
+  Filter by order state
+  """
+  state: OrderState
+  """
+  Filter by customer first name, last name, or email. When combined with code, uses OR logic.
+  """
+  customer: StringFilter
+}
