@@ -1,25 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { useEffect, useMemo } from 'react';
 
-import { isArray } from '@lune/common';
-
-import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
+import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useGetProducts } from '../../hooks/use-get-products';
 import { useProductsCount } from '../../hooks/use-products-count';
 
-import type { TableProduct } from './products-table';
-
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 10;
+import type { ProductTableFilters, TableProduct } from './products-table';
 
 export const useProductsTable = () => {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(DEFAULT_PAGE);
-  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
-  const [status, setStatus] = useState<boolean | undefined>();
-  const [archived, setArchived] = useState<boolean | undefined>();
+  const dataTable = useDataTable<ProductTableFilters>({
+    search: '',
+    enabled: undefined,
+    archived: false
+  });
+
+  const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useProductsCount();
 
@@ -27,44 +23,24 @@ export const useProductsTable = () => {
     isLoading,
     isRefetching,
     products: allProducts,
-    pagination,
+    pagination: { pageInfo },
     refetch
   } = useGetProducts({
     filters: {
-      ...(search && { name: { contains: search } }),
-      ...(status !== undefined && { enabled: { equals: status } }),
-      ...(archived !== undefined
-        ? { archived: { equals: archived } }
-        : { archived: { equals: false } })
+      ...(filters.search && { name: { contains: filters.search } }),
+      ...(filters.enabled !== undefined && { enabled: { equals: filters.enabled } }),
+      archived: { equals: filters.archived }
     },
-    skip: getSkip(page, size),
-    take: size
+    skip: getSkip(pagination.page, pagination.size),
+    take: pagination.size
   });
 
   useEffect(() => {
     refetch();
-  }, [search, page, size, status, archived]);
-
-  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
-    if (input.search !== undefined) setSearch(input.search);
-    if (input.page) setPage(input.page);
-    if (input.size) setSize(input.size);
-
-    if (isArray(input.status)) {
-      setArchived(input.status.includes('archived'));
-
-      if (input.status.includes('enabled')) {
-        setStatus(true);
-      } else if (input.status.includes('disabled')) {
-        setStatus(false);
-      } else {
-        setStatus(undefined);
-      }
-    }
-  }, TYPING_DEBOUNCE_DELAY);
+  }, [filters, pagination]);
 
   const products: TableProduct[] = useMemo(
-    (): TableProduct[] =>
+    () =>
       allProducts?.map(p => ({
         id: p.id,
         image: p.assets.items[0]?.source,
@@ -82,18 +58,11 @@ export const useProductsTable = () => {
   }, [isLoading, isLoadingCount, count]);
 
   return {
-    onUpdate,
+    dataTable,
     isLoading,
     isRefetching,
     shouldRenderEmptyState,
     products,
-    pagination
+    totalRows: pageInfo?.total ?? 0
   };
-};
-
-type OnUpdateInput = {
-  search?: string;
-  page?: number;
-  size?: number;
-  status?: string[];
 };

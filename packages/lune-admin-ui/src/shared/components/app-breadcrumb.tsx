@@ -49,7 +49,7 @@ export const AppBreadcrumb = () => {
 
 const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
-  '/products': [{ label: 'Products' }],
+  '/products': [{ href: '/products', label: 'Products' }, { label: 'All products' }],
   '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Add product' }],
   '/collections': [{ href: '/collections', label: 'Collections' }, { label: 'All collections' }],
   '/collections/': [
