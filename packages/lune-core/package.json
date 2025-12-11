@@ -14,7 +14,8 @@
     "lint:check": "eslint .",
     "gen:types": "graphql-codegen --config ./scripts/gen-types.ts",
     "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts",
-    "seed:local": "dotenv -e ./database/.env.migration.local -- ts-node -r tsconfig-paths/register database/seed/seed.ts"
+    "seed:local": "dotenv -e ./database/.env.migration.local -- ts-node -r tsconfig-paths/register database/seed/seed.ts",
+    "seed:orders": "dotenv -e ./database/.env.migration.local -- tsx database/seed/orders/seed-orders.ts"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",
