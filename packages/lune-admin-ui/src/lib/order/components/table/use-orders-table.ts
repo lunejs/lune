@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { type OrderState } from '@/lib/api/types';
+import { FulfillmentType, type OrderState } from '@/lib/api/types';
 import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
@@ -50,7 +50,7 @@ export const useOrdersTable = () => {
         total: o.total,
         items: o.lines.count,
         state: o.state,
-        shipment: o.fulfillment?.__typename === 'ShippingFulfillment' ? 'Shipping' : 'Pickup',
+        shipment: o.fulfillment?.type === FulfillmentType.Shipping ? 'Shipping' : 'Pickup',
         placedAt: o.placedAt ?? null
       })) ?? [],
     [allOrders]

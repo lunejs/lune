@@ -19,7 +19,7 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       count
     }
     fulfillment {
-      __typename
+      type
     }
   }
 `);

@@ -60,7 +60,7 @@ type Documents = {
     "\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": typeof types.CreateOptionDocument,
     "\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": typeof types.UpdateOptionDocument,
     "\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n": typeof types.RemoveOptionDocument,
-    "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      __typename\n    }\n  }\n": typeof types.CommonOrderFragmentDoc,
+    "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n": typeof types.CommonOrderFragmentDoc,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonOrder\n      }\n    }\n  }\n": typeof types.GetAllOrdersDocument,
     "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": typeof types.CountOrdersDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonPaymentMethodFragmentDoc,
@@ -156,7 +156,7 @@ const documents: Documents = {
     "\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": types.CreateOptionDocument,
     "\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": types.UpdateOptionDocument,
     "\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n": types.RemoveOptionDocument,
-    "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      __typename\n    }\n  }\n": types.CommonOrderFragmentDoc,
+    "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n": types.CommonOrderFragmentDoc,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonOrder\n      }\n    }\n  }\n": types.GetAllOrdersDocument,
     "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": types.CountOrdersDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonPaymentMethodFragmentDoc,
@@ -407,7 +407,7 @@ export function graphql(source: "\n  mutation RemoveOption($id: ID!) {\n    soft
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      __typename\n    }\n  }\n"): (typeof documents)["\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      __typename\n    }\n  }\n"];
+export function graphql(source: "\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n"): (typeof documents)["\n  fragment CommonOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

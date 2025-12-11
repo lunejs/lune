@@ -58,9 +58,7 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   {
     accessorKey: 'code',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Code" />,
-    cell: ({ row }) => (
-      <P className="w-20 font-mono">{row.original.code ?? '-'}</P>
-    ),
+    cell: ({ row }) => <P className="w-20 font-mono">{row.original.code ?? '-'}</P>,
     enableSorting: false
   },
   {
@@ -78,9 +76,7 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   {
     accessorKey: 'total',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Total" />,
-    cell: ({ row }) => (
-      <P className="font-medium">{LunePrice.format(row.original.total)}</P>
-    ),
+    cell: ({ row }) => <P className="font-medium">{LunePrice.format(row.original.total)}</P>,
     enableSorting: false
   },
   {
