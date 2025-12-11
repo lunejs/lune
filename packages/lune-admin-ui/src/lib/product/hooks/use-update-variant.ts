@@ -13,8 +13,10 @@ export const useUpdateVariant = (productId: string) => {
     try {
       await updateVariant(input);
 
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.ForVariants(productId)] });
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(productId)] });
+      await queryClient.refetchQueries({
+        queryKey: [ProductCacheKeys.UniqueForVariants(productId)]
+      });
+      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Unique(productId)] });
 
       return { isSuccess: true };
     } catch (error) {

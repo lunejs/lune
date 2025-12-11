@@ -9,7 +9,7 @@ import { DiscountCacheKeys } from '../constants/cache-keys';
 
 export const useGetDiscount = (id: string) => {
   const result = useGqlQuery(GET_DISCOUNT_BY_ID_QUERY, {
-    key: [DiscountCacheKeys.unique(id)],
+    key: [DiscountCacheKeys.Unique(id)],
     variables: { id }
   });
 

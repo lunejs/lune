@@ -21,10 +21,10 @@ export const useCreateLocation = () => {
 
       await Promise.all([
         await queryClient.refetchQueries({
-          queryKey: [LocationCacheKeys.Locations]
+          queryKey: [LocationCacheKeys.All]
         }),
         await queryClient.refetchQueries({
-          queryKey: [LocationCacheKeys.Location(location?.id as string)]
+          queryKey: [LocationCacheKeys.Unique(location?.id as string)]
         })
       ]);
 

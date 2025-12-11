@@ -12,7 +12,7 @@ export const useGetProductForTranslation = (id: string) => {
     GET_PRODUCT_BY_ID_FOR_TRANSLATION_QUERY,
     {
       variables: { id },
-      key: [ProductCacheKeys.ProductForTranslation(id)]
+      key: [ProductCacheKeys.UniqueForTranslation(id)]
     }
   );
 

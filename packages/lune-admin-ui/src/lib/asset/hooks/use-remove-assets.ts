@@ -17,7 +17,7 @@ export const useRemoveAssets = () => {
       }
 
       await Promise.all([
-        queryClient.refetchQueries({ queryKey: [AssetCacheKeys.all] }),
+        queryClient.refetchQueries({ queryKey: [AssetCacheKeys.All] }),
         queryClient.refetchQueries({ queryKey: [AssetCacheKeys.Count] })
       ]);
 

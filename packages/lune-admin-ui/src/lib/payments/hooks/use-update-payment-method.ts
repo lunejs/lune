@@ -17,10 +17,10 @@ export const useUpdatePaymentMethod = () => {
 
       await Promise.all([
         await queryClient.refetchQueries({
-          queryKey: [PaymentCacheKeys.PaymentMethods]
+          queryKey: [PaymentCacheKeys.All]
         }),
         await queryClient.refetchQueries({
-          queryKey: [PaymentCacheKeys.PaymentMethod(input.id)]
+          queryKey: [PaymentCacheKeys.Unique(input.id)]
         })
       ]);
 

@@ -18,10 +18,10 @@ export const useRemoveProducts = () => {
 
       await Promise.all([
         queryClient.refetchQueries({
-          queryKey: [ProductCacheKeys.Products]
+          queryKey: [ProductCacheKeys.All]
         }),
         queryClient.refetchQueries({
-          queryKey: [ProductCacheKeys.ProductsCount]
+          queryKey: [ProductCacheKeys.Count]
         })
       ]);
 

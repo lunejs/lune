@@ -13,7 +13,7 @@ export const useArchiveProduct = () => {
       await updateProduct({ id, input: { archived: true } });
 
       await queryClient.refetchQueries({
-        queryKey: [ProductCacheKeys.Product(id), ProductCacheKeys.Products]
+        queryKey: [ProductCacheKeys.Unique(id), ProductCacheKeys.All]
       });
 
       return { isSuccess: true };

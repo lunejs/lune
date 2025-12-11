@@ -20,7 +20,7 @@ export const useCreatePaymentMethod = () => {
       if (error) return { isSuccess: false, error, errorCode };
 
       await queryClient.refetchQueries({
-        queryKey: [PaymentCacheKeys.PaymentMethods]
+        queryKey: [PaymentCacheKeys.All]
       });
 
       return { isSuccess: true, data: { id: paymentMethod?.id as string } };

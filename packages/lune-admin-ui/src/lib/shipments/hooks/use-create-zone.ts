@@ -15,7 +15,7 @@ export const useCreateZone = () => {
 
       await Promise.all([
         await queryClient.refetchQueries({
-          queryKey: [ShipmentCacheKeys.Zones]
+          queryKey: [ShipmentCacheKeys.All]
         }),
         await queryClient.refetchQueries({
           queryKey: [ShipmentCacheKeys.Zone(result.id)]

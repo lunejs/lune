@@ -14,7 +14,7 @@ export const useAddCollectionTranslation = () => {
       await addTranslation({ id, input });
 
       await queryClient.refetchQueries({
-        queryKey: [CollectionsCacheKeys.CollectionForTranslation(id)]
+        queryKey: [CollectionsCacheKeys.UniqueForTranslation(id)]
       });
 
       return { isSuccess: true };

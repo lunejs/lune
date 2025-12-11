@@ -9,7 +9,7 @@ import { ShipmentCacheKeys } from '../constants/cache-keys';
 
 export const useGetZones = () => {
   const result = useGqlQuery(GET_ALL_ZONES_QUERY, {
-    key: [ShipmentCacheKeys.Zones]
+    key: [ShipmentCacheKeys.All]
   });
 
   const zones = result.data?.zones?.map(z => getFragmentData(COMMON_LIST_ZONE_FRAGMENT, z)) ?? [];

@@ -1,4 +1,4 @@
 export const OrderCacheKeys = {
-  all: 'orders',
-  count: 'orders-count'
+  All: 'orders',
+  Count: 'orders-count'
 };

@@ -7,7 +7,7 @@ import { AssetCacheKeys } from '../constants/cache-keys';
 export const useGetAssets = (input?: AssetListInput) => {
   const result = useGqlQuery(GET_ALL_ASSETS_QUERY, {
     variables: { input },
-    key: [AssetCacheKeys.all]
+    key: [AssetCacheKeys.All]
   });
 
   const assets =

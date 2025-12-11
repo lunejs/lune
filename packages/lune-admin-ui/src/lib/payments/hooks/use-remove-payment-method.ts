@@ -18,7 +18,7 @@ export const useRemovePaymentMethod = () => {
       if (!result) return { isSuccess: false, error: 'Failed to remove payment method' };
 
       await queryClient.refetchQueries({
-        queryKey: [PaymentCacheKeys.PaymentMethods]
+        queryKey: [PaymentCacheKeys.All]
       });
 
       return { isSuccess: true };

@@ -1,3 +1,3 @@
 export const UserCacheKeys = {
-  whoami: 'whoami'
+  Whoami: 'whoami'
 };

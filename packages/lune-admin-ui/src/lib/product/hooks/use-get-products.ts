@@ -10,7 +10,7 @@ import { ProductCacheKeys } from '../constants/cache-keys';
 export const useGetProducts = (input?: ProductListInput) => {
   const result = useGqlQuery(GET_ALL_PRODUCTS_QUERY, {
     variables: { input },
-    key: [ProductCacheKeys.Products]
+    key: [ProductCacheKeys.All]
   });
 
   const products =

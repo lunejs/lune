@@ -18,10 +18,10 @@ export const useUpdateCollection = () => {
 
       await Promise.all([
         queryClient.refetchQueries({
-          queryKey: [CollectionsCacheKeys.Collections]
+          queryKey: [CollectionsCacheKeys.All]
         }),
         queryClient.refetchQueries({
-          queryKey: [CollectionsCacheKeys.Collection(collectionId)]
+          queryKey: [CollectionsCacheKeys.Unique(collectionId)]
         }),
         queryClient.refetchQueries({
           queryKey: [CollectionsCacheKeys.Products(collectionId)]

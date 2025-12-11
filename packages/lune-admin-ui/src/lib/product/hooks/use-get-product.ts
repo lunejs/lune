@@ -10,7 +10,7 @@ import { ProductCacheKeys } from '../constants/cache-keys';
 export const useGetProduct = (id: string) => {
   const { data, isLoading, refetch } = useGqlQuery(GET_PRODUCT_BY_ID_QUERY, {
     variables: { id },
-    key: [ProductCacheKeys.Product(id)]
+    key: [ProductCacheKeys.Unique(id)]
   });
 
   const product = getFragmentData(COMMON_PRODUCT_FRAGMENT, data?.product);

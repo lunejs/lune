@@ -10,7 +10,7 @@ import { CollectionsCacheKeys } from '../constants/cache-keys';
 export const useGetCollection = (id: string) => {
   const result = useGqlQuery(GET_COLLECTION_BY_ID_QUERY, {
     variables: { id },
-    key: [CollectionsCacheKeys.Collection(id)]
+    key: [CollectionsCacheKeys.Unique(id)]
   });
 
   const collection = getFragmentData(COMMON_COLLECTION_FRAGMENT, result.data?.collection);

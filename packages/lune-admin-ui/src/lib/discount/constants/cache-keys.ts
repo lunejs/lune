@@ -1,7 +1,6 @@
 export const DiscountCacheKeys = {
-  count: 'discounts-count',
-  all: 'discounts',
-  unique: (id: string) => `discount-${id}`,
-  withFilters: (filters: any) => JSON.stringify(filters),
-  handlers: 'discount-handlers'
+  All: 'discounts',
+  Count: 'discounts-count',
+  Unique: (id: string) => `discount-${id}`,
+  Handlers: 'discount-handlers'
 };

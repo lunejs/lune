@@ -6,7 +6,7 @@ import { OrderCacheKeys } from '../constants/cache-keys';
 
 export const useGetOrders = (input?: OrderListInput) => {
   const result = useGqlQuery(GET_ALL_ORDERS_QUERY, {
-    key: [OrderCacheKeys.all],
+    key: [OrderCacheKeys.All],
     variables: { input }
   });
 

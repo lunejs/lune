@@ -24,10 +24,10 @@ export const useUpdateDiscount = () => {
       }
 
       await queryClient.refetchQueries({
-        queryKey: [DiscountCacheKeys.all]
+        queryKey: [DiscountCacheKeys.All]
       });
       await queryClient.refetchQueries({
-        queryKey: [DiscountCacheKeys.unique(id)]
+        queryKey: [DiscountCacheKeys.Unique(id)]
       });
 
       return { isSuccess: true, data: { id: discount?.id as string } };

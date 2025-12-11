@@ -5,7 +5,7 @@ import { ProductCacheKeys } from '../constants/cache-keys';
 
 export const useProductsCount = () => {
   const { data, ...rest } = useGqlQuery(GET_PRODUCTS_EXISTS, {
-    key: [ProductCacheKeys.ProductsCount]
+    key: [ProductCacheKeys.Count]
   });
 
   return {

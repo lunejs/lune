@@ -10,7 +10,7 @@ import { PaymentCacheKeys } from '../constants/cache-keys';
 export const useGetPaymentMethod = (id: string) => {
   const result = useGqlQuery(GET_PAYMENT_METHOD_QUERY, {
     variables: { id },
-    key: [PaymentCacheKeys.PaymentMethod(id)]
+    key: [PaymentCacheKeys.Unique(id)]
   });
 
   const paymentMethod = getFragmentData(COMMON_PAYMENT_METHOD_FRAGMENT, result.data?.paymentMethod);

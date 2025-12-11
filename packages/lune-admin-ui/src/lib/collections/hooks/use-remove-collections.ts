@@ -18,10 +18,10 @@ export const useRemoveCollections = () => {
 
       await Promise.all([
         queryClient.refetchQueries({
-          queryKey: [CollectionsCacheKeys.Collections]
+          queryKey: [CollectionsCacheKeys.All]
         }),
         queryClient.refetchQueries({
-          queryKey: [CollectionsCacheKeys.CollectionsExists]
+          queryKey: [CollectionsCacheKeys.Count]
         })
       ]);
 

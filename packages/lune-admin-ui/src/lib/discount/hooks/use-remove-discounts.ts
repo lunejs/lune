@@ -18,7 +18,7 @@ export const useRemoveDiscounts = () => {
       if (!result) return { isSuccess: false, error: 'Failed to remove discounts' };
 
       await queryClient.refetchQueries({
-        queryKey: [DiscountCacheKeys.all]
+        queryKey: [DiscountCacheKeys.All]
       });
 
       return { isSuccess: true };

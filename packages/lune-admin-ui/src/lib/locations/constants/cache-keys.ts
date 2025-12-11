@@ -1,4 +1,4 @@
 export const LocationCacheKeys = {
-  Locations: 'locations',
-  Location: (id: string) => `location-${id}`
+  All: 'locations',
+  Unique: (id: string) => `location-${id}`
 };

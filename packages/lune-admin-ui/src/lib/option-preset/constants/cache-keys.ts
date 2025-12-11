@@ -1,3 +1,3 @@
 export const OptionPresetCacheKeys = {
-  all: 'option-presets'
+  All: 'option-presets'
 };

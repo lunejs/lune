@@ -8,7 +8,7 @@ import {
 import { LocationCacheKeys } from '../constants/cache-keys';
 
 export const useGetLocations = () => {
-  const result = useGqlQuery(GET_ALL_LOCATIONS_QUERY, { key: [LocationCacheKeys.Locations] });
+  const result = useGqlQuery(GET_ALL_LOCATIONS_QUERY, { key: [LocationCacheKeys.All] });
 
   const locations =
     result.data?.locations.items.map(l => getFragmentData(COMMON_LIST_LOCATION_FRAGMENT, l)) ?? [];

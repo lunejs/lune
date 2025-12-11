@@ -1,5 +1,5 @@
 export const ShipmentCacheKeys = {
-  Zones: 'zones',
+  All: 'zones',
   Countries: 'countries',
   Handlers: 'Handlers',
   Zone: (id: string) => `zone-${id}`

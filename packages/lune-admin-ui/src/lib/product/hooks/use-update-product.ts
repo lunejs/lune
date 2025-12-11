@@ -129,7 +129,7 @@ export const useUpdateProduct = () => {
       input.variantsToRemove.map(async variantId => await removeVariant({ id: variantId }))
     );
 
-    queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(productId)] });
+    queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Unique(productId)] });
   };
 
   return {

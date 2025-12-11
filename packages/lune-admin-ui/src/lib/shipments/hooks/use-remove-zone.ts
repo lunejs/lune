@@ -13,7 +13,7 @@ export const useRemoveZone = () => {
       await removeZone({ id });
 
       await queryClient.refetchQueries({
-        queryKey: [ShipmentCacheKeys.Zones]
+        queryKey: [ShipmentCacheKeys.All]
       });
 
       return { isSuccess: true };

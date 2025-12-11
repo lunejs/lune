@@ -30,7 +30,7 @@ export const useCollectionAssetUploader = () => {
       });
 
       await queryClient.refetchQueries({
-        queryKey: [CollectionsCacheKeys.Collection(collection.id)]
+        queryKey: [CollectionsCacheKeys.Unique(collection.id)]
       });
 
       success('Collection updated');

@@ -9,7 +9,7 @@ import { PaymentCacheKeys } from '../constants/cache-keys';
 
 export const useGetPaymentHandlers = () => {
   const result = useGqlQuery(GET_ALL_PAYMENT_HANDLERS_QUERY, {
-    key: [PaymentCacheKeys.PaymentHandlers]
+    key: [PaymentCacheKeys.Handlers]
   });
 
   const paymentHandlers =

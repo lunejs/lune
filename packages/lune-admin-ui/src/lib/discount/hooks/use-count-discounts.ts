@@ -5,7 +5,7 @@ import { DiscountCacheKeys } from '../constants/cache-keys';
 
 export const useCountDiscounts = () => {
   const result = useGqlQuery(COUNT_DISCOUNTS_QUERY, {
-    key: [DiscountCacheKeys.count]
+    key: [DiscountCacheKeys.Count]
   });
 
   return {

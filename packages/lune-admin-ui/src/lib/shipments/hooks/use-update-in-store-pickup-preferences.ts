@@ -18,10 +18,10 @@ export const useUpdateInStorePickupPreferences = () => {
 
       await Promise.all([
         await queryClient.refetchQueries({
-          queryKey: [LocationCacheKeys.Locations]
+          queryKey: [LocationCacheKeys.All]
         }),
         await queryClient.refetchQueries({
-          queryKey: [LocationCacheKeys.Location(input.locationId)]
+          queryKey: [LocationCacheKeys.Unique(input.locationId)]
         })
       ]);
 

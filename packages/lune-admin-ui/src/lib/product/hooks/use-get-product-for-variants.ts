@@ -10,7 +10,7 @@ import { ProductCacheKeys } from '../constants/cache-keys';
 export const useGetProductForVariants = (id: string) => {
   const result = useGqlQuery(GET_PRODUCT_FOR_VARIANTS_QUERY, {
     variables: { id },
-    key: [ProductCacheKeys.ForVariants(id)]
+    key: [ProductCacheKeys.UniqueForVariants(id)]
   });
 
   const variants =

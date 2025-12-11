@@ -10,7 +10,7 @@ import {
 import { OptionPresetCacheKeys } from '../constants/cache-keys';
 
 export const useGetOptionPresets = () => {
-  const result = useGqlQuery(GET_ALL_OPTION_PRESETS_QUERY, { key: [OptionPresetCacheKeys.all] });
+  const result = useGqlQuery(GET_ALL_OPTION_PRESETS_QUERY, { key: [OptionPresetCacheKeys.All] });
 
   const optionPresets = useMemo(() => {
     return (

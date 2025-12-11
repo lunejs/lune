@@ -26,7 +26,7 @@ export const useProductAsset = () => {
         }
       });
 
-      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Product(product.id)] });
+      await queryClient.refetchQueries({ queryKey: [ProductCacheKeys.Unique(product.id)] });
 
       success('Product updated');
     } catch (error) {

@@ -22,7 +22,7 @@ export const useCreateCollection = () => {
       });
 
       await queryClient.refetchQueries({
-        queryKey: [CollectionsCacheKeys.Collections]
+        queryKey: [CollectionsCacheKeys.All]
       });
 
       return { isSuccess: true, data: { id } };

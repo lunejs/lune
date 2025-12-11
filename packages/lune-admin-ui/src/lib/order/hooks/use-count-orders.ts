@@ -5,7 +5,7 @@ import { OrderCacheKeys } from '../constants/cache-keys';
 
 export const useCountOrders = () => {
   const result = useGqlQuery(COUNT_ORDERS_QUERY, {
-    key: [OrderCacheKeys.count]
+    key: [OrderCacheKeys.Count]
   });
 
   return {

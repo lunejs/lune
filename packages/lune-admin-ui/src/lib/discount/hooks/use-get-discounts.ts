@@ -9,7 +9,7 @@ import { DiscountCacheKeys } from '../constants/cache-keys';
 
 export const useGetDiscounts = (input?: DiscountListInput) => {
   const result = useGqlQuery(GET_ALL_DISCOUNTS_QUERY, {
-    key: [DiscountCacheKeys.all],
+    key: [DiscountCacheKeys.All],
     variables: { input }
   });
 

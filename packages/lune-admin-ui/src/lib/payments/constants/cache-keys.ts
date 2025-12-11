@@ -1,5 +1,5 @@
 export const PaymentCacheKeys = {
-  PaymentMethods: 'payment-methods',
-  PaymentHandlers: 'payment-handlers',
-  PaymentMethod: (id: string) => `payment-method-${id}`
+  All: 'payment-methods',
+  Handlers: 'payment-handlers',
+  Unique: (id: string) => `payment-method-${id}`
 };

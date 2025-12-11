@@ -9,7 +9,7 @@ import { DiscountCacheKeys } from '../constants/cache-keys';
 
 export const useGetDiscountHandlers = () => {
   const result = useGqlQuery(GET_ALL_DISCOUNT_HANDLERS_QUERY, {
-    key: [DiscountCacheKeys.handlers]
+    key: [DiscountCacheKeys.Handlers]
   });
 
   const discountHandlers =

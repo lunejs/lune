@@ -5,7 +5,7 @@ import { CollectionsCacheKeys } from '../constants/cache-keys';
 
 export const useCollectionsCount = () => {
   const { data, ...rest } = useGqlQuery(GET_COLLECTIONS_EXISTS, {
-    key: [CollectionsCacheKeys.CollectionsExists]
+    key: [CollectionsCacheKeys.Count]
   });
 
   return {

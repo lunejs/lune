@@ -14,7 +14,7 @@ export const useAddProductTranslation = () => {
       await addTranslation({ id, input });
 
       await queryClient.refetchQueries({
-        queryKey: [ProductCacheKeys.ProductForTranslation(id)]
+        queryKey: [ProductCacheKeys.UniqueForTranslation(id)]
       });
 
       return { isSuccess: true };

@@ -24,7 +24,7 @@ export const useCreateDiscount = () => {
       }
 
       await queryClient.refetchQueries({
-        queryKey: [DiscountCacheKeys.all]
+        queryKey: [DiscountCacheKeys.All]
       });
 
       return { isSuccess: true, data: { id: discount?.id as string } };

@@ -17,7 +17,7 @@ export const useRemoveLocation = () => {
       await removeLocation({ id });
 
       await queryClient.refetchQueries({
-        queryKey: [LocationCacheKeys.Locations]
+        queryKey: [LocationCacheKeys.All]
       });
 
       return { isSuccess: true };
