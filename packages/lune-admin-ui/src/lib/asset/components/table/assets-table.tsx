@@ -3,34 +3,29 @@ import { UploadCloudIcon } from 'lucide-react';
 import { Button } from '@lune/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
+import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
 import { Dropzone } from '@/shared/components/dropzone/dropzone';
 
 import { useUploadAsset } from '../../hooks/use-upload-asset';
 
 import { AssetsTableActions } from './actions/assets-table-actions';
 import { AssetsTableColumns } from './columns';
-import { AssetsTableEmptyState } from './empty-state';
-import { useAssetsTable } from './use-assets-table';
 
-export const AssetsTable = () => {
+export const AssetsTable = ({ isRefetching, assets, totalRows, dataTable }: Props) => {
+  const { pagination, updateFilters, updatePagination } = dataTable;
   const { isUploading, uploadAsset } = useUploadAsset();
-
-  const { isLoading, isRefetching, shouldRenderEmptyState, products, pagination, onUpdate } =
-    useAssetsTable();
-
-  if (shouldRenderEmptyState) return <AssetsTableEmptyState />;
 
   return (
     <DataTable
-      isLoading={isLoading || isRefetching}
-      data={products}
+      isLoading={isRefetching}
+      data={assets}
       columns={AssetsTableColumns}
-      onSearch={async q => onUpdate({ search: q })}
+      onSearch={q => updateFilters({ search: q })}
       searchPlaceholder="Search assets..."
-      onPageChange={page => onUpdate({ page })}
-      onPageSizeChange={size => onUpdate({ size })}
-      totalRows={pagination.pageInfo?.total ?? 0}
-      defaultPagination={{ page: 1, pageSize: 10 }}
+      onPageChange={page => updatePagination({ page })}
+      onPageSizeChange={size => updatePagination({ size })}
+      totalRows={totalRows}
+      defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
       actions={
         <Dropzone onDrop={acceptedFiles => uploadAsset(acceptedFiles)}>
           <Button size="sm" isLoading={isUploading}>
@@ -51,4 +46,15 @@ export type AssetsTableRow = {
   ext: string;
   source: string;
   size: number;
+};
+
+type AssetTableFilters = {
+  search: string;
+};
+
+type Props = {
+  isRefetching: boolean;
+  assets: AssetsTableRow[];
+  totalRows: number;
+  dataTable: UseDataTableReturn<AssetTableFilters>;
 };

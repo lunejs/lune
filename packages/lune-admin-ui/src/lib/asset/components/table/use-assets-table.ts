@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { useEffect, useMemo } from 'react';
 
-import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
+import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useAssetsCount } from '../../hooks/use-assets-count';
@@ -9,13 +8,12 @@ import { useGetAssets } from '../../hooks/use-get-assets';
 
 import type { AssetsTableRow } from './assets-table';
 
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 10;
-
 export const useAssetsTable = () => {
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(DEFAULT_PAGE);
-  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
+  const dataTable = useDataTable<AssetTableFilters>({
+    search: ''
+  });
+
+  const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useAssetsCount();
 
@@ -23,28 +21,22 @@ export const useAssetsTable = () => {
     isLoading,
     isRefetching,
     assets: allAssets,
-    pagination,
+    pagination: { pageInfo },
     refetch
   } = useGetAssets({
     filters: {
-      ...(query && { filename: { contains: query } })
+      ...(filters.search && { filename: { contains: filters.search } })
     },
-    skip: getSkip(page, size),
-    take: size
+    skip: getSkip(pagination.page, pagination.size),
+    take: pagination.size
   });
 
   useEffect(() => {
     refetch();
-  }, [query, page, size]);
-
-  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
-    if (input.search !== undefined) setQuery(input.search);
-    if (input.page) setPage(input.page);
-    if (input.size) setSize(input.size);
-  }, TYPING_DEBOUNCE_DELAY);
+  }, [filters, pagination]);
 
   const assets: AssetsTableRow[] = useMemo(
-    (): AssetsTableRow[] => allAssets?.map(a => ({ ...a, createdAt: new Date(a.createdAt) })) ?? [],
+    () => allAssets?.map(a => ({ ...a, createdAt: new Date(a.createdAt) })) ?? [],
     [allAssets]
   );
 
@@ -53,18 +45,15 @@ export const useAssetsTable = () => {
   }, [isLoading, isLoadingCount, count]);
 
   return {
-    onUpdate,
+    dataTable,
     isLoading,
     isRefetching,
     shouldRenderEmptyState,
-    products: assets,
-    pagination
+    assets,
+    totalRows: pageInfo?.total ?? 0
   };
 };
 
-type OnUpdateInput = {
-  search?: string;
-  page?: number;
-  size?: number;
-  status?: string[];
+type AssetTableFilters = {
+  search: string;
 };
