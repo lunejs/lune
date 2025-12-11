@@ -1,26 +1,29 @@
+import { type OrderState } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
+import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
 
 import { OrdersTableColumns } from './columns';
-import { OrdersTableEmptyState } from './empty-state';
-import { useOrdersTable } from './use-orders-table';
 
-export const OrdersTable = () => {
-  const { isLoading, isRefetching, shouldRenderEmptyState, orders, pagination, onUpdate } =
-    useOrdersTable();
-
-  if (shouldRenderEmptyState) return <OrdersTableEmptyState />;
+export const OrdersTable = ({
+  isRefetching,
+  orders,
+  totalRows,
+  dataTable,
+  onStateFilterChange
+}: Props) => {
+  const { pagination, updateFilters, updatePagination } = dataTable;
 
   return (
     <DataTable
-      isLoading={isLoading || isRefetching}
+      isLoading={isRefetching}
       data={orders}
       columns={OrdersTableColumns}
-      onSearch={async q => onUpdate({ search: q })}
+      onSearch={q => updateFilters({ search: q })}
       searchPlaceholder="Search by code or customer..."
-      onPageChange={page => onUpdate({ page })}
-      onPageSizeChange={size => onUpdate({ size })}
-      totalRows={pagination.pageInfo?.total ?? 0}
-      defaultPagination={{ page: 1, pageSize: 10 }}
+      onPageChange={page => updatePagination({ page })}
+      onPageSizeChange={size => updatePagination({ size })}
+      totalRows={totalRows}
+      defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
       filters={[
         {
           title: 'State',
@@ -32,7 +35,7 @@ export const OrdersTable = () => {
             { label: 'Completed', value: 'COMPLETED' },
             { label: 'Canceled', value: 'CANCELED' }
           ],
-          onChange: state => onUpdate({ state })
+          onChange: onStateFilterChange
         }
       ]}
     />
@@ -48,4 +51,17 @@ export type OrdersTableRow = {
   state: string;
   shipment: string | null;
   placedAt: string | null;
+};
+
+type OrderTableFilters = {
+  search: string;
+  state: OrderState | undefined;
+};
+
+type Props = {
+  isRefetching: boolean;
+  orders: OrdersTableRow[];
+  totalRows: number;
+  dataTable: UseDataTableReturn<OrderTableFilters>;
+  onStateFilterChange: (values: string[]) => void;
 };

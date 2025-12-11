@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { useEffect, useMemo } from 'react';
 
 import { type OrderState } from '@/lib/api/types';
-import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
+import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useCountOrders } from '../../hooks/use-count-orders';
@@ -10,14 +9,13 @@ import { useGetOrders } from '../../hooks/use-get-orders';
 
 import type { OrdersTableRow } from './orders-table';
 
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 10;
-
 export const useOrdersTable = () => {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(DEFAULT_PAGE);
-  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
-  const [state, setState] = useState<OrderState | undefined>();
+  const dataTable = useDataTable<OrderTableFilters>({
+    search: '',
+    state: undefined
+  });
+
+  const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useCountOrders();
 
@@ -25,35 +23,24 @@ export const useOrdersTable = () => {
     isLoading,
     isRefetching,
     orders: allOrders,
-    pagination,
+    pagination: { pageInfo },
     refetch
   } = useGetOrders({
     filters: {
-      ...(search && { code: { contains: search } }),
-      ...(search && { customer: { contains: search } }),
-      ...(state && { state })
+      ...(filters.search && { code: { contains: filters.search } }),
+      ...(filters.search && { customer: { contains: filters.search } }),
+      ...(filters.state && { state: filters.state })
     },
-    skip: getSkip(page, size),
-    take: size
+    skip: getSkip(pagination.page, pagination.size),
+    take: pagination.size
   });
 
   useEffect(() => {
     refetch();
-  }, [search, page, size, state]);
-
-  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
-    if (input.search !== undefined) setSearch(input.search);
-    if (input.page) setPage(input.page);
-    if (input.size) setSize(input.size);
-
-    if (input.state !== undefined) {
-      const selectedState = input.state[0] as OrderState | undefined;
-      setState(selectedState);
-    }
-  }, TYPING_DEBOUNCE_DELAY);
+  }, [filters, pagination]);
 
   const orders: OrdersTableRow[] = useMemo(
-    (): OrdersTableRow[] =>
+    () =>
       allOrders?.map(o => ({
         id: o.id,
         code: o.code ?? null,
@@ -73,19 +60,23 @@ export const useOrdersTable = () => {
     return !isLoading && !isLoadingCount && !count;
   }, [isLoading, isLoadingCount, count]);
 
+  const onStateFilterChange = (values: string[]) => {
+    const selectedState = values[0] as OrderState | undefined;
+    dataTable.updateFilters({ state: selectedState });
+  };
+
   return {
-    onUpdate,
+    dataTable,
+    onStateFilterChange,
     isLoading,
     isRefetching,
     shouldRenderEmptyState,
     orders,
-    pagination
+    totalRows: pageInfo?.total ?? 0
   };
 };
 
-type OnUpdateInput = {
-  search?: string;
-  page?: number;
-  size?: number;
-  state?: string[];
+type OrderTableFilters = {
+  search: string;
+  state: OrderState | undefined;
 };
