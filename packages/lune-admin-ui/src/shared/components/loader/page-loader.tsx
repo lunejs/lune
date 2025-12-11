@@ -1,11 +1,11 @@
-import { LoaderIcon } from 'lucide-react';
+import { Loader2Icon } from 'lucide-react';
 
 import { cn } from '@lune/ui';
 
 export const PageLoader = ({ className }: Props) => {
   return (
     <div className={cn('w-full flex items-center justify-center h-full', className)}>
-      <LoaderIcon size={24} className="animate-spin text-muted-foreground" />
+      <Loader2Icon size={24} className="animate-spin text-muted-foreground" />
     </div>
   );
 };
