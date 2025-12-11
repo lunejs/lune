@@ -148,7 +148,7 @@ const SIDEBAR = {
   sales: [
     {
       title: 'Orders',
-      url: '#',
+      url: '/orders',
       icon: ShoppingCartIcon,
       isActive: (pathname: string) => pathname.includes('orders')
     },

@@ -60,6 +60,7 @@ const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
     { href: '/collections', label: 'Collections' },
     { label: 'Create collection' }
   ],
+  '/assets': [{ href: '/assets', label: 'Assets' }, { label: 'All assets' }],
   '/orders': [{ href: '/orders', label: 'Orders' }, { label: 'All orders' }],
   '/orders/': [{ href: '/orders', label: 'Orders' }, { label: 'Order details' }],
   '/customers': [{ href: '/customers', label: 'Customers' }, { label: 'All customers' }],
