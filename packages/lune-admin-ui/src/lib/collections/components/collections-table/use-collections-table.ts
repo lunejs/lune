@@ -1,22 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { useEffect, useMemo } from 'react';
 
 import { CollectionContentType } from '@/lib/api/types';
-import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
+import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
 import { useCollectionsCount } from '../../hooks/use-count-collections';
 import { useGetCollections } from '../../hooks/use-get-collections';
 
-import type { CollectionsTableRow } from './collections-table';
-
-const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 10;
+import type { CollectionsTableRow, CollectionTableFilters } from './collections-table';
 
 export const useCollectionsTable = () => {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(DEFAULT_PAGE);
-  const [size, setSize] = useState(DEFAULT_PAGE_SIZE);
+  const dataTable = useDataTable<CollectionTableFilters>({
+    search: ''
+  });
+
+  const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCollectionCount, count } = useCollectionsCount();
 
@@ -24,29 +22,23 @@ export const useCollectionsTable = () => {
     isLoading,
     isRefetching,
     collections: allCollections,
-    pagination,
+    pagination: { pageInfo },
     refetch
   } = useGetCollections({
     filters: {
-      ...(search && { name: { contains: search } }),
+      ...(filters.search && { name: { contains: filters.search } }),
       isTopLevel: { equals: true }
     },
-    skip: getSkip(page, size),
-    take: size
+    skip: getSkip(pagination.page, pagination.size),
+    take: pagination.size
   });
 
   useEffect(() => {
     refetch();
-  }, [search, page, size]);
-
-  const onUpdate = useDebouncedCallback((input: OnUpdateInput) => {
-    if (input.search !== undefined) setSearch(input.search);
-    if (input.page) setPage(input.page);
-    if (input.size) setSize(input.size);
-  }, TYPING_DEBOUNCE_DELAY);
+  }, [filters, pagination]);
 
   const collections: CollectionsTableRow[] = useMemo(
-    (): CollectionsTableRow[] =>
+    () =>
       allCollections?.map(c => ({
         id: c.id,
         image: c.assets.items[0]?.source,
@@ -66,18 +58,11 @@ export const useCollectionsTable = () => {
   }, [isLoading, isLoadingCollectionCount, count]);
 
   return {
-    onUpdate,
+    dataTable,
     isLoading,
     isRefetching,
     shouldRenderEmptyState,
     collections,
-    pagination
+    totalRows: pageInfo?.total ?? 0
   };
-};
-
-type OnUpdateInput = {
-  search?: string;
-  page?: number;
-  size?: number;
-  status?: string[];
 };

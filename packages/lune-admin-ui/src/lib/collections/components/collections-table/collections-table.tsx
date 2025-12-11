@@ -3,41 +3,27 @@ import { Link } from 'react-router';
 
 import { Button } from '@lune/ui';
 
-import { CollectionContentType } from '@/lib/api/types';
+import type { CollectionContentType } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
+import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
 
 import { CollectionTableActions } from './actions/collection-table-actions';
 import { CollectionsTableColumns } from './columns';
-import { CollectionsTableEmptyState } from './empty-state';
-import { useCollectionsTable } from './use-collections-table';
 
-export const CollectionsTable = () => {
-  const { isLoading, isRefetching, shouldRenderEmptyState, onUpdate, collections, pagination } =
-    useCollectionsTable();
-
-  if (shouldRenderEmptyState) return <CollectionsTableEmptyState />;
+export const CollectionsTable = ({ isRefetching, collections, totalRows, dataTable }: Props) => {
+  const { pagination, updateFilters, updatePagination } = dataTable;
 
   return (
     <DataTable
-      isLoading={isLoading || isRefetching}
+      isLoading={isRefetching}
       data={collections}
       columns={CollectionsTableColumns}
       searchPlaceholder="Search collections..."
-      onSearch={async q => onUpdate({ search: q })}
-      onPageChange={page => onUpdate({ page })}
-      onPageSizeChange={size => onUpdate({ size })}
-      totalRows={pagination.pageInfo?.total ?? 0}
-      defaultPagination={{ page: 1, pageSize: 10 }}
-      filters={[
-        {
-          title: 'Content type',
-          options: [
-            { label: 'Products', value: CollectionContentType.Products },
-            { label: 'Collections', value: CollectionContentType.Collections }
-          ],
-          onChange: status => onUpdate({ status })
-        }
-      ]}
+      onSearch={q => updateFilters({ search: q })}
+      onPageChange={page => updatePagination({ page })}
+      onPageSizeChange={size => updatePagination({ size })}
+      totalRows={totalRows}
+      defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
       actions={
         <>
           <Button size="sm" variant="outline" className="hidden lg:flex">
@@ -63,4 +49,15 @@ export type CollectionsTableRow = {
   totalContent: number;
   status: boolean;
   contentType: CollectionContentType;
+};
+
+export type CollectionTableFilters = {
+  search: string;
+};
+
+type Props = {
+  isRefetching: boolean;
+  collections: CollectionsTableRow[];
+  totalRows: number;
+  dataTable: UseDataTableReturn<CollectionTableFilters>;
 };
