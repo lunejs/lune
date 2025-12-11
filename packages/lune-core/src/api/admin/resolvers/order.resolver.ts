@@ -5,12 +5,18 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type { QueryOrderArgs, QueryOrdersArgs } from '@/api/shared/types/graphql';
+import { ListResponse } from '@/api/shared/utils/list-response';
 import { OrderService } from '@/business/order/order.service';
 
 async function orders(_, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
-  return orderService.find(input ?? {});
+  const [orders, total] = await Promise.all([
+    orderService.find(input ?? {}),
+    orderService.count(input?.filters)
+  ]);
+
+  return new ListResponse(orders, orders.length, { total });
 }
 
 async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
