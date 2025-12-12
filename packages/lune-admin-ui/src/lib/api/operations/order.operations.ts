@@ -32,7 +32,7 @@ export const GET_ALL_ORDERS_QUERY = graphql(`
         total
       }
       items {
-        ...CommonOrder
+        ...CommonListOrder
       }
     }
   }

@@ -184,10 +184,10 @@ export class OrderDiscountApplication {
       const discountedAmount = await discountHandler.apply(this.ctx, order, discount.handler.args);
 
       const appliedDiscount: AppliedDiscount = {
+        discountedAmount,
         code: discount.code,
         applicationMode: discount.applicationMode,
-        applicationLevel: discount.applicationLevel,
-        amount: discountedAmount
+        applicationLevel: discount.applicationLevel
       };
 
       const fulfillment = await this.fulfillmentRepository.findOne({
@@ -228,10 +228,10 @@ export class OrderDiscountApplication {
         );
 
         const appliedDiscount: AppliedDiscount = {
+          discountedAmount,
           code: discount.code,
           applicationMode: discount.applicationMode,
-          applicationLevel: discount.applicationLevel,
-          amount: discountedAmount
+          applicationLevel: discount.applicationLevel
         };
 
         const newTotal = line.lineTotal - discountedAmount;
@@ -272,10 +272,10 @@ export class OrderDiscountApplication {
       });
 
       const appliedDiscount: AppliedDiscount = {
+        discountedAmount: 0,
         code: discount.code,
         applicationMode: discount.applicationMode,
-        applicationLevel: discount.applicationLevel,
-        amount: 0
+        applicationLevel: discount.applicationLevel
       };
 
       if (!fulfillment) {
@@ -316,7 +316,7 @@ export class OrderDiscountApplication {
         where: { id: order.id },
         data: {
           total: order.subtotal + newFulfillmentTotal,
-          appliedDiscounts: [{ ...appliedDiscount, amount: discountedAmount }]
+          appliedDiscounts: [{ ...appliedDiscount, discountedAmount }]
         }
       });
     }

@@ -89,7 +89,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.OrderDiscountCode,
           applicationMode: 'CODE',
           applicationLevel: 'ORDER',
-          amount: LunePrice.toCent(100)
+          discountedAmount: LunePrice.toCent(100)
         }
       ],
       lines: {
@@ -167,7 +167,7 @@ describe('addDiscountCode - Mutation', () => {
                 code: DiscountConstants.OrderLineDiscountCode,
                 applicationMode: 'CODE',
                 applicationLevel: 'ORDER_LINE',
-                amount: LunePrice.toCent(300)
+                discountedAmount: LunePrice.toCent(300)
               }
             ],
             quantity: 1,
@@ -214,7 +214,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.FulfillmentDiscountCode,
           applicationMode: 'CODE',
           applicationLevel: 'FULFILLMENT',
-          amount: LunePrice.toCent(50)
+          discountedAmount: LunePrice.toCent(50)
         }
       ],
       lines: {
@@ -273,7 +273,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.FulfillmentDiscountCode,
           applicationMode: 'CODE',
           applicationLevel: 'FULFILLMENT',
-          amount: 0
+          discountedAmount: 0
         }
       ],
       lines: {
@@ -334,7 +334,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.AlreadyUsedCode,
           applicationMode: 'CODE',
           applicationLevel: 'ORDER',
-          amount: LunePrice.toCent(100)
+          discountedAmount: LunePrice.toCent(100)
         }
       ],
       lines: {
@@ -403,7 +403,7 @@ describe('addDiscountCode - Mutation', () => {
                 code: DiscountConstants.OrderLineDiscountCode,
                 applicationMode: 'CODE',
                 applicationLevel: 'ORDER_LINE',
-                amount: LunePrice.toCent(300)
+                discountedAmount: LunePrice.toCent(300)
               }
             ],
             variant: {
@@ -449,7 +449,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.FulfillmentDiscountCode,
           applicationMode: 'CODE',
           applicationLevel: 'FULFILLMENT',
-          amount: LunePrice.toCent(50)
+          discountedAmount: LunePrice.toCent(50)
         }
       ],
       lines: {
@@ -513,7 +513,7 @@ describe('addDiscountCode - Mutation', () => {
           code: DiscountConstants.OrderDiscountCode,
           applicationMode: 'CODE',
           applicationLevel: 'ORDER',
-          amount: LunePrice.toCent(100)
+          discountedAmount: LunePrice.toCent(100)
         }
       ],
       lines: {
@@ -974,7 +974,7 @@ const ADD_DISCOUNT_CODE_TO_ORDER = /* GraphQL */ `
           code
           applicationMode
           applicationLevel
-          amount
+          discountedAmount
         }
         lines {
           items {
@@ -987,7 +987,7 @@ const ADD_DISCOUNT_CODE_TO_ORDER = /* GraphQL */ `
               code
               applicationMode
               applicationLevel
-              amount
+              discountedAmount
             }
             variant {
               id
@@ -1021,7 +1021,7 @@ const FETCH_ORDER = /* GraphQL */ `
         code
         applicationMode
         applicationLevel
-        amount
+        discountedAmount
       }
       lines {
         items {
@@ -1034,7 +1034,7 @@ const FETCH_ORDER = /* GraphQL */ `
             code
             applicationMode
             applicationLevel
-            amount
+            discountedAmount
           }
           variant {
             id

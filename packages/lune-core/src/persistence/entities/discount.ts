@@ -27,7 +27,7 @@ export enum ApplicationLevel {
  */
 export type AppliedDiscount = Pick<Discount, 'code' | 'applicationMode' | 'applicationLevel'> & {
   /** The amount discounted */
-  amount: number;
+  discountedAmount: number;
 };
 
 /**

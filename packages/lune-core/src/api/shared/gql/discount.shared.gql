@@ -13,5 +13,5 @@ type AppliedDiscount {
   code: String!
   applicationMode: DiscountApplicationMode!
   applicationLevel: DiscountApplicationLevel!
-  amount: Int!
+  discountedAmount: Int!
 }

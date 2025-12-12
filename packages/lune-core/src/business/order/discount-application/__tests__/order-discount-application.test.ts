@@ -79,7 +79,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -121,7 +121,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderLineAutomaticDiscountCode,
-            amount: LunePrice.toCent(600),
+            discountedAmount: LunePrice.toCent(600),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.OrderLine
           }
@@ -152,7 +152,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.FulfillmentAutomaticDiscountCode,
-            amount: LunePrice.toCent(550),
+            discountedAmount: LunePrice.toCent(550),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Fulfillment
           }
@@ -186,7 +186,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -208,7 +208,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderDiscountCode,
-            amount: LunePrice.toCent(100),
+            discountedAmount: LunePrice.toCent(100),
             applicationMode: ApplicationMode.Code,
             applicationLevel: ApplicationLevel.Order
           }
@@ -230,7 +230,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -252,7 +252,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -274,7 +274,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -296,7 +296,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }
@@ -318,7 +318,7 @@ describe('DiscountApplication', () => {
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
-            amount: LunePrice.toCent(500),
+            discountedAmount: LunePrice.toCent(500),
             applicationMode: ApplicationMode.Automatic,
             applicationLevel: ApplicationLevel.Order
           }

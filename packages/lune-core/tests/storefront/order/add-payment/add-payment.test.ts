@@ -155,7 +155,7 @@ describe('addPaymentToOrder - Mutation', () => {
       appliedDiscounts: [
         {
           code: DiscountConstants.OrderDiscountCode,
-          amount: LunePrice.toCent(100),
+          discountedAmount: LunePrice.toCent(100),
           applicationMode: ApplicationMode.Code,
           applicationLevel: ApplicationLevel.Order
         }
@@ -365,7 +365,7 @@ const ADD_PAYMENT_TO_ORDER = /* GraphQL */ `
           code
           applicationMode
           applicationLevel
-          amount
+          discountedAmount
         }
         lines {
           items {
@@ -378,7 +378,7 @@ const ADD_PAYMENT_TO_ORDER = /* GraphQL */ `
               code
               applicationMode
               applicationLevel
-              amount
+              discountedAmount
             }
             variant {
               id

@@ -78,10 +78,10 @@ export type Address = {
 
 export type AppliedDiscount = {
   __typename?: 'AppliedDiscount';
-  amount: Scalars['Int']['output'];
   applicationLevel: DiscountApplicationLevel;
   applicationMode: DiscountApplicationMode;
   code: Scalars['String']['output'];
+  discountedAmount: Scalars['Int']['output'];
 };
 
 export type Asset = Node & {
@@ -2546,10 +2546,10 @@ export type AddressResolvers<ContextType = ExecutionContext, ParentType extends 
 };
 
 export type AppliedDiscountResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['AppliedDiscount'] = ResolversParentTypes['AppliedDiscount']> = {
-  amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  discountedAmount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
