@@ -32,6 +32,7 @@ import { createProductTranslationsLoader } from './product/product-translations.
 import { createStateCountryLoader } from './state/state-country.loader';
 import { createVariantAssetsLoader } from './variant/variant-assets.loader';
 import { createVariantOptionValuesLoader } from './variant/variant-option-values.loader';
+import { createVariantProductLoader } from './variant/variant-product.loader';
 import { createVariantsLoader } from './variant/variants.loader';
 import { createZoneShippingMethodsLoader } from './zone/zone-shipping-methods.loader';
 import { createZoneStatesLoader } from './zone/zone-states.loader';
@@ -49,7 +50,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     variant: {
       assets: createVariantAssetsLoader(trx),
-      optionValues: createVariantOptionValuesLoader(trx)
+      optionValues: createVariantOptionValuesLoader(trx),
+      product: createVariantProductLoader(trx)
     },
     option: {
       localization: createOptionLocalizationLoader(trx, locale),

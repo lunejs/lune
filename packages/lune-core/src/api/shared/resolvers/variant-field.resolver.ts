@@ -1,5 +1,7 @@
+import type { Variant } from '@/persistence/entities/variant';
+
 import type { ExecutionContext } from '../context/types';
-import type { Variant, VariantAssetsArgs } from '../types/graphql';
+import type { VariantAssetsArgs } from '../types/graphql';
 import { getPaginatedResult } from '../utils/pagination';
 
 export const CommonVariantFieldResolver = {
@@ -12,5 +14,10 @@ export const CommonVariantFieldResolver = {
     const optionValues = await ctx.loaders.variant.optionValues.load(parent.id);
 
     return optionValues;
+  },
+  product: async (parent: Variant, _, ctx: ExecutionContext) => {
+    const product = await ctx.loaders.variant.product.load(parent.productId);
+
+    return product;
   }
 };
