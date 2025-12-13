@@ -3,6 +3,122 @@ import { graphql } from '../codegen';
 export const COMMON_ORDER_FRAGMENT = graphql(`
   fragment CommonOrder on Order {
     id
+    createdAt
+    code
+    state
+    subtotal
+    total
+    totalQuantity
+    appliedDiscounts {
+      code
+      applicationLevel
+      applicationMode
+      discountedAmount
+    }
+    lines {
+      items {
+        id
+        lineSubtotal
+        lineTotal
+        quantity
+        unitPrice
+        appliedDiscounts {
+          code
+          applicationMode
+          discountedAmount
+        }
+        variant {
+          id
+          sku
+          optionValues {
+            id
+            name
+          }
+          assets(input: { take: 1 }) {
+            items {
+              id
+              source
+            }
+          }
+          product {
+            id
+            name
+            slug
+            assets(input: { take: 1 }) {
+              items {
+                id
+                source
+              }
+            }
+          }
+        }
+      }
+    }
+    customer {
+      id
+      email
+      firstName
+      lastName
+      phoneNumber
+    }
+    shippingAddress {
+      streetLine1
+      streetLine2
+      city
+      postalCode
+      phoneNumber
+      references
+      country
+      countryCode
+      state
+      stateCode
+    }
+    fulfillment {
+      id
+      type
+      amount
+      details {
+        ... on InStorePickupFulfillment {
+          id
+          address {
+            streetLine1
+            streetLine2
+            city
+            postalCode
+            phoneNumber
+            references
+            country
+            countryCode
+            state
+            stateCode
+          }
+          location {
+            id
+            name
+          }
+        }
+        ... on ShippingFulfillment {
+          id
+          method
+          shippingMethod {
+            id
+            name
+          }
+        }
+      }
+    }
+    payments {
+      id
+      amount
+      method
+      transactionId
+    }
+  }
+`);
+
+export const COMMON_LIST_ORDER_FRAGMENT = graphql(`
+  fragment CommonListOrder on Order {
+    id
     code
     state
     total
@@ -20,6 +136,14 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
     }
     fulfillment {
       type
+    }
+  }
+`);
+
+export const GET_ORDER_QUERY = graphql(`
+  query GetOrderById($id: ID!) {
+    order(id: $id) {
+      ...CommonOrder
     }
   }
 `);
