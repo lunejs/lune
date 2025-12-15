@@ -1,5 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { ID } from '@/persistence/entities/entity';
+import type { Fulfillment } from '@/persistence/entities/fulfillment';
+import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { Order } from '@/persistence/entities/order';
 import { OrderState } from '@/persistence/entities/order';
 
@@ -44,5 +46,15 @@ export class OrderActionsValidator {
 
   canMarkAsProcessing(state: OrderState) {
     return state === OrderState.Placed;
+  }
+
+  canMarkAsShipped(
+    state: OrderState,
+    fulfillment: Fulfillment | undefined
+  ): fulfillment is Fulfillment {
+    return (
+      fulfillment?.type === FulfillmentType.SHIPPING &&
+      [OrderState.Placed, OrderState.Processing].includes(state)
+    );
   }
 }

@@ -6,6 +6,7 @@ import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type {
   MutationMarkOrderAsProcessingArgs,
+  MutationMarkOrderAsShippedArgs,
   QueryOrderArgs,
   QueryOrdersArgs
 } from '@/api/shared/types/graphql';
@@ -44,13 +45,28 @@ async function markOrderAsProcessing(
     : { apiErrors: [], order: result };
 }
 
+async function markOrderAsShipped(
+  _,
+  { id, input }: MutationMarkOrderAsShippedArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.markAsShipped(id, input);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result], order: null }
+    : { apiErrors: [], order: result };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     orders: UseUserGuard(orders),
     order: UseUserGuard(order)
   },
   Mutation: {
-    markOrderAsProcessing: UseUserGuard(markOrderAsProcessing)
+    markOrderAsProcessing: UseUserGuard(markOrderAsProcessing),
+    markOrderAsShipped: UseUserGuard(markOrderAsShipped)
   },
   Order: {
     ...CommonOrderFieldResolver

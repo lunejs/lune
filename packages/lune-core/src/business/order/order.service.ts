@@ -9,6 +9,7 @@ import type {
   CreateOrderAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
+  MarkOrderAsShippedInput,
   OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
@@ -732,6 +733,33 @@ export class OrderService {
       where: { id: orderId },
       data: {
         state: OrderState.Processing
+      }
+    });
+  }
+
+  async markAsShipped(id: ID, input: MarkOrderAsShippedInput) {
+    const [order, fulfillment] = await Promise.all([
+      this.repository.findOneOrThrow({ where: { id } }),
+      this.fulfillmentRepository.findOne({ where: { orderId: id } })
+    ]);
+
+    if (!this.validator.canMarkAsShipped(order.state, fulfillment)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    await this.shippingFulfillmentRepository.update({
+      where: { fulfillmentId: fulfillment.id },
+      data: {
+        carrier: input.carrier,
+        trackingCode: input.trackingCode,
+        shippedAt: new Date()
+      }
+    });
+
+    return await this.repository.update({
+      where: { id },
+      data: {
+        state: OrderState.Shipped
       }
     });
   }
