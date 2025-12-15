@@ -101,20 +101,12 @@ export type CreatePaymentResult =
   | {
       /**
        * @description
-       * A declined payment is a payment that has not been completed successfully because of a provider error o a internal error of the handler
+       * A failed payment is a payment that has not been completed successfully because of a provider error o a internal error of the handler
        */
       status: PaymentState.Failed;
       /**
        * @description
-       * The error message that will be displayed in the api
-       * ```json
-       * apiErrors: [
-       *   {
-       *     code: 'PAYMENT_FAILED',
-       *     message: 'error from payment.error'
-       *   }
-       * ]
-       * ```
+       * reason why payment was failed (provided error or internal error)
        */
-      error: string;
+      reason: string;
     };

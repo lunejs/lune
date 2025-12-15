@@ -27,6 +27,7 @@ import type { LocationRepository } from '@/persistence/repositories/location-rep
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
+import type { PaymentFailureRepository } from '@/persistence/repositories/payment-failure-repository';
 import type { PaymentMethodRepository } from '@/persistence/repositories/payment-method-repository';
 import type { PaymentRepository } from '@/persistence/repositories/payment-repository';
 import { SortKey } from '@/persistence/repositories/repository';
@@ -70,6 +71,7 @@ export class OrderService {
   private readonly locationRepository: LocationRepository;
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMethodRepository: PaymentMethodRepository;
+  private readonly paymentFailureRepository: PaymentFailureRepository;
   private readonly discounts: OrderDiscountApplication;
 
   constructor(private readonly ctx: ExecutionContext) {
@@ -92,6 +94,7 @@ export class OrderService {
     this.locationRepository = ctx.repositories.location;
     this.paymentRepository = ctx.repositories.payment;
     this.paymentMethodRepository = ctx.repositories.paymentMethod;
+    this.paymentFailureRepository = ctx.repositories.paymentFailure;
   }
 
   async find(input?: OrderListInput) {
@@ -661,7 +664,21 @@ export class OrderService {
     );
 
     if (paymentResult.status === PaymentState.Failed) {
-      return new PaymentFailedError(paymentResult.error);
+      const payment = await this.paymentRepository.create({
+        orderId,
+        amount: order.total,
+        method: paymentMethod.name,
+        state: paymentResult.status,
+        paymentMethodId: paymentMethod.id
+      });
+
+      await this.paymentFailureRepository.create({
+        paymentId: payment.id,
+        reason: paymentResult.reason
+      });
+
+      // TODO: i don't think this is a good idea, should have internal reason a a public error
+      return new PaymentFailedError(paymentResult.reason);
     }
 
     await Promise.all(

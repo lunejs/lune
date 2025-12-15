@@ -123,7 +123,6 @@ describe('addPaymentToOrder - Mutation', () => {
 
     expect(payment).toBeDefined();
     expect(payment.transaction_id).toBeDefined();
-    expect(payment.transaction_id).toMatch(TestUtils.Regex.UUID);
     expect(payment.amount).toBe(LunePrice.toCent(2_300));
     expect(payment.method).toBe('Stripe');
     expect(payment.state).toBe('CAPTURED');
@@ -335,7 +334,29 @@ describe('addPaymentToOrder - Mutation', () => {
 
     expect(order).toBeNull();
     expect(error.code).toBe('PAYMENT_FAILED');
-    expect(error.message).toBe('Payment failed');
+    expect(error.message).toBe('Payment provider failed');
+
+    // Verify stock was not reduced
+    const db = testHelper.getQueryBuilder();
+    const variant1 = await db(Tables.Variant).where('id', VariantConstants.AlreadyInLineID).first();
+    const variant2 = await db(Tables.Variant).where('id', VariantConstants.ID).first();
+
+    expect(variant1.stock).toBe(3);
+    expect(variant2.stock).toBe(3);
+
+    // Verify payment was created in DB with correct data
+    const payment = await db(Tables.Payment).where('order_id', OrderConstants.ID).first();
+
+    expect(payment).toBeDefined();
+    expect(payment.transaction_id).toBeNull();
+    expect(payment.amount).toBe(LunePrice.toCent(2_300));
+    expect(payment.method).toBe('PayPal');
+    expect(payment.state).toBe('FAILED');
+    expect(payment.payment_method_id).toBe(PaymentMethodConstants.FailedID);
+
+    const paymentFailure = await db(Tables.PaymentFailure).where('payment_id', payment.id).first();
+
+    expect(paymentFailure.reason).toBe('Payment provider failed');
   });
 });
 

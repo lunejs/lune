@@ -10,9 +10,7 @@ import { ShopConstants } from './shop.fixtures';
 
 export const VariantConstants = {
   ID: TestUtils.generateUUID(),
-
   AlreadyInLineID: TestUtils.generateUUID(),
-
   LowStockID: TestUtils.generateUUID()
 };
 

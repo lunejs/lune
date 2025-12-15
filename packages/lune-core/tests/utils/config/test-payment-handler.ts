@@ -15,7 +15,7 @@ export const TestPaymentHandler = new PaymentHandler({
     if (paymentState === PaymentState.Failed) {
       return {
         status: paymentState,
-        error: 'Payment failed'
+        reason: 'Payment provider failed'
       };
     }
 
@@ -40,7 +40,7 @@ export const TestPaymentHandler = new PaymentHandler({
 
     return {
       status: PaymentState.Failed,
-      error: 'Payment state not supported'
+      reason: 'Payment state not supported'
     };
   }
 });
