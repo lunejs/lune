@@ -724,7 +724,7 @@ export class OrderService {
   async markAsProcessing(orderId: ID) {
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
-    if (this.validator.canMarkAsProcessing(order.state)) {
+    if (!this.validator.canMarkAsProcessing(order.state)) {
       return new ForbiddenOrderActionError(order.state);
     }
 
