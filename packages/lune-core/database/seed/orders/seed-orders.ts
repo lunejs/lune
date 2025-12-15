@@ -5,13 +5,16 @@
  *   yarn seed:orders
  *
  * Configure VARIANT_IDS array below with the variant IDs you want to order.
+ * Each variant will become an order line in a single order.
+ *
  * The script will:
- * 1. Create order with the variant
- * 2. Add default shipping address (if USE_PICKUP = false)
+ * 1. Create order with the first variant
+ * 2. Add remaining variants as additional order lines
  * 3. Add default customer
- * 4. Get available shipping/pickup methods and use the first one
- * 5. Get available payment methods and use the first one
- * 6. Add payment to finalize order
+ * 4. Add default shipping address (if USE_PICKUP = false)
+ * 5. Get available shipping/pickup methods and use the first one
+ * 6. Get available payment methods and use the first one
+ * 7. Add payment to finalize order
  */
 
 const STOREFRONT_API_URL = 'http://localhost:4000/storefront-api';
@@ -29,10 +32,14 @@ const SHOP_ID = '99216796-99e7-4a95-9c93-e4736775bd73';
 const USE_PICKUP = true;
 
 /**
- * Array of variant IDs to create orders for.
- * Each variant ID will create a separate order.
+ * Array of variant IDs to add to the order.
+ * Each variant ID will become an order line in a single order.
  */
-const VARIANT_IDS: string[] = ['24a49402-2815-45f1-b5ab-5db2e8dc3e9a'];
+const VARIANT_IDS: string[] = [
+  'cd5e0a8d-31a6-4f5c-ba7a-0f779bb23dc6',
+  '8e44ff4e-2722-444e-90e5-383d5f3025c3',
+  '5916cc75-66d5-473a-a7fd-f696432c3e1f'
+];
 
 /**
  * Default customer info
@@ -69,6 +76,22 @@ const CREATE_ORDER = `
       order {
         id
         state
+        total
+        subtotal
+      }
+      apiErrors {
+        code
+        message
+      }
+    }
+  }
+`;
+
+const ADD_LINE_TO_ORDER = `
+  mutation AddLineToOrder($orderId: ID!, $input: CreateOrderLineInput!) {
+    addLineToOrder(orderId: $orderId, input: $input) {
+      order {
+        id
         total
         subtotal
       }
@@ -280,6 +303,29 @@ async function createOrder(variantId: string): Promise<string> {
   return orderId;
 }
 
+async function addLineToOrder(orderId: string, variantId: string): Promise<void> {
+  console.log(`   📦 Adding line with variant: ${variantId}`);
+
+  const data = await graphqlRequest<{
+    addLineToOrder: {
+      order: { id: string };
+      apiErrors: { code: string; message: string }[];
+    };
+  }>(ADD_LINE_TO_ORDER, {
+    orderId,
+    input: {
+      productVariantId: variantId,
+      quantity: 1
+    }
+  });
+
+  if (data.addLineToOrder.apiErrors.length > 0) {
+    throw new Error(`Add line failed: ${JSON.stringify(data.addLineToOrder.apiErrors)}`);
+  }
+
+  console.log(`   ✓ Line added`);
+}
+
 async function addCustomer(orderId: string): Promise<void> {
   console.log(`👤 Adding customer...`);
 
@@ -462,39 +508,39 @@ async function main() {
   console.log(`Shop ID: ${SHOP_ID}`);
   console.log(`API Key: ${API_KEY.substring(0, 12)}...`);
   console.log(`Fulfillment: ${USE_PICKUP ? '🏪 In-store pickup' : '🚚 Shipping'}`);
-  console.log(`Orders to create: ${VARIANT_IDS.length}`);
+  console.log(`Order lines: ${VARIANT_IDS.length}`);
 
-  const createdOrders: string[] = [];
+  console.log(`\n${'─'.repeat(50)}`);
 
-  for (let i = 0; i < VARIANT_IDS.length; i++) {
-    const variantId = VARIANT_IDS[i];
-    console.log(`\n${'─'.repeat(50)}`);
-    console.log(`Order ${i + 1} of ${VARIANT_IDS.length}`);
+  try {
+    // Create order with first variant
+    const orderId = await createOrder(VARIANT_IDS[0]);
 
-    try {
-      const orderId = await createOrder(variantId);
-      await addCustomer(orderId);
-
-      if (USE_PICKUP) {
-        await addPickupFulfillment(orderId);
-      } else {
-        await addShippingAddress(orderId);
-        await addShippingMethod(orderId);
+    // Add remaining variants as additional lines
+    if (VARIANT_IDS.length > 1) {
+      console.log(`\n📦 Adding ${VARIANT_IDS.length - 1} additional line(s)...`);
+      for (let i = 1; i < VARIANT_IDS.length; i++) {
+        await addLineToOrder(orderId, VARIANT_IDS[i]);
       }
-
-      const orderCode = await addPayment(orderId);
-      createdOrders.push(orderCode);
-    } catch (err) {
-      console.error(`\n❌ Failed to create order: ${err}`);
     }
-  }
 
-  console.log(`\n${'='.repeat(50)}`);
-  console.log(`\n🎉 Done! Created ${createdOrders.length}/${VARIANT_IDS.length} orders`);
+    await addCustomer(orderId);
 
-  if (createdOrders.length > 0) {
-    console.log('\nOrder codes:');
-    createdOrders.forEach(code => console.log(`  - ${code}`));
+    if (USE_PICKUP) {
+      await addPickupFulfillment(orderId);
+    } else {
+      await addShippingAddress(orderId);
+      await addShippingMethod(orderId);
+    }
+
+    const orderCode = await addPayment(orderId);
+
+    console.log(`\n${'='.repeat(50)}`);
+    console.log(`\n🎉 Done! Created order: ${orderCode}`);
+    console.log(`   Lines: ${VARIANT_IDS.length}`);
+  } catch (err) {
+    console.error(`\n❌ Failed to create order: ${err}`);
+    process.exit(1);
   }
 }
 
