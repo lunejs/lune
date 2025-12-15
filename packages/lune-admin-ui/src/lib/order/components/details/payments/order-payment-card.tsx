@@ -1,7 +1,9 @@
 import { formatDate, LunePrice } from '@lune/common';
-import { Badge, Card, CardContent, CardHeader, CardTitle, Muted, Small } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, Muted, Small } from '@lune/ui';
 
-import type { CommonOrderFragment } from '@/lib/api/types';
+import { type CommonOrderFragment, PaymentState } from '@/lib/api/types';
+
+import { OrderPaymentStatusBadge } from './status/order-payment-status-badge';
 
 export const OrderPaymentCard = ({ payments }: Props) => {
   return (
@@ -16,7 +18,7 @@ export const OrderPaymentCard = ({ payments }: Props) => {
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <Small>{payment.method}</Small>
-                <Badge variant={'outline'}>Pending</Badge>
+                <OrderPaymentStatusBadge state={PaymentState.Submitted} />
               </div>
               <Muted>{payment.transactionId}</Muted>
             </div>

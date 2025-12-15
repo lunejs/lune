@@ -9,7 +9,7 @@ import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { OrderCustomerCard } from '../components/details/customer/order-customer-card';
 import { OrderItemsTable } from '../components/details/items/order-items-table';
-import { OrderPaymentCard } from '../components/details/payment/order-payment-card';
+import { OrderPaymentCard } from '../components/details/payments/order-payment-card';
 import { useGetOrder } from '../hooks/use-get-order';
 
 export const OrderDetailsPage = () => {
