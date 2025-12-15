@@ -24,12 +24,16 @@ export const formatDate = (date: Date) => {
 /**
  * Get the full name from a user object
  */
-export const getFullName = (input: { firstName?: string; lastName: string }) => {
+export const getFullName = (input: { firstName?: string; lastName?: string }) => {
+  if (input.firstName && input.lastName) {
+    return `${input.firstName} ${input.lastName}`;
+  }
+
   if (!input.firstName) {
     return input.lastName;
   }
 
-  return `${input.firstName} ${input.lastName}`;
+  return '';
 };
 
 /**

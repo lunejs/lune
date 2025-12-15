@@ -7,6 +7,8 @@ import { PageLayout } from '@/shared/components/layout/page-layout';
 import { PageLoader } from '@/shared/components/loader/page-loader';
 import { NotFound } from '@/shared/components/not-found/not-found';
 
+import { OrderCustomerCard } from '../components/details/customer/order-customer-card';
+import { OrderItemsTable } from '../components/details/items/order-items-table';
 import { useGetOrder } from '../hooks/use-get-order';
 
 export const OrderDetailsPage = () => {
@@ -18,17 +20,22 @@ export const OrderDetailsPage = () => {
   if (!order) return <NotFound />;
 
   return (
-    <PageLayout>
+    <PageLayout className="max-w-5xl mx-auto w-full">
       <DetailsPageLayout>
         <DetailsPageLayout.Header>
-          <DetailsPageLayout.Title>Create discount</DetailsPageLayout.Title>
+          <DetailsPageLayout.Title>{order.code}</DetailsPageLayout.Title>
           <DetailsPageLayout.Actions>
             <Button>Confirm</Button>
           </DetailsPageLayout.Actions>
         </DetailsPageLayout.Header>
 
         <DetailsPageLayout.Content>
-          <h1>{order.code}</h1>
+          <div className="col-span-4">
+            <OrderItemsTable order={order} />
+          </div>
+          <div className="col-span-2">
+            <OrderCustomerCard order={order} />
+          </div>
         </DetailsPageLayout.Content>
       </DetailsPageLayout>
     </PageLayout>

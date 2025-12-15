@@ -77,6 +77,7 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       id
       type
       amount
+      total
       details {
         ... on InStorePickupFulfillment {
           id
