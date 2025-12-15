@@ -133,6 +133,10 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type CancelOrderInput = {
+  reason?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** A collection is a group of products that are displayed together in the storefront. */
 export type Collection = Node & {
   __typename?: 'Collection';
@@ -658,6 +662,11 @@ export type LocationResult = {
   location?: Maybe<Location>;
 };
 
+export type MarkOrderAsShippedInput = {
+  carrier: Scalars['String']['input'];
+  trackingCode: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCollectionTranslation: CollectionTranslation;
@@ -669,6 +678,7 @@ export type Mutation = {
   addProductTranslation: ProductTranslation;
   addShippingAddressToOrder: OrderResult;
   addShippingFulfillmentToOrder: OrderResult;
+  cancelOrder: OrderResult;
   createCollection: Collection;
   createDiscount: DiscountResult;
   createLocation: LocationResult;
@@ -689,6 +699,10 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
+  markAsReadyForPickup: OrderResult;
+  markOrderAsDelivered: OrderResult;
+  markOrderAsProcessing: OrderResult;
+  markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
   removeDiscounts: Scalars['Boolean']['output'];
@@ -775,6 +789,12 @@ export type MutationAddShippingFulfillmentToOrderArgs = {
 };
 
 
+export type MutationCancelOrderArgs = {
+  id: Scalars['ID']['input'];
+  input: CancelOrderInput;
+};
+
+
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
 };
@@ -844,6 +864,27 @@ export type MutationCreateZoneArgs = {
 
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
+};
+
+
+export type MutationMarkAsReadyForPickupArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkOrderAsDeliveredArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkOrderAsProcessingArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkOrderAsShippedArgs = {
+  id: Scalars['ID']['input'];
+  input: MarkOrderAsShippedInput;
 };
 
 
@@ -2211,6 +2252,7 @@ export type ResolversTypes = {
   AssetListInput: AssetListInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   BooleanFilter: BooleanFilter;
+  CancelOrderInput: CancelOrderInput;
   Collection: ResolverTypeWrapper<Collection>;
   CollectionContentType: CollectionContentType;
   CollectionFilters: CollectionFilters;
@@ -2271,6 +2313,7 @@ export type ResolversTypes = {
   LocationErrorResult: ResolverTypeWrapper<LocationErrorResult>;
   LocationList: ResolverTypeWrapper<LocationList>;
   LocationResult: ResolverTypeWrapper<LocationResult>;
+  MarkOrderAsShippedInput: MarkOrderAsShippedInput;
   Mutation: ResolverTypeWrapper<{}>;
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
@@ -2386,6 +2429,7 @@ export type ResolversParentTypes = {
   AssetListInput: AssetListInput;
   Boolean: Scalars['Boolean']['output'];
   BooleanFilter: BooleanFilter;
+  CancelOrderInput: CancelOrderInput;
   Collection: Collection;
   CollectionFilters: CollectionFilters;
   CollectionList: CollectionList;
@@ -2439,6 +2483,7 @@ export type ResolversParentTypes = {
   LocationErrorResult: LocationErrorResult;
   LocationList: LocationList;
   LocationResult: LocationResult;
+  MarkOrderAsShippedInput: MarkOrderAsShippedInput;
   Mutation: {};
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
@@ -2806,6 +2851,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
   addShippingFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>>;
+  cancelOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCancelOrderArgs, 'id' | 'input'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationCreateDiscountArgs, 'input'>>;
   createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
@@ -2820,6 +2866,10 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
+  markAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkAsReadyForPickupArgs, 'id'>>;
+  markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
+  markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
+  markOrderAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>>;
   removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeDiscounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveDiscountsArgs, 'ids'>>;

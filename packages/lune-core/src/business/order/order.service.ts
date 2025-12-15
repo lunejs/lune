@@ -75,7 +75,7 @@ export class OrderService {
   private readonly discounts: OrderDiscountApplication;
 
   constructor(private readonly ctx: ExecutionContext) {
-    this.validator = new OrderActionsValidator();
+    this.validator = new OrderActionsValidator(ctx);
     this.discounts = new OrderDiscountApplication(ctx);
 
     this.repository = ctx.repositories.order;
@@ -719,5 +719,20 @@ export class OrderService {
     });
 
     return orderUpdated;
+  }
+
+  async markAsProcessing(orderId: ID) {
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (this.validator.canMarkAsProcessing(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    return await this.repository.update({
+      where: { id: orderId },
+      data: {
+        state: OrderState.Processing
+      }
+    });
   }
 }
