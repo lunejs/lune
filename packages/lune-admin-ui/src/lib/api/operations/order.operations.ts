@@ -82,6 +82,8 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       details {
         ... on InStorePickupFulfillment {
           id
+          pickedUpAt
+          readyAt
           address {
             streetLine1
             streetLine2
@@ -102,6 +104,10 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
         ... on ShippingFulfillment {
           id
           method
+          carrier
+          trackingCode
+          shippedAt
+          deliveredAt
           shippingMethod {
             id
             name
