@@ -110,6 +110,7 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
     }
     payments {
       id
+      createdAt
       amount
       method
       transactionId
