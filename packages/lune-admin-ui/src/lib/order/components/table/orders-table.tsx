@@ -48,8 +48,8 @@ export type OrdersTableRow = {
   customer: string | null;
   total: number;
   items: number;
-  state: string;
-  shipment: string | null;
+  state: OrderState;
+  fulfillment: 'Shipping' | 'Pickup' | null;
   placedAt: string | null;
 };
 

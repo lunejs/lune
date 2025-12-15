@@ -50,7 +50,7 @@ export const useOrdersTable = () => {
         total: o.total,
         items: o.lines.count,
         state: o.state,
-        shipment: o.fulfillment?.type === FulfillmentType.Shipping ? 'Shipping' : 'Pickup',
+        fulfillment: o.fulfillment?.type === FulfillmentType.Shipping ? 'Shipping' : 'Pickup',
         placedAt: o.placedAt ?? null
       })) ?? [],
     [allOrders]

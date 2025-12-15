@@ -1,35 +1,15 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { UserIcon } from 'lucide-react';
+import { StoreIcon, TruckIcon, UserIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { formatDate, LunePrice } from '@lune/common';
-import { Badge, Checkbox, P } from '@lune/ui';
+import { Checkbox, P } from '@lune/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 
+import { OrderStateBadge } from '../status/order-state-badge';
+
 import type { OrdersTableRow } from './orders-table';
-
-const getStateBadgeVariant = (state: string) => {
-  switch (state) {
-    case 'PLACED':
-      return 'default';
-    case 'PROCESSING':
-      return 'secondary';
-    case 'SHIPPED':
-      return 'outline';
-    case 'DELIVERED':
-    case 'COMPLETED':
-      return 'default';
-    case 'CANCELED':
-      return 'destructive';
-    default:
-      return 'secondary';
-  }
-};
-
-const formatState = (state: string) => {
-  return state.charAt(0) + state.slice(1).toLowerCase();
-};
 
 export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   {
@@ -96,17 +76,18 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   {
     accessorKey: 'state',
     header: ({ column }) => <DataTableColumnHeader column={column} title="State" />,
-    cell: ({ row }) => (
-      <Badge variant={getStateBadgeVariant(row.original.state)}>
-        {formatState(row.original.state)}
-      </Badge>
-    ),
+    cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
     enableSorting: false
   },
   {
-    accessorKey: 'shipment',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Shipment" />,
-    cell: ({ row }) => <P>{row.original.shipment ?? '-'}</P>,
+    accessorKey: 'fulfillment',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Fulfillment" />,
+    cell: ({ row }) => (
+      <div className="flex items-center gap-1">
+        {row.original.fulfillment === 'Pickup' ? <StoreIcon size={16} /> : <TruckIcon size={16} />}
+        <P>{row.original.fulfillment ?? '-'}</P>
+      </div>
+    ),
     enableSorting: false
   },
   {

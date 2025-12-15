@@ -1,4 +1,4 @@
-import { TagIcon } from 'lucide-react';
+import { StoreIcon, TagIcon, TruckIcon } from 'lucide-react';
 
 import { isFirst, LunePrice } from '@lune/common';
 import {
@@ -29,6 +29,8 @@ import {
 } from '@/lib/api/types';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
+import { OrderStateBadge } from '../../status/order-state-badge';
+
 export const OrderItemsTable = ({ order }: Props) => {
   const lines = order.lines.items;
   const { fulfillment, appliedDiscounts } = order;
@@ -41,8 +43,7 @@ export const OrderItemsTable = ({ order }: Props) => {
     <Card>
       <CardHeader className="flex items-center flex-row justify-between space-y-0">
         <CardTitle>Products</CardTitle>
-        <Badge>Status</Badge>
-        {/* <OrderStatusBadge status={order.state} /> */}
+        <OrderStateBadge state={order.state} />
       </CardHeader>
 
       <CardContent>
@@ -143,9 +144,17 @@ export const OrderItemsTable = ({ order }: Props) => {
             <TableRow className="border-transparent">
               <TableCell>Fulfillment</TableCell>
               <TableCell>
-                {fulfillment?.type === FulfillmentType.InStorePickup
-                  ? `Pickup at ${(fulfillment.details as InStorePickupFulfillment).location.name}`
-                  : (fulfillment?.details as ShippingFulfillment).method}
+                {fulfillment?.type === FulfillmentType.InStorePickup ? (
+                  <div className="flex items-center gap-1">
+                    <StoreIcon size={16} />
+                    {(fulfillment.details as InStorePickupFulfillment).location.name}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1">
+                    <TruckIcon size={16} />
+                    {(fulfillment?.details as ShippingFulfillment).method}
+                  </div>
+                )}
               </TableCell>
               <TableCell></TableCell>
               <TableCell>

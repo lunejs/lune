@@ -22,7 +22,7 @@ export const OrderCustomerCard: FC<Props> = ({ order }) => {
           <div className="flex flex-col gap-2">
             <Link
               to={`/customers/${customer.id}`}
-              className="font-medium text-distinct hover:underline"
+              className="font-medium text-distinct-foreground hover:underline"
             >
               {getFullName(clean(customer)) || 'Guest'}
             </Link>
