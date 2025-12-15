@@ -585,6 +585,30 @@ export class OrderService {
     return this.discounts.applyAvailable(orderUpdated);
   }
 
+  async addDiscountCode(orderId: ID, code: string) {
+    await this.discounts.clean(orderId);
+
+    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
+
+    if (!this.validator.canModifyDiscounts(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const discount = await this.discountRepository.findOne({ where: { code } });
+
+    if (!discount) return new DiscountCodeNotApplicable();
+
+    const isValid = await this.discounts.isValid(discount, order);
+
+    if (!isValid) return new DiscountCodeNotApplicable();
+
+    const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
+
+    if (!handler) return new DiscountHandlerNotFound();
+
+    return await this.discounts.apply(order, discount, handler);
+  }
+
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const currentOrder = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
@@ -678,29 +702,5 @@ export class OrderService {
     });
 
     return orderUpdated;
-  }
-
-  async addDiscountCode(orderId: ID, code: string) {
-    await this.discounts.clean(orderId);
-
-    const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
-
-    if (!this.validator.canModifyDiscounts(order.state)) {
-      return new ForbiddenOrderActionError(order.state);
-    }
-
-    const discount = await this.discountRepository.findOne({ where: { code } });
-
-    if (!discount) return new DiscountCodeNotApplicable();
-
-    const isValid = await this.discounts.isValid(discount, order);
-
-    if (!isValid) return new DiscountCodeNotApplicable();
-
-    const handler = getConfig().discounts.handlers.find(h => h.code === discount.handler.code);
-
-    if (!handler) return new DiscountHandlerNotFound();
-
-    return await this.discounts.apply(order, discount, handler);
   }
 }

@@ -6,6 +6,37 @@ type Query {
   orders(input: OrderListInput): OrderList!
 }
 
+type Mutation {
+  markOrderAsProcessing(id: ID!): OrderResult!
+  markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
+  markAsReadyForPickup(id: ID!): OrderResult!
+  markOrderAsDelivered(id: ID!): OrderResult!
+  cancelOrder(id: ID!, input: CancelOrderInput!): OrderResult!
+}
+
+input MarkOrderAsShippedInput {
+  carrier: String!
+  trackingCode: String!
+}
+
+input CancelOrderInput {
+  reason: String
+}
+
+type OrderResult {
+  order: Order
+  apiErrors: [OrderErrorResult!]!
+}
+
+type OrderErrorResult {
+  code: OrderErrorCode!
+  message: String!
+}
+
+enum OrderErrorCode {
+  FORBIDDEN_ORDER_ACTION
+}
+
 input OrderListInput {
   """
   Skip the first n results
