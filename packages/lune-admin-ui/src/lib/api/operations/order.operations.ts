@@ -75,6 +75,7 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
     }
     fulfillment {
       id
+      createdAt
       type
       amount
       total

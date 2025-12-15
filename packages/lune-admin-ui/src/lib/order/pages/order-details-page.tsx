@@ -8,6 +8,7 @@ import { PageLoader } from '@/shared/components/loader/page-loader';
 import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { OrderCustomerCard } from '../components/details/customer/order-customer-card';
+import { OrderFulfillmentCard } from '../components/details/fulfillment/order-fulfillment-card';
 import { OrderItemsTable } from '../components/details/items/order-items-table';
 import { OrderPaymentCard } from '../components/details/payments/order-payment-card';
 import { useGetOrder } from '../hooks/use-get-order';
@@ -33,6 +34,7 @@ export const OrderDetailsPage = () => {
         <DetailsPageLayout.Content>
           <div className="col-span-4 flex flex-col gap-6">
             <OrderItemsTable order={order} />
+            <OrderFulfillmentCard fulfillment={order.fulfillment} />
             <OrderPaymentCard payments={order.payments} />
           </div>
           <div className="col-span-2">
