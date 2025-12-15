@@ -6,6 +6,7 @@ import { DummyPaymentHandler } from './payment-handler/dummy-payment-handler';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
 import { FlatShippingHandler } from './shipping-handler/flat-shipping-handler';
 import { LocalStorageProvider } from './storage/local-storage-provider';
+import { DefaultOrderCodeStrategy } from './strategies/order-code/default-order-code-strategy';
 import type { LuneConfig } from './lune.config';
 
 export const DEFAULT_LUNE_CONFIG: LuneConfig = {
@@ -19,6 +20,9 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
   },
   db: {
     url: 'postgres://app_user:womteC_ruqri0_punqah@localhost:5432/lune'
+  },
+  orders: {
+    codeStrategy: new DefaultOrderCodeStrategy({ prefix: '#' })
   },
   assets: {
     storageProvider: new LocalStorageProvider('http://localhost:4000'),

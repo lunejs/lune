@@ -26,7 +26,7 @@ const SHOP_ID = '99216796-99e7-4a95-9c93-e4736775bd73';
 /**
  * Set to true for in-store pickup, false for shipping to address
  */
-const USE_PICKUP = false;
+const USE_PICKUP = true;
 
 /**
  * Array of variant IDs to create orders for.

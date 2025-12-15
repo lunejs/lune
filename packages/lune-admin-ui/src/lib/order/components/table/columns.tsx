@@ -58,17 +58,21 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   {
     accessorKey: 'code',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Code" />,
-    cell: ({ row }) => <P className="w-20 font-mono">{row.original.code ?? '-'}</P>,
+    cell: ({ row }) => (
+      <Link to={`/orders/${row.original.id}`} className="flex items-center gap-2 w-max">
+        <P className="w-20 font-mono">{row.original.code ?? '-'}</P>
+      </Link>
+    ),
     enableSorting: false
   },
   {
     accessorKey: 'customer',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
     cell: ({ row }) => (
-      <Link to={`/orders/${row.original.id}`} className="flex items-center gap-2 w-max">
+      <div className="flex items-center gap-2 w-max">
         <UserIcon className="h-5 w-5 shrink-0 text-muted-foreground" />
         <P className="text-nowrap">{row.original.customer ?? 'Guest'}</P>
-      </Link>
+      </div>
     ),
     enableSorting: false,
     enableHiding: false

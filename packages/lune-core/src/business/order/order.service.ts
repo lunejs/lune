@@ -665,13 +665,14 @@ export class OrderService {
       paymentMethodId: paymentMethod.id
     });
 
-    const placedCount = await this.repository.countPlaced();
+    const orderCodeStrategy = getConfig().orders.codeStrategy;
+    const orderCode = await orderCodeStrategy.generate(order, this.ctx);
 
     const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         state: OrderState.Placed,
-        code: String(placedCount),
+        code: orderCode,
         placedAt: new Date()
       }
     });
