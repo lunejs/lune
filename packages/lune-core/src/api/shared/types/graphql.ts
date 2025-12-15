@@ -699,9 +699,9 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
-  markAsReadyForPickup: OrderResult;
   markOrderAsDelivered: OrderResult;
   markOrderAsProcessing: OrderResult;
+  markOrderAsReadyForPickup: OrderResult;
   markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
@@ -867,17 +867,17 @@ export type MutationGenerateUserAccessTokenArgs = {
 };
 
 
-export type MutationMarkAsReadyForPickupArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
 export type MutationMarkOrderAsDeliveredArgs = {
   id: Scalars['ID']['input'];
 };
 
 
 export type MutationMarkOrderAsProcessingArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkOrderAsReadyForPickupArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -2866,9 +2866,9 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
-  markAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkAsReadyForPickupArgs, 'id'>>;
   markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
   markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
+  markOrderAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsReadyForPickupArgs, 'id'>>;
   markOrderAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>>;
   removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;

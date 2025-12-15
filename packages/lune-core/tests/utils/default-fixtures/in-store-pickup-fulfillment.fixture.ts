@@ -11,8 +11,8 @@ export const DefaultInStorePickupFulfillmentFixture = (): InStorePickupFulfillme
     postalCode: '94102',
     phoneNumber: '+14155551234'
   },
-  ready_at: new Date(),
-  picked_up_at: new Date(),
+  ready_at: null,
+  picked_up_at: null,
   fulfillment_id: crypto.randomUUID(),
   location_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()

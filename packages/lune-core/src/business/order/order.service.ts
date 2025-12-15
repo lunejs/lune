@@ -763,4 +763,29 @@ export class OrderService {
       }
     });
   }
+
+  async markAsReadyForPickup(id: ID) {
+    const [order, fulfillment] = await Promise.all([
+      this.repository.findOneOrThrow({ where: { id } }),
+      this.fulfillmentRepository.findOne({ where: { orderId: id } })
+    ]);
+
+    if (!this.validator.canMarkAsReadyForPickup(order.state, fulfillment)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    await this.inStorePickupFulfillmentRepository.update({
+      where: { fulfillmentId: fulfillment.id },
+      data: {
+        readyAt: new Date()
+      }
+    });
+
+    return await this.repository.update({
+      where: { id },
+      data: {
+        state: OrderState.ReadyForPickup
+      }
+    });
+  }
 }

@@ -9,7 +9,7 @@ type Query {
 type Mutation {
   markOrderAsProcessing(id: ID!): OrderResult!
   markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
-  markAsReadyForPickup(id: ID!): OrderResult!
+  markOrderAsReadyForPickup(id: ID!): OrderResult!
   markOrderAsDelivered(id: ID!): OrderResult!
   cancelOrder(id: ID!, input: CancelOrderInput!): OrderResult!
 }

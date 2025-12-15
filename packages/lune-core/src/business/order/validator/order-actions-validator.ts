@@ -57,4 +57,14 @@ export class OrderActionsValidator {
       [OrderState.Placed, OrderState.Processing].includes(state)
     );
   }
+
+  canMarkAsReadyForPickup(
+    state: OrderState,
+    fulfillment: Fulfillment | undefined
+  ): fulfillment is Fulfillment {
+    return (
+      fulfillment?.type === FulfillmentType.IN_STORE_PICKUP &&
+      [OrderState.Placed, OrderState.Processing].includes(state)
+    );
+  }
 }
