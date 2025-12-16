@@ -45,6 +45,7 @@ describe('markOrderAsCompleted - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.DeliveredID);
     expect(order.state).toBe(OrderState.Completed);
+    expect(order.completedAt).toBeDefined();
   });
 
   test('returns FORBIDDEN_ORDER_ACTION error when order is in placed state', async () => {
@@ -86,6 +87,7 @@ const MARK_ORDER_AS_COMPLETED_MUTATION = /* GraphQL */ `
       order {
         id
         state
+        completedAt
       }
       apiErrors {
         code

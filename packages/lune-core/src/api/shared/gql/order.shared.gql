@@ -64,10 +64,6 @@ type Order implements Node {
   """
   placedAt: Date
   """
-  The date and time when the order has been marked as completed (delivered and paid)
-  """
-  completedAt: Date
-  """
   Total quantity of items across all order lines
   """
   totalQuantity: Int!

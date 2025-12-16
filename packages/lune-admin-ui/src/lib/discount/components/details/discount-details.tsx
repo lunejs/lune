@@ -25,7 +25,9 @@ export const DiscountDetails = ({ discount, handler }: Props) => {
       <form onSubmit={form.onSubmit}>
         <DetailsPageLayout>
           <DetailsPageLayout.Header>
-            <DetailsPageLayout.Title>Create discount</DetailsPageLayout.Title>
+            <DetailsPageLayout.Title>
+              {discount ? discount.code : 'Create discount'}
+            </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
               {discount && <DiscountActions discount={discount} />}
               <DiscountDetailsSubmitButton />
