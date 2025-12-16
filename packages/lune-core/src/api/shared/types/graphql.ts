@@ -699,6 +699,7 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
+  markOrderAsCompleted: OrderResult;
   markOrderAsDelivered: OrderResult;
   markOrderAsProcessing: OrderResult;
   markOrderAsReadyForPickup: OrderResult;
@@ -864,6 +865,11 @@ export type MutationCreateZoneArgs = {
 
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
+};
+
+
+export type MutationMarkOrderAsCompletedArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -2866,6 +2872,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
+  markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
   markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
   markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
   markOrderAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsReadyForPickupArgs, 'id'>>;

@@ -819,4 +819,19 @@ export class OrderService {
       }
     });
   }
+
+  async markAsCompleted(id: ID) {
+    const order = await this.repository.findOneOrThrow({ where: { id } });
+
+    if (!this.validator.canMarkAsCompleted(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    return await this.repository.update({
+      where: { id: order.id },
+      data: {
+        state: OrderState.Completed
+      }
+    });
+  }
 }

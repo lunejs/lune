@@ -11,6 +11,7 @@ type Mutation {
   markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
   markOrderAsReadyForPickup(id: ID!): OrderResult!
   markOrderAsDelivered(id: ID!): OrderResult!
+  markOrderAsCompleted(id: ID!): OrderResult!
   cancelOrder(id: ID!, input: CancelOrderInput!): OrderResult!
 }
 
