@@ -5,6 +5,7 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type {
+  MutationCancelOrderArgs,
   MutationMarkOrderAsCompletedArgs,
   MutationMarkOrderAsDeliveredArgs,
   MutationMarkOrderAsProcessingArgs,
@@ -104,6 +105,16 @@ async function markOrderAsCompleted(
     : { apiErrors: [], order: result };
 }
 
+async function cancelOrder(_, { id, input }: MutationCancelOrderArgs, ctx: ExecutionContext) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.cancel(id, input);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result], order: null }
+    : { apiErrors: [], order: result };
+}
+
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
     orders: UseUserGuard(orders),
@@ -114,7 +125,8 @@ export const OrderResolver: GraphqlApiResolver = {
     markOrderAsShipped: UseUserGuard(markOrderAsShipped),
     markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
     markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
-    markOrderAsCompleted: UseUserGuard(markOrderAsCompleted)
+    markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),
+    cancelOrder: UseUserGuard(cancelOrder)
   },
   Order: {
     ...CommonOrderFieldResolver

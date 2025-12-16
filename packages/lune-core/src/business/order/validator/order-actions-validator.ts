@@ -75,4 +75,8 @@ export class OrderActionsValidator {
   canMarkAsCompleted(state: OrderState) {
     return state === OrderState.Delivered;
   }
+
+  canCancel(state: OrderState) {
+    return [OrderState.Placed, OrderState.Processing].includes(state);
+  }
 }

@@ -134,7 +134,8 @@ export type BooleanFilter = {
 };
 
 export type CancelOrderInput = {
-  reason?: InputMaybe<Scalars['String']['input']>;
+  reason: Scalars['String']['input'];
+  shouldRestock?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** A collection is a group of products that are displayed together in the storefront. */

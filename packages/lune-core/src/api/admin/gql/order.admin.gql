@@ -21,7 +21,8 @@ input MarkOrderAsShippedInput {
 }
 
 input CancelOrderInput {
-  reason: String
+  reason: String!
+  shouldRestock: Boolean
 }
 
 type OrderResult {

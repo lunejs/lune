@@ -6,6 +6,7 @@ import type {
   AddInStorePickupFulfillmentInput,
   AddPaymentToOrderInput,
   AddShippingFulfillmentInput,
+  CancelOrderInput,
   CreateOrderAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
@@ -25,6 +26,7 @@ import type { FulfillmentRepository } from '@/persistence/repositories/fulfillme
 import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
 import type { InStorePickupRepository } from '@/persistence/repositories/in-store-pickup-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
+import type { OrderCancellationRepository } from '@/persistence/repositories/order-cancellation-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -69,6 +71,7 @@ export class OrderService {
   private readonly inStorePickupRepository: InStorePickupRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
+  private readonly orderCancellation: OrderCancellationRepository;
   private readonly locationRepository: LocationRepository;
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMethodRepository: PaymentMethodRepository;
@@ -92,6 +95,7 @@ export class OrderService {
     this.inStorePickupRepository = ctx.repositories.inStorePickup;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
+    this.orderCancellation = ctx.repositories.orderCancellation;
     this.locationRepository = ctx.repositories.location;
     this.paymentRepository = ctx.repositories.payment;
     this.paymentMethodRepository = ctx.repositories.paymentMethod;
@@ -851,7 +855,53 @@ export class OrderService {
     return await this.repository.update({
       where: { id: order.id },
       data: {
-        state: OrderState.Completed
+        state: OrderState.Completed,
+        completedAt: new Date()
+      }
+    });
+  }
+
+  async cancel(id: ID, input: CancelOrderInput) {
+    const order = await this.repository.findOneOrThrow({ where: { id } });
+
+    if (!this.validator.canCancel(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    await this.orderCancellation.create({
+      orderId: order.id,
+      reason: input.reason
+    });
+
+    if (input.shouldRestock) {
+      const orderLines = await this.lineRepository.findMany({ where: { orderId: order.id } });
+
+      const variants = await Promise.all(
+        orderLines.map(line =>
+          this.variantRepository.findOneOrThrow({ where: { id: line.variantId } })
+        )
+      );
+
+      await Promise.all(
+        orderLines.map(line => {
+          const variant = variants.find(v => v.id === line.variantId);
+
+          if (!variant) return null;
+
+          this.variantRepository.update({
+            where: { id: variant.id },
+            data: {
+              stock: variant.stock + line.quantity
+            }
+          });
+        })
+      );
+    }
+
+    return await this.repository.update({
+      where: { id: order.id },
+      data: {
+        state: OrderState.Canceled
       }
     });
   }
