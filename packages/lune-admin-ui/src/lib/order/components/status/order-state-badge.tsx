@@ -12,7 +12,7 @@ export const OrderStateBadge: FC<Props> = ({ state }) => {
 
   if (state === OrderState.Placed) {
     return (
-      <Badge className="flex gap-1 bg-distinct text-foreground w-fit">
+      <Badge className="flex gap-1 bg-distinct/15 border-distinct text-distinct w-fit">
         <BookmarkIcon size={16} /> Paid
       </Badge>
     );

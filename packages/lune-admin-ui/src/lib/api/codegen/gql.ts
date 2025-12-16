@@ -69,6 +69,7 @@ type Documents = {
     "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsReadyForPickupDocument,
     "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsDeliveredDocument,
     "\n  mutation MarkAsCompleted($orderId: ID!) {\n    markOrderAsCompleted(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsCompletedDocument,
+    "\n  mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {\n    cancelOrder(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.CancelOrderDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonPaymentMethodFragmentDoc,
     "\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n": typeof types.CommonPaymentHandlerFragmentDoc,
     "\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n": typeof types.GetAllPaymentMethodsDocument,
@@ -171,6 +172,7 @@ const documents: Documents = {
     "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsReadyForPickupDocument,
     "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsDeliveredDocument,
     "\n  mutation MarkAsCompleted($orderId: ID!) {\n    markOrderAsCompleted(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsCompletedDocument,
+    "\n  mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {\n    cancelOrder(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.CancelOrderDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonPaymentMethodFragmentDoc,
     "\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n": types.CommonPaymentHandlerFragmentDoc,
     "\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n": types.GetAllPaymentMethodsDocument,
@@ -452,6 +454,10 @@ export function graphql(source: "\n  mutation MarkAsDelivered($orderId: ID!) {\n
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation MarkAsCompleted($orderId: ID!) {\n    markOrderAsCompleted(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation MarkAsCompleted($orderId: ID!) {\n    markOrderAsCompleted(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {\n    cancelOrder(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {\n    cancelOrder(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

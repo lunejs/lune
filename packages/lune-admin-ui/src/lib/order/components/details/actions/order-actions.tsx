@@ -11,10 +11,13 @@ import {
 
 import { type CommonOrderFragment, OrderState } from '@/lib/api/types';
 
+import { CancelOrderDialog } from './cancel/cancel-order-dialog';
 import { CompleteOrderAlert } from './complete/complete-order-alert';
 
 export const OrderActions = ({ order }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<OrderDialog | null>(null);
+
+  if ([OrderState.Completed, OrderState.Canceled].includes(order.state)) return;
 
   return (
     <>
@@ -30,18 +33,24 @@ export const OrderActions = ({ order }: Props) => {
               <CheckCircle2Icon /> Complete
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={() => setDialogOpen(OrderDialog.Cancel)}>
-            <XIcon className="text-destructive" /> <span className="text-destructive">Cancel</span>
-          </DropdownMenuItem>
+          {[OrderState.Placed, OrderState.Processing].includes(order.state) && (
+            <DropdownMenuItem onClick={() => setDialogOpen(OrderDialog.Cancel)}>
+              <XIcon className="text-destructive" />{' '}
+              <span className="text-destructive">Cancel</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
-      {
-        <CompleteOrderAlert
-          isOpen={dialogOpen === OrderDialog.Complete}
-          setIsOpen={value => (!value ? setDialogOpen(null) : setDialogOpen(OrderDialog.Complete))}
-          order={order}
-        />
-      }
+      <CompleteOrderAlert
+        isOpen={dialogOpen === OrderDialog.Complete}
+        setIsOpen={value => (!value ? setDialogOpen(null) : setDialogOpen(OrderDialog.Complete))}
+        order={order}
+      />
+      <CancelOrderDialog
+        isOpen={dialogOpen === OrderDialog.Cancel}
+        setIsOpen={value => (!value ? setDialogOpen(null) : setDialogOpen(OrderDialog.Cancel))}
+        order={order}
+      />
     </>
   );
 };

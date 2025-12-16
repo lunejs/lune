@@ -235,3 +235,17 @@ export const MARK_ORDER_AS_COMPLETED_MUTATION = graphql(`
     }
   }
 `);
+
+export const CANCEL_ORDER_MUTATION = graphql(`
+  mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {
+    cancelOrder(id: $orderId, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
