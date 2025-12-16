@@ -1,4 +1,4 @@
-import { Button, Form, FormInput, FormMessage } from '@lune/ui';
+import { Button, DialogClose, Form, FormInput, FormMessage } from '@lune/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 
@@ -18,9 +18,11 @@ export const MarkAsShippedForm = ({ order }: Props) => {
           )}
         </div>
         <div className="flex items-center justify-end gap-2">
-          <Button variant={'secondary'} className="w-fit">
-            Cancel
-          </Button>
+          <DialogClose asChild>
+            <Button variant={'secondary'} className="w-fit">
+              Cancel
+            </Button>
+          </DialogClose>
           <Button className="w-fit">Save</Button>
         </div>
       </form>

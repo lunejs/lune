@@ -1,3 +1,5 @@
+import { PackagePlusIcon } from 'lucide-react';
+
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lune/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
@@ -9,7 +11,7 @@ export const MarkAsShippedButton = ({ isOpen, setIsOpen, order }: Props) => {
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
       <DialogTrigger>
         <Button variant={'outline'} size={'sm'}>
-          Mark as shipped
+          <PackagePlusIcon size={16} /> Mark as shipped
         </Button>
       </DialogTrigger>
       <DialogContent>

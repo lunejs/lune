@@ -29,7 +29,7 @@ export const OrderShippingFulfillmentDetails = ({ fulfillment }: Props) => {
       )}
       {details.deliveredAt && (
         <div className="flex flex-col items-center gap-1">
-          <Small className="flex items-center">Shipped at</Small>
+          <Small className="flex items-center">Delivered at</Small>
           <Muted>{formatDate(new Date(details.deliveredAt))}</Muted>
         </div>
       )}
