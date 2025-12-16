@@ -16,6 +16,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { OrderService } from '@/business/order/order.service';
+import type { Order } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
 async function orders(_, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
@@ -129,6 +130,9 @@ export const OrderResolver: GraphqlApiResolver = {
     cancelOrder: UseUserGuard(cancelOrder)
   },
   Order: {
-    ...CommonOrderFieldResolver
+    ...CommonOrderFieldResolver,
+    cancellation: async (parent: Order, _, ctx: ExecutionContext) => {
+      return ctx.loaders.order.cancellation.load(parent.id);
+    }
   }
 };

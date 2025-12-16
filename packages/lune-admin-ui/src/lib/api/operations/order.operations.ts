@@ -123,6 +123,11 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       method
       transactionId
     }
+    cancellation {
+      id
+      createdAt
+      reason
+    }
   }
 `);
 

@@ -2,6 +2,7 @@ import type { CommonOrderFragment } from '@/lib/api/types';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
 import { OrderActions } from './actions/order-actions';
+import { OrderCancellationCard } from './cancellation/order-cancellation-card';
 import { OrderCustomerCard } from './customer/order-customer-card';
 import { OrderFulfillmentCard } from './fulfillment/order-fulfillment-card';
 import { OrderItemsTable } from './items/order-items-table';
@@ -23,8 +24,9 @@ export const OrderDetails = ({ order }: Props) => {
           <OrderFulfillmentCard order={order} />
           <OrderPaymentCard payments={order.payments} />
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 flex flex-col gap-6">
           <OrderCustomerCard order={order} />
+          <OrderCancellationCard order={order} />
         </div>
       </DetailsPageLayout.Content>
     </DetailsPageLayout>

@@ -59,15 +59,8 @@ describe('cancelOrder - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.PlacedID);
     expect(order.state).toBe(OrderState.Canceled);
-
-    // Verify order_cancellation record was created
-    const db = testHelper.getQueryBuilder();
-    const cancellation = await db(Tables.OrderCancellation)
-      .where('order_id', OrderConstants.PlacedID)
-      .first();
-
-    expect(cancellation).toBeDefined();
-    expect(cancellation.reason).toBe('Customer requested cancellation');
+    expect(order.cancellation).toBeDefined();
+    expect(order.cancellation.reason).toBe('Customer requested cancellation');
   });
 
   test('cancels a processing order', async () => {
@@ -90,15 +83,8 @@ describe('cancelOrder - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.ProcessingID);
     expect(order.state).toBe(OrderState.Canceled);
-
-    // Verify order_cancellation record was created
-    const db = testHelper.getQueryBuilder();
-    const cancellation = await db(Tables.OrderCancellation)
-      .where('order_id', OrderConstants.ProcessingID)
-      .first();
-
-    expect(cancellation).toBeDefined();
-    expect(cancellation.reason).toBe('Out of stock');
+    expect(order.cancellation).toBeDefined();
+    expect(order.cancellation.reason).toBe('Out of stock');
   });
 
   test('restocks variants when shouldRestock is true', async () => {
@@ -212,6 +198,10 @@ const CANCEL_ORDER_MUTATION = /* GraphQL */ `
       order {
         id
         state
+        cancellation {
+          id
+          reason
+        }
       }
       apiErrors {
         code

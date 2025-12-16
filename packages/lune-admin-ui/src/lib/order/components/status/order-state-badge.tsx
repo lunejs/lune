@@ -51,7 +51,11 @@ export const OrderStateBadge: FC<Props> = ({ state }) => {
   }
 
   if (state === OrderState.Canceled) {
-    return <Badge>Canceled</Badge>;
+    return (
+      <Badge variant={'outline'} className="bg-muted text-muted-foreground">
+        Canceled
+      </Badge>
+    );
   }
 
   return <Badge>Adding</Badge>;

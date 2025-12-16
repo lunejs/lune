@@ -1,5 +1,6 @@
 extend type Order {
   payments: [Payment!]!
+  cancellation: OrderCancellation
 }
 
 type Query {
