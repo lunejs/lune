@@ -14,8 +14,7 @@
     "lint:check": "eslint .",
     "gen:types": "graphql-codegen --config ./scripts/gen-types.ts",
     "migrate:local": "dotenv -e ./database/.env.migration.local -- knex migrate:latest --env local --knexfile ./database/knexfile.ts",
-    "seed:local": "dotenv -e ./database/.env.migration.local -- ts-node -r tsconfig-paths/register database/seed/seed.ts",
-    "seed:orders": "dotenv -e ./database/.env.migration.local -- tsx database/seed/orders/seed-orders.ts"
+    "seed:local": "dotenv -e ./database/.env.migration.local -- ts-node -r tsconfig-paths/register database/seed/seed.ts"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",
@@ -51,6 +50,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.0.10",
+    "@types/prompts": "^2.4.9",
     "@types/supertest": "^6.0.3",
     "dotenv-cli": "^8.0.0",
     "eslint": "^9.30.0",
@@ -58,6 +58,7 @@
     "kleur": "^4.1.5",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
+    "prompts": "^2.4.2",
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",

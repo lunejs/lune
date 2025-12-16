@@ -12,10 +12,5 @@ export const CommonLocationFieldResolver = {
     const country = await ctx.loaders.location.state.load(parent.stateId);
 
     return country;
-  },
-  inStorePickup: async (parent: Location, _, ctx: ExecutionContext) => {
-    const location = await ctx.loaders.location.inStorePickup.load(parent.id);
-
-    return location;
   }
 };

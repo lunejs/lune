@@ -15,10 +15,13 @@ import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
 import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
+import { LocationFieldResolver } from './field-resolvers/location-field.resolver';
+import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
 import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
 import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { ShippingMethodFieldResolver } from './field-resolvers/shipping-method-field.resolver';
+import { VariantFieldResolver } from './field-resolvers/variant-field.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
@@ -42,7 +45,10 @@ export class StorefrontApi extends GraphqlApi {
         OrderLineFieldResolver,
         FulfillmentFieldResolver,
         CountryResolver,
-        ShippingMethodFieldResolver
+        ShippingMethodFieldResolver,
+        VariantFieldResolver,
+        OptionValueFieldResolver,
+        LocationFieldResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

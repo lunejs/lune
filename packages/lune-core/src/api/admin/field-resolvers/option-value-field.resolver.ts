@@ -1,14 +1,10 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
+import { CommonOptionValueFieldResolver } from '@/api/shared/resolvers/option-value-field.resolver';
 import type { OptionValue } from '@/persistence/entities/option_value';
 
 export const OptionValueFieldResolver = {
   OptionValue: {
-    name: async (parent: OptionValue, _, ctx: ExecutionContext) => {
-      if (!parent.presetId) return parent.name;
-
-      const preset = await ctx.loaders.optionValues.preset.load(parent.presetId);
-      return preset?.name ?? parent.name;
-    },
+    ...CommonOptionValueFieldResolver,
     translations: async (parent: OptionValue, _, ctx: ExecutionContext) => {
       return ctx.loaders.optionValues.translations.load(parent.id);
     },

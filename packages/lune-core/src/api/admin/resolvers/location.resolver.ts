@@ -12,6 +12,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { LocationService } from '@/business/location/location.service';
+import type { Location } from '@/persistence/entities/location';
 import { isErrorResult } from '@/utils/error-result';
 
 async function locations(_, { input }: QueryLocationsArgs, ctx: ExecutionContext) {
@@ -83,6 +84,11 @@ export const LocationResolver: GraphqlApiResolver = {
     updateInStorePickupPreferences: UseUserGuard(updateInStorePickupPreferences)
   },
   Location: {
-    ...CommonLocationFieldResolver
+    ...CommonLocationFieldResolver,
+    inStorePickup: async (parent: Location, _, ctx: ExecutionContext) => {
+      const location = await ctx.loaders.location.inStorePickup.load(parent.id);
+
+      return location;
+    }
   }
 };
