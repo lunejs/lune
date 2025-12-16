@@ -14,12 +14,18 @@ export const MarkAsDeliveredForm = ({ order }: Props) => {
           <p className="text-sm text-muted-foreground">
             This will mark order #{order.code} as delivered. The customer will be notified.
           </p>
-          <FormCheckbox control={form.control} name="shouldCompleteOrder" label="Complete order" />
           {form.formState.errors.root?.message && (
             <FormMessage>{form.formState.errors.root?.message}</FormMessage>
           )}
         </div>
         <div className="flex items-center justify-end gap-2">
+          <div className="w-full">
+            <FormCheckbox
+              control={form.control}
+              name="shouldCompleteOrder"
+              label="Complete order"
+            />
+          </div>
           <DialogClose asChild>
             <Button variant="secondary" className="w-fit">
               Cancel

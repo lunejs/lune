@@ -5,6 +5,7 @@ import { type CommonOrderFragment, FulfillmentType, OrderState } from '@/lib/api
 import { OrderInStorePickupFulfillmentDetails } from './details/order-in-store-pickup-fulfillment-details';
 import { OrderShippingFulfillmentDetails } from './details/order-shipping-fulfillment-details';
 import { MarkAsDeliveredButton } from './mark-as-delivered/mark-as-delivered-button';
+import { MarkAsReadyForPickupAlert } from './mark-as-ready-for-pickup/mark-as-ready-for-pickup-alert';
 import { MarkAsShippedButton } from './mark-as-shipped/mark-as-shipped-button';
 
 export const OrderFulfillmentCard = ({ order }: Props) => {
@@ -21,6 +22,9 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
           {(order.state === OrderState.Shipped || order.state === OrderState.ReadyForPickup) && (
             <MarkAsDeliveredButton order={order} />
           )}
+
+          {fulfillment?.type === FulfillmentType.InStorePickup &&
+            order.state === OrderState.Placed && <MarkAsReadyForPickupAlert order={order} />}
         </CardAction>
       </CardHeader>
       <CardContent>
