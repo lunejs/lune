@@ -65,6 +65,9 @@ type Documents = {
     "\n  query GetOrderById($id: ID!) {\n    order(id: $id) {\n      ...CommonOrder\n    }\n  }\n": typeof types.GetOrderByIdDocument,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListOrder\n      }\n    }\n  }\n": typeof types.GetAllOrdersDocument,
     "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": typeof types.CountOrdersDocument,
+    "\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsShippedDocument,
+    "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsReadyForPickupDocument,
+    "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsDeliveredDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonPaymentMethodFragmentDoc,
     "\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n": typeof types.CommonPaymentHandlerFragmentDoc,
     "\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n": typeof types.GetAllPaymentMethodsDocument,
@@ -163,6 +166,9 @@ const documents: Documents = {
     "\n  query GetOrderById($id: ID!) {\n    order(id: $id) {\n      ...CommonOrder\n    }\n  }\n": types.GetOrderByIdDocument,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListOrder\n      }\n    }\n  }\n": types.GetAllOrdersDocument,
     "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": types.CountOrdersDocument,
+    "\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsShippedDocument,
+    "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsReadyForPickupDocument,
+    "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsDeliveredDocument,
     "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    enabled\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonPaymentMethodFragmentDoc,
     "\n  fragment CommonPaymentHandler on PaymentHandler {\n    name\n    code\n    args\n  }\n": types.CommonPaymentHandlerFragmentDoc,
     "\n  query GetAllPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n": types.GetAllPaymentMethodsDocument,
@@ -428,6 +434,18 @@ export function graphql(source: "\n  query GetAllOrders($input: OrderListInput) 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n"): (typeof documents)["\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -29,7 +29,7 @@ const SHOP_ID = '99216796-99e7-4a95-9c93-e4736775bd73';
 /**
  * Set to true for in-store pickup, false for shipping to address
  */
-const USE_PICKUP = true;
+const USE_PICKUP = Math.random() > 0.5;
 
 /**
  * Array of variant IDs to add to the order.

@@ -179,3 +179,45 @@ export const COUNT_ORDERS_QUERY = graphql(`
     }
   }
 `);
+
+export const MARK_ORDER_AS_SHIPPED_MUTATION = graphql(`
+  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {
+    markOrderAsShipped(id: $orderId, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_ORDER_AS_READY_FOR_PICKUP_MUTATION = graphql(`
+  mutation MarkAsReadyForPickup($orderId: ID!) {
+    markOrderAsReadyForPickup(id: $orderId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_ORDER_AS_DELIVERED_MUTATION = graphql(`
+  mutation MarkAsDelivered($orderId: ID!) {
+    markOrderAsDelivered(id: $orderId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
