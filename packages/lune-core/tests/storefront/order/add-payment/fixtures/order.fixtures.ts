@@ -15,7 +15,9 @@ export const OrderConstants = {
   PlacedID: TestUtils.generateUUID(),
   PlacedID2: TestUtils.generateUUID(),
   WithLowStockID: TestUtils.generateUUID(),
-  WithDiscountCodeID: TestUtils.generateUUID()
+  WithDiscountCodeID: TestUtils.generateUUID(),
+  WithOrderLineDiscountID: TestUtils.generateUUID(),
+  WithFulfillmentDiscountID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {
@@ -78,6 +80,31 @@ export class OrderFixtures implements Fixture<OrderTable> {
             code: 'ORDER_DISCOUNT',
             applicationMode: 'CODE',
             applicationLevel: 'ORDER',
+            amount: 0
+          }
+        ])
+      },
+      {
+        shop_id: ShopConstants.ID,
+        id: OrderConstants.WithOrderLineDiscountID,
+        subtotal: LunePrice.toCent(2100),
+        total: LunePrice.toCent(2300),
+        total_quantity: 2,
+        customer_id: CustomerConstants.ID,
+        applied_discounts: JSON.stringify([])
+      },
+      {
+        shop_id: ShopConstants.ID,
+        id: OrderConstants.WithFulfillmentDiscountID,
+        subtotal: LunePrice.toCent(2100),
+        total: LunePrice.toCent(2300),
+        total_quantity: 2,
+        customer_id: CustomerConstants.ID,
+        applied_discounts: JSON.stringify([
+          {
+            code: 'FULFILLMENT_DISCOUNT',
+            applicationMode: 'CODE',
+            applicationLevel: 'FULFILLMENT',
             amount: 0
           }
         ])

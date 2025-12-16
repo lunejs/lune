@@ -707,10 +707,33 @@ export class OrderService {
       paymentMethodId: paymentMethod.id
     });
 
+    const discountsApplied = [
+      ...order.appliedDiscounts,
+      ...orderLines.flatMap(l => l.appliedDiscounts)
+    ];
+
+    const discounts = await this.discountRepository.findManyByCodes(
+      discountsApplied.map(d => d.code)
+    );
+
+    await Promise.all(
+      discountsApplied.map(({ discountedAmount, code }) => {
+        const discount = discounts.find(d => d.code === code);
+
+        if (!discount) return null;
+
+        return this.orderDiscountRepository.create({
+          amount: discountedAmount,
+          discountId: discount.id,
+          orderId: orderId
+        });
+      })
+    );
+
     const orderCodeStrategy = getConfig().orders.codeStrategy;
     const orderCode = await orderCodeStrategy.generate(order, this.ctx);
 
-    const orderUpdated = await this.repository.update({
+    return await this.repository.update({
       where: { id: orderId },
       data: {
         state: OrderState.Placed,
@@ -718,8 +741,6 @@ export class OrderService {
         placedAt: new Date()
       }
     });
-
-    return orderUpdated;
   }
 
   async markAsProcessing(orderId: ID) {

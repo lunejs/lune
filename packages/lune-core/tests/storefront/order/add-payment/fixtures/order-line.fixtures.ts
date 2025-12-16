@@ -22,7 +22,13 @@ export const OrderLineConstants = {
   LowStockID: TestUtils.generateUUID(),
 
   WithDiscountCodeID: TestUtils.generateUUID(),
-  WithDiscountCodeID2: TestUtils.generateUUID()
+  WithDiscountCodeID2: TestUtils.generateUUID(),
+
+  WithOrderLineDiscountID: TestUtils.generateUUID(),
+  WithOrderLineDiscountID2: TestUtils.generateUUID(),
+
+  WithFulfillmentDiscountID: TestUtils.generateUUID(),
+  WithFulfillmentDiscountID2: TestUtils.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {
@@ -118,6 +124,56 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
       {
         id: OrderLineConstants.WithDiscountCodeID2,
         order_id: OrderConstants.WithDiscountCodeID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(1_300),
+        line_subtotal: LunePrice.toCent(1_300),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_300),
+        shop_id: ShopConstants.ID
+      },
+      // with order line discount
+      {
+        id: OrderLineConstants.WithOrderLineDiscountID,
+        order_id: OrderConstants.WithOrderLineDiscountID,
+        variant_id: VariantConstants.AlreadyInLineID,
+        line_total: LunePrice.toCent(800),
+        line_subtotal: LunePrice.toCent(800),
+        quantity: 1,
+        unit_price: LunePrice.toCent(800),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: OrderLineConstants.WithOrderLineDiscountID2,
+        order_id: OrderConstants.WithOrderLineDiscountID,
+        variant_id: VariantConstants.ID,
+        line_total: LunePrice.toCent(1_300),
+        line_subtotal: LunePrice.toCent(1_300),
+        quantity: 1,
+        unit_price: LunePrice.toCent(1_300),
+        shop_id: ShopConstants.ID,
+        applied_discounts: JSON.stringify([
+          {
+            code: 'ORDER_LINE_DISCOUNT',
+            applicationMode: 'CODE',
+            applicationLevel: 'ORDER_LINE',
+            amount: 0
+          }
+        ])
+      },
+      // with fulfillment discount
+      {
+        id: OrderLineConstants.WithFulfillmentDiscountID,
+        order_id: OrderConstants.WithFulfillmentDiscountID,
+        variant_id: VariantConstants.AlreadyInLineID,
+        line_total: LunePrice.toCent(800),
+        line_subtotal: LunePrice.toCent(800),
+        quantity: 1,
+        unit_price: LunePrice.toCent(800),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: OrderLineConstants.WithFulfillmentDiscountID2,
+        order_id: OrderConstants.WithFulfillmentDiscountID,
         variant_id: VariantConstants.ID,
         line_total: LunePrice.toCent(1_300),
         line_subtotal: LunePrice.toCent(1_300),

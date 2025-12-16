@@ -14,9 +14,11 @@ export const DiscountConstants = {
   OrderDiscountCode: 'ORDER_DISCOUNT',
   OrderDiscountDoesNotApplyCode: 'ORDER_DISCOUNT_DOES_NOT_APPLY',
 
+  FulfillmentDiscountID: TestUtils.generateUUID(),
   FulfillmentDiscountCode: 'FULFILLMENT_DISCOUNT',
   FulfillmentDiscountDoesNotApplyCode: 'FULFILLMENT_DISCOUNT_DOES_NOT_APPLY',
 
+  OrderLineDiscountID: TestUtils.generateUUID(),
   OrderLineDiscountCode: 'ORDER_LINE_DISCOUNT',
   OrderLineDiscountDoesNotApplyCode: 'ORDER_LINE_DISCOUNT_DOES_NOT_APPLY',
 
@@ -62,6 +64,7 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
       // fulfillment-line level
       {
         shop_id: ShopConstants.ID,
+        id: DiscountConstants.FulfillmentDiscountID,
         code: DiscountConstants.FulfillmentDiscountCode,
         application_level: ApplicationLevel.Fulfillment,
         application_mode: ApplicationMode.Code,
@@ -87,6 +90,7 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
       // order-line level
       {
         shop_id: ShopConstants.ID,
+        id: DiscountConstants.OrderLineDiscountID,
         code: DiscountConstants.OrderLineDiscountCode,
         application_level: ApplicationLevel.OrderLine,
         application_mode: ApplicationMode.Code,

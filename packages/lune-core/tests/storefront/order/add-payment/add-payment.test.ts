@@ -175,6 +175,67 @@ describe('addPaymentToOrder - Mutation', () => {
       .first();
 
     expect(payment.amount).toBe(LunePrice.toCent(2_200));
+
+    // Verify order discount record was created
+    const orderDiscount = await db(Tables.OrderDiscount)
+      .where('order_id', OrderConstants.WithDiscountCodeID)
+      .first();
+
+    expect(orderDiscount.discount_id).toBe(DiscountConstants.OrderDiscountID);
+    expect(orderDiscount.amount).toBe(LunePrice.toCent(100));
+  });
+
+  test('creates order_discount record for order line level discount on payment', async () => {
+    await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_PAYMENT_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithOrderLineDiscountID,
+          input: { methodId: PaymentMethodConstants.CapturedID }
+        }
+      });
+
+    const db = testHelper.getQueryBuilder();
+    const orderDiscounts = await db(Tables.OrderDiscount).where(
+      'order_id',
+      OrderConstants.WithOrderLineDiscountID
+    );
+
+    expect(orderDiscounts).toHaveLength(1);
+    expect(orderDiscounts[0]).toMatchObject({
+      order_id: OrderConstants.WithOrderLineDiscountID,
+      discount_id: DiscountConstants.OrderLineDiscountID,
+      amount: LunePrice.toCent(300)
+    });
+  });
+
+  test('creates order_discount record for fulfillment level discount on payment', async () => {
+    await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_PAYMENT_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.WithFulfillmentDiscountID,
+          input: { methodId: PaymentMethodConstants.CapturedID }
+        }
+      });
+
+    const db = testHelper.getQueryBuilder();
+    const orderDiscounts = await db(Tables.OrderDiscount).where(
+      'order_id',
+      OrderConstants.WithFulfillmentDiscountID
+    );
+
+    expect(orderDiscounts).toHaveLength(1);
+    expect(orderDiscounts[0]).toMatchObject({
+      order_id: OrderConstants.WithFulfillmentDiscountID,
+      discount_id: DiscountConstants.FulfillmentDiscountID
+    });
   });
 
   test('returns FORBIDDEN_ORDER_ACTION when order has no customer', async () => {
