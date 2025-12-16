@@ -13,7 +13,7 @@ export const OrderDetails = ({ order }: Props) => {
       <DetailsPageLayout.Header>
         <DetailsPageLayout.Title>{order.code}</DetailsPageLayout.Title>
         <DetailsPageLayout.Actions>
-          <OrderActions />
+          <OrderActions order={order} />
         </DetailsPageLayout.Actions>
       </DetailsPageLayout.Header>
 
