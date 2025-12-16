@@ -788,4 +788,35 @@ export class OrderService {
       }
     });
   }
+
+  async markAsDelivered(id: ID) {
+    const order = await this.repository.findOneOrThrow({ where: { id } });
+
+    if (!this.validator.canMarkAsDelivered(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
+      where: { orderId: order.id }
+    });
+
+    if (fulfillment.type === FulfillmentType.SHIPPING) {
+      await this.shippingFulfillmentRepository.update({
+        where: { fulfillmentId: fulfillment.id },
+        data: { deliveredAt: new Date() }
+      });
+    } else {
+      await this.inStorePickupFulfillmentRepository.update({
+        where: { fulfillmentId: fulfillment.id },
+        data: { pickedUpAt: new Date() }
+      });
+    }
+
+    return await this.repository.update({
+      where: { id },
+      data: {
+        state: OrderState.Delivered
+      }
+    });
+  }
 }

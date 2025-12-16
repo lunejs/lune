@@ -67,4 +67,8 @@ export class OrderActionsValidator {
       [OrderState.Placed, OrderState.Processing].includes(state)
     );
   }
+
+  canMarkAsDelivered(state: OrderState) {
+    return [OrderState.Shipped, OrderState.ReadyForPickup].includes(state);
+  }
 }
