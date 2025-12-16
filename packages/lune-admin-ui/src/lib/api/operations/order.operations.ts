@@ -221,3 +221,17 @@ export const MARK_ORDER_AS_DELIVERED_MUTATION = graphql(`
     }
   }
 `);
+
+export const MARK_ORDER_AS_COMPLETED_MUTATION = graphql(`
+  mutation MarkAsCompleted($orderId: ID!) {
+    markOrderAsCompleted(id: $orderId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
