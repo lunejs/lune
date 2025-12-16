@@ -49,4 +49,4 @@ uploads
 tmp
 
 # Seed scripts
-seed-orders.ts
+seed
