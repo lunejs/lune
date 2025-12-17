@@ -1,0 +1,31 @@
+type Mutation {
+  createCustomerAddress(input: CreateAddressInput!): Address!
+  updateCustomerAddress(id: ID!, input: UpdateAddressInput!): Address!
+  removeCustomerAddress(id: ID!): Address!
+}
+
+input CreateAddressInput {
+  fullName: String!
+  streetLine1: String!
+  streetLine2: String
+  city: String!
+  postalCode: String!
+  phoneNumber: String!
+  references: String
+  countryCode: String!
+  stateCode: String!
+  isDefault: Boolean
+}
+
+input UpdateAddressInput {
+  fullName: String
+  streetLine1: String
+  streetLine2: String
+  city: String
+  postalCode: String
+  phoneNumber: String
+  references: String
+  countryCode: String
+  stateCode: String
+  isDefault: Boolean
+}
