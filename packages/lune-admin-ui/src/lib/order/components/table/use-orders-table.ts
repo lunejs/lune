@@ -1,15 +1,19 @@
 import { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { FulfillmentType, type OrderState } from '@/lib/api/types';
 import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
+import { OrderParamFiltersKeys } from '../../constants/param-filters-keys';
 import { useCountOrders } from '../../hooks/use-count-orders';
 import { useGetOrders } from '../../hooks/use-get-orders';
 
 import type { OrdersTableRow } from './orders-table';
 
 export const useOrdersTable = () => {
+  const [searchParams] = useSearchParams();
+
   const dataTable = useDataTable<OrderTableFilters>({
     search: '',
     states: []
@@ -18,6 +22,11 @@ export const useOrdersTable = () => {
   const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useCountOrders();
+
+  const customerEmailFilter = useMemo(
+    () => searchParams.get(OrderParamFiltersKeys.CustomerEmail),
+    []
+  );
 
   const {
     isLoading,
@@ -28,7 +37,9 @@ export const useOrdersTable = () => {
   } = useGetOrders({
     filters: {
       ...(filters.search && { code: { contains: filters.search } }),
-      ...(filters.search && { customer: { contains: filters.search } }),
+      ...((filters.search || customerEmailFilter) && {
+        customer: { contains: customerEmailFilter ?? filters.search }
+      }),
       ...(filters.states && { states: filters.states })
     },
     skip: getSkip(pagination.page, pagination.size),
@@ -62,7 +73,7 @@ export const useOrdersTable = () => {
 
   return {
     dataTable,
-    isLoading,
+    isLoading: isLoading,
     isRefetching,
     shouldRenderEmptyState,
     orders,

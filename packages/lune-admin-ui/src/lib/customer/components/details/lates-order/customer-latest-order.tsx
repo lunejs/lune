@@ -5,6 +5,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Muted, Small } from '
 
 import type { CommonCustomerFragment } from '@/lib/api/types';
 import { OrderStateBadge } from '@/lib/order/components/status/order-state-badge';
+import { OrderParamFiltersKeys } from '@/lib/order/constants/param-filters-keys';
 
 export const CustomerLatestOrder = ({ customer }: Props) => {
   const lastPlacedOrder = customer.orders.items[0];
@@ -33,9 +34,11 @@ export const CustomerLatestOrder = ({ customer }: Props) => {
           </div>
         </div>
         <footer className="border-t pt-4 px-4 flex justify-end">
-          <Button size={'sm'} variant={'outline'} className="">
-            View all orders
-          </Button>
+          <Link to={`/orders?${OrderParamFiltersKeys.CustomerEmail}=${customer.email}`}>
+            <Button size={'sm'} variant={'outline'} className="">
+              View all orders
+            </Button>
+          </Link>
         </footer>
       </CardContent>
     </Card>
