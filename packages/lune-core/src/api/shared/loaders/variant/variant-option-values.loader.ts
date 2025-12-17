@@ -17,7 +17,7 @@ export function createVariantOptionValuesLoader(trx: Transaction) {
       .from({ va: Tables.VariantOptionValue })
       .innerJoin({ a: Tables.OptionValue }, 'a.id', 'va.option_value_id')
       .select('va.variant_id', trx.ref('a.*'))
-      .whereNull('a.deleted_at')
+      // .whereNull('a.deleted_at') // if not, deleted option values wont show in orders page
       .whereIn('va.variant_id', ids);
 
     const byId = new Map<string, OptionValue[]>();

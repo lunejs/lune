@@ -25,7 +25,7 @@ import { SpinnerLoader } from '../../loader/spinner-loader';
 import { AssetSelectorEmptyState } from '../empty-state/asset-selector-empty-state';
 import { AssetSelectorNoMatchingFiltersState } from '../empty-state/asset-selector-no-matching-filters-state';
 
-export const AssetSelectorList = ({ setSelected }: Props) => {
+export const AssetSelectorList = ({ selected, setSelected }: Props) => {
   const { theme } = useTheme();
   const [ref, isScrolled] = useScrolled<HTMLDivElement>();
   const [query, setQuery] = useState('');
@@ -105,6 +105,7 @@ export const AssetSelectorList = ({ setSelected }: Props) => {
                     <Checkbox
                       id={asset.id}
                       className="absolute top-2 left-2 dark:bg-background"
+                      checked={selected.some(s => s.id === asset.id)}
                       onCheckedChange={value => {
                         onSelect(asset, value);
                       }}
@@ -140,5 +141,8 @@ export const AssetSelectorList = ({ setSelected }: Props) => {
 };
 
 type Props = {
-  setSelected: Dispatch<SetStateAction<CommonAssetFragment[]>>;
+  selected: SelectedAsset[];
+  setSelected: Dispatch<SetStateAction<SelectedAsset[]>>;
 };
+
+type SelectedAsset = { id: string; source: string };

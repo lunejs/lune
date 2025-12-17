@@ -15,7 +15,7 @@ export const useAssetUploader = (
   }, [defaultAssets]);
 
   const addSelectedAssets = (selectedAssets: AssetUploaderAsset[]) => {
-    const newAssets = [...assets, ...selectedAssets].slice(0, max);
+    const newAssets = [...selectedAssets].slice(0, max);
     onAssetsChange(newAssets);
 
     if (persistenceMode) return;

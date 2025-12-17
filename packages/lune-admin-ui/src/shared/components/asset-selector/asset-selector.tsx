@@ -11,8 +11,6 @@ import {
   DialogTrigger
 } from '@lune/ui';
 
-import type { CommonAssetFragment } from '@/lib/api/types';
-
 import { AssetSelectorList } from './list/asset-selector-list';
 
 /**
@@ -43,8 +41,14 @@ import { AssetSelectorList } from './list/asset-selector-list';
  *   <Button variant="outline">Choose Product Images</Button>
  * </AssetSelector>
  */
-export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }) => {
-  const [selected, setSelected] = useState<CommonAssetFragment[]>([]);
+export const AssetSelector: FC<Props> = ({
+  onDone,
+  defaultSelected = [],
+  isOpen,
+  setIsOpen,
+  children
+}) => {
+  const [selected, setSelected] = useState<SelectedAsset[]>(defaultSelected);
 
   return (
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -54,7 +58,7 @@ export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }
           <DialogTitle>Select Assets</DialogTitle>
         </DialogHeader>
 
-        <AssetSelectorList setSelected={setSelected} />
+        <AssetSelectorList selected={selected} setSelected={setSelected} />
 
         <DialogFooter className="border-t p-6 h-fit shrink-0">
           <DialogClose asChild>
@@ -68,14 +72,17 @@ export const AssetSelector: FC<Props> = ({ onDone, isOpen, setIsOpen, children }
 };
 
 type Props = {
+  /** Callback invoked when the user confirms their asset selection by clicking "Done". */
+  onDone: (assets: SelectedAsset[]) => void;
+
+  /** Default selected assets */
+  defaultSelected?: SelectedAsset[];
+
   /**
    * Optional trigger element that opens the asset selector when clicked.
    * Typically a button or other interactive element.
    */
   children?: ReactNode;
-
-  /** Callback invoked when the user confirms their asset selection by clicking "Done". */
-  onDone: (assets: CommonAssetFragment[]) => void;
 
   /** Controls the dialog's open state. Use together with `setIsOpen` for controlled behavior. */
   isOpen?: boolean;
@@ -83,3 +90,5 @@ type Props = {
   /** Callback to update the dialog's open state. Use together with `isOpen` for controlled behavior. */
   setIsOpen?: (isOpen: boolean) => void;
 };
+
+type SelectedAsset = { id: string; source: string };

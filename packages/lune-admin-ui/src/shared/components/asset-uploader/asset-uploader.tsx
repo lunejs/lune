@@ -71,7 +71,7 @@ export const AssetUploader = ({
                   onCheckedChange={value => toggleAsset(value, asset)}
                 />
                 {isLast(i, assets) && assets.length < max && (
-                  <AssetSelector onDone={addSelectedAssets}>
+                  <AssetSelector onDone={addSelectedAssets} defaultSelected={assets}>
                     <div className="aspect-square flex items-center justify-center rounded-md border border-dashed hover:border-muted-foreground transition-colors hover:bg-muted">
                       <UploadIcon className="text-muted-foreground" />
                     </div>
