@@ -21,6 +21,6 @@ export class InvalidEmailError extends CustomerErrorResult {
  */
 export class EmailAlreadyExistsError extends CustomerErrorResult {
   constructor() {
-    super(CustomerErrorCode.InvalidEmail, 'Provided email is already taken');
+    super(CustomerErrorCode.EmailAlreadyExists, 'Provided email is already taken');
   }
 }

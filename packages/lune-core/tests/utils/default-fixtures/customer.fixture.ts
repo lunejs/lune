@@ -7,7 +7,6 @@ export const DefaultCustomerFixture = (): CustomerTable => ({
   first_name: null,
   last_name: null,
   email: `${crypto.randomUUID()}@test.com`,
-  password: null,
   phone_number: null,
   enabled: true,
   shop_id: crypto.randomUUID()

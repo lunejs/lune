@@ -30,7 +30,6 @@ export interface CustomerTable extends LuneTable {
   email: string;
   first_name?: string | null;
   last_name?: string | null;
-  password?: string | null;
   phone_number?: string | null;
   enabled: boolean;
   shop_id: string;
