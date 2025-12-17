@@ -20,6 +20,7 @@ export type ExecutionContext = {
 export type CurrentUser = {
   id: string;
   email: string;
+  enabled: boolean;
 };
 
 export type StorefrontContext = {

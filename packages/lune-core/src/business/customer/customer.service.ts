@@ -1,7 +1,8 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { SignUpWithCredentialsInput } from '@/api/shared/types/graphql';
+import type { SignUpWithCredentialsInput, UpdateCustomerInput } from '@/api/shared/types/graphql';
 import type { JwtService } from '@/libs/jwt';
 import { CustomerAuthProvider } from '@/persistence/entities/customer-auth-method';
+import type { ID } from '@/persistence/entities/entity';
 import type { CustomerAuthMethodRepository } from '@/persistence/repositories/customer-auth-method-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import { PasswordHasher } from '@/security/hash/hash';
@@ -109,5 +110,29 @@ export class CustomerService {
     });
 
     return accessToken;
+  }
+
+  async update(id: ID, input: UpdateCustomerInput) {
+    if (input.email) {
+      if (!isValidEmail(input.email)) {
+        return new InvalidEmailError();
+      }
+
+      const customerWithSameEmail = await this.repository.findOne({
+        where: { email: input.email }
+      });
+
+      if (customerWithSameEmail && customerWithSameEmail.id !== id) {
+        return new EmailAlreadyExistsError();
+      }
+    }
+
+    return await this.repository.update({
+      where: { id },
+      data: {
+        ...input,
+        email: input.email ?? undefined
+      }
+    });
   }
 }

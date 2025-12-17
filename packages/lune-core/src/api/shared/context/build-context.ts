@@ -25,7 +25,9 @@ export async function buildContext(input: Input): Promise<ExecutionContext> {
       jwtService,
       runWithoutRLS: runWithoutRLS(trx, shopId, ownerId),
       ownerId,
-      currentUser: userJWT ? { id: userJWT?.sub ?? '', email: userJWT?.email ?? '' } : null,
+      currentUser: userJWT
+        ? { id: userJWT?.sub ?? '', email: userJWT?.email ?? '', enabled: userJWT.enabled ?? true }
+        : null,
       repositories: buildRepositories(trx),
       loaders: buildLoaders(trx, storefront?.locale),
       storefront

@@ -748,11 +748,6 @@ export type Mutation = {
    * This token is used to modify and retrieve the customer's data.
    */
   signInCustomerWithCredentials: GenerateCustomerAccessTokenResult;
-  /**
-   * Generate an access token for a customer with google auth method.
-   * This token is used to modify and retrieve the customer's data.
-   */
-  signInCustomerWithGoogle: GenerateCustomerAccessTokenResult;
   /** Create a new customer with credentials as auth method */
   signUpCustomerWithCredentials: GenerateCustomerAccessTokenResult;
   softRemoveOption: Option;
@@ -760,6 +755,8 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  /** Update the customer's data. */
+  updateCustomer: CustomerResult;
   updateDiscount: DiscountResult;
   updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
@@ -987,11 +984,6 @@ export type MutationSignInCustomerWithCredentialsArgs = {
 };
 
 
-export type MutationSignInCustomerWithGoogleArgs = {
-  tokenId: Scalars['String']['input'];
-};
-
-
 export type MutationSignUpCustomerWithCredentialsArgs = {
   input: SignUpWithCredentialsInput;
 };
@@ -1020,6 +1012,11 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateCustomerArgs = {
+  input: UpdateCustomerInput;
 };
 
 
@@ -2010,6 +2007,13 @@ export type UpdateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type UpdateCustomerInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateDiscountInput = {
   code?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2467,6 +2471,7 @@ export type ResolversTypes = {
   TagListInput: TagListInput;
   TagResult: ResolverTypeWrapper<TagResult>;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
@@ -2633,6 +2638,7 @@ export type ResolversParentTypes = {
   TagListInput: TagListInput;
   TagResult: TagResult;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
   UpdateLocationInput: UpdateLocationInput;
@@ -2983,13 +2989,13 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
   signInCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInCustomerWithCredentialsArgs, 'email' | 'password'>>;
-  signInCustomerWithGoogle?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInCustomerWithGoogleArgs, 'tokenId'>>;
   signUpCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignUpCustomerWithCredentialsArgs, 'input'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
   softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
   updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
+  updateCustomer?: Resolver<ResolversTypes['CustomerResult'], ParentType, ContextType, RequireFields<MutationUpdateCustomerArgs, 'input'>>;
   updateDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationUpdateDiscountArgs, 'id' | 'input'>>;
   updateInStorePickupPreferences?: Resolver<ResolversTypes['InStorePickup'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
   updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;

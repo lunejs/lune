@@ -21,10 +21,9 @@ type Mutation {
     password: String!
   ): GenerateCustomerAccessTokenResult!
   """
-  Generate an access token for a customer with google auth method.
-  This token is used to modify and retrieve the customer's data.
+  Update the customer's data.
   """
-  signInCustomerWithGoogle(tokenId: String!): GenerateCustomerAccessTokenResult!
+  updateCustomer(input: UpdateCustomerInput!): CustomerResult!
 }
 
 input SignUpWithCredentialsInput {
@@ -32,6 +31,13 @@ input SignUpWithCredentialsInput {
   password: String!
   firstName: String
   lastName: String
+  phoneNumber: String
+}
+
+input UpdateCustomerInput {
+  firstName: String
+  lastName: String
+  email: String
   phoneNumber: String
 }
 
