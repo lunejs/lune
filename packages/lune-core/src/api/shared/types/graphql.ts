@@ -725,11 +725,6 @@ export type Mutation = {
   createVariant: Array<Maybe<Variant>>;
   createZone: Zone;
   /**
-   * Generate an access token for a customer with google auth method.
-   * This token is used to modify and retrieve the customer's data.
-   */
-  generateCustomerAccessTokenWithGoogle: GenerateCustomerAccessTokenResult;
-  /**
    * Generate an access token for a user
    * This token can be used to access user-specific resources
    */
@@ -752,9 +747,14 @@ export type Mutation = {
    * Generate an access token for a customer with credentials auth method.
    * This token is used to modify and retrieve the customer's data.
    */
-  signInWithCredentials: GenerateCustomerAccessTokenResult;
+  signInCustomerWithCredentials: GenerateCustomerAccessTokenResult;
+  /**
+   * Generate an access token for a customer with google auth method.
+   * This token is used to modify and retrieve the customer's data.
+   */
+  signInCustomerWithGoogle: GenerateCustomerAccessTokenResult;
   /** Create a new customer with credentials as auth method */
-  signUpWithCredentials: CustomerResult;
+  signUpCustomerWithCredentials: GenerateCustomerAccessTokenResult;
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
@@ -905,11 +905,6 @@ export type MutationCreateZoneArgs = {
 };
 
 
-export type MutationGenerateCustomerAccessTokenWithGoogleArgs = {
-  tokenId: Scalars['String']['input'];
-};
-
-
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
@@ -986,13 +981,18 @@ export type MutationRemoveZoneArgs = {
 };
 
 
-export type MutationSignInWithCredentialsArgs = {
+export type MutationSignInCustomerWithCredentialsArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
 
-export type MutationSignUpWithCredentialsArgs = {
+export type MutationSignInCustomerWithGoogleArgs = {
+  tokenId: Scalars['String']['input'];
+};
+
+
+export type MutationSignUpCustomerWithCredentialsArgs = {
   input: SignUpWithCredentialsInput;
 };
 
@@ -2967,7 +2967,6 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
-  generateCustomerAccessTokenWithGoogle?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateCustomerAccessTokenWithGoogleArgs, 'tokenId'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
   markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
@@ -2983,8 +2982,9 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
-  signInWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInWithCredentialsArgs, 'email' | 'password'>>;
-  signUpWithCredentials?: Resolver<ResolversTypes['CustomerResult'], ParentType, ContextType, RequireFields<MutationSignUpWithCredentialsArgs, 'input'>>;
+  signInCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInCustomerWithCredentialsArgs, 'email' | 'password'>>;
+  signInCustomerWithGoogle?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInCustomerWithGoogleArgs, 'tokenId'>>;
+  signUpCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignUpCustomerWithCredentialsArgs, 'input'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;

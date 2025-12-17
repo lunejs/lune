@@ -7,7 +7,11 @@ import type { CustomerRepository } from '@/persistence/repositories/customer-rep
 import { PasswordHasher } from '@/security/hash/hash';
 import { isValidEmail } from '@/utils/validators';
 
-import { EmailAlreadyExistsError, InvalidEmailError } from './customer.errors';
+import {
+  EmailAlreadyExistsError,
+  InvalidCredentialsError,
+  InvalidEmailError
+} from './customer.errors';
 
 export class CustomerService {
   private jwtService: JwtService;
@@ -60,6 +64,43 @@ export class CustomerService {
       provider: CustomerAuthProvider.Credentials,
       password: hashedPassword
     });
+
+    const accessToken = await this.jwtService.generateToken({
+      sub: customer.id,
+      email: customer.email,
+      enabled: customer.enabled
+    });
+
+    return accessToken;
+  }
+
+  async signInWithCredentials(email: string, password: string) {
+    const customer = await this.repository.findOne({ where: { email } });
+
+    if (!customer) {
+      return new InvalidCredentialsError();
+    }
+
+    if (!customer.enabled) {
+      return new InvalidCredentialsError();
+    }
+
+    const credentialsAuth = await this.customerAuthMethodRepository.findOne({
+      where: { customerId: customer.id, provider: CustomerAuthProvider.Credentials }
+    });
+
+    if (!credentialsAuth) {
+      return new InvalidCredentialsError();
+    }
+
+    const passwordsMatch = await PasswordHasher.compare(
+      password,
+      credentialsAuth.password as string
+    );
+
+    if (!passwordsMatch) {
+      return new InvalidCredentialsError();
+    }
 
     const accessToken = await this.jwtService.generateToken({
       sub: customer.id,

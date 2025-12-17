@@ -7,7 +7,7 @@ const hash = async (str: string) => {
 };
 
 const compare = async (str: string, hash: string) => {
-  await bcrypt.compare(str, hash);
+  return await bcrypt.compare(str, hash);
 };
 
 const generateSalt = async () => {
