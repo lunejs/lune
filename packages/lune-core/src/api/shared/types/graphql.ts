@@ -76,7 +76,7 @@ export type Address = {
   updatedAt: Scalars['Date']['output'];
 };
 
-export type AddressList = List & {
+export type AddressList = {
   __typename?: 'AddressList';
   count: Scalars['Int']['output'];
   items: Array<Address>;
@@ -410,9 +410,18 @@ export type Customer = {
   id: Scalars['ID']['output'];
   /** The customer's last name */
   lastName?: Maybe<Scalars['String']['output']>;
+  orders: OrderList;
   /** The customer's phone number */
   phoneNumber?: Maybe<Scalars['String']['output']>;
+  /** Total amount spent by the customer in orders */
+  totalSpent: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+
+/** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
+export type CustomerOrdersArgs = {
+  input?: InputMaybe<OrderListInput>;
 };
 
 export enum CustomerErrorCode {
@@ -430,6 +439,29 @@ export type CustomerErrorResult = {
   __typename?: 'CustomerErrorResult';
   code: CustomerErrorCode;
   message: Scalars['String']['output'];
+};
+
+export type CustomerFilters = {
+  email?: InputMaybe<StringFilter>;
+  enabled?: InputMaybe<BooleanFilter>;
+  firstName?: InputMaybe<StringFilter>;
+  lastName?: InputMaybe<StringFilter>;
+};
+
+export type CustomerList = {
+  __typename?: 'CustomerList';
+  count: Scalars['Int']['output'];
+  items: Array<Customer>;
+  pageInfo: PageInfo;
+};
+
+export type CustomerListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CustomerFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CustomerResult = {
@@ -757,7 +789,7 @@ export type Mutation = {
   markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
-  removeCustomerAddress: Address;
+  removeCustomerAddress: Scalars['Boolean']['output'];
   removeDiscounts: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
   removeOrderLine: OrderResult;
@@ -1687,6 +1719,8 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
+  customer?: Maybe<Customer>;
+  customers: CustomerList;
   discount?: Maybe<Discount>;
   discountHandlers: Array<DiscountHandler>;
   discounts: DiscountList;
@@ -1744,6 +1778,16 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+
+export type QueryCustomerArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryCustomersArgs = {
+  input?: InputMaybe<CustomerListInput>;
 };
 
 
@@ -2362,8 +2406,8 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AddressList ) | ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<_RefType['OrderCancellation']>, fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, fulfillment?: Maybe<_RefType['Fulfillment']>, lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2411,9 +2455,12 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
-  Customer: ResolverTypeWrapper<Customer>;
+  Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
+  CustomerFilters: CustomerFilters;
+  CustomerList: ResolverTypeWrapper<CustomerList>;
+  CustomerListInput: CustomerListInput;
   CustomerResult: ResolverTypeWrapper<CustomerResult>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Dimensions: ResolverTypeWrapper<Dimensions>;
@@ -2467,15 +2514,15 @@ export type ResolversTypes = {
   OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: ResolverTypeWrapper<Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<ResolversTypes['OrderCancellation']>, fulfillment?: Maybe<ResolversTypes['Fulfillment']>, payments: Array<ResolversTypes['Payment']> }>;
+  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversTypes['Fulfillment']>, lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
   OrderAddressJson: ResolverTypeWrapper<OrderAddressJson>;
   OrderBy: OrderBy;
   OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
   OrderErrorCode: OrderErrorCode;
   OrderErrorResult: ResolverTypeWrapper<OrderErrorResult>;
   OrderFilters: OrderFilters;
-  OrderLine: ResolverTypeWrapper<OrderLine>;
-  OrderLineList: ResolverTypeWrapper<OrderLineList>;
+  OrderLine: ResolverTypeWrapper<Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']> }>;
+  OrderLineList: ResolverTypeWrapper<Omit<OrderLineList, 'items'> & { items: Array<ResolversTypes['OrderLine']> }>;
   OrderList: ResolverTypeWrapper<Omit<OrderList, 'items'> & { items: Array<ResolversTypes['Order']> }>;
   OrderListInput: OrderListInput;
   OrderResult: ResolverTypeWrapper<Omit<OrderResult, 'order'> & { order?: Maybe<ResolversTypes['Order']> }>;
@@ -2596,8 +2643,11 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
-  Customer: Customer;
+  Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
+  CustomerFilters: CustomerFilters;
+  CustomerList: CustomerList;
+  CustomerListInput: CustomerListInput;
   CustomerResult: CustomerResult;
   Date: Scalars['Date']['output'];
   Dimensions: Dimensions;
@@ -2645,13 +2695,13 @@ export type ResolversParentTypes = {
   OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<ResolversParentTypes['OrderCancellation']>, fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, payments: Array<ResolversParentTypes['Payment']> };
+  Order: Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
   OrderFilters: OrderFilters;
-  OrderLine: OrderLine;
-  OrderLineList: OrderLineList;
+  OrderLine: Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']> };
+  OrderLineList: Omit<OrderLineList, 'items'> & { items: Array<ResolversParentTypes['OrderLine']> };
   OrderList: Omit<OrderList, 'items'> & { items: Array<ResolversParentTypes['Order']> };
   OrderListInput: OrderListInput;
   OrderResult: Omit<OrderResult, 'order'> & { order?: Maybe<ResolversParentTypes['Order']> };
@@ -2833,7 +2883,9 @@ export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<CustomerOrdersArgs>>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  totalSpent?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -2841,6 +2893,13 @@ export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends
 export type CustomerErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerErrorResult'] = ResolversParentTypes['CustomerErrorResult']> = {
   code?: Resolver<ResolversTypes['CustomerErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomerListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerList'] = ResolversParentTypes['CustomerList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Customer']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2971,7 +3030,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AddressList' | 'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -3047,7 +3106,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   markOrderAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>>;
   removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
-  removeCustomerAddress?: Resolver<ResolversTypes['Address'], ParentType, ContextType, RequireFields<MutationRemoveCustomerAddressArgs, 'id'>>;
+  removeCustomerAddress?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomerAddressArgs, 'id'>>;
   removeDiscounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveDiscountsArgs, 'ids'>>;
   removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
   removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
@@ -3379,6 +3438,8 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
   collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
+  customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType, RequireFields<QueryCustomerArgs, 'id'>>;
+  customers?: Resolver<ResolversTypes['CustomerList'], ParentType, ContextType, Partial<QueryCustomersArgs>>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
   discountHandlers?: Resolver<Array<ResolversTypes['DiscountHandler']>, ParentType, ContextType>;
   discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, Partial<QueryDiscountsArgs>>;
@@ -3612,6 +3673,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CreateTagsResult?: CreateTagsResultResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
+  CustomerList?: CustomerListResolvers<ContextType>;
   CustomerResult?: CustomerResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Dimensions?: DimensionsResolvers<ContextType>;
