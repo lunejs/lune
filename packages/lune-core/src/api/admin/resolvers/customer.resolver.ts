@@ -1,5 +1,6 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type { QueryCustomerArgs, QueryCustomersArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomerService } from '@/business/customer/customer.service';
@@ -23,7 +24,7 @@ async function customer(_, { id }: QueryCustomerArgs, ctx: ExecutionContext) {
 
 export const CustomerResolver: GraphqlApiResolver = {
   Query: {
-    customers,
-    customer
+    customers: UseUserGuard(customers),
+    customer: UseUserGuard(customer)
   }
 };
