@@ -12,6 +12,7 @@ import { createCollectionProductsLoader } from './collection/collection-product.
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
+import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
 import { createFulfillmentLocationLoader } from './fulfillment/fulfillment-location.loader';
 import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
@@ -111,7 +112,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       state: createAddressStateLoader(trx)
     },
     customer: {
-      orders: createCustomerOrdersLoader(trx)
+      orders: createCustomerOrdersLoader(trx),
+      totalSpent: createCustomerTotalSpentLoader(trx)
     }
   };
 };

@@ -1,5 +1,7 @@
 import request from 'supertest';
 
+import { LunePrice } from '@lune/common';
+
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -127,6 +129,24 @@ describe('customer - Query', () => {
     expect(customer.orders.items).toHaveLength(1);
     expect(customer.orders.pageInfo.total).toBe(2);
   });
+
+  test('returns customer total spent', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOMER_WITH_ORDERS_QUERY,
+        variables: {
+          id: CustomerConstants.ID
+        }
+      });
+
+    const { customer } = res.body.data;
+
+    // Order 1: 10000 (Placed) + Order 2: 5000 (Completed) = 15000
+    expect(customer.totalSpent).toBe(LunePrice.toCent(150));
+  });
 });
 
 const GET_CUSTOMER_QUERY = /* GraphQL */ `
@@ -148,6 +168,7 @@ const GET_CUSTOMER_WITH_ORDERS_QUERY = /* GraphQL */ `
   query CustomerWithOrders($id: ID!, $ordersInput: OrderListInput) {
     customer(id: $id) {
       id
+      totalSpent
       orders(input: $ordersInput) {
         items {
           id

@@ -5,6 +5,7 @@ import { CommonCustomerFieldResolver } from '@/api/shared/resolvers/customer-fie
 import type { QueryCustomerArgs, QueryCustomersArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomerService } from '@/business/customer/customer.service';
+import type { Customer } from '@/persistence/entities/customer';
 
 async function customers(_, { input }: QueryCustomersArgs, ctx: ExecutionContext) {
   const customerService = new CustomerService(ctx);
@@ -29,6 +30,9 @@ export const CustomerResolver: GraphqlApiResolver = {
     customer: UseUserGuard(customer)
   },
   Customer: {
-    ...CommonCustomerFieldResolver
+    ...CommonCustomerFieldResolver,
+    totalSpent: (parent: Customer, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customer.totalSpent.load(parent.id);
+    }
   }
 };
