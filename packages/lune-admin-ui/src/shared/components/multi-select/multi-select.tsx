@@ -33,19 +33,23 @@ export function MultiSelect({
     onSelectionChange?.(newSelected);
   };
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    const input = inputRef.current;
-    if (!input) return;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const input = inputRef.current;
+      if (!input) return;
 
-    if ((e.key === 'Delete' || e.key === 'Backspace') && input.value === '') {
-      setSelected(prev => prev.slice(0, -1));
-    }
+      if ((e.key === 'Delete' || e.key === 'Backspace') && input.value === '') {
+        const optionToRemove = selected[selected.length - 1];
+        handleUnselect(optionToRemove);
+      }
 
-    if (e.key === 'Escape') {
-      input.blur();
-      setOpen(false);
-    }
-  }, []);
+      if (e.key === 'Escape') {
+        input.blur();
+        setOpen(false);
+      }
+    },
+    [selected]
+  );
 
   useEffect(() => {
     if (!open) return;

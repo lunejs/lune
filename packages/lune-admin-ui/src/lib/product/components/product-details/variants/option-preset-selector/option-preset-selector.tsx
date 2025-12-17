@@ -34,6 +34,7 @@ export const OptionPresetSelector = ({ children }: Props) => {
             <CommandGroup>
               {optionPresets?.map(preset => (
                 <CommandItem
+                  key={preset.id}
                   value={preset.id}
                   onSelect={() => {
                     appendOption(preset.id);

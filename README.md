@@ -20,5 +20,3 @@ Lune is an open-source foundation for building commerce management systems. It f
 - Components: [shadcn](https://ui.shadcn.com/)
 - Icons: [lucide icons](https://lucide.dev/)
 - Guide style: [TailwindCSS](https://tailwindcss.com/)
-
-quitar option values de los presets con el backspace y luego done, no los quita, pero si le doy a la x sí los quita
