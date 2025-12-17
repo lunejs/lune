@@ -17,10 +17,6 @@ export interface Customer extends LuneEntity {
    */
   lastName?: string | null;
   /**
-   * The customer's password. Nullable for guest customers
-   */
-  password?: string | null;
-  /**
    * The customer's phone number
    */
   phoneNumber?: string | null;

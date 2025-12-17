@@ -11,7 +11,6 @@ export class CustomerSerializer extends Serializer<Customer, CustomerTable> {
       ['first_name', 'firstName'],
       ['last_name', 'lastName'],
       ['email', 'email'],
-      ['password', 'password'],
       ['phone_number', 'phoneNumber'],
       ['enabled', 'enabled']
     ]);

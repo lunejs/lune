@@ -1,0 +1,62 @@
+type Query {
+  """
+  Get authenticated customer
+  """
+  me: Customer
+}
+
+type Mutation {
+  """
+  Create a new customer with credentials as auth method
+  """
+  signUpCustomerWithCredentials(
+    input: SignUpWithCredentialsInput!
+  ): GenerateCustomerAccessTokenResult!
+  """
+  Generate an access token for a customer with credentials auth method.
+  This token is used to modify and retrieve the customer's data.
+  """
+  signInCustomerWithCredentials(
+    email: String!
+    password: String!
+  ): GenerateCustomerAccessTokenResult!
+  """
+  Generate an access token for a customer with google auth method.
+  This token is used to modify and retrieve the customer's data.
+  """
+  signInCustomerWithGoogle(tokenId: String!): GenerateCustomerAccessTokenResult!
+}
+
+input SignUpWithCredentialsInput {
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+}
+
+type GenerateCustomerAccessTokenResult {
+  accessToken: String
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerResult {
+  customer: Customer
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerErrorResult {
+  code: CustomerErrorCode!
+  message: String!
+}
+
+enum CustomerErrorCode {
+  INVALID_EMAIL
+  EMAIL_ALREADY_EXISTS
+  INVALID_ACCESS_TOKEN
+  PASSWORDS_DO_NOT_MATCH
+  INVALID_CREDENTIALS
+  DISABLED_CUSTOMER
+  CUSTOMER_NOT_FOUND
+  INVALID_PASSWORD_TOKEN
+}

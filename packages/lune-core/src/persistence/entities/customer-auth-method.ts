@@ -17,12 +17,12 @@ export interface CustomerAuthMethod extends LuneEntity {
    * The unique identifier from the OAuth provider (e.g., Google sub).
    * Null for credentials provider.
    */
-  providerId: string | null;
+  providerId?: string | null;
   /**
    * The hashed password. Only used for credentials provider.
    * Null for OAuth providers.
    */
-  password: string | null;
+  password?: string | null;
   /**
    * The customer this auth method belongs to
    */
@@ -31,8 +31,8 @@ export interface CustomerAuthMethod extends LuneEntity {
 
 export interface CustomerAuthMethodTable extends LuneTable {
   provider: CustomerAuthProvider;
-  provider_id: string | null;
-  password: string | null;
+  provider_id?: string | null;
+  password?: string | null;
   customer_id: string;
   shop_id: string;
 }

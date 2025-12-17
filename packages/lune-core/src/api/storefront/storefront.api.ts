@@ -23,6 +23,7 @@ import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
 import { ShippingMethodFieldResolver } from './field-resolvers/shipping-method-field.resolver';
 import { VariantFieldResolver } from './field-resolvers/variant-field.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
+import { CustomerResolver } from './resolvers/customer.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
 
@@ -48,7 +49,8 @@ export class StorefrontApi extends GraphqlApi {
         ShippingMethodFieldResolver,
         VariantFieldResolver,
         OptionValueFieldResolver,
-        LocationFieldResolver
+        LocationFieldResolver,
+        CustomerResolver
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

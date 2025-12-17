@@ -395,6 +395,29 @@ export type Customer = {
   updatedAt: Scalars['Date']['output'];
 };
 
+export enum CustomerErrorCode {
+  CustomerNotFound = 'CUSTOMER_NOT_FOUND',
+  DisabledCustomer = 'DISABLED_CUSTOMER',
+  EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
+  InvalidAccessToken = 'INVALID_ACCESS_TOKEN',
+  InvalidCredentials = 'INVALID_CREDENTIALS',
+  InvalidEmail = 'INVALID_EMAIL',
+  InvalidPasswordToken = 'INVALID_PASSWORD_TOKEN',
+  PasswordsDoNotMatch = 'PASSWORDS_DO_NOT_MATCH'
+}
+
+export type CustomerErrorResult = {
+  __typename?: 'CustomerErrorResult';
+  code: CustomerErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CustomerResult = {
+  __typename?: 'CustomerResult';
+  apiErrors: Array<CustomerErrorResult>;
+  customer?: Maybe<Customer>;
+};
+
 export type Dimensions = {
   __typename?: 'Dimensions';
   height?: Maybe<Scalars['Float']['output']>;
@@ -516,6 +539,12 @@ export enum FulfillmentType {
   /** Product will be shipped to the customer's address */
   Shipping = 'SHIPPING'
 }
+
+export type GenerateCustomerAccessTokenResult = {
+  __typename?: 'GenerateCustomerAccessTokenResult';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  apiErrors: Array<CustomerErrorResult>;
+};
 
 export type GenerateUserAccessTokenInput = {
   email: Scalars['String']['input'];
@@ -696,6 +725,11 @@ export type Mutation = {
   createVariant: Array<Maybe<Variant>>;
   createZone: Zone;
   /**
+   * Generate an access token for a customer with google auth method.
+   * This token is used to modify and retrieve the customer's data.
+   */
+  generateCustomerAccessTokenWithGoogle: GenerateCustomerAccessTokenResult;
+  /**
    * Generate an access token for a user
    * This token can be used to access user-specific resources
    */
@@ -714,6 +748,13 @@ export type Mutation = {
   removeShippingMethod: Scalars['Boolean']['output'];
   removeTags: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
+  /**
+   * Generate an access token for a customer with credentials auth method.
+   * This token is used to modify and retrieve the customer's data.
+   */
+  signInWithCredentials: GenerateCustomerAccessTokenResult;
+  /** Create a new customer with credentials as auth method */
+  signUpWithCredentials: CustomerResult;
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProducts: Scalars['Boolean']['output'];
@@ -864,6 +905,11 @@ export type MutationCreateZoneArgs = {
 };
 
 
+export type MutationGenerateCustomerAccessTokenWithGoogleArgs = {
+  tokenId: Scalars['String']['input'];
+};
+
+
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
@@ -937,6 +983,17 @@ export type MutationRemoveTagsArgs = {
 
 export type MutationRemoveZoneArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationSignInWithCredentialsArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
+export type MutationSignUpWithCredentialsArgs = {
+  input: SignUpWithCredentialsInput;
 };
 
 
@@ -1172,6 +1229,7 @@ export type Order = Node & {
    * Use this field to show data of current discounts applied to the order
    */
   appliedDiscounts: Array<AppliedDiscount>;
+  cancellation?: Maybe<OrderCancellation>;
   /** Unique order code generated after order is placed */
   code?: Maybe<Scalars['String']['output']>;
   /** The date and time when the order has been marked as completed (delivered and paid) */
@@ -1598,6 +1656,8 @@ export type Query = {
   discounts: DiscountList;
   location?: Maybe<Location>;
   locations: LocationList;
+  /** Get authenticated customer */
+  me?: Maybe<Customer>;
   optionPresets: OptionPresetList;
   order?: Maybe<Order>;
   orders: OrderList;
@@ -1860,6 +1920,14 @@ export type ShopSocialsInput = {
   facebook?: InputMaybe<Scalars['String']['input']>;
   instagram?: InputMaybe<Scalars['String']['input']>;
   twitter?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SignUpWithCredentialsInput = {
+  email: Scalars['String']['input'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  password: Scalars['String']['input'];
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A state is a Geographical Region in a country. */
@@ -2239,7 +2307,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( OrderLineList ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<_RefType['OrderCancellation']>, fulfillment?: Maybe<_RefType['Fulfillment']>, payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( OrderLine ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2286,6 +2354,9 @@ export type ResolversTypes = {
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
   Customer: ResolverTypeWrapper<Customer>;
+  CustomerErrorCode: CustomerErrorCode;
+  CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
+  CustomerResult: ResolverTypeWrapper<CustomerResult>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Dimensions: ResolverTypeWrapper<Dimensions>;
   DimensionsInput: DimensionsInput;
@@ -2303,6 +2374,7 @@ export type ResolversTypes = {
   Fulfillment: ResolverTypeWrapper<Omit<Fulfillment, 'details'> & { details: ResolversTypes['FulfillmentDetails'] }>;
   FulfillmentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']>;
   FulfillmentType: FulfillmentType;
+  GenerateCustomerAccessTokenResult: ResolverTypeWrapper<GenerateCustomerAccessTokenResult>;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: ResolverTypeWrapper<HandlerConfig>;
   HandlerConfigInput: HandlerConfigInput;
@@ -2337,7 +2409,7 @@ export type ResolversTypes = {
   OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: ResolverTypeWrapper<Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<ResolversTypes['Fulfillment']>, payments: Array<ResolversTypes['Payment']> }>;
+  Order: ResolverTypeWrapper<Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<ResolversTypes['OrderCancellation']>, fulfillment?: Maybe<ResolversTypes['Fulfillment']>, payments: Array<ResolversTypes['Payment']> }>;
   OrderAddressJson: ResolverTypeWrapper<OrderAddressJson>;
   OrderBy: OrderBy;
   OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
@@ -2383,6 +2455,7 @@ export type ResolversTypes = {
   ShopResult: ResolverTypeWrapper<ShopResult>;
   ShopSocials: ResolverTypeWrapper<ShopSocials>;
   ShopSocialsInput: ShopSocialsInput;
+  SignUpWithCredentialsInput: SignUpWithCredentialsInput;
   State: ResolverTypeWrapper<State>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   StringFilter: StringFilter;
@@ -2462,6 +2535,8 @@ export type ResolversParentTypes = {
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
   Customer: Customer;
+  CustomerErrorResult: CustomerErrorResult;
+  CustomerResult: CustomerResult;
   Date: Scalars['Date']['output'];
   Dimensions: Dimensions;
   DimensionsInput: DimensionsInput;
@@ -2475,6 +2550,7 @@ export type ResolversParentTypes = {
   Float: Scalars['Float']['output'];
   Fulfillment: Omit<Fulfillment, 'details'> & { details: ResolversParentTypes['FulfillmentDetails'] };
   FulfillmentDetails: ResolversUnionTypes<ResolversParentTypes>['FulfillmentDetails'];
+  GenerateCustomerAccessTokenResult: GenerateCustomerAccessTokenResult;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: HandlerConfig;
   HandlerConfigInput: HandlerConfigInput;
@@ -2507,7 +2583,7 @@ export type ResolversParentTypes = {
   OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: Omit<Order, 'fulfillment' | 'payments'> & { fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, payments: Array<ResolversParentTypes['Payment']> };
+  Order: Omit<Order, 'cancellation' | 'fulfillment' | 'payments'> & { cancellation?: Maybe<ResolversParentTypes['OrderCancellation']>, fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, payments: Array<ResolversParentTypes['Payment']> };
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
@@ -2546,6 +2622,7 @@ export type ResolversParentTypes = {
   ShopResult: ShopResult;
   ShopSocials: ShopSocials;
   ShopSocialsInput: ShopSocialsInput;
+  SignUpWithCredentialsInput: SignUpWithCredentialsInput;
   State: State;
   String: Scalars['String']['output'];
   StringFilter: StringFilter;
@@ -2690,6 +2767,18 @@ export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CustomerErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerErrorResult'] = ResolversParentTypes['CustomerErrorResult']> = {
+  code?: Resolver<ResolversTypes['CustomerErrorCode'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomerResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerResult'] = ResolversParentTypes['CustomerResult']> = {
+  apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
+  customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
@@ -2757,6 +2846,12 @@ export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType exte
 
 export type FulfillmentDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentDetails'] = ResolversParentTypes['FulfillmentDetails']> = {
   __resolveType: TypeResolveFn<'InStorePickupFulfillment' | 'ShippingFulfillment', ParentType, ContextType>;
+};
+
+export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
+  accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type HandlerConfigResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['HandlerConfig'] = ResolversParentTypes['HandlerConfig']> = {
@@ -2872,6 +2967,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
+  generateCustomerAccessTokenWithGoogle?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateCustomerAccessTokenWithGoogleArgs, 'tokenId'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
   markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
@@ -2887,6 +2983,8 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
   removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
   removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
+  signInWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInWithCredentialsArgs, 'email' | 'password'>>;
+  signUpWithCredentials?: Resolver<ResolversTypes['CustomerResult'], ParentType, ContextType, RequireFields<MutationSignUpWithCredentialsArgs, 'input'>>;
   softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
   softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
   softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
@@ -3002,6 +3100,7 @@ export type OptionValueTranslationResolvers<ContextType = ExecutionContext, Pare
 
 export type OrderResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
   appliedDiscounts?: Resolver<Array<ResolversTypes['AppliedDiscount']>, ParentType, ContextType>;
+  cancellation?: Resolver<Maybe<ResolversTypes['OrderCancellation']>, ParentType, ContextType>;
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3211,6 +3310,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, Partial<QueryDiscountsArgs>>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
+  me?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
   optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<QueryOrdersArgs>>;
@@ -3436,6 +3536,8 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Country?: CountryResolvers<ContextType>;
   CreateTagsResult?: CreateTagsResultResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
+  CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
+  CustomerResult?: CustomerResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Dimensions?: DimensionsResolvers<ContextType>;
   Discount?: DiscountResolvers<ContextType>;
@@ -3445,6 +3547,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   DiscountResult?: DiscountResultResolvers<ContextType>;
   Fulfillment?: FulfillmentResolvers<ContextType>;
   FulfillmentDetails?: FulfillmentDetailsResolvers<ContextType>;
+  GenerateCustomerAccessTokenResult?: GenerateCustomerAccessTokenResultResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;
   InStorePickupFulfillment?: InStorePickupFulfillmentResolvers<ContextType>;
