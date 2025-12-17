@@ -1,5 +1,9 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { SignUpWithCredentialsInput, UpdateCustomerInput } from '@/api/shared/types/graphql';
+import type {
+  CustomerListInput,
+  SignUpWithCredentialsInput,
+  UpdateCustomerInput
+} from '@/api/shared/types/graphql';
 import type { JwtService } from '@/libs/jwt';
 import { CustomerAuthProvider } from '@/persistence/entities/customer-auth-method';
 import type { ID } from '@/persistence/entities/entity';
@@ -23,6 +27,18 @@ export class CustomerService {
     this.jwtService = ctx.jwtService;
     this.repository = ctx.repositories.customer;
     this.customerAuthMethodRepository = ctx.repositories.customerAuthMethod;
+  }
+
+  async find(input: CustomerListInput) {
+    return this.repository.findByFilters(input);
+  }
+
+  async count(filters: CustomerListInput['filters']) {
+    return this.repository.countByFilters(filters);
+  }
+
+  async findById(id: ID) {
+    return this.repository.findOne({ where: { id } });
   }
 
   async signUpWithCredentials(input: SignUpWithCredentialsInput) {
