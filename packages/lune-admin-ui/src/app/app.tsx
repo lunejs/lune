@@ -8,6 +8,7 @@ import { AssetsPage } from '@/lib/asset/pages/assets-page';
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
+import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { DiscountDetailsPage } from '@/lib/discount/pages/discount-details-page';
@@ -90,11 +91,12 @@ export const App = () => {
                   <Route path="/orders" element={<OrdersPage />} />
                   <Route path="/orders/:id" element={<OrderDetailsPage />} />
 
-                  <Route path="/customers" element={<CustomersPage />} />
-
                   <Route path="/discounts" element={<DiscountsPage />} />
                   <Route path="/discounts/new" element={<NewDiscountPage />} />
                   <Route path="/discounts/:id" element={<DiscountDetailsPage />} />
+
+                  <Route path="/customers" element={<CustomersPage />} />
+                  <Route path="/customers/:id" element={<CustomerDetailsPage />} />
                 </Route>
 
                 <Route element={<SettingsLayout />}>
