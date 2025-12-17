@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
     table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
-    table.integer('amount').notNullable();
+    table.integer('discounted_amount').notNullable();
 
     table.uuid('discount_id').notNullable().references('id').inTable('discount');
     table.uuid('order_id').notNullable().references('id').inTable('orders');

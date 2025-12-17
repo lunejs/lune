@@ -5,7 +5,7 @@ import type { ID, LuneEntity, LuneTable } from './entity';
  */
 export interface OrderDiscount extends Omit<LuneEntity, 'updatedAt'> {
   /** The amount discounted in cents */
-  amount: number;
+  discountedAmount: number;
   /** The discount that was used */
   discountId: ID;
   /** The order this discount was applied to */
@@ -13,7 +13,7 @@ export interface OrderDiscount extends Omit<LuneEntity, 'updatedAt'> {
 }
 
 export interface OrderDiscountTable extends Omit<LuneTable, 'updated_at'> {
-  amount: number;
+  discounted_amount: number;
   discount_id: ID;
   order_id: ID;
   shop_id: ID;

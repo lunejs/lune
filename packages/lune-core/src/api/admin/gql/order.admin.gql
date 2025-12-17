@@ -1,9 +1,4 @@
 extend type Order {
-  """
-  The date and time when the order has been marked as completed (delivered and paid)
-  """
-  completedAt: Date
-
   payments: [Payment!]!
   cancellation: OrderCancellation
 }

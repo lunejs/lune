@@ -182,7 +182,7 @@ describe('addPaymentToOrder - Mutation', () => {
       .first();
 
     expect(orderDiscount.discount_id).toBe(DiscountConstants.OrderDiscountID);
-    expect(orderDiscount.amount).toBe(LunePrice.toCent(100));
+    expect(orderDiscount.discounted_amount).toBe(LunePrice.toCent(100));
   });
 
   test('creates order_discount record for order line level discount on payment', async () => {
@@ -208,7 +208,7 @@ describe('addPaymentToOrder - Mutation', () => {
     expect(orderDiscounts[0]).toMatchObject({
       order_id: OrderConstants.WithOrderLineDiscountID,
       discount_id: DiscountConstants.OrderLineDiscountID,
-      amount: LunePrice.toCent(300)
+      discounted_amount: LunePrice.toCent(300)
     });
   });
 

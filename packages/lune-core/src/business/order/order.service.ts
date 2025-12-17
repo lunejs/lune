@@ -727,7 +727,7 @@ export class OrderService {
         if (!discount) return null;
 
         return this.orderDiscountRepository.create({
-          amount: discountedAmount,
+          discountedAmount,
           discountId: discount.id,
           orderId: orderId
         });
