@@ -9,7 +9,7 @@ export const OrderShippingFulfillmentDetails = ({ fulfillment }: Props) => {
   const details = fulfillment?.details as ShippingFulfillment;
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between flex-wrap gap-4">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-1">
           <TruckIcon size={16} />

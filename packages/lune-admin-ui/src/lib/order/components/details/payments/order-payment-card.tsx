@@ -14,7 +14,10 @@ export const OrderPaymentCard = ({ payments }: Props) => {
 
       <CardContent className="divide-y p-0">
         {payments.map(payment => (
-          <div className="flex items-center justify-between hover:bg-muted/50 transition-colors p-6">
+          <div
+            key={payment.id}
+            className="flex items-center justify-between hover:bg-muted/50 transition-colors p-6 flex-wrap gap-4"
+          >
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <Small>{payment.method}</Small>
