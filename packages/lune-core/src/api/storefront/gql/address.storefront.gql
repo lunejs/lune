@@ -1,7 +1,7 @@
 type Mutation {
   createCustomerAddress(input: CreateAddressInput!): Address!
   updateCustomerAddress(id: ID!, input: UpdateAddressInput!): Address!
-  removeCustomerAddress(id: ID!): Address!
+  removeCustomerAddress(id: ID!): Boolean!
 }
 
 input CreateAddressInput {
@@ -12,8 +12,8 @@ input CreateAddressInput {
   postalCode: String!
   phoneNumber: String!
   references: String
-  countryCode: String!
-  stateCode: String!
+  countryId: String!
+  stateId: String!
   isDefault: Boolean
 }
 
@@ -25,7 +25,7 @@ input UpdateAddressInput {
   postalCode: String
   phoneNumber: String
   references: String
-  countryCode: String
-  stateCode: String
+  countryId: String
+  stateId: String
   isDefault: Boolean
 }
