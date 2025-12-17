@@ -44,7 +44,7 @@ extend input OrderFilters {
   """
   Filter by order state
   """
-  state: OrderState
+  states: [OrderState!]
   """
   Filter by customer first name, last name, or email. When combined with code, uses OR logic.
   """

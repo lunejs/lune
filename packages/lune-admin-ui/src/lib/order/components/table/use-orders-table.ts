@@ -12,7 +12,7 @@ import type { OrdersTableRow } from './orders-table';
 export const useOrdersTable = () => {
   const dataTable = useDataTable<OrderTableFilters>({
     search: '',
-    state: undefined
+    states: []
   });
 
   const { filters, pagination } = dataTable;
@@ -29,7 +29,7 @@ export const useOrdersTable = () => {
     filters: {
       ...(filters.search && { code: { contains: filters.search } }),
       ...(filters.search && { customer: { contains: filters.search } }),
-      ...(filters.state && { state: filters.state })
+      ...(filters.states && { states: filters.states })
     },
     skip: getSkip(pagination.page, pagination.size),
     take: pagination.size
@@ -60,14 +60,8 @@ export const useOrdersTable = () => {
     return !isLoading && !isLoadingCount && !count;
   }, [isLoading, isLoadingCount, count]);
 
-  const onStateFilterChange = (values: string[]) => {
-    const selectedState = values[0] as OrderState | undefined;
-    dataTable.updateFilters({ state: selectedState });
-  };
-
   return {
     dataTable,
-    onStateFilterChange,
     isLoading,
     isRefetching,
     shouldRenderEmptyState,
@@ -78,5 +72,5 @@ export const useOrdersTable = () => {
 
 type OrderTableFilters = {
   search: string;
-  state: OrderState | undefined;
+  states: OrderState[];
 };

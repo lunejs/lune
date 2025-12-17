@@ -50,7 +50,7 @@ describe('orders - Query', () => {
     expect(orders.count).toBe(5);
   });
 
-  test('returns orders filtered by state', async () => {
+  test('returns orders filtered by single state', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -60,7 +60,7 @@ describe('orders - Query', () => {
         variables: {
           input: {
             filters: {
-              state: 'PLACED'
+              states: ['PLACED']
             }
           }
         }
@@ -70,6 +70,29 @@ describe('orders - Query', () => {
 
     expect(orders.items).toHaveLength(2);
     expect(orders.items.every(o => o.state === 'PLACED')).toBe(true);
+  });
+
+  test('returns orders filtered by multiple states (OR logic)', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_ORDERS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              states: ['PLACED', 'PROCESSING']
+            }
+          }
+        }
+      });
+
+    const { orders } = res.body.data;
+
+    // 2 PLACED + 1 PROCESSING = 3 orders
+    expect(orders.items).toHaveLength(3);
+    expect(orders.items.every(o => ['PLACED', 'PROCESSING'].includes(o.state))).toBe(true);
   });
 
   test('returns CANCELED orders when explicitly filtered', async () => {
@@ -82,7 +105,7 @@ describe('orders - Query', () => {
         variables: {
           input: {
             filters: {
-              state: 'CANCELED'
+              states: ['CANCELED']
             }
           }
         }
@@ -382,7 +405,7 @@ describe('orders - Query', () => {
     expect(orders.items).toHaveLength(0);
   });
 
-  test('returns orders filtered by state and customer', async () => {
+  test('returns orders filtered by states and customer', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -392,7 +415,7 @@ describe('orders - Query', () => {
         variables: {
           input: {
             filters: {
-              state: 'PLACED',
+              states: ['PLACED'],
               customer: { contains: 'John' }
             }
           }

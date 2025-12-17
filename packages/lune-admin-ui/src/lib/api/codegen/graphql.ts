@@ -1142,7 +1142,7 @@ export type OrderFilters = {
   /** Filter by customer first name, last name, or email. When combined with code, uses OR logic. */
   customer?: InputMaybe<StringFilter>;
   /** Filter by order state */
-  state?: InputMaybe<OrderState>;
+  states?: InputMaybe<Array<OrderState>>;
 };
 
 /** An order line represents a single item in an order */

@@ -1,16 +1,10 @@
-import { type OrderState } from '@/lib/api/types';
+import { OrderState } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
 
 import { OrdersTableColumns } from './columns';
 
-export const OrdersTable = ({
-  isRefetching,
-  orders,
-  totalRows,
-  dataTable,
-  onStateFilterChange
-}: Props) => {
+export const OrdersTable = ({ isRefetching, orders, totalRows, dataTable }: Props) => {
   const { pagination, updateFilters, updatePagination } = dataTable;
 
   return (
@@ -28,14 +22,14 @@ export const OrdersTable = ({
         {
           title: 'State',
           options: [
-            { label: 'Placed', value: 'PLACED' },
-            { label: 'Processing', value: 'PROCESSING' },
-            { label: 'Shipped', value: 'SHIPPED' },
-            { label: 'Delivered', value: 'DELIVERED' },
-            { label: 'Completed', value: 'COMPLETED' },
-            { label: 'Canceled', value: 'CANCELED' }
+            { label: 'Placed', value: OrderState.Placed },
+            { label: 'Processing', value: OrderState.Processing },
+            { label: 'Sent', value: OrderState.Shipped },
+            { label: 'Delivered', value: OrderState.Delivered },
+            { label: 'Completed', value: OrderState.Completed },
+            { label: 'Canceled', value: OrderState.Canceled }
           ],
-          onChange: onStateFilterChange
+          onChange: states => dataTable.updateFilters({ states: states as OrderState[] })
         }
       ]}
     />
@@ -55,7 +49,7 @@ export type OrdersTableRow = {
 
 type OrderTableFilters = {
   search: string;
-  state: OrderState | undefined;
+  states: OrderState[];
 };
 
 type Props = {
@@ -63,5 +57,4 @@ type Props = {
   orders: OrdersTableRow[];
   totalRows: number;
   dataTable: UseDataTableReturn<OrderTableFilters>;
-  onStateFilterChange: (values: string[]) => void;
 };

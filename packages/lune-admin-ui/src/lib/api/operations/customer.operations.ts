@@ -10,7 +10,7 @@ export const COMMON_CUSTOMER_FRAGMENT = graphql(`
     phoneNumber
     enabled
     totalSpent
-    orders(input: { take: 1, filters: {state: 'PLACED'} }) {
+    orders(input: { take: 1 }) {
       pageInfo {
         total
       }

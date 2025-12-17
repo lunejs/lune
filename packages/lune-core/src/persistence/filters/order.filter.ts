@@ -22,10 +22,10 @@ export class OrderFilter extends BaseFilter<OrderTable> {
   }
 
   applyFilters(filters: OrderFilters) {
-    const { state, code, customer } = filters;
+    const { states, code, customer } = filters;
 
-    if (state) {
-      this.query.where(`${this.tableAlias}.state`, state);
+    if (states?.length) {
+      this.query.whereIn(`${this.tableAlias}.state`, states);
     } else {
       this.query.whereNotIn(`${this.tableAlias}.state`, ['MODIFYING', 'CANCELED']);
     }
