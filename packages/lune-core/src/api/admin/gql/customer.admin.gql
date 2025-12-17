@@ -6,4 +6,37 @@ extend type Customer {
   Whether the customer is enabled. Disabled customers cannot login or place orders
   """
   enabled: Boolean!
+  """
+  Total amount spent by the customer in orders
+  """
+  totalSpent: Int!
+}
+
+type Query {
+  customers(input: CustomerListInput): CustomerList!
+  customer(id: ID!): Customer
+}
+
+input CustomerListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: CustomerFilters
+}
+
+input CustomerFilters {
+  firstName: StringFilter
+  lastName: StringFilter
+  email: StringFilter
+  enabled: BooleanFilter
 }

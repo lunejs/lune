@@ -19,4 +19,12 @@ type Customer {
   The customer's phone number
   """
   phoneNumber: String
+
+  orders(input: OrderListInput): OrderList!
+}
+
+type CustomerList {
+  items: [Customer!]!
+  count: Int!
+  pageInfo: PageInfo!
 }
