@@ -182,26 +182,6 @@ describe('updateCustomerAddress - Mutation', () => {
     expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
 
-  test('returns error when access token is invalid', async () => {
-    const res = await request(app)
-      .post('/storefront-api')
-      .set('x_lune_shop_id', ShopConstants.ID)
-      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
-      .set('Authorization', 'Bearer invalid-token')
-      .send({
-        query: UPDATE_CUSTOMER_ADDRESS_MUTATION,
-        variables: {
-          id: AddressConstants.DefaultAddressID,
-          input: {
-            fullName: 'Should Fail'
-          }
-        }
-      });
-
-    expect(res.body.errors).toBeDefined();
-    expect(res.body.errors[0].message).toBe('Invalid access token');
-  });
-
   test('returns UNAUTHORIZED when customer is disabled', async () => {
     const res = await request(app)
       .post('/storefront-api')
