@@ -4,6 +4,8 @@ import { createProductLocalizationLoader } from '@/api/storefront/loaders/produc
 import type { Transaction } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
+import { createAddressCountryLoader } from './address/address-country.loader';
+import { createAddressStateLoader } from './address/address-state.loader';
 import { createCollectionAssetsLoader } from './collection/collection-asset.loader';
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
@@ -102,6 +104,10 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     optionPreset: {
       optionValues: createOptionValuePresetsLoader(trx)
+    },
+    address: {
+      country: createAddressCountryLoader(trx),
+      state: createAddressStateLoader(trx)
     }
   };
 };

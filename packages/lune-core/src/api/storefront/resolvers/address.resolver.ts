@@ -1,6 +1,7 @@
 import type { CurrentCustomer, ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseCustomerGuard } from '@/api/shared/guards/customer.guard';
+import { CommonAddressFieldResolver } from '@/api/shared/resolvers/address-field.resolver';
 import type {
   MutationCreateCustomerAddressArgs,
   MutationRemoveCustomerAddressArgs,
@@ -45,5 +46,8 @@ export const AddressResolver: GraphqlApiResolver = {
     createCustomerAddress: UseCustomerGuard(createCustomerAddress),
     updateCustomerAddress: UseCustomerGuard(updateCustomerAddress),
     removeCustomerAddress: UseCustomerGuard(removeCustomerAddress)
+  },
+  Address: {
+    ...CommonAddressFieldResolver
   }
 };
