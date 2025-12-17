@@ -5,6 +5,7 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerConstants, CustomerFixtures } from './fixtures/customer.fixtures';
+import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
@@ -15,7 +16,12 @@ describe('customer - Query', () => {
   const app = luneServer.getApp();
 
   beforeEach(async () => {
-    await testHelper.loadFixtures([new UserFixtures(), new ShopFixtures(), new CustomerFixtures()]);
+    await testHelper.loadFixtures([
+      new UserFixtures(),
+      new ShopFixtures(),
+      new CustomerFixtures(),
+      new OrderFixtures()
+    ]);
   });
 
   afterEach(async () => {
@@ -79,6 +85,48 @@ describe('customer - Query', () => {
 
     expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('returns customer orders', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOMER_WITH_ORDERS_QUERY,
+        variables: {
+          id: CustomerConstants.ID
+        }
+      });
+
+    const { customer } = res.body.data;
+
+    expect(customer.orders.items).toHaveLength(2);
+    expect(customer.orders.count).toBe(2);
+    expect(customer.orders.pageInfo.total).toBe(2);
+
+    const orderCodes = customer.orders.items.map((o: { code: string }) => o.code);
+    expect(orderCodes).toContain(OrderConstants.Order1Code);
+    expect(orderCodes).toContain(OrderConstants.Order2Code);
+  });
+
+  test('returns customer orders with pagination', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOMER_WITH_ORDERS_QUERY,
+        variables: {
+          id: CustomerConstants.ID,
+          ordersInput: { take: 1 }
+        }
+      });
+
+    const { customer } = res.body.data;
+
+    expect(customer.orders.items).toHaveLength(1);
+    expect(customer.orders.pageInfo.total).toBe(2);
+  });
 });
 
 const GET_CUSTOMER_QUERY = /* GraphQL */ `
@@ -92,6 +140,26 @@ const GET_CUSTOMER_QUERY = /* GraphQL */ `
       enabled
       createdAt
       updatedAt
+    }
+  }
+`;
+
+const GET_CUSTOMER_WITH_ORDERS_QUERY = /* GraphQL */ `
+  query CustomerWithOrders($id: ID!, $ordersInput: OrderListInput) {
+    customer(id: $id) {
+      id
+      orders(input: $ordersInput) {
+        items {
+          id
+          code
+          state
+          total
+        }
+        count
+        pageInfo {
+          total
+        }
+      }
     }
   }
 `;

@@ -1,6 +1,7 @@
 import type { CurrentCustomer, ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseCustomerGuard } from '@/api/shared/guards/customer.guard';
+import { CommonCustomerFieldResolver } from '@/api/shared/resolvers/customer-field.resolver';
 import type {
   MutationSignInCustomerWithCredentialsArgs,
   MutationSignUpCustomerWithCredentialsArgs,
@@ -48,5 +49,8 @@ export const CustomerResolver: GraphqlApiResolver = {
     signUpCustomerWithCredentials: signUpCustomerWithCredentials,
     signInCustomerWithCredentials: signInCustomerWithCredentials,
     updateCustomer: UseCustomerGuard(updateCustomer)
+  },
+  Customer: {
+    ...CommonCustomerFieldResolver
   }
 };
