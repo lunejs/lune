@@ -309,6 +309,59 @@ describe('customers - Query', () => {
 
     expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('returns customers matching email OR firstName OR lastName', async () => {
+    // "john" matches Customer1 email
+    // "Jane" matches Customer2 firstName
+    // "User" matches Customer3 lastName
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOMERS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              email: { contains: 'john' },
+              firstName: { contains: 'Jane' },
+              lastName: { contains: 'User' }
+            }
+          }
+        }
+      });
+
+    const { customers } = res.body.data;
+
+    expect(customers.items).toHaveLength(3);
+  });
+
+  test('combines OR search filters with AND enabled filter', async () => {
+    // "john" matches Customer1 email (enabled)
+    // "Disabled" matches Customer3 firstName (disabled)
+    // enabled: true should filter out Customer3
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOMERS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              email: { contains: 'john' },
+              firstName: { contains: 'Disabled' },
+              enabled: { equals: true }
+            }
+          }
+        }
+      });
+
+    const { customers } = res.body.data;
+
+    expect(customers.items).toHaveLength(1);
+    expect(customers.items[0].email).toBe(CustomerConstants.Customer1Email);
+  });
 });
 
 const GET_CUSTOMERS_QUERY = /* GraphQL */ `

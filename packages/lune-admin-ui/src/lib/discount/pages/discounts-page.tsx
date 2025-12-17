@@ -9,7 +9,11 @@ export const DiscountsPage = () => {
 
   return (
     <PageLayout isLoading={result.isLoading}>
-      {result.shouldRenderEmptyState ? <DiscountsTableEmptyState /> : <DiscountsTable {...result} />}
+      {result.shouldRenderEmptyState ? (
+        <DiscountsTableEmptyState />
+      ) : (
+        <DiscountsTable {...result} />
+      )}
     </PageLayout>
   );
 };

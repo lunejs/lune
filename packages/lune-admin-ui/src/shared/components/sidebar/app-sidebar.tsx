@@ -94,9 +94,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {SIDEBAR.customers.map(item => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
+                  <Link to={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -162,13 +168,15 @@ const SIDEBAR = {
   customers: [
     {
       title: 'Customers',
-      url: '#',
-      icon: UserIcon
+      url: '/customers',
+      icon: UserIcon,
+      isActive: (pathname: string) => pathname.includes('customers')
     },
     {
       title: 'Business Customers',
       url: '#',
-      icon: UsersIcon
+      icon: UsersIcon,
+      isActive: (pathname: string) => pathname.includes('random')
     }
   ]
 };

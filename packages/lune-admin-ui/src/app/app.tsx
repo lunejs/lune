@@ -8,6 +8,7 @@ import { AssetsPage } from '@/lib/asset/pages/assets-page';
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
+import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
 import { DiscountDetailsPage } from '@/lib/discount/pages/discount-details-page';
 import { DiscountsPage } from '@/lib/discount/pages/discounts-page';
@@ -88,6 +89,8 @@ export const App = () => {
 
                   <Route path="/orders" element={<OrdersPage />} />
                   <Route path="/orders/:id" element={<OrderDetailsPage />} />
+
+                  <Route path="/customers" element={<CustomersPage />} />
 
                   <Route path="/discounts" element={<DiscountsPage />} />
                   <Route path="/discounts/new" element={<NewDiscountPage />} />

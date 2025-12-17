@@ -21,7 +21,7 @@ export const AssetsTable = ({ isRefetching, assets, totalRows, dataTable }: Prop
       data={assets}
       columns={AssetsTableColumns}
       onSearch={q => updateFilters({ search: q })}
-      searchPlaceholder="Search assets..."
+      searchPlaceholder="Search by asset or ext..."
       onPageChange={page => updatePagination({ page })}
       onPageSizeChange={size => updatePagination({ size })}
       totalRows={totalRows}

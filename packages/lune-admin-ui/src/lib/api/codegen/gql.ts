@@ -37,6 +37,9 @@ type Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": typeof types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": typeof types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": typeof types.GetCountriesForSelectorDocument,
+    "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": typeof types.CommonListCustomerFragmentDoc,
+    "\n  query GetAllCustomers($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCustomer\n      }\n    }\n  }\n": typeof types.GetAllCustomersDocument,
+    "\n  query CountCustomers {\n    customers {\n      count\n    }\n  }\n": typeof types.CountCustomersDocument,
     "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": typeof types.CommonDiscountHandlerFragmentDoc,
     "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n": typeof types.CommonDiscountFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": typeof types.CommonListDiscountFragmentDoc,
@@ -140,6 +143,9 @@ const documents: Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": types.GetCountriesForSelectorDocument,
+    "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": types.CommonListCustomerFragmentDoc,
+    "\n  query GetAllCustomers($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCustomer\n      }\n    }\n  }\n": types.GetAllCustomersDocument,
+    "\n  query CountCustomers {\n    customers {\n      count\n    }\n  }\n": types.CountCustomersDocument,
     "\n  fragment CommonDiscountHandler on DiscountHandler {\n    code\n    name\n    description\n    args\n    applicationLevel\n  }\n": types.CommonDiscountHandlerFragmentDoc,
     "\n  fragment CommonDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n    perCustomerLimit\n    handler {\n      code\n      args\n    }\n  }\n": types.CommonDiscountFragmentDoc,
     "\n  fragment CommonListDiscount on Discount {\n    id\n    code\n    applicationMode\n    applicationLevel\n    startsAt\n    endsAt\n    enabled\n  }\n": types.CommonListDiscountFragmentDoc,
@@ -326,6 +332,18 @@ export function graphql(source: "\n  query GetCountries {\n    countries {\n    
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n"): (typeof documents)["\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n"): (typeof documents)["\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetAllCustomers($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCustomer\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetAllCustomers($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListCustomer\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query CountCustomers {\n    customers {\n      count\n    }\n  }\n"): (typeof documents)["\n  query CountCustomers {\n    customers {\n      count\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

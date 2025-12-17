@@ -12,7 +12,7 @@ export const DataTableEmptyState: FC<Props> = ({ title, subtitle, icon, actions 
         <H4>{title}</H4>
         <Small className="text-muted-foreground">{subtitle}</Small>
       </div>
-      <div className="flex items-center gap-3">{actions}</div>
+      {actions && <div className="flex items-center gap-3">{actions}</div>}
     </div>
   );
 };
@@ -21,5 +21,5 @@ type Props = {
   icon: ReactElement;
   title: string;
   subtitle: string;
-  actions: ReactElement;
+  actions?: ReactElement;
 };
