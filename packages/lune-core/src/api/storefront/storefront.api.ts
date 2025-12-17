@@ -12,7 +12,7 @@ import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
-import type { UserJWT } from '../shared/types/api.types';
+import type { CustomerJWT } from '../shared/types/api.types';
 
 import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
 import { LocationFieldResolver } from './field-resolvers/location-field.resolver';
@@ -67,16 +67,17 @@ export class StorefrontApi extends GraphqlApi {
       HeaderKeys.StorefrontLocale
     ) as Locale | null;
 
-    const userJWT = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
+    const customerJWT = token ? await this.jwtService.verifyToken<CustomerJWT>(token) : null;
 
     return buildContext({
       database: this.database,
       jwtService: this.jwtService,
       shopId,
-      userJWT,
+      userJWT: null,
       storefront: {
         apiKey: storefrontApiKey,
-        locale: storefrontLocale
+        locale: storefrontLocale,
+        currentCustomer: customerJWT ? { ...customerJWT, id: customerJWT.sub } : null
       }
     });
   }

@@ -20,10 +20,16 @@ export type ExecutionContext = {
 export type CurrentUser = {
   id: string;
   email: string;
-  enabled: boolean;
 };
 
 export type StorefrontContext = {
   apiKey: string | null;
   locale: Locale | null;
+  currentCustomer: CurrentCustomer | null;
+};
+
+export type CurrentCustomer = {
+  id: string;
+  email: string;
+  enabled: boolean;
 };

@@ -1,4 +1,4 @@
-import type { ExecutionContext } from '@/api/shared/context/types';
+import type { CurrentCustomer, ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseCustomerGuard } from '@/api/shared/guards/customer.guard';
 import type {
@@ -34,9 +34,11 @@ async function signInCustomerWithCredentials(
 }
 
 async function updateCustomer(_, { input }: MutationUpdateCustomerArgs, ctx: ExecutionContext) {
+  const currentCustomer = ctx.storefront?.currentCustomer as CurrentCustomer;
+
   const customerService = new CustomerService(ctx);
 
-  const result = await customerService.update(ctx.currentUser?.id as string, input);
+  const result = await customerService.update(currentCustomer.id, input);
 
   return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
 }
