@@ -8,6 +8,7 @@ import { DefaultCollectionProductFixture } from './collection-product.fixture';
 import { DefaultCollectionTranslationFixture } from './collection-translation.fixture';
 import { DefaultCountryFixture } from './country.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
+import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
@@ -67,6 +68,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CollectionProduct]: DefaultCollectionProductFixture,
   [Tables.CollectionAsset]: DefaultCollectionAssetFixture,
   [Tables.Customer]: DefaultCustomerFixture,
+  [Tables.CustomerAuthMethod]: DefaultCustomerAuthMethodFixture,
   [Tables.Country]: DefaultCountryFixture,
   [Tables.State]: DefaultStateFixture,
   [Tables.Address]: DefaultAddressFixture,

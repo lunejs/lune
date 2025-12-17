@@ -5,6 +5,7 @@ import { AssetRepository } from './asset-repository';
 import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
+import { CustomerAuthMethodRepository } from './customer-auth-method-repository';
 import { CustomerRepository } from './customer-repository';
 import { DiscountRepository } from './discount-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
@@ -51,6 +52,7 @@ export function buildRepositories(trx: Transaction) {
     collection: new CollectionRepository(trx),
     collectionTranslation: new CollectionTranslationRepository(trx),
     customer: new CustomerRepository(trx),
+    customerAuthMethod: new CustomerAuthMethodRepository(trx),
     country: new CountryRepository(trx),
     state: new StateRepository(trx),
     address: new AddressRepository(trx),

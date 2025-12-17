@@ -41,5 +41,6 @@ export const enum Tables {
   ZoneState = 'zone_state',
   ShippingMethod = 'shipping_method',
   Discount = 'discount',
-  OrderDiscount = 'order_discount'
+  OrderDiscount = 'order_discount',
+  CustomerAuthMethod = 'customer_auth_method'
 }
