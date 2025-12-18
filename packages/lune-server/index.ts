@@ -27,7 +27,7 @@ const luneServer = new LuneServer({
   },
   assets: {
     imageProcessor: new DefaultImageProcessor(),
-    storageProvider: new LocalStorageProvider('http://localhost:4000'),
+    storageProvider: new LocalStorageProvider('http://localhost:8080'),
   },
   discounts: {
     handlers: [

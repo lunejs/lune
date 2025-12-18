@@ -8,6 +8,6 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <App config={{ apiUrl: 'http://localhost:8080' }} />
   </StrictMode>
 );

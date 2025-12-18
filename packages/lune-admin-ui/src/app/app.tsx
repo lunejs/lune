@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { GraphQLClient } from 'graphql-request';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { LuneLogger } from '@lune/common';
@@ -41,6 +42,8 @@ import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
 import ScrollToTop from '@/shared/components/scroll-to-top';
 import { SettingsLayout } from '@/shared/components/settings-layout/settings-layout';
 
+import { AdminUiContextProvider } from './admin-ui.context';
+import { type AdminUiConfig } from './admin-ui-config';
 import { AuthWrapper } from './auth-wrapper';
 import { ErrorBoundary } from './error-boundary';
 
@@ -53,79 +56,89 @@ export const queryClient = new QueryClient({
   }
 });
 
-export const App = () => {
+export let gqlClient: GraphQLClient;
+
+export const App = ({ config }: Props) => {
   LuneLogger.setLevels(['*']);
 
+  gqlClient = new GraphQLClient(`${config.apiUrl}/admin-api`);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <ErrorBoundary fallback={<p>Something went wrong</p>}>
-        <ThemeProvider defaultTheme="dark" storageKey="lune-ui-theme">
-          <Toaster />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route element={<AuthWrapper />}>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/shops" element={<ShopsPage />} />
-                <Route path="/shops/new" element={<CreateShopPage />} />
+    <AdminUiContextProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <ErrorBoundary fallback={<p>Something went wrong</p>}>
+          <ThemeProvider defaultTheme="dark" storageKey="lune-ui-theme">
+            <Toaster />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route element={<AuthWrapper />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/shops" element={<ShopsPage />} />
+                  <Route path="/shops/new" element={<CreateShopPage />} />
 
-                <Route path="/translate/products/:id" element={<TranslateProductsPage />} />
-                <Route path="/translate/products" element={<TranslateProductsPage />} />
-                <Route path="/translate/collections/:id" element={<TranslateCollectionsPage />} />
-                <Route path="/translate/collections" element={<TranslateCollectionsPage />} />
+                  <Route path="/translate/products/:id" element={<TranslateProductsPage />} />
+                  <Route path="/translate/products" element={<TranslateProductsPage />} />
+                  <Route path="/translate/collections/:id" element={<TranslateCollectionsPage />} />
+                  <Route path="/translate/collections" element={<TranslateCollectionsPage />} />
 
-                <Route element={<AdminLayout />}>
-                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route element={<AdminLayout />}>
+                    <Route path="/dashboard" element={<DashboardPage />} />
 
-                  <Route path="/products" element={<ProductsPage />} />
-                  <Route path="/products/new" element={<NewProductPage />} />
-                  <Route path="/products/:id" element={<ProductDetailsPage />} />
-                  <Route path="/products/:id/variants/:variantId" element={<VariantsPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/products/new" element={<NewProductPage />} />
+                    <Route path="/products/:id" element={<ProductDetailsPage />} />
+                    <Route path="/products/:id/variants/:variantId" element={<VariantsPage />} />
 
-                  <Route path="/collections" element={<CollectionsPage />} />
-                  <Route path="/collections/new" element={<NewCollectionPage />} />
-                  <Route path="/collections/:id" element={<CollectionDetailsPage />} />
+                    <Route path="/collections" element={<CollectionsPage />} />
+                    <Route path="/collections/new" element={<NewCollectionPage />} />
+                    <Route path="/collections/:id" element={<CollectionDetailsPage />} />
 
-                  <Route path="/assets" element={<AssetsPage />} />
+                    <Route path="/assets" element={<AssetsPage />} />
 
-                  <Route path="/orders" element={<OrdersPage />} />
-                  <Route path="/orders/:id" element={<OrderDetailsPage />} />
+                    <Route path="/orders" element={<OrdersPage />} />
+                    <Route path="/orders/:id" element={<OrderDetailsPage />} />
 
-                  <Route path="/discounts" element={<DiscountsPage />} />
-                  <Route path="/discounts/new" element={<NewDiscountPage />} />
-                  <Route path="/discounts/:id" element={<DiscountDetailsPage />} />
+                    <Route path="/discounts" element={<DiscountsPage />} />
+                    <Route path="/discounts/new" element={<NewDiscountPage />} />
+                    <Route path="/discounts/:id" element={<DiscountDetailsPage />} />
 
-                  <Route path="/customers" element={<CustomersPage />} />
-                  <Route path="/customers/:id" element={<CustomerDetailsPage />} />
+                    <Route path="/customers" element={<CustomersPage />} />
+                    <Route path="/customers/:id" element={<CustomerDetailsPage />} />
+                  </Route>
+
+                  <Route element={<SettingsLayout />}>
+                    <Route path="/settings/shop" element={<ShopDetails />} />
+                    <Route path="/settings/shipments" element={<ShipmentsPage />} />
+                    <Route path="/settings/shipments/new" element={<NewZonePage />} />
+                    <Route path="/settings/shipments/:id" element={<ZoneDetailsPage />} />
+                    <Route
+                      path="/settings/shipments/in-store-pickup"
+                      element={<InStorePickupLocationsPage />}
+                    />
+                    <Route
+                      path="/settings/shipments/in-store-pickup/:id"
+                      element={<InStorePickupPreferencesPage />}
+                    />
+                    <Route path="/settings/locations" element={<LocationsPage />} />
+                    <Route path="/settings/locations/new" element={<NewLocationPage />} />
+                    <Route path="/settings/locations/:id" element={<LocationDetailsPage />} />
+
+                    <Route path="/settings/payments" element={<PaymentMethodsPage />} />
+                    <Route path="/settings/payments/new" element={<NewPaymentMethodPage />} />
+                    <Route path="/settings/payments/:id" element={<PaymentMethodDetailsPage />} />
+                  </Route>
+                  <Route path="/" element={<DashboardPage />} />
                 </Route>
-
-                <Route element={<SettingsLayout />}>
-                  <Route path="/settings/shop" element={<ShopDetails />} />
-                  <Route path="/settings/shipments" element={<ShipmentsPage />} />
-                  <Route path="/settings/shipments/new" element={<NewZonePage />} />
-                  <Route path="/settings/shipments/:id" element={<ZoneDetailsPage />} />
-                  <Route
-                    path="/settings/shipments/in-store-pickup"
-                    element={<InStorePickupLocationsPage />}
-                  />
-                  <Route
-                    path="/settings/shipments/in-store-pickup/:id"
-                    element={<InStorePickupPreferencesPage />}
-                  />
-                  <Route path="/settings/locations" element={<LocationsPage />} />
-                  <Route path="/settings/locations/new" element={<NewLocationPage />} />
-                  <Route path="/settings/locations/:id" element={<LocationDetailsPage />} />
-
-                  <Route path="/settings/payments" element={<PaymentMethodsPage />} />
-                  <Route path="/settings/payments/new" element={<NewPaymentMethodPage />} />
-                  <Route path="/settings/payments/:id" element={<PaymentMethodDetailsPage />} />
-                </Route>
-                <Route path="/" element={<DashboardPage />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </ThemeProvider>
-      </ErrorBoundary>
-    </QueryClientProvider>
+              </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
+        </ErrorBoundary>
+      </QueryClientProvider>
+    </AdminUiContextProvider>
   );
+};
+
+type Props = {
+  config: AdminUiConfig;
 };

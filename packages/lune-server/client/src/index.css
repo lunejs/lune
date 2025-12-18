@@ -23,6 +23,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-distinct: var(--distinct);
+  --color-distinct-foreground: var(--distinct-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -46,6 +48,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
 }
 
 :root {
@@ -58,6 +63,8 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
+  --distinct: oklch(62.3% 0.214 259.815);
+  --distinct-foreground: oklch(54.6% 0.245 262.881);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -81,6 +88,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --warning:  oklch(0.852 0.199 91.936);
+  --warning-foreground:  oklch(0.421 0.095 57.708);
+
 }
 
 .dark {
@@ -92,6 +103,8 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
+  --distinct: oklch(54.6% 0.245 262.881);
+  --distinct-foreground: oklch(62.3% 0.214 259.815);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -115,6 +128,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --warning:  oklch(0.795 0.184 86.047);
+  --warning-foreground:  oklch(0.421 0.095 57.708);
 }
 
 @layer base {
@@ -124,6 +140,14 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Geist Variable', sans-serif;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body,
@@ -141,4 +165,23 @@
     resize: none;
     field-sizing: content;
   }
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: 0.3s fadeIn;
+}
+
+.quick-fade-in {
+  animation: 0.1s fadeIn;
 }

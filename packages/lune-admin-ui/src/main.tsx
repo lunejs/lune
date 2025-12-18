@@ -9,6 +9,6 @@ import './app/app.css';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
-    <App />
+    <App config={{ apiUrl: `http://localhost:4000` }} />
   </StrictMode>
 );

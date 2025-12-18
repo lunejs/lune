@@ -10,9 +10,12 @@ import { CookiesKeys } from '@/shared/cookies/keys';
  *   body: formData
  * });
  */
-export const restFetcher = async <R>(url: string, options?: RestFetcherOptions) => {
+export const restFetcher = async <R>(
+  baseUrl: string,
+  url: string,
+  options?: RestFetcherOptions
+) => {
   const queryParams = options?.queryParams ? `?${options.queryParams.toString()}` : '';
-  const baseUrl = `http://localhost:4000`;
 
   const userToken = getCookie(CookiesKeys.UserToken);
   const shopId = getCookie(CookiesKeys.ActiveShop);
