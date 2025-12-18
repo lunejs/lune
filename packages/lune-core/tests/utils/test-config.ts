@@ -10,7 +10,6 @@ import { TestFulfillmentDiscountHandler } from './config/test-shipping-discount.
 import { TestStorageProvider } from './config/test-storage-provider';
 
 export const TEST_LUNE_CONFIG: LuneConfig = {
-  adminUIServeUrl: '/',
   app: {
     port: 4000
   },

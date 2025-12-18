@@ -2,6 +2,7 @@ import { join } from 'node:path';
 
 import express from 'express';
 
+import { LuneLogger } from '@/logger/lune.logger';
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
 /**
@@ -30,6 +31,8 @@ export class AssetServerPlugin implements LunePlugin {
         }
       })
     );
+
+    LuneLogger.info(`Assets available on ${this.options.route}`);
   }
 
   private getOptions(option?: Options): Required<Options> {

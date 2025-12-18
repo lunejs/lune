@@ -53,11 +53,10 @@ export class LuneServer {
   }
 
   async start() {
-    const { app, adminUIServeUrl } = getConfig();
+    const { app } = getConfig();
 
     this.app.listen(app.port, () => {
       LuneLogger.ready(`Lune server (v0.0.1) running on port ${app.port}`);
-      LuneLogger.info(`Admin UI → http://localhost:${app.port}${adminUIServeUrl}`);
       LuneLogger.info(`Admin API → http://localhost:${app.port}/admin-api`);
       LuneLogger.info(`Storefront API → http://localhost:${app.port}/storefront-api`);
     });

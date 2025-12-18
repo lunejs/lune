@@ -3,6 +3,7 @@ import { OrderPriceDiscountHandler } from './discounts/handlers/order-price-disc
 import { ProductDiscountHandler } from './discounts/handlers/product-discount.handler';
 import { DefaultImageProcessor } from './image-processor/default-image-processor';
 import { DummyPaymentHandler } from './payment-handler/dummy-payment-handler';
+import { AdminUiServerPlugin } from './plugins/admin-ui-server-plugin';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
 import { FlatShippingHandler } from './shipping-handler/flat-shipping-handler';
 import { LocalStorageProvider } from './storage/local-storage-provider';
@@ -10,7 +11,6 @@ import { DefaultOrderCodeStrategy } from './strategies/order-code/default-order-
 import type { LuneConfig } from './lune.config';
 
 export const DEFAULT_LUNE_CONFIG: LuneConfig = {
-  adminUIServeUrl: '/',
   app: {
     port: 4000
   },
@@ -37,7 +37,7 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
   discounts: {
     handlers: [OrderPriceDiscountHandler, ProductDiscountHandler, FreeShippingDiscountHandler]
   },
-  plugins: [new AssetServerPlugin()],
+  plugins: [new AssetServerPlugin(), new AdminUiServerPlugin()],
   logger: {
     levels: ['*']
   }

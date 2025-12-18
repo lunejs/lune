@@ -16,7 +16,6 @@ import { config } from 'dotenv';
 config();
 
 const luneServer = new LuneServer({
-  adminUIServeUrl: '/',
   app: { port: Number(process.env.PORT) ?? 8080 },
   auth: {
     jwtExpiresIn: Number(process.env.JWT_EXPIRATION) ?? 604800,

@@ -11,7 +11,6 @@ import type { StorageProvider } from './storage/storage';
 import type { OrderCodeStrategy } from './strategies/order-code/order-code.strategy';
 
 export interface LuneConfig {
-  adminUIServeUrl: string;
   app: {
     port: number;
   };
