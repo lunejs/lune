@@ -53,7 +53,7 @@ type LunePluginConfig = {
    * @description
    * Runs just after the app is served
    */
-  onStart?(config: LuneConfig): void;
+  onStart?(): void;
 
   /**
    * Storefront api extensions

@@ -65,7 +65,7 @@ export class LuneServer {
 
       for (const plugin of config.plugins) {
         if (typeof plugin.onStart === 'function') {
-          plugin.onStart(config);
+          plugin.onStart();
         }
       }
     });

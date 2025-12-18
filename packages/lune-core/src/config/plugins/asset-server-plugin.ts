@@ -6,6 +6,8 @@ import { LuneLogger } from '@lune/common';
 
 import { LunePlugin } from '@/plugin/lune.plugin';
 
+let port = 0;
+
 /**
  * Asset server plugin
  *
@@ -19,6 +21,11 @@ export class AssetServerPlugin extends LunePlugin {
     const { folder, route } = AssetServerPlugin.getOptions(options);
 
     super({
+      configure(config) {
+        port = config.app.port;
+
+        return config;
+      },
       register(app) {
         app.use(
           route,
@@ -29,8 +36,8 @@ export class AssetServerPlugin extends LunePlugin {
           })
         );
       },
-      onStart(config) {
-        LuneLogger.info(`Asset server → http://localhost:${config.app.port}${route}`);
+      onStart() {
+        LuneLogger.info(`Asset server → http://localhost:${port}${route}`);
       }
     });
   }
