@@ -33,7 +33,10 @@ export const useUploadAsset = () => {
       if (!result.success) {
         failure('Failed to upload images');
         setIsUploading(false);
-        return;
+        return {
+          success: false,
+          data: []
+        };
       }
 
       await Promise.all([

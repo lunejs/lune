@@ -1,7 +1,9 @@
+import * as path from 'path';
+
 import { LuneMigration } from '@lune/core';
 import { config } from 'dotenv';
 
-config();
+config({ path: path.resolve(process.cwd(), './scripts/.env.migration') });
 
 const luneMigration = new LuneMigration(process.env.DATABASE_URL as string);
 

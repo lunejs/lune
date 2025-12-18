@@ -6,7 +6,9 @@
   "main": "index.js",
   "author": "Rogelio Samuel Moreno Corrales",
   "scripts": {
-    "start:dev": "ts-node index.ts",
+    "client:dev": "cd ./client && yarn dev",
+    "server:dev": "ts-node index.ts",
+    "migrate": "ts-node ./scripts/migrations.ts",
     "build": "tsc",
     "build:client": "cd ./client && yarn build",
     "start": "node dist/index.js"

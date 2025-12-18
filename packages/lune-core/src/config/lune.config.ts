@@ -36,7 +36,11 @@ export interface LuneConfig {
     handlers: PaymentHandler[];
   };
   discounts: {
-    handlers: (OrderDiscountHandler | OrderLineDiscountHandler | FulfillmentDiscountHandler)[];
+    handlers: (
+      | OrderDiscountHandler<any>
+      | OrderLineDiscountHandler<any>
+      | FulfillmentDiscountHandler<any>
+    )[];
   };
   plugins: LunePlugin[];
   logger?: {
