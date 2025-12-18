@@ -5,5 +5,17 @@
   "main": "index.js",
   "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
   "license": "AGPL-3.0",
-  "private": false
+  "private": false,
+  "scripts": {
+    "dev": "email dev --dir templates"
+  },
+  "devDependencies": {
+    "@react-email/preview-server": "5.0.8",
+    "react-email": "5.0.8"
+  },
+  "dependencies": {
+    "@react-email/components": "1.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
 }
