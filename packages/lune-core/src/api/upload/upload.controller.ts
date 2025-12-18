@@ -5,7 +5,7 @@ import multer from 'multer';
 
 import { AssetService } from '@/business/asset/asset.service';
 import { getConfig } from '@/config/config';
-import { LuneLogger } from '@/logger/lune.logger';
+import { LuneLogger } from '@lune/common';
 import type { Asset } from '@/persistence/entities/asset';
 
 import type { ExecutionContext } from '../shared/context/types';

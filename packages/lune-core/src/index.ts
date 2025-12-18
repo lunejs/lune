@@ -60,11 +60,6 @@ export * from './errors/lune.error';
 export * from './libs/slug';
 
 /**
- * Logger
- */
-export * from './logger/lune.logger';
-
-/**
  * Migrations
  */
 export * from './migration/migration';

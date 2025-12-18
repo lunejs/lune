@@ -2,8 +2,9 @@ import { GraphQLError } from 'graphql';
 import type { Plugin } from 'graphql-yoga';
 import { isAsyncIterable } from 'graphql-yoga';
 
+import { LuneLogger } from '@lune/common';
+
 import { LuneError } from '@/errors/lune.error';
-import { LuneLogger } from '@/logger/lune.logger';
 
 export function useErrorLogger(): Plugin {
   return {

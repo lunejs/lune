@@ -1,4 +1,5 @@
-import type { LuneLoggerLevel } from '@/logger/lune.logger';
+import type { LuneLoggerLevel } from '@lune/common';
+
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
 import type { FulfillmentDiscountHandler } from './discounts/fulfillment-discount-handler';

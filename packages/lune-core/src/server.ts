@@ -2,12 +2,13 @@ import cors from 'cors';
 import express from 'express';
 import type { Knex } from 'knex';
 
+import { LuneLogger } from '@lune/common';
+
 import { AdminApi } from './api/admin/admin.api';
 import { StorefrontApi } from './api/storefront/storefront.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
 import type { LuneConfig } from './config/lune.config';
-import { LuneLogger } from './logger/lune.logger';
 import type { Database } from './persistence/connection';
 import { createConnection } from './persistence/connection';
 
