@@ -10,6 +10,7 @@
     "dev": "email dev --dir templates"
   },
   "devDependencies": {
+    "@lune/core": "*",
     "@react-email/preview-server": "5.0.8",
     "react-email": "5.0.8"
   },

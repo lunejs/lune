@@ -15,14 +15,14 @@ import type { LuneConfig } from '@/config/lune.config';
  * - Inject new configuration before the server starts
  */
 export class LunePlugin {
-  config?: LunePluginConfig['config'];
+  configure?: LunePluginConfig['configure'];
   register?: LunePluginConfig['register'];
   onStart?: LunePluginConfig['onStart'];
   adminApiExtension?: LunePluginConfig['adminApiExtension'];
   storefrontApiExtension?: LunePluginConfig['storefrontApiExtension'];
 
-  constructor(private readonly pluginConfig: LunePluginConfig) {
-    Object.assign(this, pluginConfig);
+  constructor(config: LunePluginConfig) {
+    Object.assign(this, config);
   }
 }
 
@@ -35,7 +35,7 @@ type LunePluginConfig = {
    * return the config to be used. Prefer returning a **new object** instead of
    * mutating the input.
    */
-  config?(config: LuneConfig): LuneConfig;
+  configure?(config: LuneConfig): LuneConfig;
 
   /**
    * Register function
