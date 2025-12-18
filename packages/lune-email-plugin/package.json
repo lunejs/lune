@@ -12,10 +12,12 @@
   "devDependencies": {
     "@lune/core": "*",
     "@react-email/preview-server": "5.0.8",
+    "@types/nodemailer": "^7.0.4",
     "react-email": "5.0.8"
   },
   "dependencies": {
     "@react-email/components": "1.0.1",
+    "nodemailer": "^7.0.11",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   }
