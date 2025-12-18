@@ -3,9 +3,7 @@ import { join } from 'node:path';
 import express from 'express';
 
 import { LuneLogger } from '@/logger/lune.logger';
-import type { LunePlugin } from '@/plugin/lune.plugin';
-
-import type { LuneConfig } from '../lune.config';
+import { LunePlugin } from '@/plugin/lune.plugin';
 
 /**
  * Admin UI Plugin
@@ -13,33 +11,26 @@ import type { LuneConfig } from '../lune.config';
  * @description
  * A plugin to serve admin ui app via the express server
  */
-export class AdminUiServerPlugin implements LunePlugin {
-  name = 'AdminUiServerPlugin';
-
-  private options: Required<Options>;
-  private appPort: number;
-
+export class AdminUiServerPlugin extends LunePlugin {
   constructor(options?: Options) {
-    this.options = this.getOptions(options);
-  }
+    const { folder, renderPath } = AdminUiServerPlugin.getOptions(options);
 
-  config(config: LuneConfig): LuneConfig {
-    this.appPort = config.app.port;
+    super({
+      name: 'AdminUiServerPlugin',
+      register(app) {
+        app.use(renderPath, express.static(join(process.cwd(), folder)));
 
-    return config;
-  }
-
-  register(app: express.Application): void {
-    app.use(this.options.renderPath, express.static(join(process.cwd(), this.options.folder)));
-
-    app.get('*', (req, res) => {
-      res.sendFile(join(process.cwd(), this.options.folder, 'index.html'));
+        app.get('*', (_req, res) => {
+          res.sendFile(join(process.cwd(), folder, 'index.html'));
+        });
+      },
+      onStart(config) {
+        LuneLogger.info(`Admin UI → http://localhost:${config.app.port}${renderPath}`);
+      }
     });
-
-    LuneLogger.info(`Admin UI served on /`);
   }
 
-  private getOptions(option?: Options): Required<Options> {
+  private static getOptions(option?: Options): Required<Options> {
     return {
       folder: option?.folder ?? '/client/dist',
       renderPath: option?.renderPath ?? '/'

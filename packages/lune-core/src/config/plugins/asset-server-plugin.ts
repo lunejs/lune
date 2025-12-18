@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import express from 'express';
 
 import { LuneLogger } from '@/logger/lune.logger';
-import type { LunePlugin } from '@/plugin/lune.plugin';
+import { LunePlugin } from '@/plugin/lune.plugin';
 
 /**
  * Asset server plugin
@@ -13,29 +13,29 @@ import type { LunePlugin } from '@/plugin/lune.plugin';
  * By default, it serves from the 'uploads' folder at the '/uploads' route.
  * You can customize the route and folder via options.
  */
-export class AssetServerPlugin implements LunePlugin {
-  name = 'AssetServerPlugin';
-
-  private options: Required<Options>;
-
+export class AssetServerPlugin extends LunePlugin {
   constructor(options?: Options) {
-    this.options = this.getOptions(options);
+    const { folder, route } = AssetServerPlugin.getOptions(options);
+
+    super({
+      name: 'AssetServerPlugin',
+      register(app) {
+        app.use(
+          route,
+          express.static(join(process.cwd(), folder), {
+            setHeaders(res) {
+              res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+            }
+          })
+        );
+      },
+      onStart(config) {
+        LuneLogger.info(`Asset server → http://localhost:${config.app.port}${route}`);
+      }
+    });
   }
 
-  register(app: express.Application): void {
-    app.use(
-      this.options.route,
-      express.static(join(process.cwd(), this.options.folder), {
-        setHeaders(res) {
-          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        }
-      })
-    );
-
-    LuneLogger.info(`Assets available on ${this.options.route}`);
-  }
-
-  private getOptions(option?: Options): Required<Options> {
+  private static getOptions(option?: Options): Required<Options> {
     return {
       route: option?.route ?? '/uploads',
       folder: option?.folder ?? 'uploads'

@@ -59,6 +59,14 @@ export class LuneServer {
       LuneLogger.ready(`Lune server (v0.0.1) running on port ${app.port}`);
       LuneLogger.info(`Admin API → http://localhost:${app.port}/admin-api`);
       LuneLogger.info(`Storefront API → http://localhost:${app.port}/storefront-api`);
+
+      const config = getConfig();
+
+      for (const plugin of config.plugins) {
+        if (typeof plugin.onStart === 'function') {
+          plugin.onStart(config);
+        }
+      }
     });
   }
 

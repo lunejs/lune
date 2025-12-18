@@ -13,7 +13,17 @@ import type { LuneConfig } from '@/config/lune.config';
  * - Add new routes, middleware, etc.
  * - Inject new configuration before the server starts
  */
-export interface LunePlugin {
+export class LunePlugin {
+  config?: LunePluginConfig['config'];
+  register?: LunePluginConfig['register'];
+  onStart?: LunePluginConfig['onStart'];
+
+  constructor(private readonly pluginConfig: LunePluginConfig) {
+    Object.assign(this, pluginConfig);
+  }
+}
+
+type LunePluginConfig = {
   /**
    * Plugin name
    *
@@ -39,4 +49,12 @@ export interface LunePlugin {
    * webhooks, sockets, etc.
    */
   register?(app: express.Application): void;
-}
+
+  /**
+   * Start function
+   *
+   * @description
+   * Runs just after the app is served
+   */
+  onStart?(config: LuneConfig): void;
+};
