@@ -1,0 +1,9 @@
+{
+  "name": "@lune/email-plugin",
+  "version": "0.0.1",
+  "description": "Email plugin sends transactional emails based on Lune events",
+  "main": "index.js",
+  "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
+  "license": "AGPL-3.0",
+  "private": false
+}
