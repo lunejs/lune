@@ -2,7 +2,6 @@ import type express from 'express';
 
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type { LuneConfig } from '@/config/lune.config';
-import type { EventBus } from '@/event-bus';
 
 /**
  * Lune plugin interface
@@ -45,7 +44,7 @@ type LunePluginConfig = {
    * Runs after the Express app is created. Register routes, middleware,
    * webhooks, sockets, etc.
    */
-  register?(app: express.Application, eventBus: EventBus): void;
+  register?(app: express.Application): void;
 
   /**
    * Start function

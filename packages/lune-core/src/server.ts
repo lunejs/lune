@@ -11,7 +11,6 @@ import { getConfig, setConfig } from './config/config';
 import type { LuneConfig } from './config/lune.config';
 import type { Database } from './persistence/connection';
 import { createConnection } from './persistence/connection';
-import { eventBus } from './event-bus';
 
 export class LuneServer {
   private app: express.Application;
@@ -94,7 +93,7 @@ export class LuneServer {
 
     for (const plugin of plugins) {
       if (typeof plugin.register === 'function') {
-        plugin.register(this.app, eventBus);
+        plugin.register(this.app);
       }
     }
   }
