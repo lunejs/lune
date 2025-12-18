@@ -1,9 +1,9 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
-import type { JwtService } from '@/libs/jwt';
-import { PasswordService } from '@/libs/password';
+import { JwtService } from '@/security/jwt/jwt';
 import type { ID } from '@/persistence/entities/entity';
 import type { UserRepository } from '@/persistence/repositories/user-repository';
+import { PasswordHasher } from '@/security/hash';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
 
 import {
@@ -15,11 +15,9 @@ import {
 
 export class UserService {
   private repository: UserRepository;
-  private jwtService: JwtService;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.user;
-    this.jwtService = ctx.jwtService;
   }
 
   async findById(id: ID) {
@@ -41,7 +39,7 @@ export class UserService {
       return new EmailAlreadyExistsError();
     }
 
-    const hashedPassword = await PasswordService.hash(input.password);
+    const hashedPassword = await PasswordHasher.hash(input.password);
 
     const user = await this.repository.create({ email: input.email, password: hashedPassword });
 
@@ -53,11 +51,11 @@ export class UserService {
 
     if (!user) return new InvalidCredentialsError();
 
-    const isPasswordMatch = await PasswordService.compare(input.password, user.password);
+    const isPasswordMatch = await PasswordHasher.compare(input.password, user.password);
 
     if (!isPasswordMatch) return new InvalidCredentialsError();
 
-    const token = this.jwtService.generateToken({ email: user.email, sub: user.id });
+    const token = JwtService.generate({ email: user.email, sub: user.id });
 
     return token;
   }

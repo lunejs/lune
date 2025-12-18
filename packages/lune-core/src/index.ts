@@ -220,6 +220,7 @@ export * from './plugin/lune.plugin';
  */
 export * from './security/api-key';
 export * from './security/hash';
+export * from './security/jwt';
 
 /**
  * Utils

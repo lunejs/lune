@@ -4,12 +4,12 @@ import type {
   SignUpWithCredentialsInput,
   UpdateCustomerInput
 } from '@/api/shared/types/graphql';
-import type { JwtService } from '@/libs/jwt';
 import { CustomerAuthProvider } from '@/persistence/entities/customer-auth-method';
 import type { ID } from '@/persistence/entities/entity';
 import type { CustomerAuthMethodRepository } from '@/persistence/repositories/customer-auth-method-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
 import { PasswordHasher } from '@/security/hash/hash';
+import { JwtService } from '@/security/jwt';
 import { isValidEmail } from '@/utils/validators';
 
 import {
@@ -19,12 +19,10 @@ import {
 } from './customer.errors';
 
 export class CustomerService {
-  private jwtService: JwtService;
   private readonly repository: CustomerRepository;
   private readonly customerAuthMethodRepository: CustomerAuthMethodRepository;
 
   constructor(ctx: ExecutionContext) {
-    this.jwtService = ctx.jwtService;
     this.repository = ctx.repositories.customer;
     this.customerAuthMethodRepository = ctx.repositories.customerAuthMethod;
   }
@@ -82,7 +80,7 @@ export class CustomerService {
       password: hashedPassword
     });
 
-    const accessToken = await this.jwtService.generateToken({
+    const accessToken = JwtService.generate({
       sub: customer.id,
       email: customer.email,
       enabled: customer.enabled
@@ -119,7 +117,7 @@ export class CustomerService {
       return new InvalidCredentialsError();
     }
 
-    const accessToken = await this.jwtService.generateToken({
+    const accessToken = await JwtService.generate({
       sub: customer.id,
       email: customer.email,
       enabled: customer.enabled

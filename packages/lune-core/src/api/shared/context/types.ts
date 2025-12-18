@@ -1,4 +1,3 @@
-import type { JwtService } from '@/libs/jwt';
 import type { Transaction } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 import type { Repositories } from '@/persistence/repositories/build-repositories';
@@ -12,7 +11,6 @@ export type ExecutionContext = {
   runWithoutRLS: <T>(fn: () => Promise<T>) => Promise<T>;
   currentUser: CurrentUser | null;
   repositories: Repositories;
-  jwtService: JwtService;
   loaders: Loaders;
   storefront?: StorefrontContext;
 };

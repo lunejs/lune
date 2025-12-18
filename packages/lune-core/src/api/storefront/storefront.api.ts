@@ -2,9 +2,9 @@ import path from 'node:path';
 
 import type { YogaInitialContext } from 'graphql-yoga';
 
-import type { JwtService } from '@/libs/jwt';
 import type { Database } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
+import { JwtService } from '@/security/jwt';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
@@ -32,10 +32,7 @@ const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const SHOP_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
 export class StorefrontApi extends GraphqlApi {
-  constructor(
-    private readonly database: Database,
-    private readonly jwtService: JwtService
-  ) {
+  constructor(private readonly database: Database) {
     super({
       endpoint: '/storefront-api',
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
@@ -69,11 +66,10 @@ export class StorefrontApi extends GraphqlApi {
       HeaderKeys.StorefrontLocale
     ) as Locale | null;
 
-    const customerJWT = token ? await this.jwtService.verifyToken<CustomerJWT>(token) : null;
+    const customerJWT = token ? await JwtService.verify<CustomerJWT>(token) : null;
 
     return buildContext({
       database: this.database,
-      jwtService: this.jwtService,
       shopId,
       userJWT: null,
       storefront: {

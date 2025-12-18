@@ -7,7 +7,6 @@ import { StorefrontApi } from './api/storefront/storefront.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
 import type { LuneConfig } from './config/lune.config';
-import { JwtService } from './libs/jwt';
 import { LuneLogger } from './logger/lune.logger';
 import type { Database } from './persistence/connection';
 import { createConnection } from './persistence/connection';
@@ -23,7 +22,7 @@ export class LuneServer {
 
     setConfig(pluginsConfig);
 
-    const { auth, db } = getConfig();
+    const { db } = getConfig();
 
     this.app = express();
 
@@ -34,12 +33,11 @@ export class LuneServer {
     );
 
     this.database = createConnection(db.url);
-    const jwtService = new JwtService({ secretKey: auth.jwtSecret, expiresIn: auth.jwtExpiresIn });
 
-    const adminApi = new AdminApi(this.database, jwtService);
-    const storefrontApi = new StorefrontApi(this.database, jwtService);
+    const adminApi = new AdminApi(this.database);
+    const storefrontApi = new StorefrontApi(this.database);
 
-    const uploadApi = new UploadApi(this.database, jwtService);
+    const uploadApi = new UploadApi(this.database);
 
     // this.app.use(makeKnexQueryCounter(this.database));
 

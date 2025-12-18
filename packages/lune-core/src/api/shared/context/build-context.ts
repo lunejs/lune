@@ -1,4 +1,3 @@
-import type { JwtService } from '@/libs/jwt';
 import { LuneLogger } from '@/logger/lune.logger';
 import type { Database } from '@/persistence/connection';
 import { buildRepositories } from '@/persistence/repositories/build-repositories';
@@ -11,7 +10,7 @@ import type { ExecutionContext, StorefrontContext } from './types';
 
 export async function buildContext(input: Input): Promise<ExecutionContext> {
   try {
-    const { database, jwtService, shopId, userJWT, storefront } = input;
+    const { database, shopId, userJWT, storefront } = input;
 
     const trx = await database.transaction();
 
@@ -22,7 +21,6 @@ export async function buildContext(input: Input): Promise<ExecutionContext> {
     return {
       trx,
       shopId,
-      jwtService,
       runWithoutRLS: runWithoutRLS(trx, shopId, ownerId),
       ownerId,
       currentUser: userJWT ? { id: userJWT?.sub ?? '', email: userJWT?.email ?? '' } : null,
@@ -38,7 +36,6 @@ export async function buildContext(input: Input): Promise<ExecutionContext> {
 
 type Input = {
   database: Database;
-  jwtService: JwtService;
   shopId: string | null;
   userJWT: UserJWT | null;
   variables?: Record<string, unknown>;

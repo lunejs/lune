@@ -2,8 +2,8 @@ import path from 'node:path';
 
 import type { YogaInitialContext } from 'graphql-yoga';
 
-import type { JwtService } from '@/libs/jwt';
 import type { Database } from '@/persistence/connection';
+import { JwtService } from '@/security/jwt';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
@@ -38,10 +38,7 @@ const SHARED_TYPE_PATH = path.join(__dirname, '../shared/gql/**/*.gql');
 const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
 export class AdminApi extends GraphqlApi {
-  constructor(
-    private readonly database: Database,
-    private readonly jwtService: JwtService
-  ) {
+  constructor(private readonly database: Database) {
     super({
       endpoint: '/admin-api',
       typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],
@@ -78,11 +75,10 @@ export class AdminApi extends GraphqlApi {
     const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
 
-    const userJWT = token ? await this.jwtService.verifyToken<UserJWT>(token) : null;
+    const userJWT = token ? await JwtService.verify<UserJWT>(token) : null;
 
     return buildContext({
       database: this.database,
-      jwtService: this.jwtService,
       shopId,
       userJWT,
       variables: initialContext.params.variables

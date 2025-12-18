@@ -5,7 +5,6 @@ import knex from 'knex';
 import { buildContext } from '@/api/shared/context/build-context';
 import type { UserJWT } from '@/api/shared/types/api.types';
 import { setConfig } from '@/config/config';
-import { JwtService } from '@/libs/jwt';
 import type { Database, Transaction } from '@/persistence/connection';
 
 import { FixtureDefaults } from './default-fixtures';
@@ -85,7 +84,6 @@ export class TestUtils {
   buildContext(shopId: string, userJWT: UserJWT) {
     return buildContext({
       database: this.db,
-      jwtService: new JwtService({ expiresIn: Infinity, secretKey: 'secret' }),
       shopId,
       userJWT
     });
