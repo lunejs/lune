@@ -55,6 +55,13 @@ export * from './config/strategies/order-code/order-code.strategy';
 export * from './errors/lune.error';
 
 /**
+ * Errors
+ */
+export * from './event-bus';
+export * from './event-bus/events/customer.event';
+export * from './event-bus/events/order.event';
+
+/**
  * Libs
  */
 export * from './libs/slug';

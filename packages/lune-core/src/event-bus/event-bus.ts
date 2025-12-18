@@ -2,7 +2,7 @@ import EventEmitter from 'node:events';
 
 import type { LuneEvent } from './events/lune.event';
 
-class EventBus {
+export class EventBus {
   private readonly emitter = new EventEmitter();
 
   emit(event: LuneEvent): void {
