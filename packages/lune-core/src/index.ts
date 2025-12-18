@@ -1,6 +1,11 @@
 export * from './server';
 
 /**
+ * Api
+ */
+export * from './api/shared/graphql-api';
+
+/**
  * Business Logic
  */
 export * from './business/address/address.service';

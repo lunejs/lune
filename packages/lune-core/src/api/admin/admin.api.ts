@@ -2,6 +2,9 @@ import path from 'node:path';
 
 import type { YogaInitialContext } from 'graphql-yoga';
 
+import { isTruthy } from '@lune/common';
+
+import { getConfig } from '@/config/config';
 import type { Database } from '@/persistence/connection';
 import { JwtService } from '@/security/jwt';
 
@@ -39,9 +42,15 @@ const ADMIN_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
 export class AdminApi extends GraphqlApi {
   constructor(private readonly database: Database) {
+    const { plugins } = getConfig();
+
+    const pluginsTypePaths = plugins.flatMap(p => p.adminApiExtension?.typePaths).filter(isTruthy);
+
+    const pluginsResolvers = plugins.flatMap(p => p.adminApiExtension?.resolvers).filter(isTruthy);
+
     super({
       endpoint: '/admin-api',
-      typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH],
+      typePaths: [ADMIN_TYPE_PATH, SHARED_TYPE_PATH, ...pluginsTypePaths],
       resolvers: [
         UserResolver,
         ShopResolver,
@@ -62,7 +71,8 @@ export class AdminApi extends GraphqlApi {
         OptionPresetsResolver,
         AssetResolver,
         DiscountResolver,
-        CustomerResolver
+        CustomerResolver,
+        ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

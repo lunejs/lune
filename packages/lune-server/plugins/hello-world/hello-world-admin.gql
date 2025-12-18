@@ -1,0 +1,7 @@
+type AdminHello {
+  foo: String!
+}
+
+type Query {
+  adminHello: AdminHello!
+}

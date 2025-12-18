@@ -12,6 +12,7 @@ import {
   DummyPaymentHandler,
 } from '@lune/core';
 import { config } from 'dotenv';
+import { HelloWorldPlugin } from './plugins/hello-world/hello-world-plugin';
 
 config();
 
@@ -47,7 +48,11 @@ const luneServer = new LuneServer({
   logger: {
     levels: ['*'],
   },
-  plugins: [new AssetServerPlugin(), new AdminUiServerPlugin()],
+  plugins: [
+    new AssetServerPlugin(),
+    new AdminUiServerPlugin(),
+    new HelloWorldPlugin(),
+  ],
 });
 
 luneServer.start();

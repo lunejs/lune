@@ -2,6 +2,9 @@ import path from 'node:path';
 
 import type { YogaInitialContext } from 'graphql-yoga';
 
+import { isTruthy } from '@lune/common';
+
+import { getConfig } from '@/config/config';
 import type { Database } from '@/persistence/connection';
 import type { Locale } from '@/persistence/entities/locale';
 import { JwtService } from '@/security/jwt';
@@ -33,9 +36,19 @@ const SHOP_TYPE_PATH = path.join(__dirname, './**/*.gql');
 
 export class StorefrontApi extends GraphqlApi {
   constructor(private readonly database: Database) {
+    const { plugins } = getConfig();
+
+    const pluginsTypePaths = plugins
+      .flatMap(p => p.storefrontApiExtension?.typePaths)
+      .filter(isTruthy);
+
+    const pluginsResolvers = plugins
+      .flatMap(p => p.storefrontApiExtension?.resolvers)
+      .filter(isTruthy);
+
     super({
       endpoint: '/storefront-api',
-      typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH],
+      typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH, ...pluginsTypePaths],
       resolvers: [
         ProductResolver,
         ProductFieldResolver,
@@ -49,7 +62,8 @@ export class StorefrontApi extends GraphqlApi {
         OptionValueFieldResolver,
         LocationFieldResolver,
         CustomerResolver,
-        AddressResolver
+        AddressResolver,
+        ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
       plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]

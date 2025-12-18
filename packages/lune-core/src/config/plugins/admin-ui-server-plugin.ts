@@ -16,7 +16,6 @@ export class AdminUiServerPlugin extends LunePlugin {
     const { folder, renderPath } = AdminUiServerPlugin.getOptions(options);
 
     super({
-      name: 'AdminUiServerPlugin',
       register(app) {
         app.use(renderPath, express.static(join(process.cwd(), folder)));
 

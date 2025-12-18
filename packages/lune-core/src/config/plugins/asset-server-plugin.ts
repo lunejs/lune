@@ -18,7 +18,6 @@ export class AssetServerPlugin extends LunePlugin {
     const { folder, route } = AssetServerPlugin.getOptions(options);
 
     super({
-      name: 'AssetServerPlugin',
       register(app) {
         app.use(
           route,

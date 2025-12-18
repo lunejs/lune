@@ -1,5 +1,6 @@
 import type express from 'express';
 
+import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type { LuneConfig } from '@/config/lune.config';
 
 /**
@@ -17,6 +18,8 @@ export class LunePlugin {
   config?: LunePluginConfig['config'];
   register?: LunePluginConfig['register'];
   onStart?: LunePluginConfig['onStart'];
+  adminApiExtension?: LunePluginConfig['adminApiExtension'];
+  storefrontApiExtension?: LunePluginConfig['storefrontApiExtension'];
 
   constructor(private readonly pluginConfig: LunePluginConfig) {
     Object.assign(this, pluginConfig);
@@ -24,13 +27,6 @@ export class LunePlugin {
 }
 
 type LunePluginConfig = {
-  /**
-   * Plugin name
-   *
-   * @description
-   * A name to identify the plugin.
-   */
-  name: string;
   /**
    * Config function
    *
@@ -57,4 +53,42 @@ type LunePluginConfig = {
    * Runs just after the app is served
    */
   onStart?(config: LuneConfig): void;
+
+  /**
+   * Storefront api extensions
+   *
+   * @description
+   * storefrontApiExtensions is the way you can extend the storefront graphql api with new types and resolvers.
+   */
+  storefrontApiExtension?: GraphqlApiExtension;
+
+  /**
+   * Admin api extensions
+   *
+   * @description
+   * adminApiExtensions is the way you can extend the admin graphql api with new types and resolvers.
+   */
+  adminApiExtension?: GraphqlApiExtension;
 };
+
+export interface GraphqlApiExtension {
+  /**
+   * Paths to files that contain GraphQL definitions.
+   *
+   * @description
+   * In order to extend graphql api by referencing the files that contain the schema definitions,
+   * You need to provide and absolute path where your schema files are located.
+   *
+   * @example
+   * You should reference your file using an absolute path from the root of the project
+   *
+   * ```ts
+   * typePaths: [path.join(process.cwd(), 'path/to/your/schema.gql')]
+   * ```
+   */
+  typePaths: string[];
+  /**
+   * Resolvers that will be added to the api.
+   */
+  resolvers: GraphqlApiResolver[];
+}

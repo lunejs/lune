@@ -1,0 +1,7 @@
+type StorefrontHello {
+  foo: String!
+}
+
+type Query {
+  storefrontHello: StorefrontHello!
+}
