@@ -1,5 +1,5 @@
 import type { AssetFilters, AssetListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset, AssetTable } from '@/persistence/entities/asset';
 import { AssetFilter } from '@/persistence/filters/asset.filter';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';

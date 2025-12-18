@@ -1,5 +1,5 @@
 import { CollectionContentType } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { CollectionTable } from '@/persistence/entities/collection';
 import { Tables } from '@/persistence/tables';
 import { TestUtils } from '@/tests/utils/test-utils';

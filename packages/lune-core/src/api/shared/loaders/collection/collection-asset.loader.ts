@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset, AssetTable } from '@/persistence/entities/asset';
 import type { CollectionAssetTable } from '@/persistence/entities/collection-asset';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';

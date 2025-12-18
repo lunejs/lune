@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { State, StateTable } from '@/persistence/entities/state';
 import type { ZoneStateTable } from '@/persistence/entities/zone-state';
 import { StateSerializer } from '@/persistence/serializers/state.serializer';

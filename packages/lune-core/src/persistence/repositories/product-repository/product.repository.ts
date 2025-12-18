@@ -1,5 +1,5 @@
 import type { ListInput, ProductListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset } from '@/persistence/entities/asset';
 import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { ID } from '@/persistence/entities/entity';

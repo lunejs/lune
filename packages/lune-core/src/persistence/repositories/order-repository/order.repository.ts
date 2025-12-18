@@ -1,5 +1,5 @@
 import type { OrderListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import { type Order, OrderState, type OrderTable } from '@/persistence/entities/order';
 import { OrderFilter } from '@/persistence/filters/order.filter';
 import { OrderSerializer } from '@/persistence/serializers/order.serializer';

@@ -3,12 +3,12 @@ import { EmailSender } from './senders/sender';
 import { OrderListener } from './listeners/order.listener';
 
 export class EmailPlugin extends LunePlugin {
-  constructor(private readonly config: Config) {
+  constructor(config: Config) {
     const orderListener = new OrderListener(config.sender);
 
     super({
-      register(app) {
-        orderListener.onOrderPlaced();
+      register(_app, database) {
+        orderListener.init(database).registerOnOrderPlacedListener();
       },
     });
   }

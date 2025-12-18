@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { Product, ProductTable } from '@/persistence/entities/product';
 import { ProductFilter } from '@/persistence/filters/product.filter';

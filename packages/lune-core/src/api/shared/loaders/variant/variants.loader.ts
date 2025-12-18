@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Variant, VariantTable } from '@/persistence/entities/variant';
 import { VariantSerializer } from '@/persistence/serializers/variant.serializer';
 import { Tables } from '@/persistence/tables';

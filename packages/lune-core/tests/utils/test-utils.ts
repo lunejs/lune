@@ -5,7 +5,7 @@ import knex from 'knex';
 import { buildContext } from '@/api/shared/context/build-context';
 import type { UserJWT } from '@/api/shared/types/api.types';
 import { setConfig } from '@/config/config';
-import type { Database, Transaction } from '@/persistence/connection';
+import type { Database, Transaction } from '@/persistence/connection/connection';
 
 import { FixtureDefaults } from './default-fixtures';
 import type { Fixture } from './fixtures';

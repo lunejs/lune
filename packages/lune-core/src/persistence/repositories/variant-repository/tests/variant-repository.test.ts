@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { VariantAssetTable } from '@/persistence/entities/variant-asset';
 import type { VariantOptionValueTable } from '@/persistence/entities/variant-option-value';
 import { Tables } from '@/persistence/tables';

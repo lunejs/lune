@@ -2,6 +2,7 @@ import type express from 'express';
 
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type { LuneConfig } from '@/config/lune.config';
+import type { Database } from '@/persistence/connection/connection';
 
 /**
  * Lune plugin interface
@@ -44,7 +45,7 @@ type LunePluginConfig = {
    * Runs after the Express app is created. Register routes, middleware,
    * webhooks, sockets, etc.
    */
-  register?(app: express.Application): void;
+  register?(app: express.Application, database: Database): void;
 
   /**
    * Start function

@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { ID } from '@/persistence/entities/entity';
 import type { OptionValue, OptionValueTable } from '@/persistence/entities/option_value';
 import { OptionValueSerializer } from '@/persistence/serializers/option-value.serializer';

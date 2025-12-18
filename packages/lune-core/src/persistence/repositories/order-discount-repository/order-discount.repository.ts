@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { ID } from '@/persistence/entities/entity';
 import type { OrderDiscount, OrderDiscountTable } from '@/persistence/entities/order-discount';
 import { OrderDiscountSerializer } from '@/persistence/serializers/order-discount.serializer';

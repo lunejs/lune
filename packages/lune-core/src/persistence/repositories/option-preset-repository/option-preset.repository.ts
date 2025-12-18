@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { OptionPreset, OptionPresetTable } from '@/persistence/entities/option-preset';
 import { OptionPresetSerializer } from '@/persistence/serializers/option-preset.serializer';
 import { Tables } from '@/persistence/tables';

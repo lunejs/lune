@@ -1,5 +1,5 @@
 import type { DiscountListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Discount, DiscountTable } from '@/persistence/entities/discount';
 import { DiscountFilter } from '@/persistence/filters/discount.filter';
 import { DiscountSerializer } from '@/persistence/serializers/discount.serializer';

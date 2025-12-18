@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset } from '@/persistence/entities/asset';
 import type { ID } from '@/persistence/entities/entity';
 import type { OptionValue } from '@/persistence/entities/option_value';

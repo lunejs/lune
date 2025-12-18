@@ -1,7 +1,7 @@
 import { createOptionLocalizationLoader } from '@/api/storefront/loaders/option-localization.loader';
 import { createOptionValueLocalizationLoader } from '@/api/storefront/loaders/option-value-localization.loader copy';
 import { createProductLocalizationLoader } from '@/api/storefront/loaders/product-localization.loader';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Locale } from '@/persistence/entities/locale';
 
 import { createAddressCountryLoader } from './address/address-country.loader';

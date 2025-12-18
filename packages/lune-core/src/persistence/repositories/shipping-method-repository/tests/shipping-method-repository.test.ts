@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { ShippingMethodRepository } from '../shipping-method.repository';

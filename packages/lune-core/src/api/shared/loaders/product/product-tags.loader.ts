@@ -1,7 +1,7 @@
 // loaders/product-tags.loader.ts
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { Tag, TagTable } from '@/persistence/entities/tag';
 import { TagSerializer } from '@/persistence/serializers/tag.serializer';

@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { OrderLine, OrderLineTable } from '@/persistence/entities/order-line';
 import { OrderLineSerializer } from '@/persistence/serializers/order_line.serializer';
 import { Tables } from '@/persistence/tables';

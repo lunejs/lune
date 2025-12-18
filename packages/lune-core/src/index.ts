@@ -74,6 +74,7 @@ export * from './migration/migration';
 /**
  * Persistence - Entities
  */
+export * from './persistence/connection/types';
 export * from './persistence/entities/address';
 export * from './persistence/entities/asset';
 export * from './persistence/entities/collection';

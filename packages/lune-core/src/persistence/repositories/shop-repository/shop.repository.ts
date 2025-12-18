@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Shop, ShopTable } from '@/persistence/entities/shop';
 import { ShopSerializer } from '@/persistence/serializers/shop.serializer';
 import { Tables } from '@/persistence/tables';

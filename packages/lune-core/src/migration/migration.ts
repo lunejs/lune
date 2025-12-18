@@ -1,7 +1,7 @@
 import kleur from 'kleur';
 import path from 'path';
 
-import { createConnection } from '@/persistence/connection';
+import { createConnection } from '@/persistence/connection/connection';
 const { green } = kleur;
 
 export class LuneMigration {

@@ -8,5 +8,6 @@ export const createConnection = (url: string): Database => {
   });
 };
 
+// TODO: remove this and use the ones in types.ts
 export type Database = knex.Knex<any, unknown[]>;
 export type Transaction = Knex.Transaction<any, any[]>;

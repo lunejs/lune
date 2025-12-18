@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import { OrderState } from '@/persistence/entities/order';
 import { Tables } from '@/persistence/tables';
 

@@ -1,5 +1,5 @@
 import type { AssetInEntity, CollectionListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset } from '@/persistence/entities/asset';
 import type { Collection, CollectionTable } from '@/persistence/entities/collection';
 import type { CollectionAssetTable } from '@/persistence/entities/collection-asset';

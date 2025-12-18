@@ -1,7 +1,7 @@
 import { OrderBy } from '@/api/shared/types/graphql';
 import { Tables } from '@/persistence/tables';
 
-import type { Transaction } from '../../connection';
+import type { Transaction } from '../../connection/connection';
 import type { Serializer } from '../../serializers/serializer';
 import { RepositoryError } from '../repository.error';
 

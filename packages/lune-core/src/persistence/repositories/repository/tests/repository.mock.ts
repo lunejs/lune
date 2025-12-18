@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import { Serializer } from '@/persistence/serializers/serializer';
 import type { Tables } from '@/persistence/tables';
 

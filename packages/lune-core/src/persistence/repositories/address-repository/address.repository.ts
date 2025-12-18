@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Address, AddressTable } from '@/persistence/entities/address';
 import { AddressSerializer } from '@/persistence/serializers/address.serializer';
 import { Tables } from '@/persistence/tables';

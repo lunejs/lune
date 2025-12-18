@@ -1,7 +1,7 @@
 import { LunePrice } from '@lune/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { OptionTable } from '@/persistence/entities/option';
 import type { ProductAssetTable } from '@/persistence/entities/product-asset';

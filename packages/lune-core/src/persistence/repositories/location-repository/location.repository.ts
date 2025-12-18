@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Location, LocationTable } from '@/persistence/entities/location';
 import { LocationSerializer } from '@/persistence/serializers/location.serializer';
 import { Tables } from '@/persistence/tables';

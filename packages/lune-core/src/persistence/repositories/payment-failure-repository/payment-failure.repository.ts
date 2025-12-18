@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { PaymentFailure, PaymentFailureTable } from '@/persistence/entities/payment-failure';
 import { PaymentFailureSerializer } from '@/persistence/serializers/payment-failure.serializer';
 import { Tables } from '@/persistence/tables';

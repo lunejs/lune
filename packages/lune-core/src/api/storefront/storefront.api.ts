@@ -5,7 +5,7 @@ import type { YogaInitialContext } from 'graphql-yoga';
 import { isTruthy } from '@lune/common';
 
 import { getConfig } from '@/config/config';
-import type { Database } from '@/persistence/connection';
+import type { Database } from '@/persistence/connection/connection';
 import type { Locale } from '@/persistence/entities/locale';
 import { JwtService } from '@/security/jwt';
 

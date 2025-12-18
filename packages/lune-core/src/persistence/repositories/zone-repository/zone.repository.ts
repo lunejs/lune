@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { ID } from '@/persistence/entities/entity';
 import type { Zone, ZoneTable } from '@/persistence/entities/zone';
 import type { ZoneStateTable } from '@/persistence/entities/zone-state';

@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { InStorePickup, InStorePickupTable } from '@/persistence/entities/in-store-pickup';
 import { InStorePickupSerializer } from '@/persistence/serializers/in-store-pickup.serializer';
 import { Tables } from '@/persistence/tables';

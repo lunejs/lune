@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset, AssetTable } from '@/persistence/entities/asset';
 import type { ID } from '@/persistence/entities/entity';
 import type { VariantAssetTable } from '@/persistence/entities/variant-asset';

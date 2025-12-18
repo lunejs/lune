@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Collection, CollectionTable } from '@/persistence/entities/collection';
 import { CollectionSerializer } from '@/persistence/serializers/collection.serializer';
 import { Tables } from '@/persistence/tables';

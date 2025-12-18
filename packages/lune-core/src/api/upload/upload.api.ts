@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import { JwtService } from '@/security/jwt/jwt';
-import type { Database } from '@/persistence/connection';
+import type { Database } from '@/persistence/connection/connection';
 
 import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';

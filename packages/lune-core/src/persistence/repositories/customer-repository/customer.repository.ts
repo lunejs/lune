@@ -1,5 +1,5 @@
 import type { CustomerListInput } from '@/api/shared/types/graphql';
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Customer, CustomerTable } from '@/persistence/entities/customer';
 import { CustomerFilter } from '@/persistence/filters/customer.filter';
 import { CustomerSerializer } from '@/persistence/serializers/customer.serializer';

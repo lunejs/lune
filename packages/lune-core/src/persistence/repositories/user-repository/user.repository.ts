@@ -1,7 +1,7 @@
 import type { ID } from '@/persistence/entities/entity';
 import { UserSerializer } from '@/persistence/serializers/user.serializer';
 
-import type { Transaction } from '../../connection';
+import type { Transaction } from '../../connection/connection';
 import type { User, UserTable } from '../../entities/user';
 import { Tables } from '../../tables';
 import { Repository } from '../repository';

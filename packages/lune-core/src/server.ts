@@ -9,8 +9,8 @@ import { StorefrontApi } from './api/storefront/storefront.api';
 import { UploadApi } from './api/upload/upload.api';
 import { getConfig, setConfig } from './config/config';
 import type { LuneConfig } from './config/lune.config';
-import type { Database } from './persistence/connection';
-import { createConnection } from './persistence/connection';
+import type { Database } from './persistence/connection/connection';
+import { createConnection } from './persistence/connection/connection';
 
 export class LuneServer {
   private app: express.Application;
@@ -93,7 +93,7 @@ export class LuneServer {
 
     for (const plugin of plugins) {
       if (typeof plugin.register === 'function') {
-        plugin.register(this.app);
+        plugin.register(this.app, this.database);
       }
     }
   }

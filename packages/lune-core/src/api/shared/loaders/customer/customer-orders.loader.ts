@@ -1,4 +1,4 @@
-import type { Transaction } from '@/persistence/connection';
+import type { Transaction } from '@/persistence/connection/connection';
 import type { Order } from '@/persistence/entities/order';
 import { OrderFilter } from '@/persistence/filters/order.filter';
 import { OrderSerializer } from '@/persistence/serializers/order.serializer';
