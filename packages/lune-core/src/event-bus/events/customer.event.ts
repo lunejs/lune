@@ -1,5 +1,6 @@
 import type { ID } from '@/persistence/entities/entity';
 
+import type { LuneEventContext } from './lune.event';
 import { LuneEvent } from './lune.event';
 
 export enum CustomerEvent {
@@ -12,9 +13,9 @@ export enum CustomerEvent {
  */
 export class CustomerRegisteredEvent extends LuneEvent {
   constructor(
-    public readonly customerId: ID,
-    public readonly email: string
+    public readonly ctx: LuneEventContext,
+    public readonly customerId: ID
   ) {
-    super(CustomerEvent.Registered);
+    super(CustomerEvent.Registered, ctx);
   }
 }

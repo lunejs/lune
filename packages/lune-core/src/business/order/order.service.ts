@@ -16,6 +16,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
 import { eventBus } from '@/event-bus';
+import { buildEventContext } from '@/event-bus/events/lune.event';
 import {
   OrderCanceledEvent,
   OrderCompletedEvent,
@@ -753,7 +754,7 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderPlacedEvent(orderUpdated.id));
+    eventBus.emit(new OrderPlacedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
 
     return orderUpdated;
   }
@@ -772,7 +773,7 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderProcessedEvent(orderUpdated.id));
+    eventBus.emit(new OrderProcessedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
 
     return orderUpdated;
   }
@@ -803,7 +804,9 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderShippedEvent(orderUpdated.id, input.trackingCode, input.carrier));
+    eventBus.emit(
+      new OrderShippedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id, input)
+    );
 
     return orderUpdated;
   }
@@ -832,7 +835,9 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderReadyForPickupEvent(orderUpdated.id));
+    eventBus.emit(
+      new OrderReadyForPickupEvent(buildEventContext(this.ctx.shopId), orderUpdated.id)
+    );
 
     return orderUpdated;
   }
@@ -867,7 +872,7 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderDeliveredEvent(orderUpdated.id));
+    eventBus.emit(new OrderDeliveredEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
 
     return orderUpdated;
   }
@@ -887,7 +892,7 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderCompletedEvent(orderUpdated.id));
+    eventBus.emit(new OrderCompletedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
 
     return orderUpdated;
   }
@@ -936,7 +941,9 @@ export class OrderService {
       }
     });
 
-    eventBus.emit(new OrderCanceledEvent(orderUpdated.id, input.reason));
+    eventBus.emit(
+      new OrderCanceledEvent(buildEventContext(this.ctx.shopId), orderUpdated.id, input)
+    );
 
     return orderUpdated;
   }

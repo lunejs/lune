@@ -1,6 +1,6 @@
 import type { ID } from '@/persistence/entities/entity';
 
-import { LuneEvent } from './lune.event';
+import { LuneEvent, type LuneEventContext } from './lune.event';
 
 export enum OrderEvent {
   Placed = 'order.placed',
@@ -17,8 +17,11 @@ export enum OrderEvent {
  * Event emitted when a payment has been added to an order.
  */
 export class OrderPlacedEvent extends LuneEvent {
-  constructor(public readonly orderId: ID) {
-    super(OrderEvent.Placed);
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(OrderEvent.Placed, ctx);
   }
 }
 
@@ -27,8 +30,11 @@ export class OrderPlacedEvent extends LuneEvent {
  * Event emitted when an order has been marked as processed.
  */
 export class OrderProcessedEvent extends LuneEvent {
-  constructor(public readonly orderId: ID) {
-    super(OrderEvent.Processed);
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(OrderEvent.Processed, ctx);
   }
 }
 
@@ -37,22 +43,31 @@ export class OrderProcessedEvent extends LuneEvent {
  * Event emitted when an order has been shipped.
  */
 export class OrderShippedEvent extends LuneEvent {
+  public readonly trackingCode: string;
+  public readonly carrier: string;
+
   constructor(
+    public readonly ctx: LuneEventContext,
     public readonly orderId: ID,
-    public readonly trackingCode: string,
-    public readonly carrier: string
+    input: OrderShippedEventInput
   ) {
-    super(OrderEvent.Shipped);
+    super(OrderEvent.Shipped, ctx);
+    Object.assign(this, input);
   }
 }
+
+type OrderShippedEventInput = { trackingCode: string; carrier: string };
 
 /**
  * @description
  * Event emitted when an order is ready for in-store pickup.
  */
 export class OrderReadyForPickupEvent extends LuneEvent {
-  constructor(public readonly orderId: ID) {
-    super(OrderEvent.ReadyForPickup);
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(OrderEvent.ReadyForPickup, ctx);
   }
 }
 
@@ -61,8 +76,11 @@ export class OrderReadyForPickupEvent extends LuneEvent {
  * Event emitted when an order has been delivered to the customer.
  */
 export class OrderDeliveredEvent extends LuneEvent {
-  constructor(public readonly orderId: ID) {
-    super(OrderEvent.Delivered);
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(OrderEvent.Delivered, ctx);
   }
 }
 
@@ -71,8 +89,11 @@ export class OrderDeliveredEvent extends LuneEvent {
  * Event emitted when an order has been marked as completed.
  */
 export class OrderCompletedEvent extends LuneEvent {
-  constructor(public readonly orderId: ID) {
-    super(OrderEvent.Completed);
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(OrderEvent.Completed, ctx);
   }
 }
 
@@ -81,10 +102,16 @@ export class OrderCompletedEvent extends LuneEvent {
  * Event emitted when an order has been canceled.
  */
 export class OrderCanceledEvent extends LuneEvent {
+  public readonly reason: string;
+
   constructor(
+    public readonly ctx: LuneEventContext,
     public readonly orderId: ID,
-    public readonly reason: string
+    input: OrderCanceledEventInput
   ) {
-    super(OrderEvent.Canceled);
+    super(OrderEvent.Canceled, ctx);
+    Object.assign(this, input);
   }
 }
+
+type OrderCanceledEventInput = { reason: string };
