@@ -15,6 +15,16 @@ import type {
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
 import { getConfig } from '@/config/config';
+import { eventBus } from '@/event-bus';
+import {
+  OrderCanceledEvent,
+  OrderCompletedEvent,
+  OrderDeliveredEvent,
+  OrderPlacedEvent,
+  OrderProcessedEvent,
+  OrderReadyForPickupEvent,
+  OrderShippedEvent
+} from '@/event-bus/events/order.event';
 import type { ID } from '@/persistence/entities/entity';
 import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import { OrderState } from '@/persistence/entities/order';
@@ -24,7 +34,6 @@ import type { CustomerRepository } from '@/persistence/repositories/customer-rep
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
 import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
-import type { InStorePickupRepository } from '@/persistence/repositories/in-store-pickup-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
 import type { OrderCancellationRepository } from '@/persistence/repositories/order-cancellation-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
@@ -68,7 +77,6 @@ export class OrderService {
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
   private readonly inStorePickupFulfillmentRepository: InStorePickupFulfillmentRepository;
-  private readonly inStorePickupRepository: InStorePickupRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
   private readonly orderCancellation: OrderCancellationRepository;
@@ -92,7 +100,6 @@ export class OrderService {
     this.fulfillmentRepository = ctx.repositories.fulfillment;
     this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
     this.inStorePickupFulfillmentRepository = ctx.repositories.inStorePickupFulfillment;
-    this.inStorePickupRepository = ctx.repositories.inStorePickup;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
     this.orderCancellation = ctx.repositories.orderCancellation;
@@ -682,7 +689,7 @@ export class OrderService {
         reason: paymentResult.reason
       });
 
-      // TODO: i don't think this is a good idea, should have internal reason a a public error
+      // TODO: i don't think this is a good idea, should have internal reason or a public error
       return new PaymentFailedError(paymentResult.reason);
     }
 
@@ -737,7 +744,7 @@ export class OrderService {
     const orderCodeStrategy = getConfig().orders.codeStrategy;
     const orderCode = await orderCodeStrategy.generate(order, this.ctx);
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         state: OrderState.Placed,
@@ -745,6 +752,10 @@ export class OrderService {
         placedAt: new Date()
       }
     });
+
+    eventBus.emit(new OrderPlacedEvent(orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async markAsProcessing(orderId: ID) {
@@ -754,12 +765,16 @@ export class OrderService {
       return new ForbiddenOrderActionError(order.state);
     }
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: orderId },
       data: {
         state: OrderState.Processing
       }
     });
+
+    eventBus.emit(new OrderProcessedEvent(orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async markAsShipped(id: ID, input: MarkOrderAsShippedInput) {
@@ -781,12 +796,16 @@ export class OrderService {
       }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id },
       data: {
         state: OrderState.Shipped
       }
     });
+
+    eventBus.emit(new OrderShippedEvent(orderUpdated.id, input.trackingCode, input.carrier));
+
+    return orderUpdated;
   }
 
   async markAsReadyForPickup(id: ID) {
@@ -806,12 +825,16 @@ export class OrderService {
       }
     });
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id },
       data: {
         state: OrderState.ReadyForPickup
       }
     });
+
+    eventBus.emit(new OrderReadyForPickupEvent(orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async markAsDelivered(id: ID) {
@@ -837,12 +860,16 @@ export class OrderService {
       });
     }
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id },
       data: {
         state: OrderState.Delivered
       }
     });
+
+    eventBus.emit(new OrderDeliveredEvent(orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async markAsCompleted(id: ID) {
@@ -852,13 +879,17 @@ export class OrderService {
       return new ForbiddenOrderActionError(order.state);
     }
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: order.id },
       data: {
         state: OrderState.Completed,
         completedAt: new Date()
       }
     });
+
+    eventBus.emit(new OrderCompletedEvent(orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async cancel(id: ID, input: CancelOrderInput) {
@@ -898,11 +929,15 @@ export class OrderService {
       );
     }
 
-    return await this.repository.update({
+    const orderUpdated = await this.repository.update({
       where: { id: order.id },
       data: {
         state: OrderState.Canceled
       }
     });
+
+    eventBus.emit(new OrderCanceledEvent(orderUpdated.id, input.reason));
+
+    return orderUpdated;
   }
 }
