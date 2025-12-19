@@ -35,7 +35,7 @@ export interface InStorePickupFulfillmentTable extends LuneTable {
   shop_id: string;
 }
 
-interface InStorePickupFulfillmentAddress {
+export interface InStorePickupFulfillmentAddress {
   /**
    * Name of the location
    */

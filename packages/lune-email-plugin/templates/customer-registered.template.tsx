@@ -19,7 +19,6 @@ import {
 
 const Component = ({ customer, shop }: CustomerRegisteredTemplateInput) => {
   const customerName = getFullName(clean(customer)) as string;
-
   return (
     <Html>
       <Head />
