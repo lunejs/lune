@@ -1,5 +1,7 @@
 import { clean, getFullName, isFirst, LunePrice } from '@lune/common';
 import {
+  ApplicationLevel,
+  ApplicationMode,
   Asset,
   Customer,
   Fulfillment,
@@ -38,6 +40,7 @@ import {
   EmailHeaderTitle,
 } from '../shared/Header';
 import { EmailFooter } from '../shared/Footer';
+import { OrderSummary } from './shared/order-summary';
 
 const Component = ({
   shop,
@@ -79,119 +82,12 @@ const Component = ({
               <EmailHeaderButton>View order</EmailHeaderButton>
             </EmailHeader>
 
-            <Section className="mt-[32px]">
-              <Text className="text-base font-semibold">Order summary</Text>
-              {orderLines.map((line, i) => {
-                return (
-                  <Row style={{ marginTop: !isFirst(i) ? 24 : 0 }}>
-                    <Column className="w-[250px]">
-                      <Img
-                        src={line.image}
-                        alt={line.name}
-                        className="float-left"
-                        width="250px"
-                      />
-                    </Column>
-                    <Column className="align-top pl-3">
-                      <Row>
-                        <Column>
-                          <Text className="m-0 text-[14px] leading-[2] font-medium">
-                            {line.name}
-                          </Text>
-                        </Column>
-                        <Column>
-                          {line.priceBeforeDiscount ? (
-                            <Text className="m-0 text-[14px] leading-[2] font-medium text-right">
-                              <span className="line-through text-[#737373] mr-[4px]">
-                                {line.priceBeforeDiscount}
-                              </span>
-                              <span className="text-red-600">
-                                {line.salePrice}
-                              </span>
-                            </Text>
-                          ) : (
-                            <Text className="m-0 text-[14px] leading-[2] font-medium text-right">
-                              {line.salePrice}
-                            </Text>
-                          )}
-                        </Column>
-                      </Row>
-                      <Text className="m-0 text-[14px] leading-[2] text-[#737373] font-medium">
-                        {line.optionValues.map((ov) => ov.name).join(' / ')}
-                      </Text>
-                    </Column>
-                  </Row>
-                );
-              })}
-              <Hr className="mx-0 my-[26px] w-full border border-[#eaeaea] border-solid" />
-              {order.appliedDiscounts.map((discount) => (
-                <Row>
-                  <Column>
-                    <Text className="m-0 text-[#737373]">{discount.code}</Text>
-                  </Column>
-                  <Column>
-                    <Text className="m-0 text-right text-[#737373]">
-                      {LunePrice.format(discount.discountedAmount)}
-                    </Text>
-                  </Column>
-                </Row>
-              ))}
-              <Row>
-                <Column>
-                  <Text className="m-0 text-[#737373]">
-                    {order.totalQuantity === 1
-                      ? `${order.totalQuantity} Product`
-                      : `${order.totalQuantity} Products`}
-                  </Text>
-                </Column>
-                <Column>
-                  <Text className="m-0 text-right text-[#737373]">
-                    {LunePrice.format(order.subtotal)}
-                  </Text>
-                </Column>
-              </Row>
-              {isShipping && (
-                <Row>
-                  <Column>
-                    <Text className="m-0 text-[#737373]">Shipment</Text>
-                  </Column>
-                  <Column>
-                    <Text className="m-0 text-right text-[#737373]">
-                      {LunePrice.format(fulfillment.total)}
-                    </Text>
-                  </Column>
-                </Row>
-              )}
-              <Row className="mt-[24px]">
-                <Column>
-                  <Text className="m-0 font-semibold">Total</Text>
-                </Column>
-                <Column>
-                  <Text className="m-0 text-right font-semibold">
-                    {LunePrice.format(order.total)}
-                  </Text>
-                </Column>
-              </Row>
-            </Section>
-            <Section className="mt-[24px]">
-              <Text className="m-0 text-sm text-black font-semibold">
-                {isShipping ? 'Shipping to' : 'Picking up at'}
-              </Text>
-              {isShipping ? (
-                <Text className="m-0 text-[14px] text-[#737373]">
-                  {order.shippingAddress?.streetLine1},{' '}
-                  {order.shippingAddress?.city},{' '}
-                  {order.shippingAddress?.stateCode}{' '}
-                  {order.shippingAddress?.postalCode}
-                </Text>
-              ) : (
-                <Text className="m-0 text-[14px] text-[#737373]">
-                  {location?.name}: {location?.address.streetLine1},{' '}
-                  {location?.address.city}, {location?.address.stateCode}{' '}
-                  {location?.address.postalCode}
-                </Text>
-              )}
-            </Section>
+            <OrderSummary
+              fulfillment={fulfillment}
+              location={location}
+              order={order}
+              orderLines={orderLines}
+            />
             <EmailFooter>
               {shop.name} ・88 Colin P Kelly Jr Street ・San Francisco, CA 94107
             </EmailFooter>
@@ -244,7 +140,14 @@ Component.PreviewProps = {
     total: 15000,
     subtotal: 14000,
     totalQuantity: 3,
-    appliedDiscounts: [],
+    appliedDiscounts: [
+      {
+        code: 'SUMMER10',
+        discountedAmount: 10000,
+        applicationMode: 'CODE' as ApplicationMode,
+        applicationLevel: 'ORDER' as ApplicationLevel,
+      },
+    ],
     shippingAddress: {
       fullName: 'John Doe',
       streetLine1: '88 Colin P Kelly Jr Street',
@@ -271,9 +174,9 @@ Component.PreviewProps = {
   },
   fulfillment: {
     id: 'fulfillment-1',
-    type: 'IN_STORE_PICKUP' as FulfillmentType,
-    amount: 0,
-    total: 0,
+    type: 'SHIPPING' as FulfillmentType,
+    amount: 10000,
+    total: 10000,
     orderId: 'order-1',
     createdAt: new Date(),
     updatedAt: new Date(),
