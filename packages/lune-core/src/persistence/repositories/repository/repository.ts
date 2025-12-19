@@ -65,6 +65,9 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
       if (input?.take) query.limit(input.take);
       if (input?.skip) query.offset(input.skip);
       if (input?.where) query.where(this.serializer.serializeWhere(input.where));
+      if (input?.whereIn) {
+        query.whereIn(this.serializer.serializeField(input.whereIn.field), input.whereIn.values);
+      }
 
       if (input?.orderBy) {
         for (const [field, direction] of Object.entries(input.orderBy)) {
@@ -210,6 +213,7 @@ type FindOneOptions<T> = {
 
 type FindManyOptions<T> = {
   where?: Where<T>;
+  whereIn?: { field: Field<T>; values: T[Field<T>][] };
   fields?: Fields<T>;
   take?: number;
   skip?: number;

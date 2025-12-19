@@ -286,6 +286,63 @@ describe('Repository', () => {
 
       expect(result).toHaveLength(0);
     });
+
+    test('returns records that match the whereIn clause', async () => {
+      const ids = [recordsMock[0].id, recordsMock[1].id];
+      const result = await repository.findMany({
+        whereIn: { field: 'id', values: ids }
+      });
+
+      expect(result).toHaveLength(2);
+      expect(result.map(r => r.id)).toEqual(expect.arrayContaining(ids));
+    });
+
+    test('returns records that match the whereIn clause', async () => {
+      const ids = [recordsMock[0].id, recordsMock[0].id];
+      const result = await repository.findMany({
+        whereIn: { field: 'id', values: ids }
+      });
+
+      expect(result).toHaveLength(1);
+      expect(result.map(r => r.id)).toEqual(expect.arrayContaining(ids));
+    });
+
+    test('returns empty array when whereIn values is an empty array', async () => {
+      const result = await repository.findMany({
+        whereIn: { field: 'id', values: [] }
+      });
+
+      expect(result).toHaveLength(0);
+    });
+
+    test('returns empty array when whereIn values do not match any record', async () => {
+      const result = await repository.findMany({
+        whereIn: { field: 'id', values: [TestUtils.generateUUID(), TestUtils.generateUUID()] }
+      });
+
+      expect(result).toHaveLength(0);
+    });
+
+    test('returns all records matching where and whereIn clauses', async () => {
+      const ids = [recordsMock[0].id, recordsMock[1].id, recordsMock[2].id];
+      const result = await repository.findMany({
+        where: { isActive: true },
+        whereIn: { field: 'id', values: ids }
+      });
+
+      expect(result).toHaveLength(2);
+      expect(result.every(r => r.isActive)).toBe(true);
+    });
+
+    test('returns all records matching whereIn clause with non-id field', async () => {
+      const emails = [recordsMock[0].email, recordsMock[2].email];
+      const result = await repository.findMany({
+        whereIn: { field: 'email', values: emails }
+      });
+
+      expect(result).toHaveLength(2);
+      expect(result.map(r => r.email)).toEqual(expect.arrayContaining(emails));
+    });
   });
 
   describe('count', () => {

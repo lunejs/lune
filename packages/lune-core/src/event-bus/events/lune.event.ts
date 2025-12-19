@@ -6,11 +6,11 @@ export class LuneEvent {
 }
 
 export type LuneEventContext = {
-  userId?: string;
+  userId: string | null;
   shopId: string;
 };
 
 export const buildEventContext = (
   shopId: string | undefined | null,
   userId?: string | null
-): LuneEventContext => ({ shopId: shopId as string, userId: userId ?? undefined });
+): LuneEventContext => ({ shopId: shopId as string, userId: userId ?? null });

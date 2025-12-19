@@ -59,6 +59,7 @@ export * from './errors/lune.error';
  */
 export * from './event-bus';
 export * from './event-bus/events/customer.event';
+export * from './event-bus/events/lune.event';
 export * from './event-bus/events/order.event';
 
 /**
@@ -121,6 +122,8 @@ export * from './persistence/entities/variant-asset';
 export * from './persistence/entities/variant-option-value';
 export * from './persistence/entities/zone';
 export * from './persistence/entities/zone-state';
+export * from './persistence/rls';
+export * from './persistence/tables';
 
 /**
  * Persistence - Repositories
