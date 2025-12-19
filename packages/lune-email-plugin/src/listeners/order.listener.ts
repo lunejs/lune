@@ -1,15 +1,22 @@
 import { LuneLogger, LunePrice } from '@lune/common';
 import type {
+  Asset,
+  Customer,
   Database,
   Fulfillment,
   ID,
   InStorePickupFulfillment,
   LuneEvent,
+  OptionValue,
+  Order,
   OrderDeliveredEvent,
+  OrderLine,
   OrderPlacedEvent,
   OrderReadyForPickupEvent,
   OrderShippedEvent,
-  ShippingFulfillment
+  Product,
+  ShippingFulfillment,
+  Variant
 } from '@lune/core';
 import {
   AssetSerializer,
@@ -282,11 +289,11 @@ export class OrderListener {
         customer_id: orderRow.o_customer_id,
         created_at: orderRow.o_created_at,
         updated_at: orderRow.o_updated_at
-      });
+      }) as Order;
 
       // Customer
       const customer = orderRow.c_id
-        ? customerSerializer.deserialize({
+        ? (customerSerializer.deserialize({
             id: orderRow.c_id,
             email: orderRow.c_email,
             first_name: orderRow.c_first_name,
@@ -295,7 +302,7 @@ export class OrderListener {
             enabled: orderRow.c_enabled,
             created_at: orderRow.c_created_at,
             updated_at: orderRow.c_updated_at
-          })
+          }) as Customer)
         : null;
 
       // Fulfillment
@@ -356,7 +363,7 @@ export class OrderListener {
           order_id: row.ol_order_id,
           created_at: row.ol_created_at,
           updated_at: row.ol_updated_at
-        });
+        }) as OrderLine;
 
         const variant = variantSerializer.deserialize({
           id: row.v_id,
@@ -367,7 +374,7 @@ export class OrderListener {
           product_id: row.v_product_id,
           created_at: row.v_created_at,
           updated_at: row.v_updated_at
-        });
+        }) as Variant;
 
         const product = productSerializer.deserialize({
           id: row.p_id,
@@ -376,36 +383,41 @@ export class OrderListener {
           description: row.p_description,
           created_at: row.p_created_at,
           updated_at: row.p_updated_at
-        });
+        }) as Product;
 
         // Assets: variant first, fallback to product
         const vAssets = variantAssetRows
           .filter(a => a.variant_id === row.v_id)
-          .map(a => assetSerializer.deserialize(a));
+          .map(a => assetSerializer.deserialize(a) as Asset);
         const pAssets = productAssetRows
           .filter(a => a.product_id === row.p_id)
-          .map(a => assetSerializer.deserialize(a));
-        const assets = vAssets.length > 0 ? vAssets : pAssets;
+          .map(a => assetSerializer.deserialize(a) as Asset);
 
         // OptionValues
         const optionValues = optionValueRows
           .filter(ov => ov.variant_id === row.v_id)
-          .map(ov => ({
-            id: ov.ov_id,
-            name: ov.ovp_name ?? ov.ov_name,
-            order: ov.ov_order,
-            optionId: ov.ov_option_id,
-            presetId: ov.ov_preset_id,
-            option: { id: ov.o_id, name: ov.o_name },
-            metadata: ov.ovp_metadata ?? null
-          }));
+          .map(
+            ov =>
+              ({
+                id: ov.ov_id,
+                name: ov.ovp_name ?? ov.ov_name,
+                order: ov.ov_order,
+                optionId: ov.ov_option_id,
+                presetId: ov.ov_preset_id,
+                option: { id: ov.o_id, name: ov.o_name },
+                metadata: ov.ovp_metadata ?? null
+              }) as OptionValue & { option: { id: string; name: string }; metadata: any }
+          );
 
         return {
           ...line,
           variant: {
             ...variant,
-            product,
-            assets,
+            product: {
+              ...product,
+              assets: pAssets
+            },
+            assets: vAssets,
             optionValues
           }
         };
@@ -432,16 +444,18 @@ export class OrderListener {
 
     const orderLines = lines.map(line => {
       const { variant } = line;
-      const hasDiscount =
-        variant.comparisonPrice && variant.comparisonPrice > (variant.salePrice as number);
-      const firstAsset = variant.assets[0];
+      const priceBeforeDiscount = line.appliedDiscounts.length
+        ? line.lineSubtotal
+        : variant.comparisonPrice;
+
+      const image = variant.assets[0]?.source ?? variant.product.assets[0]?.source;
 
       return {
         name: variant.product.name,
-        image: firstAsset?.source ?? '',
-        salePrice: LunePrice.format(line.unitPrice as number),
-        priceBeforeDiscount: hasDiscount
-          ? LunePrice.format(variant.comparisonPrice ?? 0) // TODO: make this ok
+        image: image,
+        salePrice: LunePrice.format(line.lineTotal),
+        priceBeforeDiscount: priceBeforeDiscount
+          ? LunePrice.format(priceBeforeDiscount)
           : undefined,
         optionValues: variant.optionValues.map(ov => ({
           id: ov.id,
@@ -462,7 +476,6 @@ export class OrderListener {
   }
 }
 
-// add eslint (lune config) and prettier
 // type safe getOrderForEmail method
 // provide more options (replace templates?, use shared components for creating my own templates?)
 // start using them
