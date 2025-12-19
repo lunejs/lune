@@ -13,15 +13,18 @@
     "dev": "email dev --dir templates"
   },
   "peerDependencies": {
-    "@lune/core": "*",
-    "@lune/common": "*"
+    "@lune/common": "*",
+    "@lune/core": "*"
   },
   "devDependencies": {
-    "@lune/core": "*",
     "@lune/common": "*",
+    "@lune/core": "*",
+    "@lune/eslint-config": "*",
     "@react-email/preview-server": "5.0.8",
     "@types/nodemailer": "^7.0.4",
     "@types/react": "^19.2.3",
+    "eslint": "^9.39.2",
+    "prettier": "^3.7.4",
     "react-email": "5.0.8",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3"

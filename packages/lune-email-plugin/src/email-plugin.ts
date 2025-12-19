@@ -1,7 +1,7 @@
 import { LunePlugin } from '@lune/core';
-import { EmailSender } from './senders/sender';
+
 import { OrderListener } from './listeners/order.listener';
-import { EmailPluginConfig } from './email-plugin.types';
+import type { EmailPluginConfig } from './email-plugin.types';
 
 export class EmailPlugin extends LunePlugin {
   constructor(config: EmailPluginConfig) {
@@ -15,7 +15,7 @@ export class EmailPlugin extends LunePlugin {
           .registerOnOrderShippedListener()
           .registerOnOrderReadyForPickupListener()
           .registerOnOrderDeliveredListener();
-      },
+      }
     });
   }
 }

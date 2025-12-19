@@ -2,26 +2,20 @@ import { clean, getFullName } from '@lune/common';
 import { Customer, Shop } from '@lune/core';
 import {
   Body,
-  Button,
   Container,
   Head,
-  Heading,
-  Hr,
   Html,
-  Img,
   Preview,
-  Section,
   Tailwind,
-  Text,
   pixelBasedPreset,
-  render,
+  render
 } from '@react-email/components';
 import {
   EmailHeader,
   EmailHeaderButton,
   EmailHeaderImage,
   EmailHeaderSubtitle,
-  EmailHeaderTitle,
+  EmailHeaderTitle
 } from './shared/Header';
 import { EmailFooter } from './shared/Footer';
 
@@ -32,23 +26,18 @@ const Component = ({ customer, shop }: CustomerRegisteredTemplateInput) => {
       <Head />
       <Tailwind
         config={{
-          presets: [pixelBasedPreset],
+          presets: [pixelBasedPreset]
         }}
       >
         <Body className="mx-auto my-auto bg-white font-sans p-[32px]">
           <Preview>Welcome {customerName}</Preview>
           <Container className="mx-auto max-w-[500px] w-full">
             <EmailHeader>
-              <EmailHeaderImage
-                src={shop.logo as string}
-                width="40"
-                height="37"
-                alt={shop.name}
-              />
+              <EmailHeaderImage src={shop.logo as string} width="40" height="37" alt={shop.name} />
               <EmailHeaderTitle>Welcome to {shop.name}!</EmailHeaderTitle>
               <EmailHeaderSubtitle>
-                Hi <strong>{customerName}</strong>, next time you shop with us
-                log in for faster checkout.
+                Hi <strong>{customerName}</strong>, next time you shop with us log in for faster
+                checkout.
               </EmailHeaderSubtitle>
               <EmailHeaderButton>Visit our store</EmailHeaderButton>
             </EmailHeader>
@@ -75,16 +64,15 @@ Component.PreviewProps = {
     email: 'jhondoe@gmail.com',
     id: '123',
     createdAt: new Date(),
-    updatedAt: new Date(),
+    updatedAt: new Date()
   },
   shop: {
     name: 'Acme',
-    logo: 'https://res.cloudinary.com/dnvp4s8pe/image/upload/v1766093488/yhvbtqvleoexe82d4twm.png',
-  },
+    logo: 'https://res.cloudinary.com/dnvp4s8pe/image/upload/v1766093488/yhvbtqvleoexe82d4twm.png'
+  }
 } as CustomerRegisteredTemplateInput;
 
 export default Component;
 
-export const createCustomerRegisteredMail = (
-  input: CustomerRegisteredTemplateInput
-) => render(<Component {...input} />);
+export const createCustomerRegisteredMail = (input: CustomerRegisteredTemplateInput) =>
+  render(<Component {...input} />);

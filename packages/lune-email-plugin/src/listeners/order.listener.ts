@@ -1,54 +1,33 @@
-import {
-  AssetRepository,
-  AssetSerializer,
-  CustomerRepository,
-  CustomerSerializer,
+import { LuneLogger, LunePrice } from '@lune/common';
+import type {
   Database,
-  enableRLS,
-  eventBus,
   Fulfillment,
-  FulfillmentRepository,
-  FulfillmentSerializer,
-  FulfillmentType,
   ID,
   InStorePickupFulfillment,
-  InStorePickupFulfillmentRepository,
-  InStorePickupFulfillmentSerializer,
-  LocationRepository,
   LuneEvent,
-  Option,
-  OptionPresetRepository,
-  OptionRepository,
-  OptionSerializer,
-  OptionValuePresetRepository,
-  OptionValuePresetSerializer,
-  OptionValueRepository,
-  OptionValueSerializer,
-  OrderCanceledEvent,
   OrderDeliveredEvent,
-  OrderEvent,
-  OrderLineRepository,
-  OrderLineSerializer,
   OrderPlacedEvent,
   OrderReadyForPickupEvent,
-  OrderRepository,
-  OrderSerializer,
   OrderShippedEvent,
-  ProductRepository,
-  ProductSerializer,
-  ShippingFulfillment,
-  ShippingFulfillmentRepository,
-  ShippingFulfillmentSerializer,
-  Shop,
-  ShopRepository,
-  Tables,
-  UserRepository,
-  VariantRepository,
-  VariantSerializer,
+  ShippingFulfillment
 } from '@lune/core';
-import { EmailSender } from '../senders/sender';
-import { LuneLogger, LunePrice } from '@lune/common';
-import { EmailPluginConfig } from '../email-plugin.types';
+import {
+  AssetSerializer,
+  CustomerSerializer,
+  enableRLS,
+  eventBus,
+  FulfillmentSerializer,
+  InStorePickupFulfillmentSerializer,
+  OrderEvent,
+  OrderLineSerializer,
+  OrderSerializer,
+  ProductSerializer,
+  ShippingFulfillmentSerializer,
+  Tables,
+  VariantSerializer
+} from '@lune/core';
+
+import type { EmailPluginConfig } from '../email-plugin.types';
 
 export class OrderListener {
   private database: Database | undefined;
@@ -88,9 +67,7 @@ export class OrderListener {
   registerOnOrderShippedListener() {
     eventBus.on(OrderEvent.Shipped, async (event: OrderShippedEvent) => {
       if (this.pluginConfig.devMode) {
-        LuneLogger.info(
-          `email sent for order ${event.orderId} (order shipped)`
-        );
+        LuneLogger.info(`email sent for order ${event.orderId} (order shipped)`);
 
         return;
       }
@@ -100,18 +77,13 @@ export class OrderListener {
   }
 
   registerOnOrderReadyForPickupListener() {
-    eventBus.on(
-      OrderEvent.ReadyForPickup,
-      async (event: OrderReadyForPickupEvent) => {
-        if (this.pluginConfig.devMode) {
-          LuneLogger.info(
-            `email sent for order ${event.orderId} (order delivered)`
-          );
+    eventBus.on(OrderEvent.ReadyForPickup, async (event: OrderReadyForPickupEvent) => {
+      if (this.pluginConfig.devMode) {
+        LuneLogger.info(`email sent for order ${event.orderId} (order delivered)`);
 
-          return;
-        }
+        return;
       }
-    );
+    });
 
     return this;
   }
@@ -119,9 +91,7 @@ export class OrderListener {
   registerOnOrderDeliveredListener() {
     eventBus.on(OrderEvent.Delivered, async (event: OrderDeliveredEvent) => {
       if (this.pluginConfig.devMode) {
-        LuneLogger.info(
-          `email sent for order ${event.orderId} (order delivered)`
-        );
+        LuneLogger.info(`email sent for order ${event.orderId} (order delivered)`);
 
         return;
       }
@@ -138,7 +108,7 @@ export class OrderListener {
     await enableRLS({
       trx,
       shopId: event.ctx.shopId,
-      ownerId: event.ctx.userId,
+      ownerId: event.ctx.userId
     });
 
     try {
@@ -147,31 +117,19 @@ export class OrderListener {
       const customerSerializer = new CustomerSerializer();
       const fulfillmentSerializer = new FulfillmentSerializer();
       const shippingFulfillmentSerializer = new ShippingFulfillmentSerializer();
-      const inStorePickupFulfillmentSerializer =
-        new InStorePickupFulfillmentSerializer();
+      const inStorePickupFulfillmentSerializer = new InStorePickupFulfillmentSerializer();
       const orderLineSerializer = new OrderLineSerializer();
       const variantSerializer = new VariantSerializer();
       const productSerializer = new ProductSerializer();
       const assetSerializer = new AssetSerializer();
-      const optionSerializer = new OptionSerializer();
-      const optionValueSerializer = new OptionValueSerializer();
-      const optionValuePresetSerializer = new OptionValuePresetSerializer();
 
       // ============ QUERY 1: Order + Customer + Fulfillment + Details ============
       const orderRow = await trx
         .from({ o: Tables.Order })
         .leftJoin({ c: Tables.Customer }, 'c.id', 'o.customer_id')
         .leftJoin({ f: Tables.Fulfillment }, 'f.order_id', 'o.id')
-        .leftJoin(
-          { sf: Tables.ShippingFulfillment },
-          'sf.fulfillment_id',
-          'f.id'
-        )
-        .leftJoin(
-          { pf: Tables.InStorePickupFulfillment },
-          'pf.fulfillment_id',
-          'f.id'
-        )
+        .leftJoin({ sf: Tables.ShippingFulfillment }, 'sf.fulfillment_id', 'f.id')
+        .leftJoin({ pf: Tables.InStorePickupFulfillment }, 'pf.fulfillment_id', 'f.id')
         .select(
           // Order
           'o.id as o_id',
@@ -261,8 +219,8 @@ export class OrderListener {
         )
         .where('ol.order_id', orderId);
 
-      const variantIds = lineRows.map((r) => r.v_id);
-      const productIds = [...new Set(lineRows.map((r) => r.p_id))];
+      const variantIds = lineRows.map(r => r.v_id);
+      const productIds = [...new Set(lineRows.map(r => r.p_id))];
 
       // ============ QUERY 3: Assets (variant + product) ============
       const [variantAssetRows, productAssetRows] = await Promise.all([
@@ -277,7 +235,7 @@ export class OrderListener {
           .innerJoin({ a: Tables.Asset }, 'a.id', 'pa.asset_id')
           .select('pa.product_id', 'a.*')
           .whereIn('pa.product_id', productIds)
-          .orderBy('pa.order', 'asc'),
+          .orderBy('pa.order', 'asc')
       ]);
 
       // ============ QUERY 4: OptionValues + Options + Presets ============
@@ -285,11 +243,7 @@ export class OrderListener {
         .from({ vov: Tables.VariantOptionValue })
         .innerJoin({ ov: Tables.OptionValue }, 'ov.id', 'vov.option_value_id')
         .innerJoin({ o: Tables.Option }, 'o.id', 'ov.option_id')
-        .leftJoin(
-          { ovp: Tables.OptionValuePreset },
-          'ovp.id',
-          'ov.option_value_preset_id'
-        )
+        .leftJoin({ ovp: Tables.OptionValuePreset }, 'ovp.id', 'ov.option_value_preset_id')
         .select(
           'vov.variant_id',
           // OptionValue
@@ -327,7 +281,7 @@ export class OrderListener {
         shipping_address: orderRow.o_shipping_address,
         customer_id: orderRow.o_customer_id,
         created_at: orderRow.o_created_at,
-        updated_at: orderRow.o_updated_at,
+        updated_at: orderRow.o_updated_at
       });
 
       // Customer
@@ -340,7 +294,7 @@ export class OrderListener {
             phone_number: orderRow.c_phone_number,
             enabled: orderRow.c_enabled,
             created_at: orderRow.c_created_at,
-            updated_at: orderRow.c_updated_at,
+            updated_at: orderRow.c_updated_at
           })
         : null;
 
@@ -359,7 +313,7 @@ export class OrderListener {
           total: orderRow.f_total,
           order_id: orderRow.f_order_id,
           created_at: orderRow.f_created_at,
-          updated_at: orderRow.f_updated_at,
+          updated_at: orderRow.f_updated_at
         }) as Fulfillment;
 
         const shipping = orderRow.sf_id
@@ -371,7 +325,7 @@ export class OrderListener {
               shipped_at: orderRow.sf_shipped_at,
               delivered_at: orderRow.sf_delivered_at,
               fulfillment_id: orderRow.sf_fulfillment_id,
-              shipping_method_id: orderRow.sf_shipping_method_id,
+              shipping_method_id: orderRow.sf_shipping_method_id
             }) as ShippingFulfillment)
           : null;
 
@@ -382,7 +336,7 @@ export class OrderListener {
               ready_at: orderRow.pf_ready_at,
               picked_up_at: orderRow.pf_picked_up_at,
               fulfillment_id: orderRow.pf_fulfillment_id,
-              location_id: orderRow.pf_location_id,
+              location_id: orderRow.pf_location_id
             }) as InStorePickupFulfillment)
           : null;
 
@@ -390,7 +344,7 @@ export class OrderListener {
       }
 
       // Lines con variants, products, assets, optionValues
-      const lines = lineRows.map((row) => {
+      const lines = lineRows.map(row => {
         const line = orderLineSerializer.deserialize({
           id: row.ol_id,
           unit_price: row.ol_unit_price,
@@ -401,7 +355,7 @@ export class OrderListener {
           variant_id: row.ol_variant_id,
           order_id: row.ol_order_id,
           created_at: row.ol_created_at,
-          updated_at: row.ol_updated_at,
+          updated_at: row.ol_updated_at
         });
 
         const variant = variantSerializer.deserialize({
@@ -412,7 +366,7 @@ export class OrderListener {
           sku: row.v_sku,
           product_id: row.v_product_id,
           created_at: row.v_created_at,
-          updated_at: row.v_updated_at,
+          updated_at: row.v_updated_at
         });
 
         const product = productSerializer.deserialize({
@@ -421,29 +375,29 @@ export class OrderListener {
           slug: row.p_slug,
           description: row.p_description,
           created_at: row.p_created_at,
-          updated_at: row.p_updated_at,
+          updated_at: row.p_updated_at
         });
 
         // Assets: variant first, fallback to product
         const vAssets = variantAssetRows
-          .filter((a) => a.variant_id === row.v_id)
-          .map((a) => assetSerializer.deserialize(a));
+          .filter(a => a.variant_id === row.v_id)
+          .map(a => assetSerializer.deserialize(a));
         const pAssets = productAssetRows
-          .filter((a) => a.product_id === row.p_id)
-          .map((a) => assetSerializer.deserialize(a));
+          .filter(a => a.product_id === row.p_id)
+          .map(a => assetSerializer.deserialize(a));
         const assets = vAssets.length > 0 ? vAssets : pAssets;
 
         // OptionValues
         const optionValues = optionValueRows
-          .filter((ov) => ov.variant_id === row.v_id)
-          .map((ov) => ({
+          .filter(ov => ov.variant_id === row.v_id)
+          .map(ov => ({
             id: ov.ov_id,
             name: ov.ovp_name ?? ov.ov_name,
             order: ov.ov_order,
             optionId: ov.ov_option_id,
             presetId: ov.ov_preset_id,
             option: { id: ov.o_id, name: ov.o_name },
-            metadata: ov.ovp_metadata ?? null,
+            metadata: ov.ovp_metadata ?? null
           }));
 
         return {
@@ -452,8 +406,8 @@ export class OrderListener {
             ...variant,
             product,
             assets,
-            optionValues,
-          },
+            optionValues
+          }
         };
       });
 
@@ -466,23 +420,20 @@ export class OrderListener {
     }
   }
 
-  private transformOrderToEmailProps(
-    order: Awaited<ReturnType<typeof this.getOrderForEmail>>
-  ) {
+  private transformOrderToEmailProps(order: Awaited<ReturnType<typeof this.getOrderForEmail>>) {
     const { customer, fulfillment, lines } = order;
 
     const location = fulfillment?.pickup
       ? {
           name: fulfillment.pickup.address?.name,
-          address: fulfillment.pickup.address,
+          address: fulfillment.pickup.address
         }
       : undefined;
 
-    const orderLines = lines.map((line) => {
+    const orderLines = lines.map(line => {
       const { variant } = line;
       const hasDiscount =
-        variant.comparisonPrice &&
-        variant.comparisonPrice > (variant.salePrice as number);
+        variant.comparisonPrice && variant.comparisonPrice > (variant.salePrice as number);
       const firstAsset = variant.assets[0];
 
       return {
@@ -490,23 +441,29 @@ export class OrderListener {
         image: firstAsset?.source ?? '',
         salePrice: LunePrice.format(line.unitPrice as number),
         priceBeforeDiscount: hasDiscount
-          ? LunePrice.format(variant.comparisonPrice!)
+          ? LunePrice.format(variant.comparisonPrice ?? 0) // TODO: make this ok
           : undefined,
-        optionValues: variant.optionValues.map((ov) => ({
+        optionValues: variant.optionValues.map(ov => ({
           id: ov.id,
           name: ov.name ?? '',
           optionName: ov.option?.name ?? '',
-          metadata: ov.metadata ?? {},
-        })),
+          metadata: ov.metadata ?? {}
+        }))
       };
     });
 
     return {
-      customer: customer!,
+      customer,
       order,
-      fulfillment: fulfillment!,
+      fulfillment,
       location,
-      orderLines,
+      orderLines
     };
   }
 }
+
+// add eslint (lune config) and prettier
+// type safe getOrderForEmail method
+// provide more options (replace templates?, use shared components for creating my own templates?)
+// start using them
+// create a dev mailbox? like vendure

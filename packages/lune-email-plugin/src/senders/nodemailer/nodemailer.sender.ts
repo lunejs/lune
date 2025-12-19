@@ -1,5 +1,6 @@
 import * as nodemailer from 'nodemailer';
-import { EmailData, EmailSender } from '../sender';
+
+import type { EmailData, EmailSender } from '../sender';
 
 /**
  * Nodemailer sender interface.
@@ -19,7 +20,7 @@ export class NodemailerSender implements EmailSender {
       from: `${email.from.name} <${email.from.email}>`,
       to: email.to,
       subject: email.subject,
-      html: email.html,
+      html: email.html
     });
   }
 }

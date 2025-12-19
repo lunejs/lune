@@ -1,4 +1,4 @@
-import { EmailSender } from './senders/sender';
+import type { EmailSender } from './senders/sender';
 
 export type EmailPluginConfig =
   | { devMode: true }
