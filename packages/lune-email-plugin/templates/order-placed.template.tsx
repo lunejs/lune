@@ -37,9 +37,10 @@ import {
   EmailHeaderButton,
   EmailHeaderImage,
   EmailHeaderSubtitle,
+  EmailHeaderThumbnail,
   EmailHeaderTitle,
-} from '../shared/Header';
-import { EmailFooter } from '../shared/Footer';
+} from './shared/Header';
+import { EmailFooter } from './shared/Footer';
 import { OrderSummary } from './shared/order-summary';
 
 const Component = ({
@@ -70,7 +71,10 @@ const Component = ({
                 height="37"
                 alt={shop.name}
               />
-              <EmailHeaderTitle>
+              <EmailHeaderThumbnail className="mb-0">
+                {order.code}
+              </EmailHeaderThumbnail>
+              <EmailHeaderTitle className="mt-0">
                 {getFullName(clean(customer))}, thanks for your purchase
               </EmailHeaderTitle>
               <EmailHeaderSubtitle>

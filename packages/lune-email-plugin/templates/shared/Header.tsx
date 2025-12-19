@@ -7,6 +7,17 @@ export const EmailHeader = ({ ...props }: EmailHeaderProps) => {
   return <Section {...props} />;
 };
 
+type EmailHeaderThumbnailProps = ComponentProps<'p'>;
+
+export const EmailHeaderThumbnail = ({
+  className,
+  ...props
+}: EmailHeaderSubtitleProps) => {
+  return (
+    <Text {...props} className={'text-[14px] text-[#737373] ' + className} />
+  );
+};
+
 type EmailHeaderImageProps = ComponentProps<'img'>;
 
 export const EmailHeaderImage = ({ ...props }: EmailHeaderImageProps) => {
@@ -22,7 +33,7 @@ export const EmailHeaderTitle = ({
   return (
     <Heading
       {...props}
-      className={'font-normal text-[24px] text-black !mb-0' + className}
+      className={'font-normal text-[24px] text-black !mb-0 ' + className}
     />
   );
 };
@@ -36,7 +47,7 @@ export const EmailHeaderSubtitle = ({
   return (
     <Text
       {...props}
-      className={'text-[14px] text-black leading-[24px]' + className}
+      className={'text-[14px] text-black leading-[24px] ' + className}
     />
   );
 };
@@ -51,7 +62,7 @@ export const EmailHeaderButton = ({
     <Button
       {...props}
       className={
-        'rounded-md bg-[#000000] px-5 py-3 text-center font-semibold text-[12px] text-white no-underline' +
+        'rounded-md bg-[#000000] px-5 py-3 text-center font-semibold text-[12px] text-white no-underline ' +
         className
       }
     />
