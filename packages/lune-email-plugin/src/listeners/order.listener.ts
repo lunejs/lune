@@ -24,12 +24,16 @@ import {
   OptionValuePresetSerializer,
   OptionValueRepository,
   OptionValueSerializer,
+  OrderCanceledEvent,
+  OrderDeliveredEvent,
   OrderEvent,
   OrderLineRepository,
   OrderLineSerializer,
   OrderPlacedEvent,
+  OrderReadyForPickupEvent,
   OrderRepository,
   OrderSerializer,
+  OrderShippedEvent,
   ProductRepository,
   ProductSerializer,
   ShippingFulfillment,
@@ -43,12 +47,13 @@ import {
   VariantSerializer,
 } from '@lune/core';
 import { EmailSender } from '../senders/sender';
-import { LunePrice } from '@lune/common';
+import { LuneLogger, LunePrice } from '@lune/common';
+import { EmailPluginConfig } from '../email-plugin.types';
 
 export class OrderListener {
   private database: Database | undefined;
 
-  constructor(private readonly sender: EmailSender) {}
+  constructor(private readonly pluginConfig: EmailPluginConfig) {}
 
   init(database: Database) {
     this.database = database;
@@ -56,11 +61,15 @@ export class OrderListener {
     return this;
   }
 
-  async registerOnOrderPlacedListener() {
+  registerOnOrderPlacedListener() {
     eventBus.on(OrderEvent.Placed, async (event: OrderPlacedEvent) => {
-      const order = await this.getOrderForEmail(event.orderId, event);
+      if (this.pluginConfig.devMode) {
+        LuneLogger.info(`email sent for order ${event.orderId} (order placed)`);
 
-      console.log({ order });
+        return;
+      }
+
+      // const order = await this.getOrderForEmail(event.orderId, event);
 
       // this.sender.send({
       //   from: { email: '', name: '' },
@@ -76,166 +85,50 @@ export class OrderListener {
     return this;
   }
 
-  // private async getOrderForEmail1(orderId: ID, event: LuneEvent) {
-  //   if (!this.database) throw new Error('Database is not present');
+  registerOnOrderShippedListener() {
+    eventBus.on(OrderEvent.Shipped, async (event: OrderShippedEvent) => {
+      if (this.pluginConfig.devMode) {
+        LuneLogger.info(
+          `email sent for order ${event.orderId} (order shipped)`
+        );
 
-  //   const trx = await this.database.transaction();
+        return;
+      }
+    });
 
-  //   await enableRLS({
-  //     trx,
-  //     shopId: event.ctx.shopId,
-  //     ownerId: event.ctx.userId,
-  //   });
+    return this;
+  }
 
-  //   try {
-  //     const orderRepo = new OrderRepository(trx);
-  //     const customerRepo = new CustomerRepository(trx);
-  //     const orderLineRepo = new OrderLineRepository(trx);
-  //     const fulfillmentRepo = new FulfillmentRepository(trx);
-  //     const shippingFulfillmentRepo = new ShippingFulfillmentRepository(trx);
-  //     const inStorePickupFulfillmentRepo =
-  //       new InStorePickupFulfillmentRepository(trx);
-  //     const variantRepo = new VariantRepository(trx);
-  //     const productRepo = new ProductRepository(trx);
-  //     const optionRepo = new OptionRepository(trx);
-  //     const optionValuePresetRepo = new OptionValuePresetRepository(trx);
+  registerOnOrderReadyForPickupListener() {
+    eventBus.on(
+      OrderEvent.ReadyForPickup,
+      async (event: OrderReadyForPickupEvent) => {
+        if (this.pluginConfig.devMode) {
+          LuneLogger.info(
+            `email sent for order ${event.orderId} (order delivered)`
+          );
 
-  //     // 1. Order
-  //     const order = await orderRepo.findOneOrThrow({ where: { id: orderId } });
+          return;
+        }
+      }
+    );
 
-  //     // 2. Customer, Fulfillment, Lines en paralelo
-  //     const [customer, fulfillment, lines] = await Promise.all([
-  //       order.customerId
-  //         ? customerRepo.findOneOrThrow({ where: { id: order.customerId } })
-  //         : null,
-  //       fulfillmentRepo.findOne({ where: { orderId: order.id } }),
-  //       orderLineRepo.findMany({ where: { orderId: order.id } }),
-  //     ]);
+    return this;
+  }
 
-  //     // 3. Fulfillment details (shipping o pickup)
-  //     let fulfillmentDetails = null;
-  //     if (fulfillment) {
-  //       if (fulfillment.type === FulfillmentType.SHIPPING) {
-  //         const shipping = await shippingFulfillmentRepo.findOne({
-  //           where: { fulfillmentId: fulfillment.id },
-  //         });
-  //         fulfillmentDetails = { ...fulfillment, shipping, pickup: null };
-  //       } else {
-  //         const pickup = await inStorePickupFulfillmentRepo.findOne({
-  //           where: { fulfillmentId: fulfillment.id },
-  //         });
-  //         fulfillmentDetails = { ...fulfillment, shipping: null, pickup };
-  //       }
-  //     }
+  registerOnOrderDeliveredListener() {
+    eventBus.on(OrderEvent.Delivered, async (event: OrderDeliveredEvent) => {
+      if (this.pluginConfig.devMode) {
+        LuneLogger.info(
+          `email sent for order ${event.orderId} (order delivered)`
+        );
 
-  //     // 4. Variants y Products (batch)
-  //     const variantIds = lines.map((l) => l.variantId);
-  //     const variants = await variantRepo.findMany({
-  //       whereIn: { field: 'id', values: variantIds },
-  //     });
+        return;
+      }
+    });
 
-  //     const productIds = variants.map((v) => v.productId);
-  //     const products = await productRepo.findMany({
-  //       whereIn: { field: 'id', values: productIds },
-  //     });
-
-  //     // 5. Assets para variants y products (batch)
-  //     const [variantAssets, productAssets] = await Promise.all([
-  //       Promise.all(
-  //         variants.map(async (v) => ({
-  //           variantId: v.id,
-  //           assets: await variantRepo.findAssets(v.id),
-  //         }))
-  //       ),
-  //       Promise.all(
-  //         products.map(async (p) => ({
-  //           productId: p.id,
-  //           assets: await productRepo.findAssets(p.id),
-  //         }))
-  //       ),
-  //     ]);
-
-  //     // 6. OptionValues por variant (batch)
-  //     const optionValuesByVariant = await Promise.all(
-  //       variants.map(async (v) => ({
-  //         variantId: v.id,
-  //         optionValues: await variantRepo.findOptionValues(v.id),
-  //       }))
-  //     );
-
-  //     // 7. Options y Presets (batch)
-  //     const allOptionValues = optionValuesByVariant.flatMap(
-  //       (x) => x.optionValues
-  //     );
-  //     const optionIds = [...new Set(allOptionValues.map((ov) => ov.optionId))];
-  //     const presetIds = [
-  //       ...new Set(
-  //         allOptionValues.filter((ov) => ov.presetId).map((ov) => ov.presetId!)
-  //       ),
-  //     ];
-
-  //     const [options, presets] = await Promise.all([
-  //       optionRepo.findMany({ whereIn: { field: 'id', values: optionIds } }),
-  //       presetIds.length > 0
-  //         ? optionValuePresetRepo.findMany({
-  //             whereIn: { field: 'id', values: presetIds },
-  //           })
-  //         : [],
-  //     ]);
-
-  //     // 8. Armar lines con relaciones
-  //     const enhancedLines = lines.map((line) => {
-  //       const variant = variants.find((v) => v.id === line.variantId)!;
-  //       const product = products.find((p) => p.id === variant.productId)!;
-  //       const variantOVs =
-  //         optionValuesByVariant.find((x) => x.variantId === variant.id)
-  //           ?.optionValues ?? [];
-
-  //       // Assets: primero variant, si no hay, usa product
-  //       const vAssets =
-  //         variantAssets.find((x) => x.variantId === variant.id)?.assets ?? [];
-  //       const pAssets =
-  //         productAssets.find((x) => x.productId === product.id)?.assets ?? [];
-  //       const assets = vAssets.length > 0 ? vAssets : pAssets;
-
-  //       const enhancedOptionValues = variantOVs.map((ov) => {
-  //         const option = options.find((o) => o.id === ov.optionId);
-  //         const preset = ov.presetId
-  //           ? presets.find((p) => p.id === ov.presetId)
-  //           : null;
-
-  //         return {
-  //           ...ov,
-  //           option,
-  //           name: preset?.name ?? ov.name,
-  //           metadata: preset?.metadata ?? null,
-  //         };
-  //       });
-
-  //       return {
-  //         ...line,
-  //         variant: {
-  //           ...variant,
-  //           product,
-  //           assets,
-  //           optionValues: enhancedOptionValues,
-  //         },
-  //       };
-  //     });
-
-  //     await trx.commit();
-
-  //     return {
-  //       ...order,
-  //       customer,
-  //       fulfillment: fulfillmentDetails,
-  //       lines: enhancedLines,
-  //     };
-  //   } catch (error) {
-  //     await trx.rollback();
-  //     throw error;
-  //   }
-  // }
+    return this;
+  }
 
   private async getOrderForEmail(orderId: ID, event: LuneEvent) {
     if (!this.database) throw new Error('Database is not present');
@@ -573,7 +466,7 @@ export class OrderListener {
     }
   }
 
-  transformOrderToEmailProps(
+  private transformOrderToEmailProps(
     order: Awaited<ReturnType<typeof this.getOrderForEmail>>
   ) {
     const { customer, fulfillment, lines } = order;
@@ -616,21 +509,4 @@ export class OrderListener {
       orderLines,
     };
   }
-
-  formatPrice(cents: number): string {
-    return `$${(cents / 100).toFixed(2)}`;
-  }
 }
-
-type EnhancedOptionValue = {
-  option: Option | undefined;
-  name: string;
-  metadata: Record<string, any> | null | undefined;
-  deletedAt?: Date | null;
-  order: number;
-  optionId: ID;
-  presetId?: ID | null;
-  id: ID;
-  createdAt: Date;
-  updatedAt: Date;
-};

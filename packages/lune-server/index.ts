@@ -13,6 +13,7 @@ import {
 } from '@lune/core';
 import { config } from 'dotenv';
 import { HelloWorldPlugin } from './plugins/hello-world/hello-world-plugin';
+import { EmailPlugin, NodemailerSender } from '@lune/email-plugin';
 
 config();
 
@@ -52,6 +53,7 @@ const luneServer = new LuneServer({
     new AssetServerPlugin(),
     new AdminUiServerPlugin(),
     new HelloWorldPlugin(),
+    new EmailPlugin({ devMode: true }),
   ],
 });
 
