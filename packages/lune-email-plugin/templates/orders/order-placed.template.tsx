@@ -30,6 +30,14 @@ import {
   pixelBasedPreset,
   render,
 } from '@react-email/components';
+import {
+  EmailHeader,
+  EmailHeaderButton,
+  EmailHeaderImage,
+  EmailHeaderSubtitle,
+  EmailHeaderTitle,
+} from '../shared/Header';
+import { EmailFooter } from '../shared/Footer';
 
 const Component = ({
   shop,
@@ -52,28 +60,25 @@ const Component = ({
         <Body className="mx-auto my-auto bg-white font-sans p-[32px]">
           <Preview>order {order.code as string}</Preview>
           <Container className="mx-auto max-w-[500px] w-full">
-            <Section>
-              <Img
+            <EmailHeader>
+              <EmailHeaderImage
                 src={shop.logo as string}
                 width="40"
                 height="37"
                 alt={shop.name}
               />
-            </Section>
-            <Section>
-              <Heading className="font-normal text-[24px] text-black !mb-0">
+              <EmailHeaderTitle>
                 {getFullName(clean(customer))}, thanks for your purchase
-              </Heading>
-              <Text className="text-[14px] text-black leading-[24px]">
+              </EmailHeaderTitle>
+              <EmailHeaderSubtitle>
                 {isShipping
                   ? `We're getting your order ready to be shipped. We will notify you when it has been
                 sent.`
                   : `We're getting ready your order. We will notify you when it's ready to pickup`}
-              </Text>
-              <Button className="rounded-md bg-[#000000] px-5 py-3 text-center font-semibold text-[12px] text-white no-underline">
-                View order
-              </Button>
-            </Section>
+              </EmailHeaderSubtitle>
+              <EmailHeaderButton>View order</EmailHeaderButton>
+            </EmailHeader>
+
             <Section className="mt-[32px]">
               <Text className="text-base font-semibold">Order summary</Text>
               {orderLines.map((line, i) => {
@@ -187,10 +192,9 @@ const Component = ({
                 </Text>
               )}
             </Section>
-            <Hr className="mx-0 my-[26px] w-full border border-[#eaeaea] border-solid" />
-            <Text className="text-[#737373] text-xs leading-[24px] text-center mb-4">
+            <EmailFooter>
               {shop.name} ・88 Colin P Kelly Jr Street ・San Francisco, CA 94107
-            </Text>
+            </EmailFooter>
           </Container>
         </Body>
       </Tailwind>
