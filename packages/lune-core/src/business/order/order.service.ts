@@ -691,8 +691,7 @@ export class OrderService {
         reason: paymentResult.reason
       });
 
-      // TODO: i don't think this is a good idea, should have internal reason or a public error
-      return new PaymentFailedError(paymentResult.reason);
+      return new PaymentFailedError('Failed to create a payment');
     }
 
     await Promise.all(
