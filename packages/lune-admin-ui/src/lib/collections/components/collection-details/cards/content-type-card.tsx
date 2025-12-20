@@ -9,7 +9,7 @@ export const CollectionContentTypeCard = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>Content type</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">

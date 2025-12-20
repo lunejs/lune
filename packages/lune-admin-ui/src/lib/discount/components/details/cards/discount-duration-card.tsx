@@ -11,7 +11,7 @@ export const DiscountDurationCard = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>Duration</CardTitle>
       </CardHeader>
 

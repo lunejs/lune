@@ -12,7 +12,7 @@ export const DiscountGeneralCard = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>General</CardTitle>
       </CardHeader>
 

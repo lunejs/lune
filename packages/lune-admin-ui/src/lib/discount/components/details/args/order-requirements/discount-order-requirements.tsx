@@ -41,7 +41,7 @@ export const DiscountOrderRequirements = ({ argKey }: Props) => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>Requirements</CardTitle>
       </CardHeader>
 

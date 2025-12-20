@@ -7,7 +7,7 @@ export const StockProductCard = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>Stock</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 items-start sm:flex-row">

@@ -8,7 +8,7 @@ export const GeneralProductCard = () => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>General</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">

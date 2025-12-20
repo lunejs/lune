@@ -7,8 +7,8 @@ export const DiscountStatusCard = () => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>General</CardTitle>
+      <CardHeader className="flex">
+        <CardTitle>Status</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">

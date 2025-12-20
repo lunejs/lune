@@ -13,7 +13,7 @@ export const OrderCustomerCard: FC<Props> = ({ order }) => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex">
         <CardTitle>Customer</CardTitle>
       </CardHeader>
 
