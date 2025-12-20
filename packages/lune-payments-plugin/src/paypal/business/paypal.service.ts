@@ -6,7 +6,7 @@ import { LuneLogger, LunePrice } from '@lune/common';
 import type { ExecutionContext, ID, OrderRepository } from '@lune/core';
 
 import type { PayPal } from '../adapters/paypal';
-import type { PaypalErrorResponse } from '../adapters/paypal.types';
+import type { PaypalCapturePaymentResponse, PaypalErrorResponse } from '../adapters/paypal.types';
 
 import { OrderNotFoundError, PaypalRequestError } from './paypal.errors';
 
@@ -131,19 +131,7 @@ export class PayPalService {
   }
 }
 
-// type CapturePaymentResult =
-//   | {
-//       success: true;
-//       data: PaypalCapturePaymentResponse;
-//       /**
-//        * @description
-//        * The invoice id which the paypal order was created with.
-//        * Paypal does not return the actual transaction id that is shared between the buyer and the seller,
-//        * so to have a common id between lune and paypal, we generate an invoice id and use it as the transaction id.
-//        */
-//       invoiceId: string;
-//     }
-//   | {
-//       success: false;
-//       error: any;
-//     };
+export type CapturePaymentResult = {
+  invoiceId: string;
+  data: PaypalCapturePaymentResponse;
+};
