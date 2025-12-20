@@ -7,7 +7,6 @@
   "types": "dist/index.d.ts",
   "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
   "license": "AGPL-3.0",
-  "private": false,
   "scripts": {
     "build": "rimraf dist && tsc",
     "dev": "email dev --dir ./src/templates"
