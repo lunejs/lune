@@ -7,15 +7,9 @@ import { dest, parallel, src } from 'gulp';
  * And when trying to reference for the graphql module it will not be found and it will throw an error
  */
 export const copySchemaToDistFolder = () => {
-  const stream = src('../src/**/*.gql');
+  const stream = src('../src/**/*.schema.gql');
 
-  return stream.pipe(dest('../dist/src'));
+  return stream.pipe(dest('../dist'));
 };
 
-export const copyDatabaseMigrationsToDistFolder = () => {
-  const stream = src('../database/**/*.ts');
-
-  return stream.pipe(dest('../dist/database'));
-};
-
-export const postBuild = parallel(copySchemaToDistFolder, copyDatabaseMigrationsToDistFolder);
+export const postBuild = parallel(copySchemaToDistFolder);

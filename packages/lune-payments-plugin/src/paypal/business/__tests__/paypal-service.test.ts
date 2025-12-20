@@ -4,7 +4,7 @@ import type { ExecutionContext } from '@lune/core';
 
 import type { PayPal } from '../../adapters/paypal';
 import { OrderNotFoundError, PaypalRequestError } from '../paypal.errors';
-import { PaypalService } from '../paypal.service';
+import { PayPalService } from '../paypal.service';
 
 import { SHIPPING_ORDER, SHIPPING_ORDER_PAYLOAD_RESULT } from './paypal-service.fixtures';
 
@@ -27,7 +27,7 @@ describe('PaypalService', () => {
     test('calls paypal.createOrder with correct payload when order is found', async () => {
       ctx.repositories.order.findOneWithDetails.mockReturnValue(SHIPPING_ORDER);
 
-      const paypalService = new PaypalService(
+      const paypalService = new PayPalService(
         ctx as unknown as ExecutionContext,
         paypal as unknown as PayPal
       );
@@ -39,7 +39,7 @@ describe('PaypalService', () => {
     });
 
     test('returns OrderNotFoundError when order was not found', async () => {
-      const paypalService = new PaypalService(
+      const paypalService = new PayPalService(
         ctx as unknown as ExecutionContext,
         paypal as unknown as PayPal
       );
@@ -56,7 +56,7 @@ describe('PaypalService', () => {
         throw new Error('Unexpected error');
       });
 
-      const paypalService = new PaypalService(
+      const paypalService = new PayPalService(
         ctx as unknown as ExecutionContext,
         paypal as unknown as PayPal
       );
