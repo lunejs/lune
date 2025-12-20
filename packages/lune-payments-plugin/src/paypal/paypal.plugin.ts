@@ -105,7 +105,7 @@ export class PaypalPlugin extends LunePlugin {
 
     super({
       storefrontApiExtension: {
-        typePaths: [path.join(__dirname, './paypal.gql')],
+        typePaths: [path.join(__dirname, './api/paypal.api.gql')],
         resolvers: [PayPalResolver]
       },
       configure(config) {

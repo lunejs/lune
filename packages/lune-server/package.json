@@ -17,6 +17,7 @@
     "@lune/core": "*",
     "@lune/admin-ui": "*",
     "@lune/email-plugin": "*",
+    "@lune/payments-plugin": "*",
     "dotenv": "^16.4.5",
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2"

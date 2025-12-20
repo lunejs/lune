@@ -14,6 +14,7 @@ import {
 import { config } from 'dotenv';
 import { HelloWorldPlugin } from './plugins/hello-world/hello-world-plugin';
 import { EmailPlugin, NodemailerSender } from '@lune/email-plugin';
+import { PaypalPlugin } from '@lune/payments-plugin';
 
 config();
 
@@ -54,6 +55,7 @@ const luneServer = new LuneServer({
     new AdminUiServerPlugin(),
     new HelloWorldPlugin(),
     new EmailPlugin({ devMode: true }),
+    new PaypalPlugin({ clientId: '', secret: '', devMode: true }),
   ],
 });
 
