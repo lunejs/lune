@@ -1,37 +1,37 @@
 import { Button, Heading, Img, Section, Text } from '@react-email/components';
 import type { ComponentProps } from 'react';
 
-type EmailHeaderProps = ComponentProps<'table'>;
+type EmailHeaderProps = ComponentProps<typeof Section>;
 
 export const EmailHeader = ({ ...props }: EmailHeaderProps) => {
   return <Section {...props} />;
 };
 
-type EmailHeaderThumbnailProps = ComponentProps<'p'>;
+type EmailHeaderThumbnailProps = ComponentProps<typeof Text>;
 
 export const EmailHeaderThumbnail = ({ className, ...props }: EmailHeaderThumbnailProps) => {
   return <Text {...props} className={'text-[14px] text-[#737373] ' + className} />;
 };
 
-type EmailHeaderImageProps = ComponentProps<'img'>;
+type EmailHeaderImageProps = ComponentProps<typeof Img>;
 
 export const EmailHeaderImage = ({ ...props }: EmailHeaderImageProps) => {
   return <Img {...props} />;
 };
 
-type EmailHeaderTitleProps = ComponentProps<'h1'>;
+type EmailHeaderTitleProps = ComponentProps<typeof Heading>;
 
 export const EmailHeaderTitle = ({ className, ...props }: EmailHeaderTitleProps) => {
   return <Heading {...props} className={'font-normal text-[24px] text-black !mb-0 ' + className} />;
 };
 
-type EmailHeaderSubtitleProps = ComponentProps<'p'>;
+type EmailHeaderSubtitleProps = ComponentProps<typeof Text>;
 
 export const EmailHeaderSubtitle = ({ className, ...props }: EmailHeaderSubtitleProps) => {
   return <Text {...props} className={'text-[14px] text-black leading-[24px] ' + className} />;
 };
 
-type EmailHeaderButtonProps = ComponentProps<'a'>;
+type EmailHeaderButtonProps = ComponentProps<typeof Button>;
 
 export const EmailHeaderButton = ({ className, ...props }: EmailHeaderButtonProps) => {
   return (
