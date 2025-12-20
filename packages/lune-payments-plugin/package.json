@@ -6,6 +6,7 @@
   "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
   "license": "AGPL-3.0",
   "scripts": {
+    "test": "vitest run",
     "gen:types": "graphql-codegen --config ./scripts/gen-types.ts"
   },
   "dependencies": {
