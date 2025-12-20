@@ -1,3 +1,4 @@
+import { LuneLogger } from '@lune/common';
 import { LunePlugin } from '@lune/core';
 
 import { OrderListener } from './listeners/order.listener';
@@ -15,6 +16,8 @@ export class EmailPlugin extends LunePlugin {
           .registerOnOrderShippedListener()
           .registerOnOrderReadyForPickupListener()
           .registerOnOrderDeliveredListener();
+
+        LuneLogger.info('email plugin initialized');
       }
     });
   }

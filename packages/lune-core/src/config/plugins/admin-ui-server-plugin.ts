@@ -6,8 +6,6 @@ import { LuneLogger } from '@lune/common';
 
 import { LunePlugin } from '@/plugin/lune.plugin';
 
-let port = 0;
-
 /**
  * Admin UI Plugin
  *
@@ -19,20 +17,14 @@ export class AdminUiServerPlugin extends LunePlugin {
     const { folder, renderPath } = AdminUiServerPlugin.getOptions(options);
 
     super({
-      configure(config) {
-        port = config.app.port;
-
-        return config;
-      },
       register(app) {
         app.use(renderPath, express.static(join(process.cwd(), folder)));
 
         app.get('*', (_req, res) => {
           res.sendFile(join(process.cwd(), folder, 'index.html'));
         });
-      },
-      onStart() {
-        LuneLogger.info(`Admin UI → http://localhost:${port}${renderPath}`);
+
+        LuneLogger.info(`admin ui served at ${renderPath}`);
       }
     });
   }

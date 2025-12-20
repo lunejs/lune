@@ -18,7 +18,6 @@ import type { Database } from '@/persistence/connection/connection';
 export class LunePlugin {
   configure?: LunePluginConfig['configure'];
   register?: LunePluginConfig['register'];
-  onStart?: LunePluginConfig['onStart'];
   adminApiExtension?: LunePluginConfig['adminApiExtension'];
   storefrontApiExtension?: LunePluginConfig['storefrontApiExtension'];
 
@@ -46,14 +45,6 @@ type LunePluginConfig = {
    * webhooks, sockets, etc.
    */
   register?(app: express.Application, database: Database): void;
-
-  /**
-   * Start function
-   *
-   * @description
-   * Runs just after the app is served
-   */
-  onStart?(): void;
 
   /**
    * Storefront api extensions

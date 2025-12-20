@@ -37,7 +37,6 @@ export class LuneServer {
 
     const adminApi = new AdminApi(this.database);
     const storefrontApi = new StorefrontApi(this.database);
-
     const uploadApi = new UploadApi(this.database);
 
     // this.app.use(makeKnexQueryCounter(this.database));
@@ -58,16 +57,9 @@ export class LuneServer {
 
     this.app.listen(app.port, () => {
       LuneLogger.ready(`Lune server (v0.0.1) running on port ${app.port}`);
-      LuneLogger.info(`Admin API → http://localhost:${app.port}/admin-api`);
-      LuneLogger.info(`Storefront API → http://localhost:${app.port}/storefront-api`);
-
-      const config = getConfig();
-
-      for (const plugin of config.plugins) {
-        if (typeof plugin.onStart === 'function') {
-          plugin.onStart();
-        }
-      }
+      LuneLogger.info(`admin api → /admin-api`);
+      LuneLogger.info(`upload api → /upload`);
+      LuneLogger.info(`storefront api → /storefront-api`);
     });
   }
 
