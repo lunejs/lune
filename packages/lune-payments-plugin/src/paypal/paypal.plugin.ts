@@ -4,6 +4,7 @@ import { LunePlugin } from '@lune/core';
 
 import { PayPal } from './adapters/paypal';
 import { PayPalResolver } from './api/paypal.resolver';
+import { paypalHandler } from './paypal.handler';
 
 export class PaypalPlugin extends LunePlugin {
   constructor(config: PaypalPluginConfig) {
@@ -13,6 +14,11 @@ export class PaypalPlugin extends LunePlugin {
       storefrontApiExtension: {
         typePaths: [path.join(__dirname, './paypal.gql')],
         resolvers: [PayPalResolver]
+      },
+      configure(config) {
+        config.payments.handlers.push(paypalHandler);
+
+        return config;
       }
     });
   }

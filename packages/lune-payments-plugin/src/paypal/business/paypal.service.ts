@@ -12,7 +12,7 @@ import { OrderNotFoundError, PaypalRequestError } from './paypal.errors';
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-export class PaypalService {
+export class PayPalService {
   private readonly orderRepository: OrderRepository;
 
   constructor(

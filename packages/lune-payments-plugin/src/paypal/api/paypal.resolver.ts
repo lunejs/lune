@@ -2,7 +2,7 @@ import type { ExecutionContext, GraphqlApiResolver } from '@lune/core';
 
 import { PayPal } from '../adapters/paypal';
 import { PaypalServiceError } from '../business/paypal.errors';
-import { PaypalService } from '../business/paypal.service';
+import { PayPalService } from '../business/paypal.service';
 
 import type { MutationCreatePaypalOrderArgs } from './types.api';
 
@@ -11,7 +11,7 @@ async function createPaypalOrder(
   { orderId }: MutationCreatePaypalOrderArgs,
   ctx: ExecutionContext
 ) {
-  const paypalService = new PaypalService(ctx, new PayPal());
+  const paypalService = new PayPalService(ctx, new PayPal());
 
   const result = await paypalService.createOrder(orderId);
 
