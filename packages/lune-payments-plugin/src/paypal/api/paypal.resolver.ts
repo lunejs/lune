@@ -1,8 +1,10 @@
-import { ExecutionContext, GraphqlApiResolver } from '@lune/core';
-import { MutationCreatePaypalOrderArgs } from './api.types';
-import { PaypalService } from './paypal.service';
-import { PaypalServiceError } from './paypal.errors';
-import { PayPal } from './paypal';
+import type { ExecutionContext, GraphqlApiResolver } from '@lune/core';
+
+import { PayPal } from '../adapters/paypal';
+import { PaypalServiceError } from '../business/paypal.errors';
+import { PaypalService } from '../business/paypal.service';
+
+import type { MutationCreatePaypalOrderArgs } from './types.api';
 
 async function createPaypalOrder(
   _: unknown,
@@ -18,7 +20,7 @@ async function createPaypalOrder(
   return { orderId: result.id };
 }
 
-export const PaypalResolver: GraphqlApiResolver = {
+export const PayPalResolver: GraphqlApiResolver = {
   Mutation: {
     createPaypalOrder
   }

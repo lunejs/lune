@@ -1,7 +1,9 @@
-import { LunePlugin } from '@lune/core';
 import * as path from 'path';
-import { PaypalResolver } from './paypa.resolver';
-import { PayPal } from './paypal';
+
+import { LunePlugin } from '@lune/core';
+
+import { PayPal } from './adapters/paypal';
+import { PayPalResolver } from './api/paypal.resolver';
 
 export class PaypalPlugin extends LunePlugin {
   constructor(config: PaypalPluginConfig) {
@@ -10,7 +12,7 @@ export class PaypalPlugin extends LunePlugin {
     super({
       storefrontApiExtension: {
         typePaths: [path.join(__dirname, './paypal.gql')],
-        resolvers: [PaypalResolver]
+        resolvers: [PayPalResolver]
       }
     });
   }

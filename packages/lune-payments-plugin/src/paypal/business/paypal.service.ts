@@ -1,19 +1,14 @@
-import type { CreateOrderRequestBody, OrderResponseBody } from '@paypal/paypal-js';
-import axios, { isAxiosError } from 'axios';
+import type { CreateOrderRequestBody } from '@paypal/paypal-js';
+import { isAxiosError } from 'axios';
 import { customAlphabet } from 'nanoid';
 
 import { LuneLogger, LunePrice } from '@lune/common';
 import type { ExecutionContext, ID, OrderRepository } from '@lune/core';
 
-import type { PaypalServiceError } from './paypal.errors';
+import type { PayPal } from '../adapters/paypal';
+import type { PaypalErrorResponse } from '../adapters/paypal.types';
+
 import { OrderNotFoundError, PaypalRequestError } from './paypal.errors';
-import type {
-  CreatePaypalOrderResponse,
-  PaypalCapturePaymentResponse,
-  PaypalErrorResponse,
-  PaypalGenerateAccessTokenResponse
-} from './paypal.types';
-import { PayPal } from './paypal';
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 

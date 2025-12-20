@@ -1,6 +1,8 @@
+import { PaypalErrorCode } from '../api/types.api';
+
 export abstract class PaypalServiceError extends Error {
   constructor(
-    private readonly code: string,
+    private readonly code: PaypalErrorCode,
     message: string
   ) {
     super(message);
@@ -9,12 +11,12 @@ export abstract class PaypalServiceError extends Error {
 
 export class OrderNotFoundError extends PaypalServiceError {
   constructor(message: string) {
-    super('ORDER_NOT_FOUND', message);
+    super(PaypalErrorCode.OrderNotFound, message);
   }
 }
 
 export class PaypalRequestError extends PaypalServiceError {
   constructor(message: string) {
-    super('PAYPAL_REQUEST_ERROR', message);
+    super(PaypalErrorCode.PaypalRequestError, message);
   }
 }

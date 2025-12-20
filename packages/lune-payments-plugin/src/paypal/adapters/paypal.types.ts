@@ -137,14 +137,3 @@ export type PaypalErrorResponse = {
 };
 
 export type PaypalOrderId = string;
-
-export type PaypalError = {
-  message: string;
-  code: PaypalErrorCode;
-};
-
-export enum PaypalErrorCode {
-  ORDER_NOT_FOUND = 'ORDER_NOT_FOUND',
-  PAYPAL_ERROR = 'PAYPAL_ERROR',
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR'
-}

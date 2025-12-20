@@ -1,11 +1,13 @@
+import type { CreateOrderRequestBody, OrderResponseBody } from '@paypal/paypal-js';
 import axios from 'axios';
-import { PaypalPluginConfig } from './paypal.plugin';
-import {
+
+import type { PaypalPluginConfig } from '../paypal.plugin';
+
+import type {
   CreatePaypalOrderResponse,
   PaypalCapturePaymentResponse,
   PaypalGenerateAccessTokenResponse
 } from './paypal.types';
-import { CreateOrderRequestBody, OrderResponseBody } from '@paypal/paypal-js';
 
 const PAYPAL_SANDBOX_BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PAYPAL_LIVE_BASE_URL = 'https://api-m.paypal.com';
