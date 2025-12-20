@@ -33,6 +33,7 @@ export type AddInStorePickupFulfillmentInput = {
 };
 
 export type AddPaymentToOrderInput = {
+  metadata?: InputMaybe<Scalars['JSON']['input']>;
   methodId: Scalars['ID']['input'];
 };
 

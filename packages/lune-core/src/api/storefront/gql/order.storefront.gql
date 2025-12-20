@@ -63,6 +63,7 @@ input AddInStorePickupFulfillmentInput {
 
 input AddPaymentToOrderInput {
   methodId: ID!
+  metadata: JSON
 }
 
 " Results "

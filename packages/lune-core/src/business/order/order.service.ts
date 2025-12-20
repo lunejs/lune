@@ -673,7 +673,8 @@ export class OrderService {
       order,
       order.total,
       paymentMethod.handler.args,
-      this.ctx
+      this.ctx,
+      input.metadata
     );
 
     if (paymentResult.status === PaymentState.Failed) {

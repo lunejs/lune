@@ -63,7 +63,8 @@ type Config<TArgs> = {
     order: Order,
     totalAmount: number,
     args: InferArgs<TArgs>,
-    ctx: ExecutionContext
+    ctx: ExecutionContext,
+    metadata: Record<string, unknown> | undefined
   ): Promise<CreatePaymentResult>;
 };
 
