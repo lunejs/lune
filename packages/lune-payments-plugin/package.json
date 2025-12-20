@@ -11,7 +11,8 @@
   "dependencies": {
     "@paypal/paypal-js": "^9.1.0",
     "axios": "^1.13.2",
-    "nanoid": "3.3.4"
+    "nanoid": "3.3.4",
+    "vitest": "4.0.13"
   },
   "devDependencies": {
     "@lune/common": "*",
