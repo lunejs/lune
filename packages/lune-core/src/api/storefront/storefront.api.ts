@@ -13,7 +13,6 @@ import { HeaderKeys } from '../shared/constants/headers.constants';
 import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
-import { useQueryLogger } from '../shared/plugins/use-query-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { CustomerJWT } from '../shared/types/api.types';
 
@@ -66,7 +65,7 @@ export class StorefrontApi extends GraphqlApi {
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
-      plugins: [useTransaction(), useErrorLogger(), useQueryLogger()]
+      plugins: [useTransaction(), useErrorLogger()]
     });
   }
 
