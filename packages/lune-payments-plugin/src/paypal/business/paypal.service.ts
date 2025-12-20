@@ -98,43 +98,27 @@ export class PaypalService {
    *
    * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
    */
-  // async capturePayment(paypalOrderId: string): Promise<CapturePaymentResult> {
-  //   try {
-  //     const accessToken = await this.generateAccessToken();
-  //     const url = `${this.getBaseUrl()}/v2/checkout/orders/${paypalOrderId}/capture`;
-  //     const { data } = await axios.post<PaypalCapturePaymentResponse>(
-  //       url,
-  //       {},
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`
-  //           // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-  //           // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-  //           // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-  //           // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-  //           // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-  //         }
-  //       }
-  //     );
+  async capturePayment(paypalOrderId: string) {
+    try {
+      const data = await this.paypal.capturePayment(paypalOrderId);
+      const orderDetails = await this.paypal.getOrderDetails(paypalOrderId);
 
-  //     const orderDetails = await this.getOrderDetails(paypalOrderId);
+      return {
+        data,
+        invoiceId: orderDetails.purchase_units?.[0].invoice_id ?? ''
+      };
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const paypalError: PaypalErrorResponse = error.response?.data;
 
-  //     return {
-  //       success: true,
-  //       data,
-  //       invoiceId: orderDetails.purchase_units?.[0].invoice_id ?? ''
-  //     };
-  //   } catch (error) {
-  //     if (isAxiosError(error)) {
-  //       const paypalError: PaypalErrorResponse = error.response?.data;
+        LuneLogger.error(paypalError);
+        return new PaypalRequestError(paypalError.message);
+      }
 
-  //       return { success: false, error: paypalError };
-  //     } else {
-  //       return { success: false, error: error };
-  //     }
-  //   }
-  // }
+      LuneLogger.error(error);
+      return new PaypalRequestError('Could not capture payment');
+    }
+  }
 
   /**
    * @description
