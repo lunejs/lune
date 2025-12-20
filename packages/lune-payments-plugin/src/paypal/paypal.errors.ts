@@ -1,4 +1,4 @@
-export class PaypalServiceError extends Error {
+export abstract class PaypalServiceError extends Error {
   constructor(
     private readonly code: string,
     message: string

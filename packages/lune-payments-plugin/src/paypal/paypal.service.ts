@@ -34,7 +34,7 @@ export class PaypalService {
    *
    * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
    */
-  async createOrder(orderId: ID): Promise<CreateOrderResult> {
+  async createOrder(orderId: ID) {
     try {
       const order = await this.orderRepository.findOneWithDetails(orderId);
 
