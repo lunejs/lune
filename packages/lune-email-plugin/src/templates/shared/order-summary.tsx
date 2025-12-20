@@ -1,66 +1,62 @@
-import { isFirst, LunePrice } from '@lune/common';
-import {
-  Customer,
-  Fulfillment,
-  InStorePickupFulfillmentAddress,
-  Order,
-  Shop,
-} from '@lune/core';
 import { Column, Hr, Img, Row, Section, Text } from '@react-email/components';
 
-export const OrderSummary = ({
-  order,
-  orderLines,
-  fulfillment,
-  location,
-}: Props) => {
+import { isFirst, LunePrice } from '@lune/common';
+import type { InStorePickupFulfillment } from '@lune/core';
+
+import type { CommonEmailOrder } from './template.types';
+
+export const OrderSummary = ({ order }: Props) => {
+  const { fulfillment, fulfillmentDetails, lines } = order;
+
   const isShipping = fulfillment.type === 'SHIPPING';
+
+  const pickupDetails = fulfillmentDetails as InStorePickupFulfillment;
 
   return (
     <Section className="mt-[32px]">
       <Text className="text-base font-semibold">Order summary</Text>
-      {orderLines.map((line, i) => {
+      {lines.map((line, i) => {
+        const variant = line.variant;
+        const product = line.variant.product;
+
+        const image = variant.assets[0]?.source ?? product.assets[0]?.source;
+
+        const hasDiscount = !!line.appliedDiscounts.length || !!variant.comparisonPrice;
+
         return (
           <Row style={{ marginTop: !isFirst(i) ? 24 : 0 }}>
             <Column className="w-[250px]">
-              <Img
-                src={line.image}
-                alt={line.name}
-                className="float-left"
-                width="250px"
-              />
+              <Img src={image} alt={product.name} className="float-left" width="250px" />
             </Column>
             <Column className="align-top pl-3">
               <Row>
                 <Column>
-                  <Text className="m-0 text-[14px] leading-[2] font-medium">
-                    {line.name}
-                  </Text>
+                  <Text className="m-0 text-[14px] leading-[2] font-medium">{product.name}</Text>
                 </Column>
                 <Column>
-                  {line.priceBeforeDiscount ? (
+                  {hasDiscount ? (
                     <Text className="m-0 text-[14px] leading-[2] font-medium text-right">
                       <span className="line-through text-[#737373] mr-[4px]">
-                        {line.priceBeforeDiscount}
+                        {LunePrice.format(line.lineSubtotal)}
                       </span>
-                      <span className="text-red-600">{line.salePrice}</span>
+                      <span className="text-red-600">{LunePrice.format(line.lineTotal)}</span>
                     </Text>
                   ) : (
                     <Text className="m-0 text-[14px] leading-[2] font-medium text-right">
-                      {line.salePrice}
+                      {LunePrice.format(line.lineTotal)}
                     </Text>
                   )}
                 </Column>
               </Row>
               <Text className="m-0 text-[14px] leading-[2] text-[#737373] font-medium">
-                {line.optionValues.map((ov) => ov.name).join(' / ')}
+                {variant.optionValues.map(ov => ov.name).join(' / ')}
               </Text>
             </Column>
           </Row>
         );
       })}
       <Hr className="mx-0 my-[26px] w-full border border-[#eaeaea] border-solid" />
-      {order.appliedDiscounts.map((discount) => (
+      {order.appliedDiscounts.map(discount => (
         <Row>
           <Column>
             <Text className="m-0 text-[#737373]">{discount.code}</Text>
@@ -81,9 +77,7 @@ export const OrderSummary = ({
           </Text>
         </Column>
         <Column>
-          <Text className="m-0 text-right text-[#737373]">
-            {LunePrice.format(order.subtotal)}
-          </Text>
+          <Text className="m-0 text-right text-[#737373]">{LunePrice.format(order.subtotal)}</Text>
         </Column>
       </Row>
       {isShipping && (
@@ -103,9 +97,7 @@ export const OrderSummary = ({
           <Text className="m-0 font-semibold">Total</Text>
         </Column>
         <Column>
-          <Text className="m-0 text-right font-semibold">
-            {LunePrice.format(order.total)}
-          </Text>
+          <Text className="m-0 text-right font-semibold">{LunePrice.format(order.total)}</Text>
         </Column>
       </Row>
 
@@ -119,9 +111,9 @@ export const OrderSummary = ({
         </Text>
       ) : (
         <Text className="m-0 text-[14px] text-[#737373]">
-          {location?.name}: {location?.address.streetLine1},{' '}
-          {location?.address.city}, {location?.address.stateCode}{' '}
-          {location?.address.postalCode}
+          {pickupDetails.address.name}: {pickupDetails.address.streetLine1},{' '}
+          {pickupDetails.address.city}, {pickupDetails.address.stateCode}{' '}
+          {pickupDetails.address.postalCode}
         </Text>
       )}
     </Section>
@@ -129,22 +121,5 @@ export const OrderSummary = ({
 };
 
 export type Props = {
-  order: Order;
-  fulfillment: Fulfillment;
-  location?: {
-    name: string;
-    address: InStorePickupFulfillmentAddress;
-  };
-  orderLines: {
-    name: string;
-    image: string;
-    salePrice: string;
-    priceBeforeDiscount?: string;
-    optionValues: {
-      id: string;
-      name: string;
-      optionName: string;
-      metadata: Record<string, unknown>;
-    }[];
-  }[];
+  order: CommonEmailOrder;
 };

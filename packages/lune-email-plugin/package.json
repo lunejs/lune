@@ -10,7 +10,7 @@
   "private": false,
   "scripts": {
     "build": "rimraf dist && tsc",
-    "dev": "email dev --dir templates"
+    "dev": "email dev --dir ./src/templates"
   },
   "peerDependencies": {
     "@lune/common": "*",

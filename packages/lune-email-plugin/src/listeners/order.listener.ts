@@ -1,4 +1,4 @@
-import { LuneLogger, LunePrice } from '@lune/common';
+import { LuneLogger } from '@lune/common';
 import type {
   Asset,
   Customer,
@@ -7,7 +7,9 @@ import type {
   ID,
   InStorePickupFulfillment,
   LuneEvent,
+  Option,
   OptionValue,
+  OptionValuePreset,
   Order,
   OrderDeliveredEvent,
   OrderLine,
@@ -35,6 +37,7 @@ import {
 } from '@lune/core';
 
 import type { EmailPluginConfig } from '../email-plugin.types';
+import type { CommonEmailOrder } from '../templates/shared/template.types';
 
 export class OrderListener {
   private database: Database | undefined;
@@ -107,7 +110,7 @@ export class OrderListener {
     return this;
   }
 
-  private async getOrderForEmail(orderId: ID, event: LuneEvent) {
+  private async getOrderForEmail(orderId: ID, event: LuneEvent): Promise<CommonEmailOrder> {
     if (!this.database) throw new Error('Database is not present');
 
     const trx = await this.database.transaction();
@@ -306,51 +309,43 @@ export class OrderListener {
         : null;
 
       // Fulfillment
-      let fulfillment:
-        | (Fulfillment & {
-            shipping: ShippingFulfillment | null;
-            pickup: InStorePickupFulfillment | null;
-          })
-        | null = null;
-      if (orderRow.f_id) {
-        const baseFulfillment = fulfillmentSerializer.deserialize({
-          id: orderRow.f_id,
-          type: orderRow.f_type,
-          amount: orderRow.f_amount,
-          total: orderRow.f_total,
-          order_id: orderRow.f_order_id,
-          created_at: orderRow.f_created_at,
-          updated_at: orderRow.f_updated_at
-        }) as Fulfillment;
+      const fulfillment = orderRow.f_id
+        ? (fulfillmentSerializer.deserialize({
+            id: orderRow.f_id,
+            type: orderRow.f_type,
+            amount: orderRow.f_amount,
+            total: orderRow.f_total,
+            order_id: orderRow.f_order_id,
+            created_at: orderRow.f_created_at,
+            updated_at: orderRow.f_updated_at
+          }) as Fulfillment)
+        : null;
 
-        const shipping = orderRow.sf_id
-          ? (shippingFulfillmentSerializer.deserialize({
-              id: orderRow.sf_id,
-              method: orderRow.sf_method,
-              tracking_code: orderRow.sf_tracking_code,
-              carrier: orderRow.sf_carrier,
-              shipped_at: orderRow.sf_shipped_at,
-              delivered_at: orderRow.sf_delivered_at,
-              fulfillment_id: orderRow.sf_fulfillment_id,
-              shipping_method_id: orderRow.sf_shipping_method_id
-            }) as ShippingFulfillment)
-          : null;
+      const shippingFulfillment = orderRow.sf_id
+        ? (shippingFulfillmentSerializer.deserialize({
+            id: orderRow.sf_id,
+            method: orderRow.sf_method,
+            tracking_code: orderRow.sf_tracking_code,
+            carrier: orderRow.sf_carrier,
+            shipped_at: orderRow.sf_shipped_at,
+            delivered_at: orderRow.sf_delivered_at,
+            fulfillment_id: orderRow.sf_fulfillment_id,
+            shipping_method_id: orderRow.sf_shipping_method_id
+          }) as ShippingFulfillment)
+        : null;
 
-        const pickup = orderRow.pf_id
-          ? (inStorePickupFulfillmentSerializer.deserialize({
-              id: orderRow.pf_id,
-              address: orderRow.pf_address,
-              ready_at: orderRow.pf_ready_at,
-              picked_up_at: orderRow.pf_picked_up_at,
-              fulfillment_id: orderRow.pf_fulfillment_id,
-              location_id: orderRow.pf_location_id
-            }) as InStorePickupFulfillment)
-          : null;
+      const inStorePickupFulfillment = orderRow.pf_id
+        ? (inStorePickupFulfillmentSerializer.deserialize({
+            id: orderRow.pf_id,
+            address: orderRow.pf_address,
+            ready_at: orderRow.pf_ready_at,
+            picked_up_at: orderRow.pf_picked_up_at,
+            fulfillment_id: orderRow.pf_fulfillment_id,
+            location_id: orderRow.pf_location_id
+          }) as InStorePickupFulfillment)
+        : null;
 
-        fulfillment = { ...baseFulfillment, shipping, pickup };
-      }
-
-      // Lines con variants, products, assets, optionValues
+      // Lines with variants, products, assets, optionValues
       const lines = lineRows.map(row => {
         const line = orderLineSerializer.deserialize({
           id: row.ol_id,
@@ -396,18 +391,40 @@ export class OrderListener {
         // OptionValues
         const optionValues = optionValueRows
           .filter(ov => ov.variant_id === row.v_id)
-          .map(
-            ov =>
-              ({
-                id: ov.ov_id,
-                name: ov.ovp_name ?? ov.ov_name,
-                order: ov.ov_order,
-                optionId: ov.ov_option_id,
-                presetId: ov.ov_preset_id,
-                option: { id: ov.o_id, name: ov.o_name },
-                metadata: ov.ovp_metadata ?? null
-              }) as OptionValue & { option: { id: string; name: string }; metadata: any }
-          );
+          .map(ov => {
+            const optionValue = {
+              id: ov.ov_id,
+              name: ov.ov_name,
+              order: ov.ov_order
+            } as OptionValue;
+
+            const preset = ov.ov_preset_id
+              ? ({
+                  name: ov.ovp_name,
+                  metadata: ov.ovp_metadata
+                } as OptionValuePreset)
+              : null;
+
+            const option = {
+              id: ov.o_id,
+              name: ov.o_name
+            } as Option;
+
+            return {
+              ...optionValue,
+              option,
+              preset
+            };
+            // return {
+            //   id: ov.ov_id,
+            //   name: ov.ovp_name ?? ov.ov_name,
+            //   order: ov.ov_order,
+            //   optionId: ov.ov_option_id,
+            //   presetId: ov.ov_preset_id,
+            //   option: { id: ov.o_id, name: ov.o_name },
+            //   metadata: ov.ovp_metadata ?? null
+            // };
+          });
 
         return {
           ...line,
@@ -425,58 +442,19 @@ export class OrderListener {
 
       await trx.commit();
 
-      return { ...order, customer, fulfillment, lines };
+      return {
+        ...order,
+        customer: customer as Customer,
+        fulfillment: fulfillment as Fulfillment,
+        fulfillmentDetails:
+          fulfillment?.type === 'SHIPPING'
+            ? (shippingFulfillment as ShippingFulfillment)
+            : (inStorePickupFulfillment as InStorePickupFulfillment),
+        lines
+      };
     } catch (error) {
       await trx.rollback();
       throw error;
     }
   }
-
-  private transformOrderToEmailProps(order: Awaited<ReturnType<typeof this.getOrderForEmail>>) {
-    const { customer, fulfillment, lines } = order;
-
-    const location = fulfillment?.pickup
-      ? {
-          name: fulfillment.pickup.address?.name,
-          address: fulfillment.pickup.address
-        }
-      : undefined;
-
-    const orderLines = lines.map(line => {
-      const { variant } = line;
-      const priceBeforeDiscount = line.appliedDiscounts.length
-        ? line.lineSubtotal
-        : variant.comparisonPrice;
-
-      const image = variant.assets[0]?.source ?? variant.product.assets[0]?.source;
-
-      return {
-        name: variant.product.name,
-        image: image,
-        salePrice: LunePrice.format(line.lineTotal),
-        priceBeforeDiscount: priceBeforeDiscount
-          ? LunePrice.format(priceBeforeDiscount)
-          : undefined,
-        optionValues: variant.optionValues.map(ov => ({
-          id: ov.id,
-          name: ov.name ?? '',
-          optionName: ov.option?.name ?? '',
-          metadata: ov.metadata ?? {}
-        }))
-      };
-    });
-
-    return {
-      customer,
-      order,
-      fulfillment,
-      location,
-      orderLines
-    };
-  }
 }
-
-// type safe getOrderForEmail method
-// provide more options (replace templates?, use shared components for creating my own templates?)
-// start using them
-// create a dev mailbox? like vendure

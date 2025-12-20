@@ -1,15 +1,18 @@
-import { clean, getFullName } from '@lune/common';
-import { Customer, Shop } from '@lune/core';
 import {
   Body,
   Container,
   Head,
   Html,
-  Preview,
-  Tailwind,
   pixelBasedPreset,
-  render
+  Preview,
+  render,
+  Tailwind
 } from '@react-email/components';
+
+import { clean, getFullName } from '@lune/common';
+import type { Customer, Shop } from '@lune/core';
+
+import { EmailFooter } from './shared/Footer';
 import {
   EmailHeader,
   EmailHeaderButton,
@@ -17,7 +20,6 @@ import {
   EmailHeaderSubtitle,
   EmailHeaderTitle
 } from './shared/Header';
-import { EmailFooter } from './shared/Footer';
 
 const Component = ({ customer, shop }: CustomerRegisteredTemplateInput) => {
   const customerName = getFullName(clean(customer)) as string;
