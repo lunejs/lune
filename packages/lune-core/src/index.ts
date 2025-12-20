@@ -3,7 +3,15 @@ export * from './server';
 /**
  * Api
  */
+export * from './api/shared/constants/headers.constants';
+export * from './api/shared/context/types';
 export * from './api/shared/graphql-api';
+export * from './api/shared/guards/customer.guard';
+export * from './api/shared/guards/user.guard';
+export * from './api/shared/middlewares/user.middleware';
+export * from './api/shared/utils/get-localized-field';
+export * from './api/shared/utils/list-response';
+export * from './api/shared/utils/pagination';
 
 /**
  * Business Logic
