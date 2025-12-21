@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { XIcon } from 'lucide-react';
 
+import { isTruthy } from '@lune/common';
 import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
@@ -11,14 +12,20 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
 
   const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>([]);
 
-  const { items, append, remove, update } = useList(['']);
+  const { items, append, remove, reset, update } = useList(['']);
 
   return (
     <Popover
       onOpenChange={isOpen => {
         if (!isOpen) {
-          setPersistedValue(items);
-          onChange(items.map(v => v.value));
+          const newValues = items.filter(i => isTruthy(i.value));
+
+          setPersistedValue(newValues);
+          onChange(newValues.map(v => v.value));
+          reset(newValues);
+
+          // avoid having empty options
+          if (!newValues.length) append('');
         }
       }}
     >

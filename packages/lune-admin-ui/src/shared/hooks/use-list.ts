@@ -7,6 +7,7 @@ export const useList = <T = unknown>(defaultItems: Item<T>['value'][]) => {
 
   const append = (value: T) => setItems(prev => [...prev, new Item(value)]);
   const remove = (id: string) => setItems(prev => prev.filter(v => v.id !== id));
+  const reset = (values: Item<T>[]) => setItems(values);
 
   const update = (id: string, value: T) => {
     setItems(prev => prev.map(v => (v.id === id ? { ...v, value } : v)));
@@ -16,6 +17,7 @@ export const useList = <T = unknown>(defaultItems: Item<T>['value'][]) => {
     append,
     remove,
     update,
+    reset,
     items
   };
 };

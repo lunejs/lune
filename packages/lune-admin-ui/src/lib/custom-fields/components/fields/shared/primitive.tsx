@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { type ChangeEventHandler, type ReactElement, useId, useState } from 'react';
 import { XIcon } from 'lucide-react';
 
 import { isTruthy } from '@lune/common';
@@ -7,23 +7,22 @@ import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useList } from '@/shared/hooks/use-list';
 
-export const IntegerCustomField = ({ definition, onChange }: Props) => {
+export const PrimitiveCustomField = ({ onChange, definition, renderInput, mapOnSave }: Props) => {
   const id = useId();
 
   const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>([]);
-
   const { items, append, remove, reset, update } = useList(['']);
 
   return (
     <Popover
       onOpenChange={isOpen => {
         if (!isOpen) {
-          const newValues = items
-            .filter(i => isTruthy(i.value))
-            .map(i => ({ ...i, value: String(Math.trunc(Number(i.value))) }));
+          const newValues = mapOnSave
+            ? items.filter(i => isTruthy(i.value)).map(mapOnSave)
+            : items.filter(i => isTruthy(i.value));
 
           setPersistedValue(newValues);
-          onChange(newValues.map(v => Number(v.value)));
+          onChange(newValues);
           reset(newValues);
 
           // avoid having empty options
@@ -52,10 +51,11 @@ export const IntegerCustomField = ({ definition, onChange }: Props) => {
 
             return (
               <div key={item.id} className="flex items-center gap-2">
-                <Input
+                {renderInput(defaultValue?.value, e => update(item.id, e.target.value))}
+                {/* <Input
                   defaultValue={defaultValue?.value}
                   onChange={e => update(item.id, e.target.value)}
-                />
+                /> */}
                 {items.length > 1 && (
                   <Button variant={'ghost'} size={'icon'} onClick={() => remove(item.id)}>
                     <XIcon />
@@ -76,6 +76,11 @@ export const IntegerCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
-  onChange: (value: number[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
+  onChange: (items: { id: string; value: string }[]) => void;
+  renderInput: (
+    defaultValue: string | undefined,
+    onChange: ChangeEventHandler<HTMLInputElement>
+  ) => ReactElement;
+  mapOnSave?: (items: { id: string; value: string }) => { id: string; value: string };
 };
