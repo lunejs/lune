@@ -4,20 +4,21 @@ import { XIcon } from 'lucide-react';
 import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
-import { genUUID } from '@/shared/utils/id.utils';
+import { useList } from '@/shared/hooks/use-list';
 
 export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
   const id = useId();
 
-  const [values, setValues] = useState<Value[]>([new Value('')]);
-  const [persistedValue, setPersistedValue] = useState<Value[]>([new Value('')]);
+  const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>([]);
+
+  const { items, append, remove, update } = useList(['']);
 
   return (
     <Popover
       onOpenChange={isOpen => {
         if (!isOpen) {
-          setPersistedValue(values);
-          onChange(values.map(v => v.value));
+          setPersistedValue(items);
+          onChange(items.map(v => v.value));
         }
       }}
     >
@@ -37,25 +38,17 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
       <PopoverContent className="w-72" align="start">
         <div className="flex flex-col gap-2">
           <Label>{definition.name}</Label>
-          {values.map(value => {
-            const defaultValue = persistedValue.find(v => v.id === value.id);
+          {items.map(item => {
+            const defaultValue = persistedValue.find(v => v.id === item.id);
 
             return (
-              <div key={value.id} className="flex items-center gap-2">
+              <div key={item.id} className="flex items-center gap-2">
                 <Input
                   defaultValue={defaultValue?.value}
-                  onChange={e =>
-                    setValues(
-                      values.map(v => (v.id === value.id ? { ...v, value: e.target.value } : v))
-                    )
-                  }
+                  onChange={e => update(item.id, e.target.value)}
                 />
-                {values.length > 1 && (
-                  <Button
-                    variant={'ghost'}
-                    size={'icon'}
-                    onClick={() => setValues(prev => prev.filter(v => v.id !== value.id))}
-                  >
+                {items.length > 1 && (
+                  <Button variant={'ghost'} size={'icon'} onClick={() => remove(item.id)}>
                     <XIcon />
                   </Button>
                 )}
@@ -63,12 +56,7 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
             );
           })}
           {definition.isList && (
-            <Button
-              variant={'outline'}
-              size={'sm'}
-              onClick={() => setValues(prev => [...prev, new Value('')])}
-              className="w-fit"
-            >
+            <Button variant={'outline'} size={'sm'} onClick={() => append('')} className="w-fit">
               Add item
             </Button>
           )}
@@ -82,11 +70,3 @@ type Props = {
   onChange: (value: string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };
-
-class Value {
-  public id: string;
-
-  constructor(public value: string) {
-    this.id = genUUID();
-  }
-}
