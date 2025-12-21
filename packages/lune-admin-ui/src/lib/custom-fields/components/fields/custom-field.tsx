@@ -1,5 +1,6 @@
 import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
+import { IntegerCustomField } from './integer';
 import { MultiLineTextCustomField } from './multi-line-text';
 import { SingleLineTextCustomField } from './single-line-text';
 
@@ -19,6 +20,12 @@ export const CustomField = ({ definition, onChange }: Props) => {
         onChange={value => onChange(definition, value)}
         definition={definition}
       />
+    );
+  }
+
+  if (definition.type === CustomFieldType.Integer) {
+    return (
+      <IntegerCustomField onChange={value => onChange(definition, value)} definition={definition} />
     );
   }
 
