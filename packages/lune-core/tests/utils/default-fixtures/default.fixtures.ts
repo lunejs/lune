@@ -32,6 +32,7 @@ import { DefaultPaymentMethodFixture } from './payment-method.fixture';
 import { DefaultPaymentRejectionFixture } from './payment-rejection.fixture';
 import { DefaultProductFixture } from './product.fixture';
 import { DefaultProductAssetFixture } from './product-asset.fixture';
+import { DefaultProductCustomFieldFixture } from './product-custom-field.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
 import { DefaultShippingFulfillmentFixture } from './shipping-fulfillment.fixture';
@@ -91,5 +92,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.ShippingMethod]: DefaultShippingMethodFixture,
   [Tables.Discount]: DefaultDiscountFixture,
   [Tables.OrderDiscount]: DefaultOrderDiscountFixture,
-  [Tables.CustomFieldDefinition]: DefaultCustomFieldDefinitionFixture
+  [Tables.CustomFieldDefinition]: DefaultCustomFieldDefinitionFixture,
+  [Tables.ProductCustomField]: DefaultProductCustomFieldFixture
 };

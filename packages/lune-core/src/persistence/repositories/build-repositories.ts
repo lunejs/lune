@@ -27,6 +27,7 @@ import { PaymentFailureRepository } from './payment-failure-repository';
 import { PaymentMethodRepository } from './payment-method-repository';
 import { PaymentRejectionRepository } from './payment-rejection-repository';
 import { PaymentRepository } from './payment-repository';
+import { ProductCustomFieldRepository } from './product-custom-field-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShippingFulfillmentRepository } from './shipping-fulfillment-repository';
@@ -76,7 +77,8 @@ export function buildRepositories(trx: Transaction) {
     discount: new DiscountRepository(trx),
     orderDiscount: new OrderDiscountRepository(trx),
     optionPreset: new OptionPresetRepository(trx),
-    customFieldDefinition: new CustomFieldDefinitionRepository(trx)
+    customFieldDefinition: new CustomFieldDefinitionRepository(trx),
+    productCustomField: new ProductCustomFieldRepository(trx)
   };
 }
 
