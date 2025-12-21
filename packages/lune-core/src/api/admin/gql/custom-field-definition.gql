@@ -56,9 +56,9 @@ type Query {
 }
 
 type Mutation {
-  createCustomField(input: CreateCustomFieldInput!): CustomFieldDefinition!
-  updateCustomField(id: ID!, input: UpdateCustomFieldInput!): CustomFieldDefinition!
-  removeCustomField(id: ID!): Boolean!
+  createCustomFieldDefinition(input: CreateCustomFieldInput!): CustomFieldDefinitionResult!
+  updateCustomFieldDefinition(id: ID!, input: UpdateCustomFieldInput!): CustomFieldDefinition!
+  removeCustomFieldDefinition(id: ID!): Boolean!
 }
 
 input CreateCustomFieldInput {
@@ -71,4 +71,20 @@ input CreateCustomFieldInput {
 
 input UpdateCustomFieldInput {
   name: String!
+}
+
+type CustomFieldDefinitionResult {
+  customFieldDefinition: CustomFieldDefinition
+  apiErrors: [CustomFieldDefinitionErrorResult!]!
+}
+
+type CustomFieldDefinitionErrorResult {
+  code: CustomFieldDefinitionErrorCode!
+  message: String!
+}
+
+" Utils "
+enum CustomFieldDefinitionErrorCode {
+  INVALID_METADATA
+  KEY_ALREADY_EXISTS
 }

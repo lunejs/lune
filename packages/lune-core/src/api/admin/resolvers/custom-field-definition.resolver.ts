@@ -2,6 +2,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
+  MutationCreateCustomFieldDefinitionArgs,
   QueryCustomFieldDefinitionArgs,
   QueryCustomFieldDefinitionsArgs
 } from '@/api/shared/types/graphql';
@@ -11,6 +12,7 @@ import {
   CustomFieldAppliesTo,
   CustomFieldType
 } from '@/persistence/entities/custom-field-definition';
+import { isErrorResult } from '@/utils/error-result';
 
 async function customFieldDefinitions(
   _,
@@ -37,6 +39,20 @@ async function customFieldDefinition(
   return customFieldDefinitionService.findUnique(id);
 }
 
+async function createCustomFieldDefinition(
+  _,
+  { input }: MutationCreateCustomFieldDefinitionArgs,
+  ctx: ExecutionContext
+) {
+  const customFieldDefinitionService = new CustomFieldDefinitionService(ctx);
+
+  const result = await customFieldDefinitionService.create(input);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result] }
+    : { apiErrors: [], customFieldDefinition: result };
+}
+
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   CustomFieldAppliesToEntity: {
     PRODUCT: CustomFieldAppliesTo.Product
@@ -55,5 +71,8 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   Query: {
     customFieldDefinitions: UseUserGuard(customFieldDefinitions),
     customFieldDefinition: UseUserGuard(customFieldDefinition)
+  },
+  Mutation: {
+    createCustomFieldDefinition: UseUserGuard(createCustomFieldDefinition)
   }
 };

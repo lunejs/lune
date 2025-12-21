@@ -14,7 +14,12 @@ const config: CodegenConfig = {
         }
       ],
       config: {
-        contextType: '../context/types#ExecutionContext'
+        contextType: '../context/types#ExecutionContext',
+        enumValues: {
+          CustomFieldAppliesToEntity:
+            '../../../persistence/entities/custom-field-definition#CustomFieldAppliesTo',
+          CustomFieldType: '../../../persistence/entities/custom-field-definition#CustomFieldType'
+        }
       }
     }
   }

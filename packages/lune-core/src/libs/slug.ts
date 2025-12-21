@@ -9,6 +9,13 @@ import slugify from 'slugify';
  * const productSlug = getSlugBy(productName)
  * console.log(productSlug) // black-t-shirt
  */
-export const getSlugBy = (base: string) => {
-  return slugify(base, { lower: true });
+export const getSlugBy = (base: string, options?: Options) => {
+  return slugify(base, { lower: true, ...options });
+};
+
+type Options = {
+  /**
+   * @default '-'
+   */
+  replacement?: string;
 };
