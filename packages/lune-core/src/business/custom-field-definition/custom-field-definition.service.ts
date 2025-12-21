@@ -33,7 +33,7 @@ export class CustomFieldDefinitionService {
   }
 
   async create(input: CreateCustomFieldInput) {
-    if (input.type === CustomFieldType.Reference && !input.metadata.targetEntity) {
+    if (input.type === CustomFieldType.Reference && !input.metadata?.targetEntity) {
       return new InvalidMetadataError('should contain metadata.targetEntity');
     }
 
@@ -42,7 +42,7 @@ export class CustomFieldDefinitionService {
     const keyAlreadyExists = await this.repository.count({ where: { key } });
     if (keyAlreadyExists) return new KeyAlreadyExistsError(key);
 
-    await this.repository.create({
+    return await this.repository.create({
       ...input,
       key,
       metadata: input.metadata ?? null
