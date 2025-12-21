@@ -42,5 +42,6 @@ export const enum Tables {
   ShippingMethod = 'shipping_method',
   Discount = 'discount',
   OrderDiscount = 'order_discount',
-  CustomerAuthMethod = 'customer_auth_method'
+  CustomerAuthMethod = 'customer_auth_method',
+  CustomFieldDefinition = 'custom_field_definition'
 }

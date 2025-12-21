@@ -7,6 +7,7 @@ import { DefaultCollectionAssetFixture } from './collection-asset.fixture';
 import { DefaultCollectionProductFixture } from './collection-product.fixture';
 import { DefaultCollectionTranslationFixture } from './collection-translation.fixture';
 import { DefaultCountryFixture } from './country.fixture';
+import { DefaultCustomFieldDefinitionFixture } from './custom-field-definition.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
@@ -89,5 +90,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.ZoneState]: DefaultZoneStateFixture,
   [Tables.ShippingMethod]: DefaultShippingMethodFixture,
   [Tables.Discount]: DefaultDiscountFixture,
-  [Tables.OrderDiscount]: DefaultOrderDiscountFixture
+  [Tables.OrderDiscount]: DefaultOrderDiscountFixture,
+  [Tables.CustomFieldDefinition]: DefaultCustomFieldDefinitionFixture
 };

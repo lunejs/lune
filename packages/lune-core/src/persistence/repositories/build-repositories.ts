@@ -5,6 +5,7 @@ import { AssetRepository } from './asset-repository';
 import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
+import { CustomFieldDefinitionRepository } from './custom-field-definition-repository';
 import { CustomerAuthMethodRepository } from './customer-auth-method-repository';
 import { CustomerRepository } from './customer-repository';
 import { DiscountRepository } from './discount-repository';
@@ -74,7 +75,8 @@ export function buildRepositories(trx: Transaction) {
     shippingMethod: new ShippingMethodRepository(trx),
     discount: new DiscountRepository(trx),
     orderDiscount: new OrderDiscountRepository(trx),
-    optionPreset: new OptionPresetRepository(trx)
+    optionPreset: new OptionPresetRepository(trx),
+    customFieldDefinition: new CustomFieldDefinitionRepository(trx)
   };
 }
 
