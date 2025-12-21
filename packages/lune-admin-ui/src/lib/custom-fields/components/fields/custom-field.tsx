@@ -5,17 +5,27 @@ import { SingleLineTextCustomField } from './single-line-text';
 
 export const CustomField = ({ definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.SingleLineText) {
-    return <SingleLineTextCustomField onChange={onChange} definition={definition} />;
+    return (
+      <SingleLineTextCustomField
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
   }
 
   if (definition.type === CustomFieldType.MultiLineText) {
-    return <MultiLineTextCustomField onChange={onChange} definition={definition} />;
+    return (
+      <MultiLineTextCustomField
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
   }
 
   return null;
 };
 
 type Props = {
-  onChange: (value: string) => void;
+  onChange: (definition: CommonCustomFieldDefinitionFragment, value: unknown) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

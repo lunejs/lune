@@ -24,7 +24,12 @@ export const MultiLineTextCustomField = ({ definition, onChange }: Props) => {
           {definition.name}
         </Label>
         <PopoverTrigger asChild>
-          <Input id={id} value={persistedValue} readOnly className="w-3/4 shrink-0 text-start" />
+          <Input
+            id={id}
+            value={persistedValue.replaceAll('\n', ' ')}
+            readOnly
+            className="w-3/4 shrink-0 text-start"
+          />
         </PopoverTrigger>
       </div>
       <PopoverContent className="w-72" align="start">

@@ -43,7 +43,9 @@ export const ProductDetails = ({ customFields, product }: Props) => {
                     <CustomField
                       key={cf.id}
                       definition={cf}
-                      onChange={value => console.log(value)}
+                      onChange={(definition, value) =>
+                        console.log({ definition: definition.key, value })
+                      }
                     />
                   ))}
                 </CardContent>
