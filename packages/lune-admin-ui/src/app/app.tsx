@@ -9,7 +9,7 @@ import { AssetsPage } from '@/lib/asset/pages/assets-page';
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
-import { CustomFieldsPage } from '@/lib/custom-field/pages/custom-fields-page';
+import { CustomFieldsPage } from '@/lib/custom-fields/pages/custom-fields-page';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
