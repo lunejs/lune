@@ -80,10 +80,20 @@ const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
     { href: '/settings/shipments', label: 'Shipments' },
     { label: 'In Store Pickup' }
   ],
+  '/settings/payments': [{ label: 'Payments' }],
+  '/settings/payments/new': [
+    { href: '/settings/payments', label: 'Payments' },
+    { label: 'Add payment method' }
+  ],
   '/settings/locations': [{ label: 'Locations' }],
   '/settings/locations/new': [
     { href: '/settings/locations', label: 'Locations' },
     { label: 'Add location' }
+  ],
+  '/settings/custom-fields': [{ label: 'Custom fields' }],
+  '/settings/custom-fields/new': [
+    { href: '/settings/custom-fields', label: 'Custom fields' },
+    { label: 'Add custom field' }
   ]
 };
 
@@ -114,6 +124,9 @@ const getBreadcrumbItems = (pathname: string, id?: string) => {
   }
   if (pathname === `/settings/shipments/${id}`) {
     return [{ href: '/settings/shipments', label: 'Shipments' }, { label: 'Zone details' }];
+  }
+  if (pathname === `/settings/payments/${id}`) {
+    return [{ href: '/settings/payments', label: 'Payments' }, { label: 'Payment method details' }];
   }
   if (pathname === `/settings/locations/${id}`) {
     return [{ href: '/settings/locations', label: 'Locations' }, { label: 'Location details' }];

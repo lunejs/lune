@@ -3,10 +3,12 @@
 import * as React from 'react';
 import {
   CreditCardIcon,
+  GroupIcon,
   LogOutIcon,
   MapPinIcon,
   StoreIcon,
   TruckIcon,
+  UngroupIcon,
   UsersIcon
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
@@ -84,6 +86,27 @@ export function SettingsSidebar({ ...props }: React.ComponentProps<typeof Sideba
             ))}
           </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Customization</SidebarGroupLabel>
+
+          <SidebarMenu>
+            {SIDEBAR.customization.map(item => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive?.(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
+                  <Link to={`/settings${item.url}`}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -139,6 +162,20 @@ const SIDEBAR = {
       url: '/locations',
       icon: MapPinIcon,
       isActive: (pathname: string) => pathname.includes('location')
+    }
+  ],
+  customization: [
+    {
+      title: 'Custom fields',
+      url: '/custom-fields',
+      icon: UngroupIcon,
+      isActive: (pathname: string) => pathname.includes('custom-fields')
+    },
+    {
+      title: 'Custom objects',
+      url: '/custom-objects',
+      icon: GroupIcon,
+      isActive: (pathname: string) => pathname.includes('custom-objects')
     }
   ]
 };
