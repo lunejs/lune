@@ -1,6 +1,7 @@
-import { Form } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, Form } from '@lune/ui';
 
-import type { CommonProductFragment } from '@/lib/api/types';
+import type { CommonCustomFieldDefinitionFragment, CommonProductFragment } from '@/lib/api/types';
+import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
 
 import { GeneralProductCard } from './cards/general-product-card';
 import { PricingProductCard } from './cards/pricing-product-card';
@@ -12,7 +13,7 @@ import { useProductDetailsForm } from './use-form/use-product-details-form';
 import { ProductVariants } from './variants/product-variants';
 import { VariantContextProvider } from './variants/variants.context';
 
-export const ProductDetails = ({ product }: Props) => {
+export const ProductDetails = ({ customFields, product }: Props) => {
   const form = useProductDetailsForm(product);
 
   return (
@@ -32,6 +33,22 @@ export const ProductDetails = ({ product }: Props) => {
             <VariantContextProvider product={product ?? undefined}>
               <ProductVariants />
             </VariantContextProvider>
+            {customFields.length && (
+              <Card>
+                <CardHeader className="flex">
+                  <CardTitle>Custom fields</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {customFields.map(cf => (
+                    <CustomField
+                      key={cf.id}
+                      definition={cf}
+                      onChange={value => console.log(value)}
+                    />
+                  ))}
+                </CardContent>
+              </Card>
+            )}
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">
             <StatusProductCard />
@@ -43,5 +60,6 @@ export const ProductDetails = ({ product }: Props) => {
 };
 
 type Props = {
+  customFields: CommonCustomFieldDefinitionFragment[];
   product?: CommonProductFragment | null;
 };
