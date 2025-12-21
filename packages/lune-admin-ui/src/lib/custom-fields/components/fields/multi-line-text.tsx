@@ -15,7 +15,7 @@ export const MultiLineTextCustomField = ({ definition, onChange }: Props) => {
       onOpenChange={isOpen => {
         if (!isOpen) {
           setPersistedValue(value);
-          onChange(value);
+          onChange(value || null);
         }
       }}
     >
@@ -47,6 +47,6 @@ export const MultiLineTextCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
-  onChange: (value: string) => void;
+  onChange: (value: null | string) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

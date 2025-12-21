@@ -6,6 +6,7 @@ export const buildDefaultValues = (product: CommonProductFragment | null | undef
   return {
     ...buildDefaultGeneralInfo(product),
     ...buildDefaultVariant(product),
+    customFields: {},
     variants: buildDefaultVariants(product),
     options: buildDefaultOptions(product)
   };

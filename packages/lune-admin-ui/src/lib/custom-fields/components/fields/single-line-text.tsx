@@ -6,12 +6,17 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
   return (
     <PrimitiveCustomField
       definition={definition}
-      onChange={items => onChange(items.map(v => v.value))}
+      onChange={items => {
+        const newValues = items.map(v => v.value);
+
+        if (definition.isList) onChange(newValues.length ? newValues : null);
+        else onChange(newValues[0] ?? null);
+      }}
     />
   );
 };
 
 type Props = {
-  onChange: (value: string[]) => void;
+  onChange: (value: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

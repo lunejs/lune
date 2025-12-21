@@ -14,17 +14,20 @@ export const ImageCustomField = ({ definition, onChange }: Props) => {
   return (
     <AssetSelector
       onDone={assets => {
-        const newAssets = definition.isList ? assets : [assets[0]];
+        const newAssets = definition.isList ? assets : assets.length ? [assets[0]] : [];
 
-        onChange(newAssets.map(asset => asset.id));
         setAssets(newAssets);
+
+        const ids = newAssets.map(asset => asset.id);
+        if (definition.isList) onChange(ids.length ? ids : null);
+        else onChange(ids[0] ?? null);
       }}
     >
       <div className="flex items-center gap-4">
         <Label className="w-full">{definition.name}</Label>
         <CustomFieldPreviewContainer>
           {assets.map(asset => (
-            <CustomFieldEntityPreview title={asset.filename} image={asset.source} />
+            <CustomFieldEntityPreview key={asset.id} title={asset.filename} image={asset.source} />
           ))}
         </CustomFieldPreviewContainer>
       </div>
@@ -33,6 +36,6 @@ export const ImageCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
-  onChange: (assetIds: string[]) => void;
+  onChange: (assetIds: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

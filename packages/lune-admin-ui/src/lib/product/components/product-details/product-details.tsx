@@ -44,7 +44,10 @@ export const ProductDetails = ({ customFields, product }: Props) => {
                       key={cf.id}
                       definition={cf}
                       onChange={(definition, value) =>
-                        console.log({ definition: definition.key, value })
+                        form.setValue('customFields', {
+                          ...form.getValues('customFields'),
+                          [definition.key]: value
+                        })
                       }
                     />
                   ))}

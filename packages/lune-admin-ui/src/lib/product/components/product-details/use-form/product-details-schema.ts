@@ -20,6 +20,9 @@ export const ProductDetailsSchema = z.object({
   width: z.coerce.number().min(0, FormMessages.greater(0)).optional().or(z.literal('')),
   height: z.coerce.number().min(0, FormMessages.greater(0)).optional().or(z.literal('')),
 
+  // custom fields
+  customFields: z.record(z.string(), z.any()),
+
   // variants
   options: z.array(
     z.object({

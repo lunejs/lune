@@ -6,7 +6,12 @@ export const DecimalCustomField = ({ definition, onChange }: Props) => {
   return (
     <PrimitiveCustomField
       definition={definition}
-      onChange={items => onChange(items.map(v => Number(v.value)))}
+      onChange={items => {
+        const values = items.map(v => Number(v.value));
+
+        if (definition.isList) onChange(values.length ? values : null);
+        else onChange(values[0] ?? null);
+      }}
       inputProps={{
         type: 'number'
       }}
@@ -15,6 +20,6 @@ export const DecimalCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
-  onChange: (values: number[]) => void;
+  onChange: (values: null | number | number[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

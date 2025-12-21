@@ -34,7 +34,11 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
         trigger={
           <CustomFieldPreviewContainer>
             {selected.map(p => (
-              <CustomFieldEntityPreview title={p.name} image={p.assets.items[0]?.source} />
+              <CustomFieldEntityPreview
+                key={p.id}
+                title={p.name}
+                image={p.assets.items[0]?.source}
+              />
             ))}
           </CustomFieldPreviewContainer>
         }
@@ -44,10 +48,16 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
         onSearch={setQuery}
         getRowId={item => item.id}
         onDone={selected => {
-          const newSelected = definition.isList ? selected : [selected[0]];
+          // Remove this once add max prop
+          const newSelected = definition.isList ? selected : selected[0] ? [selected[0]] : [];
 
           setSelected(newSelected);
-          onChange(newSelected.map(s => s.id));
+
+          const ids = newSelected.map(s => s.id);
+
+          if (definition.isList) onChange(ids.length ? ids : null);
+          else onChange(newSelected[0]?.id ?? null);
+
           return true;
         }}
         renderItem={({ rowId, item, isSelected, onSelect }) => (
@@ -65,6 +75,6 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
 };
 
 type Props = {
-  onChange: (productIds: string[]) => void;
+  onChange: (productIds: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };
