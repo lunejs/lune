@@ -1,34 +1,43 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import type z from 'zod';
 
 import {
+  type CommonCustomFieldDefinitionFragment,
   type CustomFieldAppliesToEntity,
   CustomFieldDefinitionErrorCode,
-  type CustomFieldType
+  CustomFieldType
 } from '@/lib/api/types';
 import { useCreateCustomFieldDefinition } from '@/lib/custom-fields/hooks/use-create-custom-field-definition';
+import { useUpdateCustomFieldDefinition } from '@/lib/custom-fields/hooks/use-update-custom-field-definition';
 import { useLoadingNotification } from '@/shared/hooks/use-loading-notification';
 
 import { CustomFieldDetailsSchema } from './form-schema';
 
-export const useCustomFieldForm = (entity: CustomFieldAppliesToEntity) => {
+export const useCustomFieldForm = (
+  entity: CustomFieldAppliesToEntity,
+  definition: CommonCustomFieldDefinitionFragment | undefined
+) => {
   const navigate = useNavigate();
 
   const { loading, failure, success, dismiss } = useLoadingNotification();
   const { createCustomFieldDefinition } = useCreateCustomFieldDefinition();
+  const { updateCustomFieldDefinition } = useUpdateCustomFieldDefinition();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(CustomFieldDetailsSchema),
     defaultValues: {
-      name: '',
-      type: '',
-      quantity: 'single'
+      name: definition?.name ?? '',
+      quantity: definition?.isList ? 'multiple' : 'single',
+      type:
+        definition?.type === CustomFieldType.Reference
+          ? `${definition.type}:${definition.metadata.targetEntity}`
+          : (definition?.type ?? '')
     }
   });
 
-  const onSubmit = async (values: FormValues) => {
+  const onCreate = async (values: FormValues) => {
     loading('Saving...');
 
     const isList = values.quantity === 'multiple';
@@ -91,12 +100,36 @@ export const useCustomFieldForm = (entity: CustomFieldAppliesToEntity) => {
     navigate(`/settings/custom-fields/${entity}/${result.data.id}`);
   };
 
+  const onUpdate = async (id: string, values: FormValues) => {
+    loading('Saving...');
+
+    const result = await updateCustomFieldDefinition(id, { name: values.name });
+
+    if (!result.isSuccess) {
+      failure(result.error);
+      return;
+    }
+
+    success('Saved');
+  };
+
+  const onSubmit = async (values: FormValues) => {
+    if (definition) {
+      await onUpdate(definition.id, values);
+    } else {
+      await onCreate(values);
+    }
+  };
+
   return {
     ...form,
+    definition,
     onSubmit: form.handleSubmit(onSubmit)
   };
 };
 
 export type FormValues = z.infer<typeof CustomFieldDetailsSchema>;
 
-export const useCustomFieldFormContext = () => useFormContext<FormValues>();
+export const useCustomFieldFormContext = () => useFormContext<FormValues>() as Return;
+
+type Return = UseFormReturn<FormValues> & { definition?: CommonCustomFieldDefinitionFragment };

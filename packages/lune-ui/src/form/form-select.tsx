@@ -35,7 +35,7 @@ export const FormSelect = <
       render={({ field }) => (
         <FormItem className={cn('w-full', className)}>
           {label && <FormLabel>{label}</FormLabel>}
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select {...field} onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />

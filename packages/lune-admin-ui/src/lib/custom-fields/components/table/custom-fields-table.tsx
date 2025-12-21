@@ -63,10 +63,14 @@ export const CustomFieldsTable = ({ entity, customFields }: Props) => {
                 cf.type === CustomFieldType.Reference
                   ? getCustomFieldTypeData(`${cf.type}:${cf.metadata.targetEntity}`)
                   : getCustomFieldTypeData(cf.type);
+
               return (
                 <TableRow key={cf.id}>
                   <TableCell>
-                    <Link to={`/settings/shipments/${cf.id}`} className="hover:underline">
+                    <Link
+                      to={`/settings/custom-fields/${entity}/${cf.id}`}
+                      className="hover:underline"
+                    >
                       <span>{cf.name}</span>
                     </Link>
                   </TableCell>

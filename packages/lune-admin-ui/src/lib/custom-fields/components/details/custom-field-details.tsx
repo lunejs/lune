@@ -14,33 +14,43 @@ import {
   UserIcon
 } from 'lucide-react';
 
-import { Button, Form, FormSelect } from '@lune/ui';
+import { Form, FormSelect } from '@lune/ui';
 
-import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
+import type {
+  CommonCustomFieldDefinitionFragment,
+  CustomFieldAppliesToEntity
+} from '@/lib/api/types';
 import { CustomFieldType } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 
 import { getEntityName } from '../../utils/custom-field.utils';
 
 import { CustomFieldName } from './name/custom-field-name';
+import { CustomFieldSubmitButton } from './use-form/submit-button';
 import { useCustomFieldForm } from './use-form/use-form';
 
-export const CustomFieldDetails = ({ entity }: Props) => {
-  const form = useCustomFieldForm(entity);
+export const CustomFieldDetails = ({ entity, definition }: Props) => {
+  const form = useCustomFieldForm(entity, definition);
 
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit}>
         <SettingsPageLayout
-          title={`Add ${getEntityName(entity).toLowerCase()} custom fields`}
+          title={
+            definition
+              ? definition.name
+              : `Add ${getEntityName(entity).toLowerCase()} custom fields`
+          }
+          subtitle={definition && `${getEntityName(entity)} custom field`}
           backUrl={`/settings/custom-fields/${entity}`}
-          actions={<Button>Save</Button>}
+          actions={<CustomFieldSubmitButton />}
           className="flex flex-col gap-4"
         >
           <CustomFieldName />
 
           <div className="flex items-end gap-4">
             <FormSelect
+              disabled={!!definition}
               label="Type"
               control={form.control}
               name="quantity"
@@ -52,6 +62,7 @@ export const CustomFieldDetails = ({ entity }: Props) => {
             />
 
             <FormSelect
+              disabled={!!definition}
               control={form.control}
               name="type"
               placeholder="Select a type"
@@ -126,5 +137,6 @@ export const CustomFieldDetails = ({ entity }: Props) => {
 };
 
 type Props = {
+  definition?: CommonCustomFieldDefinitionFragment;
   entity: CustomFieldAppliesToEntity;
 };

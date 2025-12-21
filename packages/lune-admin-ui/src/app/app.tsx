@@ -9,6 +9,7 @@ import { AssetsPage } from '@/lib/asset/pages/assets-page';
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';
 import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
+import { CustomFieldDetailsPage } from '@/lib/custom-fields/pages/custom-fields-details-page';
 import { CustomFieldsPage } from '@/lib/custom-fields/pages/custom-fields-page';
 import { EntityCustomFieldsPage } from '@/lib/custom-fields/pages/entity-custom-fields-page';
 import { NewCustomFieldPage } from '@/lib/custom-fields/pages/new-custom-fields-page';
@@ -139,6 +140,10 @@ export const App = ({ config }: Props) => {
                     <Route
                       path="/settings/custom-fields/:entity/new"
                       element={<NewCustomFieldPage />}
+                    />
+                    <Route
+                      path="/settings/custom-fields/:entity/:id"
+                      element={<CustomFieldDetailsPage />}
                     />
                   </Route>
                   <Route path="/" element={<DashboardPage />} />
