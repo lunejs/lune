@@ -11,6 +11,7 @@ import { CollectionsPage } from '@/lib/collections/pages/collections-page';
 import { NewCollectionPage } from '@/lib/collections/pages/new-collection-page';
 import { CustomFieldsPage } from '@/lib/custom-fields/pages/custom-fields-page';
 import { EntityCustomFieldsPage } from '@/lib/custom-fields/pages/entity-custom-fields-page';
+import { NewCustomFieldPage } from '@/lib/custom-fields/pages/new-custom-fields-page';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
@@ -134,6 +135,10 @@ export const App = ({ config }: Props) => {
                     <Route
                       path="/settings/custom-fields/:entity"
                       element={<EntityCustomFieldsPage />}
+                    />
+                    <Route
+                      path="/settings/custom-fields/:entity/new"
+                      element={<NewCustomFieldPage />}
                     />
                   </Route>
                   <Route path="/" element={<DashboardPage />} />

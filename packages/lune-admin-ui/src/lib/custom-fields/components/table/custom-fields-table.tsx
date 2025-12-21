@@ -17,18 +17,21 @@ import {
   TableRow
 } from '@lune/ui';
 
+import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
 import { type CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
-export const CustomFieldsTable = ({ customFields }: Props) => {
+import { getEntityName } from '../../utils/custom-field.utils';
+
+export const CustomFieldsTable = ({ entity, customFields }: Props) => {
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <div>
           <CardTitle>Custom fields</CardTitle>
-          <CardDescription>Product custom fields</CardDescription>
+          <CardDescription>{getEntityName(entity)} custom fields</CardDescription>
         </div>
         <div>
-          <Link to="/settings/shipments/new">
+          <Link to={`/settings/custom-fields/${entity}/new`}>
             <Button variant="outline" size="sm" className="gap-2">
               <CircleFadingPlusIcon size={16} />
               Add definition
@@ -73,5 +76,6 @@ export const CustomFieldsTable = ({ customFields }: Props) => {
 };
 
 type Props = {
+  entity: CustomFieldAppliesToEntity;
   customFields: CommonCustomFieldDefinitionFragment[];
 };

@@ -22,7 +22,7 @@ export const EntityCustomFieldsPage = () => {
       subtitle={getSubtitle(entity)}
       backUrl="/settings/custom-fields"
     >
-      <CustomFieldsTable customFields={customFieldDefinitions} />
+      <CustomFieldsTable entity={entity} customFields={customFieldDefinitions} />
     </SettingsPageLayout>
   );
 };
