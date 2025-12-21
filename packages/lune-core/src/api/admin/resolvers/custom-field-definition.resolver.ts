@@ -24,7 +24,7 @@ async function customFieldDefinitions(
 
   const [definitions, count] = await Promise.all([
     customFieldDefinitionService.find(input ?? {}),
-    customFieldDefinitionService.count()
+    customFieldDefinitionService.count(input?.filters)
   ]);
 
   return new ListResponse(definitions, definitions.length, { total: count });
@@ -66,7 +66,8 @@ async function updateCustomFieldDefinition(
 
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   CustomFieldAppliesToEntity: {
-    PRODUCT: CustomFieldAppliesTo.Product
+    PRODUCT: CustomFieldAppliesTo.Product,
+    COLLECTION: CustomFieldAppliesTo.Collection
   },
   CustomFieldType: {
     SINGLE_LINE_TEXT: CustomFieldType.SingleLineText,

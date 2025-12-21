@@ -59,6 +59,16 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         type: CustomFieldType.Reference,
         metadata: { targetEntity: 'product' },
         shop_id: ShopConstants.ID
+      },
+      {
+        id: TestUtils.generateUUID(),
+        name: 'Another option',
+        key: 'another_option',
+        is_list: true,
+        applies_to_entity: 'collection',
+        type: CustomFieldType.Reference,
+        metadata: { targetEntity: 'product' },
+        shop_id: ShopConstants.ID
       }
     ];
   }

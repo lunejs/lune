@@ -1,16 +1,13 @@
-import { clean } from '@lune/common';
-
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   CreateCustomFieldInput,
-  ListInput,
+  CustomFieldDefinitionListInput,
   UpdateCustomFieldInput
 } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
 import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';
-import { SortKey } from '@/persistence/repositories/repository';
 
 import { InvalidMetadataError, KeyAlreadyExistsError } from './custom-field-definition.errors';
 
@@ -21,15 +18,12 @@ export class CustomFieldDefinitionService {
     this.repository = ctx.repositories.customFieldDefinition;
   }
 
-  async find(input?: ListInput) {
-    return await this.repository.findMany({
-      ...clean(input ?? {}),
-      orderBy: { createdAt: SortKey.Asc }
-    });
+  async find(input?: CustomFieldDefinitionListInput) {
+    return await this.repository.findByFilters(input ?? {});
   }
 
-  async count() {
-    return await this.repository.count();
+  async count(filters?: CustomFieldDefinitionListInput['filters']) {
+    return await this.repository.countByFilters(filters);
   }
 
   async findUnique(id: ID) {

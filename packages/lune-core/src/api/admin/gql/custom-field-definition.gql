@@ -1,5 +1,6 @@
 enum CustomFieldAppliesToEntity {
   PRODUCT
+  COLLECTION
 }
 
 enum CustomFieldType {
@@ -50,9 +51,30 @@ type CustomFieldDefinitionList {
   pageInfo: PageInfo!
 }
 
+input CustomFieldDefinitionListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: CustomFieldDefinitionFilters
+}
+
+input CustomFieldDefinitionFilters {
+  appliesToEntity: CustomFieldAppliesToEntity
+}
+
 type Query {
   customFieldDefinition(id: ID!): CustomFieldDefinition
-  customFieldDefinitions(input: ListInput): CustomFieldDefinitionList!
+  customFieldDefinitions(input: CustomFieldDefinitionListInput): CustomFieldDefinitionList!
 }
 
 type Mutation {

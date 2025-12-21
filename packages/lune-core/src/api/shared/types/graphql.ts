@@ -442,11 +442,24 @@ export type CustomFieldDefinitionErrorResult = {
   message: Scalars['String']['output'];
 };
 
+export type CustomFieldDefinitionFilters = {
+  appliesToEntity?: InputMaybe<CustomFieldAppliesToEntity>;
+};
+
 export type CustomFieldDefinitionList = {
   __typename?: 'CustomFieldDefinitionList';
   count: Scalars['Int']['output'];
   items: Array<CustomFieldDefinition>;
   pageInfo: PageInfo;
+};
+
+export type CustomFieldDefinitionListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CustomFieldDefinitionFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CustomFieldDefinitionResult = {
@@ -1868,7 +1881,7 @@ export type QueryCustomFieldDefinitionArgs = {
 
 
 export type QueryCustomFieldDefinitionsArgs = {
-  input?: InputMaybe<ListInput>;
+  input?: InputMaybe<CustomFieldDefinitionListInput>;
 };
 
 
@@ -2555,7 +2568,9 @@ export type ResolversTypes = {
   CustomFieldDefinition: ResolverTypeWrapper<CustomFieldDefinition>;
   CustomFieldDefinitionErrorCode: CustomFieldDefinitionErrorCode;
   CustomFieldDefinitionErrorResult: ResolverTypeWrapper<CustomFieldDefinitionErrorResult>;
+  CustomFieldDefinitionFilters: CustomFieldDefinitionFilters;
   CustomFieldDefinitionList: ResolverTypeWrapper<CustomFieldDefinitionList>;
+  CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: ResolverTypeWrapper<CustomFieldDefinitionResult>;
   CustomFieldType: CustomFieldType;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
@@ -2750,7 +2765,9 @@ export type ResolversParentTypes = {
   CreateZoneInput: CreateZoneInput;
   CustomFieldDefinition: CustomFieldDefinition;
   CustomFieldDefinitionErrorResult: CustomFieldDefinitionErrorResult;
+  CustomFieldDefinitionFilters: CustomFieldDefinitionFilters;
   CustomFieldDefinitionList: CustomFieldDefinitionList;
+  CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: CustomFieldDefinitionResult;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
