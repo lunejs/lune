@@ -18,9 +18,9 @@ import {
 } from '@lune/ui';
 
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
-import { type CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
+import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
-import { getEntityName } from '../../utils/custom-field.utils';
+import { getCustomFieldTypeData, getEntityName } from '../../utils/custom-field.utils';
 
 export const CustomFieldsTable = ({ entity, customFields }: Props) => {
   return (
@@ -58,16 +58,26 @@ export const CustomFieldsTable = ({ entity, customFields }: Props) => {
                 </TableCell>
               </TableRow>
             )}
-            {customFields.map(cf => (
-              <TableRow key={cf.id}>
-                <TableCell>
-                  <Link to={`/settings/shipments/${cf.id}`} className="hover:underline">
-                    <span>{cf.name}</span>
-                  </Link>
-                </TableCell>
-                <TableCell>{cf.type}</TableCell>
-              </TableRow>
-            ))}
+            {customFields.map(cf => {
+              const type =
+                cf.type === CustomFieldType.Reference
+                  ? getCustomFieldTypeData(`${cf.type}:${cf.metadata.targetEntity}`)
+                  : getCustomFieldTypeData(cf.type);
+              return (
+                <TableRow key={cf.id}>
+                  <TableCell>
+                    <Link to={`/settings/shipments/${cf.id}`} className="hover:underline">
+                      <span>{cf.name}</span>
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      {<type.icon size={16} />} {type.title}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>
