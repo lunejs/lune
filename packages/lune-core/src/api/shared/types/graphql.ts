@@ -279,7 +279,7 @@ export type CreateCollectionInput = {
 };
 
 export type CreateCustomFieldInput = {
-  appliesToEntity: CustomFieldDefinitionAppliesToEntity;
+  appliesToEntity: CustomFieldAppliesToEntity;
   isList: Scalars['Boolean']['input'];
   metadata?: InputMaybe<Scalars['JSON']['input']>;
   name: Scalars['String']['input'];
@@ -406,11 +406,15 @@ export type CreateZoneInput = {
   stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export enum CustomFieldAppliesToEntity {
+  Product = 'PRODUCT'
+}
+
 /** Represents a custom field that cna be attached to an entity */
 export type CustomFieldDefinition = {
   __typename?: 'CustomFieldDefinition';
   /** Entities this field can be applied to */
-  appliesToEntity: CustomFieldDefinitionAppliesToEntity;
+  appliesToEntity: CustomFieldAppliesToEntity;
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   /** Weather the field is a list of values */
@@ -424,10 +428,6 @@ export type CustomFieldDefinition = {
   type: CustomFieldType;
   updatedAt: Scalars['Date']['output'];
 };
-
-export enum CustomFieldDefinitionAppliesToEntity {
-  Product = 'PRODUCT'
-}
 
 export type CustomFieldDefinitionList = {
   __typename?: 'CustomFieldDefinitionList';
@@ -2542,8 +2542,8 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
+  CustomFieldAppliesToEntity: CustomFieldAppliesToEntity;
   CustomFieldDefinition: ResolverTypeWrapper<CustomFieldDefinition>;
-  CustomFieldDefinitionAppliesToEntity: CustomFieldDefinitionAppliesToEntity;
   CustomFieldDefinitionList: ResolverTypeWrapper<CustomFieldDefinitionList>;
   CustomFieldType: CustomFieldType;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
@@ -2973,7 +2973,7 @@ export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType
 };
 
 export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinition'] = ResolversParentTypes['CustomFieldDefinition']> = {
-  appliesToEntity?: Resolver<ResolversTypes['CustomFieldDefinitionAppliesToEntity'], ParentType, ContextType>;
+  appliesToEntity?: Resolver<ResolversTypes['CustomFieldAppliesToEntity'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isList?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;

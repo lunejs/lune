@@ -1,4 +1,4 @@
-enum CustomFieldDefinitionAppliesToEntity {
+enum CustomFieldAppliesToEntity {
   PRODUCT
 }
 
@@ -36,7 +36,7 @@ type CustomFieldDefinition {
   """
   Entities this field can be applied to
   """
-  appliesToEntity: CustomFieldDefinitionAppliesToEntity!
+  appliesToEntity: CustomFieldAppliesToEntity!
   """
   Type of the definition
   """
@@ -64,7 +64,7 @@ type Mutation {
 input CreateCustomFieldInput {
   name: String!
   isList: Boolean!
-  appliesToEntity: CustomFieldDefinitionAppliesToEntity!
+  appliesToEntity: CustomFieldAppliesToEntity!
   type: CustomFieldType!
   metadata: JSON
 }

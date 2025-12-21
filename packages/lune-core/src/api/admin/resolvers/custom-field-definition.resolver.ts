@@ -7,6 +7,10 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomFieldDefinitionService } from '@/business/custom-field-definition/custom-field-definition.service';
+import {
+  CustomFieldAppliesTo,
+  CustomFieldType
+} from '@/persistence/entities/custom-field-definition';
 
 async function customFieldDefinitions(
   _,
@@ -34,6 +38,20 @@ async function customFieldDefinition(
 }
 
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
+  CustomFieldAppliesToEntity: {
+    PRODUCT: CustomFieldAppliesTo.Product
+  },
+  CustomFieldType: {
+    SINGLE_LINE_TEXT: CustomFieldType.SingleLineText,
+    MULTI_LINE_TEXT: CustomFieldType.MultiLineText,
+    INTEGER: CustomFieldType.Integer,
+    DECIMAL: CustomFieldType.Decimal,
+    MONEY: CustomFieldType.Money,
+    DATE: CustomFieldType.Date,
+    BOOLEAN: CustomFieldType.Boolean,
+    IMAGE: CustomFieldType.Image,
+    REFERENCE: CustomFieldType.Reference
+  },
   Query: {
     customFieldDefinitions: UseUserGuard(customFieldDefinitions),
     customFieldDefinition: UseUserGuard(customFieldDefinition)
