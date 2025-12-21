@@ -24,5 +24,6 @@ input AssetListInput {
 }
 
 input AssetFilters {
+  ids: [ID!]
   filename: StringFilter
 }

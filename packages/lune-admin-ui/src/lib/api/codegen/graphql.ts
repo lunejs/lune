@@ -81,6 +81,7 @@ export type Asset = Node & {
 
 export type AssetFilters = {
   filename?: InputMaybe<StringFilter>;
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type AssetInEntity = {

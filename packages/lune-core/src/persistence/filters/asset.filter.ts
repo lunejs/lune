@@ -16,6 +16,10 @@ export class AssetFilter extends BaseFilter<AssetTable> {
       }
     }
 
+    if (filters.ids?.length) {
+      this.query.whereIn('id', filters.ids);
+    }
+
     return this;
   }
 

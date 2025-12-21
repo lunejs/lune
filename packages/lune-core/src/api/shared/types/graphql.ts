@@ -111,6 +111,7 @@ export type Asset = Node & {
 
 export type AssetFilters = {
   filename?: InputMaybe<StringFilter>;
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type AssetInEntity = {
@@ -3003,7 +3004,7 @@ export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
+export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
 
 export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinition'] = ResolversParentTypes['CustomFieldDefinition']> = {
   appliesToEntity?: Resolver<ResolversTypes['CustomFieldAppliesToEntity'], ParentType, ContextType>;

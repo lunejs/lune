@@ -102,6 +102,31 @@ describe('assets - Query', () => {
     expect(assets.items[1].id).toBe(AssetConstants.EllieImageID);
   });
 
+  test('returns assets filtered by ids', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_ASSETS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              ids: [AssetConstants.JoelImageID, AssetConstants.EllieImageID]
+            }
+          }
+        }
+      });
+
+    const { assets } = res.body.data;
+
+    expect(assets.items).toHaveLength(2);
+    expect(assets.count).toBe(2);
+    expect(assets.pageInfo.total).toBe(2);
+    expect(assets.items.map(a => a.id)).toContain(AssetConstants.JoelImageID);
+    expect(assets.items.map(a => a.id)).toContain(AssetConstants.EllieImageID);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app).post('/admin-api').send({
       query: GET_ASSETS_QUERY,

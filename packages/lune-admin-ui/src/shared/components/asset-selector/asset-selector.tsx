@@ -11,6 +11,8 @@ import {
   DialogTrigger
 } from '@lune/ui';
 
+import type { CommonAssetFragment } from '@/lib/api/types';
+
 import { AssetSelectorList } from './list/asset-selector-list';
 
 /**
@@ -64,7 +66,13 @@ export const AssetSelector: FC<Props> = ({
           <DialogClose asChild>
             <Button variant={'outline'}>Cancel</Button>
           </DialogClose>
-          <Button onClick={() => onDone(selected)}>Done</Button>
+          {isOpen === undefined ? (
+            <DialogClose asChild>
+              <Button onClick={() => onDone(selected as CommonAssetFragment[])}>Done</Button>
+            </DialogClose>
+          ) : (
+            <Button onClick={() => onDone(selected as CommonAssetFragment[])}>Done</Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -73,7 +81,7 @@ export const AssetSelector: FC<Props> = ({
 
 type Props = {
   /** Callback invoked when the user confirms their asset selection by clicking "Done". */
-  onDone: (assets: SelectedAsset[]) => void;
+  onDone: (assets: CommonAssetFragment[]) => void;
 
   /** Default selected assets */
   defaultSelected?: SelectedAsset[];
