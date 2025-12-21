@@ -38,7 +38,7 @@ export const ProductDetails = ({ customFields, product }: Props) => {
                 <CardHeader className="flex">
                   <CardTitle>Custom fields</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-col gap-4">
                   {customFields.map(cf => (
                     <CustomField
                       key={cf.id}

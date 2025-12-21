@@ -1,10 +1,10 @@
 import { useId, useState } from 'react';
 
-import { Input, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
+import { Input, Label, Popover, PopoverContent, PopoverTrigger, Textarea } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
-export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
+export const MultiLineTextCustomField = ({ definition, onChange }: Props) => {
   const id = useId();
 
   const [value, setValue] = useState('');
@@ -30,7 +30,11 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
       <PopoverContent className="w-72" align="start">
         <div className="flex flex-col gap-2">
           <Label>{definition.name}</Label>
-          <Input defaultValue={persistedValue} onChange={e => setValue(e.target.value)} />
+          <Textarea
+            className="w-full"
+            defaultValue={persistedValue}
+            onChange={e => setValue(e.target.value)}
+          />
         </div>
       </PopoverContent>
     </Popover>
