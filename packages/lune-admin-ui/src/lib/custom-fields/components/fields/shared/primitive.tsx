@@ -1,4 +1,4 @@
-import { type ChangeEventHandler, type ReactElement, useId, useState } from 'react';
+import { type ComponentProps, useId, useState } from 'react';
 import { XIcon } from 'lucide-react';
 
 import { isTruthy } from '@lune/common';
@@ -7,7 +7,7 @@ import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useList } from '@/shared/hooks/use-list';
 
-export const PrimitiveCustomField = ({ onChange, definition, renderInput, mapOnSave }: Props) => {
+export const PrimitiveCustomField = ({ onChange, definition, inputProps, mapOnSave }: Props) => {
   const id = useId();
 
   const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>([]);
@@ -51,11 +51,11 @@ export const PrimitiveCustomField = ({ onChange, definition, renderInput, mapOnS
 
             return (
               <div key={item.id} className="flex items-center gap-2">
-                {renderInput(defaultValue?.value, e => update(item.id, e.target.value))}
-                {/* <Input
+                <Input
+                  {...inputProps}
                   defaultValue={defaultValue?.value}
                   onChange={e => update(item.id, e.target.value)}
-                /> */}
+                />
                 {items.length > 1 && (
                   <Button variant={'ghost'} size={'icon'} onClick={() => remove(item.id)}>
                     <XIcon />
@@ -78,9 +78,6 @@ export const PrimitiveCustomField = ({ onChange, definition, renderInput, mapOnS
 type Props = {
   definition: CommonCustomFieldDefinitionFragment;
   onChange: (items: { id: string; value: string }[]) => void;
-  renderInput: (
-    defaultValue: string | undefined,
-    onChange: ChangeEventHandler<HTMLInputElement>
-  ) => ReactElement;
+  inputProps?: ComponentProps<'input'>;
   mapOnSave?: (items: { id: string; value: string }) => { id: string; value: string };
 };
