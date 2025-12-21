@@ -1,7 +1,16 @@
 import { type ComponentProps } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components';
 import { cn } from '@/lib/utils';
 
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
@@ -12,6 +21,7 @@ export const FormSelect = <
 >({
   name,
   items,
+  groups,
   label,
   description,
   placeholder,
@@ -32,9 +42,20 @@ export const FormSelect = <
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {items.map(item => (
+              {groups?.map(group => (
+                <SelectGroup key={group.label}>
+                  <SelectLabel>{group.label}</SelectLabel>
+
+                  {group.items.map(item => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.icon && <item.icon size={16} />} {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))}
+              {items?.map(item => (
                 <SelectItem key={item.value} value={item.value}>
-                  {item.label}
+                  {item.icon && <item.icon size={16} />} {item.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -54,9 +75,12 @@ type Props<
   ComponentProps<typeof FormField<TFieldValues, TName>>,
   'control' | 'defaultValue' | 'disabled' | 'name'
 > & {
-  items: { label: string; value: string }[];
+  groups?: { label: string; items: SelectItem[] }[];
+  items?: SelectItem[];
   label?: string;
   description?: string;
   placeholder?: string;
   className?: string;
 };
+
+type SelectItem = { label: string; value: string; icon?: LucideIcon };

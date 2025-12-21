@@ -25,7 +25,14 @@ export const useLoadingNotification = () => {
     notification.error(msg);
   };
 
+  const dismiss = () => {
+    if (notificationId.current) {
+      notification.dismiss(notificationId.current);
+    }
+  };
+
   return {
+    dismiss,
     loading,
     success,
     failure
