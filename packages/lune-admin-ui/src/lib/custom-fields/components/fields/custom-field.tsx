@@ -4,6 +4,7 @@ import { DecimalCustomField } from './decimal';
 import { ImageCustomField } from './image';
 import { IntegerCustomField } from './integer';
 import { MultiLineTextCustomField } from './multi-line-text';
+import { ProductReferenceCustomField } from './product-reference';
 import { SingleLineTextCustomField } from './single-line-text';
 
 export const CustomField = ({ definition, onChange }: Props) => {
@@ -40,6 +41,18 @@ export const CustomField = ({ definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.Image) {
     return (
       <ImageCustomField onChange={value => onChange(definition, value)} definition={definition} />
+    );
+  }
+
+  if (
+    definition.type === CustomFieldType.Reference &&
+    definition.metadata.targetEntity === 'product'
+  ) {
+    return (
+      <ProductReferenceCustomField
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
     );
   }
 
