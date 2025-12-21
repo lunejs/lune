@@ -233,6 +233,14 @@ export type CreateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type CreateCustomFieldInput = {
+  appliesToEntity: CustomFieldAppliesToEntity;
+  isList: Scalars['Boolean']['input'];
+  metadata?: InputMaybe<Scalars['JSON']['input']>;
+  name: Scalars['String']['input'];
+  type: CustomFieldType;
+};
+
 export type CreateDiscountInput = {
   applicationLevel: DiscountApplicationLevel;
   applicationMode: DiscountApplicationMode;
@@ -330,6 +338,76 @@ export type CreateZoneInput = {
   name: Scalars['String']['input'];
   stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
+
+export enum CustomFieldAppliesToEntity {
+  Collection = 'COLLECTION',
+  Product = 'PRODUCT'
+}
+
+/** Represents a custom field that cna be attached to an entity */
+export type CustomFieldDefinition = {
+  /** Entities this field can be applied to */
+  appliesToEntity: CustomFieldAppliesToEntity;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Weather the field is a list of values */
+  isList: Scalars['Boolean']['output'];
+  /** A unique  and readable key to make reference to the definition */
+  key: Scalars['String']['output'];
+  metadata?: Maybe<Scalars['JSON']['output']>;
+  /** Name of the definition */
+  name: Scalars['String']['output'];
+  /** Type of the definition */
+  type: CustomFieldType;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/**  Utils  */
+export enum CustomFieldDefinitionErrorCode {
+  InvalidMetadata = 'INVALID_METADATA',
+  KeyAlreadyExists = 'KEY_ALREADY_EXISTS'
+}
+
+export type CustomFieldDefinitionErrorResult = {
+  code: CustomFieldDefinitionErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CustomFieldDefinitionFilters = {
+  appliesToEntity?: InputMaybe<CustomFieldAppliesToEntity>;
+};
+
+export type CustomFieldDefinitionList = {
+  count: Scalars['Int']['output'];
+  items: Array<CustomFieldDefinition>;
+  pageInfo: PageInfo;
+};
+
+export type CustomFieldDefinitionListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CustomFieldDefinitionFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CustomFieldDefinitionResult = {
+  apiErrors: Array<CustomFieldDefinitionErrorResult>;
+  customFieldDefinition?: Maybe<CustomFieldDefinition>;
+};
+
+export enum CustomFieldType {
+  Boolean = 'BOOLEAN',
+  Date = 'DATE',
+  Decimal = 'DECIMAL',
+  Image = 'IMAGE',
+  Integer = 'INTEGER',
+  Money = 'MONEY',
+  MultiLineText = 'MULTI_LINE_TEXT',
+  Reference = 'REFERENCE',
+  SingleLineText = 'SINGLE_LINE_TEXT'
+}
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type Customer = {
@@ -642,6 +720,7 @@ export type Mutation = {
   addProductTranslation: ProductTranslation;
   cancelOrder: OrderResult;
   createCollection: Collection;
+  createCustomFieldDefinition: CustomFieldDefinitionResult;
   createDiscount: DiscountResult;
   createLocation: LocationResult;
   createOption: Array<Option>;
@@ -667,6 +746,7 @@ export type Mutation = {
   markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
+  removeCustomFieldDefinition: Scalars['Boolean']['output'];
   removeDiscounts: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
   removePaymentMethod: Scalars['Boolean']['output'];
@@ -678,6 +758,7 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateCustomFieldDefinition: CustomFieldDefinition;
   updateDiscount: DiscountResult;
   updateInStorePickupPreferences: InStorePickup;
   updateLocation: LocationResult;
@@ -715,6 +796,11 @@ export type MutationCancelOrderArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+
+export type MutationCreateCustomFieldDefinitionArgs = {
+  input: CreateCustomFieldInput;
 };
 
 
@@ -816,6 +902,11 @@ export type MutationRemoveCollectionsArgs = {
 };
 
 
+export type MutationRemoveCustomFieldDefinitionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveDiscountsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
@@ -869,6 +960,12 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
+};
+
+
+export type MutationUpdateCustomFieldDefinitionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCustomFieldInput;
 };
 
 
@@ -1432,6 +1529,8 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
+  customFieldDefinition?: Maybe<CustomFieldDefinition>;
+  customFieldDefinitions: CustomFieldDefinitionList;
   customer?: Maybe<Customer>;
   customers: CustomerList;
   discount?: Maybe<Discount>;
@@ -1483,6 +1582,16 @@ export type QueryCollectionArgs = {
 
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
+};
+
+
+export type QueryCustomFieldDefinitionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryCustomFieldDefinitionsArgs = {
+  input?: InputMaybe<CustomFieldDefinitionListInput>;
 };
 
 
@@ -1770,6 +1879,10 @@ export type UpdateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Array<Scalars['ID']['input']>>;
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+export type UpdateCustomFieldInput = {
+  name: Scalars['String']['input'];
 };
 
 export type UpdateDiscountInput = {
@@ -2097,6 +2210,22 @@ export type GetCountriesForSelectorQueryVariables = Exact<{ [key: string]: never
 
 
 export type GetCountriesForSelectorQuery = { countries: Array<{ ' $fragmentRefs'?: { 'CommonCountryForSelectorFragment': CommonCountryForSelectorFragment } }> };
+
+export type CommonCustomFieldDefinitionFragment = { id: string, createdAt: any, updatedAt: any, name: string, key: string, isList: boolean, appliesToEntity: CustomFieldAppliesToEntity, type: CustomFieldType, metadata?: any | null } & { ' $fragmentName'?: 'CommonCustomFieldDefinitionFragment' };
+
+export type GetCustomFieldDefinitionQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetCustomFieldDefinitionQuery = { customFieldDefinition?: { ' $fragmentRefs'?: { 'CommonCustomFieldDefinitionFragment': CommonCustomFieldDefinitionFragment } } | null };
+
+export type GetCustomFieldDefinitionsQueryVariables = Exact<{
+  input?: InputMaybe<CustomFieldDefinitionListInput>;
+}>;
+
+
+export type GetCustomFieldDefinitionsQuery = { customFieldDefinitions: { count: number, pageInfo: { total: number }, items: Array<{ ' $fragmentRefs'?: { 'CommonCustomFieldDefinitionFragment': CommonCustomFieldDefinitionFragment } }> } };
 
 export type CommonCustomerFragment = { id: string, createdAt: any, firstName?: string | null, lastName?: string | null, email: string, phoneNumber?: string | null, enabled: boolean, totalSpent: number, orders: { pageInfo: { total: number }, items: Array<{ id: string, code?: string | null, state: OrderState, placedAt?: any | null, total: number, lines: { count: number }, payments: Array<{ state: PaymentState }>, fulfillment?: { type: FulfillmentType } | null }> } } & { ' $fragmentName'?: 'CommonCustomerFragment' };
 
@@ -2568,6 +2697,7 @@ export const CommonCollectionProductFragmentDoc = {"kind":"Document","definition
 export const CommonCollectionSubCollectionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCollectionSubCollection"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Collection"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"assets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"take"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"source"}}]}}]}}]}}]} as unknown as DocumentNode<CommonCollectionSubCollectionFragment, unknown>;
 export const CommonCountryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCountry"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Country"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"states"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CommonCountryFragment, unknown>;
 export const CommonCountryForSelectorFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCountryForSelector"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Country"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]} as unknown as DocumentNode<CommonCountryForSelectorFragment, unknown>;
+export const CommonCustomFieldDefinitionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCustomFieldDefinition"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CustomFieldDefinition"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"isList"}},{"kind":"Field","name":{"kind":"Name","value":"appliesToEntity"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}}]}}]} as unknown as DocumentNode<CommonCustomFieldDefinitionFragment, unknown>;
 export const CommonCustomerFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCustomer"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Customer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"totalSpent"}},{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"take"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"placedAt"}},{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"lines"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fulfillment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CommonCustomerFragment, unknown>;
 export const CommonListCustomerFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonListCustomer"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Customer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"totalSpent"}},{"kind":"Field","name":{"kind":"Name","value":"orders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]} as unknown as DocumentNode<CommonListCustomerFragment, unknown>;
 export const CommonDiscountHandlerFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonDiscountHandler"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DiscountHandler"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"args"}},{"kind":"Field","name":{"kind":"Name","value":"applicationLevel"}}]}}]} as unknown as DocumentNode<CommonDiscountHandlerFragment, unknown>;
@@ -2605,6 +2735,8 @@ export const RemoveCollectionsDocument = {"kind":"Document","definitions":[{"kin
 export const AddCollectionTranslationMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddCollectionTranslationMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CollectionTranslationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addCollectionTranslation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AddCollectionTranslationMutationMutation, AddCollectionTranslationMutationMutationVariables>;
 export const GetCountriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCountries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonCountry"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCountry"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Country"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"states"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetCountriesQuery, GetCountriesQueryVariables>;
 export const GetCountriesForSelectorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCountriesForSelector"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countries"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonCountryForSelector"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCountryForSelector"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Country"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]} as unknown as DocumentNode<GetCountriesForSelectorQuery, GetCountriesForSelectorQueryVariables>;
+export const GetCustomFieldDefinitionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomFieldDefinition"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customFieldDefinition"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonCustomFieldDefinition"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCustomFieldDefinition"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CustomFieldDefinition"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"isList"}},{"kind":"Field","name":{"kind":"Name","value":"appliesToEntity"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}}]}}]} as unknown as DocumentNode<GetCustomFieldDefinitionQuery, GetCustomFieldDefinitionQueryVariables>;
+export const GetCustomFieldDefinitionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomFieldDefinitions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CustomFieldDefinitionListInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customFieldDefinitions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonCustomFieldDefinition"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCustomFieldDefinition"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CustomFieldDefinition"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"isList"}},{"kind":"Field","name":{"kind":"Name","value":"appliesToEntity"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}}]}}]} as unknown as DocumentNode<GetCustomFieldDefinitionsQuery, GetCustomFieldDefinitionsQueryVariables>;
 export const GetCustomerByIdQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerByIdQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonCustomer"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonCustomer"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Customer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"totalSpent"}},{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"take"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"placedAt"}},{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"lines"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"fulfillment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetCustomerByIdQueryQuery, GetCustomerByIdQueryQueryVariables>;
 export const GetAllCustomersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllCustomers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CustomerListInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommonListCustomer"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CommonListCustomer"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Customer"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"enabled"}},{"kind":"Field","name":{"kind":"Name","value":"totalSpent"}},{"kind":"Field","name":{"kind":"Name","value":"orders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]} as unknown as DocumentNode<GetAllCustomersQuery, GetAllCustomersQueryVariables>;
 export const CountCustomersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CountCustomers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]} as unknown as DocumentNode<CountCustomersQuery, CountCustomersQueryVariables>;
