@@ -6,19 +6,23 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
-  JSON: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
+  JSON: { input: any; output: any };
 };
 
 export type AddCustomerToOrderInput = {
@@ -174,18 +178,15 @@ export type Collection = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-
 /** A collection is a group of products that are displayed together in the storefront. */
 export type CollectionAssetsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
-
 /** A collection is a group of products that are displayed together in the storefront. */
 export type CollectionProductsArgs = {
   input?: InputMaybe<ProductListInput>;
 };
-
 
 /** A collection is a group of products that are displayed together in the storefront. */
 export type CollectionSubCollectionsArgs = {
@@ -276,6 +277,14 @@ export type CreateCollectionInput = {
   order?: InputMaybe<Scalars['Int']['input']>;
   products?: InputMaybe<Array<Scalars['ID']['input']>>;
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+export type CreateCustomFieldInput = {
+  appliesToEntity: CustomFieldDefinitionAppliesToEntity;
+  isList: Scalars['Boolean']['input'];
+  metadata?: InputMaybe<Scalars['JSON']['input']>;
+  name: Scalars['String']['input'];
+  type: CustomFieldType;
 };
 
 export type CreateDiscountInput = {
@@ -398,6 +407,48 @@ export type CreateZoneInput = {
   stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+/** Represents a custom field that cna be attached to an entity */
+export type CustomFieldDefinition = {
+  __typename?: 'CustomFieldDefinition';
+  /** Entities this field can be applied to */
+  appliesToEntity: CustomFieldDefinitionAppliesToEntity;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Weather the field is a list of values */
+  isList: Scalars['Boolean']['output'];
+  /** A unique  and readable key to make reference to the definition */
+  key: Scalars['String']['output'];
+  metadata?: Maybe<Scalars['JSON']['output']>;
+  /** Name of the definition */
+  name: Scalars['String']['output'];
+  /** Type of the definition */
+  type: CustomFieldType;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export enum CustomFieldDefinitionAppliesToEntity {
+  Product = 'PRODUCT'
+}
+
+export type CustomFieldDefinitionList = {
+  __typename?: 'CustomFieldDefinitionList';
+  count: Scalars['Int']['output'];
+  items: Array<CustomFieldDefinition>;
+  pageInfo: PageInfo;
+};
+
+export enum CustomFieldType {
+  Boolean = 'BOOLEAN',
+  Date = 'DATE',
+  Decimal = 'DECIMAL',
+  Image = 'IMAGE',
+  Integer = 'INTEGER',
+  Money = 'MONEY',
+  MultiLineText = 'MULTI_LINE_TEXT',
+  Reference = 'REFERENCE',
+  SingleLineText = 'SINGLE_LINE_TEXT'
+}
+
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type Customer = {
   __typename?: 'Customer';
@@ -418,7 +469,6 @@ export type Customer = {
   totalSpent: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
-
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type CustomerOrdersArgs = {
@@ -763,6 +813,7 @@ export type Mutation = {
   addShippingFulfillmentToOrder: OrderResult;
   cancelOrder: OrderResult;
   createCollection: Collection;
+  createCustomField: CustomFieldDefinition;
   createCustomerAddress: Address;
   createDiscount: DiscountResult;
   createLocation: LocationResult;
@@ -790,6 +841,7 @@ export type Mutation = {
   markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
+  removeCustomField: Scalars['Boolean']['output'];
   removeCustomerAddress: Scalars['Boolean']['output'];
   removeDiscounts: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
@@ -810,6 +862,7 @@ export type Mutation = {
   softRemoveProducts: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateCollection: Collection;
+  updateCustomField: CustomFieldDefinition;
   /** Update the customer's data. */
   updateCustomer: CustomerResult;
   updateCustomerAddress: Address;
@@ -830,339 +883,290 @@ export type Mutation = {
   updateZone: Zone;
 };
 
-
 export type MutationAddCollectionTranslationArgs = {
   id: Scalars['ID']['input'];
   input: CollectionTranslationInput;
 };
-
 
 export type MutationAddCustomerToOrderArgs = {
   input: AddCustomerToOrderInput;
   orderId: Scalars['ID']['input'];
 };
 
-
 export type MutationAddDiscountCodeToOrderArgs = {
   code: Scalars['String']['input'];
   orderId: Scalars['ID']['input'];
 };
-
 
 export type MutationAddInStorePickupFulfillmentToOrderArgs = {
   input: AddInStorePickupFulfillmentInput;
   orderId: Scalars['ID']['input'];
 };
 
-
 export type MutationAddLineToOrderArgs = {
   input: CreateOrderLineInput;
   orderId: Scalars['ID']['input'];
 };
-
 
 export type MutationAddPaymentToOrderArgs = {
   input: AddPaymentToOrderInput;
   orderId: Scalars['ID']['input'];
 };
 
-
 export type MutationAddProductTranslationArgs = {
   id: Scalars['ID']['input'];
   input: AddProductTranslationInput;
 };
-
 
 export type MutationAddShippingAddressToOrderArgs = {
   input: CreateOrderAddressInput;
   orderId: Scalars['ID']['input'];
 };
 
-
 export type MutationAddShippingFulfillmentToOrderArgs = {
   input: AddShippingFulfillmentInput;
   orderId: Scalars['ID']['input'];
 };
-
 
 export type MutationCancelOrderArgs = {
   id: Scalars['ID']['input'];
   input: CancelOrderInput;
 };
 
-
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
 };
 
+export type MutationCreateCustomFieldArgs = {
+  input: CreateCustomFieldInput;
+};
 
 export type MutationCreateCustomerAddressArgs = {
   input: CreateAddressInput;
 };
 
-
 export type MutationCreateDiscountArgs = {
   input: CreateDiscountInput;
 };
 
-
 export type MutationCreateLocationArgs = {
   input: CreateLocationInput;
 };
-
 
 export type MutationCreateOptionArgs = {
   input: Array<CreateOptionInput>;
   productId: Scalars['ID']['input'];
 };
 
-
 export type MutationCreateOrderArgs = {
   input: CreateOrderInput;
 };
-
 
 export type MutationCreatePaymentMethodArgs = {
   input: CreatePaymentMethodInput;
 };
 
-
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
 };
-
 
 export type MutationCreateShippingMethodArgs = {
   input: CreateShippingMethodInput;
 };
 
-
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
 };
-
 
 export type MutationCreateTagsArgs = {
   input: Array<CreateTagInput>;
 };
 
-
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
 };
-
 
 export type MutationCreateVariantArgs = {
   input: Array<CreateVariantInput>;
   productId: Scalars['ID']['input'];
 };
 
-
 export type MutationCreateZoneArgs = {
   input: CreateZoneInput;
 };
-
 
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
 
-
 export type MutationMarkOrderAsCompletedArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationMarkOrderAsDeliveredArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationMarkOrderAsProcessingArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationMarkOrderAsReadyForPickupArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationMarkOrderAsShippedArgs = {
   id: Scalars['ID']['input'];
   input: MarkOrderAsShippedInput;
 };
 
-
 export type MutationRemoveAssetsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
-
 
 export type MutationRemoveCollectionsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
+export type MutationRemoveCustomFieldArgs = {
+  id: Scalars['ID']['input'];
+};
 
 export type MutationRemoveCustomerAddressArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationRemoveDiscountsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
-
 
 export type MutationRemoveLocationArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationRemoveOrderLineArgs = {
   lineId: Scalars['ID']['input'];
 };
-
 
 export type MutationRemovePaymentMethodArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationRemoveShippingMethodArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationRemoveTagsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
-
 export type MutationRemoveZoneArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationSignInCustomerWithCredentialsArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
-
 export type MutationSignUpCustomerWithCredentialsArgs = {
   input: SignUpWithCredentialsInput;
 };
-
 
 export type MutationSoftRemoveOptionArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type MutationSoftRemoveOptionValuesArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
-
 
 export type MutationSoftRemoveProductsArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
-
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationUpdateCollectionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCollectionInput;
 };
 
+export type MutationUpdateCustomFieldArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCustomFieldInput;
+};
 
 export type MutationUpdateCustomerArgs = {
   input: UpdateCustomerInput;
 };
-
 
 export type MutationUpdateCustomerAddressArgs = {
   id: Scalars['ID']['input'];
   input: UpdateAddressInput;
 };
 
-
 export type MutationUpdateDiscountArgs = {
   id: Scalars['ID']['input'];
   input: UpdateDiscountInput;
 };
-
 
 export type MutationUpdateInStorePickupPreferencesArgs = {
   input: UpdateInStorePickupPreferencesInput;
   locationId: Scalars['ID']['input'];
 };
 
-
 export type MutationUpdateLocationArgs = {
   id: Scalars['ID']['input'];
   input: UpdateLocationInput;
 };
-
 
 export type MutationUpdateOptionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateOptionInput;
 };
 
-
 export type MutationUpdateOrderLineArgs = {
   input: UpdateOrderLineInput;
   lineId: Scalars['ID']['input'];
 };
-
 
 export type MutationUpdatePaymentMethodArgs = {
   id: Scalars['ID']['input'];
   input: UpdatePaymentMethodInput;
 };
 
-
 export type MutationUpdateProductArgs = {
   id: Scalars['ID']['input'];
   input: UpdateProductInput;
 };
-
 
 export type MutationUpdateShippingMethodArgs = {
   id: Scalars['ID']['input'];
   input: UpdateShippingMethodInput;
 };
 
-
 export type MutationUpdateShopArgs = {
   input: UpdateShopInput;
   shopSlug: Scalars['String']['input'];
 };
-
 
 export type MutationUpdateTagArgs = {
   id: Scalars['ID']['input'];
   input: UpdateTagInput;
 };
 
-
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
 };
 
-
 export type MutationUpdateVariantArgs = {
   id: Scalars['ID']['input'];
   input: UpdateVariantInput;
 };
-
 
 export type MutationUpdateZoneArgs = {
   id: Scalars['ID']['input'];
@@ -1204,7 +1208,6 @@ export type OptionPreset = {
   /** Option values for this preset */
   values: OptionValuePresetList;
 };
-
 
 export type OptionPresetValuesArgs = {
   input?: InputMaybe<ListInput>;
@@ -1648,18 +1651,15 @@ export type Product = Node & {
   variants: VariantList;
 };
 
-
 /** A product is a good or service that you want to sell. */
 export type ProductAssetsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
-
 /** A product is a good or service that you want to sell. */
 export type ProductOptionsArgs = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** A product is a good or service that you want to sell. */
 export type ProductVariantsArgs = {
@@ -1720,6 +1720,8 @@ export type Query = {
   collection?: Maybe<Collection>;
   collections: CollectionList;
   countries: Array<Country>;
+  customField?: Maybe<CustomFieldDefinition>;
+  customFields: CustomFieldDefinitionList;
   customer?: Maybe<Customer>;
   customers: CustomerList;
   discount?: Maybe<Discount>;
@@ -1760,115 +1762,101 @@ export type Query = {
   zones: Array<Zone>;
 };
 
-
 export type QueryAssetsArgs = {
   input?: InputMaybe<AssetListInput>;
 };
 
-
 export type QueryAvailableShippingMethodsArgs = {
   orderId: Scalars['ID']['input'];
 };
-
 
 export type QueryCollectionArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryCollectionsArgs = {
   input?: InputMaybe<CollectionListInput>;
 };
 
+export type QueryCustomFieldArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type QueryCustomFieldsArgs = {
+  input?: InputMaybe<ListInput>;
+};
 
 export type QueryCustomerArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type QueryCustomersArgs = {
   input?: InputMaybe<CustomerListInput>;
 };
-
 
 export type QueryDiscountArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type QueryDiscountsArgs = {
   input?: InputMaybe<DiscountListInput>;
 };
-
 
 export type QueryLocationArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type QueryLocationsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
-
 export type QueryOptionPresetsArgs = {
   input?: InputMaybe<ListInput>;
 };
-
 
 export type QueryOrderArgs = {
   code?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
 };
 
-
 export type QueryOrdersArgs = {
   input?: InputMaybe<OrderListInput>;
 };
 
-
 export type QueryPaymentMethodArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type QueryProductArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryProductsArgs = {
   input?: InputMaybe<ProductListInput>;
 };
-
 
 export type QueryProductsByVariantIdsArgs = {
   ids: Array<Scalars['ID']['input']>;
   input?: InputMaybe<ProductListInput>;
 };
 
-
 export type QueryShopArgs = {
   slug: Scalars['String']['input'];
 };
-
 
 export type QueryShopsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
-
 export type QueryTagsArgs = {
   input?: InputMaybe<TagListInput>;
 };
 
-
 export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type QueryZoneArgs = {
   id: Scalars['ID']['input'];
@@ -2104,6 +2092,10 @@ export type UpdateCollectionInput = {
   subCollections?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type UpdateCustomFieldInput = {
+  name: Scalars['String']['input'];
+};
+
 export type UpdateCustomerInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
@@ -2302,7 +2294,6 @@ export type Variant = Node & {
   weight?: Maybe<Scalars['Float']['output']>;
 };
 
-
 /**
  * A variant is a specific version of a product.
  * For example, a product can have a variant with a specific color, size, or material.
@@ -2332,15 +2323,14 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-
-
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -2363,7 +2353,13 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
   subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
   resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
@@ -2377,7 +2373,13 @@ export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, 
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
   | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
@@ -2387,7 +2389,11 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -2401,14 +2407,54 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
-  FulfillmentDetails: ( InStorePickupFulfillment ) | ( ShippingFulfillment );
-  PaymentDetails: ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } );
+  FulfillmentDetails: InStorePickupFulfillment | ShippingFulfillment;
+  PaymentDetails:
+    | (Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] })
+    | (Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] })
+    | (Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] });
 };
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, fulfillment?: Maybe<_RefType['Fulfillment']>, lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  List:
+    | AssetList
+    | CollectionList
+    | DiscountList
+    | OptionList
+    | (Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> })
+    | (Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> })
+    | ProductList
+    | ShopList
+    | TagList
+    | UserList
+    | VariantList;
+  Node:
+    | Asset
+    | Collection
+    | Discount
+    | (Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] })
+    | InStorePickup
+    | Option
+    | OptionValue
+    | (Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & {
+        appliedDiscounts: Array<_RefType['AppliedDiscount']>;
+        fulfillment?: Maybe<_RefType['Fulfillment']>;
+        lines: _RefType['OrderLineList'];
+        payments: Array<_RefType['Payment']>;
+      })
+    | (Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] })
+    | (Omit<OrderLine, 'appliedDiscounts'> & {
+        appliedDiscounts: Array<_RefType['AppliedDiscount']>;
+      })
+    | (Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] })
+    | (Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] })
+    | (Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] })
+    | Product
+    | Shop
+    | Tag
+    | User
+    | Variant
+    | Zone;
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2440,6 +2486,7 @@ export type ResolversTypes = {
   Country: ResolverTypeWrapper<Country>;
   CreateAddressInput: CreateAddressInput;
   CreateCollectionInput: CreateCollectionInput;
+  CreateCustomFieldInput: CreateCustomFieldInput;
   CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
@@ -2456,6 +2503,10 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
+  CustomFieldDefinition: ResolverTypeWrapper<CustomFieldDefinition>;
+  CustomFieldDefinitionAppliesToEntity: CustomFieldDefinitionAppliesToEntity;
+  CustomFieldDefinitionList: ResolverTypeWrapper<CustomFieldDefinitionList>;
+  CustomFieldType: CustomFieldType;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -2477,8 +2528,12 @@ export type ResolversTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: ResolverTypeWrapper<DiscountResult>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  Fulfillment: ResolverTypeWrapper<Omit<Fulfillment, 'details'> & { details: ResolversTypes['FulfillmentDetails'] }>;
-  FulfillmentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']>;
+  Fulfillment: ResolverTypeWrapper<
+    Omit<Fulfillment, 'details'> & { details: ResolversTypes['FulfillmentDetails'] }
+  >;
+  FulfillmentDetails: ResolverTypeWrapper<
+    ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']
+  >;
   FulfillmentType: FulfillmentType;
   GenerateCustomerAccessTokenResult: ResolverTypeWrapper<GenerateCustomerAccessTokenResult>;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
@@ -2515,30 +2570,57 @@ export type ResolversTypes = {
   OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversTypes['Fulfillment']>, lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
+  Order: ResolverTypeWrapper<
+    Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & {
+      appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>;
+      fulfillment?: Maybe<ResolversTypes['Fulfillment']>;
+      lines: ResolversTypes['OrderLineList'];
+      payments: Array<ResolversTypes['Payment']>;
+    }
+  >;
   OrderAddressJson: ResolverTypeWrapper<OrderAddressJson>;
   OrderBy: OrderBy;
-  OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
+  OrderCancellation: ResolverTypeWrapper<
+    Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }
+  >;
   OrderErrorCode: OrderErrorCode;
   OrderErrorResult: ResolverTypeWrapper<OrderErrorResult>;
   OrderFilters: OrderFilters;
-  OrderLine: ResolverTypeWrapper<Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']> }>;
-  OrderLineList: ResolverTypeWrapper<Omit<OrderLineList, 'items'> & { items: Array<ResolversTypes['OrderLine']> }>;
-  OrderList: ResolverTypeWrapper<Omit<OrderList, 'items'> & { items: Array<ResolversTypes['Order']> }>;
+  OrderLine: ResolverTypeWrapper<
+    Omit<OrderLine, 'appliedDiscounts'> & {
+      appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>;
+    }
+  >;
+  OrderLineList: ResolverTypeWrapper<
+    Omit<OrderLineList, 'items'> & { items: Array<ResolversTypes['OrderLine']> }
+  >;
+  OrderList: ResolverTypeWrapper<
+    Omit<OrderList, 'items'> & { items: Array<ResolversTypes['Order']> }
+  >;
   OrderListInput: OrderListInput;
-  OrderResult: ResolverTypeWrapper<Omit<OrderResult, 'order'> & { order?: Maybe<ResolversTypes['Order']> }>;
+  OrderResult: ResolverTypeWrapper<
+    Omit<OrderResult, 'order'> & { order?: Maybe<ResolversTypes['Order']> }
+  >;
   OrderState: OrderState;
   PageInfo: ResolverTypeWrapper<PageInfo>;
-  Payment: ResolverTypeWrapper<Omit<Payment, 'details'> & { details?: Maybe<ResolversTypes['PaymentDetails']> }>;
-  PaymentCancellation: ResolverTypeWrapper<Omit<PaymentCancellation, 'payment'> & { payment: ResolversTypes['Payment'] }>;
+  Payment: ResolverTypeWrapper<
+    Omit<Payment, 'details'> & { details?: Maybe<ResolversTypes['PaymentDetails']> }
+  >;
+  PaymentCancellation: ResolverTypeWrapper<
+    Omit<PaymentCancellation, 'payment'> & { payment: ResolversTypes['Payment'] }
+  >;
   PaymentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['PaymentDetails']>;
-  PaymentFailure: ResolverTypeWrapper<Omit<PaymentFailure, 'payment'> & { payment: ResolversTypes['Payment'] }>;
+  PaymentFailure: ResolverTypeWrapper<
+    Omit<PaymentFailure, 'payment'> & { payment: ResolversTypes['Payment'] }
+  >;
   PaymentHandler: ResolverTypeWrapper<PaymentHandler>;
   PaymentMethod: ResolverTypeWrapper<PaymentMethod>;
   PaymentMethodErrorCode: PaymentMethodErrorCode;
   PaymentMethodErrorResult: ResolverTypeWrapper<PaymentMethodErrorResult>;
   PaymentMethodResult: ResolverTypeWrapper<PaymentMethodResult>;
-  PaymentRejection: ResolverTypeWrapper<Omit<PaymentRejection, 'payment'> & { payment: ResolversTypes['Payment'] }>;
+  PaymentRejection: ResolverTypeWrapper<
+    Omit<PaymentRejection, 'payment'> & { payment: ResolversTypes['Payment'] }
+  >;
   PaymentState: PaymentState;
   PriceRange: PriceRange;
   Product: ResolverTypeWrapper<Product>;
@@ -2574,6 +2656,7 @@ export type ResolversTypes = {
   TagResult: ResolverTypeWrapper<TagResult>;
   UpdateAddressInput: UpdateAddressInput;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
@@ -2628,6 +2711,7 @@ export type ResolversParentTypes = {
   Country: Country;
   CreateAddressInput: CreateAddressInput;
   CreateCollectionInput: CreateCollectionInput;
+  CreateCustomFieldInput: CreateCustomFieldInput;
   CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
@@ -2644,6 +2728,8 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
+  CustomFieldDefinition: CustomFieldDefinition;
+  CustomFieldDefinitionList: CustomFieldDefinitionList;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
   CustomerFilters: CustomerFilters;
@@ -2661,7 +2747,9 @@ export type ResolversParentTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: DiscountResult;
   Float: Scalars['Float']['output'];
-  Fulfillment: Omit<Fulfillment, 'details'> & { details: ResolversParentTypes['FulfillmentDetails'] };
+  Fulfillment: Omit<Fulfillment, 'details'> & {
+    details: ResolversParentTypes['FulfillmentDetails'];
+  };
   FulfillmentDetails: ResolversUnionTypes<ResolversParentTypes>['FulfillmentDetails'];
   GenerateCustomerAccessTokenResult: GenerateCustomerAccessTokenResult;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
@@ -2696,26 +2784,37 @@ export type ResolversParentTypes = {
   OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
+  Order: Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & {
+    appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>;
+    fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>;
+    lines: ResolversParentTypes['OrderLineList'];
+    payments: Array<ResolversParentTypes['Payment']>;
+  };
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
   OrderFilters: OrderFilters;
-  OrderLine: Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']> };
+  OrderLine: Omit<OrderLine, 'appliedDiscounts'> & {
+    appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>;
+  };
   OrderLineList: Omit<OrderLineList, 'items'> & { items: Array<ResolversParentTypes['OrderLine']> };
   OrderList: Omit<OrderList, 'items'> & { items: Array<ResolversParentTypes['Order']> };
   OrderListInput: OrderListInput;
   OrderResult: Omit<OrderResult, 'order'> & { order?: Maybe<ResolversParentTypes['Order']> };
   PageInfo: PageInfo;
   Payment: Omit<Payment, 'details'> & { details?: Maybe<ResolversParentTypes['PaymentDetails']> };
-  PaymentCancellation: Omit<PaymentCancellation, 'payment'> & { payment: ResolversParentTypes['Payment'] };
+  PaymentCancellation: Omit<PaymentCancellation, 'payment'> & {
+    payment: ResolversParentTypes['Payment'];
+  };
   PaymentDetails: ResolversUnionTypes<ResolversParentTypes>['PaymentDetails'];
   PaymentFailure: Omit<PaymentFailure, 'payment'> & { payment: ResolversParentTypes['Payment'] };
   PaymentHandler: PaymentHandler;
   PaymentMethod: PaymentMethod;
   PaymentMethodErrorResult: PaymentMethodErrorResult;
   PaymentMethodResult: PaymentMethodResult;
-  PaymentRejection: Omit<PaymentRejection, 'payment'> & { payment: ResolversParentTypes['Payment'] };
+  PaymentRejection: Omit<PaymentRejection, 'payment'> & {
+    payment: ResolversParentTypes['Payment'];
+  };
   PriceRange: PriceRange;
   Product: Product;
   ProductFilters: ProductFilters;
@@ -2747,6 +2846,7 @@ export type ResolversParentTypes = {
   TagResult: TagResult;
   UpdateAddressInput: UpdateAddressInput;
   UpdateCollectionInput: UpdateCollectionInput;
+  UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
@@ -2772,7 +2872,10 @@ export type ResolversParentTypes = {
   Zone: Zone;
 };
 
-export type AddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
+export type AddressResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']
+> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['Country'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -2789,14 +2892,21 @@ export type AddressResolvers<ContextType = ExecutionContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AddressListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['AddressList'] = ResolversParentTypes['AddressList']> = {
+export type AddressListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['AddressList'] = ResolversParentTypes['AddressList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Address']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AppliedDiscountResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['AppliedDiscount'] = ResolversParentTypes['AppliedDiscount']> = {
+export type AppliedDiscountResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['AppliedDiscount'] =
+    ResolversParentTypes['AppliedDiscount']
+> = {
   applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2804,7 +2914,10 @@ export type AppliedDiscountResolvers<ContextType = ExecutionContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AssetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Asset'] = ResolversParentTypes['Asset']> = {
+export type AssetResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Asset'] = ResolversParentTypes['Asset']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   ext?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2818,15 +2931,26 @@ export type AssetResolvers<ContextType = ExecutionContext, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AssetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['AssetList'] = ResolversParentTypes['AssetList']> = {
+export type AssetListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['AssetList'] = ResolversParentTypes['AssetList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Asset']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CollectionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Collection'] = ResolversParentTypes['Collection']> = {
-  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<CollectionAssetsArgs>>;
+export type CollectionResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Collection'] = ResolversParentTypes['Collection']
+> = {
+  assets?: Resolver<
+    ResolversTypes['AssetList'],
+    ParentType,
+    ContextType,
+    Partial<CollectionAssetsArgs>
+  >;
   contentType?: Resolver<ResolversTypes['CollectionContentType'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -2835,22 +2959,39 @@ export type CollectionResolvers<ContextType = ExecutionContext, ParentType exten
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   parentCollection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType>;
-  products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<CollectionProductsArgs>>;
+  products?: Resolver<
+    ResolversTypes['ProductList'],
+    ParentType,
+    ContextType,
+    Partial<CollectionProductsArgs>
+  >;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subCollections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<CollectionSubCollectionsArgs>>;
+  subCollections?: Resolver<
+    ResolversTypes['CollectionList'],
+    ParentType,
+    ContextType,
+    Partial<CollectionSubCollectionsArgs>
+  >;
   translations?: Resolver<Array<ResolversTypes['CollectionTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CollectionListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionList'] = ResolversParentTypes['CollectionList']> = {
+export type CollectionListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CollectionList'] = ResolversParentTypes['CollectionList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Collection']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CollectionTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionTranslation'] = ResolversParentTypes['CollectionTranslation']> = {
+export type CollectionTranslationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CollectionTranslation'] =
+    ResolversParentTypes['CollectionTranslation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -2861,7 +3002,10 @@ export type CollectionTranslationResolvers<ContextType = ExecutionContext, Paren
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CountryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Country'] = ResolversParentTypes['Country']> = {
+export type CountryResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Country'] = ResolversParentTypes['Country']
+> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -2871,40 +3015,94 @@ export type CountryResolvers<ContextType = ExecutionContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CreateTagsResult'] = ResolversParentTypes['CreateTagsResult']> = {
+export type CreateTagsResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CreateTagsResult'] =
+    ResolversParentTypes['CreateTagsResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['TagErrorResult']>, ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Customer'] = ResolversParentTypes['Customer']> = {
+export type CustomFieldDefinitionResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CustomFieldDefinition'] =
+    ResolversParentTypes['CustomFieldDefinition']
+> = {
+  appliesToEntity?: Resolver<
+    ResolversTypes['CustomFieldDefinitionAppliesToEntity'],
+    ParentType,
+    ContextType
+  >;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isList?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['CustomFieldType'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomFieldDefinitionListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CustomFieldDefinitionList'] =
+    ResolversParentTypes['CustomFieldDefinitionList']
+> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomerResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Customer'] = ResolversParentTypes['Customer']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<CustomerOrdersArgs>>;
+  orders?: Resolver<
+    ResolversTypes['OrderList'],
+    ParentType,
+    ContextType,
+    Partial<CustomerOrdersArgs>
+  >;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   totalSpent?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomerErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerErrorResult'] = ResolversParentTypes['CustomerErrorResult']> = {
+export type CustomerErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CustomerErrorResult'] =
+    ResolversParentTypes['CustomerErrorResult']
+> = {
   code?: Resolver<ResolversTypes['CustomerErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomerListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerList'] = ResolversParentTypes['CustomerList']> = {
+export type CustomerListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CustomerList'] = ResolversParentTypes['CustomerList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Customer']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomerResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomerResult'] = ResolversParentTypes['CustomerResult']> = {
+export type CustomerResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['CustomerResult'] = ResolversParentTypes['CustomerResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
   customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2914,14 +3112,20 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
-export type DimensionsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Dimensions'] = ResolversParentTypes['Dimensions']> = {
+export type DimensionsResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Dimensions'] = ResolversParentTypes['Dimensions']
+> = {
   height?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   length?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   width?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscountResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Discount'] = ResolversParentTypes['Discount']> = {
+export type DiscountResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Discount'] = ResolversParentTypes['Discount']
+> = {
   applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   applicationMode?: Resolver<ResolversTypes['DiscountApplicationMode'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2936,13 +3140,21 @@ export type DiscountResolvers<ContextType = ExecutionContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscountErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountErrorResult'] = ResolversParentTypes['DiscountErrorResult']> = {
+export type DiscountErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['DiscountErrorResult'] =
+    ResolversParentTypes['DiscountErrorResult']
+> = {
   code?: Resolver<ResolversTypes['DiscountErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscountHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountHandler'] = ResolversParentTypes['DiscountHandler']> = {
+export type DiscountHandlerResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['DiscountHandler'] =
+    ResolversParentTypes['DiscountHandler']
+> = {
   applicationLevel?: Resolver<ResolversTypes['DiscountApplicationLevel'], ParentType, ContextType>;
   args?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2951,20 +3163,29 @@ export type DiscountHandlerResolvers<ContextType = ExecutionContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscountListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountList'] = ResolversParentTypes['DiscountList']> = {
+export type DiscountListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['DiscountList'] = ResolversParentTypes['DiscountList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscountResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DiscountResult'] = ResolversParentTypes['DiscountResult']> = {
+export type DiscountResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['DiscountResult'] = ResolversParentTypes['DiscountResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['DiscountErrorResult']>, ParentType, ContextType>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']> = {
+export type FulfillmentResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']
+> = {
   amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   details?: Resolver<ResolversTypes['FulfillmentDetails'], ParentType, ContextType>;
@@ -2975,23 +3196,41 @@ export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType exte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FulfillmentDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentDetails'] = ResolversParentTypes['FulfillmentDetails']> = {
-  __resolveType: TypeResolveFn<'InStorePickupFulfillment' | 'ShippingFulfillment', ParentType, ContextType>;
+export type FulfillmentDetailsResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['FulfillmentDetails'] =
+    ResolversParentTypes['FulfillmentDetails']
+> = {
+  __resolveType: TypeResolveFn<
+    'InStorePickupFulfillment' | 'ShippingFulfillment',
+    ParentType,
+    ContextType
+  >;
 };
 
-export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
+export type GenerateCustomerAccessTokenResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] =
+    ResolversParentTypes['GenerateCustomerAccessTokenResult']
+> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type HandlerConfigResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['HandlerConfig'] = ResolversParentTypes['HandlerConfig']> = {
+export type HandlerConfigResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['HandlerConfig'] = ResolversParentTypes['HandlerConfig']
+> = {
   args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InStorePickupResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickup'] = ResolversParentTypes['InStorePickup']> = {
+export type InStorePickupResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['InStorePickup'] = ResolversParentTypes['InStorePickup']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   instructions?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3000,7 +3239,11 @@ export type InStorePickupResolvers<ContextType = ExecutionContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InStorePickupFulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickupFulfillment'] = ResolversParentTypes['InStorePickupFulfillment']> = {
+export type InStorePickupFulfillmentResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['InStorePickupFulfillment'] =
+    ResolversParentTypes['InStorePickupFulfillment']
+> = {
   address?: Resolver<ResolversTypes['InStorePickupFulfillmentAddress'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3011,7 +3254,11 @@ export type InStorePickupFulfillmentResolvers<ContextType = ExecutionContext, Pa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InStorePickupFulfillmentAddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickupFulfillmentAddress'] = ResolversParentTypes['InStorePickupFulfillmentAddress']> = {
+export type InStorePickupFulfillmentAddressResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['InStorePickupFulfillmentAddress'] =
+    ResolversParentTypes['InStorePickupFulfillmentAddress']
+> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3030,14 +3277,34 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'JSON';
 }
 
-export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+export type ListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']
+> = {
+  __resolveType: TypeResolveFn<
+    | 'AssetList'
+    | 'CollectionList'
+    | 'DiscountList'
+    | 'OptionList'
+    | 'OrderLineList'
+    | 'OrderList'
+    | 'ProductList'
+    | 'ShopList'
+    | 'TagList'
+    | 'UserList'
+    | 'VariantList',
+    ParentType,
+    ContextType
+  >;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
-export type LocationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']> = {
+export type LocationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']
+> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['Country'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3055,98 +3322,467 @@ export type LocationResolvers<ContextType = ExecutionContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LocationErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationErrorResult'] = ResolversParentTypes['LocationErrorResult']> = {
+export type LocationErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['LocationErrorResult'] =
+    ResolversParentTypes['LocationErrorResult']
+> = {
   code?: Resolver<ResolversTypes['LocationErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LocationListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationList'] = ResolversParentTypes['LocationList']> = {
+export type LocationListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['LocationList'] = ResolversParentTypes['LocationList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Location']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LocationResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['LocationResult'] = ResolversParentTypes['LocationResult']> = {
+export type LocationResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['LocationResult'] = ResolversParentTypes['LocationResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['LocationErrorResult']>, ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
-  addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
-  addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
-  addInStorePickupFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddInStorePickupFulfillmentToOrderArgs, 'input' | 'orderId'>>;
-  addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
-  addPaymentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddPaymentToOrderArgs, 'input' | 'orderId'>>;
-  addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
-  addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
-  addShippingFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>>;
-  cancelOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCancelOrderArgs, 'id' | 'input'>>;
-  createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
-  createCustomerAddress?: Resolver<ResolversTypes['Address'], ParentType, ContextType, RequireFields<MutationCreateCustomerAddressArgs, 'input'>>;
-  createDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationCreateDiscountArgs, 'input'>>;
-  createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
-  createOption?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>>;
-  createOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
-  createPaymentMethod?: Resolver<ResolversTypes['PaymentMethodResult'], ParentType, ContextType, RequireFields<MutationCreatePaymentMethodArgs, 'input'>>;
-  createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
-  createShippingMethod?: Resolver<ResolversTypes['ShippingMethodResult'], ParentType, ContextType, RequireFields<MutationCreateShippingMethodArgs, 'input'>>;
-  createShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationCreateShopArgs, 'input'>>;
-  createTags?: Resolver<ResolversTypes['CreateTagsResult'], ParentType, ContextType, RequireFields<MutationCreateTagsArgs, 'input'>>;
-  createUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
-  createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
-  generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
-  markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
-  markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
-  markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
-  markOrderAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsReadyForPickupArgs, 'id'>>;
-  markOrderAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>>;
-  removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
-  removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
-  removeCustomerAddress?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomerAddressArgs, 'id'>>;
-  removeDiscounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveDiscountsArgs, 'ids'>>;
-  removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
-  removeOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationRemoveOrderLineArgs, 'lineId'>>;
-  removePaymentMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemovePaymentMethodArgs, 'id'>>;
-  removeShippingMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveShippingMethodArgs, 'id'>>;
-  removeTags?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveTagsArgs, 'ids'>>;
-  removeZone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveZoneArgs, 'id'>>;
-  signInCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignInCustomerWithCredentialsArgs, 'email' | 'password'>>;
-  signUpCustomerWithCredentials?: Resolver<ResolversTypes['GenerateCustomerAccessTokenResult'], ParentType, ContextType, RequireFields<MutationSignUpCustomerWithCredentialsArgs, 'input'>>;
-  softRemoveOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionArgs, 'id'>>;
-  softRemoveOptionValues?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>>;
-  softRemoveProducts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSoftRemoveProductsArgs, 'ids'>>;
-  softRemoveVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationSoftRemoveVariantArgs, 'id'>>;
-  updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
-  updateCustomer?: Resolver<ResolversTypes['CustomerResult'], ParentType, ContextType, RequireFields<MutationUpdateCustomerArgs, 'input'>>;
-  updateCustomerAddress?: Resolver<ResolversTypes['Address'], ParentType, ContextType, RequireFields<MutationUpdateCustomerAddressArgs, 'id' | 'input'>>;
-  updateDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationUpdateDiscountArgs, 'id' | 'input'>>;
-  updateInStorePickupPreferences?: Resolver<ResolversTypes['InStorePickup'], ParentType, ContextType, RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>>;
-  updateLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>>;
-  updateOption?: Resolver<ResolversTypes['Option'], ParentType, ContextType, RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>>;
-  updateOrderLine?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>>;
-  updatePaymentMethod?: Resolver<ResolversTypes['PaymentMethod'], ParentType, ContextType, RequireFields<MutationUpdatePaymentMethodArgs, 'id' | 'input'>>;
-  updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
-  updateShippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType, RequireFields<MutationUpdateShippingMethodArgs, 'id' | 'input'>>;
-  updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
-  updateTag?: Resolver<ResolversTypes['TagResult'], ParentType, ContextType, RequireFields<MutationUpdateTagArgs, 'id' | 'input'>>;
-  updateUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id' | 'input'>>;
-  updateVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationUpdateVariantArgs, 'id' | 'input'>>;
-  updateZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationUpdateZoneArgs, 'id' | 'input'>>;
+export type MutationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  addCollectionTranslation?: Resolver<
+    ResolversTypes['CollectionTranslation'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>
+  >;
+  addCustomerToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>
+  >;
+  addDiscountCodeToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>
+  >;
+  addInStorePickupFulfillmentToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddInStorePickupFulfillmentToOrderArgs, 'input' | 'orderId'>
+  >;
+  addLineToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>
+  >;
+  addPaymentToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddPaymentToOrderArgs, 'input' | 'orderId'>
+  >;
+  addProductTranslation?: Resolver<
+    ResolversTypes['ProductTranslation'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>
+  >;
+  addShippingAddressToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>
+  >;
+  addShippingFulfillmentToOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>
+  >;
+  cancelOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCancelOrderArgs, 'id' | 'input'>
+  >;
+  createCollection?: Resolver<
+    ResolversTypes['Collection'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCollectionArgs, 'input'>
+  >;
+  createCustomField?: Resolver<
+    ResolversTypes['CustomFieldDefinition'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCustomFieldArgs, 'input'>
+  >;
+  createCustomerAddress?: Resolver<
+    ResolversTypes['Address'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCustomerAddressArgs, 'input'>
+  >;
+  createDiscount?: Resolver<
+    ResolversTypes['DiscountResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateDiscountArgs, 'input'>
+  >;
+  createLocation?: Resolver<
+    ResolversTypes['LocationResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateLocationArgs, 'input'>
+  >;
+  createOption?: Resolver<
+    Array<ResolversTypes['Option']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateOptionArgs, 'input' | 'productId'>
+  >;
+  createOrder?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateOrderArgs, 'input'>
+  >;
+  createPaymentMethod?: Resolver<
+    ResolversTypes['PaymentMethodResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreatePaymentMethodArgs, 'input'>
+  >;
+  createProduct?: Resolver<
+    ResolversTypes['Product'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateProductArgs, 'input'>
+  >;
+  createShippingMethod?: Resolver<
+    ResolversTypes['ShippingMethodResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateShippingMethodArgs, 'input'>
+  >;
+  createShop?: Resolver<
+    ResolversTypes['ShopResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateShopArgs, 'input'>
+  >;
+  createTags?: Resolver<
+    ResolversTypes['CreateTagsResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateTagsArgs, 'input'>
+  >;
+  createUser?: Resolver<
+    ResolversTypes['UserResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'input'>
+  >;
+  createVariant?: Resolver<
+    Array<Maybe<ResolversTypes['Variant']>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>
+  >;
+  createZone?: Resolver<
+    ResolversTypes['Zone'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateZoneArgs, 'input'>
+  >;
+  generateUserAccessToken?: Resolver<
+    ResolversTypes['UserAccessTokenResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>
+  >;
+  markOrderAsCompleted?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>
+  >;
+  markOrderAsDelivered?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>
+  >;
+  markOrderAsProcessing?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>
+  >;
+  markOrderAsReadyForPickup?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkOrderAsReadyForPickupArgs, 'id'>
+  >;
+  markOrderAsShipped?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>
+  >;
+  removeAssets?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveAssetsArgs, 'ids'>
+  >;
+  removeCollections?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCollectionsArgs, 'ids'>
+  >;
+  removeCustomField?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCustomFieldArgs, 'id'>
+  >;
+  removeCustomerAddress?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCustomerAddressArgs, 'id'>
+  >;
+  removeDiscounts?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveDiscountsArgs, 'ids'>
+  >;
+  removeLocation?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveLocationArgs, 'id'>
+  >;
+  removeOrderLine?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveOrderLineArgs, 'lineId'>
+  >;
+  removePaymentMethod?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemovePaymentMethodArgs, 'id'>
+  >;
+  removeShippingMethod?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveShippingMethodArgs, 'id'>
+  >;
+  removeTags?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveTagsArgs, 'ids'>
+  >;
+  removeZone?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveZoneArgs, 'id'>
+  >;
+  signInCustomerWithCredentials?: Resolver<
+    ResolversTypes['GenerateCustomerAccessTokenResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignInCustomerWithCredentialsArgs, 'email' | 'password'>
+  >;
+  signUpCustomerWithCredentials?: Resolver<
+    ResolversTypes['GenerateCustomerAccessTokenResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignUpCustomerWithCredentialsArgs, 'input'>
+  >;
+  softRemoveOption?: Resolver<
+    ResolversTypes['Option'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSoftRemoveOptionArgs, 'id'>
+  >;
+  softRemoveOptionValues?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSoftRemoveOptionValuesArgs, 'ids'>
+  >;
+  softRemoveProducts?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSoftRemoveProductsArgs, 'ids'>
+  >;
+  softRemoveVariant?: Resolver<
+    ResolversTypes['Variant'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSoftRemoveVariantArgs, 'id'>
+  >;
+  updateCollection?: Resolver<
+    ResolversTypes['Collection'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>
+  >;
+  updateCustomField?: Resolver<
+    ResolversTypes['CustomFieldDefinition'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCustomFieldArgs, 'id' | 'input'>
+  >;
+  updateCustomer?: Resolver<
+    ResolversTypes['CustomerResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCustomerArgs, 'input'>
+  >;
+  updateCustomerAddress?: Resolver<
+    ResolversTypes['Address'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCustomerAddressArgs, 'id' | 'input'>
+  >;
+  updateDiscount?: Resolver<
+    ResolversTypes['DiscountResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateDiscountArgs, 'id' | 'input'>
+  >;
+  updateInStorePickupPreferences?: Resolver<
+    ResolversTypes['InStorePickup'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateInStorePickupPreferencesArgs, 'input' | 'locationId'>
+  >;
+  updateLocation?: Resolver<
+    ResolversTypes['LocationResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateLocationArgs, 'id' | 'input'>
+  >;
+  updateOption?: Resolver<
+    ResolversTypes['Option'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateOptionArgs, 'id' | 'input'>
+  >;
+  updateOrderLine?: Resolver<
+    ResolversTypes['OrderResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateOrderLineArgs, 'input' | 'lineId'>
+  >;
+  updatePaymentMethod?: Resolver<
+    ResolversTypes['PaymentMethod'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdatePaymentMethodArgs, 'id' | 'input'>
+  >;
+  updateProduct?: Resolver<
+    ResolversTypes['Product'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateProductArgs, 'id' | 'input'>
+  >;
+  updateShippingMethod?: Resolver<
+    ResolversTypes['ShippingMethod'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateShippingMethodArgs, 'id' | 'input'>
+  >;
+  updateShop?: Resolver<
+    ResolversTypes['ShopResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>
+  >;
+  updateTag?: Resolver<
+    ResolversTypes['TagResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateTagArgs, 'id' | 'input'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['UserResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'id' | 'input'>
+  >;
+  updateVariant?: Resolver<
+    ResolversTypes['Variant'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateVariantArgs, 'id' | 'input'>
+  >;
+  updateZone?: Resolver<
+    ResolversTypes['Zone'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateZoneArgs, 'id' | 'input'>
+  >;
 };
 
-export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Discount' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+export type NodeResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']
+> = {
+  __resolveType: TypeResolveFn<
+    | 'Asset'
+    | 'Collection'
+    | 'Discount'
+    | 'Fulfillment'
+    | 'InStorePickup'
+    | 'Option'
+    | 'OptionValue'
+    | 'Order'
+    | 'OrderCancellation'
+    | 'OrderLine'
+    | 'PaymentCancellation'
+    | 'PaymentFailure'
+    | 'PaymentRejection'
+    | 'Product'
+    | 'Shop'
+    | 'Tag'
+    | 'User'
+    | 'Variant'
+    | 'Zone',
+    ParentType,
+    ContextType
+  >;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
 };
 
-export type OptionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Option'] = ResolversParentTypes['Option']> = {
+export type OptionResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Option'] = ResolversParentTypes['Option']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3157,30 +3793,49 @@ export type OptionResolvers<ContextType = ExecutionContext, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionList'] = ResolversParentTypes['OptionList']> = {
+export type OptionListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionList'] = ResolversParentTypes['OptionList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionPresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPreset'] = ResolversParentTypes['OptionPreset']> = {
+export type OptionPresetResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionPreset'] = ResolversParentTypes['OptionPreset']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  values?: Resolver<ResolversTypes['OptionValuePresetList'], ParentType, ContextType, Partial<OptionPresetValuesArgs>>;
+  values?: Resolver<
+    ResolversTypes['OptionValuePresetList'],
+    ParentType,
+    ContextType,
+    Partial<OptionPresetValuesArgs>
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionPresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPresetList'] = ResolversParentTypes['OptionPresetList']> = {
+export type OptionPresetListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionPresetList'] =
+    ResolversParentTypes['OptionPresetList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['OptionPreset']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionTranslation'] = ResolversParentTypes['OptionTranslation']> = {
+export type OptionTranslationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionTranslation'] =
+    ResolversParentTypes['OptionTranslation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
@@ -3189,7 +3844,10 @@ export type OptionTranslationResolvers<ContextType = ExecutionContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValue'] = ResolversParentTypes['OptionValue']> = {
+export type OptionValueResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionValue'] = ResolversParentTypes['OptionValue']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['OptionValueMetadata']>, ParentType, ContextType>;
@@ -3202,12 +3860,20 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionValueMetadataResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueMetadata'] = ResolversParentTypes['OptionValueMetadata']> = {
+export type OptionValueMetadataResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionValueMetadata'] =
+    ResolversParentTypes['OptionValueMetadata']
+> = {
   color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionValuePresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePreset'] = ResolversParentTypes['OptionValuePreset']> = {
+export type OptionValuePresetResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionValuePreset'] =
+    ResolversParentTypes['OptionValuePreset']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
@@ -3216,14 +3882,22 @@ export type OptionValuePresetResolvers<ContextType = ExecutionContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionValuePresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePresetList'] = ResolversParentTypes['OptionValuePresetList']> = {
+export type OptionValuePresetListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionValuePresetList'] =
+    ResolversParentTypes['OptionValuePresetList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['OptionValuePreset']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionValueTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueTranslation'] = ResolversParentTypes['OptionValueTranslation']> = {
+export type OptionValueTranslationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OptionValueTranslation'] =
+    ResolversParentTypes['OptionValueTranslation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
@@ -3232,7 +3906,10 @@ export type OptionValueTranslationResolvers<ContextType = ExecutionContext, Pare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
+export type OrderResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']
+> = {
   appliedDiscounts?: Resolver<Array<ResolversTypes['AppliedDiscount']>, ParentType, ContextType>;
   cancellation?: Resolver<Maybe<ResolversTypes['OrderCancellation']>, ParentType, ContextType>;
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -3253,7 +3930,11 @@ export type OrderResolvers<ContextType = ExecutionContext, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderAddressJsonResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderAddressJson'] = ResolversParentTypes['OrderAddressJson']> = {
+export type OrderAddressJsonResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderAddressJson'] =
+    ResolversParentTypes['OrderAddressJson']
+> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3268,7 +3949,11 @@ export type OrderAddressJsonResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderCancellationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderCancellation'] = ResolversParentTypes['OrderCancellation']> = {
+export type OrderCancellationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderCancellation'] =
+    ResolversParentTypes['OrderCancellation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Order'], ParentType, ContextType>;
@@ -3277,13 +3962,20 @@ export type OrderCancellationResolvers<ContextType = ExecutionContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderErrorResult'] = ResolversParentTypes['OrderErrorResult']> = {
+export type OrderErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderErrorResult'] =
+    ResolversParentTypes['OrderErrorResult']
+> = {
   code?: Resolver<ResolversTypes['OrderErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderLineResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderLine'] = ResolversParentTypes['OrderLine']> = {
+export type OrderLineResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderLine'] = ResolversParentTypes['OrderLine']
+> = {
   appliedDiscounts?: Resolver<Array<ResolversTypes['AppliedDiscount']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3296,32 +3988,47 @@ export type OrderLineResolvers<ContextType = ExecutionContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderLineListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderLineList'] = ResolversParentTypes['OrderLineList']> = {
+export type OrderLineListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderLineList'] = ResolversParentTypes['OrderLineList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['OrderLine']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderList'] = ResolversParentTypes['OrderList']> = {
+export type OrderListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderList'] = ResolversParentTypes['OrderList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrderResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OrderResult'] = ResolversParentTypes['OrderResult']> = {
+export type OrderResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['OrderResult'] = ResolversParentTypes['OrderResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['OrderErrorResult']>, ParentType, ContextType>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PageInfoResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+export type PageInfoResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+> = {
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Payment'] = ResolversParentTypes['Payment']> = {
+export type PaymentResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Payment'] = ResolversParentTypes['Payment']
+> = {
   amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   details?: Resolver<Maybe<ResolversTypes['PaymentDetails']>, ParentType, ContextType>;
@@ -3334,7 +4041,11 @@ export type PaymentResolvers<ContextType = ExecutionContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentCancellationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentCancellation'] = ResolversParentTypes['PaymentCancellation']> = {
+export type PaymentCancellationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentCancellation'] =
+    ResolversParentTypes['PaymentCancellation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   payment?: Resolver<ResolversTypes['Payment'], ParentType, ContextType>;
@@ -3343,11 +4054,21 @@ export type PaymentCancellationResolvers<ContextType = ExecutionContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentDetails'] = ResolversParentTypes['PaymentDetails']> = {
-  __resolveType: TypeResolveFn<'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection', ParentType, ContextType>;
+export type PaymentDetailsResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentDetails'] = ResolversParentTypes['PaymentDetails']
+> = {
+  __resolveType: TypeResolveFn<
+    'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection',
+    ParentType,
+    ContextType
+  >;
 };
 
-export type PaymentFailureResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentFailure'] = ResolversParentTypes['PaymentFailure']> = {
+export type PaymentFailureResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentFailure'] = ResolversParentTypes['PaymentFailure']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   payment?: Resolver<ResolversTypes['Payment'], ParentType, ContextType>;
@@ -3356,14 +4077,20 @@ export type PaymentFailureResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentHandler'] = ResolversParentTypes['PaymentHandler']> = {
+export type PaymentHandlerResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentHandler'] = ResolversParentTypes['PaymentHandler']
+> = {
   args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethod'] = ResolversParentTypes['PaymentMethod']> = {
+export type PaymentMethodResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentMethod'] = ResolversParentTypes['PaymentMethod']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
@@ -3373,19 +4100,31 @@ export type PaymentMethodResolvers<ContextType = ExecutionContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentMethodErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethodErrorResult'] = ResolversParentTypes['PaymentMethodErrorResult']> = {
+export type PaymentMethodErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentMethodErrorResult'] =
+    ResolversParentTypes['PaymentMethodErrorResult']
+> = {
   code?: Resolver<ResolversTypes['PaymentMethodErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentMethodResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentMethodResult'] = ResolversParentTypes['PaymentMethodResult']> = {
+export type PaymentMethodResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentMethodResult'] =
+    ResolversParentTypes['PaymentMethodResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['PaymentMethodErrorResult']>, ParentType, ContextType>;
   paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaymentRejectionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PaymentRejection'] = ResolversParentTypes['PaymentRejection']> = {
+export type PaymentRejectionResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['PaymentRejection'] =
+    ResolversParentTypes['PaymentRejection']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   payment?: Resolver<ResolversTypes['Payment'], ParentType, ContextType>;
@@ -3394,9 +4133,17 @@ export type PaymentRejectionResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProductResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
+export type ProductResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']
+> = {
   archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<ProductAssetsArgs>>;
+  assets?: Resolver<
+    ResolversTypes['AssetList'],
+    ParentType,
+    ContextType,
+    Partial<ProductAssetsArgs>
+  >;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -3404,23 +4151,40 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
   maxSalePrice?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   minSalePrice?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  options?: Resolver<Array<ResolversTypes['Option']>, ParentType, ContextType, Partial<ProductOptionsArgs>>;
+  options?: Resolver<
+    Array<ResolversTypes['Option']>,
+    ParentType,
+    ContextType,
+    Partial<ProductOptionsArgs>
+  >;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   translations?: Resolver<Array<ResolversTypes['ProductTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  variants?: Resolver<ResolversTypes['VariantList'], ParentType, ContextType, Partial<ProductVariantsArgs>>;
+  variants?: Resolver<
+    ResolversTypes['VariantList'],
+    ParentType,
+    ContextType,
+    Partial<ProductVariantsArgs>
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProductListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductList'] = ResolversParentTypes['ProductList']> = {
+export type ProductListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ProductList'] = ResolversParentTypes['ProductList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductTranslation'] = ResolversParentTypes['ProductTranslation']> = {
+export type ProductTranslationResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ProductTranslation'] =
+    ResolversParentTypes['ProductTranslation']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3431,45 +4195,158 @@ export type ProductTranslationResolvers<ContextType = ExecutionContext, ParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = {
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<QueryAssetsArgs>>;
-  availablePaymentMethods?: Resolver<Array<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
+  availablePaymentMethods?: Resolver<
+    Array<ResolversTypes['PaymentMethod']>,
+    ParentType,
+    ContextType
+  >;
   availablePickupLocations?: Resolver<Array<ResolversTypes['Location']>, ParentType, ContextType>;
-  availableShippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType, RequireFields<QueryAvailableShippingMethodsArgs, 'orderId'>>;
-  collection?: Resolver<Maybe<ResolversTypes['Collection']>, ParentType, ContextType, Partial<QueryCollectionArgs>>;
-  collections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<QueryCollectionsArgs>>;
+  availableShippingMethods?: Resolver<
+    Array<ResolversTypes['ShippingMethod']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAvailableShippingMethodsArgs, 'orderId'>
+  >;
+  collection?: Resolver<
+    Maybe<ResolversTypes['Collection']>,
+    ParentType,
+    ContextType,
+    Partial<QueryCollectionArgs>
+  >;
+  collections?: Resolver<
+    ResolversTypes['CollectionList'],
+    ParentType,
+    ContextType,
+    Partial<QueryCollectionsArgs>
+  >;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
-  customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType, RequireFields<QueryCustomerArgs, 'id'>>;
-  customers?: Resolver<ResolversTypes['CustomerList'], ParentType, ContextType, Partial<QueryCustomersArgs>>;
-  discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
+  customField?: Resolver<
+    Maybe<ResolversTypes['CustomFieldDefinition']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCustomFieldArgs, 'id'>
+  >;
+  customFields?: Resolver<
+    ResolversTypes['CustomFieldDefinitionList'],
+    ParentType,
+    ContextType,
+    Partial<QueryCustomFieldsArgs>
+  >;
+  customer?: Resolver<
+    Maybe<ResolversTypes['Customer']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCustomerArgs, 'id'>
+  >;
+  customers?: Resolver<
+    ResolversTypes['CustomerList'],
+    ParentType,
+    ContextType,
+    Partial<QueryCustomersArgs>
+  >;
+  discount?: Resolver<
+    Maybe<ResolversTypes['Discount']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryDiscountArgs, 'id'>
+  >;
   discountHandlers?: Resolver<Array<ResolversTypes['DiscountHandler']>, ParentType, ContextType>;
-  discounts?: Resolver<ResolversTypes['DiscountList'], ParentType, ContextType, Partial<QueryDiscountsArgs>>;
-  location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
-  locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
+  discounts?: Resolver<
+    ResolversTypes['DiscountList'],
+    ParentType,
+    ContextType,
+    Partial<QueryDiscountsArgs>
+  >;
+  location?: Resolver<
+    Maybe<ResolversTypes['Location']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryLocationArgs, 'id'>
+  >;
+  locations?: Resolver<
+    ResolversTypes['LocationList'],
+    ParentType,
+    ContextType,
+    Partial<QueryLocationsArgs>
+  >;
   me?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
-  optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;
-  order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
+  optionPresets?: Resolver<
+    ResolversTypes['OptionPresetList'],
+    ParentType,
+    ContextType,
+    Partial<QueryOptionPresetsArgs>
+  >;
+  order?: Resolver<
+    Maybe<ResolversTypes['Order']>,
+    ParentType,
+    ContextType,
+    Partial<QueryOrderArgs>
+  >;
   orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<QueryOrdersArgs>>;
   paymentHandlers?: Resolver<Array<ResolversTypes['PaymentHandler']>, ParentType, ContextType>;
-  paymentMethod?: Resolver<Maybe<ResolversTypes['PaymentMethod']>, ParentType, ContextType, RequireFields<QueryPaymentMethodArgs, 'id'>>;
+  paymentMethod?: Resolver<
+    Maybe<ResolversTypes['PaymentMethod']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryPaymentMethodArgs, 'id'>
+  >;
   paymentMethods?: Resolver<Array<ResolversTypes['PaymentMethod']>, ParentType, ContextType>;
-  product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<QueryProductArgs>>;
-  products?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, Partial<QueryProductsArgs>>;
-  productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
+  product?: Resolver<
+    Maybe<ResolversTypes['Product']>,
+    ParentType,
+    ContextType,
+    Partial<QueryProductArgs>
+  >;
+  products?: Resolver<
+    ResolversTypes['ProductList'],
+    ParentType,
+    ContextType,
+    Partial<QueryProductsArgs>
+  >;
+  productsByVariantIds?: Resolver<
+    ResolversTypes['ProductList'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryProductsByVariantIdsArgs, 'ids'>
+  >;
   shippingHandlers?: Resolver<Array<ResolversTypes['ShippingHandler']>, ParentType, ContextType>;
   shippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
-  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'slug'>>;
+  shop?: Resolver<
+    Maybe<ResolversTypes['Shop']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryShopArgs, 'slug'>
+  >;
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
   tagList?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   tags?: Resolver<ResolversTypes['TagList'], ParentType, ContextType, Partial<QueryTagsArgs>>;
   validateAccessToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  variant?: Resolver<Maybe<ResolversTypes['Variant']>, ParentType, ContextType, RequireFields<QueryVariantArgs, 'id'>>;
+  variant?: Resolver<
+    Maybe<ResolversTypes['Variant']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryVariantArgs, 'id'>
+  >;
   whoami?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  zone?: Resolver<Maybe<ResolversTypes['Zone']>, ParentType, ContextType, RequireFields<QueryZoneArgs, 'id'>>;
+  zone?: Resolver<
+    Maybe<ResolversTypes['Zone']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryZoneArgs, 'id'>
+  >;
   zones?: Resolver<Array<ResolversTypes['Zone']>, ParentType, ContextType>;
 };
 
-export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingFulfillment'] = ResolversParentTypes['ShippingFulfillment']> = {
+export type ShippingFulfillmentResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShippingFulfillment'] =
+    ResolversParentTypes['ShippingFulfillment']
+> = {
   carrier?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   deliveredAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
@@ -3482,14 +4359,21 @@ export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShippingHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingHandler'] = ResolversParentTypes['ShippingHandler']> = {
+export type ShippingHandlerResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShippingHandler'] =
+    ResolversParentTypes['ShippingHandler']
+> = {
   args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShippingMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethod'] = ResolversParentTypes['ShippingMethod']> = {
+export type ShippingMethodResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShippingMethod'] = ResolversParentTypes['ShippingMethod']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   handler?: Resolver<ResolversTypes['HandlerConfig'], ParentType, ContextType>;
@@ -3500,19 +4384,30 @@ export type ShippingMethodResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShippingMethodErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodErrorResult'] = ResolversParentTypes['ShippingMethodErrorResult']> = {
+export type ShippingMethodErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShippingMethodErrorResult'] =
+    ResolversParentTypes['ShippingMethodErrorResult']
+> = {
   code?: Resolver<ResolversTypes['ShippingMethodErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShippingMethodResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingMethodResult'] = ResolversParentTypes['ShippingMethodResult']> = {
+export type ShippingMethodResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShippingMethodResult'] =
+    ResolversParentTypes['ShippingMethodResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['ShippingMethodErrorResult']>, ParentType, ContextType>;
   shippingMethod?: Resolver<Maybe<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']> = {
+export type ShopResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Shop'] = ResolversParentTypes['Shop']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3528,33 +4423,49 @@ export type ShopResolvers<ContextType = ExecutionContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShopErrorResult'] = ResolversParentTypes['ShopErrorResult']> = {
+export type ShopErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopErrorResult'] =
+    ResolversParentTypes['ShopErrorResult']
+> = {
   code?: Resolver<ResolversTypes['ShopErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShopList'] = ResolversParentTypes['ShopList']> = {
+export type ShopListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopList'] = ResolversParentTypes['ShopList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Shop']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShopResult'] = ResolversParentTypes['ShopResult']> = {
+export type ShopResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopResult'] = ResolversParentTypes['ShopResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['ShopErrorResult']>, ParentType, ContextType>;
   shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ShopSocialsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShopSocials'] = ResolversParentTypes['ShopSocials']> = {
+export type ShopSocialsResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['ShopSocials'] = ResolversParentTypes['ShopSocials']
+> = {
   facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   instagram?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StateResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['State'] = ResolversParentTypes['State']> = {
+export type StateResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['State'] = ResolversParentTypes['State']
+> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   country?: Resolver<ResolversTypes['Country'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3564,7 +4475,10 @@ export type StateResolvers<ContextType = ExecutionContext, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
+export type TagResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3572,26 +4486,38 @@ export type TagResolvers<ContextType = ExecutionContext, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['TagErrorResult'] = ResolversParentTypes['TagErrorResult']> = {
+export type TagErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['TagErrorResult'] = ResolversParentTypes['TagErrorResult']
+> = {
   code?: Resolver<ResolversTypes['TagErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['TagList'] = ResolversParentTypes['TagList']> = {
+export type TagListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['TagList'] = ResolversParentTypes['TagList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['TagResult'] = ResolversParentTypes['TagResult']> = {
+export type TagResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['TagResult'] = ResolversParentTypes['TagResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['TagErrorResult']>, ParentType, ContextType>;
   tag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3600,33 +4526,55 @@ export type UserResolvers<ContextType = ExecutionContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['UserAccessTokenResult'] = ResolversParentTypes['UserAccessTokenResult']> = {
+export type UserAccessTokenResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserAccessTokenResult'] =
+    ResolversParentTypes['UserAccessTokenResult']
+> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['UserErrorResult']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserErrorResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['UserErrorResult'] = ResolversParentTypes['UserErrorResult']> = {
+export type UserErrorResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserErrorResult'] =
+    ResolversParentTypes['UserErrorResult']
+> = {
   code?: Resolver<ResolversTypes['UserErrorCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['UserList'] = ResolversParentTypes['UserList']> = {
+export type UserListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserList'] = ResolversParentTypes['UserList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['UserResult'] = ResolversParentTypes['UserResult']> = {
+export type UserResultResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['UserResult'] = ResolversParentTypes['UserResult']
+> = {
   apiErrors?: Resolver<Array<ResolversTypes['UserErrorResult']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VariantResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Variant'] = ResolversParentTypes['Variant']> = {
-  assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<VariantAssetsArgs>>;
+export type VariantResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Variant'] = ResolversParentTypes['Variant']
+> = {
+  assets?: Resolver<
+    ResolversTypes['AssetList'],
+    ParentType,
+    ContextType,
+    Partial<VariantAssetsArgs>
+  >;
   comparisonPrice?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   costPerUnit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3644,14 +4592,20 @@ export type VariantResolvers<ContextType = ExecutionContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VariantListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['VariantList'] = ResolversParentTypes['VariantList']> = {
+export type VariantListResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['VariantList'] = ResolversParentTypes['VariantList']
+> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Variant']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ZoneResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Zone'] = ResolversParentTypes['Zone']> = {
+export type ZoneResolvers<
+  ContextType = ExecutionContext,
+  ParentType extends ResolversParentTypes['Zone'] = ResolversParentTypes['Zone']
+> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3672,6 +4626,8 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CollectionTranslation?: CollectionTranslationResolvers<ContextType>;
   Country?: CountryResolvers<ContextType>;
   CreateTagsResult?: CreateTagsResultResolvers<ContextType>;
+  CustomFieldDefinition?: CustomFieldDefinitionResolvers<ContextType>;
+  CustomFieldDefinitionList?: CustomFieldDefinitionListResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;
@@ -3754,4 +4710,3 @@ export type Resolvers<ContextType = ExecutionContext> = {
   VariantList?: VariantListResolvers<ContextType>;
   Zone?: ZoneResolvers<ContextType>;
 };
-

@@ -1,0 +1,74 @@
+enum CustomFieldDefinitionAppliesToEntity {
+  PRODUCT
+}
+
+enum CustomFieldType {
+  SINGLE_LINE_TEXT
+  MULTI_LINE_TEXT
+  INTEGER
+  DECIMAL
+  MONEY
+  DATE
+  BOOLEAN
+  IMAGE
+  REFERENCE
+}
+
+"""
+Represents a custom field that cna be attached to an entity
+"""
+type CustomFieldDefinition {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Name of the definition
+  """
+  name: String!
+  """
+  A unique  and readable key to make reference to the definition
+  """
+  key: String!
+  """
+  Weather the field is a list of values
+  """
+  isList: Boolean!
+  """
+  Entities this field can be applied to
+  """
+  appliesToEntity: CustomFieldDefinitionAppliesToEntity!
+  """
+  Type of the definition
+  """
+  type: CustomFieldType!
+  metadata: JSON
+}
+
+type CustomFieldDefinitionList {
+  items: [CustomFieldDefinition!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  customField(id: ID!): CustomFieldDefinition
+  customFields(input: ListInput): CustomFieldDefinitionList!
+}
+
+type Mutation {
+  createCustomField(input: CreateCustomFieldInput!): CustomFieldDefinition!
+  updateCustomField(id: ID!, input: UpdateCustomFieldInput!): CustomFieldDefinition!
+  removeCustomField(id: ID!): Boolean!
+}
+
+input CreateCustomFieldInput {
+  name: String!
+  isList: Boolean!
+  appliesToEntity: CustomFieldDefinitionAppliesToEntity!
+  type: CustomFieldType!
+  metadata: JSON
+}
+
+input UpdateCustomFieldInput {
+  name: String!
+}
