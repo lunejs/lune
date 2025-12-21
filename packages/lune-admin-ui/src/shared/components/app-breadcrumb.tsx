@@ -12,13 +12,15 @@ import {
   cn
 } from '@lune/ui';
 
+import { CustomFieldAppliesToEntity } from '@/lib/api/types';
+
 export const AppBreadcrumb = () => {
   const { pathname } = useLocation();
-  const { id } = useParams();
+  const params = useParams();
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/dashboard' },
-    ...getBreadcrumbItems(pathname, id)
+    ...getBreadcrumbItems(pathname, params, params.id)
   ];
 
   return (
@@ -102,7 +104,7 @@ type TBreadcrumbItem = {
   label: string;
 };
 
-const getBreadcrumbItems = (pathname: string, id?: string) => {
+const getBreadcrumbItems = (pathname: string, params: Record<string, unknown>, id?: string) => {
   if (pathname === `/products/${id}`) {
     return [{ href: '/products', label: 'Products' }, { label: 'Product details' }];
   }
@@ -138,6 +140,21 @@ const getBreadcrumbItems = (pathname: string, id?: string) => {
       { label: 'Preferences' }
     ];
   }
+  if (pathname.includes(`/settings/custom-fields`) && params.entity) {
+    return [
+      { href: '/settings/custom-fields', label: 'Custom fields' },
+      { label: getLabelByEntity(params.entity as any) }
+    ];
+  }
 
   return BREADCRUMBS[pathname] ?? [];
+};
+
+const getLabelByEntity = (entity: CustomFieldAppliesToEntity) => {
+  const NAMES = {
+    [CustomFieldAppliesToEntity.Product]: 'Product custom fields',
+    [CustomFieldAppliesToEntity.Collection]: 'Collection custom fields'
+  };
+
+  return NAMES[entity];
 };
