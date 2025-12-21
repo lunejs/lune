@@ -3,6 +3,7 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
   MutationCreateCustomFieldDefinitionArgs,
+  MutationRemoveCustomFieldDefinitionArgs,
   MutationUpdateCustomFieldDefinitionArgs,
   QueryCustomFieldDefinitionArgs,
   QueryCustomFieldDefinitionsArgs
@@ -64,6 +65,16 @@ async function updateCustomFieldDefinition(
   return await customFieldDefinitionService.update(id, input);
 }
 
+async function removeCustomFieldDefinition(
+  _,
+  { id }: MutationRemoveCustomFieldDefinitionArgs,
+  ctx: ExecutionContext
+) {
+  const customFieldDefinitionService = new CustomFieldDefinitionService(ctx);
+
+  return await customFieldDefinitionService.remove(id);
+}
+
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   CustomFieldAppliesToEntity: {
     PRODUCT: CustomFieldAppliesTo.Product,
@@ -86,6 +97,7 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   },
   Mutation: {
     createCustomFieldDefinition: UseUserGuard(createCustomFieldDefinition),
-    updateCustomFieldDefinition: UseUserGuard(updateCustomFieldDefinition)
+    updateCustomFieldDefinition: UseUserGuard(updateCustomFieldDefinition),
+    removeCustomFieldDefinition: UseUserGuard(removeCustomFieldDefinition)
   }
 };

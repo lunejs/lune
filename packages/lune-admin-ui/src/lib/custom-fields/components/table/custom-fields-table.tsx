@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   P,
@@ -20,7 +19,7 @@ import {
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
 import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
-import { getCustomFieldTypeData, getEntityName } from '../../utils/custom-field.utils';
+import { getCustomFieldTypeData } from '../../utils/custom-field.utils';
 
 export const CustomFieldsTable = ({ entity, customFields }: Props) => {
   return (
@@ -28,7 +27,6 @@ export const CustomFieldsTable = ({ entity, customFields }: Props) => {
       <CardHeader className="flex justify-between flex-row items-center">
         <div>
           <CardTitle>Custom fields</CardTitle>
-          <CardDescription>{getEntityName(entity)} custom fields</CardDescription>
         </div>
         <div>
           <Link to={`/settings/custom-fields/${entity}/new`}>

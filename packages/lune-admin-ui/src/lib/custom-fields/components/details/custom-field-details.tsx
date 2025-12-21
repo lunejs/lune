@@ -25,6 +25,7 @@ import { SettingsPageLayout } from '@/shared/components/layout/settings-page-lay
 
 import { getEntityName } from '../../utils/custom-field.utils';
 
+import { CustomFieldActions } from './actions/custom-field-actions';
 import { CustomFieldName } from './name/custom-field-name';
 import { CustomFieldSubmitButton } from './use-form/submit-button';
 import { useCustomFieldForm } from './use-form/use-form';
@@ -43,7 +44,12 @@ export const CustomFieldDetails = ({ entity, definition }: Props) => {
           }
           subtitle={definition && `${getEntityName(entity)} custom field`}
           backUrl={`/settings/custom-fields/${entity}`}
-          actions={<CustomFieldSubmitButton />}
+          actions={
+            <div className="flex items-center gap-4">
+              {definition && <CustomFieldActions definition={definition} entity={entity} />}
+              <CustomFieldSubmitButton />
+            </div>
+          }
           className="flex flex-col gap-4"
         >
           <CustomFieldName />

@@ -54,6 +54,13 @@ export class CustomFieldDefinitionService {
     });
   }
 
+  // TODO: remove form product_custom_field, collection_custom_field, ...
+  async remove(id: ID) {
+    await this.repository.remove({ where: { id } });
+
+    return true;
+  }
+
   private generateKey(name: string) {
     return getSlugBy(name, { replacement: '_' });
   }
