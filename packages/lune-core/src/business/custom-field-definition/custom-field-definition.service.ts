@@ -1,7 +1,11 @@
 import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateCustomFieldInput, ListInput } from '@/api/shared/types/graphql';
+import type {
+  CreateCustomFieldInput,
+  ListInput,
+  UpdateCustomFieldInput
+} from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
@@ -46,6 +50,13 @@ export class CustomFieldDefinitionService {
       ...input,
       key,
       metadata: input.metadata ?? null
+    });
+  }
+
+  async update(id: ID, input: UpdateCustomFieldInput) {
+    return this.repository.update({
+      where: { id },
+      data: input
     });
   }
 
