@@ -51,8 +51,8 @@ type CustomFieldDefinitionList {
 }
 
 type Query {
-  customField(id: ID!): CustomFieldDefinition
-  customFields(input: ListInput): CustomFieldDefinitionList!
+  customFieldDefinition(id: ID!): CustomFieldDefinition
+  customFieldDefinitions(input: ListInput): CustomFieldDefinitionList!
 }
 
 type Mutation {

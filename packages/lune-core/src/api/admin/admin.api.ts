@@ -22,6 +22,7 @@ import { StateFieldResolver } from './field-resolvers/state-field.resolver';
 import { AssetResolver } from './resolvers/asset.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
+import { CustomFieldDefinitionResolver } from './resolvers/custom-field-definition.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
 import { DiscountResolver } from './resolvers/discount.resolver';
 import { LocationResolver } from './resolvers/location.resolver';
@@ -71,6 +72,7 @@ export class AdminApi extends GraphqlApi {
         AssetResolver,
         DiscountResolver,
         CustomerResolver,
+        CustomFieldDefinitionResolver,
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
