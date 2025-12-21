@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Badge, cn, Label } from '@lune/ui';
+import { Label } from '@lune/ui';
 
 import type {
   CommonCustomFieldDefinitionFragment,
@@ -9,6 +9,9 @@ import type {
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';
 import { DefaultEntitySelectorRow } from '@/shared/components/entity-selector/rows/default-entity-selector-row';
+
+import { CustomFieldEntityPreview } from './shared/preview/custom-field-entity-preview';
+import { CustomFieldPreviewContainer } from './shared/preview/custom-field-preview-container';
 
 export const ProductReferenceCustomField = ({ definition, onChange }: Props) => {
   const { isLoading, products: allProducts } = useGetProducts();
@@ -29,30 +32,22 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
         title="Add products"
         description="Add products to your collection"
         trigger={
-          <div
-            className={cn(
-              'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-              'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-              'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-              'w-3/4 shrink-0 px-1 flex items-center gap-1'
-            )}
-          >
+          <CustomFieldPreviewContainer>
             {selected.map(p => (
-              <Badge variant={'secondary'} className="bg-background/75">
-                <img src={p.assets.items[0]?.source} alt={p.name} className="w-5 h-5 rounded" />
-                {p.name.length > 15 ? `${p.name.slice(0, 15)}...` : p.name}
-              </Badge>
+              <CustomFieldEntityPreview title={p.name} image={p.assets.items[0]?.source} />
             ))}
-          </div>
+          </CustomFieldPreviewContainer>
         }
         items={products}
         isLoading={isLoading}
-        defaultSelected={[]}
+        defaultSelected={selected}
         onSearch={setQuery}
         getRowId={item => item.id}
         onDone={selected => {
-          setSelected(selected);
-          onChange(selected.map(s => s.id));
+          const newSelected = definition.isList ? selected : [selected[0]];
+
+          setSelected(newSelected);
+          onChange(newSelected.map(s => s.id));
           return true;
         }}
         renderItem={({ rowId, item, isSelected, onSelect }) => (
