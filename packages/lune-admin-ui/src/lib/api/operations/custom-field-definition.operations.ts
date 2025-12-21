@@ -35,3 +35,31 @@ export const GET_CUSTOM_FIELD_DEFINITIONS_QUERY = graphql(`
     }
   }
 `);
+
+export const CREATE_CUSTOM_FIELD_DEFINITION_MUTATION = graphql(`
+  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {
+    createCustomFieldDefinition(input: $input) {
+      customFieldDefinition {
+        id
+      }
+      apiErrors {
+        code
+        message
+      }
+    }
+  }
+`);
+
+export const UPDATE_CUSTOM_FIELD_DEFINITION_MUTATION = graphql(`
+  mutation UpdateCustomFieldDefinition($id: ID!, $input: UpdateCustomFieldInput!) {
+    updateCustomFieldDefinition(id: $id, input: $input) {
+      id
+    }
+  }
+`);
+
+export const REMOVE_CUSTOM_FIELD_DEFINITION_MUTATION = graphql(`
+  mutation RemoveCustomFieldDefinition($id: ID!) {
+    removeCustomFieldDefinition(id: $id)
+  }
+`);

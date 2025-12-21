@@ -40,6 +40,9 @@ type Documents = {
     "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n": typeof types.CommonCustomFieldDefinitionFragmentDoc,
     "\n  query GetCustomFieldDefinition($id: ID!) {\n    customFieldDefinition(id: $id) {\n      ...CommonCustomFieldDefinition\n    }\n  }\n": typeof types.GetCustomFieldDefinitionDocument,
     "\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n": typeof types.GetCustomFieldDefinitionsDocument,
+    "\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": typeof types.CreateCustomFieldDefinitionDocument,
+    "\n  mutation UpdateCustomFieldDefinition($id: ID!, $input: UpdateCustomFieldInput!) {\n    updateCustomFieldDefinition(id: $id, input: $input) {\n      id\n    }\n  }\n": typeof types.UpdateCustomFieldDefinitionDocument,
+    "\n  mutation RemoveCustomFieldDefinition($id: ID!) {\n    removeCustomFieldDefinition(id: $id)\n  }\n": typeof types.RemoveCustomFieldDefinitionDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": typeof types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": typeof types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": typeof types.GetCustomerByIdQueryDocument,
@@ -151,6 +154,9 @@ const documents: Documents = {
     "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n": types.CommonCustomFieldDefinitionFragmentDoc,
     "\n  query GetCustomFieldDefinition($id: ID!) {\n    customFieldDefinition(id: $id) {\n      ...CommonCustomFieldDefinition\n    }\n  }\n": types.GetCustomFieldDefinitionDocument,
     "\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n": types.GetCustomFieldDefinitionsDocument,
+    "\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.CreateCustomFieldDefinitionDocument,
+    "\n  mutation UpdateCustomFieldDefinition($id: ID!, $input: UpdateCustomFieldInput!) {\n    updateCustomFieldDefinition(id: $id, input: $input) {\n      id\n    }\n  }\n": types.UpdateCustomFieldDefinitionDocument,
+    "\n  mutation RemoveCustomFieldDefinition($id: ID!) {\n    removeCustomFieldDefinition(id: $id)\n  }\n": types.RemoveCustomFieldDefinitionDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": types.GetCustomerByIdQueryDocument,
@@ -354,6 +360,18 @@ export function graphql(source: "\n  query GetCustomFieldDefinition($id: ID!) {\
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateCustomFieldDefinition($id: ID!, $input: UpdateCustomFieldInput!) {\n    updateCustomFieldDefinition(id: $id, input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateCustomFieldDefinition($id: ID!, $input: UpdateCustomFieldInput!) {\n    updateCustomFieldDefinition(id: $id, input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveCustomFieldDefinition($id: ID!) {\n    removeCustomFieldDefinition(id: $id)\n  }\n"): (typeof documents)["\n  mutation RemoveCustomFieldDefinition($id: ID!) {\n    removeCustomFieldDefinition(id: $id)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
