@@ -4,7 +4,7 @@ import { Input, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui'
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
-export const IntegerCustomField = ({ definition, onChange }: Props) => {
+export const DecimalCustomField = ({ definition, onChange }: Props) => {
   const id = useId();
 
   const [value, setValue] = useState('');
@@ -14,9 +14,8 @@ export const IntegerCustomField = ({ definition, onChange }: Props) => {
     <Popover
       onOpenChange={isOpen => {
         if (!isOpen) {
-          const newValue = value === '' ? null : Math.trunc(Number(value));
-          setPersistedValue(newValue?.toString() ?? '');
-          onChange(newValue);
+          setPersistedValue(value);
+          onChange(value === '' ? null : Number(value));
         }
       }}
     >
