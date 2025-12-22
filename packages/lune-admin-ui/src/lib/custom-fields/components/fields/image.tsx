@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { EyeIcon } from 'lucide-react';
 
 import { Label } from '@lune/ui';
 
@@ -22,7 +23,7 @@ export const ImageCustomField = ({ definition, defaultValues, onChange }: Props)
   // placeholder while default values are not available
   if (defaultValues?.length && isLoading) {
     return (
-      <div className="flex items-center gap-4">
+      <div className="group flex flex-col items-center gap-2 md:flex-row md:gap-4">
         <Label className="w-full">{definition.name}</Label>
         <CustomFieldPreviewContainer className="relative">
           <SpinnerLoader className="absolute right-1" />
@@ -44,12 +45,24 @@ export const ImageCustomField = ({ definition, defaultValues, onChange }: Props)
         else onChange(ids[0] ?? null);
       }}
     >
-      <div className="flex items-center gap-4">
+      <div className="group grid grid-cols-1 items-center gap-2 md:grid-cols-[25%_1fr] md:gap-4">
         <Label className="w-full">{definition.name}</Label>
         <CustomFieldPreviewContainer className="relative">
           {assets.map(asset => (
             <CustomFieldEntityPreview key={asset.id} title={asset.filename} image={asset.source} />
           ))}
+          {assets.length && (
+            <button
+              type="button"
+              className="opacity-0 absolute right-0 w-8 flex justify-center items-center h-full bg-accent group-hover:opacity-100 transition-opacity before:absolute before:-left-4 before:top-0 before:h-full before:w-4 before:bg-linear-to-r before:from-transparent before:to-accent before:pointer-events-none"
+              onClick={e => {
+                e.stopPropagation();
+                // TODO: add preview for entities
+              }}
+            >
+              <EyeIcon size={16} />
+            </button>
+          )}
         </CustomFieldPreviewContainer>
       </div>
     </AssetSelector>

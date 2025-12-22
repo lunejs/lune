@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { EyeIcon } from 'lucide-react';
 
 import { Label } from '@lune/ui';
 
@@ -29,7 +30,7 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
   }, [allProducts]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="group grid grid-cols-1 items-center gap-2 md:grid-cols-[25%_1fr] md:gap-4">
       <Label className="w-full">{definition.name}</Label>
 
       <EntitySelector
@@ -44,6 +45,18 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
                 image={p.assets.items[0]?.source}
               />
             ))}
+            {selected.length && (
+              <button
+                type="button"
+                className="opacity-0 absolute right-0 w-8 flex justify-center items-center h-full bg-accent group-hover:opacity-100 transition-opacity before:absolute before:-left-4 before:top-0 before:h-full before:w-4 before:bg-linear-to-r before:from-transparent before:to-accent before:pointer-events-none"
+                onClick={e => {
+                  e.stopPropagation();
+                  // TODO: add preview for entities
+                }}
+              >
+                <EyeIcon size={16} />
+              </button>
+            )}
           </CustomFieldPreviewContainer>
         }
         items={products}

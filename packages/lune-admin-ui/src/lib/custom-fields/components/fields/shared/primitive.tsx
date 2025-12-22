@@ -39,7 +39,7 @@ export const PrimitiveCustomField = ({
         }
       }}
     >
-      <div className="flex items-center gap-4">
+      <div className="group grid grid-cols-1 items-center gap-2 md:grid-cols-[25%_1fr] md:gap-4 cursor-default">
         <Label htmlFor={id} className="w-full">
           {definition.name}
         </Label>
@@ -55,7 +55,7 @@ export const PrimitiveCustomField = ({
                 : persistedValue.map(v => v.value).join(', ')
             }
             readOnly
-            className="w-3/4 shrink-0 text-start"
+            className="w-full shrink-0 text-start dark:group-hover:bg-input/50 group-hover:bg-muted"
           />
         </PopoverTrigger>
       </div>
