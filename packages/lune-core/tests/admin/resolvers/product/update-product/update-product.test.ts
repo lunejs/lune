@@ -5,8 +5,16 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
+import {
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
+import {
+  ProductCustomFieldConstants,
+  ProductCustomFieldFixtures
+} from './fixtures/product-custom-field.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
@@ -26,7 +34,9 @@ describe('updateProduct - Mutation', () => {
       new TagFixtures(),
       new ProductTagFixtures(),
       new AssetFixtures(),
-      new ProductAssetFixtures()
+      new ProductAssetFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new ProductCustomFieldFixtures()
     ]);
   });
 
@@ -183,6 +193,113 @@ describe('updateProduct - Mutation', () => {
     expect(updateProduct.assets.count).toBe(0);
   });
 
+  test('update existing custom field value', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            customFields: [{ id: CustomFieldDefinitionConstants.BrandID, value: 'Samsung' }]
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    const brandField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'brand'
+    );
+    expect(brandField.value).toBe('Samsung');
+
+    // Weight should still exist with original value
+    const weightField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'weight'
+    );
+    expect(weightField.value).toBe(ProductCustomFieldConstants.WeightValue);
+  });
+
+  test('add new custom field to product', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            customFields: [
+              { id: CustomFieldDefinitionConstants.MaterialID, value: ['Cotton', 'Silk'] },
+              { id: CustomFieldDefinitionConstants.IsOrganicID, value: true }
+            ]
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    // New fields should be added
+    const materialField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'material'
+    );
+    expect(materialField.value).toEqual(['Cotton', 'Silk']);
+    expect(materialField.definition.isList).toBe(true);
+
+    const isOrganicField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'is_organic'
+    );
+    expect(isOrganicField.value).toBe(true);
+    expect(isOrganicField.definition.type).toBe('BOOLEAN');
+
+    // Existing fields should still be there
+    expect(updateProduct.customFieldEntries).toHaveLength(4);
+  });
+
+  test('update and add custom fields simultaneously', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            customFields: [
+              { id: CustomFieldDefinitionConstants.BrandID, value: 'Nike' },
+              { id: CustomFieldDefinitionConstants.WeightID, value: 250 },
+              { id: CustomFieldDefinitionConstants.IsOrganicID, value: false }
+            ]
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    // Updated fields
+    const brandField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'brand'
+    );
+    expect(brandField.value).toBe('Nike');
+
+    const weightField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'weight'
+    );
+    expect(weightField.value).toBe(250);
+
+    // New field
+    const isOrganicField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'is_organic'
+    );
+    expect(isOrganicField.value).toBe(false);
+
+    expect(updateProduct.customFieldEntries).toHaveLength(3);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
@@ -220,6 +337,16 @@ const UPDATE_PRODUCT_MUTATION = /* GraphQL */ `
         count
         items {
           id
+        }
+      }
+      customFieldEntries {
+        value
+        definition {
+          id
+          key
+          name
+          type
+          isList
         }
       }
     }

@@ -2291,6 +2291,7 @@ export type UpdatePaymentMethodInput = {
 export type UpdateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   assets?: InputMaybe<Array<AssetInEntity>>;
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;

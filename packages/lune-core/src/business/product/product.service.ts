@@ -71,7 +71,7 @@ export class ProductService {
         customFields.map(cf => ({
           definitionId: cf.id,
           productId: product.id,
-          value: JSON.stringify(cf.value) // TODO: could e cool serializer does this
+          value: JSON.stringify(cf.value) // TODO: could be cool serializer does this
         }))
       );
     }
@@ -88,7 +88,7 @@ export class ProductService {
   }
 
   async update(id: ID, input: UpdateProductInput) {
-    const { assets, tags, ...baseProduct } = input;
+    const { assets, tags, customFields, ...baseProduct } = input;
 
     const result = await this.repository.update({
       where: { id },
@@ -101,6 +101,18 @@ export class ProductService {
 
     if (tags?.length) {
       await this.repository.upsertTags(id, tags);
+    }
+
+    if (customFields?.length) {
+      await Promise.all(
+        customFields.map(cf =>
+          this.customFieldRepository.upsert({
+            where: { definitionId: cf.id, productId: id },
+            create: { definitionId: cf.id, productId: id, value: cf.value },
+            update: { value: cf.value }
+          })
+        )
+      );
     }
 
     await this.removeMissingAssets(id, assets);

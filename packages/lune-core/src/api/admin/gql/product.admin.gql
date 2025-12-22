@@ -58,6 +58,7 @@ input UpdateProductInput {
   enabled: Boolean
   archived: Boolean
 
+  customFields: [CustomFieldValue!]
   assets: [AssetInEntity!]
   tags: [ID!]
 }
