@@ -2,9 +2,9 @@ import { CardTitle, TableCell } from '@lune/ui';
 
 import { TranslateFormRow } from './translate-form-row';
 
-export const TranslateFormSeparator = ({ text }: Props) => {
+export const TranslateFormSeparator = ({ className, text }: Props) => {
   return (
-    <TranslateFormRow>
+    <TranslateFormRow className={className}>
       <TableCell className="py-6 pl-4">
         <CardTitle className="text-base">{text}</CardTitle>
       </TableCell>
@@ -13,5 +13,6 @@ export const TranslateFormSeparator = ({ text }: Props) => {
 };
 
 type Props = {
+  className?: string;
   text: string;
 };

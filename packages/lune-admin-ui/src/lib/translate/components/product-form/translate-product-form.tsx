@@ -10,6 +10,7 @@ import { TranslateInput } from '../form/translate-input';
 import { TranslateTextarea } from '../form/translate-textarea';
 import { LocaleSelector } from '../locale-selector/locale-selector';
 
+import { TranslateProductCustomField } from './custom-fields/translate-product-custom-fields';
 import { TranslateOptions } from './options/translate-product-options';
 import { ReplaceProductSheet } from './replace-product/replace-product-sheet';
 import { TranslateProductFormSubmitButton } from './submit-button/translate-product-form-submit-button';
@@ -19,6 +20,7 @@ export const TranslateProductForm = ({ product }: Props) => {
   const form = useTranslateProductForm(product);
 
   const hasOptions = !!product.options.length;
+  const hasCustomFields = !!product.customFieldEntries.length;
 
   return (
     <Form {...form}>
@@ -77,6 +79,12 @@ export const TranslateProductForm = ({ product }: Props) => {
                   {hasOptions && <TranslateFormSeparator text="Options" />}
 
                   <TranslateOptions product={product} />
+
+                  {hasCustomFields && (
+                    <TranslateFormSeparator text="Custom fields" className="border-t!" />
+                  )}
+
+                  <TranslateProductCustomField product={product} />
                 </TableBody>
               </Table>
             </CardContent>

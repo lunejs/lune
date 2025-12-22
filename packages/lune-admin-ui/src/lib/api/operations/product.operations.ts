@@ -42,6 +42,21 @@ export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
         order
       }
     }
+
+    customFieldEntries {
+      value
+      definition {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+      }
+    }
   }
 `);
 

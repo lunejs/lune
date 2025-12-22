@@ -16,7 +16,10 @@ export const TranslateFormRowData = ({ children, field, reference, className }: 
       >
         <TranslateFormCell>{field}</TranslateFormCell>
         <TranslateFormCell
-          className={typeof className === 'string' ? undefined : className?.referenceCell}
+          className={cn(
+            typeof className === 'string' ? undefined : className?.referenceCell,
+            'text-muted-foreground'
+          )}
           isDisabled
         >
           {reference}
@@ -32,7 +35,9 @@ export const TranslateFormRowData = ({ children, field, reference, className }: 
 
       {reference && (
         <TranslateFormRow className="lg:hidden">
-          <TranslateFormCell isDisabled>{reference}</TranslateFormCell>
+          <TranslateFormCell isDisabled className="text-muted-foreground">
+            {reference}
+          </TranslateFormCell>
         </TranslateFormRow>
       )}
 
