@@ -1,7 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, Package } from 'lucide-react';
+import { Link } from 'react-router';
 
-import { Label } from '@lune/ui';
+import { LunePrice } from '@lune/common';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  Label,
+  Muted,
+  Small
+} from '@lune/ui';
 
 import type {
   CommonCustomFieldDefinitionFragment,
@@ -10,11 +21,13 @@ import type {
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';
 import { DefaultEntitySelectorRow } from '@/shared/components/entity-selector/rows/default-entity-selector-row';
+import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
 import { CustomFieldEntityPreview } from './shared/preview/custom-field-entity-preview';
 import { CustomFieldPreviewContainer } from './shared/preview/custom-field-preview-container';
 
 export const ProductReferenceCustomField = ({ defaultValues, definition, onChange }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { isLoading, products: allProducts } = useGetProducts();
 
   const [query, setQuery] = useState('');
@@ -51,7 +64,7 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
                 className="opacity-0 absolute right-0 w-8 flex justify-center items-center h-full bg-accent group-hover:opacity-100 transition-opacity before:absolute before:-left-4 before:top-0 before:h-full before:w-4 before:bg-linear-to-r before:from-transparent before:to-accent before:pointer-events-none"
                 onClick={e => {
                   e.stopPropagation();
-                  // TODO: add preview for entities
+                  setIsOpen(true);
                 }}
               >
                 <EyeIcon size={16} />
@@ -87,6 +100,39 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
           />
         )}
       />
+
+      <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{definition.name}</DialogTitle>
+            <DialogDescription className="flex items-center gap-1">
+              <Package size={16} />
+              Products
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            {selected.map(p => (
+              <div className="flex items-center gap-2">
+                {p.assets.items[0]?.source ? (
+                  <img
+                    src={p.assets.items[0]?.source}
+                    alt={p.name}
+                    className="w-12 h-12 rounded-md object-cover"
+                  />
+                ) : (
+                  <ImagePlaceholder initial={p.name} />
+                )}
+                <div>
+                  <Link to={`/products/${p.id}`}>
+                    <Small className="hover:underline">{p.name}</Small>
+                  </Link>
+                  <Muted>{LunePrice.format(p.minSalePrice)}</Muted>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
