@@ -12,9 +12,9 @@ import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
 import type { Product } from '@/persistence/entities/product';
-import type { CollectionRepository } from '@/persistence/repositories/collection-repository';
 import type { OptionTranslationRepository } from '@/persistence/repositories/option-translation-repository';
 import type { OptionValueTranslationRepository } from '@/persistence/repositories/option-value-translation-repository';
+import type { ProductCustomFieldRepository } from '@/persistence/repositories/product-custom-field-repository';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import type { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
@@ -24,14 +24,14 @@ export class ProductService {
   private translationRepository: ProductTranslationRepository;
   private optionTranslationRepository: OptionTranslationRepository;
   private optionValueTranslationRepository: OptionValueTranslationRepository;
-  private collectionRepository: CollectionRepository;
+  private customFieldRepository: ProductCustomFieldRepository;
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.product;
     this.translationRepository = ctx.repositories.productTranslation;
     this.optionTranslationRepository = ctx.repositories.optionTranslation;
     this.optionValueTranslationRepository = ctx.repositories.optionValueTranslation;
-    this.collectionRepository = ctx.repositories.collection;
+    this.customFieldRepository = ctx.repositories.productCustomField;
   }
 
   async find(input?: ProductListInput) {
@@ -55,7 +55,7 @@ export class ProductService {
   async create(input: CreateProductInput) {
     const slug = await this.validateAndParseSlug(input.name);
 
-    const { assets, tags, ...baseProduct } = input;
+    const { assets, tags, customFields, ...baseProduct } = input;
 
     const product = await this.repository.create({
       ...clean(baseProduct),
@@ -65,6 +65,16 @@ export class ProductService {
       archived: false,
       slug
     });
+
+    if (customFields?.length) {
+      await this.customFieldRepository.createMany(
+        customFields.map(cf => ({
+          definitionId: cf.id,
+          productId: product.id,
+          value: JSON.stringify(cf.value) // TODO: could e cool serializer does this
+        }))
+      );
+    }
 
     if (assets?.length) {
       await this.repository.upsertAssets(product.id, assets);

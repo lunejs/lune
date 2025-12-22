@@ -1,3 +1,8 @@
+input CustomFieldValue {
+  id: ID!
+  value: JSON!
+}
+
 enum CustomFieldAppliesToEntity {
   PRODUCT
   COLLECTION

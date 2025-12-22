@@ -41,6 +41,7 @@ input CreateProductInput {
   description: String
   enabled: Boolean
 
+  customFields: [CustomFieldValue!]
   assets: [AssetInEntity!]
   tags: [ID!]
 }

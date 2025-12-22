@@ -5,6 +5,10 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
+import {
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { TagConstants, TagFixtures } from './fixtures/tag.fixtures';
@@ -22,7 +26,8 @@ describe('product - Query', () => {
       new ShopFixtures(),
       new ProductFixtures(),
       new TagFixtures(),
-      new AssetFixtures()
+      new AssetFixtures(),
+      new CustomFieldDefinitionFixtures()
     ]);
   });
 
@@ -176,6 +181,32 @@ describe('product - Query', () => {
     const { createProduct } = res.body.data;
 
     expect(createProduct.tags).toHaveLength(3);
+  });
+
+  test('creates a product with custom fields', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_PRODUCT_MUTATION,
+        variables: {
+          input: {
+            name: 'Product with custom fields',
+            customFields: [
+              { id: CustomFieldDefinitionConstants.BrandID, value: 'text value' },
+              { id: CustomFieldDefinitionConstants.MaterialID, value: ['Cotton', 'Polyester'] },
+              { id: CustomFieldDefinitionConstants.WeightID, value: 150 },
+              { id: CustomFieldDefinitionConstants.IsOrganicID, value: true }
+            ]
+          }
+        }
+      });
+
+    const { createProduct } = res.body.data;
+
+    expect(createProduct.id).toBeDefined();
+    expect(createProduct.name).toBe('Product with custom fields');
   });
 
   test('returns Authorization error when no token is provided', async () => {

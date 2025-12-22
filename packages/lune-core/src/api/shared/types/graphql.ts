@@ -355,6 +355,7 @@ export type CreatePaymentMethodInput = {
 
 export type CreateProductInput = {
   assets?: InputMaybe<Array<AssetInEntity>>;
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
@@ -470,6 +471,13 @@ export type CustomFieldDefinitionResult = {
 };
 
 export { CustomFieldType };
+
+export type CustomFieldValue = {
+  __typename?: 'CustomFieldValue';
+  id: Scalars['ID']['output'];
+  key: Scalars['String']['output'];
+  value: Scalars['JSON']['output'];
+};
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type Customer = {
@@ -2574,6 +2582,7 @@ export type ResolversTypes = {
   CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: ResolverTypeWrapper<CustomFieldDefinitionResult>;
   CustomFieldType: CustomFieldType;
+  CustomFieldValue: ResolverTypeWrapper<CustomFieldValue>;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -2770,6 +2779,7 @@ export type ResolversParentTypes = {
   CustomFieldDefinitionList: CustomFieldDefinitionList;
   CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: CustomFieldDefinitionResult;
+  CustomFieldValue: CustomFieldValue;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
   CustomerFilters: CustomerFilters;
@@ -3039,6 +3049,13 @@ export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext,
 };
 
 export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
+
+export type CustomFieldValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldValue'] = ResolversParentTypes['CustomFieldValue']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Customer'] = ResolversParentTypes['Customer']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3846,6 +3863,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomFieldDefinitionList?: CustomFieldDefinitionListResolvers<ContextType>;
   CustomFieldDefinitionResult?: CustomFieldDefinitionResultResolvers<ContextType>;
   CustomFieldType?: CustomFieldTypeResolvers;
+  CustomFieldValue?: CustomFieldValueResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;
