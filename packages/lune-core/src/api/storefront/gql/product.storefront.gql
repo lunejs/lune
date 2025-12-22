@@ -1,3 +1,10 @@
+extend type Product {
+  """
+  Custom fields as key-value pairs
+  """
+  customFields: JSON!
+}
+
 type Query {
   products(input: ProductListInput): ProductList!
 }

@@ -8,6 +8,11 @@ type ProductTranslation {
   locale: Locale!
 }
 
+type ProductCustomField {
+  value: JSON!
+  definition: CustomFieldDefinition!
+}
+
 extend type Product {
   """
   Whether the product is archived or not.
@@ -17,6 +22,7 @@ extend type Product {
   archived: Boolean!
 
   translations: [ProductTranslation!]!
+  customFieldEntries: [ProductCustomField!]!
 }
 
 type Query {

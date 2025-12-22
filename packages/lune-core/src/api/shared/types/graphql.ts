@@ -473,10 +473,8 @@ export type CustomFieldDefinitionResult = {
 export { CustomFieldType };
 
 export type CustomFieldValue = {
-  __typename?: 'CustomFieldValue';
-  id: Scalars['ID']['output'];
-  key: Scalars['String']['output'];
-  value: Scalars['JSON']['output'];
+  id: Scalars['ID']['input'];
+  value: Scalars['JSON']['input'];
 };
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
@@ -1718,6 +1716,9 @@ export type Product = Node & {
   archived: Scalars['Boolean']['output'];
   assets: AssetList;
   createdAt: Scalars['Date']['output'];
+  customFieldEntries: Array<ProductCustomField>;
+  /** Custom fields as key-value pairs */
+  customFields: Scalars['JSON']['output'];
   /** The product's description */
   description?: Maybe<Scalars['String']['output']>;
   /**
@@ -1764,6 +1765,12 @@ export type ProductOptionsArgs = {
 /** A product is a good or service that you want to sell. */
 export type ProductVariantsArgs = {
   input?: InputMaybe<ListInput>;
+};
+
+export type ProductCustomField = {
+  __typename?: 'ProductCustomField';
+  definition: CustomFieldDefinition;
+  value: Scalars['JSON']['output'];
 };
 
 export type ProductFilters = {
@@ -2582,7 +2589,7 @@ export type ResolversTypes = {
   CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: ResolverTypeWrapper<CustomFieldDefinitionResult>;
   CustomFieldType: CustomFieldType;
-  CustomFieldValue: ResolverTypeWrapper<CustomFieldValue>;
+  CustomFieldValue: CustomFieldValue;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -2669,6 +2676,7 @@ export type ResolversTypes = {
   PaymentState: PaymentState;
   PriceRange: PriceRange;
   Product: ResolverTypeWrapper<Product>;
+  ProductCustomField: ResolverTypeWrapper<ProductCustomField>;
   ProductFilters: ProductFilters;
   ProductList: ResolverTypeWrapper<ProductList>;
   ProductListInput: ProductListInput;
@@ -2854,6 +2862,7 @@ export type ResolversParentTypes = {
   PaymentRejection: Omit<PaymentRejection, 'payment'> & { payment: ResolversParentTypes['Payment'] };
   PriceRange: PriceRange;
   Product: Product;
+  ProductCustomField: ProductCustomField;
   ProductFilters: ProductFilters;
   ProductList: ProductList;
   ProductListInput: ProductListInput;
@@ -3049,13 +3058,6 @@ export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext,
 };
 
 export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
-
-export type CustomFieldValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldValue'] = ResolversParentTypes['CustomFieldValue']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
 
 export type CustomerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Customer'] = ResolversParentTypes['Customer']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3581,6 +3583,8 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
   archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<ProductAssetsArgs>>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  customFieldEntries?: Resolver<Array<ResolversTypes['ProductCustomField']>, ParentType, ContextType>;
+  customFields?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3593,6 +3597,12 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
   translations?: Resolver<Array<ResolversTypes['ProductTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   variants?: Resolver<ResolversTypes['VariantList'], ParentType, ContextType, Partial<ProductVariantsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductCustomFieldResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductCustomField'] = ResolversParentTypes['ProductCustomField']> = {
+  definition?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3863,7 +3873,6 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomFieldDefinitionList?: CustomFieldDefinitionListResolvers<ContextType>;
   CustomFieldDefinitionResult?: CustomFieldDefinitionResultResolvers<ContextType>;
   CustomFieldType?: CustomFieldTypeResolvers;
-  CustomFieldValue?: CustomFieldValueResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;
@@ -3919,6 +3928,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   PaymentMethodResult?: PaymentMethodResultResolvers<ContextType>;
   PaymentRejection?: PaymentRejectionResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
+  ProductCustomField?: ProductCustomFieldResolvers<ContextType>;
   ProductList?: ProductListResolvers<ContextType>;
   ProductTranslation?: ProductTranslationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

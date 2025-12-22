@@ -90,6 +90,9 @@ export const ProductResolver: GraphqlApiResolver = {
     ...CommonProductFieldResolver,
     translations: async (parent: Product, _, ctx: ExecutionContext) => {
       return ctx.loaders.product.translation.load(parent.id);
+    },
+    customFieldEntries: async (parent: Product, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.product.customFields.load(parent.id);
     }
   }
 };

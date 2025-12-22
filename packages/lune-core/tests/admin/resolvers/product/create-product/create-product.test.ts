@@ -207,6 +207,32 @@ describe('product - Query', () => {
 
     expect(createProduct.id).toBeDefined();
     expect(createProduct.name).toBe('Product with custom fields');
+    expect(createProduct.customFieldEntries).toHaveLength(4);
+
+    const brandField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'brand'
+    );
+    expect(brandField.value).toBe('text value');
+    expect(brandField.definition.id).toBe(CustomFieldDefinitionConstants.BrandID);
+    expect(brandField.definition.isList).toBe(false);
+
+    const materialField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'material'
+    );
+    expect(materialField.value).toEqual(['Cotton', 'Polyester']);
+    expect(materialField.definition.isList).toBe(true);
+
+    const weightField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'weight'
+    );
+    expect(weightField.value).toBe(150);
+    expect(weightField.definition.type).toBe('INTEGER');
+
+    const isOrganicField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'is_organic'
+    );
+    expect(isOrganicField.value).toBe(true);
+    expect(isOrganicField.definition.type).toBe('BOOLEAN');
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -245,6 +271,16 @@ const CREATE_PRODUCT_MUTATION = /* GraphQL */ `
         count
         items {
           id
+        }
+      }
+      customFieldEntries {
+        value
+        definition {
+          id
+          key
+          name
+          type
+          isList
         }
       }
     }

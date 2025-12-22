@@ -15,6 +15,17 @@ export const ProductFieldResolver: GraphqlApiResolver = {
     },
     description: async (parent: Product, _, ctx: ExecutionContext) => {
       return getProductLocalizedField(ctx, parent, 'description');
+    },
+    customFields: async (parent: Product, _: unknown, ctx: ExecutionContext) => {
+      const fields = await ctx.loaders.product.customFields.load(parent.id);
+
+      return fields.reduce(
+        (acc, field) => {
+          acc[field.definition.key] = field.value;
+          return acc;
+        },
+        {} as Record<string, unknown>
+      );
     }
   }
 };

@@ -31,6 +31,7 @@ import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderPaymentsLoader } from './order/order-payments.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
+import { createProductCustomFieldsLoader } from './product/product-custom-fields.loader';
 import { createProductOptionsLoader } from './product/product-options.loader';
 import { createProductTagsLoader } from './product/product-tags.loader';
 import { createProductTranslationsLoader } from './product/product-translations.loader';
@@ -51,7 +52,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       assets: createProductAssetsLoader(trx),
       tags: createProductTagsLoader(trx),
       variants: createVariantsLoader(trx),
-      options: createProductOptionsLoader(trx)
+      options: createProductOptionsLoader(trx),
+      customFields: createProductCustomFieldsLoader(trx)
     },
     variant: {
       assets: createVariantAssetsLoader(trx),
