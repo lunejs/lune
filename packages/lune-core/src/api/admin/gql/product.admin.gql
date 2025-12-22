@@ -9,6 +9,7 @@ type ProductTranslation {
 }
 
 type ProductCustomField {
+  id: ID!
   value: JSON!
   definition: CustomFieldDefinition!
 }
@@ -69,6 +70,7 @@ input AddProductTranslationInput {
   description: String
   options: [OptionTranslationInput!]
   optionValues: [OptionValueTranslationInput!]
+  customFields: [CustomFieldValue!]
 }
 
 input OptionTranslationInput {

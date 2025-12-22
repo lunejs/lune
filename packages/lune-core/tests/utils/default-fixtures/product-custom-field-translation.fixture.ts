@@ -7,6 +7,6 @@ export const DefaultProductCustomFieldTranslationFixture =
     updated_at: new Date(),
     value: 'Translated value',
     locale: 'es',
-    product_custom_field_id: crypto.randomUUID(),
+    field_id: crypto.randomUUID(),
     shop_id: crypto.randomUUID()
   });

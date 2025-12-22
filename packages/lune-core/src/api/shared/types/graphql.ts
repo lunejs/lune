@@ -41,6 +41,7 @@ export type AddPaymentToOrderInput = {
 };
 
 export type AddProductTranslationInput = {
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   locale: Locale;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -474,7 +475,7 @@ export { CustomFieldType };
 
 export type CustomFieldValue = {
   id: Scalars['ID']['input'];
-  value: Scalars['JSON']['input'];
+  value?: InputMaybe<Scalars['JSON']['input']>;
 };
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */

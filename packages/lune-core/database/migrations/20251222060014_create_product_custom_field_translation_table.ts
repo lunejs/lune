@@ -8,14 +8,15 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).defaultTo(knex.fn.now());
 
-    table.jsonb('value').notNullable();
+    table.jsonb('value').nullable();
     table.string('locale', 10).notNullable();
 
     table
-      .uuid('product_custom_field_id')
+      .uuid('field_id')
       .notNullable()
       .references('id')
-      .inTable('product_custom_field');
+      .inTable('product_custom_field')
+      .onDelete('CASCADE');
 
     table
       .uuid('shop_id')
@@ -24,7 +25,7 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('shop');
 
-    table.unique(['shop_id', 'product_custom_field_id', 'locale']);
+    table.unique(['shop_id', 'field_id', 'locale']);
   });
 }
 

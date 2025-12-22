@@ -16,7 +16,7 @@ export class ProductCustomFieldTranslationSerializer extends Serializer<
       ['updated_at', 'updatedAt'],
       ['value', 'value'],
       ['locale', 'locale'],
-      ['product_custom_field_id', 'productCustomFieldId']
+      ['field_id', 'fieldId']
     ]);
   }
 }

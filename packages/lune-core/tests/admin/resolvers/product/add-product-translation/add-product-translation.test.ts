@@ -2,11 +2,13 @@ import request from 'supertest';
 
 import type { OptionTranslationTable } from '@/persistence/entities/option-translation';
 import type { OptionValueTranslationTable } from '@/persistence/entities/option-value-translation';
+import type { ProductCustomFieldTranslationTable } from '@/persistence/entities/product-custom-field-translation';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
+import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
 import { OptionConstants, OptionFixtures } from './fixtures/option.fixtures';
 import {
   OptionTranslationConstants,
@@ -15,6 +17,14 @@ import {
 import { OptionValueConstants, OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OptionValueTranslationFixtures } from './fixtures/option-value-translation.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
+import {
+  ProductCustomFieldConstants,
+  ProductCustomFieldFixtures
+} from './fixtures/product-custom-field.fixtures';
+import {
+  ProductCustomFieldTranslationConstants,
+  ProductCustomFieldTranslationFixtures
+} from './fixtures/product-custom-field-translation.fixtures';
 import {
   ProductTranslationConstants,
   ProductTranslationFixtures
@@ -37,7 +47,10 @@ describe('addProductTranslation - Mutation', () => {
       new OptionFixtures(),
       new OptionValueFixtures(),
       new OptionTranslationFixtures(),
-      new OptionValueTranslationFixtures()
+      new OptionValueTranslationFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new ProductCustomFieldFixtures(),
+      new ProductCustomFieldTranslationFixtures()
     ]);
   });
 
@@ -372,6 +385,127 @@ describe('addProductTranslation - Mutation', () => {
         o => o.option_value_id === OptionValueConstants.SmallOptionValueID
       )?.name
     ).toBe(null);
+  });
+
+  test('add new custom field translation', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            locale: 'en',
+            customFields: [
+              { id: ProductCustomFieldConstants.MaterialFieldID, value: 'Cotton translated' },
+              {
+                id: ProductCustomFieldConstants.CareInstructionsFieldID,
+                value: 'Hand wash only translated'
+              }
+            ]
+          }
+        }
+      });
+
+    const { addProductTranslation } = res.body.data;
+
+    expect(addProductTranslation).toBeDefined();
+
+    const customFieldTranslations = await testHelper
+      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
+      .whereIn('field_id', [
+        ProductCustomFieldConstants.MaterialFieldID,
+        ProductCustomFieldConstants.CareInstructionsFieldID
+      ]);
+
+    expect(
+      customFieldTranslations.find(t => t.field_id === ProductCustomFieldConstants.MaterialFieldID)
+        ?.value
+    ).toBe('Cotton translated');
+    expect(
+      customFieldTranslations.find(
+        t => t.field_id === ProductCustomFieldConstants.CareInstructionsFieldID
+      )?.value
+    ).toBe('Hand wash only translated');
+  });
+
+  test('update custom field translation', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        variables: {
+          id: ProductConstants.AlreadyTranslatedID,
+          input: {
+            locale: 'en',
+            name: 'test',
+            customFields: [
+              {
+                id: ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID,
+                value: 'Updated polyester translation'
+              }
+            ]
+          }
+        }
+      });
+
+    const { addProductTranslation } = res.body.data;
+
+    expect(addProductTranslation).toBeDefined();
+
+    const customFieldTranslation = await testHelper
+      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
+      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
+      .first();
+
+    expect(customFieldTranslation?.value).toBe('Updated polyester translation');
+  });
+
+  test('set null custom field translation', async () => {
+    const translation = await testHelper
+      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
+      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
+      .first();
+
+    expect(translation?.value).toBe(
+      ProductCustomFieldTranslationConstants.AlreadyTranslatedMaterialValue
+    );
+
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: ADD_PRODUCT_TRANSLATION_MUTATION,
+        variables: {
+          id: ProductConstants.AlreadyTranslatedID,
+          input: {
+            locale: 'en',
+            name: 'test',
+            customFields: [
+              {
+                id: ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID,
+                value: null
+              }
+            ]
+          }
+        }
+      });
+
+    const { addProductTranslation } = res.body.data;
+
+    expect(addProductTranslation).toBeDefined();
+
+    const updatedTranslation = await testHelper
+      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
+      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
+      .first();
+
+    expect(updatedTranslation?.value).toBe(null);
   });
 
   test('returns Authorization error when no token is provided', async () => {

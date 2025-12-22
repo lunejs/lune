@@ -16,6 +16,7 @@ import type { Product } from '@/persistence/entities/product';
 import type { OptionTranslationRepository } from '@/persistence/repositories/option-translation-repository';
 import type { OptionValueTranslationRepository } from '@/persistence/repositories/option-value-translation-repository';
 import type { ProductCustomFieldRepository } from '@/persistence/repositories/product-custom-field-repository';
+import type { ProductCustomFieldTranslationRepository } from '@/persistence/repositories/product-custom-field-translation-repository';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import type { ProductTranslationRepository } from '@/persistence/repositories/product-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
@@ -26,6 +27,7 @@ export class ProductService {
   private optionTranslationRepository: OptionTranslationRepository;
   private optionValueTranslationRepository: OptionValueTranslationRepository;
   private customFieldRepository: ProductCustomFieldRepository;
+  private customFieldTranslationRepository: ProductCustomFieldTranslationRepository;
 
   constructor(private ctx: ExecutionContext) {
     this.repository = ctx.repositories.product;
@@ -33,6 +35,7 @@ export class ProductService {
     this.optionTranslationRepository = ctx.repositories.optionTranslation;
     this.optionValueTranslationRepository = ctx.repositories.optionValueTranslation;
     this.customFieldRepository = ctx.repositories.productCustomField;
+    this.customFieldTranslationRepository = ctx.repositories.productCustomFieldTranslation;
   }
 
   async find(input?: ProductListInput) {
@@ -150,6 +153,24 @@ export class ProductService {
           })
         )
       ]);
+    }
+
+    if (input.customFields?.length) {
+      await Promise.all(
+        input.customFields.map(cf =>
+          this.customFieldTranslationRepository.upsert({
+            where: { fieldId: cf.id, locale: input.locale as unknown as Locale },
+            create: {
+              locale: input.locale as unknown as Locale,
+              fieldId: cf.id,
+              value: JSON.stringify(cf.value)
+            },
+            update: {
+              value: JSON.stringify(cf.value)
+            }
+          })
+        )
+      );
     }
 
     return await this.translationRepository.upsert({
