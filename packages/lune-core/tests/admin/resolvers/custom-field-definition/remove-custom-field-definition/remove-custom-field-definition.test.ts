@@ -2,6 +2,7 @@ import request from 'supertest';
 
 import type { CustomFieldDefinitionTable } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
+import type { ProductCustomFieldTable } from '@/persistence/entities/product-custom-field';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -11,6 +12,11 @@ import {
   CustomFieldDefinitionConstants,
   CustomFieldDefinitionFixtures
 } from './fixtures/custom-field-definition.fixtures';
+import { ProductFixtures } from './fixtures/product.fixtures';
+import {
+  ProductCustomFieldConstants,
+  ProductCustomFieldFixtures
+} from './fixtures/product-custom-field.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
@@ -24,7 +30,9 @@ describe('removeCustomFieldDefinition - Mutation', () => {
     await testHelper.loadFixtures([
       new UserFixtures(),
       new ShopFixtures(),
-      new CustomFieldDefinitionFixtures()
+      new ProductFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new ProductCustomFieldFixtures()
     ]);
   });
 
@@ -88,6 +96,40 @@ describe('removeCustomFieldDefinition - Mutation', () => {
     expect(otherField).toBeDefined();
   });
 
+  test('removes associated product custom fields when definition is removed', async () => {
+    // Verify product custom field exists before removal
+    const prevProductCustomField = await getProductCustomField(
+      testHelper,
+      ProductCustomFieldConstants.FieldToRemoveValueID
+    );
+    expect(prevProductCustomField).toBeDefined();
+
+    await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: REMOVE_CUSTOM_FIELD_DEFINITION_MUTATION,
+        variables: {
+          id: CustomFieldDefinitionConstants.ToRemoveID
+        }
+      });
+
+    // Product custom field should be removed
+    const afterProductCustomField = await getProductCustomField(
+      testHelper,
+      ProductCustomFieldConstants.FieldToRemoveValueID
+    );
+    expect(afterProductCustomField).toBeUndefined();
+
+    // Other product custom fields should not be affected
+    const otherProductCustomField = await getProductCustomField(
+      testHelper,
+      ProductCustomFieldConstants.AnotherFieldValueID
+    );
+    expect(otherProductCustomField).toBeDefined();
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
@@ -111,6 +153,13 @@ const REMOVE_CUSTOM_FIELD_DEFINITION_MUTATION = /* GraphQL */ `
 const getCustomFieldDefinition = async (testHelper: TestUtils, id: ID) => {
   return await testHelper
     .getQueryBuilder()<CustomFieldDefinitionTable>(Tables.CustomFieldDefinition)
+    .where('id', id)
+    .first();
+};
+
+const getProductCustomField = async (testHelper: TestUtils, id: ID) => {
+  return await testHelper
+    .getQueryBuilder()<ProductCustomFieldTable>(Tables.ProductCustomField)
     .where('id', id)
     .first();
 };

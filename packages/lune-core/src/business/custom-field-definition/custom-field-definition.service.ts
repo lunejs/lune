@@ -8,14 +8,17 @@ import { getSlugBy } from '@/libs/slug';
 import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
 import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';
+import type { ProductCustomFieldRepository } from '@/persistence/repositories/product-custom-field-repository';
 
 import { InvalidMetadataError, KeyAlreadyExistsError } from './custom-field-definition.errors';
 
 export class CustomFieldDefinitionService {
   private readonly repository: CustomFieldDefinitionRepository;
+  private readonly productCustomFieldRepository: ProductCustomFieldRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.customFieldDefinition;
+    this.productCustomFieldRepository = ctx.repositories.productCustomField;
   }
 
   async find(input?: CustomFieldDefinitionListInput) {
@@ -54,8 +57,8 @@ export class CustomFieldDefinitionService {
     });
   }
 
-  // TODO: remove form product_custom_field, collection_custom_field, ...
   async remove(id: ID) {
+    await this.productCustomFieldRepository.remove({ where: { definitionId: id } });
     await this.repository.remove({ where: { id } });
 
     return true;
