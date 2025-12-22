@@ -2,7 +2,6 @@ import request from 'supertest';
 
 import type { OptionTranslationTable } from '@/persistence/entities/option-translation';
 import type { OptionValueTranslationTable } from '@/persistence/entities/option-value-translation';
-import type { ProductCustomFieldTranslationTable } from '@/persistence/entities/product-custom-field-translation';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -413,22 +412,30 @@ describe('addProductTranslation - Mutation', () => {
 
     expect(addProductTranslation).toBeDefined();
 
-    const customFieldTranslations = await testHelper
-      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
-      .whereIn('field_id', [
-        ProductCustomFieldConstants.MaterialFieldID,
-        ProductCustomFieldConstants.CareInstructionsFieldID
-      ]);
+    const productRes = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_QUERY,
+        variables: { id: ProductConstants.ID }
+      });
 
-    expect(
-      customFieldTranslations.find(t => t.field_id === ProductCustomFieldConstants.MaterialFieldID)
-        ?.value
-    ).toBe('Cotton translated');
-    expect(
-      customFieldTranslations.find(
-        t => t.field_id === ProductCustomFieldConstants.CareInstructionsFieldID
-      )?.value
-    ).toBe('Hand wash only translated');
+    const { product } = productRes.body.data;
+    const materialField = product.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === ProductCustomFieldConstants.MaterialFieldID
+    );
+    const careField = product.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === ProductCustomFieldConstants.CareInstructionsFieldID
+    );
+
+    expect(materialField.translations).toHaveLength(1);
+    expect(materialField.translations[0].value).toBe('Cotton translated');
+    expect(materialField.translations[0].locale).toBe('en');
+
+    expect(careField.translations).toHaveLength(1);
+    expect(careField.translations[0].value).toBe('Hand wash only translated');
+    expect(careField.translations[0].locale).toBe('en');
   });
 
   test('update custom field translation', async () => {
@@ -457,21 +464,41 @@ describe('addProductTranslation - Mutation', () => {
 
     expect(addProductTranslation).toBeDefined();
 
-    const customFieldTranslation = await testHelper
-      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
-      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
-      .first();
+    const productRes = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_QUERY,
+        variables: { id: ProductConstants.AlreadyTranslatedID }
+      });
 
-    expect(customFieldTranslation?.value).toBe('Updated polyester translation');
+    const { product } = productRes.body.data;
+    const materialField = product.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID
+    );
+
+    expect(materialField.translations).toHaveLength(1);
+    expect(materialField.translations[0].value).toBe('Updated polyester translation');
   });
 
   test('set null custom field translation', async () => {
-    const translation = await testHelper
-      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
-      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
-      .first();
+    // Verify initial translation value via GraphQL
+    const initialRes = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_QUERY,
+        variables: { id: ProductConstants.AlreadyTranslatedID }
+      });
 
-    expect(translation?.value).toBe(
+    const initialProduct = initialRes.body.data.product;
+    const initialMaterialField = initialProduct.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID
+    );
+
+    expect(initialMaterialField.translations[0].value).toBe(
       ProductCustomFieldTranslationConstants.AlreadyTranslatedMaterialValue
     );
 
@@ -500,12 +527,22 @@ describe('addProductTranslation - Mutation', () => {
 
     expect(addProductTranslation).toBeDefined();
 
-    const updatedTranslation = await testHelper
-      .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
-      .where('field_id', ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID)
-      .first();
+    const productRes = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_QUERY,
+        variables: { id: ProductConstants.AlreadyTranslatedID }
+      });
 
-    expect(updatedTranslation?.value).toBe(null);
+    const { product } = productRes.body.data;
+    const materialField = product.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === ProductCustomFieldConstants.AlreadyTranslatedMaterialFieldID
+    );
+
+    expect(materialField.translations).toHaveLength(1);
+    expect(materialField.translations[0].value).toBe(null);
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -532,6 +569,23 @@ const ADD_PRODUCT_TRANSLATION_MUTATION = /* GraphQL */ `
       name
       slug
       description
+    }
+  }
+`;
+
+const GET_PRODUCT_WITH_CUSTOM_FIELDS_QUERY = /* GraphQL */ `
+  query GetProduct($id: ID!) {
+    product(id: $id) {
+      id
+      customFieldEntries {
+        id
+        value
+        translations {
+          id
+          value
+          locale
+        }
+      }
     }
   }
 `;

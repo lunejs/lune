@@ -1771,7 +1771,18 @@ export type ProductVariantsArgs = {
 export type ProductCustomField = {
   __typename?: 'ProductCustomField';
   definition: CustomFieldDefinition;
+  id: Scalars['ID']['output'];
+  translations: Array<ProductCustomFieldTranslation>;
   value: Scalars['JSON']['output'];
+};
+
+export type ProductCustomFieldTranslation = {
+  __typename?: 'ProductCustomFieldTranslation';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  updatedAt: Scalars['Date']['output'];
+  value?: Maybe<Scalars['JSON']['output']>;
 };
 
 export type ProductFilters = {
@@ -2679,6 +2690,7 @@ export type ResolversTypes = {
   PriceRange: PriceRange;
   Product: ResolverTypeWrapper<Product>;
   ProductCustomField: ResolverTypeWrapper<ProductCustomField>;
+  ProductCustomFieldTranslation: ResolverTypeWrapper<ProductCustomFieldTranslation>;
   ProductFilters: ProductFilters;
   ProductList: ResolverTypeWrapper<ProductList>;
   ProductListInput: ProductListInput;
@@ -2865,6 +2877,7 @@ export type ResolversParentTypes = {
   PriceRange: PriceRange;
   Product: Product;
   ProductCustomField: ProductCustomField;
+  ProductCustomFieldTranslation: ProductCustomFieldTranslation;
   ProductFilters: ProductFilters;
   ProductList: ProductList;
   ProductListInput: ProductListInput;
@@ -3604,7 +3617,18 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
 
 export type ProductCustomFieldResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductCustomField'] = ResolversParentTypes['ProductCustomField']> = {
   definition?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['ProductCustomFieldTranslation']>, ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductCustomFieldTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ProductCustomFieldTranslation'] = ResolversParentTypes['ProductCustomFieldTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3931,6 +3955,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   PaymentRejection?: PaymentRejectionResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   ProductCustomField?: ProductCustomFieldResolvers<ContextType>;
+  ProductCustomFieldTranslation?: ProductCustomFieldTranslationResolvers<ContextType>;
   ProductList?: ProductListResolvers<ContextType>;
   ProductTranslation?: ProductTranslationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

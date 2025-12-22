@@ -8,10 +8,19 @@ type ProductTranslation {
   locale: Locale!
 }
 
+type ProductCustomFieldTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  value: JSON
+  locale: Locale!
+}
+
 type ProductCustomField {
   id: ID!
   value: JSON!
   definition: CustomFieldDefinition!
+  translations: [ProductCustomFieldTranslation!]!
 }
 
 extend type Product {

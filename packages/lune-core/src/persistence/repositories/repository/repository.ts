@@ -130,6 +130,7 @@ export class Repository<T extends Record<string, any>, Table extends Record<stri
     }
   }
 
+  // TODO: avoid this ERR RepositoryError: Empty .update() call detected! Update data does not contain any values to update. This will result in a faulty query. Table: product_translation. Columns: .
   async update(input: { where: Where<T>; data: Partial<RepositoryInput<T>> }): Promise<T> {
     try {
       const [result] = await this.trx(this.tableName)
