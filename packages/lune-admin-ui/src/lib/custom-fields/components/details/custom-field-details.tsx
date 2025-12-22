@@ -1,11 +1,9 @@
 import {
   BoxesIcon,
   CalendarIcon,
-  CircleIcon,
   DollarSignIcon,
   HashIcon,
   ImageIcon,
-  ListIcon,
   PackageIcon,
   ShoppingCartIcon,
   TextIcon,
@@ -26,6 +24,7 @@ import { SettingsPageLayout } from '@/shared/components/layout/settings-page-lay
 import { getEntityName } from '../../utils/custom-field.utils';
 
 import { CustomFieldActions } from './actions/custom-field-actions';
+import { CustomFieldIsList } from './is-list/custom-field-is-list';
 import { CustomFieldName } from './name/custom-field-name';
 import { CustomFieldSubmitButton } from './use-form/submit-button';
 import { useCustomFieldForm } from './use-form/use-form';
@@ -55,17 +54,7 @@ export const CustomFieldDetails = ({ entity, definition }: Props) => {
           <CustomFieldName />
 
           <div className="flex items-end gap-4">
-            <FormSelect
-              disabled={!!definition}
-              label="Type"
-              control={form.control}
-              name="quantity"
-              items={[
-                { label: 'One value', value: 'single', icon: CircleIcon },
-                { label: 'List of values', value: 'multiple', icon: ListIcon }
-              ]}
-              className="w-40 shrink-0"
-            />
+            <CustomFieldIsList />
 
             <FormSelect
               disabled={!!definition}

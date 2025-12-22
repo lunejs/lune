@@ -66,7 +66,14 @@ export const PrimitiveCustomField = ({
                     .map(v => v.value)
                     .join(', ')
                     .replaceAll('\n', ' ')
-                : persistedValue.map(v => v.value).join(', ')
+                : bool
+                  ? persistedValue
+                      .map(
+                        v => `${v.value.charAt(0).toUpperCase()}${v.value.slice(1, v.value.length)}`
+                      )
+                      .join(', ')
+                      .replaceAll('\n', ' ')
+                  : persistedValue.map(v => v.value).join(', ')
             }
             readOnly
             className="w-full shrink-0 text-start dark:group-hover:bg-input/50 group-hover:bg-muted"

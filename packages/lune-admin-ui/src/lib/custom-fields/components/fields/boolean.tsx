@@ -9,9 +9,9 @@ export const BooleanCustomField = ({ definition, defaultValues, onChange }: Prop
       defaultValues={defaultValues?.map(dv => String(dv))}
       definition={definition}
       onChange={items => {
-        const [{ value }] = items;
+        const [value] = items;
 
-        onChange(value === 'true');
+        onChange(value?.value ? value?.value === 'true' : null);
       }}
       inputProps={{ type: 'number' }}
     />

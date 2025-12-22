@@ -112,7 +112,7 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
           </DialogHeader>
           <div className="flex flex-col gap-2">
             {selected.map(p => (
-              <div className="flex items-center gap-2">
+              <div key={p.id} className="flex items-center gap-2">
                 {p.assets.items[0]?.source ? (
                   <img
                     src={p.assets.items[0]?.source}

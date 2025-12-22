@@ -93,7 +93,7 @@ export const ImageCustomField = ({ definition, defaultValues, onChange }: Props)
           </DialogHeader>
           <div className="flex flex-col gap-2">
             {assets.map(a => (
-              <div className="flex items-center gap-2">
+              <div key={a.id} className="flex items-center gap-2">
                 <img
                   src={a.source}
                   alt={a.filename}
