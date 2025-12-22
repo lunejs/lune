@@ -46,6 +46,11 @@ export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
     customFieldEntries {
       id
       value
+      translations {
+        id
+        value
+        locale
+      }
       definition {
         id
         createdAt

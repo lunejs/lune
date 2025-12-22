@@ -1,8 +1,10 @@
 import { type DeepPartial, type UseFormReturn, useWatch } from 'react-hook-form';
 
+import { equals } from '@lune/common';
 import { Button } from '@lune/ui';
 
 import { type CommonProductForTranslationFragment, Locale } from '@/lib/api/types';
+import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';
 
 import {
   type TranslateProductFormValues,
@@ -15,12 +17,17 @@ export const TranslateProductFormSubmitButton = ({ product }: Props) => {
   const values = useWatch({ defaultValue: form.getValues() });
   const translation = product.translations.find(t => t.locale === Locale.En);
 
+  const customFieldsHasChanged = getCustomFieldsHasChanged(product, values);
   const optionsHasChanged = getOptionsHasChanged(product, values);
   const optionValuesHasChanged = getOptionValuesHasChanged(form, product, values);
   const generalHasChanged = generalValuesHasChanged(translation, values);
 
   const isDirty =
-    optionsHasChanged || optionValuesHasChanged || generalHasChanged || form.formState.isSubmitting;
+    customFieldsHasChanged ||
+    optionsHasChanged ||
+    optionValuesHasChanged ||
+    generalHasChanged ||
+    form.formState.isSubmitting;
 
   return (
     <Button disabled={!isDirty} className="w-full sm:w-auto">
@@ -67,4 +74,19 @@ const getOptionsHasChanged = (
   return product.options
     .flatMap(o => ({ optionId: o.id, ...(o.translations.find(t => t.locale === Locale.En) ?? {}) }))
     .some(t => values.options?.find(op => op?.id === t?.optionId)?.name !== t?.name);
+};
+
+const getCustomFieldsHasChanged = (
+  product: CommonProductForTranslationFragment,
+  values: DeepPartial<TranslateProductFormValues>
+) => {
+  const form = Object.entries(values.customFields ?? {});
+  const persisted = product.customFieldEntries
+    .filter(cf => isTranslatable(cf.definition.type))
+    .map(field => {
+      const fieldTranslation = field.translations.find(t => t.locale === Locale.En);
+      return [field.id, fieldTranslation?.value];
+    });
+
+  return !equals(form, persisted);
 };

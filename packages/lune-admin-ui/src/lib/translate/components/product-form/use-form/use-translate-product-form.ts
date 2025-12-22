@@ -25,7 +25,11 @@ export const useTranslateProductForm = (product: CommonProductForTranslationFrag
   const onSubmit = async (values: TranslateProductFormValues) => {
     loading('Saving...');
 
-    const result = await addProductTranslation(product.id, { ...values, locale: Locale.En });
+    const result = await addProductTranslation(product.id, {
+      ...values,
+      locale: Locale.En,
+      customFields: Object.entries(values.customFields).map(([key, value]) => ({ id: key, value }))
+    });
 
     if (!result.isSuccess) {
       failure(result.error);
@@ -57,7 +61,8 @@ const schema = z.object({
       id: z.string(),
       name: z.string().optional()
     })
-  )
+  ),
+  customFields: z.record(z.string(), z.any())
 });
 
 export type TranslateProductFormValues = z.infer<typeof schema>;

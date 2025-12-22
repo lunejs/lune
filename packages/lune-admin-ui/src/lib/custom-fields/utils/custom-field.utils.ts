@@ -56,3 +56,6 @@ export const getEntityName = (entity: CustomFieldAppliesToEntity) => {
 };
 
 export const getCustomFieldTypeData = (type: CustomFieldType | string) => DATA[type];
+
+export const isTranslatable = (type: CustomFieldType) =>
+  [CustomFieldType.SingleLineText].includes(type);
