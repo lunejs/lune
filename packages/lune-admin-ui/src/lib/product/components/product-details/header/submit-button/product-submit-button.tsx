@@ -14,6 +14,7 @@ export const ProductSubmitButton = () => {
   const { product, ...form } = useProductDetailsFormContext();
   const values = useWatch({ defaultValue: form.getValues() });
 
+  const generalInfoHasChanged = getGeneralInfoHasChanged(values, product);
   const variantsHasChanged = getVariantsHasChanged(values, product);
   const optionsHasChanged = getOptionsHasChanged(values, product);
   const customFieldsHasChanged = getCustomFieldsHasChanged(values, product);
@@ -23,7 +24,7 @@ export const ProductSubmitButton = () => {
       type="submit"
       disabled={
         !(
-          form.formState.isDirty ||
+          generalInfoHasChanged ||
           variantsHasChanged ||
           optionsHasChanged ||
           customFieldsHasChanged
@@ -35,6 +36,25 @@ export const ProductSubmitButton = () => {
       Save
     </Button>
   );
+};
+
+const getGeneralInfoHasChanged = (
+  values: DeepPartial<ProductDetailsFormInput>,
+  product: CommonProductFragment | null
+) => {
+  const persisted = {
+    name: product?.name,
+    enabled: product?.enabled,
+    description: product?.description
+  };
+
+  const form = {
+    name: values?.name,
+    enabled: values?.enabled,
+    description: values?.description
+  };
+
+  return !equals(persisted, form);
 };
 
 const getCustomFieldsHasChanged = (
