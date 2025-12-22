@@ -3,11 +3,12 @@ import { useWatch } from 'react-hook-form';
 import { isFirst, isLast } from '@lune/common';
 import { cn } from '@lune/ui';
 
-import { type CommonProductForTranslationFragment } from '@/lib/api/types';
+import { type CommonProductForTranslationFragment, CustomFieldType } from '@/lib/api/types';
 import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';
 
 import { TranslateFormRowData } from '../../form/translate-form-row-data';
 import { TranslateInput } from '../../form/translate-input';
+import { TranslateTextarea } from '../../form/translate-textarea';
 import { useTranslateProductFormContext } from '../use-form/use-translate-product-form';
 
 export const TranslateProductCustomField = ({ product }: Props) => {
@@ -65,18 +66,33 @@ export const TranslateProductCustomField = ({ product }: Props) => {
             reference={field.value}
             className={cn(isLast(i, translatableFields) && 'border-b-0')}
           >
-            <TranslateInput
-              defaultValue={values.customFields?.[field.id]}
-              label="English"
-              onChange={e => {
-                const value = e.target.value;
+            {field.definition.type === CustomFieldType.SingleLineText ? (
+              <TranslateInput
+                defaultValue={values.customFields?.[field.id]}
+                label="English"
+                onChange={e => {
+                  const value = e.target.value;
 
-                form.setValue('customFields', {
-                  ...form.getValues('customFields'),
-                  [field.id]: value
-                });
-              }}
-            />
+                  form.setValue('customFields', {
+                    ...form.getValues('customFields'),
+                    [field.id]: value
+                  });
+                }}
+              />
+            ) : (
+              <TranslateTextarea
+                defaultValue={values.customFields?.[field.id]}
+                label="English"
+                onChange={e => {
+                  const value = e.target.value;
+
+                  form.setValue('customFields', {
+                    ...form.getValues('customFields'),
+                    [field.id]: value
+                  });
+                }}
+              />
+            )}
           </TranslateFormRowData>
         )
       )}
