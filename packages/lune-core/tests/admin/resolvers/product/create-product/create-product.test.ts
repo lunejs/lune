@@ -235,6 +235,47 @@ describe('product - Query', () => {
     expect(isOrganicField.definition.type).toBe('BOOLEAN');
   });
 
+  test('ignores custom fields with null or undefined values', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_PRODUCT_MUTATION,
+        variables: {
+          input: {
+            name: 'Product with null custom fields',
+            customFields: [
+              { id: CustomFieldDefinitionConstants.BrandID, value: 'Valid Brand' },
+              { id: CustomFieldDefinitionConstants.MaterialID, value: null },
+              { id: CustomFieldDefinitionConstants.WeightID, value: 100 }
+            ]
+          }
+        }
+      });
+
+    const { createProduct } = res.body.data;
+
+    // Only 2 custom fields should be saved (Brand and Weight)
+    expect(createProduct.customFieldEntries).toHaveLength(2);
+
+    const brandField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'brand'
+    );
+    expect(brandField.value).toBe('Valid Brand');
+
+    const weightField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'weight'
+    );
+    expect(weightField.value).toBe(100);
+
+    // Material should not exist
+    const materialField = createProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'material'
+    );
+    expect(materialField).toBeUndefined();
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')

@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddProductTranslationInput,
   CreateProductInput,
+  CustomFieldValue,
   ProductListInput,
   UpdateProductInput
 } from '@/api/shared/types/graphql';
@@ -67,12 +68,9 @@ export class ProductService {
     });
 
     if (customFields?.length) {
-      await this.customFieldRepository.createMany(
-        customFields.map(cf => ({
-          definitionId: cf.id,
-          productId: product.id,
-          value: JSON.stringify(cf.value) // TODO: could be cool serializer does this
-        }))
+      await this.upsertCustomFields(
+        product.id,
+        customFields.filter(cf => cf.value != null)
       );
     }
 
@@ -104,14 +102,10 @@ export class ProductService {
     }
 
     if (customFields?.length) {
-      await Promise.all(
-        customFields.map(cf =>
-          this.customFieldRepository.upsert({
-            where: { definitionId: cf.id, productId: id },
-            create: { definitionId: cf.id, productId: id, value: cf.value },
-            update: { value: cf.value }
-          })
-        )
+      await this.removeEmptyCustomFields(id, customFields);
+      await this.upsertCustomFields(
+        id,
+        customFields.filter(cf => cf.value != null)
       );
     }
 
@@ -220,4 +214,26 @@ export class ProductService {
 
     await this.repository.removeTags(tagsToRemove.map(tag => tag.id));
   }
+
+  private upsertCustomFields = async (productId: ID, fields: CustomFieldValue[]) => {
+    await Promise.all(
+      fields.map(cf =>
+        this.customFieldRepository.upsert({
+          where: { definitionId: cf.id, productId },
+          create: { definitionId: cf.id, productId, value: JSON.stringify(cf.value) },
+          update: { value: JSON.stringify(cf.value) }
+        })
+      )
+    );
+  };
+
+  private removeEmptyCustomFields = async (productId: ID, fields: CustomFieldValue[]) => {
+    const idsToRemove = fields.filter(f => f.value == null).map(f => f.id);
+
+    await Promise.all(
+      idsToRemove.map(id =>
+        this.customFieldRepository.remove({ where: { definitionId: id, productId } })
+      )
+    );
+  };
 }

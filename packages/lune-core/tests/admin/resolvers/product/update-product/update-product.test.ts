@@ -300,6 +300,62 @@ describe('updateProduct - Mutation', () => {
     expect(updateProduct.customFieldEntries).toHaveLength(3);
   });
 
+  test('removes custom field when value is null', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            customFields: [{ id: CustomFieldDefinitionConstants.BrandID, value: null }]
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    // Brand should be removed
+    const brandField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'brand'
+    );
+    expect(brandField).toBeUndefined();
+
+    // Weight should still exist
+    const weightField = updateProduct.customFieldEntries.find(
+      (cf: { definition: { key: string } }) => cf.definition.key === 'weight'
+    );
+    expect(weightField.value).toBe(ProductCustomFieldConstants.WeightValue);
+
+    expect(updateProduct.customFieldEntries).toHaveLength(1);
+  });
+
+  test('removes multiple custom fields when values are null', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_PRODUCT_MUTATION,
+        variables: {
+          id: ProductConstants.ID,
+          input: {
+            customFields: [
+              { id: CustomFieldDefinitionConstants.BrandID, value: null },
+              { id: CustomFieldDefinitionConstants.WeightID, value: null }
+            ]
+          }
+        }
+      });
+
+    const { updateProduct } = res.body.data;
+
+    // Both should be removed
+    expect(updateProduct.customFieldEntries).toHaveLength(0);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')

@@ -1,6 +1,6 @@
 input CustomFieldValue {
   id: ID!
-  value: JSON!
+  value: JSON
 }
 
 enum CustomFieldAppliesToEntity {
