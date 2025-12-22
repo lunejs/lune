@@ -2,7 +2,20 @@ import { type ComponentProps, useId, useState } from 'react';
 import { XIcon } from 'lucide-react';
 
 import { isTruthy } from '@lune/common';
-import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger, Textarea } from '@lune/ui';
+import {
+  Button,
+  Input,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Textarea
+} from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useList } from '@/shared/hooks/use-list';
@@ -13,7 +26,8 @@ export const PrimitiveCustomField = ({
   defaultValues,
   inputProps,
   mapOnSave,
-  textarea
+  textarea,
+  bool
 }: Props) => {
   const id = useId();
 
@@ -67,6 +81,16 @@ export const PrimitiveCustomField = ({
               <div key={item.id} className="flex items-center gap-2">
                 {textarea ? (
                   <Textarea value={item.value} onChange={e => update(item.id, e.target.value)} />
+                ) : bool ? (
+                  <Select value={item.value} onValueChange={value => update(item.id, value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a value" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={'true'}>True</SelectItem>
+                      <SelectItem value={'false'}>False</SelectItem>
+                    </SelectContent>
+                  </Select>
                 ) : (
                   <Input
                     {...inputProps}
@@ -99,5 +123,6 @@ type Props = {
   inputProps?: ComponentProps<'input'>;
   defaultValues?: string[];
   textarea?: boolean;
+  bool?: boolean;
   mapOnSave?: (items: { id: string; value: string }) => { id: string; value: string };
 };

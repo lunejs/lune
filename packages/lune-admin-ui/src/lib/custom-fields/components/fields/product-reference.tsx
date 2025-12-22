@@ -142,3 +142,12 @@ type Props = {
   onChange: (productIds: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };
+
+// TODO:
+// Add boolean custom field
+// Add date custom field
+// Add money custom field
+// Add custom fields to collections
+// Add custom fields to customers
+// Fields can be modified from storefront
+// Add custom objects
