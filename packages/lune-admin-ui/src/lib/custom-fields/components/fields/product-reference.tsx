@@ -45,7 +45,7 @@ export const ProductReferenceCustomField = ({ defaultValues, definition, onChang
                 image={p.assets.items[0]?.source}
               />
             ))}
-            {selected.length && (
+            {!!selected.length && (
               <button
                 type="button"
                 className="opacity-0 absolute right-0 w-8 flex justify-center items-center h-full bg-accent group-hover:opacity-100 transition-opacity before:absolute before:-left-4 before:top-0 before:h-full before:w-4 before:bg-linear-to-r before:from-transparent before:to-accent before:pointer-events-none"
