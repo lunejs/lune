@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useGqlQuery } from '@/lib/api/fetchers/use-gql-query';
 import { COMMON_ASSET_FRAGMENT, GET_ALL_ASSETS_QUERY } from '@/lib/api/operations/asset.operations';
 import { type AssetListInput, getFragmentData } from '@/lib/api/types';
@@ -10,8 +12,11 @@ export const useGetAssets = (input?: AssetListInput) => {
     key: [AssetCacheKeys.All]
   });
 
-  const assets =
-    result.data?.assets.items.map(asset => getFragmentData(COMMON_ASSET_FRAGMENT, asset)) ?? [];
+  const assets = useMemo(
+    () =>
+      result.data?.assets.items.map(asset => getFragmentData(COMMON_ASSET_FRAGMENT, asset)) ?? [],
+    [result.data]
+  );
   const { count, pageInfo } = result.data?.assets ?? {};
 
   return {

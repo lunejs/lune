@@ -101,6 +101,20 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
         order
       }
     }
+    customFieldEntries {
+      value
+      definition {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+      }
+    }
   }
 `);
 

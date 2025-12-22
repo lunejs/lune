@@ -7,10 +7,11 @@ import { MultiLineTextCustomField } from './multi-line-text';
 import { ProductReferenceCustomField } from './product-reference';
 import { SingleLineTextCustomField } from './single-line-text';
 
-export const CustomField = ({ definition, onChange }: Props) => {
+export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.SingleLineText) {
     return (
       <SingleLineTextCustomField
+        defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}
       />
@@ -20,6 +21,7 @@ export const CustomField = ({ definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.MultiLineText) {
     return (
       <MultiLineTextCustomField
+        defaultValue={defaultValues?.[0]}
         onChange={value => onChange(definition, value)}
         definition={definition}
       />
@@ -28,19 +30,31 @@ export const CustomField = ({ definition, onChange }: Props) => {
 
   if (definition.type === CustomFieldType.Integer) {
     return (
-      <IntegerCustomField onChange={value => onChange(definition, value)} definition={definition} />
+      <IntegerCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
     );
   }
 
   if (definition.type === CustomFieldType.Decimal) {
     return (
-      <DecimalCustomField onChange={value => onChange(definition, value)} definition={definition} />
+      <DecimalCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
     );
   }
 
   if (definition.type === CustomFieldType.Image) {
     return (
-      <ImageCustomField onChange={value => onChange(definition, value)} definition={definition} />
+      <ImageCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
     );
   }
 
@@ -50,6 +64,7 @@ export const CustomField = ({ definition, onChange }: Props) => {
   ) {
     return (
       <ProductReferenceCustomField
+        defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}
       />
@@ -60,6 +75,7 @@ export const CustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
+  defaultValues?: any[];
   onChange: (definition: CommonCustomFieldDefinitionFragment, value: unknown) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

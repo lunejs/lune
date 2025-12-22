@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useGqlQuery } from '@/lib/api/fetchers/use-gql-query';
 import {
   COMMON_LIST_PRODUCT_FRAGMENT,
@@ -13,8 +15,11 @@ export const useGetProducts = (input?: ProductListInput) => {
     key: [ProductCacheKeys.All]
   });
 
-  const products =
-    result.data?.products?.items.map(p => getFragmentData(COMMON_LIST_PRODUCT_FRAGMENT, p)) ?? [];
+  const products = useMemo(
+    () =>
+      result.data?.products?.items.map(p => getFragmentData(COMMON_LIST_PRODUCT_FRAGMENT, p)) ?? [],
+    [result.data]
+  );
   const { count, pageInfo } = result.data?.products ?? {};
 
   return {

@@ -2,9 +2,10 @@ import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
 import { PrimitiveCustomField } from './shared/primitive';
 
-export const IntegerCustomField = ({ definition, onChange }: Props) => {
+export const IntegerCustomField = ({ definition, defaultValues, onChange }: Props) => {
   return (
     <PrimitiveCustomField
+      defaultValues={defaultValues?.map(dv => String(dv))}
       definition={definition}
       onChange={items => {
         const newValues = items.map(v => Number(v.value));
@@ -19,6 +20,7 @@ export const IntegerCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
+  defaultValues?: number[];
   onChange: (value: null | number | number[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

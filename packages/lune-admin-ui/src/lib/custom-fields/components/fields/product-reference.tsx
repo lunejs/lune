@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Label } from '@lune/ui';
 
@@ -13,7 +13,7 @@ import { DefaultEntitySelectorRow } from '@/shared/components/entity-selector/ro
 import { CustomFieldEntityPreview } from './shared/preview/custom-field-entity-preview';
 import { CustomFieldPreviewContainer } from './shared/preview/custom-field-preview-container';
 
-export const ProductReferenceCustomField = ({ definition, onChange }: Props) => {
+export const ProductReferenceCustomField = ({ defaultValues, definition, onChange }: Props) => {
   const { isLoading, products: allProducts } = useGetProducts();
 
   const [query, setQuery] = useState('');
@@ -23,6 +23,10 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
     () => allProducts.filter(p => p.name.toLowerCase().includes(query.toLowerCase())),
     [allProducts]
   );
+
+  useEffect(() => {
+    if (defaultValues) setSelected(allProducts.filter(p => defaultValues.includes(p.id)));
+  }, [allProducts]);
 
   return (
     <div className="flex items-center gap-4">
@@ -75,6 +79,7 @@ export const ProductReferenceCustomField = ({ definition, onChange }: Props) => 
 };
 
 type Props = {
+  defaultValues?: string[];
   onChange: (productIds: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

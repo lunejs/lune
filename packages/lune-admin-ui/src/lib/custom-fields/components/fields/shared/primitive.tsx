@@ -2,16 +2,25 @@ import { type ComponentProps, useId, useState } from 'react';
 import { XIcon } from 'lucide-react';
 
 import { isTruthy } from '@lune/common';
-import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
+import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger, Textarea } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useList } from '@/shared/hooks/use-list';
 
-export const PrimitiveCustomField = ({ onChange, definition, inputProps, mapOnSave }: Props) => {
+export const PrimitiveCustomField = ({
+  onChange,
+  definition,
+  defaultValues,
+  inputProps,
+  mapOnSave,
+  textarea
+}: Props) => {
   const id = useId();
 
-  const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>([]);
-  const { items, append, remove, reset, update } = useList(['']);
+  const { items, build, append, remove, reset, update } = useList(defaultValues ?? ['']);
+  const [persistedValue, setPersistedValue] = useState<{ id: string; value: string }[]>(
+    defaultValues?.map(dv => build(dv)) ?? []
+  );
 
   return (
     <Popover
@@ -37,7 +46,14 @@ export const PrimitiveCustomField = ({ onChange, definition, inputProps, mapOnSa
         <PopoverTrigger asChild>
           <Input
             id={id}
-            value={persistedValue.map(v => v.value).join(', ')}
+            value={
+              textarea
+                ? persistedValue
+                    .map(v => v.value)
+                    .join(', ')
+                    .replaceAll('\n', ' ')
+                : persistedValue.map(v => v.value).join(', ')
+            }
             readOnly
             className="w-3/4 shrink-0 text-start"
           />
@@ -47,15 +63,17 @@ export const PrimitiveCustomField = ({ onChange, definition, inputProps, mapOnSa
         <div className="flex flex-col gap-2">
           <Label>{definition.name}</Label>
           {items.map(item => {
-            const defaultValue = persistedValue.find(v => v.id === item.id);
-
             return (
               <div key={item.id} className="flex items-center gap-2">
-                <Input
-                  {...inputProps}
-                  defaultValue={defaultValue?.value}
-                  onChange={e => update(item.id, e.target.value)}
-                />
+                {textarea ? (
+                  <Textarea value={item.value} onChange={e => update(item.id, e.target.value)} />
+                ) : (
+                  <Input
+                    {...inputProps}
+                    value={item.value}
+                    onChange={e => update(item.id, e.target.value)}
+                  />
+                )}
                 {items.length > 1 && (
                   <Button variant={'ghost'} size={'icon'} onClick={() => remove(item.id)}>
                     <XIcon />
@@ -79,5 +97,7 @@ type Props = {
   definition: CommonCustomFieldDefinitionFragment;
   onChange: (items: { id: string; value: string }[]) => void;
   inputProps?: ComponentProps<'input'>;
+  defaultValues?: string[];
+  textarea?: boolean;
   mapOnSave?: (items: { id: string; value: string }) => { id: string; value: string };
 };

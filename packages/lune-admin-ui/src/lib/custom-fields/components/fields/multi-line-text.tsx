@@ -1,52 +1,24 @@
-import { useId, useState } from 'react';
-
-import { Input, Label, Popover, PopoverContent, PopoverTrigger, Textarea } from '@lune/ui';
-
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
-export const MultiLineTextCustomField = ({ definition, onChange }: Props) => {
-  const id = useId();
+import { PrimitiveCustomField } from './shared/primitive';
 
-  const [value, setValue] = useState('');
-  const [persistedValue, setPersistedValue] = useState('');
-
+export const MultiLineTextCustomField = ({ defaultValue, definition, onChange }: Props) => {
   return (
-    <Popover
-      onOpenChange={isOpen => {
-        if (!isOpen) {
-          setPersistedValue(value);
-          onChange(value || null);
-        }
+    <PrimitiveCustomField
+      textarea
+      defaultValues={defaultValue ? [defaultValue] : []}
+      definition={definition}
+      onChange={items => {
+        const newValues = items.map(v => v.value);
+
+        onChange(newValues[0] ?? null);
       }}
-    >
-      <div className="flex items-center gap-4">
-        <Label htmlFor={id} className="w-full">
-          {definition.name}
-        </Label>
-        <PopoverTrigger asChild>
-          <Input
-            id={id}
-            value={persistedValue.replaceAll('\n', ' ')}
-            readOnly
-            className="w-3/4 shrink-0 text-start"
-          />
-        </PopoverTrigger>
-      </div>
-      <PopoverContent className="w-72" align="start">
-        <div className="flex flex-col gap-2">
-          <Label>{definition.name}</Label>
-          <Textarea
-            className="w-full"
-            defaultValue={persistedValue}
-            onChange={e => setValue(e.target.value)}
-          />
-        </div>
-      </PopoverContent>
-    </Popover>
+    />
   );
 };
 
 type Props = {
+  defaultValue?: string;
   onChange: (value: null | string) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

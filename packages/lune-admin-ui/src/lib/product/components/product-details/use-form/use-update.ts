@@ -19,6 +19,7 @@ export const useProductDetailsUpdate = () => {
       description: input.description,
       enabled: input.enabled,
       defaultVariant: productHasDefaultVariant ? product.variants.items[0].id : null,
+      customFields: input.customFields,
       variants: variants.length
         ? variants.map(v => ({
             id: v?.id as string,

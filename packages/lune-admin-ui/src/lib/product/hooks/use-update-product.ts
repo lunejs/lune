@@ -94,7 +94,8 @@ export const useUpdateProduct = () => {
       input: {
         name: input.name,
         description: input.description,
-        enabled: input.enabled
+        enabled: input.enabled,
+        customFields: Object.entries(input.customFields).map(([key, value]) => ({ id: key, value }))
       }
     });
 
@@ -141,6 +142,7 @@ type UpdateProductInput = {
   name: string;
   description?: string;
   enabled?: boolean;
+  customFields: Record<string, any>;
 
   options: {
     id: string;

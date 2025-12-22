@@ -14,7 +14,8 @@ export const useCreateProduct = () => {
         name: input.name,
         description: input.description,
         enabled: input.enabled,
-        assets: input.images?.map((image, i) => ({ id: image, order: i }))
+        assets: input.images?.map((image, i) => ({ id: image, order: i })),
+        customFields: Object.entries(input.customFields).map(([key, value]) => ({ id: key, value }))
       }
     });
 
@@ -82,6 +83,7 @@ type CreateProductInput = {
   description?: string;
   enabled?: boolean;
   images?: string[];
+  customFields: Record<string, any>;
   options: {
     id: string;
     name: string;

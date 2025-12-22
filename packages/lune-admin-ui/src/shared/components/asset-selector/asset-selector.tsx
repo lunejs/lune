@@ -52,6 +52,10 @@ export const AssetSelector: FC<Props> = ({
 }) => {
   const [selected, setSelected] = useState<SelectedAsset[]>(defaultSelected);
 
+  // useEffect(() => {
+  //   if (!selected.length) setSelected(defaultSelected);
+  // }, [defaultSelected]);
+
   return (
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}

@@ -6,7 +6,11 @@ export const buildDefaultValues = (product: CommonProductFragment | null | undef
   return {
     ...buildDefaultGeneralInfo(product),
     ...buildDefaultVariant(product),
-    customFields: {},
+    customFields:
+      product?.customFieldEntries.reduce(
+        (prev, curr) => ({ ...prev, [curr.definition.id]: curr.value }),
+        {}
+      ) ?? {},
     variants: buildDefaultVariants(product),
     options: buildDefaultOptions(product)
   };

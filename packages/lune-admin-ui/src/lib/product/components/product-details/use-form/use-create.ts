@@ -8,7 +8,7 @@ export const useProductDetailsCreate = () => {
   const { createProduct: create } = useCreateProduct();
 
   const exec = (input: ProductDetailsFormInput) => {
-    const { options, variants } = input;
+    const { options, variants, customFields } = input;
 
     return create({
       name: input.name,
@@ -16,6 +16,7 @@ export const useProductDetailsCreate = () => {
       enabled: input.enabled,
       images: input.images,
       options,
+      customFields: customFields,
       variants: variants.length
         ? variants.map(v => ({
             salePrice: v.salePrice ? LunePrice.parse(v.salePrice) : 0,

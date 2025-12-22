@@ -2,9 +2,10 @@ import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
 import { PrimitiveCustomField } from './shared/primitive';
 
-export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
+export const SingleLineTextCustomField = ({ definition, defaultValues, onChange }: Props) => {
   return (
     <PrimitiveCustomField
+      defaultValues={defaultValues}
       definition={definition}
       onChange={items => {
         const newValues = items.map(v => v.value);
@@ -17,6 +18,7 @@ export const SingleLineTextCustomField = ({ definition, onChange }: Props) => {
 };
 
 type Props = {
+  defaultValues?: string[];
   onChange: (value: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };

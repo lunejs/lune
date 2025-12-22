@@ -16,12 +16,18 @@ export const ProductSubmitButton = () => {
 
   const variantsHasChanged = getVariantsHasChanged(values, product);
   const optionsHasChanged = getOptionsHasChanged(values, product);
+  const customFieldsHasChanged = getCustomFieldsHasChanged(values, product);
 
   return (
     <Button
       type="submit"
       disabled={
-        !(form.formState.isDirty || variantsHasChanged || optionsHasChanged) ||
+        !(
+          form.formState.isDirty ||
+          variantsHasChanged ||
+          optionsHasChanged ||
+          customFieldsHasChanged
+        ) ||
         form.formState.isSubmitting ||
         !values.name
       }
@@ -29,6 +35,20 @@ export const ProductSubmitButton = () => {
       Save
     </Button>
   );
+};
+
+const getCustomFieldsHasChanged = (
+  values: DeepPartial<ProductDetailsFormInput>,
+  product: CommonProductFragment | null
+) => {
+  const formCustomFields = values.customFields ?? {};
+  const productCustomFields =
+    product?.customFieldEntries.reduce(
+      (prev, curr) => ({ ...prev, [curr.definition.id]: curr.value }),
+      {}
+    ) ?? {};
+
+  return !equals(formCustomFields, productCustomFields);
 };
 
 const getVariantsHasChanged = (

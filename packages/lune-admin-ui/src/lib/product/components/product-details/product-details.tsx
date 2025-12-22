@@ -1,3 +1,4 @@
+import { isArray } from '@lune/common';
 import { Card, CardContent, CardHeader, CardTitle, Form } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment, CommonProductFragment } from '@/lib/api/types';
@@ -39,18 +40,29 @@ export const ProductDetails = ({ customFields, product }: Props) => {
                   <CardTitle>Custom fields</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
-                  {customFields.map(cf => (
-                    <CustomField
-                      key={cf.id}
-                      definition={cf}
-                      onChange={(definition, value) =>
-                        form.setValue('customFields', {
-                          ...form.getValues('customFields'),
-                          [definition.key]: value
-                        })
-                      }
-                    />
-                  ))}
+                  {customFields.map(cf => {
+                    const entry = product?.customFieldEntries.find(e => e.definition.id === cf.id);
+
+                    const defaultValue = entry
+                      ? isArray(entry?.value)
+                        ? entry.value
+                        : [entry?.value]
+                      : undefined;
+
+                    return (
+                      <CustomField
+                        key={cf.id}
+                        definition={cf}
+                        defaultValues={defaultValue}
+                        onChange={(definition, value) =>
+                          form.setValue('customFields', {
+                            ...form.getValues('customFields'),
+                            [definition.id]: value
+                          })
+                        }
+                      />
+                    );
+                  })}
                 </CardContent>
               </Card>
             )}
