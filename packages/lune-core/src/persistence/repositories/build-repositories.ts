@@ -2,6 +2,7 @@ import type { Transaction } from '../connection/connection';
 
 import { AddressRepository } from './address-repository';
 import { AssetRepository } from './asset-repository';
+import { CollectionCustomFieldRepository } from './collection-custom-field-repository';
 import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
@@ -53,6 +54,7 @@ export function buildRepositories(trx: Transaction) {
     optionTranslation: new OptionTranslationRepository(trx),
     optionValueTranslation: new OptionValueTranslationRepository(trx),
     collection: new CollectionRepository(trx),
+    collectionCustomField: new CollectionCustomFieldRepository(trx),
     collectionTranslation: new CollectionTranslationRepository(trx),
     customer: new CustomerRepository(trx),
     customerAuthMethod: new CustomerAuthMethodRepository(trx),

@@ -45,5 +45,6 @@ export const enum Tables {
   CustomerAuthMethod = 'customer_auth_method',
   CustomFieldDefinition = 'custom_field_definition',
   ProductCustomField = 'product_custom_field',
-  ProductCustomFieldTranslation = 'product_custom_field_translation'
+  ProductCustomFieldTranslation = 'product_custom_field_translation',
+  CollectionCustomField = 'collection_custom_field'
 }
