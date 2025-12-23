@@ -13,6 +13,7 @@ export const OrdersTable = ({ isRefetching, orders, totalRows, dataTable }: Prop
       data={orders}
       columns={OrdersTableColumns}
       onSearch={q => updateFilters({ search: q })}
+      searchDefaultValue={dataTable.filters.search}
       searchPlaceholder="Search by code or customer..."
       onPageChange={page => updatePagination({ page })}
       onPageSizeChange={size => updatePagination({ size })}

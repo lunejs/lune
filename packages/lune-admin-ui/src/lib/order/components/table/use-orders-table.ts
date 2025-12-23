@@ -19,19 +19,19 @@ export const useOrdersTable = () => {
     []
   );
 
+  const customerEmailFilter = useMemo(
+    () => searchParams.get(OrderParamFiltersKeys.CustomerEmail),
+    []
+  );
+
   const dataTable = useDataTable<OrderTableFilters>({
-    search: '',
+    search: customerEmailFilter ?? '',
     states: orderStateFilter ? [orderStateFilter] : []
   });
 
   const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useCountOrders();
-
-  const customerEmailFilter = useMemo(
-    () => searchParams.get(OrderParamFiltersKeys.CustomerEmail),
-    []
-  );
 
   const {
     isLoading,
@@ -42,9 +42,7 @@ export const useOrdersTable = () => {
   } = useGetOrders({
     filters: {
       ...(filters.search && { code: { contains: filters.search } }),
-      ...((filters.search || customerEmailFilter) && {
-        customer: { contains: customerEmailFilter ?? filters.search }
-      }),
+      ...(filters.search && { customer: { contains: filters.search } }),
       ...(filters.states && { states: filters.states })
     },
     skip: getSkip(pagination.page, pagination.size),

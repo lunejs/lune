@@ -14,7 +14,8 @@ export function DataTableToolbar<TData, TValue>({
   filters,
   table,
   isLoading,
-  onSelectRender
+  onSelectRender,
+  searchDefaultValue
 }: Props<TData, TValue>) {
   const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
 
@@ -23,6 +24,7 @@ export function DataTableToolbar<TData, TValue>({
       <div className="flex flex-1 items-center gap-2">
         <InputGroup className="w-[150px] lg:w-[250px]">
           <InputGroupInput
+            defaultValue={searchDefaultValue}
             placeholder={searchPlaceholder || 'Search...'}
             onChange={event => onSearch(event.target.value)}
             className="text-sm h-8"
