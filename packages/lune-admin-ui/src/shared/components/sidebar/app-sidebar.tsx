@@ -173,7 +173,7 @@ const SIDEBAR = {
       isActive: (pathname: string) => pathname.includes('customers')
     },
     {
-      title: 'Business Customers',
+      title: 'Segments',
       url: '#',
       icon: UsersIcon,
       isActive: (pathname: string) => pathname.includes('random')
