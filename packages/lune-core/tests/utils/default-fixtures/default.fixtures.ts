@@ -5,6 +5,7 @@ import { DefaultAssetFixture } from './asset.fixture';
 import { DefaultCollectionFixture } from './collection.fixture';
 import { DefaultCollectionAssetFixture } from './collection-asset.fixture';
 import { DefaultCollectionCustomFieldFixture } from './collection-custom-field.fixture';
+import { DefaultCollectionCustomFieldTranslationFixture } from './collection-custom-field-translation.fixture';
 import { DefaultCollectionProductFixture } from './collection-product.fixture';
 import { DefaultCollectionTranslationFixture } from './collection-translation.fixture';
 import { DefaultCountryFixture } from './country.fixture';
@@ -72,6 +73,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CollectionProduct]: DefaultCollectionProductFixture,
   [Tables.CollectionAsset]: DefaultCollectionAssetFixture,
   [Tables.CollectionCustomField]: DefaultCollectionCustomFieldFixture,
+  [Tables.CollectionCustomFieldTranslation]: DefaultCollectionCustomFieldTranslationFixture,
   [Tables.Customer]: DefaultCustomerFixture,
   [Tables.CustomerAuthMethod]: DefaultCustomerAuthMethodFixture,
   [Tables.Country]: DefaultCountryFixture,
