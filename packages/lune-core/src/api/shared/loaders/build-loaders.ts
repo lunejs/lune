@@ -8,6 +8,8 @@ import { createAddressCountryLoader } from './address/address-country.loader';
 import { createAddressStateLoader } from './address/address-state.loader';
 import { createCollectionAssetsLoader } from './collection/collection-asset.loader';
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
+import { createCollectionCustomFieldTranslationsLoader } from './collection/collection-custom-field-translations.loader';
+import { createCollectionCustomFieldsLoader } from './collection/collection-custom-fields.loader';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
@@ -76,7 +78,9 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       assets: createCollectionAssetsLoader(trx),
       products: createCollectionProductsLoader(trx),
       subCollections: createCollectionSubCollectionsLoader(trx),
-      translations: createCollectionTranslationsLoader(trx)
+      translations: createCollectionTranslationsLoader(trx),
+      customFields: createCollectionCustomFieldsLoader(trx),
+      customFieldTranslations: createCollectionCustomFieldTranslationsLoader(trx)
     },
     order: {
       lines: createOrderLineLoader(trx),

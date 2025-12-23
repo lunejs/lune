@@ -3,6 +3,7 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import type { CollectionCustomFieldWithDefinition } from '@/api/shared/loaders/collection/collection-custom-fields.loader';
 import { CommonCollectionFieldResolver } from '@/api/shared/resolvers/collection-field.resolver';
 import type {
   MutationAddCollectionTranslationArgs,
@@ -82,6 +83,18 @@ export const CollectionResolver: GraphqlApiResolver = {
     ...CommonCollectionFieldResolver,
     translations: async (parent: Collection, _, ctx: ExecutionContext) => {
       return ctx.loaders.collections.translations.load(parent.id);
+    },
+    customFieldEntries: async (parent: Collection, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.collections.customFields.load(parent.id);
+    }
+  },
+  CollectionCustomField: {
+    translations: async (
+      parent: CollectionCustomFieldWithDefinition,
+      _: unknown,
+      ctx: ExecutionContext
+    ) => {
+      return ctx.loaders.collections.customFieldTranslations.load(parent.id);
     }
   }
 };

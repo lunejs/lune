@@ -1,6 +1,22 @@
+type CollectionCustomFieldTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  value: JSON
+  locale: Locale!
+}
+
+type CollectionCustomField {
+  id: ID!
+  value: JSON!
+  definition: CustomFieldDefinition!
+  translations: [CollectionCustomFieldTranslation!]!
+}
+
 extend type Collection {
   order: Int!
   translations: [CollectionTranslation!]!
+  customFieldEntries: [CollectionCustomField!]!
 }
 
 type CollectionTranslation {
@@ -28,6 +44,7 @@ input CollectionTranslationInput {
   locale: Locale!
   name: String
   description: String
+  customFields: [CustomFieldValue!]
 }
 
 input CreateCollectionInput {
@@ -39,6 +56,7 @@ input CreateCollectionInput {
   assets: [AssetInEntity!]
   subCollections: [ID!]
   order: Int
+  customFields: [CustomFieldValue!]
 }
 
 input UpdateCollectionInput {
@@ -49,6 +67,7 @@ input UpdateCollectionInput {
   assets: [AssetInEntity!]
   subCollections: [ID!]
   order: Int
+  customFields: [CustomFieldValue!]
 }
 
 extend input CollectionFilters {

@@ -1,12 +1,18 @@
 import { clean, isArray } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CollectionTranslationInput, UpdateCollectionInput } from '@/api/shared/types/graphql';
+import type {
+  CollectionTranslationInput,
+  CustomFieldValue,
+  UpdateCollectionInput
+} from '@/api/shared/types/graphql';
 import { type CollectionListInput, type CreateCollectionInput } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
 import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
+import type { CollectionCustomFieldRepository } from '@/persistence/repositories/collection-custom-field-repository';
+import type { CollectionCustomFieldTranslationRepository } from '@/persistence/repositories/collection-custom-field-translation-repository';
 import type { CollectionRepository } from '@/persistence/repositories/collection-repository';
 import type { CollectionTranslationRepository } from '@/persistence/repositories/collection-translation-repository';
 import type { Where } from '@/persistence/repositories/repository';
@@ -14,10 +20,14 @@ import type { Where } from '@/persistence/repositories/repository';
 export class CollectionService {
   private repository: CollectionRepository;
   private translationRepository: CollectionTranslationRepository;
+  private customFieldRepository: CollectionCustomFieldRepository;
+  private customFieldTranslationRepository: CollectionCustomFieldTranslationRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.collection;
     this.translationRepository = ctx.repositories.collectionTranslation;
+    this.customFieldRepository = ctx.repositories.collectionCustomField;
+    this.customFieldTranslationRepository = ctx.repositories.collectionCustomFieldTranslation;
   }
 
   async find(input?: CollectionListInput) {
@@ -39,7 +49,7 @@ export class CollectionService {
     const slug = await this.validateAndParseSlug(input.name);
     const collectionCount = await this.repository.count();
 
-    const { assets, products, subCollections, ...baseCollection } = input;
+    const { assets, products, subCollections, customFields, ...baseCollection } = input;
 
     const collection = await this.repository.create({
       ...clean(baseCollection),
@@ -49,6 +59,13 @@ export class CollectionService {
       contentType:
         (input.contentType as unknown as CollectionContentType) ?? CollectionContentType.Products
     });
+
+    if (customFields?.length) {
+      await this.upsertCustomFields(
+        collection.id,
+        customFields.filter(cf => cf.value != null)
+      );
+    }
 
     if (assets?.length) {
       await this.repository.upsertAssets(collection.id, assets);
@@ -66,12 +83,20 @@ export class CollectionService {
   }
 
   async update(id: ID, input: UpdateCollectionInput) {
-    const { assets, products, subCollections, ...baseCollection } = input;
+    const { assets, products, subCollections, customFields, ...baseCollection } = input;
 
     const result = await this.repository.update({
       where: { id },
       data: clean(baseCollection)
     });
+
+    if (customFields?.length) {
+      await this.removeEmptyCustomFields(id, customFields);
+      await this.upsertCustomFields(
+        id,
+        customFields.filter(cf => cf.value != null)
+      );
+    }
 
     if (assets?.length) {
       await this.repository.upsertAssets(id, assets);
@@ -104,6 +129,24 @@ export class CollectionService {
   }
 
   async addTranslation(id: ID, input: CollectionTranslationInput) {
+    if (input.customFields?.length) {
+      await Promise.all(
+        input.customFields.map(cf =>
+          this.customFieldTranslationRepository.upsert({
+            where: { fieldId: cf.id, locale: input.locale as unknown as Locale },
+            create: {
+              locale: input.locale as unknown as Locale,
+              fieldId: cf.id,
+              value: JSON.stringify(cf.value)
+            },
+            update: {
+              value: cf.value != null ? JSON.stringify(cf.value) : null
+            }
+          })
+        )
+      );
+    }
+
     const r = await this.translationRepository.upsert({
       where: { collectionId: id, locale: input.locale as unknown as Locale },
       create: {
@@ -189,4 +232,26 @@ export class CollectionService {
 
     return slug + '-' + productNameCount;
   }
+
+  private upsertCustomFields = async (collectionId: ID, fields: CustomFieldValue[]) => {
+    await Promise.all(
+      fields.map(cf =>
+        this.customFieldRepository.upsert({
+          where: { definitionId: cf.id, collectionId },
+          create: { definitionId: cf.id, collectionId, value: JSON.stringify(cf.value) },
+          update: { value: JSON.stringify(cf.value) }
+        })
+      )
+    );
+  };
+
+  private removeEmptyCustomFields = async (collectionId: ID, fields: CustomFieldValue[]) => {
+    const idsToRemove = fields.filter(f => f.value == null).map(f => f.id);
+
+    await Promise.all(
+      idsToRemove.map(id =>
+        this.customFieldRepository.remove({ where: { definitionId: id, collectionId } })
+      )
+    );
+  };
 }

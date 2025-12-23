@@ -158,6 +158,7 @@ export type Collection = Node & {
   /** The collection's content type indicating if the collection contains products or other collections */
   contentType: CollectionContentType;
   createdAt: Scalars['Date']['output'];
+  customFieldEntries: Array<CollectionCustomField>;
   /** The collection's description */
   description?: Maybe<Scalars['String']['output']>;
   /**
@@ -202,6 +203,23 @@ export enum CollectionContentType {
   Products = 'PRODUCTS'
 }
 
+export type CollectionCustomField = {
+  __typename?: 'CollectionCustomField';
+  definition: CustomFieldDefinition;
+  id: Scalars['ID']['output'];
+  translations: Array<CollectionCustomFieldTranslation>;
+  value: Scalars['JSON']['output'];
+};
+
+export type CollectionCustomFieldTranslation = {
+  __typename?: 'CollectionCustomFieldTranslation';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  updatedAt: Scalars['Date']['output'];
+  value?: Maybe<Scalars['JSON']['output']>;
+};
+
 export type CollectionFilters = {
   contentType?: InputMaybe<CollectionContentType>;
   enabled?: InputMaybe<BooleanFilter>;
@@ -237,6 +255,7 @@ export type CollectionTranslation = {
 };
 
 export type CollectionTranslationInput = {
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   locale: Locale;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -275,6 +294,7 @@ export type CreateAddressInput = {
 export type CreateCollectionInput = {
   assets?: InputMaybe<Array<AssetInEntity>>;
   contentType?: InputMaybe<CollectionContentType>;
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
@@ -2227,6 +2247,7 @@ export type UpdateAddressInput = {
 
 export type UpdateCollectionInput = {
   assets?: InputMaybe<Array<AssetInEntity>>;
+  customFields?: InputMaybe<Array<CustomFieldValue>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2568,6 +2589,8 @@ export type ResolversTypes = {
   CancelOrderInput: CancelOrderInput;
   Collection: ResolverTypeWrapper<Collection>;
   CollectionContentType: CollectionContentType;
+  CollectionCustomField: ResolverTypeWrapper<CollectionCustomField>;
+  CollectionCustomFieldTranslation: ResolverTypeWrapper<CollectionCustomFieldTranslation>;
   CollectionFilters: CollectionFilters;
   CollectionList: ResolverTypeWrapper<CollectionList>;
   CollectionListInput: CollectionListInput;
@@ -2770,6 +2793,8 @@ export type ResolversParentTypes = {
   BooleanFilter: BooleanFilter;
   CancelOrderInput: CancelOrderInput;
   Collection: Collection;
+  CollectionCustomField: CollectionCustomField;
+  CollectionCustomFieldTranslation: CollectionCustomFieldTranslation;
   CollectionFilters: CollectionFilters;
   CollectionList: CollectionList;
   CollectionListInput: CollectionListInput;
@@ -2990,6 +3015,7 @@ export type CollectionResolvers<ContextType = ExecutionContext, ParentType exten
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<CollectionAssetsArgs>>;
   contentType?: Resolver<ResolversTypes['CollectionContentType'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  customFieldEntries?: Resolver<Array<ResolversTypes['CollectionCustomField']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3001,6 +3027,23 @@ export type CollectionResolvers<ContextType = ExecutionContext, ParentType exten
   subCollections?: Resolver<ResolversTypes['CollectionList'], ParentType, ContextType, Partial<CollectionSubCollectionsArgs>>;
   translations?: Resolver<Array<ResolversTypes['CollectionTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollectionCustomFieldResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionCustomField'] = ResolversParentTypes['CollectionCustomField']> = {
+  definition?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['CollectionCustomFieldTranslation']>, ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollectionCustomFieldTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CollectionCustomFieldTranslation'] = ResolversParentTypes['CollectionCustomFieldTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3889,6 +3932,8 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Asset?: AssetResolvers<ContextType>;
   AssetList?: AssetListResolvers<ContextType>;
   Collection?: CollectionResolvers<ContextType>;
+  CollectionCustomField?: CollectionCustomFieldResolvers<ContextType>;
+  CollectionCustomFieldTranslation?: CollectionCustomFieldTranslationResolvers<ContextType>;
   CollectionList?: CollectionListResolvers<ContextType>;
   CollectionTranslation?: CollectionTranslationResolvers<ContextType>;
   Country?: CountryResolvers<ContextType>;
