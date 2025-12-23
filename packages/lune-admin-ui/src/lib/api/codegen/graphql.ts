@@ -741,6 +741,21 @@ export type MarkOrderAsShippedInput = {
   trackingCode: Scalars['String']['input'];
 };
 
+export type Metric = {
+  key: Scalars['String']['output'];
+  value: Scalars['Int']['output'];
+};
+
+export type MetricsInput = {
+  endsAt: Scalars['Date']['input'];
+  startsAt: Scalars['Date']['input'];
+};
+
+export type MetricsResult = {
+  metrics: Array<Metric>;
+  total: Scalars['Int']['output'];
+};
+
 export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addProductTranslation: ProductTranslation;
@@ -1601,6 +1616,10 @@ export type Query = {
   /** Get a list of shops */
   shops: ShopList;
   tags: TagList;
+  totalAverageOrderValue: MetricsResult;
+  totalNewCustomers: MetricsResult;
+  totalOrders: MetricsResult;
+  totalSales: MetricsResult;
   /** Validate current token of the user in session */
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
@@ -1717,6 +1736,26 @@ export type QueryShopsArgs = {
 
 export type QueryTagsArgs = {
   input?: InputMaybe<TagListInput>;
+};
+
+
+export type QueryTotalAverageOrderValueArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalNewCustomersArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalOrdersArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalSalesArgs = {
+  input: MetricsInput;
 };
 
 

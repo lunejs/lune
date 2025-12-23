@@ -850,6 +850,23 @@ export type MarkOrderAsShippedInput = {
   trackingCode: Scalars['String']['input'];
 };
 
+export type Metric = {
+  __typename?: 'Metric';
+  key: Scalars['String']['output'];
+  value: Scalars['Int']['output'];
+};
+
+export type MetricsInput = {
+  endsAt: Scalars['Date']['input'];
+  startsAt: Scalars['Date']['input'];
+};
+
+export type MetricsResult = {
+  __typename?: 'MetricsResult';
+  metrics: Array<Metric>;
+  total: Scalars['Int']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCollectionTranslation: CollectionTranslation;
@@ -1892,6 +1909,10 @@ export type Query = {
   shops: ShopList;
   tagList: Array<Tag>;
   tags: TagList;
+  totalAverageOrderValue: MetricsResult;
+  totalNewCustomers: MetricsResult;
+  totalOrders: MetricsResult;
+  totalSales: MetricsResult;
   /** Validate current token of the user in session */
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
@@ -2013,6 +2034,26 @@ export type QueryShopsArgs = {
 
 export type QueryTagsArgs = {
   input?: InputMaybe<TagListInput>;
+};
+
+
+export type QueryTotalAverageOrderValueArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalNewCustomersArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalOrdersArgs = {
+  input: MetricsInput;
+};
+
+
+export type QueryTotalSalesArgs = {
+  input: MetricsInput;
 };
 
 
@@ -2669,6 +2710,9 @@ export type ResolversTypes = {
   LocationList: ResolverTypeWrapper<LocationList>;
   LocationResult: ResolverTypeWrapper<LocationResult>;
   MarkOrderAsShippedInput: MarkOrderAsShippedInput;
+  Metric: ResolverTypeWrapper<Metric>;
+  MetricsInput: MetricsInput;
+  MetricsResult: ResolverTypeWrapper<MetricsResult>;
   Mutation: ResolverTypeWrapper<{}>;
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
@@ -2863,6 +2907,9 @@ export type ResolversParentTypes = {
   LocationList: LocationList;
   LocationResult: LocationResult;
   MarkOrderAsShippedInput: MarkOrderAsShippedInput;
+  Metric: Metric;
+  MetricsInput: MetricsInput;
+  MetricsResult: MetricsResult;
   Mutation: {};
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
@@ -3314,6 +3361,18 @@ export type LocationResultResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MetricResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Metric'] = ResolversParentTypes['Metric']> = {
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MetricsResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['MetricsResult'] = ResolversParentTypes['MetricsResult']> = {
+  metrics?: Resolver<Array<ResolversTypes['Metric']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
@@ -3726,6 +3785,10 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
   tagList?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   tags?: Resolver<ResolversTypes['TagList'], ParentType, ContextType, Partial<QueryTagsArgs>>;
+  totalAverageOrderValue?: Resolver<ResolversTypes['MetricsResult'], ParentType, ContextType, RequireFields<QueryTotalAverageOrderValueArgs, 'input'>>;
+  totalNewCustomers?: Resolver<ResolversTypes['MetricsResult'], ParentType, ContextType, RequireFields<QueryTotalNewCustomersArgs, 'input'>>;
+  totalOrders?: Resolver<ResolversTypes['MetricsResult'], ParentType, ContextType, RequireFields<QueryTotalOrdersArgs, 'input'>>;
+  totalSales?: Resolver<ResolversTypes['MetricsResult'], ParentType, ContextType, RequireFields<QueryTotalSalesArgs, 'input'>>;
   validateAccessToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   variant?: Resolver<Maybe<ResolversTypes['Variant']>, ParentType, ContextType, RequireFields<QueryVariantArgs, 'id'>>;
   whoami?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
@@ -3968,6 +4031,8 @@ export type Resolvers<ContextType = ExecutionContext> = {
   LocationErrorResult?: LocationErrorResultResolvers<ContextType>;
   LocationList?: LocationListResolvers<ContextType>;
   LocationResult?: LocationResultResolvers<ContextType>;
+  Metric?: MetricResolvers<ContextType>;
+  MetricsResult?: MetricsResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
   Option?: OptionResolvers<ContextType>;

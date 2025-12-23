@@ -26,6 +26,7 @@ import { CustomFieldDefinitionResolver } from './resolvers/custom-field-definiti
 import { CustomerResolver } from './resolvers/customer.resolver';
 import { DiscountResolver } from './resolvers/discount.resolver';
 import { LocationResolver } from './resolvers/location.resolver';
+import { MetricResolver } from './resolvers/metric.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
 import { OptionPresetsResolver } from './resolvers/option-preset.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
@@ -73,6 +74,7 @@ export class AdminApi extends GraphqlApi {
         DiscountResolver,
         CustomerResolver,
         CustomFieldDefinitionResolver,
+        MetricResolver,
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),
