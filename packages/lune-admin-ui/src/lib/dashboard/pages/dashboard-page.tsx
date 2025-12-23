@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UTCDate } from '@date-fns/utc';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { BookOpenIcon, CalendarRangeIcon, InboxIcon, PackageIcon } from 'lucide-react';
@@ -16,6 +16,7 @@ import {
   Small
 } from '@lune/ui';
 
+import type { MetricResult } from '@/lib/api/types';
 import { PageLayout } from '@/shared/components/layout/page-layout';
 import { PageLoader } from '@/shared/components/loader/page-loader';
 
@@ -31,60 +32,36 @@ export function DashboardPage() {
     to: endOfMonth(new UTCDate())
   });
 
-  const {
-    isLoadingTotalSales,
-    refetch: refetchTotalSales,
-    totalSales
-  } = useGetTotalSales({
-    startsAt: date?.from ?? startOfMonth(new UTCDate()),
-    endsAt: date?.to ?? endOfMonth(new UTCDate())
-  });
+  const input = useMemo(
+    () => ({
+      startsAt: date?.from ?? startOfMonth(new UTCDate()),
+      endsAt: date?.to ?? endOfMonth(new UTCDate())
+    }),
+    [date]
+  );
 
-  const {
-    isLoadingTotalOrders,
-    refetch: refetchTotalOrders,
-    totalOrders
-  } = useGetTotalOrders({
-    startsAt: date?.from ?? startOfMonth(new UTCDate()),
-    endsAt: date?.to ?? endOfMonth(new UTCDate())
-  });
+  const { totalSales, ...totalSalesRes } = useGetTotalSales(input);
 
-  const {
-    isLoadingTotalNewCustomers,
-    refetch: refetchTotalNewCustomers,
-    totalNewCustomers
-  } = useGetTotalNewCustomers({
-    startsAt: date?.from ?? startOfMonth(new UTCDate()),
-    endsAt: date?.to ?? endOfMonth(new UTCDate())
-  });
+  const { totalOrders, ...totalOrdersRes } = useGetTotalOrders(input);
 
-  const {
-    isLoadingTotalAvgOrderValue,
-    refetch: refetchTotalAvgOrderValue,
-    totalAvgOrderValue
-  } = useGetTotalAvgOrderValue({
-    startsAt: date?.from ?? startOfMonth(new UTCDate()),
-    endsAt: date?.to ?? endOfMonth(new UTCDate())
-  });
+  const { totalNewCustomers, ...totalNewCustomersRes } = useGetTotalNewCustomers(input);
+
+  const { totalAvgOrderValue, ...totalAvgOrderValueRes } = useGetTotalAvgOrderValue(input);
 
   useEffect(() => {
-    refetchTotalSales();
-    refetchTotalOrders();
-    refetchTotalNewCustomers();
-    refetchTotalAvgOrderValue();
+    totalSalesRes.refetch();
+    totalOrdersRes.refetch();
+    totalNewCustomersRes.refetch();
+    totalAvgOrderValueRes.refetch();
   }, [date]);
 
-  if (
-    isLoadingTotalSales ||
-    isLoadingTotalOrders ||
-    isLoadingTotalNewCustomers ||
-    isLoadingTotalAvgOrderValue ||
-    !totalSales ||
-    !totalOrders ||
-    !totalNewCustomers ||
-    !totalAvgOrderValue
-  )
-    return <PageLoader />;
+  const isLoading =
+    totalSalesRes.isLoading ||
+    totalOrdersRes.isLoading ||
+    totalNewCustomersRes.isLoading ||
+    totalAvgOrderValueRes.isLoading;
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <>
@@ -134,10 +111,10 @@ export function DashboardPage() {
           </Popover>
 
           <DashboardCharts
-            totalSales={totalSales}
-            ordersCount={totalOrders}
-            newCustomers={totalNewCustomers}
-            avgOrderValue={totalAvgOrderValue}
+            totalSales={totalSales as MetricResult}
+            ordersCount={totalOrders as MetricResult}
+            newCustomers={totalNewCustomers as MetricResult}
+            avgOrderValue={totalAvgOrderValue as MetricResult}
           />
 
           <div className="flex items-center gap-4">
