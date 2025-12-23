@@ -10,5 +10,6 @@ export const CollectionDetailsFormSchema = z.object({
   enabled: z.boolean(),
   contentType: z
     .enum([CollectionContentType.Products, CollectionContentType.Collections])
-    .default(CollectionContentType.Products)
+    .default(CollectionContentType.Products),
+  customFields: z.record(z.string(), z.any())
 });

@@ -17,6 +17,10 @@ export const useCreateCollection = () => {
           contentType: input.contentType,
           description: input.description,
           enabled: input.enabled,
+          customFields: Object.entries(input.customFields).map(([key, value]) => ({
+            id: key,
+            value
+          })),
           ...(input.image && { assets: [{ id: input.image, order: 0 }] })
         }
       });

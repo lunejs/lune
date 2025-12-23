@@ -1,13 +1,16 @@
 import { isArray } from '@lune/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@lune/ui';
 
-import type { CommonCustomFieldDefinitionFragment, CommonProductFragment } from '@/lib/api/types';
+import type {
+  CommonCollectionFragment,
+  CommonCustomFieldDefinitionFragment
+} from '@/lib/api/types';
 import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
 
-import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
+import { useCollectionDetailsFormContext } from '../use-form/use-form';
 
-export const ProductCustomFields = ({ customFieldDefinitions, product }: Props) => {
-  const form = useProductDetailsFormContext();
+export const CollectionCustomFields = ({ customFieldDefinitions, collection }: Props) => {
+  const form = useCollectionDetailsFormContext();
 
   return (
     <Card>
@@ -16,7 +19,7 @@ export const ProductCustomFields = ({ customFieldDefinitions, product }: Props) 
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {customFieldDefinitions.map(cf => {
-          const entry = product?.customFieldEntries.find(e => e.definition.id === cf.id);
+          const entry = collection?.customFieldEntries.find(e => e.definition.id === cf.id);
 
           const defaultValue = entry
             ? isArray(entry?.value)
@@ -44,6 +47,6 @@ export const ProductCustomFields = ({ customFieldDefinitions, product }: Props) 
 };
 
 type Props = {
-  product: CommonProductFragment | undefined | null;
+  collection: CommonCollectionFragment | undefined | null;
   customFieldDefinitions: CommonCustomFieldDefinitionFragment[];
 };

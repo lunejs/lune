@@ -17,6 +17,26 @@ export const COMMON_COLLECTION_FOR_TRANSLATION_FRAGMENT = graphql(`
         source
       }
     }
+    customFieldEntries {
+      id
+      value
+      translations {
+        id
+        value
+        locale
+      }
+      definition {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+      }
+    }
   }
 `);
 
@@ -38,6 +58,20 @@ export const COMMON_COLLECTION_FRAGMENT = graphql(`
         id
         filename
         source
+      }
+    }
+    customFieldEntries {
+      value
+      definition {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
       }
     }
   }

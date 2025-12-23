@@ -88,7 +88,7 @@ export const PrimitiveCustomField = ({
           />
         </PopoverTrigger>
       </div>
-      <PopoverContent className="w-auto min-w-72" align="start">
+      <PopoverContent className="w-auto min-w-72 max-w-lg" align="start">
         <div className="flex flex-col gap-2">
           <Label>{definition.name}</Label>
           {items.map(item => {
@@ -123,8 +123,8 @@ export const PrimitiveCustomField = ({
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        defaultMonth={item.value ? new Date(item.value) : new Date()}
-                        selected={item.value ? new Date(item.value) : new Date()}
+                        defaultMonth={item.value ? new Date(item.value) : undefined}
+                        selected={item.value ? new Date(item.value) : undefined}
                         onSelect={date => update(item.id, date ? date.toISOString() : '')}
                         className="h-81.25"
                       />

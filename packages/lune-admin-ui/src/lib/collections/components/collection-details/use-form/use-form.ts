@@ -34,7 +34,11 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
       const result = await updateCollection(collection.id, {
         name: values.name,
         description: values.description,
-        enabled: values.enabled
+        enabled: values.enabled,
+        customFields: Object.entries(values.customFields).map(([key, value]) => ({
+          id: key,
+          value
+        }))
       });
 
       if (!result.isSuccess) {
