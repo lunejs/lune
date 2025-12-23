@@ -12,7 +12,7 @@ import {
   CardTitle,
   cn,
   Input,
-  P
+  Small
 } from '@lune/ui';
 
 import { SpinnerLoader } from '../loader/spinner-loader';
@@ -67,7 +67,7 @@ const List = ({ children }: PropsWithChildren) => {
 const ListEmpty = () => {
   return (
     <div className="flex justify-center py-8">
-      <P className="text-muted-foreground">No results</P>
+      <Small className="text-muted-foreground">No results</Small>
     </div>
   );
 };

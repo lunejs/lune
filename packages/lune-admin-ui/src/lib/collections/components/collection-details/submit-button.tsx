@@ -64,5 +64,7 @@ const getCustomFieldsHasChanged = (
       {}
     ) ?? {};
 
+  console.log({ formCustomFields, productCustomFields });
+
   return !equals(formCustomFields, productCustomFields);
 };

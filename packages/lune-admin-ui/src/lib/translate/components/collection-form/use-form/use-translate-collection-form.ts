@@ -25,7 +25,11 @@ export const useTranslateCollectionForm = (collection: CommonCollectionForTransl
   const onSubmit = async (values: TranslateCollectionFormValues) => {
     loading('Saving...');
 
-    const result = await addCollectionTranslation(collection.id, { ...values, locale: Locale.En });
+    const result = await addCollectionTranslation(collection.id, {
+      ...values,
+      locale: Locale.En,
+      customFields: Object.entries(values.customFields).map(([key, value]) => ({ id: key, value }))
+    });
 
     if (!result.isSuccess) {
       failure(result.error);
@@ -45,7 +49,8 @@ export const useTranslateCollectionForm = (collection: CommonCollectionForTransl
 
 const schema = z.object({
   name: z.string().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  customFields: z.record(z.string(), z.any())
 });
 
 export type TranslateCollectionFormValues = z.infer<typeof schema>;

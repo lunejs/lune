@@ -7,7 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  P,
+  Small,
   Table,
   TableBody,
   TableCell,
@@ -51,7 +51,7 @@ export const CustomFieldsTable = ({ entity, customFields }: Props) => {
               <TableRow>
                 <TableCell colSpan={2}>
                   <div className="flex justify-center py-8 w-full">
-                    <P className="text-muted-foreground">No results</P>
+                    <Small className="text-muted-foreground">No results</Small>
                   </div>
                 </TableCell>
               </TableRow>

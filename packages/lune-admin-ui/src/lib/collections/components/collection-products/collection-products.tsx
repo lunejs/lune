@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { notification, P } from '@lune/ui';
+import { notification, Small } from '@lune/ui';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { ItemsTable } from '@/shared/components/items-table/items-table';
@@ -48,7 +48,7 @@ export const CollectionProductsCard = ({ collection }: Props) => {
         <ItemsTable.List>
           {!products?.length && (
             <div className="flex justify-center py-8">
-              <P className="text-muted-foreground">No results</P>
+              <Small className="text-muted-foreground">No results</Small>
             </div>
           )}
           {products?.map(product => (

@@ -23,7 +23,12 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment |
       name: collection?.name ?? '',
       description: collection?.description ?? '',
       enabled: collection?.enabled ?? true,
-      contentType: collection?.contentType ?? CollectionContentType.Products
+      contentType: collection?.contentType ?? CollectionContentType.Products,
+      customFields:
+        collection?.customFieldEntries.reduce(
+          (prev, curr) => ({ ...prev, [curr.definition.id]: curr.value }),
+          {}
+        ) ?? {}
     }
   });
 

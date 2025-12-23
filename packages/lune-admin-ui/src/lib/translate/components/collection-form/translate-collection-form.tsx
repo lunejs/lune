@@ -5,16 +5,20 @@ import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeho
 
 import { TranslateFormHeader } from '../form/translate-form-header';
 import { TranslateFormRowData } from '../form/translate-form-row-data';
+import { TranslateFormSeparator } from '../form/translate-form-separator';
 import { TranslateInput } from '../form/translate-input';
 import { TranslateTextarea } from '../form/translate-textarea';
 import { LocaleSelector } from '../locale-selector/locale-selector';
 
+import { TranslateCollectionCustomField } from './custom-fields/translate-collection-custom-fields';
 import { ReplaceCollectionSheet } from './replace-collection/replace-collection-sheet';
 import { useTranslateCollectionForm } from './use-form/use-translate-collection-form';
 import { TranslateCollectionSubmitButton } from './submit-button';
 
 export const TranslateCollectionForm = ({ collection }: Props) => {
   const form = useTranslateCollectionForm(collection);
+
+  const hasCustomFields = !!collection.customFieldEntries.length;
 
   return (
     <Form {...form}>
@@ -69,6 +73,12 @@ export const TranslateCollectionForm = ({ collection }: Props) => {
                       onChange={e => form.setValue('description', e.target.value)}
                     />
                   </TranslateFormRowData>
+
+                  {hasCustomFields && (
+                    <TranslateFormSeparator text="Custom fields" className="border-t!" />
+                  )}
+
+                  <TranslateCollectionCustomField collection={collection} />
                 </TableBody>
               </Table>
             </CardContent>

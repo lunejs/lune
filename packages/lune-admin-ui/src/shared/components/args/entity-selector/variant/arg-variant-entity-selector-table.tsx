@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { LunePrice } from '@lune/common';
-import { P } from '@lune/ui';
+import { Small } from '@lune/ui';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { ItemsTable } from '@/shared/components/items-table/items-table';
@@ -48,7 +48,7 @@ export const ArgVariantEntitySelectorTable = ({ onValueChange, defaultSelected }
         <ItemsTable.List>
           {!products?.length && (
             <div className="flex justify-center py-8">
-              <P className="text-muted-foreground">No results</P>
+              <Small className="text-muted-foreground">No results</Small>
             </div>
           )}
           {products?.map(product => {
