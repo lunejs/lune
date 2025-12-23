@@ -3,6 +3,7 @@ import request from 'supertest';
 import type { ID } from '@/index';
 import type { CollectionTable } from '@/persistence/entities/collection';
 import type { CollectionAssetTable } from '@/persistence/entities/collection-asset';
+import type { CollectionCustomFieldTable } from '@/persistence/entities/collection-custom-field';
 import type { CollectionProductTable } from '@/persistence/entities/collection-product';
 import type { CollectionTranslationTable } from '@/persistence/entities/collection-translation';
 import { Tables } from '@/persistence/tables';
@@ -13,8 +14,10 @@ import { TestUtils } from '@/tests/utils/test-utils';
 import { AssetFixtures } from './fixtures/asset.fixtures';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
 import { CollectionAssetFixtures } from './fixtures/collection-assets.fixtures';
+import { CollectionCustomFieldFixtures } from './fixtures/collection-custom-field.fixtures';
 import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
 import { CollectionTranslationFixtures } from './fixtures/collection-translation.fixtures';
+import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
 import { ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -34,7 +37,9 @@ describe('removeCollection - Mutation', () => {
       new AssetFixtures(),
       new CollectionProductFixtures(),
       new CollectionAssetFixtures(),
-      new CollectionTranslationFixtures()
+      new CollectionTranslationFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new CollectionCustomFieldFixtures()
     ]);
   });
 
@@ -53,6 +58,7 @@ describe('removeCollection - Mutation', () => {
     expect(prevCollection.collection).toBeDefined();
     expect(prevCollection.assets.length).toBeGreaterThan(0);
     expect(prevCollection.products.length).toBeGreaterThan(0);
+    expect(prevCollection.customFields.length).toBeGreaterThan(0);
 
     const res = await request(app)
       .post('/admin-api')
@@ -75,6 +81,7 @@ describe('removeCollection - Mutation', () => {
     expect(afterCollection.assets.length).toBe(0);
     expect(afterCollection.products.length).toBe(0);
     expect(afterCollection.translations.length).toBe(0);
+    expect(afterCollection.customFields.length).toBe(0);
   });
 
   test('unlink subCollections for given collection', async () => {
@@ -140,6 +147,7 @@ describe('removeCollection - Mutation', () => {
     expect(collections.every(c => c.assets.length === 0)).toBe(true);
     expect(collections.every(c => c.products.length === 0)).toBe(true);
     expect(collections.every(c => c.translations.length === 0)).toBe(true);
+    expect(collections.every(c => c.customFields.length === 0)).toBe(true);
   });
 
   test('remove a simple collection', async () => {
@@ -201,10 +209,15 @@ const getCollection = async (testHelper: TestUtils, collectionId: ID) => {
     .getQueryBuilder()<CollectionTranslationTable>(Tables.CollectionTranslation)
     .where('collection_id', collectionId);
 
+  const customFields = await testHelper
+    .getQueryBuilder()<CollectionCustomFieldTable>(Tables.CollectionCustomField)
+    .where('collection_id', collectionId);
+
   return {
     collection,
     assets,
     products,
-    translations
+    translations,
+    customFields
   };
 };

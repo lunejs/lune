@@ -5,6 +5,7 @@ import type { CollectionProductTable } from '@/persistence/entities/collection-p
 import type { OptionTable } from '@/persistence/entities/option';
 import type { OptionValueTable } from '@/persistence/entities/option_value';
 import type { ProductTable } from '@/persistence/entities/product';
+import type { ProductCustomFieldTable } from '@/persistence/entities/product-custom-field';
 import type { ProductTagTable } from '@/persistence/entities/product-tag';
 import type { ProductTranslationTable } from '@/persistence/entities/product-translation';
 import { Tables } from '@/persistence/tables';
@@ -14,9 +15,11 @@ import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionFixtures } from './fixtures/collection.fixtures';
 import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
+import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
+import { ProductCustomFieldFixtures } from './fixtures/product-custom-field.fixtures';
 import { ProductTagFixtures } from './fixtures/product-tag.fixtures';
 import { ProductTranslationFixtures } from './fixtures/product-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
@@ -44,7 +47,9 @@ describe('product - Query', () => {
       new VariantOptionValueFixtures(),
       new ProductTranslationFixtures(),
       new CollectionFixtures(),
-      new CollectionProductFixtures()
+      new CollectionProductFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new ProductCustomFieldFixtures()
     ]);
   });
 
@@ -65,6 +70,7 @@ describe('product - Query', () => {
     expect(prevProduct.translations.length).toBe(1);
     expect(prevProduct.tags.length).toBe(1);
     expect(prevProduct.collections.length).toBe(1);
+    expect(prevProduct.customFields.length).toBe(1);
 
     const res = await request(app)
       .post('/admin-api')
@@ -89,6 +95,7 @@ describe('product - Query', () => {
     expect(afterProduct.translations.length).toBe(0);
     expect(afterProduct.tags.length).toBe(0);
     expect(afterProduct.collections.length).toBe(0);
+    expect(afterProduct.customFields.length).toBe(0);
   });
 
   test('remove multiple products with different data', async () => {
@@ -147,6 +154,7 @@ describe('product - Query', () => {
     expect(afterProduct1.translations.length).toBe(0);
     expect(afterProduct1.tags.length).toBe(0);
     expect(afterProduct1.collections.length).toBe(0);
+    expect(afterProduct1.customFields.length).toBe(0);
 
     expect(afterProduct2.product?.deleted_at).not.toBeNull();
     expect(afterProduct2.options.length).toBe(0);
@@ -154,6 +162,7 @@ describe('product - Query', () => {
     expect(afterProduct2.translations.length).toBe(0);
     expect(afterProduct2.tags.length).toBe(0);
     expect(afterProduct2.collections.length).toBe(0);
+    expect(afterProduct2.customFields.length).toBe(0);
 
     expect(afterProduct3.product?.deleted_at).not.toBeNull();
     expect(afterProduct3.options.length).toBe(0);
@@ -161,6 +170,7 @@ describe('product - Query', () => {
     expect(afterProduct3.translations.length).toBe(0);
     expect(afterProduct3.tags.length).toBe(0);
     expect(afterProduct3.collections.length).toBe(0);
+    expect(afterProduct3.customFields.length).toBe(0);
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -212,12 +222,17 @@ const getProduct = async (testHelper: TestUtils, productId: ID) => {
     .getQueryBuilder()<CollectionProductTable>(Tables.CollectionProduct)
     .where('product_id', productId);
 
+  const customFields = await testHelper
+    .getQueryBuilder()<ProductCustomFieldTable>(Tables.ProductCustomField)
+    .where('product_id', productId);
+
   return {
     product,
     options,
     optionValues,
     translations,
     tags,
-    collections
+    collections,
+    customFields
   };
 };

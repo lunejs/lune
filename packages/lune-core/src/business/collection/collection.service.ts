@@ -118,12 +118,11 @@ export class CollectionService {
   }
 
   async remove(ids: ID[]) {
-    await Promise.all([
-      this.repository.removeAllAssets(ids),
-      this.repository.removeAllProducts(ids),
-      this.repository.removeAllTranslations(ids),
-      this.repository.removeMany({ whereIn: 'id', values: ids })
-    ]);
+    await this.customFieldRepository.removeMany({ whereIn: 'collectionId', values: ids });
+    await this.repository.removeAllAssets(ids);
+    await this.repository.removeAllProducts(ids);
+    await this.repository.removeAllTranslations(ids);
+    await this.repository.removeMany({ whereIn: 'id', values: ids });
 
     return true;
   }

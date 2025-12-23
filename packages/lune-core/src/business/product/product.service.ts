@@ -189,6 +189,7 @@ export class ProductService {
   }
 
   async softRemove(ids: ID[]) {
+    await this.customFieldRepository.removeMany({ whereIn: 'productId', values: ids });
     await this.repository.removeAllOptions(ids);
     await this.repository.removeAllAssets(ids);
     await this.repository.removeAllTags(ids);
