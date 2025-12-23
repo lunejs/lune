@@ -12,7 +12,7 @@ type Query {
   totalSales(input: MetricInput!): MetricResult!
   totalOrders(input: MetricInput!): MetricResult!
   totalNewCustomers(input: MetricInput!): MetricResult!
-  totalAverageOrderValue(input: MetricInput!): MetricResult!
+  totalAverageOrdersValue(input: MetricInput!): MetricResult!
 }
 
 type MetricResult {

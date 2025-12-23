@@ -16,9 +16,23 @@ async function totalOrders(_, { input }: QueryTotalSalesArgs, ctx: ExecutionCont
   return metricService.getTotalOrders(input);
 }
 
+async function totalNewCustomers(_, { input }: QueryTotalSalesArgs, ctx: ExecutionContext) {
+  const metricService = new MetricService(ctx);
+
+  return metricService.getTotalNewCustomers(input);
+}
+
+async function totalAverageOrdersValue(_, { input }: QueryTotalSalesArgs, ctx: ExecutionContext) {
+  const metricService = new MetricService(ctx);
+
+  return metricService.getTotalAverageOrderValue(input);
+}
+
 export const MetricResolver: GraphqlApiResolver = {
   Query: {
     totalSales: UseUserGuard(totalSales),
-    totalOrders: UseUserGuard(totalOrders)
+    totalOrders: UseUserGuard(totalOrders),
+    totalNewCustomers: UseUserGuard(totalNewCustomers),
+    totalAverageOrdersValue: UseUserGuard(totalAverageOrdersValue)
   }
 };

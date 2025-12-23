@@ -5,10 +5,17 @@ import { Card, CardContent, CardHeader, cn, Muted, P } from '@lune/ui';
 
 import type { MetricResult } from '@/lib/api/types';
 
+import { AvgOrderValueChart } from './avg-order-value/avg-order-value-chart';
+import { NewCustomersChart } from './new-customers/new-customers-chart';
 import { OrdersCountChart } from './orders-count/order-counts-chart';
 import { TotalSalesChart } from './total-sales/total-sales-chart';
 
-export const DashboardCharts = ({ totalSales, ordersCount }: Props) => {
+export const DashboardCharts = ({
+  totalSales,
+  ordersCount,
+  newCustomers,
+  avgOrderValue
+}: Props) => {
   const [dashboardMetric, setDashboardMetric] = useState<DashboardMetric>(
     DashboardMetric.TotalSales
   );
@@ -35,7 +42,7 @@ export const DashboardCharts = ({ totalSales, ordersCount }: Props) => {
             )}
           >
             <Muted>Orders</Muted>
-            <P>{LunePrice.format(totalSales.total)}</P>
+            <P>{ordersCount.total}</P>
           </button>
           <button
             onClick={() => setDashboardMetric(DashboardMetric.NewCustomers)}
@@ -45,7 +52,7 @@ export const DashboardCharts = ({ totalSales, ordersCount }: Props) => {
             )}
           >
             <Muted>New customers</Muted>
-            <P>{LunePrice.format(totalSales.total)}</P>
+            <P>{newCustomers.total}</P>
           </button>
           <button
             onClick={() => setDashboardMetric(DashboardMetric.AvgOrderValue)}
@@ -55,7 +62,7 @@ export const DashboardCharts = ({ totalSales, ordersCount }: Props) => {
             )}
           >
             <Muted>Avg order value</Muted>
-            <P>{LunePrice.format(totalSales.total)}</P>
+            <P>{LunePrice.format(avgOrderValue.total)}</P>
           </button>
         </div>
       </CardHeader>
@@ -65,6 +72,12 @@ export const DashboardCharts = ({ totalSales, ordersCount }: Props) => {
         )}
         {dashboardMetric === DashboardMetric.OrdersCount && (
           <OrdersCountChart ordersCount={ordersCount.metrics} />
+        )}
+        {dashboardMetric === DashboardMetric.NewCustomers && (
+          <NewCustomersChart newCustomers={newCustomers.metrics} />
+        )}
+        {dashboardMetric === DashboardMetric.AvgOrderValue && (
+          <AvgOrderValueChart avgOrderValue={avgOrderValue.metrics} />
         )}
       </CardContent>
     </Card>
@@ -81,4 +94,6 @@ enum DashboardMetric {
 type Props = {
   totalSales: MetricResult;
   ordersCount: MetricResult;
+  newCustomers: MetricResult;
+  avgOrderValue: MetricResult;
 };

@@ -20,6 +20,8 @@ import { PageLayout } from '@/shared/components/layout/page-layout';
 import { PageLoader } from '@/shared/components/loader/page-loader';
 
 import { DashboardCharts } from '../components/charts/dashboard-charts';
+import { useGetTotalAvgOrderValue } from '../hooks/use-get-total-avg-order-value';
+import { useGetTotalNewCustomers } from '../hooks/use-get-total-new-customers';
 import { useGetTotalOrders } from '../hooks/use-get-total-orders';
 import { useGetTotalSales } from '../hooks/use-get-total-sales';
 
@@ -47,12 +49,41 @@ export function DashboardPage() {
     endsAt: date?.to ?? endOfMonth(new UTCDate())
   });
 
+  const {
+    isLoadingTotalNewCustomers,
+    refetch: refetchTotalNewCustomers,
+    totalNewCustomers
+  } = useGetTotalNewCustomers({
+    startsAt: date?.from ?? startOfMonth(new UTCDate()),
+    endsAt: date?.to ?? endOfMonth(new UTCDate())
+  });
+
+  const {
+    isLoadingTotalAvgOrderValue,
+    refetch: refetchTotalAvgOrderValue,
+    totalAvgOrderValue
+  } = useGetTotalAvgOrderValue({
+    startsAt: date?.from ?? startOfMonth(new UTCDate()),
+    endsAt: date?.to ?? endOfMonth(new UTCDate())
+  });
+
   useEffect(() => {
     refetchTotalSales();
     refetchTotalOrders();
+    refetchTotalNewCustomers();
+    refetchTotalAvgOrderValue();
   }, [date]);
 
-  if (isLoadingTotalSales || isLoadingTotalOrders || !totalSales || !totalOrders)
+  if (
+    isLoadingTotalSales ||
+    isLoadingTotalOrders ||
+    isLoadingTotalNewCustomers ||
+    isLoadingTotalAvgOrderValue ||
+    !totalSales ||
+    !totalOrders ||
+    !totalNewCustomers ||
+    !totalAvgOrderValue
+  )
     return <PageLoader />;
 
   return (
@@ -102,7 +133,12 @@ export function DashboardPage() {
             </PopoverContent>
           </Popover>
 
-          <DashboardCharts totalSales={totalSales} ordersCount={totalOrders} />
+          <DashboardCharts
+            totalSales={totalSales}
+            ordersCount={totalOrders}
+            newCustomers={totalNewCustomers}
+            avgOrderValue={totalAvgOrderValue}
+          />
 
           <div className="flex items-center gap-4">
             <div className="size-2 rounded-full bg-distinct" />
