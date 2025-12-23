@@ -8,6 +8,7 @@ export class MetricService {
 
   async getTotalSales(input: MetricInput): Promise<MetricResult> {
     const { startsAt, endsAt } = input;
+    console.log({ startsAt, endsAt });
 
     const rows = await this.ctx.trx.raw(
       `
@@ -31,8 +32,7 @@ export class MetricService {
     }));
 
     const total = metrics.reduce((acc, m) => acc + m.value, 0);
-
-    console.log({ metrics, total });
+    console.log(metrics);
 
     return { metrics, total };
   }

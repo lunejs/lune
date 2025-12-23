@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { UTCDate } from '@date-fns/utc';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { BookOpenIcon, CalendarRangeIcon, InboxIcon, PackageIcon } from 'lucide-react';
 import { Link } from 'react-router';
@@ -23,13 +24,13 @@ import { useGetTotalSales } from '../hooks/use-get-total-sales';
 
 export function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date())
+    from: startOfMonth(new UTCDate()),
+    to: endOfMonth(new UTCDate())
   });
 
   const { isLoadingTotalSales, refetch, totalSales } = useGetTotalSales({
-    startsAt: date?.from ?? startOfMonth(new Date()),
-    endsAt: date?.to ?? startOfMonth(new Date())
+    startsAt: date?.from ?? startOfMonth(new UTCDate()),
+    endsAt: date?.to ?? endOfMonth(new UTCDate())
   });
 
   useEffect(() => {

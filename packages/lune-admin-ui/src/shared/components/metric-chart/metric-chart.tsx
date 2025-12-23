@@ -1,3 +1,4 @@
+import { UTCDate } from '@date-fns/utc';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import type { Metric } from '@/lib/api/types';
@@ -27,7 +28,7 @@ export const MetricChart = ({ config, data }: Props) => {
           tickMargin={8}
           minTickGap={32}
           tickFormatter={value => {
-            const date = new Date(value);
+            const date = new UTCDate(value);
             return date.toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric'
@@ -39,7 +40,7 @@ export const MetricChart = ({ config, data }: Props) => {
           content={
             <ChartTooltipContent
               labelFormatter={value => {
-                return new Date(value).toLocaleDateString('en-US', {
+                return new UTCDate(value).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric'
                 });
