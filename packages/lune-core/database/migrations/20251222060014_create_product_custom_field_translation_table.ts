@@ -11,12 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     table.jsonb('value').nullable();
     table.string('locale', 10).notNullable();
 
-    table
-      .uuid('field_id')
-      .notNullable()
-      .references('id')
-      .inTable('product_custom_field')
-      .onDelete('CASCADE');
+    table.uuid('field_id').notNullable().references('id').inTable('product_custom_field');
 
     table
       .uuid('shop_id')

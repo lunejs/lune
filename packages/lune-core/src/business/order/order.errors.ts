@@ -75,7 +75,6 @@ export class DiscountCodeNotApplicable extends OrderErrorResult {
     super(OrderErrorCode.DiscountCodeNotApplicable, 'Discount code not applicable');
   }
 }
-
 /**
  * Error thrown when the discount handler is not found in lune config
  */

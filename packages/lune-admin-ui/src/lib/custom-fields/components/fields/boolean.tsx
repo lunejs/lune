@@ -13,7 +13,6 @@ export const BooleanCustomField = ({ definition, defaultValues, onChange }: Prop
 
         onChange(value?.value ? value?.value === 'true' : null);
       }}
-      inputProps={{ type: 'number' }}
     />
   );
 };

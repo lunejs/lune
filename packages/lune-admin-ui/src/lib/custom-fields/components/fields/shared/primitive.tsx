@@ -1,9 +1,12 @@
 import { type ComponentProps, useId, useState } from 'react';
-import { XIcon } from 'lucide-react';
+import { formatDate } from 'date-fns';
+import { CalendarIcon, XIcon } from 'lucide-react';
 
 import { isTruthy } from '@lune/common';
 import {
   Button,
+  Calendar,
+  cn,
   Input,
   Label,
   Popover,
@@ -27,7 +30,8 @@ export const PrimitiveCustomField = ({
   inputProps,
   mapOnSave,
   textarea,
-  bool
+  bool,
+  date
 }: Props) => {
   const id = useId();
 
@@ -73,14 +77,18 @@ export const PrimitiveCustomField = ({
                       )
                       .join(', ')
                       .replaceAll('\n', ' ')
-                  : persistedValue.map(v => v.value).join(', ')
+                  : date
+                    ? persistedValue
+                        .map(v => (v.value ? formatDate(v.value, 'PPP') : ''))
+                        .join(', ')
+                    : persistedValue.map(v => v.value).join(', ')
             }
             readOnly
             className="w-full shrink-0 text-start dark:group-hover:bg-input/50 group-hover:bg-muted"
           />
         </PopoverTrigger>
       </div>
-      <PopoverContent className="w-72" align="start">
+      <PopoverContent className="w-auto min-w-72" align="start">
         <div className="flex flex-col gap-2">
           <Label>{definition.name}</Label>
           {items.map(item => {
@@ -98,6 +106,30 @@ export const PrimitiveCustomField = ({
                       <SelectItem value={'false'}>False</SelectItem>
                     </SelectContent>
                   </Select>
+                ) : date ? (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'pl-3 text-left font-normal justify-between flex-1',
+                          !item.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {item.value ? formatDate(new Date(item.value), 'PPP') : <span>{''}</span>}
+                        <CalendarIcon size={16} className="opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        defaultMonth={item.value ? new Date(item.value) : new Date()}
+                        selected={item.value ? new Date(item.value) : new Date()}
+                        onSelect={date => update(item.id, date ? date.toISOString() : '')}
+                        className="h-81.25"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 ) : (
                   <Input
                     {...inputProps}
@@ -106,7 +138,12 @@ export const PrimitiveCustomField = ({
                   />
                 )}
                 {items.length > 1 && (
-                  <Button variant={'ghost'} size={'icon'} onClick={() => remove(item.id)}>
+                  <Button
+                    variant={'ghost'}
+                    size={'icon'}
+                    onClick={() => remove(item.id)}
+                    className="shrink-0"
+                  >
                     <XIcon />
                   </Button>
                 )}
@@ -131,5 +168,6 @@ type Props = {
   defaultValues?: string[];
   textarea?: boolean;
   bool?: boolean;
+  date?: boolean;
   mapOnSave?: (items: { id: string; value: string }) => { id: string; value: string };
 };

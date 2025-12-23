@@ -1,6 +1,7 @@
 import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
 import { BooleanCustomField } from './boolean';
+import { DateCustomField } from './date';
 import { DecimalCustomField } from './decimal';
 import { ImageCustomField } from './image';
 import { IntegerCustomField } from './integer';
@@ -52,6 +53,16 @@ export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.Boolean) {
     return (
       <BooleanCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
+  }
+
+  if (definition.type === CustomFieldType.Date) {
+    return (
+      <DateCustomField
         defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}

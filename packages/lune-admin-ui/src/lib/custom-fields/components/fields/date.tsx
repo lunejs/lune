@@ -2,23 +2,24 @@ import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
 import { PrimitiveCustomField } from './shared/primitive';
 
-export const MultiLineTextCustomField = ({ defaultValue, definition, onChange }: Props) => {
+export const DateCustomField = ({ definition, defaultValues, onChange }: Props) => {
   return (
     <PrimitiveCustomField
-      textarea
-      defaultValues={defaultValue ? [defaultValue] : ['']}
+      date
+      defaultValues={defaultValues}
       definition={definition}
       onChange={items => {
         const newValues = items.map(v => v.value);
 
-        onChange(newValues[0] ?? null);
+        if (definition.isList) onChange(newValues.length ? newValues : null);
+        else onChange(newValues[0] ?? null);
       }}
     />
   );
 };
 
 type Props = {
-  defaultValue?: string;
-  onChange: (value: null | string) => void;
+  defaultValues?: string[];
+  onChange: (value: null | string | string[]) => void;
   definition: CommonCustomFieldDefinitionFragment;
 };
