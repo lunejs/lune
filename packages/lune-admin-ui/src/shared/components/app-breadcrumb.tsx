@@ -124,6 +124,9 @@ const getBreadcrumbItems = (pathname: string, params: Record<string, unknown>, i
   if (pathname === `/orders/${id}`) {
     return [{ href: '/orders', label: 'Orders' }, { label: 'Order details' }];
   }
+  if (pathname === `/customers/${params.id}`) {
+    return [{ href: '/customers', label: 'Customers' }, { label: 'Customers details' }];
+  }
   if (pathname === `/settings/shipments/${id}`) {
     return [{ href: '/settings/shipments', label: 'Shipments' }, { label: 'Zone details' }];
   }

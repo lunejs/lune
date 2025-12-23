@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import type { DayButton } from 'react-day-picker';
+import type { DateRange as RDPDateRange, DayButton } from 'react-day-picker';
 import { DayPicker, getDefaultClassNames } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 
 import { Button, buttonVariants } from './button';
+
+export type DateRange = RDPDateRange;
 
 function Calendar({
   className,
