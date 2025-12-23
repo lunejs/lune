@@ -3,6 +3,7 @@ import request from 'supertest';
 import type { CustomFieldDefinitionTable } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
 import type { ProductCustomFieldTable } from '@/persistence/entities/product-custom-field';
+import type { ProductCustomFieldTranslationTable } from '@/persistence/entities/product-custom-field-translation';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -17,6 +18,10 @@ import {
   ProductCustomFieldConstants,
   ProductCustomFieldFixtures
 } from './fixtures/product-custom-field.fixtures';
+import {
+  ProductCustomFieldTranslationConstants,
+  ProductCustomFieldTranslationFixtures
+} from './fixtures/product-custom-field-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
@@ -32,7 +37,8 @@ describe('removeCustomFieldDefinition - Mutation', () => {
       new ShopFixtures(),
       new ProductFixtures(),
       new CustomFieldDefinitionFixtures(),
-      new ProductCustomFieldFixtures()
+      new ProductCustomFieldFixtures(),
+      new ProductCustomFieldTranslationFixtures()
     ]);
   });
 
@@ -130,6 +136,40 @@ describe('removeCustomFieldDefinition - Mutation', () => {
     expect(otherProductCustomField).toBeDefined();
   });
 
+  test('removes associated product custom field translations when definition is removed', async () => {
+    // Verify translation exists before removal
+    const prevTranslation = await getProductCustomFieldTranslation(
+      testHelper,
+      ProductCustomFieldTranslationConstants.TranslationToRemoveID
+    );
+    expect(prevTranslation).toBeDefined();
+
+    await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: REMOVE_CUSTOM_FIELD_DEFINITION_MUTATION,
+        variables: {
+          id: CustomFieldDefinitionConstants.ToRemoveID
+        }
+      });
+
+    // Translation should be removed
+    const afterTranslation = await getProductCustomFieldTranslation(
+      testHelper,
+      ProductCustomFieldTranslationConstants.TranslationToRemoveID
+    );
+    expect(afterTranslation).toBeUndefined();
+
+    // Other translations should not be affected
+    const otherTranslation = await getProductCustomFieldTranslation(
+      testHelper,
+      ProductCustomFieldTranslationConstants.AnotherTranslationID
+    );
+    expect(otherTranslation).toBeDefined();
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
@@ -160,6 +200,13 @@ const getCustomFieldDefinition = async (testHelper: TestUtils, id: ID) => {
 const getProductCustomField = async (testHelper: TestUtils, id: ID) => {
   return await testHelper
     .getQueryBuilder()<ProductCustomFieldTable>(Tables.ProductCustomField)
+    .where('id', id)
+    .first();
+};
+
+const getProductCustomFieldTranslation = async (testHelper: TestUtils, id: ID) => {
+  return await testHelper
+    .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
     .where('id', id)
     .first();
 };
