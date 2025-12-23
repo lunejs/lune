@@ -21,6 +21,7 @@ export const OrdersTable = ({ isRefetching, orders, totalRows, dataTable }: Prop
       filters={[
         {
           title: 'State',
+          defaultSelected: dataTable.filters.states,
           options: [
             { label: 'Placed', value: OrderState.Placed },
             { label: 'Processing', value: OrderState.Processing },

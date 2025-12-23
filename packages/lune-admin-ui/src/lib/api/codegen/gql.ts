@@ -79,7 +79,7 @@ type Documents = {
     "\n  fragment CommonListOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n": typeof types.CommonListOrderFragmentDoc,
     "\n  query GetOrderById($id: ID!) {\n    order(id: $id) {\n      ...CommonOrder\n    }\n  }\n": typeof types.GetOrderByIdDocument,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListOrder\n      }\n    }\n  }\n": typeof types.GetAllOrdersDocument,
-    "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": typeof types.CountOrdersDocument,
+    "\n  query CountOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n    }\n  }\n": typeof types.CountOrdersDocument,
     "\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsShippedDocument,
     "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsReadyForPickupDocument,
     "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": typeof types.MarkAsDeliveredDocument,
@@ -197,7 +197,7 @@ const documents: Documents = {
     "\n  fragment CommonListOrder on Order {\n    id\n    code\n    state\n    total\n    subtotal\n    totalQuantity\n    placedAt\n    customer {\n      id\n      firstName\n      lastName\n      email\n    }\n    lines {\n      count\n    }\n    fulfillment {\n      type\n    }\n  }\n": types.CommonListOrderFragmentDoc,
     "\n  query GetOrderById($id: ID!) {\n    order(id: $id) {\n      ...CommonOrder\n    }\n  }\n": types.GetOrderByIdDocument,
     "\n  query GetAllOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonListOrder\n      }\n    }\n  }\n": types.GetAllOrdersDocument,
-    "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n": types.CountOrdersDocument,
+    "\n  query CountOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n    }\n  }\n": types.CountOrdersDocument,
     "\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsShippedDocument,
     "\n  mutation MarkAsReadyForPickup($orderId: ID!) {\n    markOrderAsReadyForPickup(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsReadyForPickupDocument,
     "\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n": types.MarkAsDeliveredDocument,
@@ -527,7 +527,7 @@ export function graphql(source: "\n  query GetAllOrders($input: OrderListInput) 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n"): (typeof documents)["\n  query CountOrders {\n    orders {\n      count\n    }\n  }\n"];
+export function graphql(source: "\n  query CountOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n    }\n  }\n"): (typeof documents)["\n  query CountOrders($input: OrderListInput) {\n    orders(input: $input) {\n      count\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -14,9 +14,14 @@ import type { OrdersTableRow } from './orders-table';
 export const useOrdersTable = () => {
   const [searchParams] = useSearchParams();
 
+  const orderStateFilter = useMemo(
+    () => searchParams.get(OrderParamFiltersKeys.OrderState) as OrderState,
+    []
+  );
+
   const dataTable = useDataTable<OrderTableFilters>({
     search: '',
-    states: []
+    states: orderStateFilter ? [orderStateFilter] : []
   });
 
   const { filters, pagination } = dataTable;

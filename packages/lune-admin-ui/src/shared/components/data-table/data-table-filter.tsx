@@ -22,7 +22,7 @@ import {
 import type { DataTableFilter as DataTableFilterType } from './data-table';
 
 export const DataTableFilter = <TData,>({ filter, table }: Props<TData>) => {
-  const [selected, setSelected] = useState(new Set<string>());
+  const [selected, setSelected] = useState(new Set<string>(filter.defaultSelected));
 
   const updateFiltersSelection = (newFilters: Set<string>) => {
     setSelected(newFilters);

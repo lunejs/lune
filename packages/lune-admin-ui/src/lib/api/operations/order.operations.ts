@@ -178,8 +178,8 @@ export const GET_ALL_ORDERS_QUERY = graphql(`
 `);
 
 export const COUNT_ORDERS_QUERY = graphql(`
-  query CountOrders {
-    orders {
+  query CountOrders($input: OrderListInput) {
+    orders(input: $input) {
       count
     }
   }

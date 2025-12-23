@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { UTCDate } from '@date-fns/utc';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
-import { BookOpenIcon, CalendarRangeIcon, InboxIcon, PackageIcon } from 'lucide-react';
+import { BookOpenIcon, CalendarRangeIcon, InboxIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import {
@@ -16,7 +16,9 @@ import {
   Small
 } from '@lune/ui';
 
-import type { MetricResult } from '@/lib/api/types';
+import { type MetricResult, OrderState } from '@/lib/api/types';
+import { OrderParamFiltersKeys } from '@/lib/order/constants/param-filters-keys';
+import { useCountOrders } from '@/lib/order/hooks/use-count-orders';
 import { PageLayout } from '@/shared/components/layout/page-layout';
 import { PageLoader } from '@/shared/components/loader/page-loader';
 
@@ -47,6 +49,8 @@ export function DashboardPage() {
   const { totalNewCustomers, ...totalNewCustomersRes } = useGetTotalNewCustomers(input);
 
   const { totalAvgOrderValue, ...totalAvgOrderValueRes } = useGetTotalAvgOrderValue(input);
+
+  const { count } = useCountOrders({ filters: { states: [OrderState.Placed] } });
 
   useEffect(() => {
     totalSalesRes.refetch();
@@ -117,15 +121,19 @@ export function DashboardPage() {
             avgOrderValue={totalAvgOrderValue as MetricResult}
           />
 
-          <div className="flex items-center gap-4">
-            <div className="size-2 rounded-full bg-distinct" />
-            <Button size={'sm'} variant={'outline'}>
-              <InboxIcon /> 2 orders to fulfill
-            </Button>
-            <Button size={'sm'} variant={'outline'}>
+          {!!count && (
+            <div className="flex items-center gap-4">
+              <div className="size-2 rounded-full bg-distinct" />
+              <Link to={`/orders?${OrderParamFiltersKeys.OrderState}=${OrderState.Placed}`}>
+                <Button size={'sm'} variant={'outline'}>
+                  <InboxIcon /> {count === 1 ? '1 order to fulfill' : `${count} orders to fulfill`}
+                </Button>
+              </Link>
+              {/* <Button size={'sm'} variant={'outline'}>
               <PackageIcon /> 7 product with low stock
-            </Button>
-          </div>
+            </Button> */}
+            </div>
+          )}
         </main>
       </PageLayout>
     </>

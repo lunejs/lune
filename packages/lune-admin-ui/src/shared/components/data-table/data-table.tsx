@@ -110,4 +110,5 @@ export type DataTableFilter = {
   title: string;
   options: { label: string; value: string }[];
   onChange: (values: string[]) => void;
+  defaultSelected?: string[];
 };

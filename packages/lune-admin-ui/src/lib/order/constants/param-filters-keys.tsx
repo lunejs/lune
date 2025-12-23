@@ -1,3 +1,4 @@
 export const OrderParamFiltersKeys = {
-  CustomerEmail: 'customerEmail'
+  CustomerEmail: 'customerEmail',
+  OrderState: 'order_state'
 };
