@@ -1,5 +1,6 @@
 import request from 'supertest';
 
+import type { CollectionCustomFieldTable } from '@/persistence/entities/collection-custom-field';
 import type { CustomFieldDefinitionTable } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
 import type { ProductCustomFieldTable } from '@/persistence/entities/product-custom-field';
@@ -9,6 +10,11 @@ import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
+import { CollectionFixtures } from './fixtures/collection.fixtures';
+import {
+  CollectionCustomFieldConstants,
+  CollectionCustomFieldFixtures
+} from './fixtures/collection-custom-field.fixtures';
 import {
   CustomFieldDefinitionConstants,
   CustomFieldDefinitionFixtures
@@ -36,9 +42,11 @@ describe('removeCustomFieldDefinition - Mutation', () => {
       new UserFixtures(),
       new ShopFixtures(),
       new ProductFixtures(),
+      new CollectionFixtures(),
       new CustomFieldDefinitionFixtures(),
       new ProductCustomFieldFixtures(),
-      new ProductCustomFieldTranslationFixtures()
+      new ProductCustomFieldTranslationFixtures(),
+      new CollectionCustomFieldFixtures()
     ]);
   });
 
@@ -170,6 +178,40 @@ describe('removeCustomFieldDefinition - Mutation', () => {
     expect(otherTranslation).toBeDefined();
   });
 
+  test('removes associated collection custom fields when definition is removed', async () => {
+    // Verify collection custom field exists before removal
+    const prevCollectionCustomField = await getCollectionCustomField(
+      testHelper,
+      CollectionCustomFieldConstants.FieldToRemoveValueID
+    );
+    expect(prevCollectionCustomField).toBeDefined();
+
+    await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: REMOVE_CUSTOM_FIELD_DEFINITION_MUTATION,
+        variables: {
+          id: CustomFieldDefinitionConstants.CollectionFieldToRemoveID
+        }
+      });
+
+    // Collection custom field should be removed
+    const afterCollectionCustomField = await getCollectionCustomField(
+      testHelper,
+      CollectionCustomFieldConstants.FieldToRemoveValueID
+    );
+    expect(afterCollectionCustomField).toBeUndefined();
+
+    // Other collection custom fields should not be affected
+    const otherCollectionCustomField = await getCollectionCustomField(
+      testHelper,
+      CollectionCustomFieldConstants.AnotherFieldValueID
+    );
+    expect(otherCollectionCustomField).toBeDefined();
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app)
       .post('/admin-api')
@@ -207,6 +249,13 @@ const getProductCustomField = async (testHelper: TestUtils, id: ID) => {
 const getProductCustomFieldTranslation = async (testHelper: TestUtils, id: ID) => {
   return await testHelper
     .getQueryBuilder()<ProductCustomFieldTranslationTable>(Tables.ProductCustomFieldTranslation)
+    .where('id', id)
+    .first();
+};
+
+const getCollectionCustomField = async (testHelper: TestUtils, id: ID) => {
+  return await testHelper
+    .getQueryBuilder()<CollectionCustomFieldTable>(Tables.CollectionCustomField)
     .where('id', id)
     .first();
 };

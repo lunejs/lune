@@ -7,6 +7,7 @@ import type {
 import { getSlugBy } from '@/libs/slug';
 import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
+import type { CollectionCustomFieldRepository } from '@/persistence/repositories/collection-custom-field-repository';
 import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';
 import type { ProductCustomFieldRepository } from '@/persistence/repositories/product-custom-field-repository';
 
@@ -15,10 +16,12 @@ import { InvalidMetadataError, KeyAlreadyExistsError } from './custom-field-defi
 export class CustomFieldDefinitionService {
   private readonly repository: CustomFieldDefinitionRepository;
   private readonly productCustomFieldRepository: ProductCustomFieldRepository;
+  private readonly collectionCustomFieldRepository: CollectionCustomFieldRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.customFieldDefinition;
     this.productCustomFieldRepository = ctx.repositories.productCustomField;
+    this.collectionCustomFieldRepository = ctx.repositories.collectionCustomField;
   }
 
   async find(input?: CustomFieldDefinitionListInput) {
@@ -58,6 +61,7 @@ export class CustomFieldDefinitionService {
   }
 
   async remove(id: ID) {
+    await this.collectionCustomFieldRepository.remove({ where: { definitionId: id } });
     await this.productCustomFieldRepository.remove({ where: { definitionId: id } });
     await this.repository.remove({ where: { id } });
 

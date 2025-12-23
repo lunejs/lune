@@ -1,5 +1,6 @@
 import {
   type CustomFieldDefinitionTable,
+  CustomFieldAppliesTo,
   CustomFieldType
 } from '@/persistence/entities/custom-field-definition';
 import { Tables } from '@/persistence/tables';
@@ -10,7 +11,9 @@ import { ShopConstants } from './shop.fixtures';
 
 export const CustomFieldDefinitionConstants = {
   ToRemoveID: TestUtils.generateUUID(),
-  AnotherFieldID: TestUtils.generateUUID()
+  AnotherFieldID: TestUtils.generateUUID(),
+  CollectionFieldToRemoveID: TestUtils.generateUUID(),
+  AnotherCollectionFieldID: TestUtils.generateUUID()
 };
 
 export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinitionTable> {
@@ -23,7 +26,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         name: 'Field To Remove',
         key: 'field_to_remove',
         is_list: false,
-        applies_to_entity: 'product',
+        applies_to_entity: CustomFieldAppliesTo.Product,
         type: CustomFieldType.SingleLineText,
         metadata: null,
         shop_id: ShopConstants.ID
@@ -33,8 +36,28 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         name: 'Another Field',
         key: 'another_field',
         is_list: false,
-        applies_to_entity: 'product',
+        applies_to_entity: CustomFieldAppliesTo.Product,
         type: CustomFieldType.Integer,
+        metadata: null,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.CollectionFieldToRemoveID,
+        name: 'Collection Field To Remove',
+        key: 'collection_field_to_remove',
+        is_list: false,
+        applies_to_entity: CustomFieldAppliesTo.Collection,
+        type: CustomFieldType.SingleLineText,
+        metadata: null,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.AnotherCollectionFieldID,
+        name: 'Another Collection Field',
+        key: 'another_collection_field',
+        is_list: false,
+        applies_to_entity: CustomFieldAppliesTo.Collection,
+        type: CustomFieldType.SingleLineText,
         metadata: null,
         shop_id: ShopConstants.ID
       }
