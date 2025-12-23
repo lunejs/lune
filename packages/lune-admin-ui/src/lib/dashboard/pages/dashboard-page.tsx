@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { BookOpenIcon, CalendarRangeIcon, InboxIcon, PackageIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { LunePrice } from '@lune/common';
 import {
   Button,
   Calendar,
@@ -17,15 +16,27 @@ import {
 } from '@lune/ui';
 
 import { PageLayout } from '@/shared/components/layout/page-layout';
-import { StatsCard } from '@/shared/components/stats/stats-card';
+import { PageLoader } from '@/shared/components/loader/page-loader';
 
-import { ChartAreaInteractive } from '../components/chart';
+import { DashboardCharts } from '../components/charts/dashboard-charts';
+import { useGetTotalSales } from '../hooks/use-get-total-sales';
 
 export function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
     to: endOfMonth(new Date())
   });
+
+  const { isLoadingTotalSales, refetch, totalSales } = useGetTotalSales({
+    startsAt: date?.from ?? startOfMonth(new Date()),
+    endsAt: date?.to ?? startOfMonth(new Date())
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [date]);
+
+  if (isLoadingTotalSales || !totalSales) return <PageLoader />;
 
   return (
     <>
@@ -74,16 +85,7 @@ export function DashboardPage() {
             </PopoverContent>
           </Popover>
 
-          <StatsCard
-            stats={[
-              { title: 'Total sales', value: LunePrice.format(609440) },
-              { title: 'Orders', value: 7 },
-              { title: 'New customers', value: 18 },
-              { title: 'Avg order value', value: LunePrice.format(125200) }
-            ]}
-          />
-
-          <ChartAreaInteractive />
+          <DashboardCharts totalSales={totalSales} ordersCount={{ metrics: [], total: 0 }} />
 
           <div className="flex items-center gap-4">
             <div className="size-2 rounded-full bg-distinct" />

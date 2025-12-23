@@ -66,6 +66,7 @@ type Documents = {
     "\n  mutation UpdateLocation($id: ID!, $input: UpdateLocationInput!) {\n    updateLocation(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      location {\n        id\n      }\n    }\n  }\n": typeof types.UpdateLocationDocument,
     "\n  mutation RemoveLocation($id: ID!) {\n    removeLocation(id: $id)\n  }\n": typeof types.RemoveLocationDocument,
     "\n  mutation UpdateInStorePickupPreferences(\n    $locationId: ID!\n    $input: UpdateInStorePickupPreferencesInput!\n  ) {\n    updateInStorePickupPreferences(locationId: $locationId, input: $input) {\n      id\n    }\n  }\n": typeof types.UpdateInStorePickupPreferencesDocument,
+    "\n  query totalSales($input: MetricInput!) {\n    totalSales(input: $input) {\n      total\n      metrics {\n        key\n        value\n      }\n    }\n  }\n": typeof types.TotalSalesDocument,
     "\n  fragment CommonOptionPreset on OptionPreset {\n    id\n    name\n    values {\n      items {\n        id\n        name\n        metadata\n      }\n    }\n  }\n": typeof types.CommonOptionPresetFragmentDoc,
     "\n  query GetAllOptionPresets($input: ListInput) {\n    optionPresets(input: $input) {\n      items {\n        ...CommonOptionPreset\n      }\n    }\n  }\n": typeof types.GetAllOptionPresetsDocument,
     "\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": typeof types.CreateOptionDocument,
@@ -180,6 +181,7 @@ const documents: Documents = {
     "\n  mutation UpdateLocation($id: ID!, $input: UpdateLocationInput!) {\n    updateLocation(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      location {\n        id\n      }\n    }\n  }\n": types.UpdateLocationDocument,
     "\n  mutation RemoveLocation($id: ID!) {\n    removeLocation(id: $id)\n  }\n": types.RemoveLocationDocument,
     "\n  mutation UpdateInStorePickupPreferences(\n    $locationId: ID!\n    $input: UpdateInStorePickupPreferencesInput!\n  ) {\n    updateInStorePickupPreferences(locationId: $locationId, input: $input) {\n      id\n    }\n  }\n": types.UpdateInStorePickupPreferencesDocument,
+    "\n  query totalSales($input: MetricInput!) {\n    totalSales(input: $input) {\n      total\n      metrics {\n        key\n        value\n      }\n    }\n  }\n": types.TotalSalesDocument,
     "\n  fragment CommonOptionPreset on OptionPreset {\n    id\n    name\n    values {\n      items {\n        id\n        name\n        metadata\n      }\n    }\n  }\n": types.CommonOptionPresetFragmentDoc,
     "\n  query GetAllOptionPresets($input: ListInput) {\n    optionPresets(input: $input) {\n      items {\n        ...CommonOptionPreset\n      }\n    }\n  }\n": types.GetAllOptionPresetsDocument,
     "\n  mutation CreateOption($productId: ID!, $input: [CreateOptionInput!]!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n": types.CreateOptionDocument,
@@ -464,6 +466,10 @@ export function graphql(source: "\n  mutation RemoveLocation($id: ID!) {\n    re
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateInStorePickupPreferences(\n    $locationId: ID!\n    $input: UpdateInStorePickupPreferencesInput!\n  ) {\n    updateInStorePickupPreferences(locationId: $locationId, input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateInStorePickupPreferences(\n    $locationId: ID!\n    $input: UpdateInStorePickupPreferencesInput!\n  ) {\n    updateInStorePickupPreferences(locationId: $locationId, input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query totalSales($input: MetricInput!) {\n    totalSales(input: $input) {\n      total\n      metrics {\n        key\n        value\n      }\n    }\n  }\n"): (typeof documents)["\n  query totalSales($input: MetricInput!) {\n    totalSales(input: $input) {\n      total\n      metrics {\n        key\n        value\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

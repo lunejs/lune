@@ -3,9 +3,9 @@ import type { FC, ReactNode } from 'react';
 import { isFirst } from '@lune/common';
 import { Card, CardContent, cn, Muted, P } from '@lune/ui';
 
-export const StatsCard: FC<Props> = ({ stats }) => {
+export const StatsCard: FC<Props> = ({ stats, className }) => {
   return (
-    <Card className="py-0">
+    <Card className={cn('py-0', className)}>
       <CardContent>
         <div className="flex divide-x items-center">
           {stats.map((stat, i) => (
@@ -25,4 +25,5 @@ export const StatsCard: FC<Props> = ({ stats }) => {
 
 type Props = {
   stats: { title: string; value: ReactNode }[];
+  className?: string;
 };
