@@ -7,7 +7,15 @@ import { TestUtils } from '@/tests/utils/test-utils';
 import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
 import { CollectionAssetFixtures } from './fixtures/collection-assets.fixtures';
+import {
+  CollectionCustomFieldConstants,
+  CollectionCustomFieldFixtures
+} from './fixtures/collection-custom-field.fixtures';
 import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
+import {
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -26,7 +34,9 @@ describe('updateCollection - Mutation', () => {
       new ProductFixtures(),
       new AssetFixtures(),
       new CollectionProductFixtures(),
-      new CollectionAssetFixtures()
+      new CollectionAssetFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new CollectionCustomFieldFixtures()
     ]);
   });
 
@@ -333,6 +343,106 @@ describe('updateCollection - Mutation', () => {
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('add new custom fields to collection', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_COLLECTION_MUTATION,
+        variables: {
+          id: CollectionConstants.JoelCollection,
+          input: {
+            customFields: [
+              {
+                id: CustomFieldDefinitionConstants.BannerTextID,
+                value: 'New Banner'
+              },
+              {
+                id: CustomFieldDefinitionConstants.PromotionLabelID,
+                value: '25% OFF'
+              }
+            ]
+          }
+        }
+      });
+
+    const { updateCollection } = res.body.data;
+
+    expect(updateCollection.id).toBe(CollectionConstants.JoelCollection);
+    expect(updateCollection.customFieldEntries).toHaveLength(2);
+
+    const bannerField = updateCollection.customFieldEntries.find(
+      (cf: { definition: { key: string } }) =>
+        cf.definition.key === CustomFieldDefinitionConstants.BannerTextKey
+    );
+    const promoField = updateCollection.customFieldEntries.find(
+      (cf: { definition: { key: string } }) =>
+        cf.definition.key === CustomFieldDefinitionConstants.PromotionLabelKey
+    );
+
+    expect(bannerField.value).toBe('New Banner');
+    expect(promoField.value).toBe('25% OFF');
+  });
+
+  test('update existing custom field value', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_COLLECTION_MUTATION,
+        variables: {
+          id: CollectionConstants.EllieCollection,
+          input: {
+            customFields: [
+              {
+                id: CustomFieldDefinitionConstants.BannerTextID,
+                value: 'Updated Banner Text'
+              }
+            ]
+          }
+        }
+      });
+
+    const { updateCollection } = res.body.data;
+
+    expect(updateCollection.id).toBe(CollectionConstants.EllieCollection);
+    expect(updateCollection.customFieldEntries).toHaveLength(1);
+
+    const bannerField = updateCollection.customFieldEntries.find(
+      (cf: { id: string }) => cf.id === CollectionCustomFieldConstants.ExistingBannerTextFieldID
+    );
+
+    expect(bannerField.value).toBe('Updated Banner Text');
+  });
+
+  test('set null custom field value removes the field', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_COLLECTION_MUTATION,
+        variables: {
+          id: CollectionConstants.EllieCollection,
+          input: {
+            customFields: [
+              {
+                id: CustomFieldDefinitionConstants.BannerTextID,
+                value: null
+              }
+            ]
+          }
+        }
+      });
+
+    const { updateCollection } = res.body.data;
+
+    expect(updateCollection.id).toBe(CollectionConstants.EllieCollection);
+    expect(updateCollection.customFieldEntries).toHaveLength(0);
+  });
 });
 
 const UPDATE_COLLECTION_MUTATION = /* GraphQL */ `
@@ -346,6 +456,13 @@ const UPDATE_COLLECTION_MUTATION = /* GraphQL */ `
       description
       enabled
       contentType
+      customFieldEntries {
+        id
+        value
+        definition {
+          key
+        }
+      }
       assets {
         count
         items {

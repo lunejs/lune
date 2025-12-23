@@ -9,6 +9,10 @@ import { AssetConstants, AssetFixtures } from './fixtures/asset.fixtures';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
 import { CollectionAssetFixtures } from './fixtures/collection-assets.fixtures';
 import { CollectionProductFixtures } from './fixtures/collection-product.fixtures';
+import {
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -27,7 +31,8 @@ describe('createProduct - Mutation', () => {
       new ProductFixtures(),
       new AssetFixtures(),
       new CollectionProductFixtures(),
-      new CollectionAssetFixtures()
+      new CollectionAssetFixtures(),
+      new CustomFieldDefinitionFixtures()
     ]);
   });
 
@@ -294,6 +299,48 @@ describe('createProduct - Mutation', () => {
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('creates a collection with custom fields', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_COLLECTION_MUTATION,
+        variables: {
+          input: {
+            name: 'Summer Sale',
+            customFields: [
+              {
+                id: CustomFieldDefinitionConstants.BannerTextID,
+                value: 'Hot Summer Deals'
+              },
+              {
+                id: CustomFieldDefinitionConstants.PromotionLabelID,
+                value: '50% OFF'
+              }
+            ]
+          }
+        }
+      });
+
+    const { createCollection } = res.body.data;
+    expect(createCollection.id).toBeDefined();
+
+    expect(createCollection.customFieldEntries).toHaveLength(2);
+
+    const bannerField = createCollection.customFieldEntries.find(
+      (cf: { definition: { key: string } }) =>
+        cf.definition.key === CustomFieldDefinitionConstants.BannerTextKey
+    );
+    const promoField = createCollection.customFieldEntries.find(
+      (cf: { definition: { key: string } }) =>
+        cf.definition.key === CustomFieldDefinitionConstants.PromotionLabelKey
+    );
+
+    expect(bannerField.value).toBe('Hot Summer Deals');
+    expect(promoField.value).toBe('50% OFF');
+  });
 });
 
 const CREATE_COLLECTION_MUTATION = /* GraphQL */ `
@@ -307,6 +354,13 @@ const CREATE_COLLECTION_MUTATION = /* GraphQL */ `
       description
       enabled
       contentType
+      customFieldEntries {
+        id
+        value
+        definition {
+          key
+        }
+      }
       assets {
         count
         items {
