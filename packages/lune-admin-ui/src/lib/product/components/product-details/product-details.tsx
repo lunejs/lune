@@ -1,13 +1,12 @@
-import { isArray } from '@lune/common';
-import { Card, CardContent, CardHeader, CardTitle, Form } from '@lune/ui';
+import { Form } from '@lune/ui';
 
 import type { CommonCustomFieldDefinitionFragment, CommonProductFragment } from '@/lib/api/types';
-import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
 
 import { GeneralProductCard } from './cards/general-product-card';
 import { PricingProductCard } from './cards/pricing-product-card';
 import { StatusProductCard } from './cards/status-product-card';
 import { StockProductCard } from './cards/stock-product-card';
+import { ProductCustomFields } from './custom-fields/product-custom-fields';
 import { ProductDetailsHeader } from './header/product-details-header';
 import { ShippingProductCard } from './shipping/shipping-product-card';
 import { useProductDetailsForm } from './use-form/use-product-details-form';
@@ -34,37 +33,9 @@ export const ProductDetails = ({ customFields, product }: Props) => {
             <VariantContextProvider product={product ?? undefined}>
               <ProductVariants />
             </VariantContextProvider>
-            {customFields.length && (
-              <Card>
-                <CardHeader className="flex">
-                  <CardTitle>Custom fields</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-4">
-                  {customFields.map(cf => {
-                    const entry = product?.customFieldEntries.find(e => e.definition.id === cf.id);
 
-                    const defaultValue = entry
-                      ? isArray(entry?.value)
-                        ? entry.value
-                        : [entry?.value]
-                      : undefined;
-
-                    return (
-                      <CustomField
-                        key={cf.id}
-                        definition={cf}
-                        defaultValues={defaultValue}
-                        onChange={(definition, value) =>
-                          form.setValue('customFields', {
-                            ...form.getValues('customFields'),
-                            [definition.id]: value
-                          })
-                        }
-                      />
-                    );
-                  })}
-                </CardContent>
-              </Card>
+            {!!customFields.length && (
+              <ProductCustomFields product={product} customFieldDefinitions={customFields} />
             )}
           </div>
           <div className="col-span-2 flex flex-col gap-6 w-full">

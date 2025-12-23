@@ -144,7 +144,6 @@ type Props = {
 };
 
 // TODO:
-// Add date custom field
 // Add money custom field
 // Add custom fields to collections
 // Add custom fields to customers
