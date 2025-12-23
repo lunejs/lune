@@ -10,8 +10,15 @@ async function totalSales(_, { input }: QueryTotalSalesArgs, ctx: ExecutionConte
   return metricService.getTotalSales(input);
 }
 
+async function totalOrders(_, { input }: QueryTotalSalesArgs, ctx: ExecutionContext) {
+  const metricService = new MetricService(ctx);
+
+  return metricService.getTotalOrders(input);
+}
+
 export const MetricResolver: GraphqlApiResolver = {
   Query: {
-    totalSales: UseUserGuard(totalSales)
+    totalSales: UseUserGuard(totalSales),
+    totalOrders: UseUserGuard(totalOrders)
   }
 };

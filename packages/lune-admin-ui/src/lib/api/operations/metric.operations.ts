@@ -11,3 +11,15 @@ export const GET_TOTAL_SALES_QUERY = graphql(`
     }
   }
 `);
+
+export const GET_TOTAL_ORDERS_QUERY = graphql(`
+  query GetTotalOrder($input: MetricInput!) {
+    totalOrders(input: $input) {
+      total
+      metrics {
+        key
+        value
+      }
+    }
+  }
+`);

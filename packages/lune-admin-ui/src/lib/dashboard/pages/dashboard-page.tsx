@@ -20,6 +20,7 @@ import { PageLayout } from '@/shared/components/layout/page-layout';
 import { PageLoader } from '@/shared/components/loader/page-loader';
 
 import { DashboardCharts } from '../components/charts/dashboard-charts';
+import { useGetTotalOrders } from '../hooks/use-get-total-orders';
 import { useGetTotalSales } from '../hooks/use-get-total-sales';
 
 export function DashboardPage() {
@@ -28,16 +29,31 @@ export function DashboardPage() {
     to: endOfMonth(new UTCDate())
   });
 
-  const { isLoadingTotalSales, refetch, totalSales } = useGetTotalSales({
+  const {
+    isLoadingTotalSales,
+    refetch: refetchTotalSales,
+    totalSales
+  } = useGetTotalSales({
+    startsAt: date?.from ?? startOfMonth(new UTCDate()),
+    endsAt: date?.to ?? endOfMonth(new UTCDate())
+  });
+
+  const {
+    isLoadingTotalOrders,
+    refetch: refetchTotalOrders,
+    totalOrders
+  } = useGetTotalOrders({
     startsAt: date?.from ?? startOfMonth(new UTCDate()),
     endsAt: date?.to ?? endOfMonth(new UTCDate())
   });
 
   useEffect(() => {
-    refetch();
+    refetchTotalSales();
+    refetchTotalOrders();
   }, [date]);
 
-  if (isLoadingTotalSales || !totalSales) return <PageLoader />;
+  if (isLoadingTotalSales || isLoadingTotalOrders || !totalSales || !totalOrders)
+    return <PageLoader />;
 
   return (
     <>
@@ -86,7 +102,7 @@ export function DashboardPage() {
             </PopoverContent>
           </Popover>
 
-          <DashboardCharts totalSales={totalSales} ordersCount={{ metrics: [], total: 0 }} />
+          <DashboardCharts totalSales={totalSales} ordersCount={totalOrders} />
 
           <div className="flex items-center gap-4">
             <div className="size-2 rounded-full bg-distinct" />
