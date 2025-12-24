@@ -1,0 +1,80 @@
+"""
+Represents a custom object definition that can be used to create custom entities
+"""
+type CustomObjectDefinition {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Name of the custom object definition
+  """
+  name: String!
+  """
+  A unique and readable identifier for the custom object definition
+  """
+  slug: String!
+}
+
+type CustomObjectDefinitionList {
+  items: [CustomObjectDefinition!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+input CustomObjectDefinitionListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  Takes n results from where the skip position is
+  """
+  take: Int
+
+  filters: CustomObjectDefinitionFilters
+}
+
+input CustomObjectDefinitionFilters {
+  name: StringFilter
+}
+
+type Query {
+  customObjectDefinition(id: ID!): CustomObjectDefinition
+  customObjectDefinitions(input: CustomObjectDefinitionListInput): CustomObjectDefinitionList!
+}
+
+type Mutation {
+  createCustomObjectDefinition(
+    input: CreateCustomObjectDefinitionInput!
+  ): CustomObjectDefinitionResult!
+
+  updateCustomObjectDefinition(
+    id: ID!
+    input: UpdateCustomObjectDefinitionInput!
+  ): CustomObjectDefinitionResult!
+
+  removeCustomObjectDefinition(id: ID!): Boolean!
+}
+
+input CreateCustomObjectDefinitionInput {
+  name: String!
+}
+
+input UpdateCustomObjectDefinitionInput {
+  name: String
+}
+
+type CustomObjectDefinitionResult {
+  customObjectDefinition: CustomObjectDefinition
+  apiErrors: [CustomObjectDefinitionErrorResult!]!
+}
+
+type CustomObjectDefinitionErrorResult {
+  code: CustomObjectDefinitionErrorCode!
+  message: String!
+}
+
+enum CustomObjectDefinitionErrorCode {
+  SLUG_ALREADY_EXISTS
+}
