@@ -12,6 +12,13 @@ export async function up(knex: Knex): Promise<void> {
     table.string('key').notNullable();
 
     table
+      .uuid('display_field_id')
+      .nullable()
+      .references('id')
+      .inTable('custom_field_definition')
+      .onDelete('SET NULL');
+
+    table
       .uuid('shop_id')
       .notNullable()
       .defaultTo(knex.raw(`(current_setting('app.current_shop_id'::text))::uuid`))

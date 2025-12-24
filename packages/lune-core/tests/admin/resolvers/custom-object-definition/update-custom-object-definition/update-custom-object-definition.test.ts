@@ -153,6 +153,58 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(fieldInDb.name).toBe('New Title');
   });
 
+  test('updates displayFieldId by displayFieldName', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          id: CustomObjectDefinitionConstants.FirstID,
+          input: {
+            displayFieldName: 'Title'
+          }
+        }
+      });
+
+    const {
+      updateCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition.displayFieldId).toBe(CustomFieldDefinitionConstants.TitleFieldID);
+
+    const inDb = await q(Tables.CustomObjectDefinition)
+      .where({ id: CustomObjectDefinitionConstants.FirstID })
+      .first();
+
+    expect(inDb.display_field_id).toBe(CustomFieldDefinitionConstants.TitleFieldID);
+  });
+
+  test('keeps displayFieldId unchanged when displayFieldName does not match any field', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          id: CustomObjectDefinitionConstants.FirstID,
+          input: {
+            displayFieldName: 'NonExistent'
+          }
+        }
+      });
+
+    const {
+      updateCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition.displayFieldId).toBeNull();
+  });
+
   test('returns KEY_ALREADY_EXISTS error when updating to duplicate key', async () => {
     const res = await request(app)
       .post('/admin-api')
@@ -207,6 +259,7 @@ const UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         updatedAt
         name
         key
+        displayFieldId
       }
     }
   }

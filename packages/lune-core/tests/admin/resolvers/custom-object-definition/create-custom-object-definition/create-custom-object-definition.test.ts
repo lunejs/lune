@@ -33,7 +33,7 @@ describe('createCustomObjectDefinition - Mutation', () => {
     await luneServer.teardown();
   });
 
-  test('creates a custom object definition', async () => {
+  test('creates a custom object definition with display field', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -42,7 +42,16 @@ describe('createCustomObjectDefinition - Mutation', () => {
         query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
         variables: {
           input: {
-            name: 'Blog Post'
+            name: 'Blog Post',
+            displayFieldName: 'Title',
+            fields: [
+              {
+                name: 'Title',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              }
+            ]
           }
         }
       });
@@ -56,6 +65,7 @@ describe('createCustomObjectDefinition - Mutation', () => {
       name: 'Blog Post',
       key: 'blog_post'
     });
+    expect(customObjectDefinition.displayFieldId).not.toBeNull();
 
     const inDb = await q(Tables.CustomObjectDefinition)
       .where({ id: customObjectDefinition.id })
@@ -63,9 +73,10 @@ describe('createCustomObjectDefinition - Mutation', () => {
 
     expect(inDb.name).toBe('Blog Post');
     expect(inDb.key).toBe('blog_post');
+    expect(inDb.display_field_id).not.toBeNull();
   });
 
-  test('creates a custom object definition with fields', async () => {
+  test('creates a custom object definition with multiple fields', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -75,6 +86,7 @@ describe('createCustomObjectDefinition - Mutation', () => {
         variables: {
           input: {
             name: 'FAQ',
+            displayFieldName: 'Question',
             fields: [
               {
                 name: 'Question',
@@ -109,6 +121,40 @@ describe('createCustomObjectDefinition - Mutation', () => {
 
     expect(fieldsInDb).toHaveLength(2);
     expect(fieldsInDb.map(f => f.name)).toEqual(expect.arrayContaining(['Question', 'Answer']));
+
+    const displayField = fieldsInDb.find(f => f.id === customObjectDefinition.displayFieldId);
+    expect(displayField?.name).toBe('Question');
+  });
+
+  test('leaves displayFieldId null when displayFieldName does not match any field', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'Test Object',
+            displayFieldName: 'NonExistent',
+            fields: [
+              {
+                name: 'Title',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              }
+            ]
+          }
+        }
+      });
+
+    const {
+      createCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition.displayFieldId).toBeNull();
   });
 
   test('returns KEY_ALREADY_EXISTS error when creating with duplicate key', async () => {
@@ -120,7 +166,16 @@ describe('createCustomObjectDefinition - Mutation', () => {
         query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
         variables: {
           input: {
-            name: 'Existing Object'
+            name: 'Existing Object',
+            displayFieldName: 'Title',
+            fields: [
+              {
+                name: 'Title',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              }
+            ]
           }
         }
       });
@@ -141,7 +196,16 @@ describe('createCustomObjectDefinition - Mutation', () => {
         query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
         variables: {
           input: {
-            name: 'No Auth Object'
+            name: 'No Auth Object',
+            displayFieldName: 'Title',
+            fields: [
+              {
+                name: 'Title',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              }
+            ]
           }
         }
       });
@@ -163,6 +227,7 @@ const CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         updatedAt
         name
         key
+        displayFieldId
       }
     }
   }

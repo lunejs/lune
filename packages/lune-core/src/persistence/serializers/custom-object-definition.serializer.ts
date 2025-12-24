@@ -15,7 +15,8 @@ export class CustomObjectDefinitionSerializer extends Serializer<
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
       ['name', 'name'],
-      ['key', 'key']
+      ['key', 'key'],
+      ['display_field_id', 'displayFieldId']
     ]);
   }
 }

@@ -13,6 +13,10 @@ type CustomObjectDefinition {
   A unique and readable identifier for the custom object definition
   """
   key: String!
+  """
+  The ID of the field used as display field for entries
+  """
+  displayFieldId: ID
 }
 
 type CustomObjectDefinitionList {
@@ -59,11 +63,13 @@ type Mutation {
 
 input CreateCustomObjectDefinitionInput {
   name: String!
+  displayFieldName: String!
   fields: [CreateCustomFieldInput!]
 }
 
 input UpdateCustomObjectDefinitionInput {
   name: String
+  displayFieldName: String
   fields: [UpdateCustomObjectFieldInput!]
 }
 
