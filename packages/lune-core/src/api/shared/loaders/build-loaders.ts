@@ -13,6 +13,7 @@ import { createCollectionCustomFieldsLoader } from './collection/collection-cust
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
+import { createCustomObjectDefinitionFieldsLoader } from './custom-object-definition/custom-object-definition-fields.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
 import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
@@ -122,6 +123,9 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     customer: {
       orders: createCustomerOrdersLoader(trx),
       totalSpent: createCustomerTotalSpentLoader(trx)
+    },
+    customObjectDefinition: {
+      fields: createCustomObjectDefinitionFieldsLoader(trx)
     }
   };
 };

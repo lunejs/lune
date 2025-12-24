@@ -17,6 +17,10 @@ type CustomObjectDefinition {
   The ID of the field used as display field for entries
   """
   displayFieldId: ID
+  """
+  The fields that belong to this custom object definition
+  """
+  fields: [CustomFieldDefinition!]!
 }
 
 type CustomObjectDefinitionList {

@@ -92,7 +92,7 @@ describe('updateCustomObjectDefinition - Mutation', () => {
               {
                 id: CustomFieldDefinitionConstants.ContentFieldID,
                 name: 'Updated Content',
-                order: 0
+                order: 1
               }
             ]
           }
@@ -106,17 +106,15 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(customObjectDefinition).not.toBeNull();
 
-    const fieldsInDb = await q(Tables.CustomFieldDefinition).whereIn('id', [
-      CustomFieldDefinitionConstants.TitleFieldID,
-      CustomFieldDefinitionConstants.ContentFieldID
-    ]);
+    const titleField = customObjectDefinition.fields.find(
+      f => f.id === CustomFieldDefinitionConstants.TitleFieldID
+    );
+    const contentField = customObjectDefinition.fields.find(
+      f => f.id === CustomFieldDefinitionConstants.ContentFieldID
+    );
 
-    expect(fieldsInDb.find(f => f.id === CustomFieldDefinitionConstants.TitleFieldID).name).toBe(
-      'Updated Title'
-    );
-    expect(fieldsInDb.find(f => f.id === CustomFieldDefinitionConstants.ContentFieldID).name).toBe(
-      'Updated Content'
-    );
+    expect(titleField.name).toBe('Updated Title');
+    expect(contentField.name).toBe('Updated Content');
   });
 
   test('updates both name and fields', async () => {
@@ -149,11 +147,10 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(customObjectDefinition.name).toBe('Updated Blog');
     expect(customObjectDefinition.key).toBe('updated_blog');
 
-    const fieldInDb = await q(Tables.CustomFieldDefinition)
-      .where({ id: CustomFieldDefinitionConstants.TitleFieldID })
-      .first();
-
-    expect(fieldInDb.name).toBe('New Title');
+    const titleField = customObjectDefinition.fields.find(
+      f => f.id === CustomFieldDefinitionConstants.TitleFieldID
+    );
+    expect(titleField.name).toBe('New Title');
   });
 
   test('updates displayFieldId by displayFieldName', async () => {
@@ -245,13 +242,9 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(customObjectDefinition).not.toBeNull();
 
-    const fieldsInDb = await q(Tables.CustomFieldDefinition).where({
-      custom_object_definition_id: CustomObjectDefinitionConstants.FirstID
-    });
-
-    const newFieldNames = fieldsInDb.map(f => f.name);
-    expect(newFieldNames).toContain('Author');
-    expect(newFieldNames).toContain('Published Date');
+    const fieldNames = customObjectDefinition.fields.map(f => f.name);
+    expect(fieldNames).toContain('Author');
+    expect(fieldNames).toContain('Published Date');
   });
 
   test('returns KEY_ALREADY_EXISTS error when updating to duplicate key', async () => {
@@ -309,6 +302,11 @@ const UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         name
         key
         displayFieldId
+        fields {
+          id
+          name
+          order
+        }
       }
     }
   }

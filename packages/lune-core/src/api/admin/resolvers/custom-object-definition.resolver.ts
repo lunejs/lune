@@ -10,6 +10,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomObjectDefinitionService } from '@/business/custom-object-definition/custom-object-definition.service';
+import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
 import { isErrorResult } from '@/utils/error-result';
 
 async function customObjectDefinitions(
@@ -84,5 +85,10 @@ export const CustomObjectDefinitionResolver: GraphqlApiResolver = {
     createCustomObjectDefinition: UseUserGuard(createCustomObjectDefinition),
     updateCustomObjectDefinition: UseUserGuard(updateCustomObjectDefinition),
     removeCustomObjectDefinition: UseUserGuard(removeCustomObjectDefinition)
+  },
+  CustomObjectDefinition: {
+    fields: (parent: CustomObjectDefinition, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customObjectDefinition.fields.load(parent.id);
+    }
   }
 };

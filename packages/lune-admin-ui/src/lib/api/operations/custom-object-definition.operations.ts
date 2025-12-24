@@ -8,6 +8,18 @@ export const COMMON_CUSTOM_OBJECT_DEFINITION_FRAGMENT = graphql(`
     name
     key
     displayFieldId
+    fields {
+      id
+      createdAt
+      updatedAt
+      name
+      key
+      isList
+      appliesToEntity
+      type
+      metadata
+      order
+    }
   }
 `);
 

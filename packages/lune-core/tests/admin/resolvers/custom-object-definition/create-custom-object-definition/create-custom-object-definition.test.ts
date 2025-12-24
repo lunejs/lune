@@ -118,14 +118,12 @@ describe('createCustomObjectDefinition - Mutation', () => {
       key: 'faq'
     });
 
-    const fieldsInDb = await q(Tables.CustomFieldDefinition).where({
-      custom_object_definition_id: customObjectDefinition.id
-    });
+    expect(customObjectDefinition.fields).toHaveLength(2);
+    expect(customObjectDefinition.fields.map(f => f.name)).toEqual(['Question', 'Answer']);
 
-    expect(fieldsInDb).toHaveLength(2);
-    expect(fieldsInDb.map(f => f.name)).toEqual(expect.arrayContaining(['Question', 'Answer']));
-
-    const displayField = fieldsInDb.find(f => f.id === customObjectDefinition.displayFieldId);
+    const displayField = customObjectDefinition.fields.find(
+      f => f.id === customObjectDefinition.displayFieldId
+    );
     expect(displayField?.name).toBe('Question');
   });
 
@@ -234,6 +232,11 @@ const CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         name
         key
         displayFieldId
+        fields {
+          id
+          name
+          order
+        }
       }
     }
   }
