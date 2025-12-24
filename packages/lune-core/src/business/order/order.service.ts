@@ -1,5 +1,3 @@
-import { subDays } from 'date-fns';
-
 import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
@@ -752,7 +750,6 @@ export class OrderService {
       data: {
         state: OrderState.Placed,
         code: orderCode,
-        // placedAt: subDays(new Date(), Math.floor(Math.random() * (22 - 1 + 1)) + 1)
         placedAt: new Date()
       }
     });
