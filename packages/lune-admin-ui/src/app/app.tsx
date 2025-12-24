@@ -14,6 +14,7 @@ import { CustomFieldsPage } from '@/lib/custom-fields/pages/custom-fields-page';
 import { EntityCustomFieldsPage } from '@/lib/custom-fields/pages/entity-custom-fields-page';
 import { NewCustomFieldPage } from '@/lib/custom-fields/pages/new-custom-fields-page';
 import { CustomObjectsPage } from '@/lib/custom-object-definition/pages/custom-objects-page';
+import { NewCustomObjectPage } from '@/lib/custom-object-definition/pages/new-custom-object-page';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';
@@ -148,6 +149,7 @@ export const App = ({ config }: Props) => {
                     />
 
                     <Route path="/settings/custom-objects" element={<CustomObjectsPage />} />
+                    <Route path="/settings/custom-objects/new" element={<NewCustomObjectPage />} />
                   </Route>
                   <Route path="/" element={<DashboardPage />} />
                 </Route>

@@ -1,0 +1,32 @@
+import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lune/ui';
+
+import { useCustomObjectFormContext } from '../use-form/use-form';
+
+export const CustomObjectGeneralCard = () => {
+  const form = useCustomObjectFormContext();
+
+  const name = form.watch('name');
+
+  return (
+    <Card>
+      <CardHeader className="flex">
+        <CardTitle>General</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div>
+          <FormInput
+            control={form.control}
+            name="name"
+            label="Name"
+            // Replace with slugify in @lune/common
+            description={
+              form.definition
+                ? form.definition.key
+                : name && `key: ${name.replaceAll(' ', '_').toLowerCase()}`
+            }
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
