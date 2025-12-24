@@ -8,6 +8,7 @@ import { CollectionRepository } from './collection-repository';
 import { CollectionTranslationRepository } from './collection-translation-repository';
 import { CountryRepository } from './country-repository';
 import { CustomFieldDefinitionRepository } from './custom-field-definition-repository';
+import { CustomObjectDefinitionRepository } from './custom-object-definition-repository';
 import { CustomerAuthMethodRepository } from './customer-auth-method-repository';
 import { CustomerRepository } from './customer-repository';
 import { DiscountRepository } from './discount-repository';
@@ -83,6 +84,7 @@ export function buildRepositories(trx: Transaction) {
     orderDiscount: new OrderDiscountRepository(trx),
     optionPreset: new OptionPresetRepository(trx),
     customFieldDefinition: new CustomFieldDefinitionRepository(trx),
+    customObjectDefinition: new CustomObjectDefinitionRepository(trx),
     productCustomField: new ProductCustomFieldRepository(trx),
     productCustomFieldTranslation: new ProductCustomFieldTranslationRepository(trx)
   };

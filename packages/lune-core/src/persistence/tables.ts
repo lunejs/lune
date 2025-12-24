@@ -44,6 +44,7 @@ export const enum Tables {
   OrderDiscount = 'order_discount',
   CustomerAuthMethod = 'customer_auth_method',
   CustomFieldDefinition = 'custom_field_definition',
+  CustomObjectDefinition = 'custom_object_definition',
   ProductCustomField = 'product_custom_field',
   ProductCustomFieldTranslation = 'product_custom_field_translation',
   CollectionCustomField = 'collection_custom_field',
