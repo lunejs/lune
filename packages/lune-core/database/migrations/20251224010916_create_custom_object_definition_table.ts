@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
     table.string('name').notNullable();
-    table.string('slug').notNullable();
+    table.string('key').notNullable();
 
     table
       .uuid('shop_id')

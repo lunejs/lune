@@ -5,6 +5,6 @@ export const DefaultCustomObjectDefinitionFixture = (): CustomObjectDefinitionTa
   created_at: new Date(),
   updated_at: new Date(),
   name: 'Default Custom Object',
-  slug: 'default_custom_object',
+  key: 'default_custom_object',
   shop_id: crypto.randomUUID()
 });

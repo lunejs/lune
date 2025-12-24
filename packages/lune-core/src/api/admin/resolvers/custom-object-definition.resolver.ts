@@ -19,7 +19,10 @@ async function customObjectDefinitions(
 ) {
   const service = new CustomObjectDefinitionService(ctx);
 
-  const [definitions, count] = await Promise.all([service.find(input ?? {}), service.count()]);
+  const [definitions, count] = await Promise.all([
+    service.find(input ?? {}),
+    service.count(input?.filters)
+  ]);
 
   return new ListResponse(definitions, definitions.length, { total: count });
 }

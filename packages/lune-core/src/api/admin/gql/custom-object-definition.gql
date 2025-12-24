@@ -12,7 +12,7 @@ type CustomObjectDefinition {
   """
   A unique and readable identifier for the custom object definition
   """
-  slug: String!
+  key: String!
 }
 
 type CustomObjectDefinitionList {
@@ -76,5 +76,5 @@ type CustomObjectDefinitionErrorResult {
 }
 
 enum CustomObjectDefinitionErrorCode {
-  SLUG_ALREADY_EXISTS
+  KEY_ALREADY_EXISTS
 }

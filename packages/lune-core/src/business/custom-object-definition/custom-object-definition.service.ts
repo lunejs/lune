@@ -10,7 +10,7 @@ import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { CustomObjectDefinitionRepository } from '@/persistence/repositories/custom-object-definition-repository';
 
-import { SlugAlreadyExistsError } from './custom-object-definition.errors';
+import { KeyAlreadyExistsError } from './custom-object-definition.errors';
 
 export class CustomObjectDefinitionService {
   private readonly repository: CustomObjectDefinitionRepository;
@@ -20,14 +20,11 @@ export class CustomObjectDefinitionService {
   }
 
   async find(input?: CustomObjectDefinitionListInput) {
-    return await this.repository.findMany({
-      skip: input?.skip ?? undefined,
-      take: input?.take ?? undefined
-    });
+    return await this.repository.findByFilters(input ?? {});
   }
 
-  async count() {
-    return await this.repository.count({});
+  async count(filters?: CustomObjectDefinitionListInput['filters']) {
+    return await this.repository.countByFilters(filters);
   }
 
   async findUnique(id: ID) {
@@ -35,31 +32,31 @@ export class CustomObjectDefinitionService {
   }
 
   async create(input: CreateCustomObjectDefinitionInput) {
-    const slug = this.generateSlug(input.name);
+    const key = this.generateKey(input.name);
 
-    const slugAlreadyExists = await this.repository.count({ where: { slug } });
-    if (slugAlreadyExists) return new SlugAlreadyExistsError(slug);
+    const keyAlreadyExists = await this.repository.count({ where: { key } });
+    if (keyAlreadyExists) return new KeyAlreadyExistsError(key);
 
     return await this.repository.create({
       name: input.name,
-      slug
+      key
     });
   }
 
   async update(id: ID, input: UpdateCustomObjectDefinitionInput) {
     if (input.name) {
-      const slug = this.generateSlug(input.name);
+      const key = this.generateKey(input.name);
 
-      const existing = await this.repository.findOne({ where: { slug } });
+      const existing = await this.repository.findOne({ where: { key } });
       if (existing && existing.id !== id) {
-        return new SlugAlreadyExistsError(slug);
+        return new KeyAlreadyExistsError(key);
       }
 
       return this.repository.update({
         where: { id },
         data: {
           ...clean(input),
-          slug
+          key
         }
       });
     }
@@ -75,7 +72,7 @@ export class CustomObjectDefinitionService {
     return true;
   }
 
-  private generateSlug(name: string) {
+  private generateKey(name: string) {
     return getSlugBy(name, { replacement: '_' });
   }
 }

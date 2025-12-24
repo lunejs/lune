@@ -8,10 +8,10 @@ export abstract class CustomObjectDefinitionErrorResult extends ErrorResult<Cust
 }
 
 /**
- * Error thrown when slug already exists
+ * Error thrown when key already exists
  */
-export class SlugAlreadyExistsError extends CustomObjectDefinitionErrorResult {
-  constructor(slug: string) {
-    super(CustomObjectDefinitionErrorCode.SlugAlreadyExists, `slug "${slug}" already exists`);
+export class KeyAlreadyExistsError extends CustomObjectDefinitionErrorResult {
+  constructor(key: string) {
+    super(CustomObjectDefinitionErrorCode.KeyAlreadyExists, `key "${key}" already exists`);
   }
 }

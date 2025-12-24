@@ -507,21 +507,25 @@ export type CustomObjectDefinition = {
   __typename?: 'CustomObjectDefinition';
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
+  /** A unique and readable identifier for the custom object definition */
+  key: Scalars['String']['output'];
   /** Name of the custom object definition */
   name: Scalars['String']['output'];
-  /** A unique and readable identifier for the custom object definition */
-  slug: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
 export enum CustomObjectDefinitionErrorCode {
-  SlugAlreadyExists = 'SLUG_ALREADY_EXISTS'
+  KeyAlreadyExists = 'KEY_ALREADY_EXISTS'
 }
 
 export type CustomObjectDefinitionErrorResult = {
   __typename?: 'CustomObjectDefinitionErrorResult';
   code: CustomObjectDefinitionErrorCode;
   message: Scalars['String']['output'];
+};
+
+export type CustomObjectDefinitionFilters = {
+  name?: InputMaybe<StringFilter>;
 };
 
 export type CustomObjectDefinitionList = {
@@ -532,6 +536,7 @@ export type CustomObjectDefinitionList = {
 };
 
 export type CustomObjectDefinitionListInput = {
+  filters?: InputMaybe<CustomObjectDefinitionFilters>;
   /** Skip the first n results */
   skip?: InputMaybe<Scalars['Int']['input']>;
   /** Takes n results from where the skip position is */
@@ -2752,6 +2757,7 @@ export type ResolversTypes = {
   CustomObjectDefinition: ResolverTypeWrapper<CustomObjectDefinition>;
   CustomObjectDefinitionErrorCode: CustomObjectDefinitionErrorCode;
   CustomObjectDefinitionErrorResult: ResolverTypeWrapper<CustomObjectDefinitionErrorResult>;
+  CustomObjectDefinitionFilters: CustomObjectDefinitionFilters;
   CustomObjectDefinitionList: ResolverTypeWrapper<CustomObjectDefinitionList>;
   CustomObjectDefinitionListInput: CustomObjectDefinitionListInput;
   CustomObjectDefinitionResult: ResolverTypeWrapper<CustomObjectDefinitionResult>;
@@ -2963,6 +2969,7 @@ export type ResolversParentTypes = {
   CustomFieldValue: CustomFieldValue;
   CustomObjectDefinition: CustomObjectDefinition;
   CustomObjectDefinitionErrorResult: CustomObjectDefinitionErrorResult;
+  CustomObjectDefinitionFilters: CustomObjectDefinitionFilters;
   CustomObjectDefinitionList: CustomObjectDefinitionList;
   CustomObjectDefinitionListInput: CustomObjectDefinitionListInput;
   CustomObjectDefinitionResult: CustomObjectDefinitionResult;
@@ -3263,8 +3270,8 @@ export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DA
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
