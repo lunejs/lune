@@ -86,11 +86,13 @@ describe('updateCustomObjectDefinition - Mutation', () => {
             fields: [
               {
                 id: CustomFieldDefinitionConstants.TitleFieldID,
-                name: 'Updated Title'
+                name: 'Updated Title',
+                order: 0
               },
               {
                 id: CustomFieldDefinitionConstants.ContentFieldID,
-                name: 'Updated Content'
+                name: 'Updated Content',
+                order: 0
               }
             ]
           }
@@ -131,7 +133,8 @@ describe('updateCustomObjectDefinition - Mutation', () => {
             fields: [
               {
                 id: CustomFieldDefinitionConstants.TitleFieldID,
-                name: 'New Title'
+                name: 'New Title',
+                order: 0
               }
             ]
           }
@@ -220,13 +223,15 @@ describe('updateCustomObjectDefinition - Mutation', () => {
                 name: 'Author',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 2
               },
               {
                 name: 'Published Date',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'DATE'
+                type: 'DATE',
+                order: 3
               }
             ]
           }

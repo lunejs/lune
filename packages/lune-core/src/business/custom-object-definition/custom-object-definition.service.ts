@@ -119,7 +119,7 @@ export class CustomObjectDefinitionService {
       fields.map(field =>
         this.customFieldDefinitionRepository.update({
           where: { id: field.id },
-          data: { name: field.name }
+          data: { name: field.name, order: field.order }
         })
       )
     );
@@ -140,6 +140,7 @@ export class CustomObjectDefinitionService {
           appliesToEntity: field.appliesToEntity,
           type: field.type as CustomFieldType,
           metadata: field.metadata ?? null,
+          order: field.order,
           customObjectDefinitionId
         })
       )

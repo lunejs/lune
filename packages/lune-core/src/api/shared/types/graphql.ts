@@ -308,6 +308,7 @@ export type CreateCustomFieldInput = {
   isList: Scalars['Boolean']['input'];
   metadata?: InputMaybe<Scalars['JSON']['input']>;
   name: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
   type: CustomFieldType;
 };
 
@@ -454,6 +455,8 @@ export type CustomFieldDefinition = {
   metadata?: Maybe<Scalars['JSON']['output']>;
   /** Name of the definition */
   name: Scalars['String']['output'];
+  /** Order of the field in the custom object definition */
+  order: Scalars['Int']['output'];
   /** Type of the definition */
   type: CustomFieldType;
   updatedAt: Scalars['Date']['output'];
@@ -2385,6 +2388,7 @@ export type UpdateCollectionInput = {
 
 export type UpdateCustomFieldInput = {
   name: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
 };
 
 export type UpdateCustomObjectDefinitionInput = {
@@ -2397,6 +2401,7 @@ export type UpdateCustomObjectDefinitionInput = {
 export type UpdateCustomObjectFieldInput = {
   id: Scalars['ID']['input'];
   name: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
 };
 
 export type UpdateCustomerInput = {
@@ -3255,6 +3260,7 @@ export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, Paren
   key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CustomFieldType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -48,6 +48,10 @@ type CustomFieldDefinition {
   """
   type: CustomFieldType!
   metadata: JSON
+  """
+  Order of the field in the custom object definition
+  """
+  order: Int!
 }
 
 type CustomFieldDefinitionList {
@@ -94,10 +98,12 @@ input CreateCustomFieldInput {
   appliesToEntity: CustomFieldAppliesToEntity!
   type: CustomFieldType!
   metadata: JSON
+  order: Int!
 }
 
 input UpdateCustomFieldInput {
   name: String!
+  order: Int!
 }
 
 type CustomFieldDefinitionResult {

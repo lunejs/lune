@@ -14,5 +14,6 @@ export const DefaultCustomFieldDefinitionFixture = (): CustomFieldDefinitionTabl
   type: CustomFieldType.SingleLineText,
   metadata: null,
   custom_object_definition_id: null,
+  order: 0,
   shop_id: crypto.randomUUID()
 });

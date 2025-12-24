@@ -42,6 +42,8 @@ type BaseCustomFieldDefinition = LuneEntity & {
   type: string;
   /** ID of the custom object definition this field belongs to */
   customObjectDefinitionId?: ID | null;
+  /** Order of the field in the custom object definition */
+  order: number;
 };
 
 type SingleLineTextCustomField = BaseCustomFieldDefinition & {
@@ -111,5 +113,6 @@ export interface CustomFieldDefinitionTable extends LuneTable {
   type: CustomFieldType;
   metadata?: Record<string, unknown> | null;
   custom_object_definition_id?: ID | null;
+  order: number;
   shop_id: ID;
 }

@@ -77,6 +77,7 @@ input UpdateCustomObjectDefinitionInput {
 input UpdateCustomObjectFieldInput {
   id: ID!
   name: String!
+  order: Int!
 }
 
 type CustomObjectDefinitionResult {

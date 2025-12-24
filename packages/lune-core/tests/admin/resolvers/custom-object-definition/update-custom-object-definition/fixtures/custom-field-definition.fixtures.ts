@@ -27,6 +27,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: 'product',
         type: CustomFieldType.SingleLineText,
         metadata: null,
+        order: 0,
         custom_object_definition_id: CustomObjectDefinitionConstants.FirstID,
         shop_id: ShopConstants.ID
       },
@@ -38,6 +39,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: 'product',
         type: CustomFieldType.MultiLineText,
         metadata: null,
+        order: 1,
         custom_object_definition_id: CustomObjectDefinitionConstants.FirstID,
         shop_id: ShopConstants.ID
       }

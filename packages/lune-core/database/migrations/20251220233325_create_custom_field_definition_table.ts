@@ -13,6 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.boolean('is_list').notNullable().defaultTo(false);
     table.string('applies_to_entity').notNullable();
     table.string('type').notNullable();
+    table.integer('order').notNullable();
     table.jsonb('metadata').nullable();
 
     table

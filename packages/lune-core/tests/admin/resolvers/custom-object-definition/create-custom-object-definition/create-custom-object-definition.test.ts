@@ -49,7 +49,8 @@ describe('createCustomObjectDefinition - Mutation', () => {
                 name: 'Title',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 0
               }
             ]
           }
@@ -92,13 +93,15 @@ describe('createCustomObjectDefinition - Mutation', () => {
                 name: 'Question',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 0
               },
               {
                 name: 'Answer',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'MULTI_LINE_TEXT'
+                type: 'MULTI_LINE_TEXT',
+                order: 1
               }
             ]
           }
@@ -142,7 +145,8 @@ describe('createCustomObjectDefinition - Mutation', () => {
                 name: 'Title',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 0
               }
             ]
           }
@@ -173,7 +177,8 @@ describe('createCustomObjectDefinition - Mutation', () => {
                 name: 'Title',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 0
               }
             ]
           }
@@ -203,7 +208,8 @@ describe('createCustomObjectDefinition - Mutation', () => {
                 name: 'Title',
                 isList: false,
                 appliesToEntity: 'PRODUCT',
-                type: 'SINGLE_LINE_TEXT'
+                type: 'SINGLE_LINE_TEXT',
+                order: 0
               }
             ]
           }

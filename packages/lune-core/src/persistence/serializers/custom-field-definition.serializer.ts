@@ -20,7 +20,8 @@ export class CustomFieldDefinitionSerializer extends Serializer<
       ['applies_to_entity', 'appliesToEntity'],
       ['type', 'type'],
       ['metadata', 'metadata'],
-      ['custom_object_definition_id', 'customObjectDefinitionId']
+      ['custom_object_definition_id', 'customObjectDefinitionId'],
+      ['order', 'order']
     ]);
   }
 }
