@@ -312,6 +312,7 @@ export type CreateCustomFieldInput = {
 };
 
 export type CreateCustomObjectDefinitionInput = {
+  fields?: InputMaybe<Array<CreateCustomFieldInput>>;
   name: Scalars['String']['input'];
 };
 
@@ -2384,7 +2385,13 @@ export type UpdateCustomFieldInput = {
 };
 
 export type UpdateCustomObjectDefinitionInput = {
+  fields?: InputMaybe<Array<UpdateCustomObjectFieldInput>>;
   name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCustomObjectFieldInput = {
+  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type UpdateCustomerInput = {
@@ -2886,6 +2893,7 @@ export type ResolversTypes = {
   UpdateCollectionInput: UpdateCollectionInput;
   UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomObjectDefinitionInput: UpdateCustomObjectDefinitionInput;
+  UpdateCustomObjectFieldInput: UpdateCustomObjectFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;
@@ -3083,6 +3091,7 @@ export type ResolversParentTypes = {
   UpdateCollectionInput: UpdateCollectionInput;
   UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomObjectDefinitionInput: UpdateCustomObjectDefinitionInput;
+  UpdateCustomObjectFieldInput: UpdateCustomObjectFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
   UpdateInStorePickupPreferencesInput: UpdateInStorePickupPreferencesInput;

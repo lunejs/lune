@@ -59,10 +59,17 @@ type Mutation {
 
 input CreateCustomObjectDefinitionInput {
   name: String!
+  fields: [CreateCustomFieldInput!]
 }
 
 input UpdateCustomObjectDefinitionInput {
   name: String
+  fields: [UpdateCustomObjectFieldInput!]
+}
+
+input UpdateCustomObjectFieldInput {
+  id: ID!
+  name: String!
 }
 
 type CustomObjectDefinitionResult {

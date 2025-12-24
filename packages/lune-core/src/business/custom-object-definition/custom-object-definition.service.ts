@@ -1,22 +1,27 @@
-import { clean } from '@lune/common';
-
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
+  CreateCustomFieldInput,
   CreateCustomObjectDefinitionInput,
   CustomObjectDefinitionListInput,
-  UpdateCustomObjectDefinitionInput
+  UpdateCustomObjectDefinitionInput,
+  UpdateCustomObjectFieldInput
 } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
+import type { CustomFieldType } from '@/persistence/entities/custom-field-definition';
+import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
 import type { ID } from '@/persistence/entities/entity';
+import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';
 import type { CustomObjectDefinitionRepository } from '@/persistence/repositories/custom-object-definition-repository';
 
 import { KeyAlreadyExistsError } from './custom-object-definition.errors';
 
 export class CustomObjectDefinitionService {
   private readonly repository: CustomObjectDefinitionRepository;
+  private readonly customFieldDefinitionRepository: CustomFieldDefinitionRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.customObjectDefinition;
+    this.customFieldDefinitionRepository = ctx.repositories.customFieldDefinition;
   }
 
   async find(input?: CustomObjectDefinitionListInput) {
@@ -37,13 +42,21 @@ export class CustomObjectDefinitionService {
     const keyAlreadyExists = await this.repository.count({ where: { key } });
     if (keyAlreadyExists) return new KeyAlreadyExistsError(key);
 
-    return await this.repository.create({
+    const customObjectDefinition = await this.repository.create({
       name: input.name,
       key
     });
+
+    if (input.fields?.length) {
+      await this.createFields(customObjectDefinition.id, input.fields);
+    }
+
+    return customObjectDefinition;
   }
 
   async update(id: ID, input: UpdateCustomObjectDefinitionInput) {
+    let customObjectDefinition: CustomObjectDefinition;
+
     if (input.name) {
       const key = this.generateKey(input.name);
 
@@ -52,24 +65,51 @@ export class CustomObjectDefinitionService {
         return new KeyAlreadyExistsError(key);
       }
 
-      return this.repository.update({
+      customObjectDefinition = await this.repository.update({
         where: { id },
-        data: {
-          ...clean(input),
-          key
-        }
+        data: { name: input.name, key }
       });
+    } else {
+      customObjectDefinition = await this.repository.findOneOrThrow({ where: { id } });
     }
 
-    return this.repository.update({
-      where: { id },
-      data: clean(input)
-    });
+    if (input.fields?.length) {
+      await this.updateFields(input.fields);
+    }
+
+    return customObjectDefinition;
+  }
+
+  private async updateFields(fields: UpdateCustomObjectFieldInput[]) {
+    await Promise.all(
+      fields.map(field =>
+        this.customFieldDefinitionRepository.update({
+          where: { id: field.id },
+          data: { name: field.name }
+        })
+      )
+    );
   }
 
   async remove(id: ID) {
     await this.repository.remove({ where: { id } });
     return true;
+  }
+
+  private async createFields(customObjectDefinitionId: ID, fields: CreateCustomFieldInput[]) {
+    await Promise.all(
+      fields.map(field =>
+        this.customFieldDefinitionRepository.create({
+          name: field.name,
+          key: this.generateKey(field.name),
+          isList: field.isList,
+          appliesToEntity: field.appliesToEntity,
+          type: field.type as CustomFieldType,
+          metadata: field.metadata ?? null,
+          customObjectDefinitionId
+        })
+      )
+    );
   }
 
   private generateKey(name: string) {
