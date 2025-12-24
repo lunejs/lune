@@ -2391,6 +2391,7 @@ export type UpdateCustomObjectDefinitionInput = {
   displayFieldName?: InputMaybe<Scalars['String']['input']>;
   fields?: InputMaybe<Array<UpdateCustomObjectFieldInput>>;
   name?: InputMaybe<Scalars['String']['input']>;
+  newFields?: InputMaybe<Array<CreateCustomFieldInput>>;
 };
 
 export type UpdateCustomObjectFieldInput = {

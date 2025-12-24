@@ -205,6 +205,50 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(customObjectDefinition.displayFieldId).toBeNull();
   });
 
+  test('creates new fields when newFields is provided', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          id: CustomObjectDefinitionConstants.FirstID,
+          input: {
+            newFields: [
+              {
+                name: 'Author',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              },
+              {
+                name: 'Published Date',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'DATE'
+              }
+            ]
+          }
+        }
+      });
+
+    const {
+      updateCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition).not.toBeNull();
+
+    const fieldsInDb = await q(Tables.CustomFieldDefinition).where({
+      custom_object_definition_id: CustomObjectDefinitionConstants.FirstID
+    });
+
+    const newFieldNames = fieldsInDb.map(f => f.name);
+    expect(newFieldNames).toContain('Author');
+    expect(newFieldNames).toContain('Published Date');
+  });
+
   test('returns KEY_ALREADY_EXISTS error when updating to duplicate key', async () => {
     const res = await request(app)
       .post('/admin-api')

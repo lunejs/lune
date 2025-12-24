@@ -71,6 +71,7 @@ input UpdateCustomObjectDefinitionInput {
   name: String
   displayFieldName: String
   fields: [UpdateCustomObjectFieldInput!]
+  newFields: [CreateCustomFieldInput!]
 }
 
 input UpdateCustomObjectFieldInput {

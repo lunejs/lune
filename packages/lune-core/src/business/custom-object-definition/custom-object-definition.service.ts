@@ -91,6 +91,10 @@ export class CustomObjectDefinitionService {
       await this.updateFields(input.fields);
     }
 
+    if (input.newFields?.length) {
+      await this.createFields(id, input.newFields);
+    }
+
     if (input.displayFieldName) {
       const displayField = await this.customFieldDefinitionRepository.findOne({
         where: {
