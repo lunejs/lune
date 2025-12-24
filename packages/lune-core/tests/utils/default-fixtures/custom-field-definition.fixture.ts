@@ -13,5 +13,6 @@ export const DefaultCustomFieldDefinitionFixture = (): CustomFieldDefinitionTabl
   applies_to_entity: 'PRODUCT',
   type: CustomFieldType.SingleLineText,
   metadata: null,
+  custom_object_definition_id: null,
   shop_id: crypto.randomUUID()
 });

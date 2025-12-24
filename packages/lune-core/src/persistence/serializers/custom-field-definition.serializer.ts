@@ -19,7 +19,8 @@ export class CustomFieldDefinitionSerializer extends Serializer<
       ['is_list', 'isList'],
       ['applies_to_entity', 'appliesToEntity'],
       ['type', 'type'],
-      ['metadata', 'metadata']
+      ['metadata', 'metadata'],
+      ['custom_object_definition_id', 'customObjectDefinitionId']
     ]);
   }
 }

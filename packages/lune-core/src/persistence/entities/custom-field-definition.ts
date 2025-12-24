@@ -40,6 +40,8 @@ type BaseCustomFieldDefinition = LuneEntity & {
   appliesToEntity: CustomFieldAppliesTo;
   /** Type of the definition, @type {CustomFieldType} */
   type: string;
+  /** ID of the custom object definition this field belongs to */
+  customObjectDefinitionId?: ID | null;
 };
 
 type SingleLineTextCustomField = BaseCustomFieldDefinition & {
@@ -108,5 +110,6 @@ export interface CustomFieldDefinitionTable extends LuneTable {
   applies_to_entity: string;
   type: CustomFieldType;
   metadata?: Record<string, unknown> | null;
+  custom_object_definition_id?: ID | null;
   shop_id: ID;
 }
