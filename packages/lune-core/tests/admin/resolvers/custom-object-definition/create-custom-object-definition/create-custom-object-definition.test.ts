@@ -1,0 +1,169 @@
+import request from 'supertest';
+
+import { Tables } from '@/persistence/tables';
+import { LuneServer } from '@/server';
+import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
+import { TestUtils } from '@/tests/utils/test-utils';
+
+import { CustomObjectDefinitionFixtures } from './fixtures/custom-object-definition.fixtures';
+import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
+import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
+
+describe('createCustomObjectDefinition - Mutation', () => {
+  const testHelper = new TestUtils();
+  const q = testHelper.getQueryBuilder();
+
+  const luneServer = new LuneServer(TEST_LUNE_CONFIG);
+  const app = luneServer.getApp();
+
+  beforeEach(async () => {
+    await testHelper.loadFixtures([
+      new UserFixtures(),
+      new ShopFixtures(),
+      new CustomObjectDefinitionFixtures()
+    ]);
+  });
+
+  afterEach(async () => {
+    await testHelper.resetDatabase();
+  });
+
+  afterAll(async () => {
+    await testHelper.destroyDatabase();
+    await luneServer.teardown();
+  });
+
+  test('creates a custom object definition', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'Blog Post'
+          }
+        }
+      });
+
+    const {
+      createCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition).toMatchObject({
+      name: 'Blog Post',
+      key: 'blog_post'
+    });
+
+    const inDb = await q(Tables.CustomObjectDefinition)
+      .where({ id: customObjectDefinition.id })
+      .first();
+
+    expect(inDb.name).toBe('Blog Post');
+    expect(inDb.key).toBe('blog_post');
+  });
+
+  test('creates a custom object definition with fields', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'FAQ',
+            fields: [
+              {
+                name: 'Question',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'SINGLE_LINE_TEXT'
+              },
+              {
+                name: 'Answer',
+                isList: false,
+                appliesToEntity: 'PRODUCT',
+                type: 'MULTI_LINE_TEXT'
+              }
+            ]
+          }
+        }
+      });
+
+    const {
+      createCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customObjectDefinition).toMatchObject({
+      name: 'FAQ',
+      key: 'faq'
+    });
+
+    const fieldsInDb = await q(Tables.CustomFieldDefinition).where({
+      custom_object_definition_id: customObjectDefinition.id
+    });
+
+    expect(fieldsInDb).toHaveLength(2);
+    expect(fieldsInDb.map(f => f.name)).toEqual(expect.arrayContaining(['Question', 'Answer']));
+  });
+
+  test('returns KEY_ALREADY_EXISTS error when creating with duplicate key', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'Existing Object'
+          }
+        }
+      });
+
+    const {
+      createCustomObjectDefinition: { customObjectDefinition, apiErrors }
+    } = res.body.data;
+    const [error] = apiErrors;
+
+    expect(error.code).toBe('KEY_ALREADY_EXISTS');
+    expect(customObjectDefinition).toBeNull();
+  });
+
+  test('returns Authorization error when no token is provided', async () => {
+    const response = await request(app)
+      .post('/admin-api')
+      .send({
+        query: CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'No Auth Object'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+});
+
+const CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
+  mutation CreateCustomObjectDefinition($input: CreateCustomObjectDefinitionInput!) {
+    createCustomObjectDefinition(input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      customObjectDefinition {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+      }
+    }
+  }
+`;
