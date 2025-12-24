@@ -114,6 +114,11 @@ export class CustomObjectDefinitionService {
     return customObjectDefinition;
   }
 
+  async remove(id: ID) {
+    await this.repository.remove({ where: { id } });
+    return true;
+  }
+
   private async updateFields(fields: UpdateCustomObjectFieldInput[]) {
     await Promise.all(
       fields.map(field =>
@@ -123,11 +128,6 @@ export class CustomObjectDefinitionService {
         })
       )
     );
-  }
-
-  async remove(id: ID) {
-    await this.repository.remove({ where: { id } });
-    return true;
   }
 
   private async createFields(customObjectDefinitionId: ID, fields: CreateCustomFieldInput[]) {

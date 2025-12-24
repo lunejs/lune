@@ -45,7 +45,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             name: 'Short Description',
             isList: false,
             appliesToEntity: 'PRODUCT',
-            type: 'SINGLE_LINE_TEXT'
+            type: 'SINGLE_LINE_TEXT',
+            order: 0
           }
         }
       });
@@ -61,7 +62,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
       isList: false,
       appliesToEntity: 'PRODUCT',
       type: 'SINGLE_LINE_TEXT',
-      metadata: null
+      metadata: null,
+      order: 0
     });
 
     const inDb = await q(Tables.CustomFieldDefinition)
@@ -70,6 +72,7 @@ describe('createCustomFieldDefinition - Mutation', () => {
 
     expect(inDb.type).toBe('single_line_text');
     expect(inDb.applies_to_entity).toBe('product');
+    expect(inDb.order).toBe(0);
   });
 
   test('creates a reference custom field with metadata', async () => {
@@ -85,7 +88,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             isList: true,
             appliesToEntity: 'PRODUCT',
             type: 'REFERENCE',
-            metadata: { targetEntity: 'product' }
+            metadata: { targetEntity: 'product' },
+            order: 1
           }
         }
       });
@@ -101,7 +105,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
       isList: true,
       appliesToEntity: 'PRODUCT',
       type: 'REFERENCE',
-      metadata: { targetEntity: 'product' }
+      metadata: { targetEntity: 'product' },
+      order: 1
     });
   });
 
@@ -117,7 +122,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             name: 'Tags List',
             isList: true,
             appliesToEntity: 'PRODUCT',
-            type: 'SINGLE_LINE_TEXT'
+            type: 'SINGLE_LINE_TEXT',
+            order: 2
           }
         }
       });
@@ -132,7 +138,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
       key: 'tags_list',
       isList: true,
       appliesToEntity: 'PRODUCT',
-      type: 'SINGLE_LINE_TEXT'
+      type: 'SINGLE_LINE_TEXT',
+      order: 2
     });
   });
 
@@ -148,7 +155,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             name: 'Existing Field',
             isList: false,
             appliesToEntity: 'PRODUCT',
-            type: 'SINGLE_LINE_TEXT'
+            type: 'SINGLE_LINE_TEXT',
+            order: 0
           }
         }
       });
@@ -175,7 +183,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             isList: false,
             appliesToEntity: 'PRODUCT',
             type: 'REFERENCE',
-            metadata: null
+            metadata: null,
+            order: 0
           }
         }
       });
@@ -199,7 +208,8 @@ describe('createCustomFieldDefinition - Mutation', () => {
             name: 'No Auth Field',
             isList: false,
             appliesToEntity: 'PRODUCT',
-            type: 'SINGLE_LINE_TEXT'
+            type: 'SINGLE_LINE_TEXT',
+            order: 0
           }
         }
       });
@@ -225,6 +235,7 @@ const CREATE_CUSTOM_FIELD_DEFINITION_MUTATION = /* GraphQL */ `
         appliesToEntity
         type
         metadata
+        order
       }
     }
   }

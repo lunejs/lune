@@ -162,6 +162,28 @@ describe('customFieldDefinitions - Query', () => {
     expect(customFieldDefinitions.pageInfo.total).toBe(4);
   });
 
+  test('returns custom field definitions sorted by order', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOM_FIELD_DEFINITIONS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              appliesToEntity: 'PRODUCT'
+            }
+          }
+        }
+      });
+
+    const { customFieldDefinitions } = res.body.data;
+    const orders = customFieldDefinitions.items.map(item => item.order);
+
+    expect(orders).toEqual([0, 1, 2, 3]);
+  });
+
   test('returns Authorization error when no token is provided', async () => {
     const response = await request(app).post('/admin-api').send({
       query: GET_CUSTOM_FIELD_DEFINITIONS_QUERY,
@@ -185,6 +207,7 @@ const GET_CUSTOM_FIELD_DEFINITIONS_QUERY = /* GraphQL */ `
         appliesToEntity
         type
         metadata
+        order
       }
       count
       pageInfo {

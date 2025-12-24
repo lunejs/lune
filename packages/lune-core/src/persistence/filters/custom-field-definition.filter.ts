@@ -16,7 +16,7 @@ export class CustomFieldDefinitionFilter extends BaseFilter<CustomFieldDefinitio
   }
 
   applySort() {
-    this.query.orderBy(`${this.tableAlias}.created_at`, 'asc');
+    this.query.orderBy(`${this.tableAlias}.order`, 'asc');
 
     return this;
   }

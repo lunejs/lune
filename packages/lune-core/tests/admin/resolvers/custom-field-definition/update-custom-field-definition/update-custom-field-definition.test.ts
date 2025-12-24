@@ -44,7 +44,8 @@ describe('updateCustomFieldDefinition - Mutation', () => {
         variables: {
           id: CustomFieldDefinitionConstants.TextFieldID,
           input: {
-            name: 'Updated Name'
+            name: 'Updated Name',
+            order: 0
           }
         }
       });
@@ -54,6 +55,28 @@ describe('updateCustomFieldDefinition - Mutation', () => {
     expect(updateCustomFieldDefinition.id).toBe(CustomFieldDefinitionConstants.TextFieldID);
     expect(updateCustomFieldDefinition.name).toBe('Updated Name');
     expect(updateCustomFieldDefinition.key).toBe('original_name');
+  });
+
+  test('updates custom field definition order', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: UPDATE_CUSTOM_FIELD_DEFINITION_MUTATION,
+        variables: {
+          id: CustomFieldDefinitionConstants.TextFieldID,
+          input: {
+            name: 'Original Name',
+            order: 5
+          }
+        }
+      });
+
+    const { updateCustomFieldDefinition } = res.body.data;
+
+    expect(updateCustomFieldDefinition.id).toBe(CustomFieldDefinitionConstants.TextFieldID);
+    expect(updateCustomFieldDefinition.order).toBe(5);
   });
 
   test('preserves other fields when updating name', async () => {
@@ -66,7 +89,8 @@ describe('updateCustomFieldDefinition - Mutation', () => {
         variables: {
           id: CustomFieldDefinitionConstants.ReferenceFieldID,
           input: {
-            name: 'Updated Reference Name'
+            name: 'Updated Reference Name',
+            order: 1
           }
         }
       });
@@ -78,6 +102,7 @@ describe('updateCustomFieldDefinition - Mutation', () => {
     expect(updateCustomFieldDefinition.isList).toBe(true);
     expect(updateCustomFieldDefinition.type).toBe('REFERENCE');
     expect(updateCustomFieldDefinition.metadata).toEqual({ targetEntity: 'product' });
+    expect(updateCustomFieldDefinition.order).toBe(1);
   });
 
   test('returns Authorization error when no token is provided', async () => {
@@ -88,7 +113,8 @@ describe('updateCustomFieldDefinition - Mutation', () => {
         variables: {
           id: CustomFieldDefinitionConstants.TextFieldID,
           input: {
-            name: 'No Auth Update'
+            name: 'No Auth Update',
+            order: 0
           }
         }
       });
@@ -109,6 +135,7 @@ const UPDATE_CUSTOM_FIELD_DEFINITION_MUTATION = /* GraphQL */ `
       appliesToEntity
       type
       metadata
+      order
     }
   }
 `;

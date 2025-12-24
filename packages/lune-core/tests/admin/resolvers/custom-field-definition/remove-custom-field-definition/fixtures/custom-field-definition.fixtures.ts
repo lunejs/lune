@@ -29,6 +29,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: CustomFieldAppliesTo.Product,
         type: CustomFieldType.SingleLineText,
         metadata: null,
+        order: 0,
         shop_id: ShopConstants.ID
       },
       {
@@ -39,6 +40,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: CustomFieldAppliesTo.Product,
         type: CustomFieldType.Integer,
         metadata: null,
+        order: 1,
         shop_id: ShopConstants.ID
       },
       {
@@ -49,6 +51,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: CustomFieldAppliesTo.Collection,
         type: CustomFieldType.SingleLineText,
         metadata: null,
+        order: 0,
         shop_id: ShopConstants.ID
       },
       {
@@ -59,6 +62,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: CustomFieldAppliesTo.Collection,
         type: CustomFieldType.SingleLineText,
         metadata: null,
+        order: 1,
         shop_id: ShopConstants.ID
       }
     ];
