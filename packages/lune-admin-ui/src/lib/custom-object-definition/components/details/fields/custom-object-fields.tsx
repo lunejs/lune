@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { arrayMove } from '@dnd-kit/sortable';
-import { CircleFadingPlusIcon, CircleIcon, GripVerticalIcon, XIcon } from 'lucide-react';
+import { CircleFadingPlusIcon, CircleIcon, GripVerticalIcon, ListIcon, XIcon } from 'lucide-react';
+import { useFieldArray } from 'react-hook-form';
 
 import { isLast } from '@lune/common';
 import {
@@ -10,55 +9,30 @@ import {
   CardHeader,
   CardTitle,
   cn,
-  Input,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
+  FormInput,
+  FormSelect
 } from '@lune/ui';
 
-import { CustomFieldType } from '@/lib/api/types';
-import { getCustomFieldTypeData } from '@/lib/custom-fields/utils/custom-field.utils';
+import { CUSTOM_FIELD_TYPE_GROUPS } from '@/lib/custom-fields/utils/custom-field.utils';
 import { SortableItem } from '@/shared/components/sortable-list/sortable-item';
 import { SortableList } from '@/shared/components/sortable-list/sortable-list';
 
-interface Field {
-  id: string;
-  name: string;
-  quantity: 'single' | 'list';
-  type: string;
-}
-
-const createField = (): Field => ({
-  id: crypto.randomUUID(),
-  name: '',
-  quantity: 'single',
-  type: ''
-});
+import { useCustomObjectFormContext } from '../use-form/use-form';
 
 export const CustomObjectFields = () => {
-  const [fields, setFields] = useState<Field[]>([createField()]);
+  const form = useCustomObjectFormContext();
 
-  // Handlers
-  const append = () => setFields(prev => [...prev, createField()]);
-
-  const remove = (index: number) => setFields(prev => prev.filter((_, i) => i !== index));
-
-  const updateField = (index: number, key: keyof Omit<Field, 'id'>, value: string) => {
-    setFields(prev => prev.map((f, i) => (i === index ? { ...f, [key]: value } : f)));
-  };
+  const { fields, append, remove, move } = useFieldArray({
+    control: form.control,
+    name: 'fields'
+  });
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      setFields(prev => {
-        const oldIndex = prev.findIndex(f => f.id === active.id);
-        const newIndex = prev.findIndex(f => f.id === over.id);
-        return arrayMove(prev, oldIndex, newIndex);
-      });
+      const oldIndex = fields.findIndex(f => f.id === active.id);
+      const newIndex = fields.findIndex(f => f.id === over.id);
+      move(oldIndex, newIndex);
     }
   };
 
@@ -93,154 +67,31 @@ export const CustomObjectFields = () => {
                       </Button>
                     )}
 
-                    <Input
-                      type="text"
-                      value={field.name}
-                      onChange={e => updateField(i, 'name', e.target.value)}
-                      className="w-1/2 "
+                    <FormInput
+                      control={form.control}
+                      name={`fields.${i}.name`}
+                      className="w-1/2"
                       placeholder="Field label"
                     />
 
                     <div className="flex items-end gap-4 flex-1">
-                      <Select defaultValue="single">
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="single">
-                            <CircleIcon /> One value
-                          </SelectItem>
-                          <SelectItem value="list">
-                            <CircleIcon /> List of values
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormSelect
+                        control={form.control}
+                        name={`fields.${i}.quantity`}
+                        items={[
+                          { label: 'One value', value: 'single', icon: CircleIcon },
+                          { label: 'List of values', value: 'list', icon: ListIcon }
+                        ]}
+                        className="w-40"
+                      />
 
-                      <Select
-                        value={field.type}
-                        onValueChange={value => updateField(i, 'type', value)}
-                      >
-                        <SelectTrigger className="w-44 shrink-0">
-                          <SelectValue placeholder="Select a type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Text</SelectLabel>
-                            <SelectItem value={CustomFieldType.SingleLineText}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  CustomFieldType.SingleLineText
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Single line text
-                            </SelectItem>
-                            <SelectItem value={CustomFieldType.MultiLineText}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  CustomFieldType.MultiLineText
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Multi line text
-                            </SelectItem>
-                          </SelectGroup>
-
-                          <SelectGroup>
-                            <SelectLabel>Number</SelectLabel>
-                            <SelectItem value={CustomFieldType.Integer}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Integer).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Integer
-                            </SelectItem>
-                            <SelectItem value={CustomFieldType.Decimal}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Decimal).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Decimal
-                            </SelectItem>
-                            <SelectItem value={CustomFieldType.Money}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Money).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Money
-                            </SelectItem>
-                          </SelectGroup>
-
-                          <SelectGroup>
-                            <SelectLabel>Media</SelectLabel>
-                            <SelectItem value={CustomFieldType.Image}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Image).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Image
-                            </SelectItem>
-                          </SelectGroup>
-
-                          <SelectGroup>
-                            <SelectLabel>Reference</SelectLabel>
-                            <SelectItem value={`${CustomFieldType.Reference}:product`}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  `${CustomFieldType.Reference}:product`
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Product
-                            </SelectItem>
-                            <SelectItem value={`${CustomFieldType.Reference}:collection`}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  `${CustomFieldType.Reference}:collection`
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Collection
-                            </SelectItem>
-                            <SelectItem value={`${CustomFieldType.Reference}:customer`}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  `${CustomFieldType.Reference}:customer`
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Customer
-                            </SelectItem>
-                            <SelectItem value={`${CustomFieldType.Reference}:order`}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(
-                                  `${CustomFieldType.Reference}:order`
-                                ).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Order
-                            </SelectItem>
-                          </SelectGroup>
-
-                          <SelectGroup>
-                            <SelectLabel>Other</SelectLabel>
-                            <SelectItem value={CustomFieldType.Boolean}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Boolean).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Boolean
-                            </SelectItem>
-                            <SelectItem value={CustomFieldType.Date}>
-                              {(() => {
-                                const Icon = getCustomFieldTypeData(CustomFieldType.Date).icon;
-                                return Icon ? <Icon size={16} /> : null;
-                              })()}
-                              Date
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                      <FormSelect
+                        control={form.control}
+                        name={`fields.${i}.type`}
+                        placeholder="Select a type"
+                        className="w-44 shrink-0"
+                        groups={CUSTOM_FIELD_TYPE_GROUPS}
+                      />
                     </div>
 
                     {fields.length > 1 && (
@@ -256,7 +107,12 @@ export const CustomObjectFields = () => {
         </SortableList>
 
         <div className="border-t px-6 py-4">
-          <Button size="sm" variant="outline" type="button" onClick={append}>
+          <Button
+            size="sm"
+            variant="outline"
+            type="button"
+            onClick={() => append({ name: '', quantity: 'single', type: '' })}
+          >
             <CircleFadingPlusIcon size={16} />
             Add field
           </Button>

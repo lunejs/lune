@@ -59,3 +59,91 @@ export const getCustomFieldTypeData = (type: CustomFieldType | string) => DATA[t
 
 export const isTranslatable = (type: CustomFieldType) =>
   [CustomFieldType.SingleLineText, CustomFieldType.MultiLineText].includes(type);
+
+export const CUSTOM_FIELD_TYPE_GROUPS = [
+  {
+    label: 'Text',
+    items: [
+      {
+        label: 'Single line text',
+        value: CustomFieldType.SingleLineText,
+        icon: getCustomFieldTypeData(CustomFieldType.SingleLineText).icon
+      },
+      {
+        label: 'Multi line text',
+        value: CustomFieldType.MultiLineText,
+        icon: getCustomFieldTypeData(CustomFieldType.MultiLineText).icon
+      }
+    ]
+  },
+  {
+    label: 'Number',
+    items: [
+      {
+        label: 'Integer',
+        value: CustomFieldType.Integer,
+        icon: getCustomFieldTypeData(CustomFieldType.Integer).icon
+      },
+      {
+        label: 'Decimal',
+        value: CustomFieldType.Decimal,
+        icon: getCustomFieldTypeData(CustomFieldType.Decimal).icon
+      },
+      {
+        label: 'Money',
+        value: CustomFieldType.Money,
+        icon: getCustomFieldTypeData(CustomFieldType.Money).icon
+      }
+    ]
+  },
+  {
+    label: 'Media',
+    items: [
+      {
+        label: 'Image',
+        value: CustomFieldType.Image,
+        icon: getCustomFieldTypeData(CustomFieldType.Image).icon
+      }
+    ]
+  },
+  {
+    label: 'Reference',
+    items: [
+      {
+        label: 'Product',
+        value: `${CustomFieldType.Reference}:product`,
+        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:product`).icon
+      },
+      {
+        label: 'Collection',
+        value: `${CustomFieldType.Reference}:collection`,
+        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:collection`).icon
+      },
+      {
+        label: 'Customer',
+        value: `${CustomFieldType.Reference}:customer`,
+        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:customer`).icon
+      },
+      {
+        label: 'Order',
+        value: `${CustomFieldType.Reference}:order`,
+        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:order`).icon
+      }
+    ]
+  },
+  {
+    label: 'Other',
+    items: [
+      {
+        label: 'Boolean',
+        value: CustomFieldType.Boolean,
+        icon: getCustomFieldTypeData(CustomFieldType.Boolean).icon
+      },
+      {
+        label: 'Date',
+        value: CustomFieldType.Date,
+        icon: getCustomFieldTypeData(CustomFieldType.Date).icon
+      }
+    ]
+  }
+];
