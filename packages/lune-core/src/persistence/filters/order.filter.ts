@@ -16,7 +16,7 @@ export class OrderFilter extends BaseFilter<OrderTable> {
   }
 
   applySort() {
-    this.query.orderBy(`${this.tableAlias}.created_at`, 'desc');
+    this.query.orderBy(`${this.tableAlias}.placed_at`, 'desc');
 
     return this;
   }
