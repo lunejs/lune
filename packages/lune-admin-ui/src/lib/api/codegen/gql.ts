@@ -37,7 +37,7 @@ type Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": typeof types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": typeof types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": typeof types.GetCountriesForSelectorDocument,
-    "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n": typeof types.CommonCustomFieldDefinitionFragmentDoc,
+    "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n    order\n  }\n": typeof types.CommonCustomFieldDefinitionFragmentDoc,
     "\n  query GetCustomFieldDefinition($id: ID!) {\n    customFieldDefinition(id: $id) {\n      ...CommonCustomFieldDefinition\n    }\n  }\n": typeof types.GetCustomFieldDefinitionDocument,
     "\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n": typeof types.GetCustomFieldDefinitionsDocument,
     "\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": typeof types.CreateCustomFieldDefinitionDocument,
@@ -155,7 +155,7 @@ const documents: Documents = {
     "\n  fragment CommonCountryForSelector on Country {\n    id\n    name\n  }\n": types.CommonCountryForSelectorFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n": types.GetCountriesDocument,
     "\n  query GetCountriesForSelector {\n    countries {\n      ...CommonCountryForSelector\n    }\n  }\n": types.GetCountriesForSelectorDocument,
-    "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n": types.CommonCustomFieldDefinitionFragmentDoc,
+    "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n    order\n  }\n": types.CommonCustomFieldDefinitionFragmentDoc,
     "\n  query GetCustomFieldDefinition($id: ID!) {\n    customFieldDefinition(id: $id) {\n      ...CommonCustomFieldDefinition\n    }\n  }\n": types.GetCustomFieldDefinitionDocument,
     "\n  query GetCustomFieldDefinitions($input: CustomFieldDefinitionListInput) {\n    customFieldDefinitions(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        ...CommonCustomFieldDefinition\n      }\n    }\n  }\n": types.GetCustomFieldDefinitionsDocument,
     "\n  mutation CreateCustomFieldDefinition($input: CreateCustomFieldInput!) {\n    createCustomFieldDefinition(input: $input) {\n      customFieldDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.CreateCustomFieldDefinitionDocument,
@@ -359,7 +359,7 @@ export function graphql(source: "\n  query GetCountriesForSelector {\n    countr
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n"): (typeof documents)["\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n  }\n"];
+export function graphql(source: "\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n    order\n  }\n"): (typeof documents)["\n  fragment CommonCustomFieldDefinition on CustomFieldDefinition {\n    id\n    createdAt\n    updatedAt\n    name\n    key\n    isList\n    appliesToEntity\n    type\n    metadata\n    order\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -22,7 +22,10 @@ export function createCollectionCustomFieldsLoader(trx: Transaction) {
       .innerJoin({ cfd: Tables.CustomFieldDefinition }, 'cfd.id', 'ccf.definition_id')
       .select('ccf.collection_id', 'ccf.value', 'ccf.id as collection_custom_field_id', 'cfd.*')
       .whereIn('ccf.collection_id', collectionIds)
-      .orderBy('cfd.order', 'asc');
+      .orderBy([
+        { column: 'cfd.order', order: 'asc' },
+        { column: 'cfd.created_at', order: 'asc' }
+      ]);
 
     type Row = Pick<CollectionCustomFieldTable, 'collection_id' | 'value'> &
       CustomFieldDefinitionTable & { collection_custom_field_id: string };

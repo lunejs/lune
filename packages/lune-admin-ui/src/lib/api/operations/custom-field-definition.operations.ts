@@ -11,6 +11,7 @@ export const COMMON_CUSTOM_FIELD_DEFINITION_FRAGMENT = graphql(`
     appliesToEntity
     type
     metadata
+    order
   }
 `);
 

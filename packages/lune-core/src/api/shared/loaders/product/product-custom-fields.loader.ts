@@ -22,7 +22,10 @@ export function createProductCustomFieldsLoader(trx: Transaction) {
       .innerJoin({ cfd: Tables.CustomFieldDefinition }, 'cfd.id', 'pcf.definition_id')
       .select('pcf.product_id', 'pcf.value', 'pcf.id as product_custom_field_id', 'cfd.*')
       .whereIn('pcf.product_id', productIds)
-      .orderBy('cfd.order', 'asc');
+      .orderBy([
+        { column: 'cfd.order', order: 'asc' },
+        { column: 'cfd.created_at', order: 'asc' }
+      ]);
 
     type Row = Pick<ProductCustomFieldTable, 'product_id' | 'value'> &
       CustomFieldDefinitionTable & { product_custom_field_id: string };

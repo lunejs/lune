@@ -49,6 +49,7 @@ export const useCustomFieldForm = (
         isList,
         appliesToEntity: entity,
         name: values.name,
+        order: 0,
         type: values.type as CustomFieldType
       });
 
@@ -79,6 +80,7 @@ export const useCustomFieldForm = (
       appliesToEntity: entity,
       name: values.name,
       type: type as CustomFieldType,
+      order: 0,
       metadata: { targetEntity }
     });
 
@@ -100,10 +102,13 @@ export const useCustomFieldForm = (
     navigate(`/settings/custom-fields/${entity}/${result.data.id}`);
   };
 
-  const onUpdate = async (id: string, values: FormValues) => {
+  const onUpdate = async (definition: CommonCustomFieldDefinitionFragment, values: FormValues) => {
     loading('Saving...');
 
-    const result = await updateCustomFieldDefinition(id, { name: values.name });
+    const result = await updateCustomFieldDefinition(definition.id, {
+      name: values.name,
+      order: definition.order
+    });
 
     if (!result.isSuccess) {
       failure(result.error);
@@ -115,7 +120,7 @@ export const useCustomFieldForm = (
 
   const onSubmit = async (values: FormValues) => {
     if (definition) {
-      await onUpdate(definition.id, values);
+      await onUpdate(definition, values);
     } else {
       await onCreate(values);
     }
