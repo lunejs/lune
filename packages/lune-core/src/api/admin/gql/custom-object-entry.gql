@@ -25,6 +25,10 @@ type CustomObjectEntryList {
   pageInfo: PageInfo!
 }
 
+type Query {
+  customObjectEntry(id: ID!): CustomObjectEntry
+}
+
 type Mutation {
   createCustomObjectEntry(
     definitionId: ID!

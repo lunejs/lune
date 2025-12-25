@@ -2021,6 +2021,7 @@ export type Query = {
   customFieldDefinitions: CustomFieldDefinitionList;
   customObjectDefinition?: Maybe<CustomObjectDefinition>;
   customObjectDefinitions: CustomObjectDefinitionList;
+  customObjectEntry?: Maybe<CustomObjectEntry>;
   customer?: Maybe<Customer>;
   customers: CustomerList;
   discount?: Maybe<Discount>;
@@ -2104,6 +2105,11 @@ export type QueryCustomObjectDefinitionArgs = {
 
 export type QueryCustomObjectDefinitionsArgs = {
   input?: InputMaybe<CustomObjectDefinitionListInput>;
+};
+
+
+export type QueryCustomObjectEntryArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -4029,6 +4035,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   customFieldDefinitions?: Resolver<ResolversTypes['CustomFieldDefinitionList'], ParentType, ContextType, Partial<QueryCustomFieldDefinitionsArgs>>;
   customObjectDefinition?: Resolver<Maybe<ResolversTypes['CustomObjectDefinition']>, ParentType, ContextType, RequireFields<QueryCustomObjectDefinitionArgs, 'id'>>;
   customObjectDefinitions?: Resolver<ResolversTypes['CustomObjectDefinitionList'], ParentType, ContextType, Partial<QueryCustomObjectDefinitionsArgs>>;
+  customObjectEntry?: Resolver<Maybe<ResolversTypes['CustomObjectEntry']>, ParentType, ContextType, RequireFields<QueryCustomObjectEntryArgs, 'id'>>;
   customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType, RequireFields<QueryCustomerArgs, 'id'>>;
   customers?: Resolver<ResolversTypes['CustomerList'], ParentType, ContextType, Partial<QueryCustomersArgs>>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;

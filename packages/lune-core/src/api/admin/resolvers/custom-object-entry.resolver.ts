@@ -4,11 +4,22 @@ import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
   MutationCreateCustomObjectEntryArgs,
   MutationRemoveCustomObjectEntryArgs,
-  MutationUpdateCustomObjectEntryArgs
+  MutationUpdateCustomObjectEntryArgs,
+  QueryCustomObjectEntryArgs
 } from '@/api/shared/types/graphql';
 import { CustomObjectEntryService } from '@/business/custom-object-entry/custom-object-entry.service';
 import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
 import type { CustomObjectEntryValue } from '@/persistence/entities/custom-object-entry-value';
+
+async function customObjectEntry(
+  _: unknown,
+  { id }: QueryCustomObjectEntryArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  return service.findUnique(id);
+}
 
 async function createCustomObjectEntry(
   _: unknown,
@@ -41,6 +52,9 @@ async function removeCustomObjectEntry(
 }
 
 export const CustomObjectEntryResolver: GraphqlApiResolver = {
+  Query: {
+    customObjectEntry: UseUserGuard(customObjectEntry)
+  },
   Mutation: {
     createCustomObjectEntry: UseUserGuard(createCustomObjectEntry),
     updateCustomObjectEntry: UseUserGuard(updateCustomObjectEntry),

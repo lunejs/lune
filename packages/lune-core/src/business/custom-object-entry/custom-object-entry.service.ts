@@ -26,6 +26,10 @@ export class CustomObjectEntryService {
     this.definitionRepository = ctx.repositories.customObjectDefinition;
   }
 
+  async findUnique(id: ID) {
+    return this.repository.findOne({ where: { id } });
+  }
+
   async create(definitionId: ID, input: CreateCustomObjectEntryInput) {
     const definition = await this.definitionRepository.findOneOrThrow({
       where: { id: definitionId }
