@@ -1,12 +1,13 @@
 import { customAlphabet } from 'nanoid';
 
-import { getSlugBy } from '@lune/common';
+import { clean, getSlugBy } from '@lune/common';
 
 const generateRandomSuffix = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   CreateCustomObjectEntryInput,
+  ListInput,
   UpdateCustomObjectEntryInput
 } from '@/api/shared/types/graphql';
 import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
@@ -28,6 +29,17 @@ export class CustomObjectEntryService {
 
   async findUnique(id: ID) {
     return this.repository.findOne({ where: { id } });
+  }
+
+  async findByDefinitionId(definitionId: ID, input?: ListInput) {
+    return this.repository.findMany({
+      where: { definitionId },
+      ...clean(input ?? {})
+    });
+  }
+
+  async countByDefinitionId(definitionId: ID) {
+    return this.repository.count({ where: { definitionId } });
   }
 
   async create(definitionId: ID, input: CreateCustomObjectEntryInput) {

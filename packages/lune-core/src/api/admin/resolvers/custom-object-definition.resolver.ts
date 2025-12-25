@@ -98,7 +98,7 @@ export const CustomObjectDefinitionResolver: GraphqlApiResolver = {
     entries: async (parent: CustomObjectDefinition, _: unknown, ctx: ExecutionContext) => {
       const items = await ctx.loaders.customObjectDefinition.entries.load(parent.id);
 
-      return { items, count: items.length, pageInfo: { hasNextPage: false } };
+      return new ListResponse(items, items.length, { total: items.length });
     }
   }
 };

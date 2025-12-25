@@ -5,8 +5,10 @@ import type {
   MutationCreateCustomObjectEntryArgs,
   MutationRemoveCustomObjectEntryArgs,
   MutationUpdateCustomObjectEntryArgs,
+  QueryCustomObjectEntriesArgs,
   QueryCustomObjectEntryArgs
 } from '@/api/shared/types/graphql';
+import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomObjectEntryService } from '@/business/custom-object-entry/custom-object-entry.service';
 import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
 import type { CustomObjectEntryValue } from '@/persistence/entities/custom-object-entry-value';
@@ -19,6 +21,21 @@ async function customObjectEntry(
   const service = new CustomObjectEntryService(ctx);
 
   return service.findUnique(id);
+}
+
+async function customObjectEntries(
+  _: unknown,
+  { definitionId, input }: QueryCustomObjectEntriesArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  const [items, total] = await Promise.all([
+    service.findByDefinitionId(definitionId, input),
+    service.countByDefinitionId(definitionId)
+  ]);
+
+  return new ListResponse(items, items.length, { total });
 }
 
 async function createCustomObjectEntry(
@@ -53,7 +70,8 @@ async function removeCustomObjectEntry(
 
 export const CustomObjectEntryResolver: GraphqlApiResolver = {
   Query: {
-    customObjectEntry: UseUserGuard(customObjectEntry)
+    customObjectEntry: UseUserGuard(customObjectEntry),
+    customObjectEntries: UseUserGuard(customObjectEntries)
   },
   Mutation: {
     createCustomObjectEntry: UseUserGuard(createCustomObjectEntry),

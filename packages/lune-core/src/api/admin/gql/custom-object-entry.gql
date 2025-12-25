@@ -27,6 +27,7 @@ type CustomObjectEntryList {
 
 type Query {
   customObjectEntry(id: ID!): CustomObjectEntry
+  customObjectEntries(definitionId: ID!, input: ListInput!): CustomObjectEntryList!
 }
 
 type Mutation {
