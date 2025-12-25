@@ -1,10 +1,11 @@
+import { getSlugBy } from '@lune/common';
+
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   CreateCustomFieldInput,
   CustomFieldDefinitionListInput,
   UpdateCustomFieldInput
 } from '@/api/shared/types/graphql';
-import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { CollectionCustomFieldRepository } from '@/persistence/repositories/collection-custom-field-repository';
 import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';

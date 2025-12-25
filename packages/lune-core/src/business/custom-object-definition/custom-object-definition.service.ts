@@ -1,3 +1,5 @@
+import { getSlugBy } from '@lune/common';
+
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   CreateCustomFieldInput,
@@ -6,7 +8,6 @@ import type {
   UpdateCustomObjectDefinitionInput,
   UpdateCustomObjectFieldInput
 } from '@/api/shared/types/graphql';
-import { getSlugBy } from '@/libs/slug';
 import type { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
 import type { ID } from '@/persistence/entities/entity';

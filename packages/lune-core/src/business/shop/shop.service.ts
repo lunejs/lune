@@ -1,8 +1,7 @@
-import { clean } from '@lune/common';
+import { clean, getSlugBy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
-import { getSlugBy } from '@/libs/slug';
 import { SortKey } from '@/persistence/repositories/repository';
 import type { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { ApiKey } from '@/security/api-key/api-key';

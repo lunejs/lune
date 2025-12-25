@@ -1,4 +1,4 @@
-import { clean, isArray, isTruthy } from '@lune/common';
+import { clean, getSlugBy, isArray, isTruthy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
@@ -9,7 +9,6 @@ import type {
   UpdateProductInput
 } from '@/api/shared/types/graphql';
 import { OrderBy } from '@/api/shared/types/graphql';
-import { getSlugBy } from '@/libs/slug';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
 import type { Product } from '@/persistence/entities/product';

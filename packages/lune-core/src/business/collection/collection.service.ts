@@ -1,4 +1,4 @@
-import { clean, isArray } from '@lune/common';
+import { clean, getSlugBy, isArray } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
@@ -7,7 +7,6 @@ import type {
   UpdateCollectionInput
 } from '@/api/shared/types/graphql';
 import { type CollectionListInput, type CreateCollectionInput } from '@/api/shared/types/graphql';
-import { getSlugBy } from '@/libs/slug';
 import { type Collection, CollectionContentType } from '@/persistence/entities/collection';
 import type { ID } from '@/persistence/entities/entity';
 import type { Locale } from '@/persistence/entities/locale';
