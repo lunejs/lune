@@ -1,22 +1,28 @@
 import { graphql } from '../codegen';
 
+export const COMMON_CUSTOM_OBJECT_ENTRY_FRAGMENT = graphql(`
+  fragment CommonCustomObjectEntry on CustomObjectEntry {
+    id
+    createdAt
+    updatedAt
+    slug
+    values {
+      id
+      value
+      field {
+        id
+        name
+        key
+        type
+      }
+    }
+  }
+`);
+
 export const GET_CUSTOM_OBJECT_ENTRY_QUERY = graphql(`
   query GetCustomObjectEntry($id: ID!) {
     customObjectEntry(id: $id) {
-      id
-      createdAt
-      updatedAt
-      slug
-      values {
-        id
-        value
-        field {
-          id
-          name
-          key
-          type
-        }
-      }
+      ...CommonCustomObjectEntry
     }
   }
 `);
