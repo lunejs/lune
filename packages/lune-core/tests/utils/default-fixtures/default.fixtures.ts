@@ -11,6 +11,7 @@ import { DefaultCollectionTranslationFixture } from './collection-translation.fi
 import { DefaultCountryFixture } from './country.fixture';
 import { DefaultCustomFieldDefinitionFixture } from './custom-field-definition.fixture';
 import { DefaultCustomObjectDefinitionFixture } from './custom-object-definition.fixture';
+import { DefaultCustomObjectEntryFixture } from './custom-object-entry.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
@@ -100,6 +101,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.OrderDiscount]: DefaultOrderDiscountFixture,
   [Tables.CustomFieldDefinition]: DefaultCustomFieldDefinitionFixture,
   [Tables.CustomObjectDefinition]: DefaultCustomObjectDefinitionFixture,
+  [Tables.CustomObjectEntry]: DefaultCustomObjectEntryFixture,
   [Tables.ProductCustomField]: DefaultProductCustomFieldFixture,
   [Tables.ProductCustomFieldTranslation]: DefaultProductCustomFieldTranslationFixture
 };

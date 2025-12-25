@@ -48,5 +48,6 @@ export const enum Tables {
   ProductCustomField = 'product_custom_field',
   ProductCustomFieldTranslation = 'product_custom_field_translation',
   CollectionCustomField = 'collection_custom_field',
-  CollectionCustomFieldTranslation = 'collection_custom_field_translation'
+  CollectionCustomFieldTranslation = 'collection_custom_field_translation',
+  CustomObjectEntry = 'custom_object_entry'
 }
