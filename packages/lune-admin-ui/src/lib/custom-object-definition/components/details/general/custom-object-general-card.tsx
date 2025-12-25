@@ -1,3 +1,4 @@
+import { getSlugBy } from '@lune/common';
 import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lune/ui';
 
 import { useCustomObjectFormContext } from '../use-form/use-form';
@@ -19,12 +20,7 @@ export const CustomObjectGeneralCard = () => {
             name="name"
             label="Name"
             placeholder="Banner, Author, Testimonial"
-            // Replace with slugify in @lune/common
-            description={
-              form.definition
-                ? form.definition.key
-                : name && `key: ${name.replaceAll(' ', '_').toLowerCase()}`
-            }
+            description={form.definition ? form.definition.key : name && `key: ${getSlugBy(name)}`}
           />
         </div>
       </CardContent>

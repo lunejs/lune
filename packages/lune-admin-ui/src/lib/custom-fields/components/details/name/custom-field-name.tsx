@@ -1,3 +1,4 @@
+import { getSlugBy } from '@lune/common';
 import { FormInput } from '@lune/ui';
 
 import { useCustomFieldFormContext } from '../use-form/use-form';
@@ -14,10 +15,7 @@ export const CustomFieldName = () => {
         name="name"
         label="Name"
         placeholder="Custom field"
-        // Replace with slugify in @lune/common
-        description={
-          definition ? definition.key : name && `key: ${name.replaceAll(' ', '_').toLowerCase()}`
-        }
+        description={definition ? definition.key : name && `key: ${getSlugBy(name)}`}
       />
     </div>
   );
