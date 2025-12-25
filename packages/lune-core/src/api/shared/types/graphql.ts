@@ -511,8 +511,8 @@ export type CustomFieldValue = {
 export type CustomObjectDefinition = {
   __typename?: 'CustomObjectDefinition';
   createdAt: Scalars['Date']['output'];
-  /** The ID of the field used as display field for entries */
-  displayFieldId?: Maybe<Scalars['ID']['output']>;
+  /** The field used as display field for entries */
+  displayField?: Maybe<CustomFieldDefinition>;
   /** The fields that belong to this custom object definition */
   fields: Array<CustomFieldDefinition>;
   id: Scalars['ID']['output'];
@@ -3252,7 +3252,7 @@ export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
+export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, CUSTOM_OBJECT?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
 
 export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinition'] = ResolversParentTypes['CustomFieldDefinition']> = {
   appliesToEntity?: Resolver<ResolversTypes['CustomFieldAppliesToEntity'], ParentType, ContextType>;
@@ -3291,7 +3291,7 @@ export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DA
 
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  displayFieldId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  displayField?: Resolver<Maybe<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
   fields?: Resolver<Array<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

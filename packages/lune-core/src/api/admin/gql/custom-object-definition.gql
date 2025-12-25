@@ -14,9 +14,9 @@ type CustomObjectDefinition {
   """
   key: String!
   """
-  The ID of the field used as display field for entries
+  The field used as display field for entries
   """
-  displayFieldId: ID
+  displayField: CustomFieldDefinition
   """
   The fields that belong to this custom object definition
   """

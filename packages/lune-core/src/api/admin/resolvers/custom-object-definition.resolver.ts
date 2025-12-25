@@ -89,6 +89,11 @@ export const CustomObjectDefinitionResolver: GraphqlApiResolver = {
   CustomObjectDefinition: {
     fields: (parent: CustomObjectDefinition, _: unknown, ctx: ExecutionContext) => {
       return ctx.loaders.customObjectDefinition.fields.load(parent.id);
+    },
+    displayField: (parent: CustomObjectDefinition, _: unknown, ctx: ExecutionContext) => {
+      if (!parent.displayFieldId) return null;
+
+      return ctx.loaders.customObjectDefinition.displayField.load(parent.displayFieldId);
     }
   }
 };
