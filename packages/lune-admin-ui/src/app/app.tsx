@@ -16,7 +16,7 @@ import { NewCustomFieldPage } from '@/lib/custom-fields/pages/new-custom-fields-
 import { CustomObjectDetailsPage } from '@/lib/custom-object-definition/pages/custom-object-details-page';
 import { CustomObjectDefinitionsPage } from '@/lib/custom-object-definition/pages/custom-objects-page';
 import { NewCustomObjectPage } from '@/lib/custom-object-definition/pages/new-custom-object-page';
-import { CustomObjectsPage } from '@/lib/custom-object-entries/pages/custom-objects';
+import { CustomObjectsPage } from '@/lib/custom-object-entry/pages/custom-objects';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
 import { DashboardPage } from '@/lib/dashboard/pages/dashboard-page';

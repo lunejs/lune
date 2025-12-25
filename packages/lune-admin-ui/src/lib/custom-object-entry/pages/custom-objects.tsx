@@ -1,8 +1,8 @@
 import { PageLayout } from '@/shared/components/layout/page-layout';
 
-import { CustomObjectDefinitionsTable } from '../components/custom-object-definitions-table/custom-object-definitions-table';
-import { CustomObjectDefinitionsTableEmptyState } from '../components/custom-object-definitions-table/empty-state';
-import { useCustomObjectDefinitionsTable } from '../components/custom-object-definitions-table/use-custom-object-definitions-table';
+import { CustomObjectDefinitionsTable } from '../components/definitions-table/custom-object-definitions-table';
+import { CustomObjectDefinitionsTableEmptyState } from '../components/definitions-table/empty-state';
+import { useCustomObjectDefinitionsTable } from '../components/definitions-table/use-custom-object-definitions-table';
 
 export const CustomObjectsPage = () => {
   const result = useCustomObjectDefinitionsTable();
