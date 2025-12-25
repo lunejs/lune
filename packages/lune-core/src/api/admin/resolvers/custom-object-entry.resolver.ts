@@ -8,6 +8,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { CustomObjectEntryService } from '@/business/custom-object-entry/custom-object-entry.service';
 import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
+import type { CustomObjectEntryValue } from '@/persistence/entities/custom-object-entry-value';
 
 async function createCustomObjectEntry(
   _: unknown,
@@ -51,6 +52,11 @@ export const CustomObjectEntryResolver: GraphqlApiResolver = {
     },
     values: (parent: CustomObjectEntry, _: unknown, ctx: ExecutionContext) => {
       return ctx.loaders.customObjectEntry.values.load(parent.id);
+    }
+  },
+  CustomObjectEntryValue: {
+    field: (parent: CustomObjectEntryValue, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customObjectEntry.valueField.load(parent.fieldId);
     }
   }
 };

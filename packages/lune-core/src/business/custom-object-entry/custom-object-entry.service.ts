@@ -53,8 +53,29 @@ export class CustomObjectEntryService {
     return entry;
   }
 
-  async update(_id: ID, _input: UpdateCustomObjectEntryInput) {
-    throw new Error('not implemented');
+  async update(id: ID, input: UpdateCustomObjectEntryInput) {
+    const entry = await this.repository.findOneOrThrow({ where: { id } });
+
+    if (!input.values?.length) return entry;
+
+    await Promise.all(
+      input.values
+        .filter(f => f.value == null)
+        .map(f => this.valueRepository.remove({ where: { entryId: id, fieldId: f.id } }))
+    );
+    await Promise.all(
+      input.values
+        .filter(v => v.value != null)
+        .map(cf =>
+          this.valueRepository.upsert({
+            where: { fieldId: cf.id, entryId: id },
+            create: { entryId: entry.id, fieldId: cf.id, value: JSON.stringify(cf.value) },
+            update: { value: JSON.stringify(cf.value) }
+          })
+        )
+    );
+
+    return await this.repository.update({ where: { id }, data: { updatedAt: new Date() } });
   }
 
   async remove(ids: ID[]) {
