@@ -11,7 +11,7 @@ import { DetailsPageLayout } from '@/shared/components/layout/details-page-layou
 import { useCustomObjectEntryForm } from './use-form/use-form';
 
 export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
-  const form = useCustomObjectEntryForm();
+  const form = useCustomObjectEntryForm(definition, entry ?? null);
 
   return (
     <Form {...form}>
