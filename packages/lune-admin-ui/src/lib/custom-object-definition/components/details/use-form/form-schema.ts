@@ -5,7 +5,7 @@ import { FormMessages } from '@/shared/forms/form-messages';
 
 export const CustomObjectFormSchema = z.object({
   name: z.string().min(1, FormMessages.required),
-  displayField: z.string(),
+  displayField: z.literal('auto').or(z.string()),
   fields: z.array(
     z.object({
       name: z.string().min(1, FormMessages.required),

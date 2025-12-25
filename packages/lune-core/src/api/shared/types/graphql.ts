@@ -313,7 +313,7 @@ export type CreateCustomFieldInput = {
 };
 
 export type CreateCustomObjectDefinitionInput = {
-  displayFieldName: Scalars['String']['input'];
+  displayFieldName?: InputMaybe<Scalars['String']['input']>;
   fields?: InputMaybe<Array<CreateCustomFieldInput>>;
   name: Scalars['String']['input'];
 };
@@ -513,6 +513,8 @@ export type CustomObjectDefinition = {
   createdAt: Scalars['Date']['output'];
   /** The ID of the field used as display field for entries */
   displayFieldId?: Maybe<Scalars['ID']['output']>;
+  /** The fields that belong to this custom object definition */
+  fields: Array<CustomFieldDefinition>;
   id: Scalars['ID']['output'];
   /** A unique and readable identifier for the custom object definition */
   key: Scalars['String']['output'];
@@ -3290,6 +3292,7 @@ export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DA
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   displayFieldId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  fields?: Resolver<Array<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

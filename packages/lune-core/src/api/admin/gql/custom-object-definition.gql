@@ -67,7 +67,7 @@ type Mutation {
 
 input CreateCustomObjectDefinitionInput {
   name: String!
-  displayFieldName: String!
+  displayFieldName: String
   fields: [CreateCustomFieldInput!]
 }
 

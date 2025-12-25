@@ -18,6 +18,7 @@ export const CustomObjectGeneralCard = () => {
             control={form.control}
             name="name"
             label="Name"
+            placeholder="Banner, Author, Testimonial"
             // Replace with slugify in @lune/common
             description={
               form.definition

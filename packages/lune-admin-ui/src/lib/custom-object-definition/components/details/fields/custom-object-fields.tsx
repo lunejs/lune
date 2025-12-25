@@ -1,4 +1,11 @@
-import { CircleFadingPlusIcon, CircleIcon, GripVerticalIcon, ListIcon, XIcon } from 'lucide-react';
+import {
+  CircleFadingPlusIcon,
+  CircleIcon,
+  GripVerticalIcon,
+  ListIcon,
+  MoreVerticalIcon,
+  XIcon
+} from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 
 import { isLast } from '@lune/common';
@@ -9,6 +16,12 @@ import {
   CardHeader,
   CardTitle,
   cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   FormInput,
   FormSelect
 } from '@lune/ui';
@@ -94,10 +107,27 @@ export const CustomObjectFields = () => {
                       />
                     </div>
 
-                    {fields.length > 1 && (
+                    {fields.length > 1 && !form.definition && (
                       <Button type="button" size="icon" variant="ghost" onClick={() => remove(i)}>
                         <XIcon />
                       </Button>
+                    )}
+
+                    {form.definition && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant={'ghost'} size={'icon'}>
+                            <MoreVerticalIcon />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          <DropdownMenuLabel>key: sam_1782</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-destructive hover:text-destructive!">
+                            <XIcon className="text-destructive" /> Remove
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     )}
                   </div>
                 )}

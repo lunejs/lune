@@ -263,7 +263,7 @@ export type CreateCustomFieldInput = {
 };
 
 export type CreateCustomObjectDefinitionInput = {
-  displayFieldName: Scalars['String']['input'];
+  displayFieldName?: InputMaybe<Scalars['String']['input']>;
   fields?: InputMaybe<Array<CreateCustomFieldInput>>;
   name: Scalars['String']['input'];
 };
@@ -369,6 +369,7 @@ export type CreateZoneInput = {
 
 export enum CustomFieldAppliesToEntity {
   Collection = 'COLLECTION',
+  CustomObject = 'CUSTOM_OBJECT',
   Product = 'PRODUCT'
 }
 

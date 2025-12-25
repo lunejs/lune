@@ -51,18 +51,20 @@ export class CustomObjectDefinitionService {
       await this.createFields(customObjectDefinition.id, input.fields);
     }
 
-    const displayField = await this.customFieldDefinitionRepository.findOne({
-      where: {
-        customObjectDefinitionId: customObjectDefinition.id,
-        name: input.displayFieldName
-      }
-    });
-
-    if (displayField) {
-      return this.repository.update({
-        where: { id: customObjectDefinition.id },
-        data: { displayFieldId: displayField.id }
+    if (input.displayFieldName) {
+      const displayField = await this.customFieldDefinitionRepository.findOne({
+        where: {
+          customObjectDefinitionId: customObjectDefinition.id,
+          name: input.displayFieldName
+        }
       });
+
+      if (displayField) {
+        return this.repository.update({
+          where: { id: customObjectDefinition.id },
+          data: { displayFieldId: displayField.id }
+        });
+      }
     }
 
     return customObjectDefinition;

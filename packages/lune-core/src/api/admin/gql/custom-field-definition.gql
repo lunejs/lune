@@ -6,6 +6,7 @@ input CustomFieldValue {
 enum CustomFieldAppliesToEntity {
   PRODUCT
   COLLECTION
+  CUSTOM_OBJECT
 }
 
 enum CustomFieldType {
