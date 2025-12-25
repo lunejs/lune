@@ -24,6 +24,7 @@ import { CollectionResolver } from './resolvers/collection.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
 import { CustomFieldDefinitionResolver } from './resolvers/custom-field-definition.resolver';
 import { CustomObjectDefinitionResolver } from './resolvers/custom-object-definition.resolver';
+import { CustomObjectEntryResolver } from './resolvers/custom-object-entry.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
 import { DiscountResolver } from './resolvers/discount.resolver';
 import { LocationResolver } from './resolvers/location.resolver';
@@ -76,6 +77,7 @@ export class AdminApi extends GraphqlApi {
         CustomerResolver,
         CustomFieldDefinitionResolver,
         CustomObjectDefinitionResolver,
+        CustomObjectEntryResolver,
         MetricResolver,
         ...pluginsResolvers
       ],

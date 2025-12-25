@@ -24,3 +24,20 @@ type CustomObjectEntryList {
   count: Int!
   pageInfo: PageInfo!
 }
+
+type Mutation {
+  createCustomObjectEntry(
+    definitionId: ID!
+    input: CreateCustomObjectEntryInput!
+  ): CustomObjectEntry!
+  updateCustomObjectEntry(id: ID!, input: UpdateCustomObjectEntryInput!): CustomObjectEntry!
+  removeCustomObjectEntry(ids: [ID!]!): Boolean!
+}
+
+input CreateCustomObjectEntryInput {
+  values: [CustomFieldValue!]
+}
+
+input UpdateCustomObjectEntryInput {
+  values: [CustomFieldValue!]
+}

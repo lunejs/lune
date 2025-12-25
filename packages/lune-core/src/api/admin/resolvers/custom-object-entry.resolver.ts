@@ -1,0 +1,56 @@
+import type { ExecutionContext } from '@/api/shared/context/types';
+import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import type {
+  MutationCreateCustomObjectEntryArgs,
+  MutationRemoveCustomObjectEntryArgs,
+  MutationUpdateCustomObjectEntryArgs
+} from '@/api/shared/types/graphql';
+import { CustomObjectEntryService } from '@/business/custom-object-entry/custom-object-entry.service';
+import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
+
+async function createCustomObjectEntry(
+  _: unknown,
+  { definitionId, input }: MutationCreateCustomObjectEntryArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  return service.create(definitionId, input);
+}
+
+async function updateCustomObjectEntry(
+  _: unknown,
+  { id, input }: MutationUpdateCustomObjectEntryArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  return service.update(id, input);
+}
+
+async function removeCustomObjectEntry(
+  _: unknown,
+  { ids }: MutationRemoveCustomObjectEntryArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  return service.remove(ids);
+}
+
+export const CustomObjectEntryResolver: GraphqlApiResolver = {
+  Mutation: {
+    createCustomObjectEntry: UseUserGuard(createCustomObjectEntry),
+    updateCustomObjectEntry: UseUserGuard(updateCustomObjectEntry),
+    removeCustomObjectEntry: UseUserGuard(removeCustomObjectEntry)
+  },
+  CustomObjectEntry: {
+    definition: (parent: CustomObjectEntry, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customObjectEntry.definition.load(parent.definitionId);
+    },
+    values: (parent: CustomObjectEntry, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customObjectEntry.values.load(parent.id);
+    }
+  }
+};

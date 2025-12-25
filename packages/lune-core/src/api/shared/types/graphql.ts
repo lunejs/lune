@@ -318,6 +318,10 @@ export type CreateCustomObjectDefinitionInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateCustomObjectEntryInput = {
+  values?: InputMaybe<Array<CustomFieldValue>>;
+};
+
 export type CreateDiscountInput = {
   applicationLevel: DiscountApplicationLevel;
   applicationMode: DiscountApplicationMode;
@@ -514,6 +518,8 @@ export type CustomObjectDefinition = {
   createdAt: Scalars['Date']['output'];
   /** The field used as display field for entries */
   displayField?: Maybe<CustomFieldDefinition>;
+  /** Entries for this object */
+  entries: CustomObjectEntryList;
   /** The fields that belong to this custom object definition */
   fields: Array<CustomFieldDefinition>;
   id: Scalars['ID']['output'];
@@ -592,13 +598,6 @@ export type CustomObjectEntryValue = {
   updatedAt: Scalars['Date']['output'];
   /** The value of the field */
   value: Scalars['JSON']['output'];
-};
-
-export type CustomObjectEntryValueList = {
-  __typename?: 'CustomObjectEntryValueList';
-  count: Scalars['Int']['output'];
-  items: Array<CustomObjectEntryValue>;
-  pageInfo: PageInfo;
 };
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
@@ -985,6 +984,7 @@ export type Mutation = {
   createCollection: Collection;
   createCustomFieldDefinition: CustomFieldDefinitionResult;
   createCustomObjectDefinition: CustomObjectDefinitionResult;
+  createCustomObjectEntry: CustomObjectEntry;
   createCustomerAddress: Address;
   createDiscount: DiscountResult;
   createLocation: LocationResult;
@@ -1014,6 +1014,7 @@ export type Mutation = {
   removeCollections: Scalars['Boolean']['output'];
   removeCustomFieldDefinition: Scalars['Boolean']['output'];
   removeCustomObjectDefinition: Scalars['Boolean']['output'];
+  removeCustomObjectEntry: Scalars['Boolean']['output'];
   removeCustomerAddress: Scalars['Boolean']['output'];
   removeDiscounts: Scalars['Boolean']['output'];
   removeLocation: Scalars['Boolean']['output'];
@@ -1036,6 +1037,7 @@ export type Mutation = {
   updateCollection: Collection;
   updateCustomFieldDefinition: CustomFieldDefinition;
   updateCustomObjectDefinition: CustomObjectDefinitionResult;
+  updateCustomObjectEntry: CustomObjectEntry;
   /** Update the customer's data. */
   updateCustomer: CustomerResult;
   updateCustomerAddress: Address;
@@ -1129,6 +1131,12 @@ export type MutationCreateCustomFieldDefinitionArgs = {
 
 export type MutationCreateCustomObjectDefinitionArgs = {
   input: CreateCustomObjectDefinitionInput;
+};
+
+
+export type MutationCreateCustomObjectEntryArgs = {
+  definitionId: Scalars['ID']['input'];
+  input: CreateCustomObjectEntryInput;
 };
 
 
@@ -1250,6 +1258,11 @@ export type MutationRemoveCustomObjectDefinitionArgs = {
 };
 
 
+export type MutationRemoveCustomObjectEntryArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
+
 export type MutationRemoveCustomerAddressArgs = {
   id: Scalars['ID']['input'];
 };
@@ -1336,6 +1349,12 @@ export type MutationUpdateCustomFieldDefinitionArgs = {
 export type MutationUpdateCustomObjectDefinitionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCustomObjectDefinitionInput;
+};
+
+
+export type MutationUpdateCustomObjectEntryArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCustomObjectEntryInput;
 };
 
 
@@ -2443,6 +2462,10 @@ export type UpdateCustomObjectDefinitionInput = {
   newFields?: InputMaybe<Array<CreateCustomFieldInput>>;
 };
 
+export type UpdateCustomObjectEntryInput = {
+  values?: InputMaybe<Array<CustomFieldValue>>;
+};
+
 export type UpdateCustomObjectFieldInput = {
   id: Scalars['ID']['input'];
   name: Scalars['String']['input'];
@@ -2790,6 +2813,7 @@ export type ResolversTypes = {
   CreateCollectionInput: CreateCollectionInput;
   CreateCustomFieldInput: CreateCustomFieldInput;
   CreateCustomObjectDefinitionInput: CreateCustomObjectDefinitionInput;
+  CreateCustomObjectEntryInput: CreateCustomObjectEntryInput;
   CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
@@ -2826,7 +2850,6 @@ export type ResolversTypes = {
   CustomObjectEntry: ResolverTypeWrapper<CustomObjectEntry>;
   CustomObjectEntryList: ResolverTypeWrapper<CustomObjectEntryList>;
   CustomObjectEntryValue: ResolverTypeWrapper<CustomObjectEntryValue>;
-  CustomObjectEntryValueList: ResolverTypeWrapper<CustomObjectEntryValueList>;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -2952,6 +2975,7 @@ export type ResolversTypes = {
   UpdateCollectionInput: UpdateCollectionInput;
   UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomObjectDefinitionInput: UpdateCustomObjectDefinitionInput;
+  UpdateCustomObjectEntryInput: UpdateCustomObjectEntryInput;
   UpdateCustomObjectFieldInput: UpdateCustomObjectFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
@@ -3011,6 +3035,7 @@ export type ResolversParentTypes = {
   CreateCollectionInput: CreateCollectionInput;
   CreateCustomFieldInput: CreateCustomFieldInput;
   CreateCustomObjectDefinitionInput: CreateCustomObjectDefinitionInput;
+  CreateCustomObjectEntryInput: CreateCustomObjectEntryInput;
   CreateDiscountInput: CreateDiscountInput;
   CreateLocationInput: CreateLocationInput;
   CreateOptionInput: CreateOptionInput;
@@ -3043,7 +3068,6 @@ export type ResolversParentTypes = {
   CustomObjectEntry: CustomObjectEntry;
   CustomObjectEntryList: CustomObjectEntryList;
   CustomObjectEntryValue: CustomObjectEntryValue;
-  CustomObjectEntryValueList: CustomObjectEntryValueList;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
   CustomerFilters: CustomerFilters;
@@ -3154,6 +3178,7 @@ export type ResolversParentTypes = {
   UpdateCollectionInput: UpdateCollectionInput;
   UpdateCustomFieldInput: UpdateCustomFieldInput;
   UpdateCustomObjectDefinitionInput: UpdateCustomObjectDefinitionInput;
+  UpdateCustomObjectEntryInput: UpdateCustomObjectEntryInput;
   UpdateCustomObjectFieldInput: UpdateCustomObjectFieldInput;
   UpdateCustomerInput: UpdateCustomerInput;
   UpdateDiscountInput: UpdateDiscountInput;
@@ -3343,6 +3368,7 @@ export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, CO
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   displayField?: Resolver<Maybe<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
+  entries?: Resolver<ResolversTypes['CustomObjectEntryList'], ParentType, ContextType>;
   fields?: Resolver<Array<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3394,13 +3420,6 @@ export type CustomObjectEntryValueResolvers<ContextType = ExecutionContext, Pare
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type CustomObjectEntryValueListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntryValueList'] = ResolversParentTypes['CustomObjectEntryValueList']> = {
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  items?: Resolver<Array<ResolversTypes['CustomObjectEntryValue']>, ParentType, ContextType>;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3627,6 +3646,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createCustomFieldDefinition?: Resolver<ResolversTypes['CustomFieldDefinitionResult'], ParentType, ContextType, RequireFields<MutationCreateCustomFieldDefinitionArgs, 'input'>>;
   createCustomObjectDefinition?: Resolver<ResolversTypes['CustomObjectDefinitionResult'], ParentType, ContextType, RequireFields<MutationCreateCustomObjectDefinitionArgs, 'input'>>;
+  createCustomObjectEntry?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType, RequireFields<MutationCreateCustomObjectEntryArgs, 'definitionId' | 'input'>>;
   createCustomerAddress?: Resolver<ResolversTypes['Address'], ParentType, ContextType, RequireFields<MutationCreateCustomerAddressArgs, 'input'>>;
   createDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationCreateDiscountArgs, 'input'>>;
   createLocation?: Resolver<ResolversTypes['LocationResult'], ParentType, ContextType, RequireFields<MutationCreateLocationArgs, 'input'>>;
@@ -3650,6 +3670,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeCustomFieldDefinition?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomFieldDefinitionArgs, 'id'>>;
   removeCustomObjectDefinition?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomObjectDefinitionArgs, 'id'>>;
+  removeCustomObjectEntry?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomObjectEntryArgs, 'ids'>>;
   removeCustomerAddress?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomerAddressArgs, 'id'>>;
   removeDiscounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveDiscountsArgs, 'ids'>>;
   removeLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveLocationArgs, 'id'>>;
@@ -3667,6 +3688,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   updateCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationUpdateCollectionArgs, 'id' | 'input'>>;
   updateCustomFieldDefinition?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType, RequireFields<MutationUpdateCustomFieldDefinitionArgs, 'id' | 'input'>>;
   updateCustomObjectDefinition?: Resolver<ResolversTypes['CustomObjectDefinitionResult'], ParentType, ContextType, RequireFields<MutationUpdateCustomObjectDefinitionArgs, 'id' | 'input'>>;
+  updateCustomObjectEntry?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType, RequireFields<MutationUpdateCustomObjectEntryArgs, 'id' | 'input'>>;
   updateCustomer?: Resolver<ResolversTypes['CustomerResult'], ParentType, ContextType, RequireFields<MutationUpdateCustomerArgs, 'input'>>;
   updateCustomerAddress?: Resolver<ResolversTypes['Address'], ParentType, ContextType, RequireFields<MutationUpdateCustomerAddressArgs, 'id' | 'input'>>;
   updateDiscount?: Resolver<ResolversTypes['DiscountResult'], ParentType, ContextType, RequireFields<MutationUpdateDiscountArgs, 'id' | 'input'>>;
@@ -4259,7 +4281,6 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomObjectEntry?: CustomObjectEntryResolvers<ContextType>;
   CustomObjectEntryList?: CustomObjectEntryListResolvers<ContextType>;
   CustomObjectEntryValue?: CustomObjectEntryValueResolvers<ContextType>;
-  CustomObjectEntryValueList?: CustomObjectEntryValueListResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;

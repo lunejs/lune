@@ -16,6 +16,8 @@ import { createCountryStatesLoader } from './country/country-states.loader';
 import { createCustomObjectDefinitionDisplayFieldLoader } from './custom-object-definition/custom-object-definition-display-field.loader';
 import { createCustomObjectDefinitionEntriesLoader } from './custom-object-definition/custom-object-definition-entries.loader';
 import { createCustomObjectDefinitionFieldsLoader } from './custom-object-definition/custom-object-definition-fields.loader';
+import { createCustomObjectEntryDefinitionLoader } from './custom-object-entry/custom-object-entry-definition.loader';
+import { createCustomObjectEntryValuesLoader } from './custom-object-entry/custom-object-entry-values.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
 import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
@@ -130,6 +132,10 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       fields: createCustomObjectDefinitionFieldsLoader(trx),
       displayField: createCustomObjectDefinitionDisplayFieldLoader(trx),
       entries: createCustomObjectDefinitionEntriesLoader(trx)
+    },
+    customObjectEntry: {
+      definition: createCustomObjectEntryDefinitionLoader(trx),
+      values: createCustomObjectEntryValuesLoader(trx)
     }
   };
 };
