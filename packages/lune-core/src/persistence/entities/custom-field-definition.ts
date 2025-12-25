@@ -9,7 +9,8 @@ export const CustomFieldType = {
   Date: 'date',
   Boolean: 'boolean',
   Image: 'image',
-  Reference: 'reference'
+  ProductReference: 'product_reference',
+  CollectionReference: 'collection_reference'
 } as const;
 
 export type CustomFieldType = (typeof CustomFieldType)[keyof typeof CustomFieldType];
@@ -20,14 +21,6 @@ export const CustomFieldAppliesTo = {
 } as const;
 
 export type CustomFieldAppliesTo = (typeof CustomFieldAppliesTo)[keyof typeof CustomFieldAppliesTo];
-
-export const ReferenceTargetEntity = {
-  Product: 'product',
-  Collection: 'collection'
-} as const;
-
-export type ReferenceTargetEntity =
-  (typeof ReferenceTargetEntity)[keyof typeof ReferenceTargetEntity];
 
 type BaseCustomFieldDefinition = LuneEntity & {
   /** Name of the definition */
@@ -86,9 +79,14 @@ type ImageCustomField = BaseCustomFieldDefinition & {
   metadata: null;
 };
 
-type ReferenceCustomField = BaseCustomFieldDefinition & {
-  type: typeof CustomFieldType.Reference;
-  metadata: { targetEntity: ReferenceTargetEntity };
+type ProductReferenceCustomField = BaseCustomFieldDefinition & {
+  type: typeof CustomFieldType.ProductReference;
+  metadata: null;
+};
+
+type CollectionReferenceCustomField = BaseCustomFieldDefinition & {
+  type: typeof CustomFieldType.CollectionReference;
+  metadata: null;
 };
 
 /**
@@ -103,7 +101,8 @@ export type CustomFieldDefinition =
   | DateCustomField
   | BooleanCustomField
   | ImageCustomField
-  | ReferenceCustomField;
+  | ProductReferenceCustomField
+  | CollectionReferenceCustomField;
 
 export interface CustomFieldDefinitionTable extends LuneTable {
   name: string;

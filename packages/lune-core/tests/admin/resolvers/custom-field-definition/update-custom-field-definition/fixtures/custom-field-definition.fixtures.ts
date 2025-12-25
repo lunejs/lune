@@ -35,8 +35,8 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         key: 'related_products',
         is_list: true,
         applies_to_entity: 'product',
-        type: CustomFieldType.Reference,
-        metadata: { targetEntity: 'product' },
+        type: CustomFieldType.ProductReference,
+        metadata: null,
         order: 1,
         shop_id: ShopConstants.ID
       }

@@ -475,7 +475,7 @@ export type CustomFieldDefinitionErrorResult = {
 };
 
 export type CustomFieldDefinitionFilters = {
-  appliesToEntity?: InputMaybe<CustomFieldAppliesToEntity>;
+  type?: InputMaybe<CustomFieldType>;
 };
 
 export type CustomFieldDefinitionList = {
@@ -3287,7 +3287,7 @@ export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext,
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
+export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, COLLECTION_REFERENCE?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, PRODUCT_REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
 
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;

@@ -112,7 +112,7 @@ describe('customFieldDefinitions - Query', () => {
     expect(customFieldDefinitions.pageInfo.total).toBe(5);
   });
 
-  test('returns custom field definitions filtered by appliesToEntity', async () => {
+  test('returns custom field definitions filtered by type', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -122,7 +122,7 @@ describe('customFieldDefinitions - Query', () => {
         variables: {
           input: {
             filters: {
-              appliesToEntity: 'PRODUCT'
+              type: 'PRODUCT_REFERENCE'
             }
           }
         }
@@ -130,12 +130,12 @@ describe('customFieldDefinitions - Query', () => {
 
     const { customFieldDefinitions } = res.body.data;
 
-    expect(customFieldDefinitions.items).toHaveLength(4);
-    expect(customFieldDefinitions.items.every(item => item.appliesToEntity === 'PRODUCT')).toBe(
+    expect(customFieldDefinitions.items).toHaveLength(2);
+    expect(customFieldDefinitions.items.every(item => item.type === 'PRODUCT_REFERENCE')).toBe(
       true
     );
-    expect(customFieldDefinitions.count).toBe(4);
-    expect(customFieldDefinitions.pageInfo.total).toBe(4);
+    expect(customFieldDefinitions.count).toBe(2);
+    expect(customFieldDefinitions.pageInfo.total).toBe(2);
   });
 
   test('returns custom field definitions with filters and pagination combined', async () => {
@@ -147,9 +147,9 @@ describe('customFieldDefinitions - Query', () => {
         query: GET_CUSTOM_FIELD_DEFINITIONS_QUERY,
         variables: {
           input: {
-            take: 2,
+            take: 1,
             filters: {
-              appliesToEntity: 'PRODUCT'
+              type: 'PRODUCT_REFERENCE'
             }
           }
         }
@@ -157,9 +157,9 @@ describe('customFieldDefinitions - Query', () => {
 
     const { customFieldDefinitions } = res.body.data;
 
-    expect(customFieldDefinitions.items).toHaveLength(2);
-    expect(customFieldDefinitions.count).toBe(2);
-    expect(customFieldDefinitions.pageInfo.total).toBe(4);
+    expect(customFieldDefinitions.items).toHaveLength(1);
+    expect(customFieldDefinitions.count).toBe(1);
+    expect(customFieldDefinitions.pageInfo.total).toBe(2);
   });
 
   test('returns custom field definitions sorted by order', async () => {
@@ -169,19 +169,13 @@ describe('customFieldDefinitions - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .send({
         query: GET_CUSTOM_FIELD_DEFINITIONS_QUERY,
-        variables: {
-          input: {
-            filters: {
-              appliesToEntity: 'PRODUCT'
-            }
-          }
-        }
+        variables: {}
       });
 
     const { customFieldDefinitions } = res.body.data;
     const orders = customFieldDefinitions.items.map(item => item.order);
 
-    expect(orders).toEqual([0, 1, 2, 3]);
+    expect(orders).toEqual([0, 0, 1, 2, 3]);
   });
 
   test('returns Authorization error when no token is provided', async () => {

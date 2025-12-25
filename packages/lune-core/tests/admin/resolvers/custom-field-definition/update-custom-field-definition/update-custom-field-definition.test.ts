@@ -100,8 +100,7 @@ describe('updateCustomFieldDefinition - Mutation', () => {
     expect(updateCustomFieldDefinition.name).toBe('Updated Reference Name');
     expect(updateCustomFieldDefinition.key).toBe('related_products');
     expect(updateCustomFieldDefinition.isList).toBe(true);
-    expect(updateCustomFieldDefinition.type).toBe('REFERENCE');
-    expect(updateCustomFieldDefinition.metadata).toEqual({ targetEntity: 'product' });
+    expect(updateCustomFieldDefinition.type).toBe('PRODUCT_REFERENCE');
     expect(updateCustomFieldDefinition.order).toBe(1);
   });
 

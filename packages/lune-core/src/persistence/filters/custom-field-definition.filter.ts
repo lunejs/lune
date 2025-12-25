@@ -25,8 +25,8 @@ export class CustomFieldDefinitionFilter extends BaseFilter<CustomFieldDefinitio
   }
 
   applyFilters(filters: CustomFieldDefinitionFilters) {
-    if (filters.appliesToEntity) {
-      this.query.where(`${this.tableAlias}.applies_to_entity`, filters.appliesToEntity);
+    if (filters.type) {
+      this.query.where(`${this.tableAlias}.type`, filters.type);
     }
 
     return this;

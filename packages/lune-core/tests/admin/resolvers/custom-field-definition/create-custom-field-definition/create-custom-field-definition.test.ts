@@ -87,7 +87,7 @@ describe('createCustomFieldDefinition - Mutation', () => {
             name: 'Related Products',
             isList: true,
             appliesToEntity: 'PRODUCT',
-            type: 'REFERENCE',
+            type: 'PRODUCT_REFERENCE',
             metadata: { targetEntity: 'product' },
             order: 1
           }
@@ -104,8 +104,7 @@ describe('createCustomFieldDefinition - Mutation', () => {
       key: 'related_products',
       isList: true,
       appliesToEntity: 'PRODUCT',
-      type: 'REFERENCE',
-      metadata: { targetEntity: 'product' },
+      type: 'PRODUCT_REFERENCE',
       order: 1
     });
   });
@@ -167,34 +166,6 @@ describe('createCustomFieldDefinition - Mutation', () => {
     const [error] = apiErrors;
 
     expect(error.code).toBe('KEY_ALREADY_EXISTS');
-    expect(customFieldDefinition).toBeNull();
-  });
-
-  test('returns INVALID_METADATA error when reference type has no targetEntity', async () => {
-    const res = await request(app)
-      .post('/admin-api')
-      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-      .set('x_lune_shop_id', ShopConstants.ID)
-      .send({
-        query: CREATE_CUSTOM_FIELD_DEFINITION_MUTATION,
-        variables: {
-          input: {
-            name: 'Invalid Reference',
-            isList: false,
-            appliesToEntity: 'PRODUCT',
-            type: 'REFERENCE',
-            metadata: null,
-            order: 0
-          }
-        }
-      });
-
-    const {
-      createCustomFieldDefinition: { customFieldDefinition, apiErrors }
-    } = res.body.data;
-    const [error] = apiErrors;
-
-    expect(error.code).toBe('INVALID_METADATA');
     expect(customFieldDefinition).toBeNull();
   });
 

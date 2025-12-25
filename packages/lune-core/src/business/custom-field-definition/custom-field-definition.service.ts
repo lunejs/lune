@@ -5,13 +5,12 @@ import type {
   UpdateCustomFieldInput
 } from '@/api/shared/types/graphql';
 import { getSlugBy } from '@/libs/slug';
-import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
 import type { ID } from '@/persistence/entities/entity';
 import type { CollectionCustomFieldRepository } from '@/persistence/repositories/collection-custom-field-repository';
 import type { CustomFieldDefinitionRepository } from '@/persistence/repositories/custom-field-definition-repository';
 import type { ProductCustomFieldRepository } from '@/persistence/repositories/product-custom-field-repository';
 
-import { InvalidMetadataError, KeyAlreadyExistsError } from './custom-field-definition.errors';
+import { KeyAlreadyExistsError } from './custom-field-definition.errors';
 
 export class CustomFieldDefinitionService {
   private readonly repository: CustomFieldDefinitionRepository;
@@ -37,10 +36,6 @@ export class CustomFieldDefinitionService {
   }
 
   async create(input: CreateCustomFieldInput) {
-    if (input.type === CustomFieldType.Reference && !input.metadata?.targetEntity) {
-      return new InvalidMetadataError('should contain metadata.targetEntity');
-    }
-
     const key = this.generateKey(input.name);
 
     const keyAlreadyExists = await this.repository.count({ where: { key } });

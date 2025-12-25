@@ -89,7 +89,8 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
     DATE: CustomFieldType.Date,
     BOOLEAN: CustomFieldType.Boolean,
     IMAGE: CustomFieldType.Image,
-    REFERENCE: CustomFieldType.Reference
+    PRODUCT_REFERENCE: CustomFieldType.ProductReference,
+    COLLECTION_REFERENCE: CustomFieldType.CollectionReference
   },
   Query: {
     customFieldDefinitions: UseUserGuard(customFieldDefinitions),

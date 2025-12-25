@@ -18,7 +18,8 @@ enum CustomFieldType {
   DATE
   BOOLEAN
   IMAGE
-  REFERENCE
+  PRODUCT_REFERENCE
+  COLLECTION_REFERENCE
 }
 
 """
@@ -79,7 +80,7 @@ input CustomFieldDefinitionListInput {
 }
 
 input CustomFieldDefinitionFilters {
-  appliesToEntity: CustomFieldAppliesToEntity
+  type: CustomFieldType
 }
 
 type Query {
