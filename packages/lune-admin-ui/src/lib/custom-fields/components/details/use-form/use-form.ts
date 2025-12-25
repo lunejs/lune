@@ -3,11 +3,11 @@ import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import type z from 'zod';
 
+import type { CustomFieldType } from '@/lib/api/types';
 import {
   type CommonCustomFieldDefinitionFragment,
   type CustomFieldAppliesToEntity,
-  CustomFieldDefinitionErrorCode,
-  CustomFieldType
+  CustomFieldDefinitionErrorCode
 } from '@/lib/api/types';
 import { useCreateCustomFieldDefinition } from '@/lib/custom-fields/hooks/use-create-custom-field-definition';
 import { useUpdateCustomFieldDefinition } from '@/lib/custom-fields/hooks/use-update-custom-field-definition';
@@ -30,10 +30,7 @@ export const useCustomFieldForm = (
     defaultValues: {
       name: definition?.name ?? '',
       quantity: definition?.isList ? 'multiple' : 'single',
-      type:
-        definition?.type === CustomFieldType.Reference
-          ? `${definition.type}:${definition.metadata.targetEntity}`
-          : (definition?.type ?? '')
+      type: definition?.type
     }
   });
 
@@ -42,46 +39,12 @@ export const useCustomFieldForm = (
 
     const isList = values.quantity === 'multiple';
 
-    const isReference = values.type.includes(':');
-
-    if (!isReference) {
-      const result = await createCustomFieldDefinition({
-        isList,
-        appliesToEntity: entity,
-        name: values.name,
-        order: 0,
-        type: values.type as CustomFieldType
-      });
-
-      if (!result.isSuccess) {
-        if (result.errorCode === CustomFieldDefinitionErrorCode.KeyAlreadyExists) {
-          dismiss();
-          form.setError('name', {
-            message: 'Generated key is already used, try with another name'
-          });
-
-          return;
-        }
-
-        failure(result.error);
-        return;
-      }
-
-      success(`${values.name} custom field created`);
-      navigate(`/settings/custom-fields/${entity}/${result.data.id}`);
-
-      return;
-    }
-
-    const [type, targetEntity] = values.type.split(':');
-
     const result = await createCustomFieldDefinition({
       isList,
       appliesToEntity: entity,
       name: values.name,
-      type: type as CustomFieldType,
       order: 0,
-      metadata: { targetEntity }
+      type: values.type as CustomFieldType
     });
 
     if (!result.isSuccess) {

@@ -475,6 +475,7 @@ export type CustomFieldDefinitionErrorResult = {
 };
 
 export type CustomFieldDefinitionFilters = {
+  appliesToEntity?: InputMaybe<CustomFieldAppliesToEntity>;
   type?: InputMaybe<CustomFieldType>;
 };
 

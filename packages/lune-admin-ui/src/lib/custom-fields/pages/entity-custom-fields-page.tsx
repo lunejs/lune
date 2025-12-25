@@ -28,18 +28,20 @@ export const EntityCustomFieldsPage = () => {
 };
 
 const getTitle = (entity: CustomFieldAppliesToEntity) => {
-  const TITLES = {
+  const TITLES: Record<CustomFieldAppliesToEntity, string> = {
     [CustomFieldAppliesToEntity.Product]: 'Product custom fields',
-    [CustomFieldAppliesToEntity.Collection]: 'Collection custom fields'
+    [CustomFieldAppliesToEntity.Collection]: 'Collection custom fields',
+    [CustomFieldAppliesToEntity.CustomObject]: ''
   };
 
   return TITLES[entity];
 };
 
 const getSubtitle = (entity: CustomFieldAppliesToEntity) => {
-  const SUBTITLES = {
+  const SUBTITLES: Record<CustomFieldAppliesToEntity, string> = {
     [CustomFieldAppliesToEntity.Product]: 'Add custom data to your products',
-    [CustomFieldAppliesToEntity.Collection]: 'Add custom data to your collections'
+    [CustomFieldAppliesToEntity.Collection]: 'Add custom data to your collections',
+    [CustomFieldAppliesToEntity.CustomObject]: ''
   };
 
   return SUBTITLES[entity];

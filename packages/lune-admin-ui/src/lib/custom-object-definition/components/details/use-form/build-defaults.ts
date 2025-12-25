@@ -1,4 +1,4 @@
-import { type CommonCustomObjectDefinitionFragment, CustomFieldType } from '@/lib/api/types';
+import { type CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 
 export const buildCustomObjectDefaults = (
   definition: CommonCustomObjectDefinitionFragment | null
@@ -9,9 +9,6 @@ export const buildCustomObjectDefaults = (
     fieldId: field.id,
     name: field.name,
     quantity: field.isList ? 'multiple' : 'single',
-    type:
-      field?.type === CustomFieldType.Reference
-        ? `${field.type}:${field.metadata.targetEntity}`
-        : (field?.type ?? '')
+    type: field.type
   })) ?? [{ name: '', quantity: 'single', type: '' }]
 });

@@ -16,7 +16,7 @@ export const CustomObjectDetails = ({ definition }: Props) => {
     <Form {...form}>
       <form onSubmit={form.onSubmit}>
         <SettingsPageLayout
-          title={definition?.name ?? '"Create custom object"'}
+          title={definition?.name ?? 'Create custom object'}
           actions={<CustomObjectSubmitButton />}
           className="flex flex-col gap-4"
         >

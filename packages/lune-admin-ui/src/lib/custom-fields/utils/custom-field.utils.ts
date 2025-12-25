@@ -40,16 +40,17 @@ const DATA: Record<string, CustomFieldTypeData> = {
   [CustomFieldType.Date]: new CustomFieldTypeData('Date', CalendarIcon),
 
   // Reference
-  [`${CustomFieldType.Reference}:product`]: new CustomFieldTypeData('Product', PackageIcon),
-  [`${CustomFieldType.Reference}:collection`]: new CustomFieldTypeData('Collection', BoxesIcon),
-  [`${CustomFieldType.Reference}:customer`]: new CustomFieldTypeData('Customer', UserIcon),
-  [`${CustomFieldType.Reference}:order`]: new CustomFieldTypeData('Order', ShoppingCartIcon)
+  [CustomFieldType.ProductReference]: new CustomFieldTypeData('Product', PackageIcon),
+  [CustomFieldType.CollectionReference]: new CustomFieldTypeData('Collection', BoxesIcon),
+  [`customer`]: new CustomFieldTypeData('Customer', UserIcon),
+  [`order`]: new CustomFieldTypeData('Order', ShoppingCartIcon)
 };
 
 export const getEntityName = (entity: CustomFieldAppliesToEntity) => {
-  const NAMES = {
+  const NAMES: Record<CustomFieldAppliesToEntity, string> = {
     [CustomFieldAppliesToEntity.Product]: 'Product',
-    [CustomFieldAppliesToEntity.Collection]: 'Collection'
+    [CustomFieldAppliesToEntity.Collection]: 'Collection',
+    [CustomFieldAppliesToEntity.CustomObject]: 'Custom object'
   };
 
   return NAMES[entity];
@@ -111,23 +112,13 @@ export const CUSTOM_FIELD_TYPE_GROUPS = [
     items: [
       {
         label: 'Product',
-        value: `${CustomFieldType.Reference}:product`,
-        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:product`).icon
+        value: CustomFieldType.ProductReference,
+        icon: getCustomFieldTypeData(CustomFieldType.ProductReference).icon
       },
       {
         label: 'Collection',
-        value: `${CustomFieldType.Reference}:collection`,
-        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:collection`).icon
-      },
-      {
-        label: 'Customer',
-        value: `${CustomFieldType.Reference}:customer`,
-        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:customer`).icon
-      },
-      {
-        label: 'Order',
-        value: `${CustomFieldType.Reference}:order`,
-        icon: getCustomFieldTypeData(`${CustomFieldType.Reference}:order`).icon
+        value: CustomFieldType.CollectionReference,
+        icon: getCustomFieldTypeData(CustomFieldType.CollectionReference).icon
       }
     ]
   },

@@ -80,10 +80,7 @@ export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
     );
   }
 
-  if (
-    definition.type === CustomFieldType.Reference &&
-    definition.metadata.targetEntity === 'product'
-  ) {
+  if (definition.type === CustomFieldType.ProductReference) {
     return (
       <ProductReferenceCustomField
         defaultValues={defaultValues}

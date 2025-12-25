@@ -66,17 +66,12 @@ export const useCustomObjectForm = (definition: CommonCustomObjectDefinitionFrag
           .map((field, i) => {
             if (field.fieldId) return;
 
-            const isList = field.quantity === 'multiple';
-            const isReference = field.type.includes(':');
-            const [type, targetEntity] = field.type.split(':');
-
             return {
-              isList,
+              isList: field.quantity === 'multiple',
               appliesToEntity: CustomFieldAppliesToEntity.CustomObject,
               name: field.name,
               order: i,
-              type: isReference ? (type as CustomFieldType) : (field.type as CustomFieldType),
-              ...(targetEntity && { metadata: { targetEntity } })
+              type: field.type as CustomFieldType
             };
           })
           .filter(isTruthy)
@@ -105,17 +100,12 @@ export const useCustomObjectForm = (definition: CommonCustomObjectDefinitionFrag
         name: values.name,
         displayFieldName: values.displayField === 'auto' ? null : values.displayField,
         fields: values.fields.map((field, i) => {
-          const isList = field.quantity === 'multiple';
-          const isReference = field.type.includes(':');
-          const [type, targetEntity] = field.type.split(':');
-
           return {
-            isList,
+            isList: field.quantity === 'multiple',
             appliesToEntity: CustomFieldAppliesToEntity.CustomObject,
             name: field.name,
             order: i,
-            type: isReference ? (type as CustomFieldType) : (field.type as CustomFieldType),
-            ...(targetEntity && { metadata: { targetEntity } })
+            type: field.type as CustomFieldType
           };
         })
       });

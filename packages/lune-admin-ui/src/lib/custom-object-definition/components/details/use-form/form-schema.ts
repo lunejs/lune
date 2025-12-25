@@ -10,19 +10,18 @@ export const CustomObjectFormSchema = z.object({
     z.object({
       fieldId: z.uuid().optional(),
       name: z.string().min(1, FormMessages.required),
-      type: z
-        .enum([
-          CustomFieldType.Boolean,
-          CustomFieldType.Date,
-          CustomFieldType.Decimal,
-          CustomFieldType.Image,
-          CustomFieldType.Integer,
-          CustomFieldType.Money,
-          CustomFieldType.MultiLineText,
-          CustomFieldType.Reference,
-          CustomFieldType.SingleLineText
-        ])
-        .or(z.string()),
+      type: z.enum([
+        CustomFieldType.Boolean,
+        CustomFieldType.Date,
+        CustomFieldType.Decimal,
+        CustomFieldType.Image,
+        CustomFieldType.Integer,
+        CustomFieldType.Money,
+        CustomFieldType.MultiLineText,
+        CustomFieldType.ProductReference,
+        CustomFieldType.CollectionReference,
+        CustomFieldType.SingleLineText
+      ]),
       quantity: z.enum(['single', 'multiple'])
     })
   )

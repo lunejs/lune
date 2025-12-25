@@ -173,7 +173,7 @@ export const CustomObjectFields = () => {
             size="sm"
             variant="outline"
             type="button"
-            onClick={() => append({ name: '', quantity: 'single', type: '' })}
+            onClick={() => append({ name: '', quantity: 'single', type: '' as any })}
           >
             <CircleFadingPlusIcon size={16} />
             Add field

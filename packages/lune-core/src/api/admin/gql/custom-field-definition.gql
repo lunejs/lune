@@ -81,6 +81,7 @@ input CustomFieldDefinitionListInput {
 
 input CustomFieldDefinitionFilters {
   type: CustomFieldType
+  appliesToEntity: CustomFieldAppliesToEntity
 }
 
 type Query {

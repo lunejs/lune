@@ -29,6 +29,10 @@ export class CustomFieldDefinitionFilter extends BaseFilter<CustomFieldDefinitio
       this.query.where(`${this.tableAlias}.type`, filters.type);
     }
 
+    if (filters.appliesToEntity) {
+      this.query.where(`${this.tableAlias}.applies_to_entity`, filters.appliesToEntity);
+    }
+
     return this;
   }
 }

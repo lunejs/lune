@@ -138,6 +138,32 @@ describe('customFieldDefinitions - Query', () => {
     expect(customFieldDefinitions.pageInfo.total).toBe(2);
   });
 
+  test('returns custom field definitions filtered by appliesToEntity', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_CUSTOM_FIELD_DEFINITIONS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              appliesToEntity: 'PRODUCT'
+            }
+          }
+        }
+      });
+
+    const { customFieldDefinitions } = res.body.data;
+
+    expect(customFieldDefinitions.items).toHaveLength(4);
+    expect(customFieldDefinitions.items.every(item => item.appliesToEntity === 'PRODUCT')).toBe(
+      true
+    );
+    expect(customFieldDefinitions.count).toBe(4);
+    expect(customFieldDefinitions.pageInfo.total).toBe(4);
+  });
+
   test('returns custom field definitions with filters and pagination combined', async () => {
     const res = await request(app)
       .post('/admin-api')

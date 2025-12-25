@@ -40,7 +40,7 @@ export const CustomObjectsTable = ({ customObjects }: Props) => {
           <TableHeader>
             <TableRow>
               <TableHead>Definition</TableHead>
-              <TableHead>Type</TableHead>
+              <TableHead>Key</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

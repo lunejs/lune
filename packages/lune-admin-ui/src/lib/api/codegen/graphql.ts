@@ -406,6 +406,7 @@ export type CustomFieldDefinitionErrorResult = {
 
 export type CustomFieldDefinitionFilters = {
   appliesToEntity?: InputMaybe<CustomFieldAppliesToEntity>;
+  type?: InputMaybe<CustomFieldType>;
 };
 
 export type CustomFieldDefinitionList = {
@@ -430,13 +431,14 @@ export type CustomFieldDefinitionResult = {
 
 export enum CustomFieldType {
   Boolean = 'BOOLEAN',
+  CollectionReference = 'COLLECTION_REFERENCE',
   Date = 'DATE',
   Decimal = 'DECIMAL',
   Image = 'IMAGE',
   Integer = 'INTEGER',
   Money = 'MONEY',
   MultiLineText = 'MULTI_LINE_TEXT',
-  Reference = 'REFERENCE',
+  ProductReference = 'PRODUCT_REFERENCE',
   SingleLineText = 'SINGLE_LINE_TEXT'
 }
 
