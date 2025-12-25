@@ -27,6 +27,7 @@
     "vitest": "^4.0.13"
   },
   "dependencies": {
-    "kleur": "^4.1.5"
+    "kleur": "^4.1.5",
+    "slugify": "^1.6.6"
   }
 }
