@@ -559,6 +559,48 @@ export type CustomObjectDefinitionResult = {
   customObjectDefinition?: Maybe<CustomObjectDefinition>;
 };
 
+/** Represents an entry of a custom object definition */
+export type CustomObjectEntry = {
+  __typename?: 'CustomObjectEntry';
+  createdAt: Scalars['Date']['output'];
+  /** The custom object definition this entry belongs to */
+  definition: CustomObjectDefinition;
+  id: Scalars['ID']['output'];
+  /** A unique and readable identifier for the entry */
+  slug: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+  /** The values of this entry */
+  values: Array<CustomObjectEntryValue>;
+};
+
+export type CustomObjectEntryList = {
+  __typename?: 'CustomObjectEntryList';
+  count: Scalars['Int']['output'];
+  items: Array<CustomObjectEntry>;
+  pageInfo: PageInfo;
+};
+
+/** Represents a value of a custom object entry field */
+export type CustomObjectEntryValue = {
+  __typename?: 'CustomObjectEntryValue';
+  createdAt: Scalars['Date']['output'];
+  /** The entry this value belongs to */
+  entry: CustomObjectEntry;
+  /** The field definition this value is for */
+  field: CustomFieldDefinition;
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['Date']['output'];
+  /** The value of the field */
+  value: Scalars['JSON']['output'];
+};
+
+export type CustomObjectEntryValueList = {
+  __typename?: 'CustomObjectEntryValueList';
+  count: Scalars['Int']['output'];
+  items: Array<CustomObjectEntryValue>;
+  pageInfo: PageInfo;
+};
+
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
 export type Customer = {
   __typename?: 'Customer';
@@ -2781,6 +2823,10 @@ export type ResolversTypes = {
   CustomObjectDefinitionList: ResolverTypeWrapper<CustomObjectDefinitionList>;
   CustomObjectDefinitionListInput: CustomObjectDefinitionListInput;
   CustomObjectDefinitionResult: ResolverTypeWrapper<CustomObjectDefinitionResult>;
+  CustomObjectEntry: ResolverTypeWrapper<CustomObjectEntry>;
+  CustomObjectEntryList: ResolverTypeWrapper<CustomObjectEntryList>;
+  CustomObjectEntryValue: ResolverTypeWrapper<CustomObjectEntryValue>;
+  CustomObjectEntryValueList: ResolverTypeWrapper<CustomObjectEntryValueList>;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -2994,6 +3040,10 @@ export type ResolversParentTypes = {
   CustomObjectDefinitionList: CustomObjectDefinitionList;
   CustomObjectDefinitionListInput: CustomObjectDefinitionListInput;
   CustomObjectDefinitionResult: CustomObjectDefinitionResult;
+  CustomObjectEntry: CustomObjectEntry;
+  CustomObjectEntryList: CustomObjectEntryList;
+  CustomObjectEntryValue: CustomObjectEntryValue;
+  CustomObjectEntryValueList: CustomObjectEntryValueList;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
   CustomerFilters: CustomerFilters;
@@ -3317,6 +3367,40 @@ export type CustomObjectDefinitionListResolvers<ContextType = ExecutionContext, 
 export type CustomObjectDefinitionResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinitionResult'] = ResolversParentTypes['CustomObjectDefinitionResult']> = {
   apiErrors?: Resolver<Array<ResolversTypes['CustomObjectDefinitionErrorResult']>, ParentType, ContextType>;
   customObjectDefinition?: Resolver<Maybe<ResolversTypes['CustomObjectDefinition']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomObjectEntryResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntry'] = ResolversParentTypes['CustomObjectEntry']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  definition?: Resolver<ResolversTypes['CustomObjectDefinition'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  values?: Resolver<Array<ResolversTypes['CustomObjectEntryValue']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomObjectEntryListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntryList'] = ResolversParentTypes['CustomObjectEntryList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CustomObjectEntry']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomObjectEntryValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntryValue'] = ResolversParentTypes['CustomObjectEntryValue']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  entry?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType>;
+  field?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomObjectEntryValueListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntryValueList'] = ResolversParentTypes['CustomObjectEntryValueList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CustomObjectEntryValue']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -4172,6 +4256,10 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomObjectDefinitionErrorResult?: CustomObjectDefinitionErrorResultResolvers<ContextType>;
   CustomObjectDefinitionList?: CustomObjectDefinitionListResolvers<ContextType>;
   CustomObjectDefinitionResult?: CustomObjectDefinitionResultResolvers<ContextType>;
+  CustomObjectEntry?: CustomObjectEntryResolvers<ContextType>;
+  CustomObjectEntryList?: CustomObjectEntryListResolvers<ContextType>;
+  CustomObjectEntryValue?: CustomObjectEntryValueResolvers<ContextType>;
+  CustomObjectEntryValueList?: CustomObjectEntryValueListResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;

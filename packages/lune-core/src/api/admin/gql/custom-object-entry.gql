@@ -1,0 +1,26 @@
+"""
+Represents an entry of a custom object definition
+"""
+type CustomObjectEntry {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  A unique and readable identifier for the entry
+  """
+  slug: String!
+  """
+  The custom object definition this entry belongs to
+  """
+  definition: CustomObjectDefinition!
+  """
+  The values of this entry
+  """
+  values: [CustomObjectEntryValue!]!
+}
+
+type CustomObjectEntryList {
+  items: [CustomObjectEntry!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

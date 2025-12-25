@@ -1,0 +1,26 @@
+"""
+Represents a value of a custom object entry field
+"""
+type CustomObjectEntryValue {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The value of the field
+  """
+  value: JSON!
+  """
+  The entry this value belongs to
+  """
+  entry: CustomObjectEntry!
+  """
+  The field definition this value is for
+  """
+  field: CustomFieldDefinition!
+}
+
+type CustomObjectEntryValueList {
+  items: [CustomObjectEntryValue!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
