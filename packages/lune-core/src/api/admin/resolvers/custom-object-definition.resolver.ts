@@ -94,6 +94,11 @@ export const CustomObjectDefinitionResolver: GraphqlApiResolver = {
       if (!parent.displayFieldId) return null;
 
       return ctx.loaders.customObjectDefinition.displayField.load(parent.displayFieldId);
+    },
+    entries: async (parent: CustomObjectDefinition, _: unknown, ctx: ExecutionContext) => {
+      const items = await ctx.loaders.customObjectDefinition.entries.load(parent.id);
+
+      return { items, count: items.length, pageInfo: { hasNextPage: false } };
     }
   }
 };

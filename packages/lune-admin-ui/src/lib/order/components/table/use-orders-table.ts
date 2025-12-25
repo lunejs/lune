@@ -62,7 +62,7 @@ export const useOrdersTable = () => {
           ? `${o.customer.firstName ?? ''} ${o.customer.lastName ?? ''}`.trim() || o.customer.email
           : null,
         total: o.total,
-        items: o.lines.count,
+        items: o.totalQuantity,
         state: o.state,
         fulfillment: o.fulfillment?.type === FulfillmentType.Shipping ? 'Shipping' : 'Pickup',
         placedAt: o.placedAt ?? null

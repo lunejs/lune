@@ -4,7 +4,7 @@ import { PageLoader } from '@/shared/components/loader/page-loader';
 import { CustomObjectsTable } from '../components/table/custom-object-table';
 import { useGetCustomObjectDefinitions } from '../hooks/use-get-custom-object-definitions';
 
-export const CustomObjectsPage = () => {
+export const CustomObjectDefinitionsPage = () => {
   const { isLoading, customObjectDefinitions } = useGetCustomObjectDefinitions();
 
   if (isLoading) return <PageLoader />;

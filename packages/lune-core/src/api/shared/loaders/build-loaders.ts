@@ -14,6 +14,7 @@ import { createCollectionProductsLoader } from './collection/collection-product.
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
 import { createCustomObjectDefinitionDisplayFieldLoader } from './custom-object-definition/custom-object-definition-display-field.loader';
+import { createCustomObjectDefinitionEntriesLoader } from './custom-object-definition/custom-object-definition-entries.loader';
 import { createCustomObjectDefinitionFieldsLoader } from './custom-object-definition/custom-object-definition-fields.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
 import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
@@ -127,7 +128,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     customObjectDefinition: {
       fields: createCustomObjectDefinitionFieldsLoader(trx),
-      displayField: createCustomObjectDefinitionDisplayFieldLoader(trx)
+      displayField: createCustomObjectDefinitionDisplayFieldLoader(trx),
+      entries: createCustomObjectDefinitionEntriesLoader(trx)
     }
   };
 };

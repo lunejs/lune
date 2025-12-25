@@ -21,6 +21,10 @@ type CustomObjectDefinition {
   The fields that belong to this custom object definition
   """
   fields: [CustomFieldDefinition!]!
+  """
+  Entries for this object
+  """
+  entries: CustomObjectEntryList!
 }
 
 type CustomObjectDefinitionList {

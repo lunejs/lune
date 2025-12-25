@@ -18,9 +18,3 @@ type CustomObjectEntryValue {
   """
   field: CustomFieldDefinition!
 }
-
-type CustomObjectEntryValueList {
-  items: [CustomObjectEntryValue!]!
-  count: Int!
-  pageInfo: PageInfo!
-}
