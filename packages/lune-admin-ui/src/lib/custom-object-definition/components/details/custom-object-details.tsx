@@ -1,4 +1,4 @@
-import { Button, Form } from '@lune/ui';
+import { Form } from '@lune/ui';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
@@ -6,6 +6,7 @@ import { SettingsPageLayout } from '@/shared/components/layout/settings-page-lay
 import { CustomObjectConfigurationCard } from './configuration/custom-object-configuration-card';
 import { CustomObjectFields } from './fields/custom-object-fields';
 import { CustomObjectGeneralCard } from './general/custom-object-general-card';
+import { CustomObjectSubmitButton } from './use-form/submit-button';
 import { useCustomObjectForm } from './use-form/use-form';
 
 export const CustomObjectDetails = ({ definition }: Props) => {
@@ -16,7 +17,7 @@ export const CustomObjectDetails = ({ definition }: Props) => {
       <form onSubmit={form.onSubmit}>
         <SettingsPageLayout
           title={definition?.name ?? '"Create custom object"'}
-          actions={<Button>Save</Button>}
+          actions={<CustomObjectSubmitButton />}
           className="flex flex-col gap-4"
         >
           <CustomObjectGeneralCard />
