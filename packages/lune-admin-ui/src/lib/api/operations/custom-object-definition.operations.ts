@@ -7,7 +7,18 @@ export const COMMON_CUSTOM_OBJECT_DEFINITION_FRAGMENT = graphql(`
     updatedAt
     name
     key
-    displayFieldId
+    displayField {
+      id
+      createdAt
+      updatedAt
+      name
+      key
+      isList
+      appliesToEntity
+      type
+      metadata
+      order
+    }
     fields {
       id
       createdAt

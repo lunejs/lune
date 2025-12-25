@@ -8,6 +8,7 @@ export const CustomObjectFormSchema = z.object({
   displayField: z.literal('auto').or(z.string()),
   fields: z.array(
     z.object({
+      fieldId: z.uuid().optional(),
       name: z.string().min(1, FormMessages.required),
       type: z
         .enum([
