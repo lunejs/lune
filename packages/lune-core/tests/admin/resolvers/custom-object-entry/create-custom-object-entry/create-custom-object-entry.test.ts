@@ -85,11 +85,15 @@ describe('createCustomObjectEntry - Mutation', () => {
     );
     expect(createCustomObjectEntry.values).toHaveLength(2);
 
-    const inDb = await q(Tables.CustomObjectEntry)
-      .where({ id: createCustomObjectEntry.id })
-      .first();
+    const titleValue = createCustomObjectEntry.values.find(
+      (v: { field: { id: string } }) => v.field.id === CustomFieldDefinitionConstants.TitleFieldID
+    );
+    const contentValue = createCustomObjectEntry.values.find(
+      (v: { field: { id: string } }) => v.field.id === CustomFieldDefinitionConstants.ContentFieldID
+    );
 
-    expect(inDb.slug).toBe('my-first-blog-post');
+    expect(titleValue.value).toBe('My First Blog Post');
+    expect(contentValue.value).toBe('This is the content of my blog post');
   });
 
   test('creates entry with random suffix when displayField value is not provided', async () => {
@@ -264,6 +268,9 @@ const CREATE_CUSTOM_OBJECT_ENTRY_MUTATION = /* GraphQL */ `
       values {
         id
         value
+        field {
+          id
+        }
       }
     }
   }

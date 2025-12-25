@@ -61,7 +61,7 @@ export class CustomObjectEntryService {
           .map(value => ({
             entryId: entry.id,
             fieldId: value.id,
-            value: JSON.stringify(value)
+            value: JSON.stringify(value.value)
           }))
       );
     }
