@@ -49,6 +49,7 @@ type Documents = {
     "\n  mutation CreateCustomObjectDefinition($input: CreateCustomObjectDefinitionInput!) {\n    createCustomObjectDefinition(input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": typeof types.CreateCustomObjectDefinitionDocument,
     "\n  mutation UpdateCustomObjectDefinition($id: ID!, $input: UpdateCustomObjectDefinitionInput!) {\n    updateCustomObjectDefinition(id: $id, input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": typeof types.UpdateCustomObjectDefinitionDocument,
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": typeof types.RemoveCustomObjectDefinitionDocument,
+    "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": typeof types.GetCustomObjectDefinitionsExistsDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": typeof types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": typeof types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": typeof types.GetCustomerByIdQueryDocument,
@@ -173,6 +174,7 @@ const documents: Documents = {
     "\n  mutation CreateCustomObjectDefinition($input: CreateCustomObjectDefinitionInput!) {\n    createCustomObjectDefinition(input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.CreateCustomObjectDefinitionDocument,
     "\n  mutation UpdateCustomObjectDefinition($id: ID!, $input: UpdateCustomObjectDefinitionInput!) {\n    updateCustomObjectDefinition(id: $id, input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.UpdateCustomObjectDefinitionDocument,
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": types.RemoveCustomObjectDefinitionDocument,
+    "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": types.GetCustomObjectDefinitionsExistsDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": types.GetCustomerByIdQueryDocument,
@@ -416,6 +418,10 @@ export function graphql(source: "\n  mutation UpdateCustomObjectDefinition($id: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n"): (typeof documents)["\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n"): (typeof documents)["\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

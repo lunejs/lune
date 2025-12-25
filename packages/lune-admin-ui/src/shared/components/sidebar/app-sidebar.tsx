@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {
   BoxesIcon,
+  GroupIcon,
   ImagesIcon,
   PackageIcon,
   SettingsIcon,
@@ -108,6 +109,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ))}
           </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Content</SidebarGroupLabel>
+
+          <SidebarMenu>
+            {SIDEBAR.content.map(item => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  variant={item.isActive(location.pathname) ? 'secondary' : 'default'}
+                  asChild
+                >
+                  <Link to={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -177,6 +199,14 @@ const SIDEBAR = {
       url: '#',
       icon: UsersIcon,
       isActive: (pathname: string) => pathname.includes('random')
+    }
+  ],
+  content: [
+    {
+      title: 'Custom objects',
+      url: '/custom-objects',
+      icon: GroupIcon,
+      isActive: (pathname: string) => pathname.includes('custom-objects')
     }
   ]
 };

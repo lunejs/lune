@@ -89,3 +89,11 @@ export const REMOVE_CUSTOM_OBJECT_DEFINITION_MUTATION = graphql(`
     removeCustomObjectDefinition(id: $id)
   }
 `);
+
+export const GET_CUSTOM_OBJECT_DEFINITIONS_EXISTS = graphql(`
+  query GetCustomObjectDefinitionsExists {
+    customObjectDefinitions(input: { take: 1 }) {
+      count
+    }
+  }
+`);
