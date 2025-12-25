@@ -16,6 +16,7 @@ import { NewCustomFieldPage } from '@/lib/custom-fields/pages/new-custom-fields-
 import { CustomObjectDetailsPage } from '@/lib/custom-object-definition/pages/custom-object-details-page';
 import { CustomObjectDefinitionsPage } from '@/lib/custom-object-definition/pages/custom-objects-page';
 import { NewCustomObjectPage } from '@/lib/custom-object-definition/pages/new-custom-object-page';
+import { CustomObjectEntriesPage } from '@/lib/custom-object-entry/pages/custom-object-entries-page';
 import { CustomObjectsPage } from '@/lib/custom-object-entry/pages/custom-objects';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
 import { CustomersPage } from '@/lib/customer/pages/customers-page';
@@ -115,6 +116,7 @@ export const App = ({ config }: Props) => {
                     <Route path="/customers/:id" element={<CustomerDetailsPage />} />
 
                     <Route path="/custom-objects" element={<CustomObjectsPage />} />
+                    <Route path="/custom-objects/:id" element={<CustomObjectEntriesPage />} />
                   </Route>
 
                   <Route element={<SettingsLayout />}>

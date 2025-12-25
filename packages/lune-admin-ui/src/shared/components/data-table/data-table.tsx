@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
 export type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onSearch: (query: string) => void;
+  onSearch?: (query: string) => void;
   searchDefaultValue?: string;
   searchPlaceholder?: string;
   totalRows: number;

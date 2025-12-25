@@ -51,9 +51,11 @@ type Documents = {
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": typeof types.RemoveCustomObjectDefinitionDocument,
     "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": typeof types.GetCustomObjectDefinitionsExistsDocument,
     "\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      id\n      createdAt\n      updatedAt\n      slug\n      values {\n        id\n        value\n        field {\n          id\n          name\n          key\n          type\n        }\n      }\n    }\n  }\n": typeof types.GetCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n": typeof types.GetCustomObjectEntriesDocument,
     "\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n": typeof types.CreateCustomObjectEntryDocument,
     "\n  mutation UpdateCustomObjectEntry($id: ID!, $input: UpdateCustomObjectEntryInput!) {\n    updateCustomObjectEntry(id: $id, input: $input) {\n      id\n    }\n  }\n": typeof types.UpdateCustomObjectEntryDocument,
     "\n  mutation RemoveCustomObjectEntry($ids: [ID!]!) {\n    removeCustomObjectEntry(ids: $ids)\n  }\n": typeof types.RemoveCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntriesCount($definitionId: ID!) {\n    customObjectEntries(definitionId: $definitionId, input: { take: 1 }) {\n      count\n    }\n  }\n": typeof types.GetCustomObjectEntriesCountDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": typeof types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": typeof types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": typeof types.GetCustomerByIdQueryDocument,
@@ -180,9 +182,11 @@ const documents: Documents = {
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": types.RemoveCustomObjectDefinitionDocument,
     "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": types.GetCustomObjectDefinitionsExistsDocument,
     "\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      id\n      createdAt\n      updatedAt\n      slug\n      values {\n        id\n        value\n        field {\n          id\n          name\n          key\n          type\n        }\n      }\n    }\n  }\n": types.GetCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n": types.GetCustomObjectEntriesDocument,
     "\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n": types.CreateCustomObjectEntryDocument,
     "\n  mutation UpdateCustomObjectEntry($id: ID!, $input: UpdateCustomObjectEntryInput!) {\n    updateCustomObjectEntry(id: $id, input: $input) {\n      id\n    }\n  }\n": types.UpdateCustomObjectEntryDocument,
     "\n  mutation RemoveCustomObjectEntry($ids: [ID!]!) {\n    removeCustomObjectEntry(ids: $ids)\n  }\n": types.RemoveCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntriesCount($definitionId: ID!) {\n    customObjectEntries(definitionId: $definitionId, input: { take: 1 }) {\n      count\n    }\n  }\n": types.GetCustomObjectEntriesCountDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    totalSpent\n    orders(input: { take: 1 }) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        placedAt\n        total\n        lines {\n          count\n        }\n        payments {\n          state\n        }\n        fulfillment {\n          type\n        }\n      }\n    }\n  }\n": types.CommonCustomerFragmentDoc,
     "\n  fragment CommonListCustomer on Customer {\n    id\n    firstName\n    lastName\n    email\n    enabled\n    totalSpent\n    orders {\n      count\n    }\n  }\n": types.CommonListCustomerFragmentDoc,
     "\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": types.GetCustomerByIdQueryDocument,
@@ -437,6 +441,10 @@ export function graphql(source: "\n  query GetCustomObjectEntry($id: ID!) {\n   
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -446,6 +454,10 @@ export function graphql(source: "\n  mutation UpdateCustomObjectEntry($id: ID!, 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation RemoveCustomObjectEntry($ids: [ID!]!) {\n    removeCustomObjectEntry(ids: $ids)\n  }\n"): (typeof documents)["\n  mutation RemoveCustomObjectEntry($ids: [ID!]!) {\n    removeCustomObjectEntry(ids: $ids)\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetCustomObjectEntriesCount($definitionId: ID!) {\n    customObjectEntries(definitionId: $definitionId, input: { take: 1 }) {\n      count\n    }\n  }\n"): (typeof documents)["\n  query GetCustomObjectEntriesCount($definitionId: ID!) {\n    customObjectEntries(definitionId: $definitionId, input: { take: 1 }) {\n      count\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

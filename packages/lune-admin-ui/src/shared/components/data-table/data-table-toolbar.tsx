@@ -22,19 +22,21 @@ export function DataTableToolbar<TData, TValue>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
-        <InputGroup className="w-[150px] lg:w-[250px]">
-          <InputGroupInput
-            defaultValue={searchDefaultValue}
-            placeholder={searchPlaceholder || 'Search...'}
-            onChange={event => onSearch(event.target.value)}
-            className="text-sm h-8"
-          />
-          {isLoading && (
-            <InputGroupAddon className="quick-fade-in" align={'inline-end'}>
-              <SpinnerLoader />
-            </InputGroupAddon>
-          )}
-        </InputGroup>
+        {onSearch && (
+          <InputGroup className="w-[150px] lg:w-[250px]">
+            <InputGroupInput
+              defaultValue={searchDefaultValue}
+              placeholder={searchPlaceholder || 'Search...'}
+              onChange={event => onSearch(event.target.value)}
+              className="text-sm h-8"
+            />
+            {isLoading && (
+              <InputGroupAddon className="quick-fade-in" align={'inline-end'}>
+                <SpinnerLoader />
+              </InputGroupAddon>
+            )}
+          </InputGroup>
+        )}
 
         <div className="hidden lg:block">
           {filters?.map(filter => (
