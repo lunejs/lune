@@ -74,7 +74,7 @@ export const CustomObjectFields = () => {
                     return (
                       <div
                         className={cn(
-                          'z-10 flex items-center gap-4 px-6 py-4',
+                          'z-10 flex gap-4 px-6 py-4',
                           !isLast(i, fields) && 'border-b',
                           isDragging && 'border-transparent bg-muted/50'
                         )}
@@ -99,7 +99,7 @@ export const CustomObjectFields = () => {
                           placeholder="Field label"
                         />
 
-                        <div className="flex items-end gap-4 flex-1">
+                        <div className="flex items-start gap-4 flex-1">
                           <FormSelect
                             disabled={!!persistedField}
                             control={form.control}

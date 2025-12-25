@@ -28,7 +28,13 @@ export const CustomObjectSubmitButton = () => {
     }))
   };
 
+  const withRequiredValues = !!values.name;
+
   const hasChanged = form.definition ? !equals(customObject, values) : true;
 
-  return <Button disabled={!hasChanged || form.formState.isSubmitting}>Save</Button>;
+  return (
+    <Button disabled={!hasChanged || !withRequiredValues || form.formState.isSubmitting}>
+      Save
+    </Button>
+  );
 };
