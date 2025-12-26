@@ -9,7 +9,9 @@ import { ShopConstants } from './shop.fixtures';
 export const CustomFieldDefinitionConstants = {
   TitleFieldID: TestUtils.generateUUID(),
   ContentFieldID: TestUtils.generateUUID(),
-  QuestionFieldID: TestUtils.generateUUID()
+  QuestionFieldID: TestUtils.generateUUID(),
+  NumberFieldID: TestUtils.generateUUID(),
+  BooleanFieldID: TestUtils.generateUUID()
 };
 
 export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinitionTable> {
@@ -48,6 +50,28 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         type: 'single_line_text',
         order: 0,
         custom_object_definition_id: CustomObjectDefinitionConstants.WithoutDisplayFieldID,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.NumberFieldID,
+        name: 'Number',
+        key: 'number',
+        is_list: false,
+        applies_to_entity: 'custom_object',
+        type: 'integer',
+        order: 2,
+        custom_object_definition_id: CustomObjectDefinitionConstants.WithDisplayFieldID,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.BooleanFieldID,
+        name: 'Boolean',
+        key: 'boolean',
+        is_list: false,
+        applies_to_entity: 'custom_object',
+        type: 'boolean',
+        order: 3,
+        custom_object_definition_id: CustomObjectDefinitionConstants.WithDisplayFieldID,
         shop_id: ShopConstants.ID
       }
     ];

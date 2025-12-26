@@ -57,7 +57,7 @@ export class CustomObjectEntryService {
     if (input.values?.length) {
       await this.valueRepository.createMany(
         input.values
-          .filter(value => !!value.value)
+          .filter(value => value.value != null)
           .map(value => ({
             entryId: entry.id,
             fieldId: value.id,

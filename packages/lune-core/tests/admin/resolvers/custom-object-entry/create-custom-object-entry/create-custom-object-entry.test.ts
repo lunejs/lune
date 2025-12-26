@@ -199,6 +199,53 @@ describe('createCustomObjectEntry - Mutation', () => {
     expect(createCustomObjectEntry.values).toHaveLength(0);
   });
 
+  test('saves falsy values like 0, empty string and false', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_OBJECT_ENTRY_MUTATION,
+        variables: {
+          definitionId: CustomObjectDefinitionConstants.WithDisplayFieldID,
+          input: {
+            values: [
+              {
+                id: CustomFieldDefinitionConstants.TitleFieldID,
+                value: ''
+              },
+              {
+                id: CustomFieldDefinitionConstants.NumberFieldID,
+                value: 0
+              },
+              {
+                id: CustomFieldDefinitionConstants.BooleanFieldID,
+                value: false
+              }
+            ]
+          }
+        }
+      });
+
+    const { createCustomObjectEntry } = res.body.data;
+
+    expect(createCustomObjectEntry.values).toHaveLength(3);
+
+    const emptyStringValue = createCustomObjectEntry.values.find(
+      (v: { field: { id: string } }) => v.field.id === CustomFieldDefinitionConstants.TitleFieldID
+    );
+    const zeroValue = createCustomObjectEntry.values.find(
+      (v: { field: { id: string } }) => v.field.id === CustomFieldDefinitionConstants.NumberFieldID
+    );
+    const falseValue = createCustomObjectEntry.values.find(
+      (v: { field: { id: string } }) => v.field.id === CustomFieldDefinitionConstants.BooleanFieldID
+    );
+
+    expect(emptyStringValue.value).toBe('');
+    expect(zeroValue.value).toBe(0);
+    expect(falseValue.value).toBe(false);
+  });
+
   test('filters out values with null value', async () => {
     const res = await request(app)
       .post('/admin-api')

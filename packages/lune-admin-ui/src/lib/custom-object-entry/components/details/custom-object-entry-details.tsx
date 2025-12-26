@@ -42,7 +42,7 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
                   {definition.fields.map(cf => {
                     const entryValue = entry?.values.find(e => e.field.id === cf.id);
 
-                    const defaultValue = entry
+                    const defaultValue = entryValue
                       ? isArray(entryValue?.value)
                         ? entryValue.value
                         : [entryValue?.value]
