@@ -50,8 +50,10 @@ type Documents = {
     "\n  mutation UpdateCustomObjectDefinition($id: ID!, $input: UpdateCustomObjectDefinitionInput!) {\n    updateCustomObjectDefinition(id: $id, input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": typeof types.UpdateCustomObjectDefinitionDocument,
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": typeof types.RemoveCustomObjectDefinitionDocument,
     "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": typeof types.GetCustomObjectDefinitionsExistsDocument,
+    "\n  fragment CommonCustomObjectEntryForTranslation on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      translations {\n        id\n        value\n        locale\n      }\n      field {\n        id\n        name\n        key\n        type\n        isList\n      }\n    }\n  }\n": typeof types.CommonCustomObjectEntryForTranslationFragmentDoc,
     "\n  fragment CommonCustomObjectEntry on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      field {\n        id\n        name\n        key\n        type\n      }\n    }\n  }\n": typeof types.CommonCustomObjectEntryFragmentDoc,
     "\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntry\n    }\n  }\n": typeof types.GetCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntryForTranslation($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntryForTranslation\n    }\n  }\n": typeof types.GetCustomObjectEntryForTranslationDocument,
     "\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n": typeof types.GetCustomObjectEntriesDocument,
     "\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n": typeof types.CreateCustomObjectEntryDocument,
     "\n  mutation UpdateCustomObjectEntry($id: ID!, $input: UpdateCustomObjectEntryInput!) {\n    updateCustomObjectEntry(id: $id, input: $input) {\n      id\n    }\n  }\n": typeof types.UpdateCustomObjectEntryDocument,
@@ -183,8 +185,10 @@ const documents: Documents = {
     "\n  mutation UpdateCustomObjectDefinition($id: ID!, $input: UpdateCustomObjectDefinitionInput!) {\n    updateCustomObjectDefinition(id: $id, input: $input) {\n      customObjectDefinition {\n        id\n      }\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.UpdateCustomObjectDefinitionDocument,
     "\n  mutation RemoveCustomObjectDefinition($id: ID!) {\n    removeCustomObjectDefinition(id: $id)\n  }\n": types.RemoveCustomObjectDefinitionDocument,
     "\n  query GetCustomObjectDefinitionsExists {\n    customObjectDefinitions(input: { take: 1 }) {\n      count\n    }\n  }\n": types.GetCustomObjectDefinitionsExistsDocument,
+    "\n  fragment CommonCustomObjectEntryForTranslation on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      translations {\n        id\n        value\n        locale\n      }\n      field {\n        id\n        name\n        key\n        type\n        isList\n      }\n    }\n  }\n": types.CommonCustomObjectEntryForTranslationFragmentDoc,
     "\n  fragment CommonCustomObjectEntry on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      field {\n        id\n        name\n        key\n        type\n      }\n    }\n  }\n": types.CommonCustomObjectEntryFragmentDoc,
     "\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntry\n    }\n  }\n": types.GetCustomObjectEntryDocument,
+    "\n  query GetCustomObjectEntryForTranslation($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntryForTranslation\n    }\n  }\n": types.GetCustomObjectEntryForTranslationDocument,
     "\n  query GetCustomObjectEntries($definitionId: ID!, $input: ListInput!) {\n    customObjectEntries(definitionId: $definitionId, input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        updatedAt\n        slug\n        values {\n          id\n          value\n          field {\n            id\n            name\n            key\n            type\n          }\n        }\n      }\n    }\n  }\n": types.GetCustomObjectEntriesDocument,
     "\n  mutation CreateCustomObjectEntry($definitionId: ID!, $input: CreateCustomObjectEntryInput!) {\n    createCustomObjectEntry(definitionId: $definitionId, input: $input) {\n      id\n    }\n  }\n": types.CreateCustomObjectEntryDocument,
     "\n  mutation UpdateCustomObjectEntry($id: ID!, $input: UpdateCustomObjectEntryInput!) {\n    updateCustomObjectEntry(id: $id, input: $input) {\n      id\n    }\n  }\n": types.UpdateCustomObjectEntryDocument,
@@ -441,11 +445,19 @@ export function graphql(source: "\n  query GetCustomObjectDefinitionsExists {\n 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  fragment CommonCustomObjectEntryForTranslation on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      translations {\n        id\n        value\n        locale\n      }\n      field {\n        id\n        name\n        key\n        type\n        isList\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonCustomObjectEntryForTranslation on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      translations {\n        id\n        value\n        locale\n      }\n      field {\n        id\n        name\n        key\n        type\n        isList\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  fragment CommonCustomObjectEntry on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      field {\n        id\n        name\n        key\n        type\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonCustomObjectEntry on CustomObjectEntry {\n    id\n    createdAt\n    updatedAt\n    slug\n    values {\n      id\n      value\n      field {\n        id\n        name\n        key\n        type\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntry\n    }\n  }\n"): (typeof documents)["\n  query GetCustomObjectEntry($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntry\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetCustomObjectEntryForTranslation($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntryForTranslation\n    }\n  }\n"): (typeof documents)["\n  query GetCustomObjectEntryForTranslation($id: ID!) {\n    customObjectEntry(id: $id) {\n      ...CommonCustomObjectEntryForTranslation\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

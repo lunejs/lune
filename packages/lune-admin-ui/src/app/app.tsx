@@ -48,6 +48,7 @@ import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
 import { ShopDetails } from '@/lib/shop/pages/shop-details';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 import { TranslateCollectionsPage } from '@/lib/translate/pages/translate-collections-page';
+import { TranslateCustomObjectsPage } from '@/lib/translate/pages/translate-custom-objects-page';
 import { TranslateProductsPage } from '@/lib/translate/pages/translate-products-page';
 import { AdminLayout } from '@/shared/components/admin-layout/admin-layout';
 import ScrollToTop from '@/shared/components/scroll-to-top';
@@ -92,6 +93,10 @@ export const App = ({ config }: Props) => {
                   <Route path="/translate/products" element={<TranslateProductsPage />} />
                   <Route path="/translate/collections/:id" element={<TranslateCollectionsPage />} />
                   <Route path="/translate/collections" element={<TranslateCollectionsPage />} />
+                  <Route
+                    path="/translate/custom-objects/:definitionId/:entryId"
+                    element={<TranslateCustomObjectsPage />}
+                  />
 
                   <Route element={<AdminLayout />}>
                     <Route path="/dashboard" element={<DashboardPage />} />

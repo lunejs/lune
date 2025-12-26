@@ -28,7 +28,7 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
                 : 'Create Entry'}
             </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
-              {entry && <CustomObjectEntryActions entry={entry} />}
+              {entry && <CustomObjectEntryActions definition={definition} entry={entry} />}
               <CustomObjectEntrySubmitButton />
             </DetailsPageLayout.Actions>
           </DetailsPageLayout.Header>

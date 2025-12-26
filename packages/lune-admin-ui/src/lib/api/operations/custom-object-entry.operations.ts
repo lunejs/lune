@@ -1,5 +1,30 @@
 import { graphql } from '../codegen';
 
+export const COMMON_CUSTOM_OBJECT_ENTRY_FOR_TRANSLATION_FRAGMENT = graphql(`
+  fragment CommonCustomObjectEntryForTranslation on CustomObjectEntry {
+    id
+    createdAt
+    updatedAt
+    slug
+    values {
+      id
+      value
+      translations {
+        id
+        value
+        locale
+      }
+      field {
+        id
+        name
+        key
+        type
+        isList
+      }
+    }
+  }
+`);
+
 export const COMMON_CUSTOM_OBJECT_ENTRY_FRAGMENT = graphql(`
   fragment CommonCustomObjectEntry on CustomObjectEntry {
     id
@@ -23,6 +48,14 @@ export const GET_CUSTOM_OBJECT_ENTRY_QUERY = graphql(`
   query GetCustomObjectEntry($id: ID!) {
     customObjectEntry(id: $id) {
       ...CommonCustomObjectEntry
+    }
+  }
+`);
+
+export const GET_CUSTOM_OBJECT_ENTRY_FOR_TRANSLATION_QUERY = graphql(`
+  query GetCustomObjectEntryForTranslation($id: ID!) {
+    customObjectEntry(id: $id) {
+      ...CommonCustomObjectEntryForTranslation
     }
   }
 `);

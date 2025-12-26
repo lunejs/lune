@@ -1,19 +1,26 @@
 import { useState } from 'react';
-import { ChevronDownIcon, Trash2Icon } from 'lucide-react';
+import { ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
 
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@lune/ui';
 
-import type { CommonCustomObjectEntryFragment } from '@/lib/api/types';
+import type {
+  CommonCustomObjectDefinitionFragment,
+  CommonCustomObjectEntryFragment
+} from '@/lib/api/types';
+import { useBack } from '@/shared/hooks/use-back';
 
 import { RemoveCustomObjectEntryAlert } from './remove/remove-custom-object-entry-alert';
 
-export const CustomObjectEntryActions = ({ entry }: Props) => {
+export const CustomObjectEntryActions = ({ definition, entry }: Props) => {
+  const { goto } = useBack();
+
   const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   return (
@@ -25,6 +32,14 @@ export const CustomObjectEntryActions = ({ entry }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            onClick={() => goto(`/translate/custom-objects/${definition.id}/${entry.id}`)}
+          >
+            <LanguagesIcon /> Translate
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
           <DropdownMenuItem
             className="text-destructive hover:text-destructive!"
             onClick={() => setIsRemoveOpen(true)}
@@ -43,5 +58,6 @@ export const CustomObjectEntryActions = ({ entry }: Props) => {
 };
 
 type Props = {
+  definition: CommonCustomObjectDefinitionFragment;
   entry: CommonCustomObjectEntryFragment;
 };

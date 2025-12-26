@@ -36,5 +36,5 @@ type Props = {
   href: string;
   isSelected: boolean;
   title: string;
-  image: string;
+  image?: string;
 };
