@@ -1,6 +1,7 @@
 import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
 import { BooleanCustomField } from './boolean';
+import { CustomObjectReferenceCustomField } from './custom-object';
 import { DateCustomField } from './date';
 import { DecimalCustomField } from './decimal';
 import { ImageCustomField } from './image';
@@ -83,6 +84,16 @@ export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.ProductReference) {
     return (
       <ProductReferenceCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
+  }
+
+  if (definition.type === CustomFieldType.CustomObjectReference) {
+    return (
+      <CustomObjectReferenceCustomField
         defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}

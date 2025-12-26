@@ -19,5 +19,5 @@ export const CustomFieldEntityPreview = ({ title, image, className, ...props }: 
 
 type Props = ComponentProps<'span'> & {
   title: string;
-  image: string | undefined;
+  image?: string;
 };

@@ -22,7 +22,7 @@ export const DefaultEntitySelectorRow = ({ title, image, isSelected, onSelect }:
 
 type Props = {
   title: string;
-  image: string | undefined;
+  image?: string;
   isSelected: boolean;
   onSelect: (value: boolean) => void;
 };
