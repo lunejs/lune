@@ -18,7 +18,7 @@ export const CustomObjectEntryDetailsPage = () => {
   if (!customObjectDefinition || !customObjectEntry) return <NotFound />;
 
   return (
-    <PageLayout className="max-w-5xl mx-auto w-full" isLoading={isLoading}>
+    <PageLayout className="max-w-3xl mx-auto w-full" isLoading={isLoading}>
       <CustomObjectEntryDetails definition={customObjectDefinition} entry={customObjectEntry} />
     </PageLayout>
   );

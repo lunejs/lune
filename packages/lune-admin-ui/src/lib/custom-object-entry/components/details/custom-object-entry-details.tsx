@@ -22,7 +22,9 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
         <DetailsPageLayout>
           <DetailsPageLayout.Header>
             <DetailsPageLayout.Title>
-              {entry ? displayFieldValue?.value : 'Create Entry'}
+              {entry
+                ? displayFieldValue?.value || `${definition.name}#${entry.slug.toUpperCase()}`
+                : 'Create Entry'}
             </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
               {/* {discount && <DiscountActions discount={discount} />} */}
@@ -31,7 +33,7 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
           </DetailsPageLayout.Header>
 
           <DetailsPageLayout.Content>
-            <div className="col-span-4 flex flex-col gap-6">
+            <div className="col-span-6 flex flex-col gap-6">
               <Card>
                 <CardHeader className="flex">
                   <CardTitle>General</CardTitle>

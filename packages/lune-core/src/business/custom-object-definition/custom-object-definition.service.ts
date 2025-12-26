@@ -112,6 +112,11 @@ export class CustomObjectDefinitionService {
           data: { displayFieldId: displayField.id }
         });
       }
+    } else if (input.displayFieldName === null) {
+      return this.repository.update({
+        where: { id },
+        data: { displayFieldId: null }
+      });
     }
 
     return customObjectDefinition;
