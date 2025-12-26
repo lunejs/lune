@@ -1,7 +1,7 @@
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@lune/ui';
+import { Button, H4 } from '@lune/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
@@ -18,23 +18,28 @@ export const CustomObjectEntriesTable = ({
   const { pagination, updatePagination } = dataTable;
 
   return (
-    <DataTable
-      isLoading={isRefetching}
-      data={customObjectEntries}
-      columns={CustomObjectEntriesTableColumns}
-      onPageChange={page => updatePagination({ page })}
-      onPageSizeChange={size => updatePagination({ size })}
-      totalRows={totalRows}
-      defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
-      actions={
-        <Link to={`/custom-objects/${definitionId}/new`}>
-          <Button size="sm">
-            <PlusIcon className="lg:hidden" />
-            <span className="hidden lg:inline">Add Entry</span>
-          </Button>
-        </Link>
-      }
-    />
+    <div className="relative">
+      <div className="absolute h-8 flex items-center">
+        <H4 className="">Banner</H4>
+      </div>
+      <DataTable
+        isLoading={isRefetching}
+        data={customObjectEntries}
+        columns={CustomObjectEntriesTableColumns}
+        onPageChange={page => updatePagination({ page })}
+        onPageSizeChange={size => updatePagination({ size })}
+        totalRows={totalRows}
+        defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
+        actions={
+          <Link to={`/custom-objects/${definitionId}/new`}>
+            <Button size="sm">
+              <PlusIcon className="lg:hidden" />
+              <span className="hidden lg:inline">Add Entry</span>
+            </Button>
+          </Link>
+        }
+      />
+    </div>
   );
 };
 

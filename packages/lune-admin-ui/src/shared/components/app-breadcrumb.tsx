@@ -71,8 +71,7 @@ const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/discounts': [{ href: '/discounts', label: 'Discounts' }, { label: 'All discounts' }],
   '/discounts/': [{ href: '/discounts', label: 'Discounts' }, { label: 'Discount details' }],
   '/discounts/new': [{ href: '/discounts', label: 'Discounts' }, { label: 'Create discount' }],
-  '/wholesale': [{ href: '/wholesale', label: 'Wholesale' }, { label: 'All requests' }],
-  '/wholesale/': [{ href: '/wholesale', label: 'Wholesale' }, { label: 'Request' }],
+  '/custom-objects': [{ label: 'Custom objects' }],
 
   '/settings/shipments': [{ label: 'Shipments' }],
   '/settings/shipments/new': [
@@ -132,6 +131,16 @@ const getBreadcrumbItems = (pathname: string, params: Record<string, unknown>, i
   }
   if (pathname === `/customers/${params.id}`) {
     return [{ href: '/customers', label: 'Customers' }, { label: 'Customers details' }];
+  }
+  if (pathname === `/custom-objects/${params.id}`) {
+    return [{ href: '/custom-objects', label: 'Custom objects' }, { label: 'Entries' }];
+  }
+  if (pathname === `/custom-objects/${params.id}/${params.entryId}`) {
+    return [
+      { href: '/custom-objects', label: 'Custom objects' },
+      { href: `/custom-objects/${params.id}`, label: 'Entries' },
+      { label: 'Entry details' }
+    ];
   }
   if (pathname === `/settings/shipments/${id}`) {
     return [{ href: '/settings/shipments', label: 'Shipments' }, { label: 'Zone details' }];

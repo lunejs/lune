@@ -48,13 +48,5 @@ export const CustomObjectDefinitionsTableColumns: ColumnDef<CustomObjectDefiniti
       return <p className="text-nowrap text-muted-foreground">{row.original.key}</p>;
     },
     enableSorting: false
-  },
-  {
-    accessorKey: 'totalFields',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Fields" />,
-    cell: ({ row }) => {
-      return <p className="text-nowrap">{row.original.totalFields}</p>;
-    },
-    enableSorting: false
   }
 ];

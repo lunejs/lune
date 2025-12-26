@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   BoxesIcon,
-  GroupIcon,
+  FileTextIcon,
   ImagesIcon,
   PackageIcon,
   SettingsIcon,
@@ -205,7 +205,7 @@ const SIDEBAR = {
     {
       title: 'Custom objects',
       url: '/custom-objects',
-      icon: GroupIcon,
+      icon: FileTextIcon,
       isActive: (pathname: string) => pathname.includes('custom-objects')
     }
   ]
