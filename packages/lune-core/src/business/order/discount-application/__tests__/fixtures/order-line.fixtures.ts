@@ -34,11 +34,11 @@ export const OrderLineConstants = {
   ForOrderLineLevelID: TestUtils.generateUUID(),
   ForOrderLineLevelID2: TestUtils.generateUUID(),
 
-  ForFulfillmentLevelID: TestUtils.generateUUID(),
-  ForFulfillmentLevelID2: TestUtils.generateUUID(),
+  ForDeliveryMethodLevelID: TestUtils.generateUUID(),
+  ForDeliveryMethodLevelID2: TestUtils.generateUUID(),
 
-  WithoutFulfillmentID: TestUtils.generateUUID(),
-  WithoutFulfillmentID2: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID2: TestUtils.generateUUID(),
 
   WithoutCustomerID: TestUtils.generateUUID(),
   WithoutCustomerID2: TestUtils.generateUUID()
@@ -231,10 +231,10 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         shop_id: ShopConstants.ID,
         applied_discounts: JSON.stringify([])
       },
-      // Order for Fulfillment level discount test (2 lines, subtotal = $2100)
+      // Order for DeliveryMethod level discount test (2 lines, subtotal = $2100)
       {
-        id: OrderLineConstants.ForFulfillmentLevelID,
-        order_id: OrderConstants.ForFulfillmentLevelID,
+        id: OrderLineConstants.ForDeliveryMethodLevelID,
+        order_id: OrderConstants.ForDeliveryMethodLevelID,
         variant_id: VariantConstants.AlreadyInLineID,
         line_total: LunePrice.toCent(800),
         line_subtotal: LunePrice.toCent(800),
@@ -244,8 +244,8 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         applied_discounts: JSON.stringify([])
       },
       {
-        id: OrderLineConstants.ForFulfillmentLevelID2,
-        order_id: OrderConstants.ForFulfillmentLevelID,
+        id: OrderLineConstants.ForDeliveryMethodLevelID2,
+        order_id: OrderConstants.ForDeliveryMethodLevelID,
         variant_id: VariantConstants.ID,
         line_total: LunePrice.toCent(1_300),
         line_subtotal: LunePrice.toCent(1_300),
@@ -254,10 +254,10 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         shop_id: ShopConstants.ID,
         applied_discounts: JSON.stringify([])
       },
-      // Order without fulfillment (2 lines, subtotal = $2100)
+      // Order without delivery method (2 lines, subtotal = $2100)
       {
-        id: OrderLineConstants.WithoutFulfillmentID,
-        order_id: OrderConstants.WithoutFulfillmentID,
+        id: OrderLineConstants.WithoutDeliveryMethodID,
+        order_id: OrderConstants.WithoutDeliveryMethodID,
         variant_id: VariantConstants.AlreadyInLineID,
         line_total: LunePrice.toCent(800),
         line_subtotal: LunePrice.toCent(800),
@@ -267,8 +267,8 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         applied_discounts: JSON.stringify([])
       },
       {
-        id: OrderLineConstants.WithoutFulfillmentID2,
-        order_id: OrderConstants.WithoutFulfillmentID,
+        id: OrderLineConstants.WithoutDeliveryMethodID2,
+        order_id: OrderConstants.WithoutDeliveryMethodID,
         variant_id: VariantConstants.ID,
         line_total: LunePrice.toCent(1_300),
         line_subtotal: LunePrice.toCent(1_300),

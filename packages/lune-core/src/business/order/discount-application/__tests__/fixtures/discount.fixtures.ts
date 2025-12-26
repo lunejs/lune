@@ -21,11 +21,11 @@ export const DiscountConstants = {
   OrderLineAutomaticDiscountID: TestUtils.generateUUID(),
   OrderLineAutomaticDiscountCode: 'ORDER_LINE_AUTOMATIC_DISCOUNT',
 
-  FulfillmentAutomaticDiscountID: TestUtils.generateUUID(),
-  FulfillmentAutomaticDiscountCode: 'FULFILLMENT_AUTOMATIC_DISCOUNT',
+  DeliveryMethodAutomaticDiscountID: TestUtils.generateUUID(),
+  DeliveryMethodAutomaticDiscountCode: 'DELIVERY_METHOD_AUTOMATIC_DISCOUNT',
 
-  FulfillmentForOrderWithoutFulfillmentID: TestUtils.generateUUID(),
-  FulfillmentForOrderWithoutFulfillmentCode: 'FULFILLMENT_FOR_ORDER_WITHOUT_FULFILLMENT',
+  DeliveryMethodForOrderWithoutDeliveryMethodID: TestUtils.generateUUID(),
+  DeliveryMethodForOrderWithoutDeliveryMethodCode: 'DELIVERY_METHOD_FOR_ORDER_WITHOUT_DELIVERY_METHOD',
 
   DisabledDiscountID: TestUtils.generateUUID(),
   DisabledDiscountCode: 'DISABLED_DISCOUNT',
@@ -88,37 +88,37 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
           }
         }
       },
-      // Fulfillment level automatic discount ($550 - higher than order level $500)
-      // Only applies to ForFulfillmentLevelID order
+      // DeliveryMethod level automatic discount ($550 - higher than order level $500)
+      // Only applies to ForDeliveryMethodLevelID order
       {
         shop_id: ShopConstants.ID,
-        id: DiscountConstants.FulfillmentAutomaticDiscountID,
-        code: DiscountConstants.FulfillmentAutomaticDiscountCode,
-        application_level: ApplicationLevel.Fulfillment,
+        id: DiscountConstants.DeliveryMethodAutomaticDiscountID,
+        code: DiscountConstants.DeliveryMethodAutomaticDiscountCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Automatic,
         handler: {
           code: 'fulfillment-discount',
           args: {
             applies: true,
             amountToDiscount: LunePrice.toCent(550),
-            appliesToOrderId: OrderConstants.ForFulfillmentLevelID
+            appliesToOrderId: OrderConstants.ForDeliveryMethodLevelID
           }
         }
       },
-      // Fulfillment level discount for order WITHOUT fulfillment ($600)
-      // Only applies to WithoutFulfillmentID order
+      // DeliveryMethod level discount for order WITHOUT delivery method ($600)
+      // Only applies to WithoutDeliveryMethodID order
       {
         shop_id: ShopConstants.ID,
-        id: DiscountConstants.FulfillmentForOrderWithoutFulfillmentID,
-        code: DiscountConstants.FulfillmentForOrderWithoutFulfillmentCode,
-        application_level: ApplicationLevel.Fulfillment,
+        id: DiscountConstants.DeliveryMethodForOrderWithoutDeliveryMethodID,
+        code: DiscountConstants.DeliveryMethodForOrderWithoutDeliveryMethodCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Automatic,
         handler: {
           code: 'fulfillment-discount',
           args: {
             applies: true,
             amountToDiscount: LunePrice.toCent(600),
-            appliesToOrderId: OrderConstants.WithoutFulfillmentID
+            appliesToOrderId: OrderConstants.WithoutDeliveryMethodID
           }
         }
       },

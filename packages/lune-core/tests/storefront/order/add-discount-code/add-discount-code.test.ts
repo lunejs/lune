@@ -8,8 +8,8 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerFixtures } from './fixtures/customer.fixtures';
+import { DeliveryMethodFixtures } from './fixtures/delivery-method.fixtures';
 import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
-import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
@@ -41,7 +41,7 @@ describe('addDiscountCode - Mutation', () => {
       new VariantOptionValueFixtures(),
       new OrderFixtures(),
       new OrderLineFixtures(),
-      new FulfillmentFixtures(),
+      new DeliveryMethodFixtures(),
       new DiscountFixtures(),
       new OrderDiscountFixtures()
     ]);
@@ -81,7 +81,7 @@ describe('addDiscountCode - Mutation', () => {
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [
@@ -142,7 +142,7 @@ describe('addDiscountCode - Mutation', () => {
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -180,7 +180,7 @@ describe('addDiscountCode - Mutation', () => {
     });
   });
 
-  test('adds fulfillment-level discount', async () => {
+  test('adds delivery-method-level discount', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -189,7 +189,7 @@ describe('addDiscountCode - Mutation', () => {
         query: ADD_DISCOUNT_CODE_TO_ORDER,
         variables: {
           orderId: OrderConstants.ID,
-          code: DiscountConstants.FulfillmentDiscountCode
+          code: DiscountConstants.DeliveryMethodDiscountCode
         }
       });
 
@@ -205,15 +205,15 @@ describe('addDiscountCode - Mutation', () => {
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200),
         total: LunePrice.toCent(150)
       },
       appliedDiscounts: [
         {
-          code: DiscountConstants.FulfillmentDiscountCode,
+          code: DiscountConstants.DeliveryMethodDiscountCode,
           applicationMode: 'CODE',
-          applicationLevel: 'FULFILLMENT',
+          applicationLevel: 'DELIVERY_METHOD',
           discountedAmount: LunePrice.toCent(50)
         }
       ],
@@ -242,7 +242,7 @@ describe('addDiscountCode - Mutation', () => {
     });
   });
 
-  test('adds fulfillment-level discount with 0 discounted amount when fulfillment is not present', async () => {
+  test('adds delivery-method-level discount with 0 discounted amount when delivery method is not present', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -250,8 +250,8 @@ describe('addDiscountCode - Mutation', () => {
       .send({
         query: ADD_DISCOUNT_CODE_TO_ORDER,
         variables: {
-          orderId: OrderConstants.WithoutFulfillmentID,
-          code: DiscountConstants.FulfillmentDiscountCode
+          orderId: OrderConstants.WithoutDeliveryMethodID,
+          code: DiscountConstants.DeliveryMethodDiscountCode
         }
       });
 
@@ -260,19 +260,19 @@ describe('addDiscountCode - Mutation', () => {
     } = res.body.data;
 
     expect(order).toMatchObject({
-      id: OrderConstants.WithoutFulfillmentID,
+      id: OrderConstants.WithoutDeliveryMethodID,
       state: 'MODIFYING',
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_100),
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: null,
+      deliveryMethod: null,
       appliedDiscounts: [
         {
-          code: DiscountConstants.FulfillmentDiscountCode,
+          code: DiscountConstants.DeliveryMethodDiscountCode,
           applicationMode: 'CODE',
-          applicationLevel: 'FULFILLMENT',
+          applicationLevel: 'DELIVERY_METHOD',
           discountedAmount: 0
         }
       ],
@@ -326,7 +326,7 @@ describe('addDiscountCode - Mutation', () => {
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [
@@ -383,11 +383,11 @@ describe('addDiscountCode - Mutation', () => {
       id: OrderConstants.WithOrderLevelDiscountID,
       state: 'MODIFYING',
       subtotal: LunePrice.toCent(700), // 1000 - 300 discount on line
-      total: LunePrice.toCent(900), // 700 + 200 fulfillment
+      total: LunePrice.toCent(900), // 700 + 200 delivery method
       placedAt: null,
       completedAt: null,
       totalQuantity: 1,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [], // ORDER_LINE discounts go on lines, not order
@@ -415,7 +415,7 @@ describe('addDiscountCode - Mutation', () => {
     });
   });
 
-  test('replaces order-line-level discount with fulfillment-level discount', async () => {
+  test('replaces order-line-level discount with delivery-method-level discount', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -424,7 +424,7 @@ describe('addDiscountCode - Mutation', () => {
         query: ADD_DISCOUNT_CODE_TO_ORDER,
         variables: {
           orderId: OrderConstants.WithOrderLineLevelDiscountID,
-          code: DiscountConstants.FulfillmentDiscountCode
+          code: DiscountConstants.DeliveryMethodDiscountCode
         }
       });
 
@@ -436,19 +436,19 @@ describe('addDiscountCode - Mutation', () => {
       id: OrderConstants.WithOrderLineLevelDiscountID,
       state: 'MODIFYING',
       subtotal: LunePrice.toCent(1_800), // 800 + 1000 (no line discount anymore)
-      total: LunePrice.toCent(1_950), // 1800 + 150 (200 - 50 fulfillment discount)
+      total: LunePrice.toCent(1_950), // 1800 + 150 (200 - 50 delivery method discount)
       placedAt: null,
       completedAt: null,
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200),
         total: LunePrice.toCent(150) // 200 - 50 discount
       },
       appliedDiscounts: [
         {
-          code: DiscountConstants.FulfillmentDiscountCode,
+          code: DiscountConstants.DeliveryMethodDiscountCode,
           applicationMode: 'CODE',
-          applicationLevel: 'FULFILLMENT',
+          applicationLevel: 'DELIVERY_METHOD',
           discountedAmount: LunePrice.toCent(50)
         }
       ],
@@ -479,7 +479,7 @@ describe('addDiscountCode - Mutation', () => {
     });
   });
 
-  test('replaces fulfillment-level discount with order-level discount', async () => {
+  test('replaces delivery-method-level discount with order-level discount', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -487,7 +487,7 @@ describe('addDiscountCode - Mutation', () => {
       .send({
         query: ADD_DISCOUNT_CODE_TO_ORDER,
         variables: {
-          orderId: OrderConstants.WithFulfillmentLevelDiscountID,
+          orderId: OrderConstants.WithDeliveryMethodLevelDiscountID,
           code: DiscountConstants.OrderDiscountCode
         }
       });
@@ -497,14 +497,14 @@ describe('addDiscountCode - Mutation', () => {
     } = res.body.data;
 
     expect(order).toMatchObject({
-      id: OrderConstants.WithFulfillmentLevelDiscountID,
+      id: OrderConstants.WithDeliveryMethodLevelDiscountID,
       state: 'MODIFYING',
       subtotal: LunePrice.toCent(900), // 1000 - 100 order discount
-      total: LunePrice.toCent(1_100), // 900 + 200 (no fulfillment discount anymore)
+      total: LunePrice.toCent(1_100), // 900 + 200 (no delivery method discount anymore)
       placedAt: null,
       completedAt: null,
       totalQuantity: 1,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200),
         total: LunePrice.toCent(200) // 200 (no discount anymore)
       },
@@ -557,7 +557,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -603,7 +603,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -649,7 +649,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -695,7 +695,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -741,7 +741,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -787,7 +787,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -833,7 +833,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -879,7 +879,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -900,7 +900,7 @@ describe('addDiscountCode - Mutation', () => {
     });
   });
 
-  test('returns DISCOUNT_CODE_NOT_APPLICABLE error when provided fulfillment-level discount does not apply', async () => {
+  test('returns DISCOUNT_CODE_NOT_APPLICABLE error when provided delivery-method-level discount does not apply', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -909,7 +909,7 @@ describe('addDiscountCode - Mutation', () => {
         query: ADD_DISCOUNT_CODE_TO_ORDER,
         variables: {
           orderId: OrderConstants.ID,
-          code: DiscountConstants.FulfillmentDiscountDoesNotApplyCode
+          code: DiscountConstants.DeliveryMethodDiscountDoesNotApplyCode
         }
       });
 
@@ -925,7 +925,7 @@ describe('addDiscountCode - Mutation', () => {
     expect(orderFetched).toMatchObject({
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -965,7 +965,7 @@ const ADD_DISCOUNT_CODE_TO_ORDER = /* GraphQL */ `
         placedAt
         completedAt
         totalQuantity
-        fulfillment {
+        deliveryMethod {
           id
           amount
           total
@@ -1012,7 +1012,7 @@ const FETCH_ORDER = /* GraphQL */ `
       placedAt
       completedAt
       totalQuantity
-      fulfillment {
+      deliveryMethod {
         id
         amount
         total

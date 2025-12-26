@@ -1,5 +1,5 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { Fulfillment } from '@/persistence/entities/fulfillment';
+import type { DeliveryMethod } from '@/persistence/entities/delivery-method';
 import type { Order } from '@/persistence/entities/order';
 
 import type { Args, InferArgs } from '../common/args.config';
@@ -54,7 +54,7 @@ type Config<TArgs> = {
   check: (
     ctx: ExecutionContext,
     order: Order,
-    fulfillment: Fulfillment,
+    fulfillment: DeliveryMethod,
     args: InferArgs<TArgs>
   ) => Promise<boolean>;
   /**
@@ -64,7 +64,7 @@ type Config<TArgs> = {
   apply: (
     ctx: ExecutionContext,
     order: Order,
-    fulfillment: Fulfillment,
+    fulfillment: DeliveryMethod,
     args: InferArgs<TArgs>
   ) => Promise<number>;
 };

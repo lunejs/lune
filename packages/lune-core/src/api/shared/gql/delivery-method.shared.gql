@@ -1,0 +1,43 @@
+"""
+Delivery method type enum
+"""
+enum DeliveryMethodType {
+  """
+  Product will be shipped to the customer's address
+  """
+  SHIPPING
+  """
+  Customer will pick up the product at a physical store location
+  """
+  PICKUP
+}
+
+"""
+Union type for delivery method details - can be either shipping or pickup
+"""
+union DeliveryMethodDetails = DeliveryMethodShipping | DeliveryMethodPickup
+
+"""
+A delivery method represents how an order will be delivered to the customer
+"""
+type DeliveryMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Type of the delivery method (shipping or pickup)
+  """
+  type: DeliveryMethodType!
+  """
+  Delivery method amount before discounts
+  """
+  amount: Int!
+  """
+  Delivery method amount after discounts
+  """
+  total: Int!
+  """
+  Union type which could be Shipping or InStorePickup
+  """
+  details: DeliveryMethodDetails!
+}

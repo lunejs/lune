@@ -1,4 +1,4 @@
-import type { ShippingFulfillmentTable } from '@/persistence/entities/shipping-fulfillment';
+import type { DeliveryMethodShippingTable } from '@/persistence/entities/delivery-method-shipping';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -12,22 +12,22 @@ export const ShippingFulfillmentConstants = {
   ForProcessingID: TestUtils.generateUUID()
 };
 
-export class ShippingFulfillmentFixtures implements Fixture<ShippingFulfillmentTable> {
-  table: Tables = Tables.ShippingFulfillment;
+export class ShippingFulfillmentFixtures implements Fixture<DeliveryMethodShippingTable> {
+  table: Tables = Tables.DeliveryMethodShipping;
 
-  async build(): Promise<Partial<ShippingFulfillmentTable>[]> {
+  async build(): Promise<Partial<DeliveryMethodShippingTable>[]> {
     return [
       {
         id: ShippingFulfillmentConstants.ForPlacedID,
         shop_id: ShopConstants.ID,
-        fulfillment_id: FulfillmentConstants.ShippingForPlacedID,
+        delivery_method_id: FulfillmentConstants.ShippingForPlacedID,
         shipping_method_id: ShippingMethodConstants.ID,
         method: 'Standard Shipping'
       },
       {
         id: ShippingFulfillmentConstants.ForProcessingID,
         shop_id: ShopConstants.ID,
-        fulfillment_id: FulfillmentConstants.ShippingForProcessingID,
+        delivery_method_id: FulfillmentConstants.ShippingForProcessingID,
         shipping_method_id: ShippingMethodConstants.ID,
         method: 'Standard Shipping'
       }

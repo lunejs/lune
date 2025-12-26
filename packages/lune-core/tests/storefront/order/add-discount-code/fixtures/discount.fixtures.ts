@@ -14,8 +14,8 @@ export const DiscountConstants = {
   OrderDiscountCode: 'ORDER_DISCOUNT',
   OrderDiscountDoesNotApplyCode: 'ORDER_DISCOUNT_DOES_NOT_APPLY',
 
-  FulfillmentDiscountCode: 'FULFILLMENT_DISCOUNT',
-  FulfillmentDiscountDoesNotApplyCode: 'FULFILLMENT_DISCOUNT_DOES_NOT_APPLY',
+  DeliveryMethodDiscountCode: 'DELIVERY_METHOD_DISCOUNT',
+  DeliveryMethodDiscountDoesNotApplyCode: 'DELIVERY_METHOD_DISCOUNT_DOES_NOT_APPLY',
 
   OrderLineDiscountCode: 'ORDER_LINE_DISCOUNT',
   OrderLineDiscountDoesNotApplyCode: 'ORDER_LINE_DISCOUNT_DOES_NOT_APPLY',
@@ -59,11 +59,11 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
           }
         }
       },
-      // fulfillment-line level
+      // delivery-method level
       {
         shop_id: ShopConstants.ID,
-        code: DiscountConstants.FulfillmentDiscountCode,
-        application_level: ApplicationLevel.Fulfillment,
+        code: DiscountConstants.DeliveryMethodDiscountCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Code,
         handler: {
           code: 'fulfillment-discount',
@@ -74,8 +74,8 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        code: DiscountConstants.FulfillmentDiscountDoesNotApplyCode,
-        application_level: ApplicationLevel.Fulfillment,
+        code: DiscountConstants.DeliveryMethodDiscountDoesNotApplyCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Code,
         handler: {
           code: 'fulfillment-discount',

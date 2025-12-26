@@ -1,6 +1,6 @@
-import type { FulfillmentTable } from '@/persistence/entities/fulfillment';
+import type { DeliveryMethodTable } from '@/persistence/entities/delivery-method';
 
-export const DefaultFulfillmentFixture = (): FulfillmentTable => ({
+export const DefaultFulfillmentFixture = (): DeliveryMethodTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),

@@ -10,8 +10,8 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('deleted_at', { useTz: true }).nullable();
 
     table.string('code').notNullable();
-    table.enum('application_mode', ['CODE', 'AUTOMATIC']).notNullable();
-    table.enum('application_level', ['ORDER', 'ORDER_LINE', 'FULFILLMENT']).notNullable();
+    table.string('application_mode', 50).notNullable();
+    table.string('application_level', 50).notNullable();
     table.smallint('per_customer_limit').nullable();
     table.timestamp('starts_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
     table.timestamp('ends_at', { useTz: true }).nullable();

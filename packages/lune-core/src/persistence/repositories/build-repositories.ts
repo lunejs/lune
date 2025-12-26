@@ -14,9 +14,10 @@ import { CustomObjectEntryValueRepository } from './custom-object-entry-value-re
 import { CustomObjectEntryValueTranslationRepository } from './custom-object-entry-value-translation-repository';
 import { CustomerAuthMethodRepository } from './customer-auth-method-repository';
 import { CustomerRepository } from './customer-repository';
+import { DeliveryMethodPickupRepository } from './delivery-method-pickup-repository';
+import { DeliveryMethodRepository } from './delivery-method-repository';
+import { DeliveryMethodShippingRepository } from './delivery-method-shipping-repository';
 import { DiscountRepository } from './discount-repository';
-import { FulfillmentRepository } from './fulfillment-repository';
-import { InStorePickupFulfillmentRepository } from './in-store-pickup-fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
 import { LocationRepository } from './location-repository';
 import { OptionPresetRepository } from './option-preset-repository';
@@ -37,7 +38,6 @@ import { ProductCustomFieldRepository } from './product-custom-field-repository'
 import { ProductCustomFieldTranslationRepository } from './product-custom-field-translation-repository';
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
-import { ShippingFulfillmentRepository } from './shipping-fulfillment-repository';
 import { ShippingMethodRepository } from './shipping-method-repository';
 import { ShopRepository } from './shop-repository';
 import { StateRepository } from './state-repository';
@@ -77,9 +77,9 @@ export function buildRepositories(trx: Transaction) {
     paymentCancellation: new PaymentCancellationRepository(trx),
     location: new LocationRepository(trx),
     inStorePickup: new InStorePickupRepository(trx),
-    fulfillment: new FulfillmentRepository(trx),
-    shippingFulfillment: new ShippingFulfillmentRepository(trx),
-    inStorePickupFulfillment: new InStorePickupFulfillmentRepository(trx),
+    deliveryMethod: new DeliveryMethodRepository(trx),
+    deliveryMethodShipping: new DeliveryMethodShippingRepository(trx),
+    deliveryMethodPickup: new DeliveryMethodPickupRepository(trx),
     zone: new ZoneRepository(trx),
     zoneState: new ZoneStateRepository(trx),
     shippingMethod: new ShippingMethodRepository(trx),

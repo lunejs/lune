@@ -72,7 +72,7 @@ type Order implements Node {
   """
   totalQuantity: Int!
   """
-  Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+  Array of all order-level and delivery method level discounts applied to the order populated every time order is modified.
   Use this field to show data of current discounts applied to the order
   """
   appliedDiscounts: [AppliedDiscount!]!
@@ -89,9 +89,9 @@ type Order implements Node {
   """
   lines: OrderLineList!
   """
-  Order's fulfillment
+  Order's delivery method
   """
-  fulfillment: Fulfillment
+  deliveryMethod: DeliveryMethod
   """
   Orders's payment
   """

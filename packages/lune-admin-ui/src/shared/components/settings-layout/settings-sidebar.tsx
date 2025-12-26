@@ -6,6 +6,7 @@ import {
   GroupIcon,
   LogOutIcon,
   MapPinIcon,
+  SquircleDashedIcon,
   StoreIcon,
   TruckIcon,
   UngroupIcon,
@@ -165,6 +166,12 @@ const SIDEBAR = {
     }
   ],
   customization: [
+    {
+      title: 'Presets',
+      url: '/presets',
+      icon: SquircleDashedIcon,
+      isActive: (pathname: string) => pathname.includes('presets')
+    },
     {
       title: 'Custom fields',
       url: '/custom-fields',

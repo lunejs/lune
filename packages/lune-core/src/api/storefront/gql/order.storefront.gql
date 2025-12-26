@@ -5,11 +5,11 @@ type Mutation {
   removeOrderLine(lineId: ID!): OrderResult!
   addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
   addShippingAddressToOrder(orderId: ID!, input: CreateOrderAddressInput!): OrderResult!
-  addShippingFulfillmentToOrder(orderId: ID!, input: AddShippingFulfillmentInput!): OrderResult!
-  addInStorePickupFulfillmentToOrder(
+  addDeliveryMethodShippingToOrder(
     orderId: ID!
-    input: AddInStorePickupFulfillmentInput!
+    input: AddDeliveryMethodShippingInput!
   ): OrderResult!
+  addDeliveryMethodPickupToOrder(orderId: ID!, input: AddDeliveryMethodPickupInput!): OrderResult!
   addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
 
   addDiscountCodeToOrder(orderId: ID!, code: String!): OrderResult!
@@ -53,11 +53,11 @@ input CreateOrderAddressInput {
   stateCode: String!
 }
 
-input AddShippingFulfillmentInput {
+input AddDeliveryMethodShippingInput {
   methodId: ID!
 }
 
-input AddInStorePickupFulfillmentInput {
+input AddDeliveryMethodPickupInput {
   locationId: ID!
 }
 

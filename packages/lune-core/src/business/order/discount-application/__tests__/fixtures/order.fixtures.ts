@@ -21,10 +21,10 @@ export const OrderConstants = {
   PreviousUsage2ID: TestUtils.generateUUID(),
   // Order for OrderLine level discount test
   ForOrderLineLevelID: TestUtils.generateUUID(),
-  // Order for Fulfillment level discount test
-  ForFulfillmentLevelID: TestUtils.generateUUID(),
-  // Order without fulfillment for Fulfillment level discount test
-  WithoutFulfillmentID: TestUtils.generateUUID(),
+  // Order for DeliveryMethod level discount test
+  ForDeliveryMethodLevelID: TestUtils.generateUUID(),
+  // Order without delivery method for DeliveryMethod level discount test
+  WithoutDeliveryMethodID: TestUtils.generateUUID(),
   // Order without customer for perCustomerLimit test
   WithoutCustomerID: TestUtils.generateUUID()
 };
@@ -48,7 +48,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithCodeDiscountID,
         subtotal: LunePrice.toCent(2000), // 2100 - 100 discount
-        total: LunePrice.toCent(2200), // 2000 + 200 fulfillment
+        total: LunePrice.toCent(2200), // 2000 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -65,7 +65,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithNonExistentDiscountID,
         subtotal: LunePrice.toCent(1900), // 2100 - 200 (fake discount)
-        total: LunePrice.toCent(2100), // 1900 + 200 fulfillment
+        total: LunePrice.toCent(2100), // 1900 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -82,7 +82,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithDisabledDiscountID,
         subtotal: LunePrice.toCent(1950), // 2100 - 150 (disabled discount)
-        total: LunePrice.toCent(2150), // 1950 + 200 fulfillment
+        total: LunePrice.toCent(2150), // 1950 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -99,7 +99,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithPrematureDiscountID,
         subtotal: LunePrice.toCent(1925), // 2100 - 175 (premature discount)
-        total: LunePrice.toCent(2125), // 1925 + 200 fulfillment
+        total: LunePrice.toCent(2125), // 1925 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -116,7 +116,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithExpiredDiscountID,
         subtotal: LunePrice.toCent(1920), // 2100 - 180 (expired discount)
-        total: LunePrice.toCent(2120), // 1920 + 200 fulfillment
+        total: LunePrice.toCent(2120), // 1920 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -133,7 +133,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.WithLimitExceededDiscountID,
         subtotal: LunePrice.toCent(1910), // 2100 - 190 (limit exceeded discount)
-        total: LunePrice.toCent(2110), // 1910 + 200 fulfillment
+        total: LunePrice.toCent(2110), // 1910 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
@@ -167,27 +167,27 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.ForOrderLineLevelID,
         subtotal: LunePrice.toCent(2100), // 800 + 1300
-        total: LunePrice.toCent(2300), // 2100 + 200 fulfillment
+        total: LunePrice.toCent(2300), // 2100 + 200 delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([])
       },
-      // Order for Fulfillment level discount test (fulfillment = $600)
+      // Order for DeliveryMethod level discount test (delivery method = $600)
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.ForFulfillmentLevelID,
+        id: OrderConstants.ForDeliveryMethodLevelID,
         subtotal: LunePrice.toCent(2100), // 800 + 1300
-        total: LunePrice.toCent(2700), // 2100 + 600 fulfillment
+        total: LunePrice.toCent(2700), // 2100 + 600 (high delivery cost)
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([])
       },
-      // Order without fulfillment for Fulfillment level discount test
+      // Order without delivery method for DeliveryMethod level discount test
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.WithoutFulfillmentID,
+        id: OrderConstants.WithoutDeliveryMethodID,
         subtotal: LunePrice.toCent(2100), // 800 + 1300
-        total: LunePrice.toCent(2100), // No fulfillment
+        total: LunePrice.toCent(2100), // No delivery method
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([])

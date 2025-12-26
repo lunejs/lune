@@ -19,13 +19,13 @@ import { createCustomObjectDefinitionEntriesLoader } from './custom-object-defin
 import { createCustomObjectDefinitionFieldsLoader } from './custom-object-definition/custom-object-definition-fields.loader';
 import { createCustomObjectEntryDefinitionLoader } from './custom-object-entry/custom-object-entry-definition.loader';
 import { createCustomObjectEntryValueFieldLoader } from './custom-object-entry/custom-object-entry-value-field.loader';
-import { createCustomObjectEntryValuesLoader } from './custom-object-entry/custom-object-entry-values.loader';
 import { createCustomObjectEntryValueTranslationsLoader } from './custom-object-entry/custom-object-entry-value-translations.loader';
+import { createCustomObjectEntryValuesLoader } from './custom-object-entry/custom-object-entry-values.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
 import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
-import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
-import { createFulfillmentLocationLoader } from './fulfillment/fulfillment-location.loader';
-import { createFulfillmentShippingMethodLoader } from './fulfillment/fulfillment-shipping-method.loader';
+import { createDeliveryMethodDetailsLoader } from './delivery-method/delivery-method-details.loader';
+import { createDeliveryMethodLocationLoader } from './delivery-method/delivery-method-location.loader';
+import { createDeliveryMethodShippingMethodLoader } from './delivery-method/delivery-method-shipping-method.loader';
 import { createLocationCountryLoader } from './location/location-country.loader';
 import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
 import { createLocationStateLoader } from './location/location-state.loader';
@@ -36,7 +36,7 @@ import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
 import { createOrderCancellationLoader } from './order/order-cancellation.loader';
 import { createOrderCustomersLoader } from './order/order-customers.loader';
-import { createOrderFulfillmentsLoader } from './order/order-fulfillments.loader';
+import { createOrderDeliveryMethodsLoader } from './order/order-delivery-methods.loader';
 import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderPaymentsLoader } from './order/order-payments.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
@@ -93,17 +93,17 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     order: {
       lines: createOrderLineLoader(trx),
       customers: createOrderCustomersLoader(trx),
-      fulfillment: createOrderFulfillmentsLoader(trx),
+      deliveryMethod: createOrderDeliveryMethodsLoader(trx),
       payments: createOrderPaymentsLoader(trx),
       cancellation: createOrderCancellationLoader(trx)
     },
     orderLine: {
       variant: createOrderLineVariantsLoader(trx)
     },
-    fulfillment: {
-      details: createFulfillmentDetailsLoader(trx),
-      shippingMethod: createFulfillmentShippingMethodLoader(trx),
-      location: createFulfillmentLocationLoader(trx)
+    deliveryMethod: {
+      details: createDeliveryMethodDetailsLoader(trx),
+      shippingMethod: createDeliveryMethodShippingMethodLoader(trx),
+      location: createDeliveryMethodLocationLoader(trx)
     },
     zone: {
       states: createZoneStatesLoader(trx),

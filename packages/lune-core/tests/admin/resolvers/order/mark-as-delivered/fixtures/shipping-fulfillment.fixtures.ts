@@ -1,4 +1,4 @@
-import type { ShippingFulfillmentTable } from '@/persistence/entities/shipping-fulfillment';
+import type { DeliveryMethodShippingTable } from '@/persistence/entities/delivery-method-shipping';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -11,20 +11,17 @@ export const ShippingFulfillmentConstants = {
   ForShippedID: TestUtils.generateUUID()
 };
 
-export class ShippingFulfillmentFixtures implements Fixture<ShippingFulfillmentTable> {
-  table: Tables = Tables.ShippingFulfillment;
+export class ShippingFulfillmentFixtures implements Fixture<DeliveryMethodShippingTable> {
+  table: Tables = Tables.DeliveryMethodShipping;
 
-  async build(): Promise<Partial<ShippingFulfillmentTable>[]> {
+  async build(): Promise<Partial<DeliveryMethodShippingTable>[]> {
     return [
       {
         id: ShippingFulfillmentConstants.ForShippedID,
         shop_id: ShopConstants.ID,
-        fulfillment_id: FulfillmentConstants.ShippingForShippedID,
+        delivery_method_id: FulfillmentConstants.ShippingForShippedID,
         shipping_method_id: ShippingMethodConstants.ID,
-        method: 'Standard Shipping',
-        carrier: 'FedEx',
-        tracking_code: 'TRACK123',
-        shipped_at: new Date()
+        method: 'Standard Shipping'
       }
     ];
   }

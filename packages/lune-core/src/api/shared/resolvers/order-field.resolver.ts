@@ -14,10 +14,10 @@ export const CommonOrderFieldResolver = {
 
     return customer;
   },
-  fulfillment: async (parent: Order, _, ctx: ExecutionContext) => {
-    const fulfillment = await ctx.loaders.order.fulfillment.load(parent.id);
+  deliveryMethod: async (parent: Order, _, ctx: ExecutionContext) => {
+    const deliveryMethod = await ctx.loaders.order.deliveryMethod.load(parent.id);
 
-    return fulfillment;
+    return deliveryMethod;
   },
   payments: async (parent: Order, _, ctx: ExecutionContext) => {
     const payments = await ctx.loaders.order.payments.load(parent.id);

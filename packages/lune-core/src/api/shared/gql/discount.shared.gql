@@ -6,7 +6,7 @@ enum DiscountApplicationMode {
 enum DiscountApplicationLevel {
   ORDER
   ORDER_LINE
-  FULFILLMENT
+  DELIVERY_METHOD
 }
 
 type AppliedDiscount {

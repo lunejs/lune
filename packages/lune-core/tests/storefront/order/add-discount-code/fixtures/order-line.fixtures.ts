@@ -13,8 +13,8 @@ export const OrderLineConstants = {
   ID: TestUtils.generateUUID(),
   ID2: TestUtils.generateUUID(),
 
-  WithoutFulfillmentID: TestUtils.generateUUID(),
-  WithoutFulfillmentID2: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID2: TestUtils.generateUUID(),
 
   WithoutCustomerID: TestUtils.generateUUID(),
   WithoutCustomerID2: TestUtils.generateUUID(),
@@ -24,7 +24,7 @@ export const OrderLineConstants = {
   WithOrderLineLevelDiscountID: TestUtils.generateUUID(),
   WithOrderLineLevelDiscountID2: TestUtils.generateUUID(),
 
-  WithFulfillmentLevelDiscountID: TestUtils.generateUUID()
+  WithDeliveryMethodLevelDiscountID: TestUtils.generateUUID()
 };
 
 export class OrderLineFixtures implements Fixture<OrderLineTable> {
@@ -32,7 +32,7 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
 
   async build(): Promise<Partial<OrderLineTable>[]> {
     return [
-      // with fulfillment
+      // with delivery method
       {
         id: OrderLineConstants.ID,
         order_id: OrderConstants.ID,
@@ -53,10 +53,10 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         unit_price: LunePrice.toCent(1_300),
         shop_id: ShopConstants.ID
       },
-      // with no fulfillment
+      // with no delivery method
       {
-        id: OrderLineConstants.WithoutFulfillmentID,
-        order_id: OrderConstants.WithoutFulfillmentID,
+        id: OrderLineConstants.WithoutDeliveryMethodID,
+        order_id: OrderConstants.WithoutDeliveryMethodID,
         variant_id: VariantConstants.AlreadyInLineID,
         line_total: LunePrice.toCent(800),
         line_subtotal: LunePrice.toCent(800),
@@ -65,8 +65,8 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
         shop_id: ShopConstants.ID
       },
       {
-        id: OrderLineConstants.WithoutFulfillmentID2,
-        order_id: OrderConstants.WithoutFulfillmentID,
+        id: OrderLineConstants.WithoutDeliveryMethodID2,
+        order_id: OrderConstants.WithoutDeliveryMethodID,
         variant_id: VariantConstants.ID,
         line_total: LunePrice.toCent(1_300),
         line_subtotal: LunePrice.toCent(1_300),
@@ -137,10 +137,10 @@ export class OrderLineFixtures implements Fixture<OrderLineTable> {
           }
         ])
       },
-      // Order with fulfillment-level discount (1 line)
+      // Order with delivery-method-level discount (1 line)
       {
-        id: OrderLineConstants.WithFulfillmentLevelDiscountID,
-        order_id: OrderConstants.WithFulfillmentLevelDiscountID,
+        id: OrderLineConstants.WithDeliveryMethodLevelDiscountID,
+        order_id: OrderConstants.WithDeliveryMethodLevelDiscountID,
         variant_id: VariantConstants.ID,
         line_total: LunePrice.toCent(1_000),
         line_subtotal: LunePrice.toCent(1_000),

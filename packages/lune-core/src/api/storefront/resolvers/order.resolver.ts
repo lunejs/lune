@@ -4,12 +4,12 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type {
   MutationAddCustomerToOrderArgs,
+  MutationAddDeliveryMethodPickupToOrderArgs,
+  MutationAddDeliveryMethodShippingToOrderArgs,
   MutationAddDiscountCodeToOrderArgs,
-  MutationAddInStorePickupFulfillmentToOrderArgs,
   MutationAddLineToOrderArgs,
   MutationAddPaymentToOrderArgs,
   MutationAddShippingAddressToOrderArgs,
-  MutationAddShippingFulfillmentToOrderArgs,
   MutationCreateOrderArgs,
   MutationRemoveOrderLineArgs,
   MutationUpdateOrderLineArgs,
@@ -111,26 +111,26 @@ async function addShippingAddressToOrder(
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
-async function addShippingFulfillmentToOrder(
+async function addDeliveryMethodShippingToOrder(
   _,
-  { orderId, input }: MutationAddShippingFulfillmentToOrderArgs,
+  { orderId, input }: MutationAddDeliveryMethodShippingToOrderArgs,
   ctx: ExecutionContext
 ) {
   const orderService = new OrderService(ctx);
 
-  const result = await orderService.addShippingFulfillment(orderId, input);
+  const result = await orderService.addDeliveryMethodShipping(orderId, input);
 
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
 
-async function addInStorePickupFulfillmentToOrder(
+async function addDeliveryMethodPickupToOrder(
   _,
-  { orderId, input }: MutationAddInStorePickupFulfillmentToOrderArgs,
+  { orderId, input }: MutationAddDeliveryMethodPickupToOrderArgs,
   ctx: ExecutionContext
 ) {
   const orderService = new OrderService(ctx);
 
-  const result = await orderService.addInStorePickupFulfillment(orderId, input);
+  const result = await orderService.addDeliveryMethodPickup(orderId, input);
 
   return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
 }
@@ -173,8 +173,8 @@ export const OrderResolver: GraphqlApiResolver = {
     removeOrderLine,
     addCustomerToOrder,
     addShippingAddressToOrder,
-    addShippingFulfillmentToOrder,
-    addInStorePickupFulfillmentToOrder,
+    addDeliveryMethodShippingToOrder,
+    addDeliveryMethodPickupToOrder,
     addDiscountCodeToOrder,
     addPaymentToOrder
   }

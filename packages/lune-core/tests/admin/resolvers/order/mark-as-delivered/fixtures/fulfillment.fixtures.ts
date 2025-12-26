@@ -1,5 +1,5 @@
-import type { FulfillmentTable } from '@/persistence/entities/fulfillment';
-import { FulfillmentType } from '@/persistence/entities/fulfillment';
+import type { DeliveryMethodTable } from '@/persistence/entities/delivery-method';
+import { DeliveryMethodType } from '@/persistence/entities/delivery-method';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -12,16 +12,16 @@ export const FulfillmentConstants = {
   PickupForReadyID: TestUtils.generateUUID()
 };
 
-export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
-  table: Tables = Tables.Fulfillment;
+export class FulfillmentFixtures implements Fixture<DeliveryMethodTable> {
+  table: Tables = Tables.DeliveryMethod;
 
-  async build(): Promise<Partial<FulfillmentTable>[]> {
+  async build(): Promise<Partial<DeliveryMethodTable>[]> {
     return [
       {
         id: FulfillmentConstants.ShippingForShippedID,
         shop_id: ShopConstants.ID,
         order_id: OrderConstants.ShippedWithShippingID,
-        type: FulfillmentType.SHIPPING,
+        type: DeliveryMethodType.Shipping,
         amount: 500,
         total: 500
       },
@@ -29,7 +29,7 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         id: FulfillmentConstants.PickupForReadyID,
         shop_id: ShopConstants.ID,
         order_id: OrderConstants.ReadyForPickupWithPickupID,
-        type: FulfillmentType.IN_STORE_PICKUP,
+        type: DeliveryMethodType.Pickup,
         amount: 0,
         total: 0
       }

@@ -31,8 +31,12 @@ export type AddCustomerToOrderInput = {
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type AddInStorePickupFulfillmentInput = {
+export type AddDeliveryMethodPickupInput = {
   locationId: Scalars['ID']['input'];
+};
+
+export type AddDeliveryMethodShippingInput = {
+  methodId: Scalars['ID']['input'];
 };
 
 export type AddPaymentToOrderInput = {
@@ -47,10 +51,6 @@ export type AddProductTranslationInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   optionValues?: InputMaybe<Array<OptionValueTranslationInput>>;
   options?: InputMaybe<Array<OptionTranslationInput>>;
-};
-
-export type AddShippingFulfillmentInput = {
-  methodId: Scalars['ID']['input'];
 };
 
 /** A customer's saved address for shipping */
@@ -686,6 +686,82 @@ export type CustomerResult = {
   customer?: Maybe<Customer>;
 };
 
+/** A delivery method represents how an order will be delivered to the customer */
+export type DeliveryMethod = Node & {
+  __typename?: 'DeliveryMethod';
+  /** Delivery method amount before discounts */
+  amount: Scalars['Int']['output'];
+  createdAt: Scalars['Date']['output'];
+  /** Union type which could be Shipping or InStorePickup */
+  details: DeliveryMethodDetails;
+  id: Scalars['ID']['output'];
+  /** Delivery method amount after discounts */
+  total: Scalars['Int']['output'];
+  /** Type of the delivery method (shipping or pickup) */
+  type: DeliveryMethodType;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** Union type for delivery method details - can be either shipping or pickup */
+export type DeliveryMethodDetails = DeliveryMethodPickup | DeliveryMethodShipping;
+
+/** Represents a delivery method pickup details for an order */
+export type DeliveryMethodPickup = {
+  __typename?: 'DeliveryMethodPickup';
+  /** Address information stored as JSON */
+  address: DeliveryMethodPickupAddress;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** Address location */
+  location: Location;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type DeliveryMethodPickupAddress = {
+  __typename?: 'DeliveryMethodPickupAddress';
+  /** Location's city */
+  city: Scalars['String']['output'];
+  /** Address's country */
+  country: Scalars['String']['output'];
+  /** Address's country code */
+  countryCode: Scalars['String']['output'];
+  /** Name of the location */
+  name: Scalars['String']['output'];
+  /** Location's phone number */
+  phoneNumber: Scalars['String']['output'];
+  /** Postal/ZIP code */
+  postalCode: Scalars['String']['output'];
+  /** Additional references or instructions for finding the location */
+  references?: Maybe<Scalars['String']['output']>;
+  /** Address's state/province/region */
+  state: Scalars['String']['output'];
+  /** Address's state/province/region code */
+  stateCode: Scalars['String']['output'];
+  /** Street address line 1 */
+  streetLine1: Scalars['String']['output'];
+  /** Street address line 2 (optional) */
+  streetLine2?: Maybe<Scalars['String']['output']>;
+};
+
+/** Represents delivery method shipping details for an order */
+export type DeliveryMethodShipping = {
+  __typename?: 'DeliveryMethodShipping';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The shipping method used to generate this delivery */
+  method: Scalars['String']['output'];
+  shippingMethod: ShippingMethod;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** Delivery method type enum */
+export enum DeliveryMethodType {
+  /** Customer will pick up the product at a physical store location */
+  Pickup = 'PICKUP',
+  /** Product will be shipped to the customer's address */
+  Shipping = 'SHIPPING'
+}
+
 export type Dimensions = {
   __typename?: 'Dimensions';
   height?: Maybe<Scalars['Float']['output']>;
@@ -781,33 +857,6 @@ export type DiscountResult = {
   discount?: Maybe<Discount>;
 };
 
-/** A fulfillment represents how an order will be delivered to the customer */
-export type Fulfillment = Node & {
-  __typename?: 'Fulfillment';
-  /** Fulfillment amount before discounts */
-  amount: Scalars['Int']['output'];
-  createdAt: Scalars['Date']['output'];
-  /** Union type which could be Shipping or InStorePickup */
-  details: FulfillmentDetails;
-  id: Scalars['ID']['output'];
-  /** Fulfillment amount after discounts */
-  total: Scalars['Int']['output'];
-  /** Type of fulfillment (shipping or in-store pickup) */
-  type: FulfillmentType;
-  updatedAt: Scalars['Date']['output'];
-};
-
-/** Union type for fulfillment details - can be either shipping or in-store pickup */
-export type FulfillmentDetails = InStorePickupFulfillment | ShippingFulfillment;
-
-/** Fulfillment type enum */
-export enum FulfillmentType {
-  /** Customer will pick up the product at a physical store location */
-  InStorePickup = 'IN_STORE_PICKUP',
-  /** Product will be shipped to the customer's address */
-  Shipping = 'SHIPPING'
-}
-
 export type GenerateCustomerAccessTokenResult = {
   __typename?: 'GenerateCustomerAccessTokenResult';
   accessToken?: Maybe<Scalars['String']['output']>;
@@ -830,7 +879,7 @@ export type HandlerConfigInput = {
   code: Scalars['String']['input'];
 };
 
-/** Represents in-store pickup fulfillment configuration for a location */
+/** Represents in-store pickup configuration for a location */
 export type InStorePickup = Node & {
   __typename?: 'InStorePickup';
   createdAt: Scalars['Date']['output'];
@@ -840,48 +889,6 @@ export type InStorePickup = Node & {
   /** Whether in-store pickup is available at this location */
   isAvailable: Scalars['Boolean']['output'];
   updatedAt: Scalars['Date']['output'];
-};
-
-/** Represents in-store pickup fulfillment details for an order */
-export type InStorePickupFulfillment = {
-  __typename?: 'InStorePickupFulfillment';
-  /** Address information stored as JSON */
-  address: InStorePickupFulfillmentAddress;
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  /** Address location */
-  location: Location;
-  /** Date and time when the order was picked up */
-  pickedUpAt?: Maybe<Scalars['Date']['output']>;
-  /** Date and time when the order is ready for pickup */
-  readyAt?: Maybe<Scalars['Date']['output']>;
-  updatedAt: Scalars['Date']['output'];
-};
-
-export type InStorePickupFulfillmentAddress = {
-  __typename?: 'InStorePickupFulfillmentAddress';
-  /** Location's city */
-  city: Scalars['String']['output'];
-  /** Address's country */
-  country: Scalars['String']['output'];
-  /** Address's country code */
-  countryCode: Scalars['String']['output'];
-  /** Name of the location */
-  name: Scalars['String']['output'];
-  /** Location's phone number */
-  phoneNumber: Scalars['String']['output'];
-  /** Postal/ZIP code */
-  postalCode: Scalars['String']['output'];
-  /** Additional references or instructions for finding the location */
-  references?: Maybe<Scalars['String']['output']>;
-  /** Address's state/province/region */
-  state: Scalars['String']['output'];
-  /** Address's state/province/region code */
-  stateCode: Scalars['String']['output'];
-  /** Street address line 1 */
-  streetLine1: Scalars['String']['output'];
-  /** Street address line 2 (optional) */
-  streetLine2?: Maybe<Scalars['String']['output']>;
 };
 
 /** A list of items with count, each result that expose a array of items should implement this interface */
@@ -987,13 +994,13 @@ export type Mutation = {
   addCollectionTranslation: CollectionTranslation;
   addCustomObjectEntryTranslation: CustomObjectEntry;
   addCustomerToOrder: OrderResult;
+  addDeliveryMethodPickupToOrder: OrderResult;
+  addDeliveryMethodShippingToOrder: OrderResult;
   addDiscountCodeToOrder: OrderResult;
-  addInStorePickupFulfillmentToOrder: OrderResult;
   addLineToOrder: OrderResult;
   addPaymentToOrder: OrderResult;
   addProductTranslation: ProductTranslation;
   addShippingAddressToOrder: OrderResult;
-  addShippingFulfillmentToOrder: OrderResult;
   cancelOrder: OrderResult;
   createCollection: Collection;
   createCustomFieldDefinition: CustomFieldDefinitionResult;
@@ -1091,14 +1098,20 @@ export type MutationAddCustomerToOrderArgs = {
 };
 
 
-export type MutationAddDiscountCodeToOrderArgs = {
-  code: Scalars['String']['input'];
+export type MutationAddDeliveryMethodPickupToOrderArgs = {
+  input: AddDeliveryMethodPickupInput;
   orderId: Scalars['ID']['input'];
 };
 
 
-export type MutationAddInStorePickupFulfillmentToOrderArgs = {
-  input: AddInStorePickupFulfillmentInput;
+export type MutationAddDeliveryMethodShippingToOrderArgs = {
+  input: AddDeliveryMethodShippingInput;
+  orderId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddDiscountCodeToOrderArgs = {
+  code: Scalars['String']['input'];
   orderId: Scalars['ID']['input'];
 };
 
@@ -1123,12 +1136,6 @@ export type MutationAddProductTranslationArgs = {
 
 export type MutationAddShippingAddressToOrderArgs = {
   input: CreateOrderAddressInput;
-  orderId: Scalars['ID']['input'];
-};
-
-
-export type MutationAddShippingFulfillmentToOrderArgs = {
-  input: AddShippingFulfillmentInput;
   orderId: Scalars['ID']['input'];
 };
 
@@ -1591,7 +1598,7 @@ export type OptionValueTranslationInput = {
 export type Order = Node & {
   __typename?: 'Order';
   /**
-   * Array of all order-level and fulfillment-level discounts applied to the order populated every time order is modified.
+   * Array of all order-level and delivery method level discounts applied to the order populated every time order is modified.
    * Use this field to show data of current discounts applied to the order
    */
   appliedDiscounts: Array<AppliedDiscount>;
@@ -1603,8 +1610,8 @@ export type Order = Node & {
   createdAt: Scalars['Date']['output'];
   /** Customer who placed the order. Nullable for guest orders */
   customer?: Maybe<Customer>;
-  /** Order's fulfillment */
-  fulfillment?: Maybe<Fulfillment>;
+  /** Order's delivery method */
+  deliveryMethod?: Maybe<DeliveryMethod>;
   id: Scalars['ID']['output'];
   /** Order lines for the order */
   lines: OrderLineList;
@@ -2252,25 +2259,6 @@ export type QueryZoneArgs = {
   id: Scalars['ID']['input'];
 };
 
-/** Represents shipping fulfillment details for an order */
-export type ShippingFulfillment = {
-  __typename?: 'ShippingFulfillment';
-  /** Name of the shipping carrier */
-  carrier?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['Date']['output'];
-  /** Date and time when the order was delivered */
-  deliveredAt?: Maybe<Scalars['Date']['output']>;
-  id: Scalars['ID']['output'];
-  /** The shipping method used to generate this fulfillment */
-  method: Scalars['String']['output'];
-  /** Date and time when the order was shipped */
-  shippedAt?: Maybe<Scalars['Date']['output']>;
-  shippingMethod: ShippingMethod;
-  /** Tracking code provided by the carrier */
-  trackingCode?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['Date']['output'];
-};
-
 /** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
 export type ShippingHandler = {
   __typename?: 'ShippingHandler';
@@ -2808,23 +2796,23 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
-  FulfillmentDetails: ( InStorePickupFulfillment ) | ( ShippingFulfillment );
+  DeliveryMethodDetails: ( DeliveryMethodPickup ) | ( DeliveryMethodShipping );
   PaymentDetails: ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } );
 };
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Discount ) | ( Omit<Fulfillment, 'details'> & { details: _RefType['FulfillmentDetails'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, fulfillment?: Maybe<_RefType['Fulfillment']>, lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  Node: ( Asset ) | ( Collection ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
-  AddInStorePickupFulfillmentInput: AddInStorePickupFulfillmentInput;
+  AddDeliveryMethodPickupInput: AddDeliveryMethodPickupInput;
+  AddDeliveryMethodShippingInput: AddDeliveryMethodShippingInput;
   AddPaymentToOrderInput: AddPaymentToOrderInput;
   AddProductTranslationInput: AddProductTranslationInput;
-  AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: ResolverTypeWrapper<Address>;
   AddressList: ResolverTypeWrapper<AddressList>;
   AppliedDiscount: ResolverTypeWrapper<AppliedDiscount>;
@@ -2897,6 +2885,12 @@ export type ResolversTypes = {
   CustomerListInput: CustomerListInput;
   CustomerResult: ResolverTypeWrapper<CustomerResult>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
+  DeliveryMethod: ResolverTypeWrapper<Omit<DeliveryMethod, 'details'> & { details: ResolversTypes['DeliveryMethodDetails'] }>;
+  DeliveryMethodDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['DeliveryMethodDetails']>;
+  DeliveryMethodPickup: ResolverTypeWrapper<DeliveryMethodPickup>;
+  DeliveryMethodPickupAddress: ResolverTypeWrapper<DeliveryMethodPickupAddress>;
+  DeliveryMethodShipping: ResolverTypeWrapper<DeliveryMethodShipping>;
+  DeliveryMethodType: DeliveryMethodType;
   Dimensions: ResolverTypeWrapper<Dimensions>;
   DimensionsInput: DimensionsInput;
   Discount: ResolverTypeWrapper<Discount>;
@@ -2910,17 +2904,12 @@ export type ResolversTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: ResolverTypeWrapper<DiscountResult>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  Fulfillment: ResolverTypeWrapper<Omit<Fulfillment, 'details'> & { details: ResolversTypes['FulfillmentDetails'] }>;
-  FulfillmentDetails: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['FulfillmentDetails']>;
-  FulfillmentType: FulfillmentType;
   GenerateCustomerAccessTokenResult: ResolverTypeWrapper<GenerateCustomerAccessTokenResult>;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: ResolverTypeWrapper<HandlerConfig>;
   HandlerConfigInput: HandlerConfigInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   InStorePickup: ResolverTypeWrapper<InStorePickup>;
-  InStorePickupFulfillment: ResolverTypeWrapper<InStorePickupFulfillment>;
-  InStorePickupFulfillmentAddress: ResolverTypeWrapper<InStorePickupFulfillmentAddress>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   List: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['List']>;
@@ -2951,7 +2940,7 @@ export type ResolversTypes = {
   OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversTypes['Fulfillment']>, lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
+  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversTypes['DeliveryMethod']>, lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
   OrderAddressJson: ResolverTypeWrapper<OrderAddressJson>;
   OrderBy: OrderBy;
   OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
@@ -2986,7 +2975,6 @@ export type ResolversTypes = {
   ProductSort: ProductSort;
   ProductTranslation: ResolverTypeWrapper<ProductTranslation>;
   Query: ResolverTypeWrapper<{}>;
-  ShippingFulfillment: ResolverTypeWrapper<ShippingFulfillment>;
   ShippingHandler: ResolverTypeWrapper<ShippingHandler>;
   ShippingMethod: ResolverTypeWrapper<ShippingMethod>;
   ShippingMethodErrorCode: ShippingMethodErrorCode;
@@ -3046,10 +3034,10 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
-  AddInStorePickupFulfillmentInput: AddInStorePickupFulfillmentInput;
+  AddDeliveryMethodPickupInput: AddDeliveryMethodPickupInput;
+  AddDeliveryMethodShippingInput: AddDeliveryMethodShippingInput;
   AddPaymentToOrderInput: AddPaymentToOrderInput;
   AddProductTranslationInput: AddProductTranslationInput;
-  AddShippingFulfillmentInput: AddShippingFulfillmentInput;
   Address: Address;
   AddressList: AddressList;
   AppliedDiscount: AppliedDiscount;
@@ -3116,6 +3104,11 @@ export type ResolversParentTypes = {
   CustomerListInput: CustomerListInput;
   CustomerResult: CustomerResult;
   Date: Scalars['Date']['output'];
+  DeliveryMethod: Omit<DeliveryMethod, 'details'> & { details: ResolversParentTypes['DeliveryMethodDetails'] };
+  DeliveryMethodDetails: ResolversUnionTypes<ResolversParentTypes>['DeliveryMethodDetails'];
+  DeliveryMethodPickup: DeliveryMethodPickup;
+  DeliveryMethodPickupAddress: DeliveryMethodPickupAddress;
+  DeliveryMethodShipping: DeliveryMethodShipping;
   Dimensions: Dimensions;
   DimensionsInput: DimensionsInput;
   Discount: Discount;
@@ -3126,16 +3119,12 @@ export type ResolversParentTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: DiscountResult;
   Float: Scalars['Float']['output'];
-  Fulfillment: Omit<Fulfillment, 'details'> & { details: ResolversParentTypes['FulfillmentDetails'] };
-  FulfillmentDetails: ResolversUnionTypes<ResolversParentTypes>['FulfillmentDetails'];
   GenerateCustomerAccessTokenResult: GenerateCustomerAccessTokenResult;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: HandlerConfig;
   HandlerConfigInput: HandlerConfigInput;
   ID: Scalars['ID']['output'];
   InStorePickup: InStorePickup;
-  InStorePickupFulfillment: InStorePickupFulfillment;
-  InStorePickupFulfillmentAddress: InStorePickupFulfillmentAddress;
   Int: Scalars['Int']['output'];
   JSON: Scalars['JSON']['output'];
   List: ResolversInterfaceTypes<ResolversParentTypes>['List'];
@@ -3164,7 +3153,7 @@ export type ResolversParentTypes = {
   OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: Omit<Order, 'appliedDiscounts' | 'fulfillment' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, fulfillment?: Maybe<ResolversParentTypes['Fulfillment']>, lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
+  Order: Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversParentTypes['DeliveryMethod']>, lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
@@ -3194,7 +3183,6 @@ export type ResolversParentTypes = {
   ProductSort: ProductSort;
   ProductTranslation: ProductTranslation;
   Query: {};
-  ShippingFulfillment: ShippingFulfillment;
   ShippingHandler: ShippingHandler;
   ShippingMethod: ShippingMethod;
   ShippingMethodErrorResult: ShippingMethodErrorResult;
@@ -3406,7 +3394,7 @@ export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext,
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, COLLECTION_REFERENCE?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, PRODUCT_REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
+export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, COLLECTION_REFERENCE?: any, CUSTOM_OBJECT_REFERENCE?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, PRODUCT_REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
 
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3513,6 +3501,54 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
+export type DeliveryMethodResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DeliveryMethod'] = ResolversParentTypes['DeliveryMethod']> = {
+  amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  details?: Resolver<ResolversTypes['DeliveryMethodDetails'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['DeliveryMethodType'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeliveryMethodDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DeliveryMethodDetails'] = ResolversParentTypes['DeliveryMethodDetails']> = {
+  __resolveType: TypeResolveFn<'DeliveryMethodPickup' | 'DeliveryMethodShipping', ParentType, ContextType>;
+};
+
+export type DeliveryMethodPickupResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DeliveryMethodPickup'] = ResolversParentTypes['DeliveryMethodPickup']> = {
+  address?: Resolver<ResolversTypes['DeliveryMethodPickupAddress'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['Location'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeliveryMethodPickupAddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DeliveryMethodPickupAddress'] = ResolversParentTypes['DeliveryMethodPickupAddress']> = {
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  references?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  stateCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  streetLine1?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  streetLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeliveryMethodShippingResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['DeliveryMethodShipping'] = ResolversParentTypes['DeliveryMethodShipping']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  method?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type DimensionsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Dimensions'] = ResolversParentTypes['Dimensions']> = {
   height?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   length?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -3563,21 +3599,6 @@ export type DiscountResultResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']> = {
-  amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  details?: Resolver<ResolversTypes['FulfillmentDetails'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['FulfillmentType'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type FulfillmentDetailsResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentDetails'] = ResolversParentTypes['FulfillmentDetails']> = {
-  __resolveType: TypeResolveFn<'InStorePickupFulfillment' | 'ShippingFulfillment', ParentType, ContextType>;
-};
-
 export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
@@ -3596,32 +3617,6 @@ export type InStorePickupResolvers<ContextType = ExecutionContext, ParentType ex
   instructions?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isAvailable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type InStorePickupFulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickupFulfillment'] = ResolversParentTypes['InStorePickupFulfillment']> = {
-  address?: Resolver<ResolversTypes['InStorePickupFulfillmentAddress'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  location?: Resolver<ResolversTypes['Location'], ParentType, ContextType>;
-  pickedUpAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  readyAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type InStorePickupFulfillmentAddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['InStorePickupFulfillmentAddress'] = ResolversParentTypes['InStorePickupFulfillmentAddress']> = {
-  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  references?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  stateCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  streetLine1?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  streetLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3689,13 +3684,13 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
   addCustomObjectEntryTranslation?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType, RequireFields<MutationAddCustomObjectEntryTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
+  addDeliveryMethodPickupToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodPickupToOrderArgs, 'input' | 'orderId'>>;
+  addDeliveryMethodShippingToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodShippingToOrderArgs, 'input' | 'orderId'>>;
   addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
-  addInStorePickupFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddInStorePickupFulfillmentToOrderArgs, 'input' | 'orderId'>>;
   addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
   addPaymentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddPaymentToOrderArgs, 'input' | 'orderId'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
-  addShippingFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingFulfillmentToOrderArgs, 'input' | 'orderId'>>;
   cancelOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCancelOrderArgs, 'id' | 'input'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createCustomFieldDefinition?: Resolver<ResolversTypes['CustomFieldDefinitionResult'], ParentType, ContextType, RequireFields<MutationCreateCustomFieldDefinitionArgs, 'input'>>;
@@ -3761,7 +3756,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'Discount' | 'Fulfillment' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'DeliveryMethod' | 'Discount' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3860,7 +3855,7 @@ export type OrderResolvers<ContextType = ExecutionContext, ParentType extends Re
   completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
-  fulfillment?: Resolver<Maybe<ResolversTypes['Fulfillment']>, ParentType, ContextType>;
+  deliveryMethod?: Resolver<Maybe<ResolversTypes['DeliveryMethod']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lines?: Resolver<ResolversTypes['OrderLineList'], ParentType, ContextType>;
   payments?: Resolver<Array<ResolversTypes['Payment']>, ParentType, ContextType>;
@@ -4119,19 +4114,6 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   zones?: Resolver<Array<ResolversTypes['Zone']>, ParentType, ContextType>;
 };
 
-export type ShippingFulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingFulfillment'] = ResolversParentTypes['ShippingFulfillment']> = {
-  carrier?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  deliveredAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  method?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  shippedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  shippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType>;
-  trackingCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type ShippingHandlerResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['ShippingHandler'] = ResolversParentTypes['ShippingHandler']> = {
   args?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -4343,19 +4325,20 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomerList?: CustomerListResolvers<ContextType>;
   CustomerResult?: CustomerResultResolvers<ContextType>;
   Date?: GraphQLScalarType;
+  DeliveryMethod?: DeliveryMethodResolvers<ContextType>;
+  DeliveryMethodDetails?: DeliveryMethodDetailsResolvers<ContextType>;
+  DeliveryMethodPickup?: DeliveryMethodPickupResolvers<ContextType>;
+  DeliveryMethodPickupAddress?: DeliveryMethodPickupAddressResolvers<ContextType>;
+  DeliveryMethodShipping?: DeliveryMethodShippingResolvers<ContextType>;
   Dimensions?: DimensionsResolvers<ContextType>;
   Discount?: DiscountResolvers<ContextType>;
   DiscountErrorResult?: DiscountErrorResultResolvers<ContextType>;
   DiscountHandler?: DiscountHandlerResolvers<ContextType>;
   DiscountList?: DiscountListResolvers<ContextType>;
   DiscountResult?: DiscountResultResolvers<ContextType>;
-  Fulfillment?: FulfillmentResolvers<ContextType>;
-  FulfillmentDetails?: FulfillmentDetailsResolvers<ContextType>;
   GenerateCustomerAccessTokenResult?: GenerateCustomerAccessTokenResultResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;
-  InStorePickupFulfillment?: InStorePickupFulfillmentResolvers<ContextType>;
-  InStorePickupFulfillmentAddress?: InStorePickupFulfillmentAddressResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   List?: ListResolvers<ContextType>;
   Location?: LocationResolvers<ContextType>;
@@ -4400,7 +4383,6 @@ export type Resolvers<ContextType = ExecutionContext> = {
   ProductList?: ProductListResolvers<ContextType>;
   ProductTranslation?: ProductTranslationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  ShippingFulfillment?: ShippingFulfillmentResolvers<ContextType>;
   ShippingHandler?: ShippingHandlerResolvers<ContextType>;
   ShippingMethod?: ShippingMethodResolvers<ContextType>;
   ShippingMethodErrorResult?: ShippingMethodErrorResultResolvers<ContextType>;

@@ -71,11 +71,6 @@ export * from './event-bus/events/lune.event';
 export * from './event-bus/events/order.event';
 
 /**
- * Libs
- */
-export * from './libs/slug';
-
-/**
  * Migrations
  */
 export * from './migration/migration';
@@ -93,11 +88,12 @@ export * from './persistence/entities/collection-translation';
 export * from './persistence/entities/country';
 export * from './persistence/entities/customer';
 export * from './persistence/entities/customer-auth-method';
+export * from './persistence/entities/delivery-method';
+export * from './persistence/entities/delivery-method-pickup';
+export * from './persistence/entities/delivery-method-shipping';
 export * from './persistence/entities/discount';
 export * from './persistence/entities/entity';
-export * from './persistence/entities/fulfillment';
 export * from './persistence/entities/in-store-pickup';
-export * from './persistence/entities/in-store-pickup-fulfillment';
 export * from './persistence/entities/locale';
 export * from './persistence/entities/location';
 export * from './persistence/entities/option';
@@ -119,7 +115,6 @@ export * from './persistence/entities/product';
 export * from './persistence/entities/product-asset';
 export * from './persistence/entities/product-tag';
 export * from './persistence/entities/product-translation';
-export * from './persistence/entities/shipping-fulfillment';
 export * from './persistence/entities/shipping-method';
 export * from './persistence/entities/shop';
 export * from './persistence/entities/state';
@@ -143,9 +138,10 @@ export * from './persistence/repositories/collection-translation-repository';
 export * from './persistence/repositories/country-repository';
 export * from './persistence/repositories/customer-auth-method-repository';
 export * from './persistence/repositories/customer-repository';
+export * from './persistence/repositories/delivery-method-pickup-repository';
+export * from './persistence/repositories/delivery-method-repository';
+export * from './persistence/repositories/delivery-method-shipping-repository';
 export * from './persistence/repositories/discount-repository';
-export * from './persistence/repositories/fulfillment-repository';
-export * from './persistence/repositories/in-store-pickup-fulfillment-repository';
 export * from './persistence/repositories/in-store-pickup-repository';
 export * from './persistence/repositories/location-repository';
 export * from './persistence/repositories/option-preset-repository';
@@ -166,7 +162,6 @@ export * from './persistence/repositories/payment-repository';
 export * from './persistence/repositories/product-repository';
 export * from './persistence/repositories/product-translation-repository';
 export * from './persistence/repositories/repository';
-export * from './persistence/repositories/shipping-fulfillment-repository';
 export * from './persistence/repositories/shipping-method-repository';
 export * from './persistence/repositories/shop-repository';
 export * from './persistence/repositories/state-repository';
@@ -185,10 +180,11 @@ export * from './persistence/serializers/collection-translation.serializer';
 export * from './persistence/serializers/country.serializer';
 export * from './persistence/serializers/customer.serializer';
 export * from './persistence/serializers/customer-auth-method.serializer';
+export * from './persistence/serializers/delivery-method.serializer';
+export * from './persistence/serializers/delivery-method-pickup.serializer';
+export * from './persistence/serializers/delivery-method-shipping.serializer';
 export * from './persistence/serializers/discount.serializer';
-export * from './persistence/serializers/fulfillment.serializer';
 export * from './persistence/serializers/in-store-pickup.serializer';
-export * from './persistence/serializers/in-store-pickup-fulfillment.serializer';
 export * from './persistence/serializers/location.serializer';
 export * from './persistence/serializers/option.serializer';
 export * from './persistence/serializers/option-preset.serializer';
@@ -208,7 +204,6 @@ export * from './persistence/serializers/payment-rejection.serializer';
 export * from './persistence/serializers/product.serializer';
 export * from './persistence/serializers/product-translation.serializer';
 export * from './persistence/serializers/serializer';
-export * from './persistence/serializers/shipping-fulfillment.serializer';
 export * from './persistence/serializers/shipping-method.serializer';
 export * from './persistence/serializers/shop.serializer';
 export * from './persistence/serializers/state.serializer';

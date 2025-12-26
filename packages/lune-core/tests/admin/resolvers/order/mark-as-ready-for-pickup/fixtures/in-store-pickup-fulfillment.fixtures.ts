@@ -1,4 +1,4 @@
-import type { InStorePickupFulfillmentTable } from '@/persistence/entities/in-store-pickup-fulfillment';
+import type { DeliveryMethodPickupTable } from '@/persistence/entities/delivery-method-pickup';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -12,10 +12,10 @@ export const InStorePickupFulfillmentConstants = {
   ForProcessingID: TestUtils.generateUUID()
 };
 
-export class InStorePickupFulfillmentFixtures implements Fixture<InStorePickupFulfillmentTable> {
-  table: Tables = Tables.InStorePickupFulfillment;
+export class InStorePickupFulfillmentFixtures implements Fixture<DeliveryMethodPickupTable> {
+  table: Tables = Tables.DeliveryMethodPickup;
 
-  async build(): Promise<Partial<InStorePickupFulfillmentTable>[]> {
+  async build(): Promise<Partial<DeliveryMethodPickupTable>[]> {
     const address = {
       name: 'Main Store',
       streetLine1: '123 Main St',
@@ -32,14 +32,14 @@ export class InStorePickupFulfillmentFixtures implements Fixture<InStorePickupFu
       {
         id: InStorePickupFulfillmentConstants.ForPlacedID,
         shop_id: ShopConstants.ID,
-        fulfillment_id: FulfillmentConstants.PickupForPlacedID,
+        delivery_method_id: FulfillmentConstants.PickupForPlacedID,
         location_id: LocationConstants.ID,
         address: JSON.stringify(address)
       },
       {
         id: InStorePickupFulfillmentConstants.ForProcessingID,
         shop_id: ShopConstants.ID,
-        fulfillment_id: FulfillmentConstants.PickupForProcessingID,
+        delivery_method_id: FulfillmentConstants.PickupForProcessingID,
         location_id: LocationConstants.ID,
         address: JSON.stringify(address)
       }

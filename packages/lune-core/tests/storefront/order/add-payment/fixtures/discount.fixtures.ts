@@ -14,9 +14,9 @@ export const DiscountConstants = {
   OrderDiscountCode: 'ORDER_DISCOUNT',
   OrderDiscountDoesNotApplyCode: 'ORDER_DISCOUNT_DOES_NOT_APPLY',
 
-  FulfillmentDiscountID: TestUtils.generateUUID(),
-  FulfillmentDiscountCode: 'FULFILLMENT_DISCOUNT',
-  FulfillmentDiscountDoesNotApplyCode: 'FULFILLMENT_DISCOUNT_DOES_NOT_APPLY',
+  DeliveryMethodDiscountID: TestUtils.generateUUID(),
+  DeliveryMethodDiscountCode: 'DELIVERY_METHOD_DISCOUNT',
+  DeliveryMethodDiscountDoesNotApplyCode: 'DELIVERY_METHOD_DISCOUNT_DOES_NOT_APPLY',
 
   OrderLineDiscountID: TestUtils.generateUUID(),
   OrderLineDiscountCode: 'ORDER_LINE_DISCOUNT',
@@ -61,12 +61,12 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
           }
         }
       },
-      // fulfillment-line level
+      // delivery-method level
       {
         shop_id: ShopConstants.ID,
-        id: DiscountConstants.FulfillmentDiscountID,
-        code: DiscountConstants.FulfillmentDiscountCode,
-        application_level: ApplicationLevel.Fulfillment,
+        id: DiscountConstants.DeliveryMethodDiscountID,
+        code: DiscountConstants.DeliveryMethodDiscountCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Code,
         handler: {
           code: 'fulfillment-discount',
@@ -77,8 +77,8 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        code: DiscountConstants.FulfillmentDiscountDoesNotApplyCode,
-        application_level: ApplicationLevel.Fulfillment,
+        code: DiscountConstants.DeliveryMethodDiscountDoesNotApplyCode,
+        application_level: ApplicationLevel.DeliveryMethod,
         application_mode: ApplicationMode.Code,
         handler: {
           code: 'fulfillment-discount',

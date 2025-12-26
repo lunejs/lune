@@ -1,0 +1,14 @@
+"""
+Represents delivery method shipping details for an order
+"""
+type DeliveryMethodShipping {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The shipping method used to generate this delivery
+  """
+  method: String!
+
+  shippingMethod: ShippingMethod!
+}

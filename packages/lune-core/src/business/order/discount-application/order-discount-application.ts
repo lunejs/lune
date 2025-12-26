@@ -9,8 +9,8 @@ import type { AppliedDiscount, Discount } from '@/persistence/entities/discount'
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
 import type { ID } from '@/persistence/entities/entity';
 import type { Order } from '@/persistence/entities/order';
+import type { DeliveryMethodRepository } from '@/persistence/repositories/delivery-method-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
-import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
 import type { OrderLineRepository } from '@/persistence/repositories/order-line-repository';
 import type { OrderRepository } from '@/persistence/repositories/order-repository';
@@ -20,14 +20,14 @@ import { DiscountCodeNotApplicable, OrderErrorResult } from '../order.errors';
 export class OrderDiscountApplication {
   private readonly repository: OrderRepository;
   private readonly lineRepository: OrderLineRepository;
-  private readonly fulfillmentRepository: FulfillmentRepository;
+  private readonly fulfillmentRepository: DeliveryMethodRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.repository = ctx.repositories.order;
     this.lineRepository = ctx.repositories.orderLine;
-    this.fulfillmentRepository = ctx.repositories.fulfillment;
+    this.fulfillmentRepository = ctx.repositories.deliveryMethod;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
   }
@@ -109,7 +109,7 @@ export class OrderDiscountApplication {
         applicableDiscounts.push({ discount, discountedAmount: accDiscountedAmount });
       }
 
-      if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+      if (discount.applicationLevel === ApplicationLevel.DeliveryMethod) {
         const discountHandler = handler as FulfillmentDiscountHandler;
 
         const fulfillment = await this.fulfillmentRepository.findOne({
@@ -264,7 +264,7 @@ export class OrderDiscountApplication {
       });
     }
 
-    if (discount.applicationLevel === ApplicationLevel.Fulfillment) {
+    if (discount.applicationLevel === ApplicationLevel.DeliveryMethod) {
       const discountHandler = handler as FulfillmentDiscountHandler;
 
       const fulfillment = await this.fulfillmentRepository.findOne({

@@ -3,9 +3,9 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
   AddCustomerToOrderInput,
-  AddInStorePickupFulfillmentInput,
+  AddDeliveryMethodPickupInput,
+  AddDeliveryMethodShippingInput,
   AddPaymentToOrderInput,
-  AddShippingFulfillmentInput,
   CancelOrderInput,
   CreateOrderAddressInput,
   CreateOrderInput,
@@ -19,22 +19,19 @@ import { eventBus } from '@/event-bus';
 import { buildEventContext } from '@/event-bus/events/lune.event';
 import {
   OrderCanceledEvent,
-  OrderCompletedEvent,
-  OrderDeliveredEvent,
   OrderPlacedEvent,
-  OrderProcessedEvent,
-  OrderReadyForPickupEvent,
-  OrderShippedEvent
+  OrderProcessedEvent
 } from '@/event-bus/events/order.event';
+import { DeliveryMethodType } from '@/persistence/entities/delivery-method';
 import type { ID } from '@/persistence/entities/entity';
-import { FulfillmentType } from '@/persistence/entities/fulfillment';
 import { OrderState } from '@/persistence/entities/order';
 import { PaymentState } from '@/persistence/entities/payment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
 import type { CustomerRepository } from '@/persistence/repositories/customer-repository';
+import type { DeliveryMethodPickupRepository } from '@/persistence/repositories/delivery-method-pickup-repository';
+import type { DeliveryMethodRepository } from '@/persistence/repositories/delivery-method-repository';
+import type { DeliveryMethodShippingRepository } from '@/persistence/repositories/delivery-method-shipping-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
-import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
-import type { InStorePickupFulfillmentRepository } from '@/persistence/repositories/in-store-pickup-fulfillment-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
 import type { OrderCancellationRepository } from '@/persistence/repositories/order-cancellation-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
@@ -44,7 +41,6 @@ import type { PaymentFailureRepository } from '@/persistence/repositories/paymen
 import type { PaymentMethodRepository } from '@/persistence/repositories/payment-method-repository';
 import type { PaymentRepository } from '@/persistence/repositories/payment-repository';
 import { SortKey } from '@/persistence/repositories/repository';
-import type { ShippingFulfillmentRepository } from '@/persistence/repositories/shipping-fulfillment-repository';
 import type { ShippingMethodRepository } from '@/persistence/repositories/shipping-method-repository';
 import type { StateRepository } from '@/persistence/repositories/state-repository';
 import type { VariantRepository } from '@/persistence/repositories/variant-repository';
@@ -75,9 +71,9 @@ export class OrderService {
   private readonly countryRepository: CountryRepository;
   private readonly stateRepository: StateRepository;
   private readonly shippingMethodRepository: ShippingMethodRepository;
-  private readonly fulfillmentRepository: FulfillmentRepository;
-  private readonly shippingFulfillmentRepository: ShippingFulfillmentRepository;
-  private readonly inStorePickupFulfillmentRepository: InStorePickupFulfillmentRepository;
+  private readonly fulfillmentRepository: DeliveryMethodRepository;
+  private readonly shippingFulfillmentRepository: DeliveryMethodShippingRepository;
+  private readonly inStorePickupFulfillmentRepository: DeliveryMethodPickupRepository;
   private readonly discountRepository: DiscountRepository;
   private readonly orderDiscountRepository: OrderDiscountRepository;
   private readonly orderCancellation: OrderCancellationRepository;
@@ -98,9 +94,9 @@ export class OrderService {
     this.countryRepository = ctx.repositories.country;
     this.stateRepository = ctx.repositories.state;
     this.shippingMethodRepository = ctx.repositories.shippingMethod;
-    this.fulfillmentRepository = ctx.repositories.fulfillment;
-    this.shippingFulfillmentRepository = ctx.repositories.shippingFulfillment;
-    this.inStorePickupFulfillmentRepository = ctx.repositories.inStorePickupFulfillment;
+    this.fulfillmentRepository = ctx.repositories.deliveryMethod;
+    this.shippingFulfillmentRepository = ctx.repositories.deliveryMethodShipping;
+    this.inStorePickupFulfillmentRepository = ctx.repositories.deliveryMethodPickup;
     this.discountRepository = ctx.repositories.discount;
     this.orderDiscountRepository = ctx.repositories.orderDiscount;
     this.orderCancellation = ctx.repositories.orderCancellation;
@@ -421,7 +417,7 @@ export class OrderService {
     return this.discounts.applyAvailable(orderUpdated);
   }
 
-  async addShippingFulfillment(orderId: ID, input: AddShippingFulfillmentInput) {
+  async addDeliveryMethodShipping(orderId: ID, input: AddDeliveryMethodShippingInput) {
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     if (!order.shippingAddress) {
@@ -468,9 +464,9 @@ export class OrderService {
     const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
 
     if (orderFulfillment) {
-      if (orderFulfillment.type === FulfillmentType.IN_STORE_PICKUP) {
+      if (orderFulfillment.type === DeliveryMethodType.Pickup) {
         await this.inStorePickupFulfillmentRepository.remove({
-          where: { fulfillmentId: orderFulfillment.id }
+          where: { deliveryMethodId: orderFulfillment.id }
         });
       }
     }
@@ -481,19 +477,19 @@ export class OrderService {
         orderId,
         amount: shippingPrice,
         total: shippingPrice,
-        type: FulfillmentType.SHIPPING
+        type: DeliveryMethodType.Shipping
       },
       update: {
         amount: shippingPrice,
         total: shippingPrice,
-        type: FulfillmentType.SHIPPING
+        type: DeliveryMethodType.Shipping
       }
     });
 
     await this.shippingFulfillmentRepository.upsert({
-      where: { fulfillmentId: orderFulfillment?.id },
+      where: { deliveryMethodId: orderFulfillment?.id },
       create: {
-        fulfillmentId: fulfillment.id,
+        deliveryMethodId: fulfillment.id,
         method: method.name,
         shippingMethodId: method.id
       },
@@ -513,7 +509,7 @@ export class OrderService {
     return this.discounts.applyAvailable(orderUpdated);
   }
 
-  async addInStorePickupFulfillment(orderId: ID, input: AddInStorePickupFulfillmentInput) {
+  async addDeliveryMethodPickup(orderId: ID, input: AddDeliveryMethodPickupInput) {
     const order = await this.repository.findOneOrThrow({ where: { id: orderId } });
 
     if (!this.validator.canAddInStorePickupFulfillment(order.state)) {
@@ -532,9 +528,9 @@ export class OrderService {
     const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
 
     if (orderFulfillment) {
-      if (orderFulfillment.type === FulfillmentType.SHIPPING) {
+      if (orderFulfillment.type === DeliveryMethodType.Shipping) {
         await this.shippingFulfillmentRepository.remove({
-          where: { fulfillmentId: orderFulfillment.id }
+          where: { deliveryMethodId: orderFulfillment.id }
         });
       }
     }
@@ -545,19 +541,19 @@ export class OrderService {
         orderId,
         amount: 0,
         total: 0,
-        type: FulfillmentType.IN_STORE_PICKUP
+        type: DeliveryMethodType.Pickup
       },
       update: {
         amount: 0,
         total: 0,
-        type: FulfillmentType.IN_STORE_PICKUP
+        type: DeliveryMethodType.Pickup
       }
     });
 
     await this.inStorePickupFulfillmentRepository.upsert({
-      where: { fulfillmentId: orderFulfillment?.id },
+      where: { deliveryMethodId: orderFulfillment?.id },
       create: {
-        fulfillmentId: fulfillment.id,
+        deliveryMethodId: fulfillment.id,
         locationId: input.locationId,
         address: {
           name: location.name,
@@ -778,123 +774,20 @@ export class OrderService {
     return orderUpdated;
   }
 
-  async markAsShipped(id: ID, input: MarkOrderAsShippedInput) {
-    const [order, fulfillment] = await Promise.all([
-      this.repository.findOneOrThrow({ where: { id } }),
-      this.fulfillmentRepository.findOne({ where: { orderId: id } })
-    ]);
-
-    if (!this.validator.canMarkAsShipped(order.state, fulfillment)) {
-      return new ForbiddenOrderActionError(order.state);
-    }
-
-    await this.shippingFulfillmentRepository.update({
-      where: { fulfillmentId: fulfillment.id },
-      data: {
-        carrier: input.carrier,
-        trackingCode: input.trackingCode,
-        shippedAt: new Date()
-      }
-    });
-
-    const orderUpdated = await this.repository.update({
-      where: { id },
-      data: {
-        state: OrderState.Shipped
-      }
-    });
-
-    eventBus.emit(
-      new OrderShippedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id, input)
-    );
-
-    return orderUpdated;
+  async markAsShipped(id: ID, _input: MarkOrderAsShippedInput) {
+    return await this.repository.findOneOrThrow({ where: { id } });
   }
 
   async markAsReadyForPickup(id: ID) {
-    const [order, fulfillment] = await Promise.all([
-      this.repository.findOneOrThrow({ where: { id } }),
-      this.fulfillmentRepository.findOne({ where: { orderId: id } })
-    ]);
-
-    if (!this.validator.canMarkAsReadyForPickup(order.state, fulfillment)) {
-      return new ForbiddenOrderActionError(order.state);
-    }
-
-    await this.inStorePickupFulfillmentRepository.update({
-      where: { fulfillmentId: fulfillment.id },
-      data: {
-        readyAt: new Date()
-      }
-    });
-
-    const orderUpdated = await this.repository.update({
-      where: { id },
-      data: {
-        state: OrderState.ReadyForPickup
-      }
-    });
-
-    eventBus.emit(
-      new OrderReadyForPickupEvent(buildEventContext(this.ctx.shopId), orderUpdated.id)
-    );
-
-    return orderUpdated;
+    return await this.repository.findOneOrThrow({ where: { id } });
   }
 
   async markAsDelivered(id: ID) {
-    const order = await this.repository.findOneOrThrow({ where: { id } });
-
-    if (!this.validator.canMarkAsDelivered(order.state)) {
-      return new ForbiddenOrderActionError(order.state);
-    }
-
-    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
-      where: { orderId: order.id }
-    });
-
-    if (fulfillment.type === FulfillmentType.SHIPPING) {
-      await this.shippingFulfillmentRepository.update({
-        where: { fulfillmentId: fulfillment.id },
-        data: { deliveredAt: new Date() }
-      });
-    } else {
-      await this.inStorePickupFulfillmentRepository.update({
-        where: { fulfillmentId: fulfillment.id },
-        data: { pickedUpAt: new Date() }
-      });
-    }
-
-    const orderUpdated = await this.repository.update({
-      where: { id },
-      data: {
-        state: OrderState.Delivered
-      }
-    });
-
-    eventBus.emit(new OrderDeliveredEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
-
-    return orderUpdated;
+    return await this.repository.findOneOrThrow({ where: { id } });
   }
 
   async markAsCompleted(id: ID) {
-    const order = await this.repository.findOneOrThrow({ where: { id } });
-
-    if (!this.validator.canMarkAsCompleted(order.state)) {
-      return new ForbiddenOrderActionError(order.state);
-    }
-
-    const orderUpdated = await this.repository.update({
-      where: { id: order.id },
-      data: {
-        state: OrderState.Completed,
-        completedAt: new Date()
-      }
-    });
-
-    eventBus.emit(new OrderCompletedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
-
-    return orderUpdated;
+    return await this.repository.findOneOrThrow({ where: { id } });
   }
 
   async cancel(id: ID, input: CancelOrderInput) {

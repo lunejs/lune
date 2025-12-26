@@ -10,13 +10,13 @@ import { ShopConstants } from './shop.fixtures';
 
 export const OrderConstants = {
   ID: TestUtils.generateUUID(),
-  WithoutFulfillmentID: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID: TestUtils.generateUUID(),
   WithoutCustomerID: TestUtils.generateUUID(),
   PlacedID: TestUtils.generateUUID(),
   PlacedID2: TestUtils.generateUUID(),
   WithOrderLevelDiscountID: TestUtils.generateUUID(),
   WithOrderLineLevelDiscountID: TestUtils.generateUUID(),
-  WithFulfillmentLevelDiscountID: TestUtils.generateUUID()
+  WithDeliveryMethodLevelDiscountID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {
@@ -34,7 +34,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.WithoutFulfillmentID,
+        id: OrderConstants.WithoutDeliveryMethodID,
         subtotal: LunePrice.toCent(2100),
         total: LunePrice.toCent(2000),
         total_quantity: 2,
@@ -86,19 +86,19 @@ export class OrderFixtures implements Fixture<OrderTable> {
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([])
       },
-      // Order with fulfillment-level automatic discount applied
+      // Order with delivery-method-level automatic discount applied
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.WithFulfillmentLevelDiscountID,
+        id: OrderConstants.WithDeliveryMethodLevelDiscountID,
         subtotal: LunePrice.toCent(1000),
         total: LunePrice.toCent(1150), // 1000 + 150 (200 - 50 discount)
         total_quantity: 1,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
           {
-            code: 'AUTOMATIC_FULFILLMENT_DISCOUNT',
+            code: 'AUTOMATIC_DELIVERY_METHOD_DISCOUNT',
             applicationMode: 'AUTOMATIC',
-            applicationLevel: 'FULFILLMENT',
+            applicationLevel: 'DELIVERY_METHOD',
             amount: LunePrice.toCent(50)
           }
         ])

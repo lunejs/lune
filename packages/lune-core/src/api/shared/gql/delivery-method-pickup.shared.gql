@@ -1,0 +1,61 @@
+"""
+Represents a delivery method pickup details for an order
+"""
+type DeliveryMethodPickup {
+  id: ID!
+  """
+  Address information stored as JSON
+  """
+  address: DeliveryMethodPickupAddress!
+  """
+  Address location
+  """
+  location: Location!
+}
+
+type DeliveryMethodPickupAddress {
+  """
+  Name of the location
+  """
+  name: String!
+  """
+  Street address line 1
+  """
+  streetLine1: String!
+  """
+  Street address line 2 (optional)
+  """
+  streetLine2: String
+  """
+  Location's city
+  """
+  city: String!
+  """
+  Postal/ZIP code
+  """
+  postalCode: String!
+  """
+  Location's phone number
+  """
+  phoneNumber: String!
+  """
+  Additional references or instructions for finding the location
+  """
+  references: String
+  """
+  Address's country
+  """
+  country: String!
+  """
+  Address's country code
+  """
+  countryCode: String!
+  """
+  Address's state/province/region
+  """
+  state: String!
+  """
+  Address's state/province/region code
+  """
+  stateCode: String!
+}

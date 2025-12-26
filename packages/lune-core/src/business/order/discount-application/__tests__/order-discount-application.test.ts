@@ -6,8 +6,8 @@ import { TestUtils } from '@/tests/utils/test-utils';
 import { OrderDiscountApplication } from '../order-discount-application';
 
 import { CustomerConstants, CustomerFixtures } from './fixtures/customer.fixtures';
+import { DeliveryMethodFixtures } from './fixtures/delivery-method.fixtures';
 import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
-import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
@@ -37,7 +37,7 @@ describe('DiscountApplication', () => {
       new VariantOptionValueFixtures(),
       new OrderFixtures(),
       new OrderLineFixtures(),
-      new FulfillmentFixtures(),
+      new DeliveryMethodFixtures(),
       new DiscountFixtures(),
       new OrderDiscountFixtures()
     ]);
@@ -135,54 +135,54 @@ describe('DiscountApplication', () => {
       });
     });
 
-    test('applies the best discount (FULFILLMENT LEVEL) when it gives more discount', async () => {
+    test('applies the best discount (DELIVERY_METHOD LEVEL) when it gives more discount', async () => {
       const order = await ctx.repositories.order.findOneOrThrow({
-        where: { id: OrderConstants.ForFulfillmentLevelID }
+        where: { id: OrderConstants.ForDeliveryMethodLevelID }
       });
 
       const result = await discountApplication.applyAvailable(order);
 
-      // Fulfillment discount ($550) applies to fulfillment ($600 -> $50)
+      // DeliveryMethod discount ($550) applies to delivery method ($600 -> $50)
       // Subtotal stays same: $2100
       // New total: 2100 + 50 = 2150
       expect(result).toMatchObject({
-        id: OrderConstants.ForFulfillmentLevelID,
+        id: OrderConstants.ForDeliveryMethodLevelID,
         subtotal: LunePrice.toCent(2_100),
         total: LunePrice.toCent(2_150),
         appliedDiscounts: [
           {
-            code: DiscountConstants.FulfillmentAutomaticDiscountCode,
+            code: DiscountConstants.DeliveryMethodAutomaticDiscountCode,
             discountedAmount: LunePrice.toCent(550),
             applicationMode: ApplicationMode.Automatic,
-            applicationLevel: ApplicationLevel.Fulfillment
+            applicationLevel: ApplicationLevel.DeliveryMethod
           }
         ]
       });
 
-      // Verify fulfillment was updated
-      const fulfillment = await ctx.repositories.fulfillment.findOne({
-        where: { orderId: OrderConstants.ForFulfillmentLevelID }
+      // Verify delivery method was updated
+      const deliveryMethod = await ctx.repositories.deliveryMethod.findOne({
+        where: { orderId: OrderConstants.ForDeliveryMethodLevelID }
       });
 
-      expect(fulfillment).toMatchObject({
+      expect(deliveryMethod).toMatchObject({
         amount: LunePrice.toCent(600),
         total: LunePrice.toCent(50) // 600 - 550
       });
     });
 
-    test('applies ORDER level discount when FULFILLMENT discount exists but order has no fulfillment', async () => {
+    test('applies ORDER level discount when DELIVERY_METHOD discount exists but order has no delivery method', async () => {
       const order = await ctx.repositories.order.findOneOrThrow({
-        where: { id: OrderConstants.WithoutFulfillmentID }
+        where: { id: OrderConstants.WithoutDeliveryMethodID }
       });
 
       const result = await discountApplication.applyAvailable(order);
 
-      // Fulfillment discount ($600) exists but order has no fulfillment, so discountedAmount = 0
+      // DeliveryMethod discount ($600) exists but order has no delivery method, so discountedAmount = 0
       // Order discount ($500) wins because it has higher discountedAmount
       expect(result).toMatchObject({
-        id: OrderConstants.WithoutFulfillmentID,
+        id: OrderConstants.WithoutDeliveryMethodID,
         subtotal: LunePrice.toCent(1_600), // 2100 - 500
-        total: LunePrice.toCent(1_600), // No fulfillment
+        total: LunePrice.toCent(1_600), // No delivery method
         appliedDiscounts: [
           {
             code: DiscountConstants.OrderAutomaticDiscountCode,
@@ -434,33 +434,33 @@ describe('DiscountApplication', () => {
         expect(line.appliedDiscounts).toEqual([]);
       }
 
-      // Verify fulfillment was cleaned
-      const fulfillment = await ctx.repositories.fulfillment.findOne({
+      // Verify delivery method was cleaned
+      const deliveryMethod = await ctx.repositories.deliveryMethod.findOne({
         where: { orderId: OrderConstants.WithCodeDiscountID }
       });
 
-      expect(fulfillment?.total).toBe(fulfillment?.amount);
+      expect(deliveryMethod?.total).toBe(deliveryMethod?.amount);
     });
 
-    test('removes all applied discounts from an order without fulfillment', async () => {
+    test('removes all applied discounts from an order without delivery method', async () => {
       const order = await ctx.repositories.order.findOneOrThrow({
-        where: { id: OrderConstants.WithoutFulfillmentID }
+        where: { id: OrderConstants.WithoutDeliveryMethodID }
       });
 
       await discountApplication.applyAvailable(order);
 
-      const result = await discountApplication.clean(OrderConstants.WithoutFulfillmentID);
+      const result = await discountApplication.clean(OrderConstants.WithoutDeliveryMethodID);
 
       expect(result).toMatchObject({
-        id: OrderConstants.WithoutFulfillmentID,
+        id: OrderConstants.WithoutDeliveryMethodID,
         subtotal: LunePrice.toCent(2_100),
-        total: LunePrice.toCent(2_100), // No fulfillment
+        total: LunePrice.toCent(2_100), // No delivery method
         appliedDiscounts: []
       });
 
       // Verify order lines were cleaned
       const lines = await ctx.repositories.orderLine.findMany({
-        where: { orderId: OrderConstants.WithoutFulfillmentID }
+        where: { orderId: OrderConstants.WithoutDeliveryMethodID }
       });
 
       for (const line of lines) {
@@ -468,12 +468,12 @@ describe('DiscountApplication', () => {
         expect(line.appliedDiscounts).toEqual([]);
       }
 
-      // Verify no fulfillment exists
-      const fulfillment = await ctx.repositories.fulfillment.findOne({
-        where: { orderId: OrderConstants.WithoutFulfillmentID }
+      // Verify no delivery method exists
+      const deliveryMethod = await ctx.repositories.deliveryMethod.findOne({
+        where: { orderId: OrderConstants.WithoutDeliveryMethodID }
       });
 
-      expect(fulfillment).toBeUndefined();
+      expect(deliveryMethod).toBeUndefined();
     });
   });
 });

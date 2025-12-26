@@ -2,27 +2,27 @@ import type { OrderListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset } from '@/persistence/entities/asset';
 import type { Customer } from '@/persistence/entities/customer';
+import type { DeliveryMethod, DeliveryMethodType } from '@/persistence/entities/delivery-method';
+import type { DeliveryMethodPickup } from '@/persistence/entities/delivery-method-pickup';
+import type { DeliveryMethodShipping } from '@/persistence/entities/delivery-method-shipping';
 import type { ID } from '@/persistence/entities/entity';
-import type { Fulfillment, FulfillmentType } from '@/persistence/entities/fulfillment';
-import type { InStorePickupFulfillment } from '@/persistence/entities/in-store-pickup-fulfillment';
 import type { OptionValue } from '@/persistence/entities/option_value';
 import type { OptionValuePreset } from '@/persistence/entities/option-value-preset';
 import { type Order, OrderState, type OrderTable } from '@/persistence/entities/order';
 import type { OrderLine } from '@/persistence/entities/order-line';
 import type { Product } from '@/persistence/entities/product';
-import type { ShippingFulfillment } from '@/persistence/entities/shipping-fulfillment';
 import type { Variant } from '@/persistence/entities/variant';
 import { OrderFilter } from '@/persistence/filters/order.filter';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
 import { CustomerSerializer } from '@/persistence/serializers/customer.serializer';
-import { FulfillmentSerializer } from '@/persistence/serializers/fulfillment.serializer';
-import { InStorePickupFulfillmentSerializer } from '@/persistence/serializers/in-store-pickup-fulfillment.serializer';
+import { DeliveryMethodSerializer } from '@/persistence/serializers/delivery-method.serializer';
+import { DeliveryMethodPickupSerializer } from '@/persistence/serializers/delivery-method-pickup.serializer';
+import { DeliveryMethodShippingSerializer } from '@/persistence/serializers/delivery-method-shipping.serializer';
 import { OptionValueSerializer } from '@/persistence/serializers/option-value.serializer';
 import { OptionValuePresetSerializer } from '@/persistence/serializers/option-value-preset.serializer';
 import { OrderSerializer } from '@/persistence/serializers/order.serializer';
 import { OrderLineSerializer } from '@/persistence/serializers/order_line.serializer';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
-import { ShippingFulfillmentSerializer } from '@/persistence/serializers/shipping-fulfillment.serializer';
 import { VariantSerializer } from '@/persistence/serializers/variant.serializer';
 import { Tables } from '@/persistence/tables';
 
@@ -63,13 +63,14 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     return Number(count);
   }
 
+  // TODO (URGENT): Fix after migration for new fulfillments
   async findOneWithDetails(orderId: ID): Promise<OrderWithDetails | null> {
     // Serializers
     const orderSerializer = new OrderSerializer();
     const customerSerializer = new CustomerSerializer();
-    const fulfillmentSerializer = new FulfillmentSerializer();
-    const shippingFulfillmentSerializer = new ShippingFulfillmentSerializer();
-    const inStorePickupFulfillmentSerializer = new InStorePickupFulfillmentSerializer();
+    const fulfillmentSerializer = new DeliveryMethodSerializer();
+    const shippingFulfillmentSerializer = new DeliveryMethodShippingSerializer();
+    const inStorePickupFulfillmentSerializer = new DeliveryMethodPickupSerializer();
     const orderLineSerializer = new OrderLineSerializer();
     const variantSerializer = new VariantSerializer();
     const productSerializer = new ProductSerializer();
@@ -81,9 +82,9 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     const orderRow = await this.trx
       .from({ o: Tables.Order })
       .leftJoin({ c: Tables.Customer }, 'c.id', 'o.customer_id')
-      .leftJoin({ f: Tables.Fulfillment }, 'f.order_id', 'o.id')
-      .leftJoin({ sf: Tables.ShippingFulfillment }, 'sf.fulfillment_id', 'f.id')
-      .leftJoin({ pf: Tables.InStorePickupFulfillment }, 'pf.fulfillment_id', 'f.id')
+      .leftJoin({ f: Tables.DeliveryMethod }, 'f.order_id', 'o.id')
+      .leftJoin({ sf: Tables.DeliveryMethodShipping }, 'sf.fulfillment_id', 'f.id')
+      .leftJoin({ pf: Tables.DeliveryMethodPickup }, 'pf.fulfillment_id', 'f.id')
       .select(
         // Order
         'o.id as o_id',
@@ -319,7 +320,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
           amount: orderRow.f_amount,
           total: orderRow.f_total,
           order_id: orderRow.f_order_id
-        }) as Fulfillment)
+        }) as DeliveryMethod)
       : null;
 
     const shippingFulfillment = orderRow.sf_id
@@ -328,13 +329,9 @@ export class OrderRepository extends Repository<Order, OrderTable> {
           created_at: orderRow.sf_created_at,
           updated_at: orderRow.sf_updated_at,
           method: orderRow.sf_method,
-          tracking_code: orderRow.sf_tracking_code,
-          carrier: orderRow.sf_carrier,
-          shipped_at: orderRow.sf_shipped_at,
-          delivered_at: orderRow.sf_delivered_at,
-          fulfillment_id: orderRow.sf_fulfillment_id,
+          delivery_method_id: orderRow.sf_fulfillment_id,
           shipping_method_id: orderRow.sf_shipping_method_id
-        }) as ShippingFulfillment)
+        }) as DeliveryMethodShipping)
       : null;
 
     const inStorePickupFulfillment = orderRow.pf_id
@@ -343,11 +340,9 @@ export class OrderRepository extends Repository<Order, OrderTable> {
           created_at: orderRow.pf_created_at,
           updated_at: orderRow.pf_updated_at,
           address: orderRow.pf_address,
-          ready_at: orderRow.pf_ready_at,
-          picked_up_at: orderRow.pf_picked_up_at,
-          fulfillment_id: orderRow.pf_fulfillment_id,
+          delivery_method_id: orderRow.pf_fulfillment_id,
           location_id: orderRow.pf_location_id
-        }) as InStorePickupFulfillment)
+        }) as DeliveryMethodPickup)
       : null;
 
     // Lines with variants, products, assets, optionValues
@@ -452,11 +447,11 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     return {
       ...order,
       customer: customer as Customer,
-      fulfillment: fulfillment as Fulfillment,
+      fulfillment: fulfillment as DeliveryMethod,
       fulfillmentDetails:
-        (fulfillment?.type as FulfillmentType) === 'SHIPPING'
-          ? (shippingFulfillment as ShippingFulfillment)
-          : (inStorePickupFulfillment as InStorePickupFulfillment),
+        (fulfillment?.type as DeliveryMethodType) === 'SHIPPING'
+          ? (shippingFulfillment as DeliveryMethodShipping)
+          : (inStorePickupFulfillment as DeliveryMethodPickup),
       lines
     };
   }
@@ -464,8 +459,8 @@ export class OrderRepository extends Repository<Order, OrderTable> {
 
 type OrderWithDetails = Order & {
   customer: Customer;
-  fulfillment: Fulfillment;
-  fulfillmentDetails: ShippingFulfillment | InStorePickupFulfillment;
+  fulfillment: DeliveryMethod;
+  fulfillmentDetails: DeliveryMethodShipping | DeliveryMethodPickup;
   lines: (OrderLine & {
     variant: Variant & {
       assets: Asset[];

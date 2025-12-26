@@ -1,5 +1,5 @@
 """
-Represents in-store pickup fulfillment configuration for a location
+Represents in-store pickup configuration for a location
 """
 type InStorePickup implements Node {
   id: ID!

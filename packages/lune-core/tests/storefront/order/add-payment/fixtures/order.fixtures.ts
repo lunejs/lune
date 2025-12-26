@@ -10,14 +10,14 @@ import { ShopConstants } from './shop.fixtures';
 
 export const OrderConstants = {
   ID: TestUtils.generateUUID(),
-  WithoutFulfillmentID: TestUtils.generateUUID(),
+  WithoutDeliveryMethodID: TestUtils.generateUUID(),
   WithoutCustomerID: TestUtils.generateUUID(),
   PlacedID: TestUtils.generateUUID(),
   PlacedID2: TestUtils.generateUUID(),
   WithLowStockID: TestUtils.generateUUID(),
   WithDiscountCodeID: TestUtils.generateUUID(),
   WithOrderLineDiscountID: TestUtils.generateUUID(),
-  WithFulfillmentDiscountID: TestUtils.generateUUID()
+  WithDeliveryMethodDiscountID: TestUtils.generateUUID()
 };
 
 export class OrderFixtures implements Fixture<OrderTable> {
@@ -35,7 +35,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.WithoutFulfillmentID,
+        id: OrderConstants.WithoutDeliveryMethodID,
         subtotal: LunePrice.toCent(2100),
         total: LunePrice.toCent(2300),
         total_quantity: 2,
@@ -95,16 +95,16 @@ export class OrderFixtures implements Fixture<OrderTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.WithFulfillmentDiscountID,
+        id: OrderConstants.WithDeliveryMethodDiscountID,
         subtotal: LunePrice.toCent(2100),
         total: LunePrice.toCent(2300),
         total_quantity: 2,
         customer_id: CustomerConstants.ID,
         applied_discounts: JSON.stringify([
           {
-            code: 'FULFILLMENT_DISCOUNT',
+            code: 'DELIVERY_METHOD_DISCOUNT',
             applicationMode: 'CODE',
-            applicationLevel: 'FULFILLMENT',
+            applicationLevel: 'DELIVERY_METHOD',
             amount: 0
           }
         ])

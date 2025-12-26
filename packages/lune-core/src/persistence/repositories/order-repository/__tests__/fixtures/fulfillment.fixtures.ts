@@ -1,7 +1,7 @@
 import { LunePrice } from '@lune/common';
 
-import type { FulfillmentTable } from '@/persistence/entities/fulfillment';
-import { FulfillmentType } from '@/persistence/entities/fulfillment';
+import type { DeliveryMethodTable } from '@/persistence/entities/delivery-method';
+import { DeliveryMethodType } from '@/persistence/entities/delivery-method';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -14,10 +14,10 @@ export const FulfillmentConstants = {
   InStorePickupID: TestUtils.generateUUID()
 };
 
-export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
-  table: Tables = Tables.Fulfillment;
+export class FulfillmentFixtures implements Fixture<DeliveryMethodTable> {
+  table: Tables = Tables.DeliveryMethod;
 
-  async build(): Promise<Partial<FulfillmentTable>[]> {
+  async build(): Promise<Partial<DeliveryMethodTable>[]> {
     return [
       {
         id: FulfillmentConstants.ID,
@@ -25,7 +25,7 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         total: LunePrice.toCent(200),
         order_id: OrderConstants.ID,
         shop_id: ShopConstants.ID,
-        type: FulfillmentType.SHIPPING
+        type: DeliveryMethodType.Shipping
       },
       {
         id: FulfillmentConstants.InStorePickupID,
@@ -33,7 +33,7 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         total: LunePrice.toCent(200),
         order_id: OrderConstants.InStorePickupID,
         shop_id: ShopConstants.ID,
-        type: FulfillmentType.IN_STORE_PICKUP
+        type: DeliveryMethodType.Pickup
       }
     ];
   }

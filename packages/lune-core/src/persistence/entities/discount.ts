@@ -19,7 +19,7 @@ export enum ApplicationLevel {
   /** Discount applied to specific order lines */
   OrderLine = 'ORDER_LINE',
   /** Discount applied to fulfillment amount */
-  Fulfillment = 'FULFILLMENT'
+  DeliveryMethod = 'DELIVERY_METHOD'
 }
 
 /**

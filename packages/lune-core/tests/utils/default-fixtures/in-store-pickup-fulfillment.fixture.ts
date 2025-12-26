@@ -1,6 +1,6 @@
-import type { InStorePickupFulfillmentTable } from '@/persistence/entities/in-store-pickup-fulfillment';
+import type { DeliveryMethodPickupTable } from '@/persistence/entities/delivery-method-pickup';
 
-export const DefaultInStorePickupFulfillmentFixture = (): InStorePickupFulfillmentTable => ({
+export const DefaultInStorePickupFulfillmentFixture = (): DeliveryMethodPickupTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
@@ -11,9 +11,7 @@ export const DefaultInStorePickupFulfillmentFixture = (): InStorePickupFulfillme
     postalCode: '94102',
     phoneNumber: '+14155551234'
   },
-  ready_at: null,
-  picked_up_at: null,
-  fulfillment_id: crypto.randomUUID(),
+  delivery_method_id: crypto.randomUUID(),
   location_id: crypto.randomUUID(),
   shop_id: crypto.randomUUID()
 });

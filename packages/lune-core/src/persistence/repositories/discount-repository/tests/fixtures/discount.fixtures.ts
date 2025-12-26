@@ -118,7 +118,7 @@ export class DiscountFixtures implements Fixture<DiscountTable> {
         id: DiscountConstants.FulfillmentLevelDiscountID,
         code: 'FULFILLMENT_LEVEL',
         application_mode: ApplicationMode.Code,
-        application_level: ApplicationLevel.Fulfillment,
+        application_level: ApplicationLevel.DeliveryMethod,
         starts_at: pastDate,
         ends_at: futureDate,
         enabled: true,

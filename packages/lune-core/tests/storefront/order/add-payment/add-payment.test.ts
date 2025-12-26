@@ -9,8 +9,8 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomerFixtures } from './fixtures/customer.fixtures';
+import { DeliveryMethodFixtures } from './fixtures/delivery-method.fixtures';
 import { DiscountConstants, DiscountFixtures } from './fixtures/discount.fixtures';
-import { FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
 import { OrderLineFixtures } from './fixtures/order-line.fixtures';
 import { PaymentMethodConstants, PaymentMethodFixtures } from './fixtures/payment-method.fixtures';
@@ -35,7 +35,7 @@ describe('addPaymentToOrder - Mutation', () => {
       new VariantFixtures(),
       new OrderFixtures(),
       new OrderLineFixtures(),
-      new FulfillmentFixtures(),
+      new DeliveryMethodFixtures(),
       new DiscountFixtures(),
       new PaymentMethodFixtures()
     ]);
@@ -76,7 +76,7 @@ describe('addPaymentToOrder - Mutation', () => {
       subtotal: LunePrice.toCent(2_100),
       total: LunePrice.toCent(2_300),
       totalQuantity: 2,
-      fulfillment: {
+      deliveryMethod: {
         amount: LunePrice.toCent(200)
       },
       appliedDiscounts: [],
@@ -147,7 +147,7 @@ describe('addPaymentToOrder - Mutation', () => {
     } = res.body.data;
 
     // Discount of $100 applied to subtotal: 2100 - 100 = 2000
-    // Total: 2000 + 200 (fulfillment) = 2200
+    // Total: 2000 + 200 (delivery method) = 2200
     expect(order).toMatchObject({
       id: OrderConstants.WithDiscountCodeID,
       subtotal: LunePrice.toCent(2_000),
@@ -212,7 +212,7 @@ describe('addPaymentToOrder - Mutation', () => {
     });
   });
 
-  test('creates order_discount record for fulfillment level discount on payment', async () => {
+  test('creates order_discount record for delivery method level discount on payment', async () => {
     await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -220,7 +220,7 @@ describe('addPaymentToOrder - Mutation', () => {
       .send({
         query: ADD_PAYMENT_TO_ORDER,
         variables: {
-          orderId: OrderConstants.WithFulfillmentDiscountID,
+          orderId: OrderConstants.WithDeliveryMethodDiscountID,
           input: { methodId: PaymentMethodConstants.CapturedID }
         }
       });
@@ -228,13 +228,13 @@ describe('addPaymentToOrder - Mutation', () => {
     const db = testHelper.getQueryBuilder();
     const orderDiscounts = await db(Tables.OrderDiscount).where(
       'order_id',
-      OrderConstants.WithFulfillmentDiscountID
+      OrderConstants.WithDeliveryMethodDiscountID
     );
 
     expect(orderDiscounts).toHaveLength(1);
     expect(orderDiscounts[0]).toMatchObject({
-      order_id: OrderConstants.WithFulfillmentDiscountID,
-      discount_id: DiscountConstants.FulfillmentDiscountID
+      order_id: OrderConstants.WithDeliveryMethodDiscountID,
+      discount_id: DiscountConstants.DeliveryMethodDiscountID
     });
   });
 
@@ -261,7 +261,7 @@ describe('addPaymentToOrder - Mutation', () => {
     expect(error.code).toBe('FORBIDDEN_ORDER_ACTION');
   });
 
-  test('returns FORBIDDEN_ORDER_ACTION when order has no fulfillment', async () => {
+  test('returns FORBIDDEN_ORDER_ACTION when order has no delivery method', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -269,7 +269,7 @@ describe('addPaymentToOrder - Mutation', () => {
       .send({
         query: ADD_PAYMENT_TO_ORDER,
         variables: {
-          orderId: OrderConstants.WithoutFulfillmentID,
+          orderId: OrderConstants.WithoutDeliveryMethodID,
           input: { methodId: PaymentMethodConstants.CapturedID }
         }
       });
@@ -439,7 +439,7 @@ const ADD_PAYMENT_TO_ORDER = /* GraphQL */ `
         placedAt
         completedAt
         totalQuantity
-        fulfillment {
+        deliveryMethod {
           id
           amount
           total

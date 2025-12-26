@@ -16,7 +16,7 @@ import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { CustomerJWT } from '../shared/types/api.types';
 
-import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
+import { DeliveryMethodFieldResolver } from './field-resolvers/delivery-method-field.resolver';
 import { LocationFieldResolver } from './field-resolvers/location-field.resolver';
 import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
 import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
@@ -54,7 +54,7 @@ export class StorefrontApi extends GraphqlApi {
         OrderResolver,
         OrderFieldResolver,
         OrderLineFieldResolver,
-        FulfillmentFieldResolver,
+        DeliveryMethodFieldResolver,
         CountryResolver,
         ShippingMethodFieldResolver,
         VariantFieldResolver,

@@ -15,7 +15,7 @@ import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
 import type { UserJWT } from '../shared/types/api.types';
 
-import { FulfillmentFieldResolver } from './field-resolvers/fulfillment-field.resolver';
+import { DeliveryMethodFieldResolver } from './field-resolvers/delivery-method-field.resolver';
 import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
 import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
 import { StateFieldResolver } from './field-resolvers/state-field.resolver';
@@ -64,7 +64,7 @@ export class AdminApi extends GraphqlApi {
         CollectionResolver,
         OrderResolver,
         OrderLineFieldResolver,
-        FulfillmentFieldResolver,
+        DeliveryMethodFieldResolver,
         ZoneResolver,
         StateFieldResolver,
         ShippingMethodResolver,

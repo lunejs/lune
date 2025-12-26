@@ -1,0 +1,9 @@
+extend type DeliveryMethodPickup {
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The location where the pickup will take place
+  """
+  location: Location!
+}
