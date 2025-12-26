@@ -173,7 +173,9 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     } = res.body.data;
 
     expect(apiErrors).toHaveLength(0);
-    expect(customObjectDefinition.displayFieldId).toBe(CustomFieldDefinitionConstants.TitleFieldID);
+    expect(customObjectDefinition.displayField.id).toBe(
+      CustomFieldDefinitionConstants.TitleFieldID
+    );
 
     const inDb = await q(Tables.CustomObjectDefinition)
       .where({ id: CustomObjectDefinitionConstants.FirstID })
@@ -182,7 +184,7 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     expect(inDb.display_field_id).toBe(CustomFieldDefinitionConstants.TitleFieldID);
   });
 
-  test('keeps displayFieldId unchanged when displayFieldName does not match any field', async () => {
+  test('keeps displayField unchanged when displayFieldName does not match any field', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -202,7 +204,7 @@ describe('updateCustomObjectDefinition - Mutation', () => {
     } = res.body.data;
 
     expect(apiErrors).toHaveLength(0);
-    expect(customObjectDefinition.displayFieldId).toBeNull();
+    expect(customObjectDefinition.displayField).toBeNull();
   });
 
   test('creates new fields when newFields is provided', async () => {
@@ -301,7 +303,10 @@ const UPDATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         updatedAt
         name
         key
-        displayFieldId
+        displayField {
+          id
+          name
+        }
         fields {
           id
           name

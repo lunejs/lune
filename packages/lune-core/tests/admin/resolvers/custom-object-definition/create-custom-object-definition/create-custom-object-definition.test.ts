@@ -66,7 +66,7 @@ describe('createCustomObjectDefinition - Mutation', () => {
       name: 'Blog Post',
       key: 'blog_post'
     });
-    expect(customObjectDefinition.displayFieldId).not.toBeNull();
+    expect(customObjectDefinition.displayField).not.toBeNull();
 
     const inDb = await q(Tables.CustomObjectDefinition)
       .where({ id: customObjectDefinition.id })
@@ -121,13 +121,10 @@ describe('createCustomObjectDefinition - Mutation', () => {
     expect(customObjectDefinition.fields).toHaveLength(2);
     expect(customObjectDefinition.fields.map(f => f.name)).toEqual(['Question', 'Answer']);
 
-    const displayField = customObjectDefinition.fields.find(
-      f => f.id === customObjectDefinition.displayFieldId
-    );
-    expect(displayField?.name).toBe('Question');
+    expect(customObjectDefinition.displayField.name).toBe('Question');
   });
 
-  test('leaves displayFieldId null when displayFieldName does not match any field', async () => {
+  test('leaves displayField null when displayFieldName does not match any field', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -156,7 +153,7 @@ describe('createCustomObjectDefinition - Mutation', () => {
     } = res.body.data;
 
     expect(apiErrors).toHaveLength(0);
-    expect(customObjectDefinition.displayFieldId).toBeNull();
+    expect(customObjectDefinition.displayField).toBeNull();
   });
 
   test('returns KEY_ALREADY_EXISTS error when creating with duplicate key', async () => {
@@ -231,7 +228,10 @@ const CREATE_CUSTOM_OBJECT_DEFINITION_MUTATION = /* GraphQL */ `
         updatedAt
         name
         key
-        displayFieldId
+        displayField {
+          id
+          name
+        }
         fields {
           id
           name
