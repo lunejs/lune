@@ -6,6 +6,7 @@ import type {
   CommonCustomObjectEntryFragment
 } from '@/lib/api/types';
 import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
+import { getDisplayFieldValue } from '@/lib/custom-fields/utils/custom-field.utils';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
 import { CustomObjectEntryActions } from './actions/custom-object-entry-actions';
@@ -15,17 +16,13 @@ import { useCustomObjectEntryForm } from './use-form/use-form';
 export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
   const form = useCustomObjectEntryForm(definition, entry ?? null);
 
-  const displayFieldValue = entry?.values.find(v => v.field.id === definition.displayField?.id);
-
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit}>
         <DetailsPageLayout>
           <DetailsPageLayout.Header>
             <DetailsPageLayout.Title>
-              {entry
-                ? displayFieldValue?.value || `${definition.name}#${entry.slug.toUpperCase()}`
-                : 'Create Entry'}
+              {entry ? getDisplayFieldValue(entry, definition) : 'Create Entry'}
             </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
               {entry && <CustomObjectEntryActions definition={definition} entry={entry} />}

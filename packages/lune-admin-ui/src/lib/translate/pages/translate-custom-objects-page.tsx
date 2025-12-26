@@ -8,7 +8,7 @@ import { PageLoader } from '@/shared/components/loader/page-loader';
 import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { CustomObjectTranslateList } from '../components/custom-object-form/list/custom-object-translate-list';
-import { TranslateCustomObjectEntryForm } from '../components/custom-object-form/translate-collection-form';
+import { TranslateCustomObjectEntryForm } from '../components/custom-object-form/translate-custom-object-form';
 import { TranslateHeader } from '../components/header/translate-header';
 
 export const TranslateCustomObjectsPage = () => {

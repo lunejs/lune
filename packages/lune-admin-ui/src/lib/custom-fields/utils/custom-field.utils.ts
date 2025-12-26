@@ -14,7 +14,11 @@ import {
   UserIcon
 } from 'lucide-react';
 
-import { CustomFieldAppliesToEntity, CustomFieldType } from '@/lib/api/types';
+import {
+  type CommonCustomObjectDefinitionFragment,
+  CustomFieldAppliesToEntity,
+  CustomFieldType
+} from '@/lib/api/types';
 
 class CustomFieldTypeData {
   constructor(
@@ -145,3 +149,14 @@ export const CUSTOM_FIELD_TYPE_GROUPS = [
     ]
   }
 ];
+
+export const getDisplayFieldValue = (
+  entry: { slug: string; values: { field: { id: string }; value: string }[] },
+  definition: CommonCustomObjectDefinitionFragment
+) => {
+  const displayFieldValue = entry.values.find(v => v.field.id === definition.displayField?.id);
+
+  if (displayFieldValue) return displayFieldValue.value;
+
+  return `${definition.name}#${entry.slug.toUpperCase()}`;
+};

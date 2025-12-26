@@ -14,7 +14,34 @@ export const COMMON_CUSTOM_FIELD_DEFINITION_FRAGMENT = graphql(`
     order
     referenceTarget {
       id
+      createdAt
+      updatedAt
       name
+      key
+      displayField {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+        order
+      }
+      fields {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+        order
+      }
     }
   }
 `);

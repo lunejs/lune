@@ -4,6 +4,7 @@ import {
   type CommonCustomObjectDefinitionFragment,
   type CommonCustomObjectEntryForTranslationFragment
 } from '@/lib/api/types';
+import { getDisplayFieldValue } from '@/lib/custom-fields/utils/custom-field.utils';
 
 import { TranslateFormHeader } from '../form/translate-form-header';
 import { LocaleSelector } from '../locale-selector/locale-selector';
@@ -15,14 +16,12 @@ import { TranslateCustomObjectEntrySubmitButton } from './submit-button';
 export const TranslateCustomObjectEntryForm = ({ definition, entry }: Props) => {
   const form = useTranslateObjectEntryForm(entry);
 
-  const displayFieldValue = entry?.values.find(v => v.field.id === definition.displayField?.id);
-
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit} className="w-full border-l">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full p-4 border-b">
           <div className="flex items-center gap-3">
-            <H4>{displayFieldValue?.value || `${definition.name}#${entry.slug.toUpperCase()}`}</H4>
+            <H4>{getDisplayFieldValue(entry, definition)}</H4>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3">
             {/* <ReplaceCollectionSheet /> */}

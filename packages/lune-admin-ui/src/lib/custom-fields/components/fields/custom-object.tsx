@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { EyeIcon, GroupIcon, Package } from 'lucide-react';
+import { EyeIcon, GroupIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { LunePrice } from '@lune/common';
 import {
   Dialog,
   DialogContent,
@@ -15,11 +14,14 @@ import {
 
 import type {
   CommonCustomFieldDefinitionFragment,
+  CommonCustomObjectDefinitionFragment,
   CommonCustomObjectEntryFragment
 } from '@/lib/api/types';
 import { useGetCustomObjectEntries } from '@/lib/custom-object-entry/hooks/use-get-custom-object-entries';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';
 import { DefaultEntitySelectorRow } from '@/shared/components/entity-selector/rows/default-entity-selector-row';
+
+import { getDisplayFieldValue } from '../../utils/custom-field.utils';
 
 import { CustomFieldEntityPreview } from './shared/preview/custom-field-entity-preview';
 import { CustomFieldPreviewContainer } from './shared/preview/custom-field-preview-container';
@@ -29,17 +31,24 @@ export const CustomObjectReferenceCustomField = ({
   definition,
   onChange
 }: Props) => {
+  const objectDefinition = definition.referenceTarget as CommonCustomObjectDefinitionFragment;
+
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, customObjectEntries: allEntries } = useGetCustomObjectEntries(
     definition.referenceTarget?.id as string,
     {}
   );
-  // const { isLoading, products: allProducts } = useGetProducts();
 
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<CommonCustomObjectEntryFragment[]>([]);
 
-  const entries = useMemo(() => allEntries, [allEntries]);
+  const entries = useMemo(
+    () =>
+      allEntries.filter(e =>
+        getDisplayFieldValue(e, objectDefinition).toLowerCase().includes(query.toLowerCase())
+      ),
+    [allEntries, query]
+  );
 
   useEffect(() => {
     if (defaultValues) setSelected(allEntries.filter(p => defaultValues.includes(p.id)));
@@ -54,8 +63,11 @@ export const CustomObjectReferenceCustomField = ({
         description="Add entries"
         trigger={
           <CustomFieldPreviewContainer>
-            {selected.map(p => (
-              <CustomFieldEntityPreview key={p.id} title={p.slug} />
+            {selected.map(entry => (
+              <CustomFieldEntityPreview
+                key={entry.id}
+                title={getDisplayFieldValue(entry, objectDefinition)}
+              />
             ))}
             {!!selected.length && (
               <button
@@ -92,7 +104,7 @@ export const CustomObjectReferenceCustomField = ({
         renderItem={({ rowId, item, isSelected, onSelect }) => (
           <DefaultEntitySelectorRow
             key={rowId}
-            title={item.slug}
+            title={getDisplayFieldValue(item, objectDefinition)}
             isSelected={isSelected}
             onSelect={onSelect}
           />
@@ -109,11 +121,13 @@ export const CustomObjectReferenceCustomField = ({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
-            {selected.map(p => (
-              <div key={p.id} className="flex items-center gap-2">
+            {selected.map(entry => (
+              <div key={entry.id} className="flex items-center gap-2">
                 <div>
-                  <Link to={`/custom-objects/${definition.referenceTarget?.id}/${p.id}`}>
-                    <Small className="hover:underline">{p.slug}</Small>
+                  <Link to={`/custom-objects/${objectDefinition.id}/${entry.id}`}>
+                    <Small className="hover:underline">
+                      {getDisplayFieldValue(entry, objectDefinition)}
+                    </Small>
                   </Link>
                 </div>
               </div>
