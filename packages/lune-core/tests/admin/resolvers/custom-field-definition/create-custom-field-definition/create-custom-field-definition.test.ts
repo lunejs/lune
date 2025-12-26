@@ -6,6 +6,10 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
+import {
+  CustomObjectDefinitionConstants,
+  CustomObjectDefinitionFixtures
+} from './fixtures/custom-object-definition.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
 
@@ -20,6 +24,7 @@ describe('createCustomFieldDefinition - Mutation', () => {
     await testHelper.loadFixtures([
       new UserFixtures(),
       new ShopFixtures(),
+      new CustomObjectDefinitionFixtures(),
       new CustomFieldDefinitionFixtures()
     ]);
   });
@@ -142,6 +147,42 @@ describe('createCustomFieldDefinition - Mutation', () => {
     });
   });
 
+  test('creates a custom object reference field with referenceTarget', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CREATE_CUSTOM_FIELD_DEFINITION_MUTATION,
+        variables: {
+          input: {
+            name: 'Related Post',
+            isList: false,
+            appliesToEntity: 'PRODUCT',
+            type: 'CUSTOM_OBJECT_REFERENCE',
+            order: 3,
+            referenceTargetId: CustomObjectDefinitionConstants.ID
+          }
+        }
+      });
+
+    const {
+      createCustomFieldDefinition: { customFieldDefinition, apiErrors }
+    } = res.body.data;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(customFieldDefinition).toMatchObject({
+      name: 'Related Post',
+      key: 'related_post',
+      isList: false,
+      appliesToEntity: 'PRODUCT',
+      type: 'CUSTOM_OBJECT_REFERENCE',
+      order: 3
+    });
+    expect(customFieldDefinition.referenceTarget.id).toBe(CustomObjectDefinitionConstants.ID);
+    expect(customFieldDefinition.referenceTarget.name).toBe(CustomObjectDefinitionConstants.Name);
+  });
+
   test('returns KEY_ALREADY_EXISTS error when creating with duplicate key', async () => {
     const res = await request(app)
       .post('/admin-api')
@@ -207,6 +248,10 @@ const CREATE_CUSTOM_FIELD_DEFINITION_MUTATION = /* GraphQL */ `
         type
         metadata
         order
+        referenceTarget {
+          id
+          name
+        }
       }
     }
   }

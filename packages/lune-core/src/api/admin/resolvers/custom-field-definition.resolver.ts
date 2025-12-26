@@ -10,6 +10,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomFieldDefinitionService } from '@/business/custom-field-definition/custom-field-definition.service';
+import type { CustomFieldDefinition } from '@/persistence/entities/custom-field-definition';
 import {
   CustomFieldAppliesTo,
   CustomFieldType
@@ -90,7 +91,15 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
     BOOLEAN: CustomFieldType.Boolean,
     IMAGE: CustomFieldType.Image,
     PRODUCT_REFERENCE: CustomFieldType.ProductReference,
-    COLLECTION_REFERENCE: CustomFieldType.CollectionReference
+    COLLECTION_REFERENCE: CustomFieldType.CollectionReference,
+    CUSTOM_OBJECT_REFERENCE: CustomFieldType.CustomObjectReference
+  },
+  CustomFieldDefinition: {
+    referenceTarget: (parent: CustomFieldDefinition, _, ctx: ExecutionContext) => {
+      if (!parent.referenceTargetId) return null;
+
+      return ctx.loaders.customFieldDefinition.referenceTarget.load(parent.referenceTargetId);
+    }
   },
   Query: {
     customFieldDefinitions: UseUserGuard(customFieldDefinitions),

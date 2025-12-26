@@ -309,6 +309,7 @@ export type CreateCustomFieldInput = {
   metadata?: InputMaybe<Scalars['JSON']['input']>;
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
+  referenceTargetId?: InputMaybe<Scalars['ID']['input']>;
   type: CustomFieldType;
 };
 
@@ -461,6 +462,8 @@ export type CustomFieldDefinition = {
   name: Scalars['String']['output'];
   /** Order of the field in the custom object definition */
   order: Scalars['Int']['output'];
+  /** The custom object definition this field references (for custom_object_reference type) */
+  referenceTarget?: Maybe<CustomObjectDefinition>;
   /** Type of the definition */
   type: CustomFieldType;
   updatedAt: Scalars['Date']['output'];
@@ -3378,6 +3381,7 @@ export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, Paren
   metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  referenceTarget?: Resolver<Maybe<ResolversTypes['CustomObjectDefinition']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CustomFieldType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -20,6 +20,7 @@ enum CustomFieldType {
   IMAGE
   PRODUCT_REFERENCE
   COLLECTION_REFERENCE
+  CUSTOM_OBJECT_REFERENCE
 }
 
 """
@@ -49,6 +50,10 @@ type CustomFieldDefinition {
   Type of the definition
   """
   type: CustomFieldType!
+  """
+  The custom object definition this field references (for custom_object_reference type)
+  """
+  referenceTarget: CustomObjectDefinition
   metadata: JSON
   """
   Order of the field in the custom object definition
@@ -102,6 +107,7 @@ input CreateCustomFieldInput {
   type: CustomFieldType!
   metadata: JSON
   order: Int!
+  referenceTargetId: ID
 }
 
 input UpdateCustomFieldInput {

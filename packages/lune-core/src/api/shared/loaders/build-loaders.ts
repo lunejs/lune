@@ -13,6 +13,7 @@ import { createCollectionCustomFieldsLoader } from './collection/collection-cust
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
 import { createCollectionTranslationsLoader } from './collection/collection-translations.loader';
 import { createCountryStatesLoader } from './country/country-states.loader';
+import { createCustomFieldDefinitionReferenceTargetLoader } from './custom-field-definition/custom-field-definition-reference-target.loader';
 import { createCustomObjectDefinitionDisplayFieldLoader } from './custom-object-definition/custom-object-definition-display-field.loader';
 import { createCustomObjectDefinitionEntriesLoader } from './custom-object-definition/custom-object-definition-entries.loader';
 import { createCustomObjectDefinitionFieldsLoader } from './custom-object-definition/custom-object-definition-fields.loader';
@@ -140,6 +141,9 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       values: createCustomObjectEntryValuesLoader(trx),
       valueField: createCustomObjectEntryValueFieldLoader(trx),
       valueTranslations: createCustomObjectEntryValueTranslationsLoader(trx)
+    },
+    customFieldDefinition: {
+      referenceTarget: createCustomFieldDefinitionReferenceTargetLoader(trx)
     }
   };
 };

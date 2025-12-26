@@ -10,7 +10,8 @@ export const CustomFieldType = {
   Boolean: 'boolean',
   Image: 'image',
   ProductReference: 'product_reference',
-  CollectionReference: 'collection_reference'
+  CollectionReference: 'collection_reference',
+  CustomObjectReference: 'custom_object_reference'
 } as const;
 
 export type CustomFieldType = (typeof CustomFieldType)[keyof typeof CustomFieldType];
@@ -37,6 +38,8 @@ type BaseCustomFieldDefinition = LuneEntity & {
   customObjectDefinitionId?: ID | null;
   /** Order of the field in the custom object definition */
   order: number;
+  /** ID of the custom object definition this field references (for custom_object_reference type) */
+  referenceTargetId?: ID | null;
 };
 
 type SingleLineTextCustomField = BaseCustomFieldDefinition & {
@@ -89,6 +92,12 @@ type CollectionReferenceCustomField = BaseCustomFieldDefinition & {
   metadata: null;
 };
 
+type CustomObjectReferenceCustomField = BaseCustomFieldDefinition & {
+  type: typeof CustomFieldType.CustomObjectReference;
+  metadata: null;
+  referenceTargetId: ID;
+};
+
 /**
  * Represents a custom field that cna be attached to an entity
  */
@@ -102,7 +111,8 @@ export type CustomFieldDefinition =
   | BooleanCustomField
   | ImageCustomField
   | ProductReferenceCustomField
-  | CollectionReferenceCustomField;
+  | CollectionReferenceCustomField
+  | CustomObjectReferenceCustomField;
 
 export interface CustomFieldDefinitionTable extends LuneTable {
   name: string;
@@ -113,5 +123,6 @@ export interface CustomFieldDefinitionTable extends LuneTable {
   metadata?: Record<string, unknown> | null;
   custom_object_definition_id?: ID | null;
   order: number;
+  reference_target_id?: ID | null;
   shop_id: ID;
 }

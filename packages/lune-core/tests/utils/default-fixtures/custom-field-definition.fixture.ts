@@ -15,5 +15,6 @@ export const DefaultCustomFieldDefinitionFixture = (): CustomFieldDefinitionTabl
   metadata: null,
   custom_object_definition_id: null,
   order: 0,
+  reference_target_id: null,
   shop_id: crypto.randomUUID()
 });
