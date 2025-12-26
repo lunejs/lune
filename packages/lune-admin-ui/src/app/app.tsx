@@ -17,6 +17,7 @@ import { CustomObjectDetailsPage } from '@/lib/custom-object-definition/pages/cu
 import { CustomObjectDefinitionsPage } from '@/lib/custom-object-definition/pages/custom-objects-page';
 import { NewCustomObjectPage } from '@/lib/custom-object-definition/pages/new-custom-object-page';
 import { CustomObjectEntriesPage } from '@/lib/custom-object-entry/pages/custom-object-entries-page';
+import { CustomObjectEntryDetailsPage } from '@/lib/custom-object-entry/pages/custom-object-entry-details';
 import { CustomObjectsPage } from '@/lib/custom-object-entry/pages/custom-objects';
 import { NewCustomObjectEntryPage } from '@/lib/custom-object-entry/pages/new-custom-object-entry';
 import { CustomerDetailsPage } from '@/lib/customer/pages/customer-details-page';
@@ -119,6 +120,10 @@ export const App = ({ config }: Props) => {
                     <Route path="/custom-objects" element={<CustomObjectsPage />} />
                     <Route path="/custom-objects/:id" element={<CustomObjectEntriesPage />} />
                     <Route path="/custom-objects/:id/new" element={<NewCustomObjectEntryPage />} />
+                    <Route
+                      path="/custom-objects/:id/:entryId"
+                      element={<CustomObjectEntryDetailsPage />}
+                    />
                   </Route>
 
                   <Route element={<SettingsLayout />}>

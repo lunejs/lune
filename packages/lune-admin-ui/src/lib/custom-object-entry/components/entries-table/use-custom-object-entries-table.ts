@@ -41,6 +41,7 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
     () =>
       allEntries?.map(entry => ({
         id: entry.id,
+        definitionId,
         slug: entry.slug,
         createdAt: entry.createdAt,
         updatedAt: entry.updatedAt,

@@ -13,12 +13,16 @@ import { useCustomObjectEntryForm } from './use-form/use-form';
 export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
   const form = useCustomObjectEntryForm(definition, entry ?? null);
 
+  const displayFieldValue = entry?.values.find(v => v.field.id === definition.displayField?.id);
+
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit}>
         <DetailsPageLayout>
           <DetailsPageLayout.Header>
-            <DetailsPageLayout.Title>{entry ? entry.slug : 'Create Entry'}</DetailsPageLayout.Title>
+            <DetailsPageLayout.Title>
+              {entry ? displayFieldValue?.value : 'Create Entry'}
+            </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
               {/* {discount && <DiscountActions discount={discount} />} */}
               <Button>Save</Button>

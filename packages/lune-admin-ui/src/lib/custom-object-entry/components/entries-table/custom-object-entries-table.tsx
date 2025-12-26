@@ -44,6 +44,7 @@ export type CustomObjectEntriesTableRow = {
   createdAt: string;
   updatedAt: string;
   valuesCount: number;
+  definitionId: string;
 };
 
 export type CustomObjectEntriesTableFilters = {

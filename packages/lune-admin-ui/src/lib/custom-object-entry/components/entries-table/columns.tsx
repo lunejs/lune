@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 
 import { formatDate } from '@lune/common';
 import { Checkbox } from '@lune/ui';
@@ -31,7 +31,16 @@ export const CustomObjectEntriesTableColumns: ColumnDef<CustomObjectEntriesTable
   {
     accessorKey: 'slug',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Slug" />,
-    cell: ({ row }) => <SlugCell row={row.original} />,
+    cell: ({ row }) => {
+      return (
+        <Link
+          to={`/custom-objects/${row.original.definitionId}/${row.original.id}`}
+          className="text-nowrap hover:underline"
+        >
+          {row.original.slug}
+        </Link>
+      );
+    },
     enableSorting: false
   },
   {
@@ -61,16 +70,3 @@ export const CustomObjectEntriesTableColumns: ColumnDef<CustomObjectEntriesTable
     enableSorting: false
   }
 ];
-
-const SlugCell = ({ row }: { row: CustomObjectEntriesTableRow }) => {
-  const { id: definitionId } = useParams<{ id: string }>();
-
-  return (
-    <Link
-      to={`/custom-objects/${definitionId}/entries/${row.id}`}
-      className="text-nowrap hover:underline"
-    >
-      {row.slug}
-    </Link>
-  );
-};
