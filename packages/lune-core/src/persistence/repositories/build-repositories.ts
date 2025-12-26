@@ -11,6 +11,7 @@ import { CustomFieldDefinitionRepository } from './custom-field-definition-repos
 import { CustomObjectDefinitionRepository } from './custom-object-definition-repository';
 import { CustomObjectEntryRepository } from './custom-object-entry-repository';
 import { CustomObjectEntryValueRepository } from './custom-object-entry-value-repository';
+import { CustomObjectEntryValueTranslationRepository } from './custom-object-entry-value-translation-repository';
 import { CustomerAuthMethodRepository } from './customer-auth-method-repository';
 import { CustomerRepository } from './customer-repository';
 import { DiscountRepository } from './discount-repository';
@@ -89,6 +90,7 @@ export function buildRepositories(trx: Transaction) {
     customObjectDefinition: new CustomObjectDefinitionRepository(trx),
     customObjectEntry: new CustomObjectEntryRepository(trx),
     customObjectEntryValue: new CustomObjectEntryValueRepository(trx),
+    customObjectEntryValueTranslation: new CustomObjectEntryValueTranslationRepository(trx),
     productCustomField: new ProductCustomFieldRepository(trx),
     productCustomFieldTranslation: new ProductCustomFieldTranslationRepository(trx)
   };
