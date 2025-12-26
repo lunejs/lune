@@ -8,6 +8,7 @@ import type {
 import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
+import { CustomObjectEntryActions } from './actions/custom-object-entry-actions';
 import { CustomObjectEntrySubmitButton } from './use-form/submit-button';
 import { useCustomObjectEntryForm } from './use-form/use-form';
 
@@ -27,7 +28,7 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
                 : 'Create Entry'}
             </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
-              {/* {discount && <DiscountActions discount={discount} />} */}
+              {entry && <CustomObjectEntryActions entry={entry} />}
               <CustomObjectEntrySubmitButton />
             </DetailsPageLayout.Actions>
           </DetailsPageLayout.Header>
