@@ -1,6 +1,7 @@
 import { Card, CardContent, CardTitle, cn, Form, H4, Table, TableBody } from '@lune/ui';
 
 import { type CommonProductForTranslationFragment } from '@/lib/api/types';
+import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
 import { TranslateFormHeader } from '../form/translate-form-header';
@@ -20,7 +21,9 @@ export const TranslateProductForm = ({ product }: Props) => {
   const form = useTranslateProductForm(product);
 
   const hasOptions = !!product.options.length;
-  const hasCustomFields = !!product.customFieldEntries.length;
+  const hasCustomFields = !!product.customFieldEntries.filter(cf =>
+    isTranslatable(cf.definition.type)
+  ).length;
 
   return (
     <Form {...form}>

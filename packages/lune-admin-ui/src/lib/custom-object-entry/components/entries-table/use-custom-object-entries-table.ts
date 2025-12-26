@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router';
 
-import { useGetCustomObjectDefinition } from '@/lib/custom-object-definition/hooks/use-get-custom-object-definition';
+import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { useCountCustomObjectEntries } from '@/lib/custom-object-entry/hooks/use-count-custom-object-entries';
 import { useGetCustomObjectEntries } from '@/lib/custom-object-entry/hooks/use-get-custom-object-entries';
 import { useDataTable } from '@/shared/components/data-table/use-data-table';
@@ -11,17 +12,18 @@ import type {
   CustomObjectEntriesTableRow
 } from './custom-object-entries-table';
 
-export const useCustomObjectEntriesTable = (definitionId: string) => {
+export const useCustomObjectEntriesTable = (
+  definition: CommonCustomObjectDefinitionFragment | undefined | null
+) => {
+  const { id } = useParams() as { id: string };
+
   const dataTable = useDataTable<CustomObjectEntriesTableFilters>({
     search: ''
   });
 
   const { filters, pagination } = dataTable;
 
-  const { isLoading: isLoadingCount, count } = useCountCustomObjectEntries(definitionId);
-
-  const { isLoading: isLoadingDefinition, customObjectDefinition } =
-    useGetCustomObjectDefinition(definitionId);
+  const { isLoading: isLoadingCount, count } = useCountCustomObjectEntries(id);
 
   const {
     isLoading,
@@ -29,10 +31,7 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
     customObjectEntries: allEntries,
     pagination: { pageInfo },
     refetch
-  } = useGetCustomObjectEntries(definitionId, {
-    filters: {
-      ...(filters.search && { slug: { contains: filters.search } })
-    },
+  } = useGetCustomObjectEntries(id, {
     skip: getSkip(pagination.page, pagination.size),
     take: pagination.size
   });
@@ -45,22 +44,20 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
     () =>
       allEntries?.map(entry => {
         const displayFieldValue = entry?.values.find(
-          v => v.field.id === customObjectDefinition?.displayField?.id
+          v => v.field.id === definition?.displayField?.id
         );
 
         return {
           id: entry.id,
-          definitionId,
+          definitionId: id,
           slug: entry.slug,
-          title:
-            displayFieldValue?.value ??
-            `${customObjectDefinition?.name}#${entry.slug.toUpperCase()}`,
+          title: displayFieldValue?.value ?? `${definition?.name}#${entry.slug.toUpperCase()}`,
           createdAt: entry.createdAt,
           updatedAt: entry.updatedAt,
           valuesCount: entry.values?.length ?? 0
         };
       }) ?? [],
-    [allEntries, customObjectDefinition]
+    [allEntries, definition]
   );
 
   const shouldRenderEmptyState = useMemo(() => {
@@ -69,7 +66,7 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
 
   return {
     dataTable,
-    isLoading: isLoading || isLoadingDefinition,
+    isLoading,
     isRefetching,
     shouldRenderEmptyState,
     customObjectEntries,

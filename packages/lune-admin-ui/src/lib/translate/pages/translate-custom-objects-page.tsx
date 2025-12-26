@@ -27,7 +27,7 @@ export const TranslateCustomObjectsPage = () => {
   return (
     <div className="bg-sidebar min-h-screen flex p-4">
       <div className="bg-background rounded-xl overflow-hidden w-full">
-        <TranslateHeader entitySelectorTitle="Collections" />
+        <TranslateHeader entitySelectorTitle="" />
         <main className="flex h-full">
           <CustomObjectTranslateList
             definition={customObjectDefinition}

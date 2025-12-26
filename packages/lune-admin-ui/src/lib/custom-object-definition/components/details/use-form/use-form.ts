@@ -91,7 +91,7 @@ export const useCustomObjectForm = (definition: CommonCustomObjectDefinitionFrag
         return;
       }
 
-      success('Custom object created');
+      success('Custom object updated');
       navigate(`/settings/custom-objects/${result.data.id}`);
     } else {
       loading('Saving...');

@@ -27,7 +27,7 @@ export const TranslateCustomObjectValues = ({ entry }: Props) => {
         field.field.isList ? (
           (field.value as string[]).map((value, valueIdx) => (
             <TranslateFormRowData
-              key={field.field.id + valueIdx}
+              key={field.id + valueIdx}
               field={isFirst(valueIdx) ? field.field.name : ''}
               reference={value}
               className={{
@@ -39,6 +39,7 @@ export const TranslateCustomObjectValues = ({ entry }: Props) => {
               }}
             >
               <TranslateInput
+                key={field.id + valueIdx}
                 defaultValue={values.customFields?.[field.id][valueIdx]}
                 className={cn(
                   !isLast(valueIdx, field.value) && 'border-b',
@@ -69,6 +70,7 @@ export const TranslateCustomObjectValues = ({ entry }: Props) => {
           >
             {field.field.type === CustomFieldType.SingleLineText ? (
               <TranslateInput
+                key={field.id}
                 defaultValue={values.customFields?.[field.id]}
                 label="English"
                 onChange={e => {
@@ -82,6 +84,7 @@ export const TranslateCustomObjectValues = ({ entry }: Props) => {
               />
             ) : (
               <TranslateTextarea
+                key={field.id}
                 defaultValue={values.customFields?.[field.id]}
                 label="English"
                 onChange={e => {

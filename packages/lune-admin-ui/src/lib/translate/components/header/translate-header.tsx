@@ -30,21 +30,23 @@ export const TranslateHeader = ({ entitySelectorTitle }: Props) => {
         </button>
         <H4>Translate</H4>
         <div className="hidden lg:flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
-                {entitySelectorTitle} <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <Link to={'/translate/products'}>
-                <DropdownMenuItem>Products</DropdownMenuItem>
-              </Link>
-              <Link to={'/translate/collections'}>
-                <DropdownMenuItem>Collections</DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {entitySelectorTitle && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost">
+                  {entitySelectorTitle} <ChevronDownIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <Link to={'/translate/products'}>
+                  <DropdownMenuItem>Products</DropdownMenuItem>
+                </Link>
+                <Link to={'/translate/collections'}>
+                  <DropdownMenuItem>Collections</DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </header>
