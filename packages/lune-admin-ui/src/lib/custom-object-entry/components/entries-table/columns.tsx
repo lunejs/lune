@@ -29,24 +29,18 @@ export const CustomObjectEntriesTableColumns: ColumnDef<CustomObjectEntriesTable
     enableHiding: false
   },
   {
-    accessorKey: 'slug',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Slug" />,
+    accessorKey: 'title',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Entry" />,
     cell: ({ row }) => {
       return (
         <Link
           to={`/custom-objects/${row.original.definitionId}/${row.original.id}`}
           className="text-nowrap hover:underline"
         >
-          {row.original.slug}
+          {row.original.title}
         </Link>
       );
     },
-    enableSorting: false
-  },
-  {
-    accessorKey: 'valuesCount',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Values" />,
-    cell: ({ row }) => <p className="text-nowrap">{row.original.valuesCount}</p>,
     enableSorting: false
   },
   {

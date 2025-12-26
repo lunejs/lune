@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
+import { useGetCustomObjectDefinition } from '@/lib/custom-object-definition/hooks/use-get-custom-object-definition';
 import { useCountCustomObjectEntries } from '@/lib/custom-object-entry/hooks/use-count-custom-object-entries';
 import { useGetCustomObjectEntries } from '@/lib/custom-object-entry/hooks/use-get-custom-object-entries';
 import { useDataTable } from '@/shared/components/data-table/use-data-table';
@@ -18,6 +19,9 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
   const { filters, pagination } = dataTable;
 
   const { isLoading: isLoadingCount, count } = useCountCustomObjectEntries(definitionId);
+
+  const { isLoading: isLoadingDefinition, customObjectDefinition } =
+    useGetCustomObjectDefinition(definitionId);
 
   const {
     isLoading,
@@ -39,15 +43,24 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
 
   const customObjectEntries: CustomObjectEntriesTableRow[] = useMemo(
     () =>
-      allEntries?.map(entry => ({
-        id: entry.id,
-        definitionId,
-        slug: entry.slug,
-        createdAt: entry.createdAt,
-        updatedAt: entry.updatedAt,
-        valuesCount: entry.values?.length ?? 0
-      })) ?? [],
-    [allEntries]
+      allEntries?.map(entry => {
+        const displayFieldValue = entry?.values.find(
+          v => v.field.id === customObjectDefinition?.displayField?.id
+        );
+
+        return {
+          id: entry.id,
+          definitionId,
+          slug: entry.slug,
+          title:
+            displayFieldValue?.value ??
+            `${customObjectDefinition?.name}#${entry.slug.toUpperCase()}`,
+          createdAt: entry.createdAt,
+          updatedAt: entry.updatedAt,
+          valuesCount: entry.values?.length ?? 0
+        };
+      }) ?? [],
+    [allEntries, customObjectDefinition]
   );
 
   const shouldRenderEmptyState = useMemo(() => {
@@ -56,7 +69,7 @@ export const useCustomObjectEntriesTable = (definitionId: string) => {
 
   return {
     dataTable,
-    isLoading,
+    isLoading: isLoading || isLoadingDefinition,
     isRefetching,
     shouldRenderEmptyState,
     customObjectEntries,

@@ -64,16 +64,19 @@ export const useCustomObjectEntryForm = (
 
   return {
     ...form,
+    definition,
+    entry,
     onSubmit: form.handleSubmit(onSubmit)
   };
 };
 
 type FormValues = z.infer<typeof schema>;
 
-export const useProductDetailsFormContext = (): HookReturn => {
+export const useCustomObjectEntryFormContext = (): HookReturn => {
   return useFormContext<FormValues>() as HookReturn;
 };
 
 type HookReturn = UseFormReturn<FormValues> & {
-  definition?: CommonCustomObjectDefinitionFragment;
+  definition: CommonCustomObjectDefinitionFragment;
+  entry?: CommonCustomObjectEntryFragment;
 };

@@ -40,6 +40,7 @@ export const CustomObjectEntriesTable = ({
 
 export type CustomObjectEntriesTableRow = {
   id: string;
+  title: string;
   slug: string;
   createdAt: string;
   updatedAt: string;

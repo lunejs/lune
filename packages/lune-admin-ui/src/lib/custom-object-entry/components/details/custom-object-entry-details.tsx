@@ -1,5 +1,5 @@
 import { isArray } from '@lune/common';
-import { Button, Card, CardContent, CardHeader, CardTitle, Form } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, Form } from '@lune/ui';
 
 import type {
   CommonCustomObjectDefinitionFragment,
@@ -8,6 +8,7 @@ import type {
 import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';
 
+import { CustomObjectEntrySubmitButton } from './use-form/submit-button';
 import { useCustomObjectEntryForm } from './use-form/use-form';
 
 export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
@@ -25,7 +26,7 @@ export const CustomObjectEntryDetails = ({ definition, entry }: Props) => {
             </DetailsPageLayout.Title>
             <DetailsPageLayout.Actions>
               {/* {discount && <DiscountActions discount={discount} />} */}
-              <Button>Save</Button>
+              <CustomObjectEntrySubmitButton />
             </DetailsPageLayout.Actions>
           </DetailsPageLayout.Header>
 
