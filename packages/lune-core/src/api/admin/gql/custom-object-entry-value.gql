@@ -1,3 +1,11 @@
+type CustomObjectEntryValueTranslation {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  value: JSON
+  locale: Locale!
+}
+
 """
 Represents a value of a custom object entry field
 """
@@ -17,4 +25,5 @@ type CustomObjectEntryValue {
   The field definition this value is for
   """
   field: CustomFieldDefinition!
+  translations: [CustomObjectEntryValueTranslation!]!
 }

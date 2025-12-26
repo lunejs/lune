@@ -2,6 +2,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
+  MutationAddCustomObjectEntryTranslationArgs,
   MutationCreateCustomObjectEntryArgs,
   MutationRemoveCustomObjectEntryArgs,
   MutationUpdateCustomObjectEntryArgs,
@@ -68,6 +69,16 @@ async function removeCustomObjectEntry(
   return service.remove(ids);
 }
 
+async function addCustomObjectEntryTranslation(
+  _: unknown,
+  { id, input }: MutationAddCustomObjectEntryTranslationArgs,
+  ctx: ExecutionContext
+) {
+  const service = new CustomObjectEntryService(ctx);
+
+  return service.addTranslation(id, input);
+}
+
 export const CustomObjectEntryResolver: GraphqlApiResolver = {
   Query: {
     customObjectEntry: UseUserGuard(customObjectEntry),
@@ -76,7 +87,8 @@ export const CustomObjectEntryResolver: GraphqlApiResolver = {
   Mutation: {
     createCustomObjectEntry: UseUserGuard(createCustomObjectEntry),
     updateCustomObjectEntry: UseUserGuard(updateCustomObjectEntry),
-    removeCustomObjectEntry: UseUserGuard(removeCustomObjectEntry)
+    removeCustomObjectEntry: UseUserGuard(removeCustomObjectEntry),
+    addCustomObjectEntryTranslation: UseUserGuard(addCustomObjectEntryTranslation)
   },
   CustomObjectEntry: {
     definition: (parent: CustomObjectEntry, _: unknown, ctx: ExecutionContext) => {

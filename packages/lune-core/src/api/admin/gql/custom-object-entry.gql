@@ -37,6 +37,10 @@ type Mutation {
   ): CustomObjectEntry!
   updateCustomObjectEntry(id: ID!, input: UpdateCustomObjectEntryInput!): CustomObjectEntry!
   removeCustomObjectEntry(ids: [ID!]!): Boolean!
+  addCustomObjectEntryTranslation(
+    id: ID!
+    input: addCustomObjectEntryTranslationInput!
+  ): CustomObjectEntry!
 }
 
 input CreateCustomObjectEntryInput {
@@ -44,5 +48,10 @@ input CreateCustomObjectEntryInput {
 }
 
 input UpdateCustomObjectEntryInput {
+  values: [CustomFieldValue!]
+}
+
+input addCustomObjectEntryTranslationInput {
+  locale: Locale!
   values: [CustomFieldValue!]
 }

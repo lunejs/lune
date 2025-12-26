@@ -595,9 +595,19 @@ export type CustomObjectEntryValue = {
   /** The field definition this value is for */
   field: CustomFieldDefinition;
   id: Scalars['ID']['output'];
+  translations: Array<CustomObjectEntryValueTranslation>;
   updatedAt: Scalars['Date']['output'];
   /** The value of the field */
   value: Scalars['JSON']['output'];
+};
+
+export type CustomObjectEntryValueTranslation = {
+  __typename?: 'CustomObjectEntryValueTranslation';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  locale: Locale;
+  updatedAt: Scalars['Date']['output'];
+  value?: Maybe<Scalars['JSON']['output']>;
 };
 
 /** A customer is a person who interacts with the shop, whether browsing, purchasing, or managing their profile */
@@ -972,6 +982,7 @@ export type MetricResult = {
 export type Mutation = {
   __typename?: 'Mutation';
   addCollectionTranslation: CollectionTranslation;
+  addCustomObjectEntryTranslation: CustomObjectEntry;
   addCustomerToOrder: OrderResult;
   addDiscountCodeToOrder: OrderResult;
   addInStorePickupFulfillmentToOrder: OrderResult;
@@ -1062,6 +1073,12 @@ export type Mutation = {
 export type MutationAddCollectionTranslationArgs = {
   id: Scalars['ID']['input'];
   input: CollectionTranslationInput;
+};
+
+
+export type MutationAddCustomObjectEntryTranslationArgs = {
+  id: Scalars['ID']['input'];
+  input: AddCustomObjectEntryTranslationInput;
 };
 
 
@@ -2714,6 +2731,11 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type AddCustomObjectEntryTranslationInput = {
+  locale: Locale;
+  values?: InputMaybe<Array<CustomFieldValue>>;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -2863,6 +2885,7 @@ export type ResolversTypes = {
   CustomObjectEntry: ResolverTypeWrapper<CustomObjectEntry>;
   CustomObjectEntryList: ResolverTypeWrapper<CustomObjectEntryList>;
   CustomObjectEntryValue: ResolverTypeWrapper<CustomObjectEntryValue>;
+  CustomObjectEntryValueTranslation: ResolverTypeWrapper<CustomObjectEntryValueTranslation>;
   Customer: ResolverTypeWrapper<Omit<Customer, 'orders'> & { orders: ResolversTypes['OrderList'] }>;
   CustomerErrorCode: CustomerErrorCode;
   CustomerErrorResult: ResolverTypeWrapper<CustomerErrorResult>;
@@ -3014,6 +3037,7 @@ export type ResolversTypes = {
   Variant: ResolverTypeWrapper<Variant>;
   VariantList: ResolverTypeWrapper<VariantList>;
   Zone: ResolverTypeWrapper<Zone>;
+  addCustomObjectEntryTranslationInput: AddCustomObjectEntryTranslationInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -3081,6 +3105,7 @@ export type ResolversParentTypes = {
   CustomObjectEntry: CustomObjectEntry;
   CustomObjectEntryList: CustomObjectEntryList;
   CustomObjectEntryValue: CustomObjectEntryValue;
+  CustomObjectEntryValueTranslation: CustomObjectEntryValueTranslation;
   Customer: Omit<Customer, 'orders'> & { orders: ResolversParentTypes['OrderList'] };
   CustomerErrorResult: CustomerErrorResult;
   CustomerFilters: CustomerFilters;
@@ -3216,6 +3241,7 @@ export type ResolversParentTypes = {
   Variant: Variant;
   VariantList: VariantList;
   Zone: Zone;
+  addCustomObjectEntryTranslationInput: AddCustomObjectEntryTranslationInput;
 };
 
 export type AddressResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
@@ -3431,8 +3457,18 @@ export type CustomObjectEntryValueResolvers<ContextType = ExecutionContext, Pare
   entry?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType>;
   field?: Resolver<ResolversTypes['CustomFieldDefinition'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['CustomObjectEntryValueTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomObjectEntryValueTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectEntryValueTranslation'] = ResolversParentTypes['CustomObjectEntryValueTranslation']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3647,6 +3683,7 @@ export type MetricResultResolvers<ContextType = ExecutionContext, ParentType ext
 
 export type MutationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addCollectionTranslation?: Resolver<ResolversTypes['CollectionTranslation'], ParentType, ContextType, RequireFields<MutationAddCollectionTranslationArgs, 'id' | 'input'>>;
+  addCustomObjectEntryTranslation?: Resolver<ResolversTypes['CustomObjectEntry'], ParentType, ContextType, RequireFields<MutationAddCustomObjectEntryTranslationArgs, 'id' | 'input'>>;
   addCustomerToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddCustomerToOrderArgs, 'input' | 'orderId'>>;
   addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
   addInStorePickupFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddInStorePickupFulfillmentToOrderArgs, 'input' | 'orderId'>>;
@@ -4296,6 +4333,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CustomObjectEntry?: CustomObjectEntryResolvers<ContextType>;
   CustomObjectEntryList?: CustomObjectEntryListResolvers<ContextType>;
   CustomObjectEntryValue?: CustomObjectEntryValueResolvers<ContextType>;
+  CustomObjectEntryValueTranslation?: CustomObjectEntryValueTranslationResolvers<ContextType>;
   Customer?: CustomerResolvers<ContextType>;
   CustomerErrorResult?: CustomerErrorResultResolvers<ContextType>;
   CustomerList?: CustomerListResolvers<ContextType>;

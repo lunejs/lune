@@ -6,20 +6,24 @@ const generateRandomSuffix = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {
+  AddCustomObjectEntryTranslationInput,
   CreateCustomObjectEntryInput,
   ListInput,
   UpdateCustomObjectEntryInput
 } from '@/api/shared/types/graphql';
 import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
 import type { ID } from '@/persistence/entities/entity';
+import type { Locale } from '@/persistence/entities/locale';
 import type { CustomObjectDefinitionRepository } from '@/persistence/repositories/custom-object-definition-repository';
 import type { CustomObjectEntryRepository } from '@/persistence/repositories/custom-object-entry-repository';
 import type { CustomObjectEntryValueRepository } from '@/persistence/repositories/custom-object-entry-value-repository';
+import type { CustomObjectEntryValueTranslationRepository } from '@/persistence/repositories/custom-object-entry-value-translation-repository';
 
 export class CustomObjectEntryService {
   private readonly repository: CustomObjectEntryRepository;
   private readonly valueRepository: CustomObjectEntryValueRepository;
   private readonly definitionRepository: CustomObjectDefinitionRepository;
+  private readonly valueTranslationRepository: CustomObjectEntryValueTranslationRepository;
 
   constructor(ctx: ExecutionContext) {
     this.repository = ctx.repositories.customObjectEntry;
@@ -98,6 +102,28 @@ export class CustomObjectEntryService {
     await this.repository.removeMany({ whereIn: 'id', values: ids });
 
     return true;
+  }
+
+  async addTranslation(id: ID, input: AddCustomObjectEntryTranslationInput) {
+    if (input.values?.length) {
+      await Promise.all(
+        input.values.map(value =>
+          this.valueTranslationRepository.upsert({
+            where: { entryValueId: value.id, locale: input.locale as unknown as Locale },
+            create: {
+              locale: input.locale as unknown as Locale,
+              entryValueId: value.id,
+              value: JSON.stringify(value.value)
+            },
+            update: {
+              value: JSON.stringify(value.value)
+            }
+          })
+        )
+      );
+    }
+
+    return await this.repository.findOneOrThrow({ where: { id } });
   }
 
   private async genEntrySlug(
