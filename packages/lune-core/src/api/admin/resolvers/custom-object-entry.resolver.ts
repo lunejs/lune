@@ -101,6 +101,9 @@ export const CustomObjectEntryResolver: GraphqlApiResolver = {
   CustomObjectEntryValue: {
     field: (parent: CustomObjectEntryValue, _: unknown, ctx: ExecutionContext) => {
       return ctx.loaders.customObjectEntry.valueField.load(parent.fieldId);
+    },
+    translations: (parent: CustomObjectEntryValue, _: unknown, ctx: ExecutionContext) => {
+      return ctx.loaders.customObjectEntry.valueTranslations.load(parent.id);
     }
   }
 };

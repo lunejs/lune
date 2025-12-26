@@ -29,6 +29,7 @@ export class CustomObjectEntryService {
     this.repository = ctx.repositories.customObjectEntry;
     this.valueRepository = ctx.repositories.customObjectEntryValue;
     this.definitionRepository = ctx.repositories.customObjectDefinition;
+    this.valueTranslationRepository = ctx.repositories.customObjectEntryValueTranslation;
   }
 
   async findUnique(id: ID) {

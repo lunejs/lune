@@ -19,6 +19,7 @@ import { createCustomObjectDefinitionFieldsLoader } from './custom-object-defini
 import { createCustomObjectEntryDefinitionLoader } from './custom-object-entry/custom-object-entry-definition.loader';
 import { createCustomObjectEntryValueFieldLoader } from './custom-object-entry/custom-object-entry-value-field.loader';
 import { createCustomObjectEntryValuesLoader } from './custom-object-entry/custom-object-entry-values.loader';
+import { createCustomObjectEntryValueTranslationsLoader } from './custom-object-entry/custom-object-entry-value-translations.loader';
 import { createCustomerOrdersLoader } from './customer/customer-orders.loader';
 import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.loader';
 import { createFulfillmentDetailsLoader } from './fulfillment/fulfillment-details.loader';
@@ -137,7 +138,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     customObjectEntry: {
       definition: createCustomObjectEntryDefinitionLoader(trx),
       values: createCustomObjectEntryValuesLoader(trx),
-      valueField: createCustomObjectEntryValueFieldLoader(trx)
+      valueField: createCustomObjectEntryValueFieldLoader(trx),
+      valueTranslations: createCustomObjectEntryValueTranslationsLoader(trx)
     }
   };
 };
