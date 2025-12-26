@@ -76,6 +76,17 @@ export const REMOVE_CUSTOM_OBJECT_ENTRY_MUTATION = graphql(`
   }
 `);
 
+export const ADD_CUSTOM_OBJECT_ENTRY_TRANSLATION_MUTATION = graphql(`
+  mutation AddCustomObjectEntryTranslation(
+    $id: ID!
+    $input: addCustomObjectEntryTranslationInput!
+  ) {
+    addCustomObjectEntryTranslation(id: $id, input: $input) {
+      id
+    }
+  }
+`);
+
 export const GET_CUSTOM_OBJECT_ENTRIES_COUNT_QUERY = graphql(`
   query GetCustomObjectEntriesCount($definitionId: ID!) {
     customObjectEntries(definitionId: $definitionId, input: { take: 1 }) {
