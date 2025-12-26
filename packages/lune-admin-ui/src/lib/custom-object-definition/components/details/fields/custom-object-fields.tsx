@@ -74,32 +74,56 @@ export const CustomObjectFields = () => {
                     return (
                       <div
                         className={cn(
-                          'z-10 flex gap-4 px-6 py-4',
+                          'z-10 flex flex-col gap-4 px-6 py-4 md:flex-row',
                           !isLast(i, fields) && 'border-b',
                           isDragging && 'border-transparent bg-muted/50'
                         )}
                       >
-                        {fields.length > 1 && (
-                          <Button
-                            type="button"
-                            size="icon"
-                            variant="ghost"
-                            className={cn('cursor-grab', isDragging && 'cursor-grabbing')}
-                            {...attributes}
-                            {...listeners}
-                          >
-                            <GripVerticalIcon />
-                          </Button>
-                        )}
+                        <div className="flex items-center gap-4">
+                          {fields.length > 1 && (
+                            <Button
+                              type="button"
+                              size="icon"
+                              variant="ghost"
+                              className={cn('cursor-grab', isDragging && 'cursor-grabbing')}
+                              {...attributes}
+                              {...listeners}
+                            >
+                              <GripVerticalIcon />
+                            </Button>
+                          )}
 
-                        <FormInput
-                          control={form.control}
-                          name={`fields.${i}.name`}
-                          className="w-1/2"
-                          placeholder="Field label"
-                        />
+                          <FormInput
+                            control={form.control}
+                            name={`fields.${i}.name`}
+                            className="flex-1 md:w-1/2"
+                            placeholder="Field label"
+                          />
 
-                        <div className="flex items-start gap-4 flex-1">
+                          {persistedField && (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild className="md:hidden">
+                                <Button variant={'ghost'} size={'icon'}>
+                                  <MoreVerticalIcon />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                  <span className="font-semibold">key:</span> {persistedField.key}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="text-destructive hover:text-destructive!"
+                                  onClick={() => setFieldToRemove(persistedField)}
+                                >
+                                  <XIcon className="text-destructive" /> Remove
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col items-start gap-4 md:flex-row">
                           <FormSelect
                             disabled={!!persistedField}
                             control={form.control}
@@ -108,7 +132,7 @@ export const CustomObjectFields = () => {
                               { label: 'One value', value: 'single', icon: CircleIcon },
                               { label: 'List of values', value: 'multiple', icon: ListIcon }
                             ]}
-                            className="w-40"
+                            className="w-full md:w-40"
                           />
 
                           <FormSelect
@@ -116,7 +140,7 @@ export const CustomObjectFields = () => {
                             control={form.control}
                             name={`fields.${i}.type`}
                             placeholder="Select a type"
-                            className="w-44 shrink-0"
+                            className="w-full md:w-44 shrink-0"
                             groups={CUSTOM_FIELD_TYPE_GROUPS}
                           />
                         </div>
@@ -134,7 +158,7 @@ export const CustomObjectFields = () => {
 
                         {persistedField && (
                           <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger asChild className="hidden md:inline-flex">
                               <Button variant={'ghost'} size={'icon'}>
                                 <MoreVerticalIcon />
                               </Button>

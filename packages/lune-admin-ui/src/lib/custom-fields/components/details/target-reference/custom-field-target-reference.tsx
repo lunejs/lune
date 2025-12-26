@@ -23,6 +23,7 @@ export const CustomFieldTargetReference = () => {
         label: definition.name,
         value: definition.id
       }))}
+      className="flex-1"
     />
   );
 };

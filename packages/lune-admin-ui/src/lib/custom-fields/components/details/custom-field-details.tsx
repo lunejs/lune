@@ -39,7 +39,7 @@ export const CustomFieldDetails = ({ entity, definition }: Props) => {
         >
           <CustomFieldName />
 
-          <div className="flex items-end gap-4">
+          <div className="flex items-end gap-4 flex-wrap">
             <CustomFieldIsList />
 
             <FormSelect
@@ -48,7 +48,7 @@ export const CustomFieldDetails = ({ entity, definition }: Props) => {
               name="type"
               placeholder="Select a type"
               groups={CUSTOM_FIELD_TYPE_GROUPS}
-              className="w-full"
+              className="flex-1"
             />
 
             <CustomFieldTargetReference />
