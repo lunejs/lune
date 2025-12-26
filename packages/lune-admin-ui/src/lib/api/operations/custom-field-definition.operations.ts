@@ -12,6 +12,10 @@ export const COMMON_CUSTOM_FIELD_DEFINITION_FRAGMENT = graphql(`
     type
     metadata
     order
+    referenceTarget {
+      id
+      name
+    }
   }
 `);
 

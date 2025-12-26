@@ -2,6 +2,7 @@ import {
   BoxesIcon,
   CalendarIcon,
   DollarSignIcon,
+  GroupIcon,
   HashIcon,
   ImageIcon,
   type LucideIcon,
@@ -42,6 +43,7 @@ const DATA: Record<string, CustomFieldTypeData> = {
   // Reference
   [CustomFieldType.ProductReference]: new CustomFieldTypeData('Product', PackageIcon),
   [CustomFieldType.CollectionReference]: new CustomFieldTypeData('Collection', BoxesIcon),
+  [CustomFieldType.CustomObjectReference]: new CustomFieldTypeData('Custom object', GroupIcon),
   [`customer`]: new CustomFieldTypeData('Customer', UserIcon),
   [`order`]: new CustomFieldTypeData('Order', ShoppingCartIcon)
 };
@@ -119,6 +121,11 @@ export const CUSTOM_FIELD_TYPE_GROUPS = [
         label: 'Collection',
         value: CustomFieldType.CollectionReference,
         icon: getCustomFieldTypeData(CustomFieldType.CollectionReference).icon
+      },
+      {
+        label: 'Custom object',
+        value: CustomFieldType.CustomObjectReference,
+        icon: getCustomFieldTypeData(CustomFieldType.CustomObjectReference).icon
       }
     ]
   },

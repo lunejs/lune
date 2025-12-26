@@ -11,6 +11,7 @@ import { CUSTOM_FIELD_TYPE_GROUPS, getEntityName } from '../../utils/custom-fiel
 import { CustomFieldActions } from './actions/custom-field-actions';
 import { CustomFieldIsList } from './is-list/custom-field-is-list';
 import { CustomFieldName } from './name/custom-field-name';
+import { CustomFieldTargetReference } from './target-reference/custom-field-target-reference';
 import { CustomFieldSubmitButton } from './use-form/submit-button';
 import { useCustomFieldForm } from './use-form/use-form';
 
@@ -49,6 +50,8 @@ export const CustomFieldDetails = ({ entity, definition }: Props) => {
               groups={CUSTOM_FIELD_TYPE_GROUPS}
               className="w-full"
             />
+
+            <CustomFieldTargetReference />
           </div>
         </SettingsPageLayout>
       </form>

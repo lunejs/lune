@@ -30,7 +30,8 @@ export const useCustomFieldForm = (
     defaultValues: {
       name: definition?.name ?? '',
       quantity: definition?.isList ? 'multiple' : 'single',
-      type: definition?.type
+      type: definition?.type,
+      referenceTargetId: definition?.referenceTarget?.id
     }
   });
 
@@ -44,6 +45,7 @@ export const useCustomFieldForm = (
       appliesToEntity: entity,
       name: values.name,
       order: 0,
+      referenceTargetId: values.referenceTargetId,
       type: values.type as CustomFieldType
     });
 

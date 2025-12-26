@@ -15,7 +15,9 @@ export const CustomFieldDetailsSchema = z.object({
     CustomFieldType.MultiLineText,
     CustomFieldType.ProductReference,
     CustomFieldType.CollectionReference,
-    CustomFieldType.SingleLineText
+    CustomFieldType.SingleLineText,
+    CustomFieldType.CustomObjectReference
   ]),
+  referenceTargetId: z.uuid().optional(),
   quantity: z.enum(['single', 'multiple'])
 });
