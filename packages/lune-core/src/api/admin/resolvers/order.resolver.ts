@@ -18,8 +18,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { OrderService } from '@/business/order/order.service';
-import { FulfillmentState } from '@/persistence/entities/fulfillment';
-import { type Order, OrderState } from '@/persistence/entities/order';
+import { type Order } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
 async function orders(_: unknown, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
@@ -150,23 +149,6 @@ export const OrderResolver: GraphqlApiResolver = {
     // markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
     markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),
     cancelOrder: UseUserGuard(cancelOrder)
-  },
-  OrderState: {
-    MODIFYING: OrderState.Modifying,
-    PLACED: OrderState.Placed,
-    PROCESSING: OrderState.Processing,
-    PARTIALLY_FULFILLED: OrderState.PartiallyFulfilled,
-    FULFILLED: OrderState.Fulfilled,
-    COMPLETED: OrderState.Completed,
-    CANCELED: OrderState.Canceled
-  },
-  FulfillmentState: {
-    PENDING: FulfillmentState.Pending,
-    SHIPPED: FulfillmentState.Shipped,
-    READY_FOR_PICKUP: FulfillmentState.ReadyForPickup,
-    DELIVERED: FulfillmentState.Delivered,
-    PICKED_UP: FulfillmentState.PickedUp,
-    CANCELED: FulfillmentState.Canceled
   },
   Order: {
     ...CommonOrderFieldResolver,

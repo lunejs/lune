@@ -13,6 +13,7 @@ import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
+import { OrderEnumsResolver } from '../shared/resolvers/enums/order-enums.resolver';
 import type { UserJWT } from '../shared/types/api.types';
 
 import { DeliveryMethodFieldResolver } from './field-resolvers/delivery-method-field.resolver';
@@ -79,6 +80,7 @@ export class AdminApi extends GraphqlApi {
         CustomObjectDefinitionResolver,
         CustomObjectEntryResolver,
         MetricResolver,
+        OrderEnumsResolver,
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),

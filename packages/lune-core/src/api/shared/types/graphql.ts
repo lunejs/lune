@@ -1,8 +1,6 @@
 /* eslint-disable */
 import { CustomFieldAppliesTo as CustomFieldAppliesToEntity } from '../../../persistence/entities/custom-field-definition';
 import { CustomFieldType } from '../../../persistence/entities/custom-field-definition';
-import { OrderState } from '../../../persistence/entities/order';
-import { FulfillmentState } from '../../../persistence/entities/fulfillment';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ExecutionContext } from '../context/types';
 export type Maybe<T> = T | null;
@@ -908,7 +906,21 @@ export type FulfillmentList = List & {
   pageInfo: PageInfo;
 };
 
-export { FulfillmentState };
+/** Fulfillment state enum */
+export enum FulfillmentState {
+  /** Fulfillment has been canceled */
+  Canceled = 'CANCELED',
+  /** Items has been delivered to the customer */
+  Delivered = 'DELIVERED',
+  /** The default state a fulfillment is created, indicates the fulfillment has been created */
+  Pending = 'PENDING',
+  /** Items has been recollected by the customer from the store */
+  PickedUp = 'PICKED_UP',
+  /** Items are ready for being picked up */
+  ReadyForPickup = 'READY_FOR_PICKUP',
+  /** The fulfillment has been shipped via the carrier */
+  Shipped = 'SHIPPED'
+}
 
 export type GenerateCustomerAccessTokenResult = {
   __typename?: 'GenerateCustomerAccessTokenResult';
@@ -1833,7 +1845,23 @@ export type OrderResult = {
   order?: Maybe<Order>;
 };
 
-export { OrderState };
+/** Order state enum */
+export enum OrderState {
+  /** Order has been cancelled */
+  Canceled = 'CANCELED',
+  /** Order is completed (delivered and fully paid) */
+  Completed = 'COMPLETED',
+  /** All order lines has been fulfilled */
+  Fulfilled = 'FULFILLED',
+  /** The order is being modified by the customer */
+  Modifying = 'MODIFYING',
+  /** There are some order lines without a fulfillment yet */
+  PartiallyFulfilled = 'PARTIALLY_FULFILLED',
+  /** A payment has been added to the order and cannot be modified anymore */
+  Placed = 'PLACED',
+  /** Order is being processed for shipment */
+  Processing = 'PROCESSING'
+}
 
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -3703,8 +3731,6 @@ export type FulfillmentListResolvers<ContextType = ExecutionContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FulfillmentStateResolvers = EnumResolverSignature<{ CANCELED?: any, DELIVERED?: any, PENDING?: any, PICKED_UP?: any, READY_FOR_PICKUP?: any, SHIPPED?: any }, ResolversTypes['FulfillmentState']>;
-
 export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
@@ -4041,8 +4067,6 @@ export type OrderResultResolvers<ContextType = ExecutionContext, ParentType exte
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
-
-export type OrderStateResolvers = EnumResolverSignature<{ CANCELED?: any, COMPLETED?: any, FULFILLED?: any, MODIFYING?: any, PARTIALLY_FULFILLED?: any, PLACED?: any, PROCESSING?: any }, ResolversTypes['OrderState']>;
 
 export type PageInfoResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -4452,7 +4476,6 @@ export type Resolvers<ContextType = ExecutionContext> = {
   FulfillmentLine?: FulfillmentLineResolvers<ContextType>;
   FulfillmentLineList?: FulfillmentLineListResolvers<ContextType>;
   FulfillmentList?: FulfillmentListResolvers<ContextType>;
-  FulfillmentState?: FulfillmentStateResolvers;
   GenerateCustomerAccessTokenResult?: GenerateCustomerAccessTokenResultResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;
@@ -4484,7 +4507,6 @@ export type Resolvers<ContextType = ExecutionContext> = {
   OrderLineList?: OrderLineListResolvers<ContextType>;
   OrderList?: OrderListResolvers<ContextType>;
   OrderResult?: OrderResultResolvers<ContextType>;
-  OrderState?: OrderStateResolvers;
   PageInfo?: PageInfoResolvers<ContextType>;
   Payment?: PaymentResolvers<ContextType>;
   PaymentCancellation?: PaymentCancellationResolvers<ContextType>;
