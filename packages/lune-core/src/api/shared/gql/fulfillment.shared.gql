@@ -1,0 +1,54 @@
+"""
+Fulfillment state enum
+"""
+enum FulfillmentState {
+  """
+  The default state a fulfillment is created, indicates the fulfillment has been created
+  """
+  PENDING
+  """
+  The fulfillment has been shipped via the carrier
+  """
+  SHIPPED
+  """
+  Items are ready for being picked up
+  """
+  READY_FOR_PICKUP
+  """
+  Items has been delivered to the customer
+  """
+  DELIVERED
+  """
+  Items has been recollected by the customer from the store
+  """
+  PICKED_UP
+  """
+  Fulfillment has been canceled
+  """
+  CANCELED
+}
+
+"""
+A fulfillment represents the process of preparing and delivering an order to a customer
+"""
+type Fulfillment implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Current state of the fulfillment
+  """
+  state: FulfillmentState!
+  """
+  Additional metadata for the fulfillment (tracking info, carrier details, etc.)
+  """
+  metadata: JSON
+
+  lines: FulfillmentLineList!
+}
+
+type FulfillmentList implements List {
+  items: [Fulfillment!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

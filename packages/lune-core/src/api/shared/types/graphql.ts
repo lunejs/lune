@@ -40,6 +40,17 @@ export type AddDeliveryMethodShippingInput = {
   methodId: Scalars['ID']['input'];
 };
 
+export type AddFulfillmentToOrderInput = {
+  carrier?: InputMaybe<Scalars['String']['input']>;
+  orderLines: Array<AddFulfillmentToOrderInputOrderLine>;
+  trackingCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AddFulfillmentToOrderInputOrderLine = {
+  id: Scalars['ID']['input'];
+  quantity: Scalars['Int']['input'];
+};
+
 export type AddPaymentToOrderInput = {
   metadata?: InputMaybe<Scalars['JSON']['input']>;
   methodId: Scalars['ID']['input'];
@@ -858,6 +869,60 @@ export type DiscountResult = {
   discount?: Maybe<Discount>;
 };
 
+/** A fulfillment represents the process of preparing and delivering an order to a customer */
+export type Fulfillment = Node & {
+  __typename?: 'Fulfillment';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  lines: FulfillmentLineList;
+  /** Additional metadata for the fulfillment (tracking info, carrier details, etc.) */
+  metadata?: Maybe<Scalars['JSON']['output']>;
+  /** Current state of the fulfillment */
+  state: FulfillmentState;
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A fulfillment line represents a specific order line item included in a fulfillment */
+export type FulfillmentLine = Node & {
+  __typename?: 'FulfillmentLine';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  orderLine: OrderLine;
+  /** Quantity of the order line item included in this fulfillment */
+  quantity: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type FulfillmentLineList = List & {
+  __typename?: 'FulfillmentLineList';
+  count: Scalars['Int']['output'];
+  items: Array<FulfillmentLine>;
+  pageInfo: PageInfo;
+};
+
+export type FulfillmentList = List & {
+  __typename?: 'FulfillmentList';
+  count: Scalars['Int']['output'];
+  items: Array<Fulfillment>;
+  pageInfo: PageInfo;
+};
+
+/** Fulfillment state enum */
+export enum FulfillmentState {
+  /** Fulfillment has been canceled */
+  Canceled = 'CANCELED',
+  /** Items has been delivered to the customer */
+  Delivered = 'DELIVERED',
+  /** The default state a fulfillment is created, indicates the fulfillment has been created */
+  Pending = 'PENDING',
+  /** Items has been recollected by the customer from the store */
+  PickedUp = 'PICKED_UP',
+  /** Items are ready for being picked up */
+  ReadyForPickup = 'READY_FOR_PICKUP',
+  /** The fulfillment has been shipped via the carrier */
+  Shipped = 'SHIPPED'
+}
+
 export type GenerateCustomerAccessTokenResult = {
   __typename?: 'GenerateCustomerAccessTokenResult';
   accessToken?: Maybe<Scalars['String']['output']>;
@@ -968,11 +1033,6 @@ export type LocationResult = {
   location?: Maybe<Location>;
 };
 
-export type MarkOrderAsShippedInput = {
-  carrier: Scalars['String']['input'];
-  trackingCode: Scalars['String']['input'];
-};
-
 export type Metric = {
   __typename?: 'Metric';
   key: Scalars['String']['output'];
@@ -998,10 +1058,12 @@ export type Mutation = {
   addDeliveryMethodPickupToOrder: OrderResult;
   addDeliveryMethodShippingToOrder: OrderResult;
   addDiscountCodeToOrder: OrderResult;
+  addFulfillmentToOrder: OrderResult;
   addLineToOrder: OrderResult;
   addPaymentToOrder: OrderResult;
   addProductTranslation: ProductTranslation;
   addShippingAddressToOrder: OrderResult;
+  cancelFulfillmentInOrder: OrderResult;
   cancelOrder: OrderResult;
   createCollection: Collection;
   createCustomFieldDefinition: CustomFieldDefinitionResult;
@@ -1027,11 +1089,9 @@ export type Mutation = {
    * This token can be used to access user-specific resources
    */
   generateUserAccessToken: UserAccessTokenResult;
-  markOrderAsCompleted: OrderResult;
-  markOrderAsDelivered: OrderResult;
+  markFulfillmentAsDelivered: OrderResult;
+  markFulfillmentAsPickedUp: OrderResult;
   markOrderAsProcessing: OrderResult;
-  markOrderAsReadyForPickup: OrderResult;
-  markOrderAsShipped: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
   removeCustomFieldDefinition: Scalars['Boolean']['output'];
@@ -1117,6 +1177,12 @@ export type MutationAddDiscountCodeToOrderArgs = {
 };
 
 
+export type MutationAddFulfillmentToOrderArgs = {
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<AddFulfillmentToOrderInput>;
+};
+
+
 export type MutationAddLineToOrderArgs = {
   input: CreateOrderLineInput;
   orderId: Scalars['ID']['input'];
@@ -1138,6 +1204,11 @@ export type MutationAddProductTranslationArgs = {
 export type MutationAddShippingAddressToOrderArgs = {
   input: CreateOrderAddressInput;
   orderId: Scalars['ID']['input'];
+};
+
+
+export type MutationCancelFulfillmentInOrderArgs = {
+  fulfillmentId: Scalars['ID']['input'];
 };
 
 
@@ -1240,29 +1311,18 @@ export type MutationGenerateUserAccessTokenArgs = {
 };
 
 
-export type MutationMarkOrderAsCompletedArgs = {
-  id: Scalars['ID']['input'];
+export type MutationMarkFulfillmentAsDeliveredArgs = {
+  fulfillmentId: Scalars['ID']['input'];
 };
 
 
-export type MutationMarkOrderAsDeliveredArgs = {
-  id: Scalars['ID']['input'];
+export type MutationMarkFulfillmentAsPickedUpArgs = {
+  fulfillmentId: Scalars['ID']['input'];
 };
 
 
 export type MutationMarkOrderAsProcessingArgs = {
   id: Scalars['ID']['input'];
-};
-
-
-export type MutationMarkOrderAsReadyForPickupArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationMarkOrderAsShippedArgs = {
-  id: Scalars['ID']['input'];
-  input: MarkOrderAsShippedInput;
 };
 
 
@@ -1613,6 +1673,7 @@ export type Order = Node & {
   customer?: Maybe<Customer>;
   /** Order's delivery method */
   deliveryMethod?: Maybe<DeliveryMethod>;
+  fulfillments: FulfillmentList;
   id: Scalars['ID']['output'];
   /** Order lines for the order */
   lines: OrderLineList;
@@ -2785,8 +2846,8 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( Omit<FulfillmentLineList, 'items'> & { items: Array<_RefType['FulfillmentLine']> } ) | ( Omit<FulfillmentList, 'items'> & { items: Array<_RefType['Fulfillment']> } ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
+  Node: ( Asset ) | ( Collection ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( Omit<Fulfillment, 'lines'> & { lines: _RefType['FulfillmentLineList'] } ) | ( Omit<FulfillmentLine, 'orderLine'> & { orderLine: _RefType['OrderLine'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, fulfillments: _RefType['FulfillmentList'], lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2794,6 +2855,8 @@ export type ResolversTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
   AddDeliveryMethodPickupInput: AddDeliveryMethodPickupInput;
   AddDeliveryMethodShippingInput: AddDeliveryMethodShippingInput;
+  AddFulfillmentToOrderInput: AddFulfillmentToOrderInput;
+  AddFulfillmentToOrderInputOrderLine: AddFulfillmentToOrderInputOrderLine;
   AddPaymentToOrderInput: AddPaymentToOrderInput;
   AddProductTranslationInput: AddProductTranslationInput;
   Address: ResolverTypeWrapper<Address>;
@@ -2887,6 +2950,11 @@ export type ResolversTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: ResolverTypeWrapper<DiscountResult>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  Fulfillment: ResolverTypeWrapper<Omit<Fulfillment, 'lines'> & { lines: ResolversTypes['FulfillmentLineList'] }>;
+  FulfillmentLine: ResolverTypeWrapper<Omit<FulfillmentLine, 'orderLine'> & { orderLine: ResolversTypes['OrderLine'] }>;
+  FulfillmentLineList: ResolverTypeWrapper<Omit<FulfillmentLineList, 'items'> & { items: Array<ResolversTypes['FulfillmentLine']> }>;
+  FulfillmentList: ResolverTypeWrapper<Omit<FulfillmentList, 'items'> & { items: Array<ResolversTypes['Fulfillment']> }>;
+  FulfillmentState: FulfillmentState;
   GenerateCustomerAccessTokenResult: ResolverTypeWrapper<GenerateCustomerAccessTokenResult>;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: ResolverTypeWrapper<HandlerConfig>;
@@ -2903,7 +2971,6 @@ export type ResolversTypes = {
   LocationErrorResult: ResolverTypeWrapper<LocationErrorResult>;
   LocationList: ResolverTypeWrapper<LocationList>;
   LocationResult: ResolverTypeWrapper<LocationResult>;
-  MarkOrderAsShippedInput: MarkOrderAsShippedInput;
   Metric: ResolverTypeWrapper<Metric>;
   MetricInput: MetricInput;
   MetricResult: ResolverTypeWrapper<MetricResult>;
@@ -2923,7 +2990,7 @@ export type ResolversTypes = {
   OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversTypes['DeliveryMethod']>, lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
+  Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversTypes['DeliveryMethod']>, fulfillments: ResolversTypes['FulfillmentList'], lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
   OrderAddressJson: ResolverTypeWrapper<OrderAddressJson>;
   OrderBy: OrderBy;
   OrderCancellation: ResolverTypeWrapper<Omit<OrderCancellation, 'order'> & { order: ResolversTypes['Order'] }>;
@@ -3019,6 +3086,8 @@ export type ResolversParentTypes = {
   AddCustomerToOrderInput: AddCustomerToOrderInput;
   AddDeliveryMethodPickupInput: AddDeliveryMethodPickupInput;
   AddDeliveryMethodShippingInput: AddDeliveryMethodShippingInput;
+  AddFulfillmentToOrderInput: AddFulfillmentToOrderInput;
+  AddFulfillmentToOrderInputOrderLine: AddFulfillmentToOrderInputOrderLine;
   AddPaymentToOrderInput: AddPaymentToOrderInput;
   AddProductTranslationInput: AddProductTranslationInput;
   Address: Address;
@@ -3102,6 +3171,10 @@ export type ResolversParentTypes = {
   DiscountListInput: DiscountListInput;
   DiscountResult: DiscountResult;
   Float: Scalars['Float']['output'];
+  Fulfillment: Omit<Fulfillment, 'lines'> & { lines: ResolversParentTypes['FulfillmentLineList'] };
+  FulfillmentLine: Omit<FulfillmentLine, 'orderLine'> & { orderLine: ResolversParentTypes['OrderLine'] };
+  FulfillmentLineList: Omit<FulfillmentLineList, 'items'> & { items: Array<ResolversParentTypes['FulfillmentLine']> };
+  FulfillmentList: Omit<FulfillmentList, 'items'> & { items: Array<ResolversParentTypes['Fulfillment']> };
   GenerateCustomerAccessTokenResult: GenerateCustomerAccessTokenResult;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: HandlerConfig;
@@ -3116,7 +3189,6 @@ export type ResolversParentTypes = {
   LocationErrorResult: LocationErrorResult;
   LocationList: LocationList;
   LocationResult: LocationResult;
-  MarkOrderAsShippedInput: MarkOrderAsShippedInput;
   Metric: Metric;
   MetricInput: MetricInput;
   MetricResult: MetricResult;
@@ -3136,7 +3208,7 @@ export type ResolversParentTypes = {
   OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
-  Order: Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversParentTypes['DeliveryMethod']>, lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
+  Order: Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversParentTypes['DeliveryMethod']>, fulfillments: ResolversParentTypes['FulfillmentList'], lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
   OrderAddressJson: OrderAddressJson;
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
@@ -3582,6 +3654,39 @@ export type DiscountResultResolvers<ContextType = ExecutionContext, ParentType e
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lines?: Resolver<ResolversTypes['FulfillmentLineList'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  state?: Resolver<ResolversTypes['FulfillmentState'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FulfillmentLineResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentLine'] = ResolversParentTypes['FulfillmentLine']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  orderLine?: Resolver<ResolversTypes['OrderLine'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FulfillmentLineListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentLineList'] = ResolversParentTypes['FulfillmentLineList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['FulfillmentLine']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FulfillmentListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['FulfillmentList'] = ResolversParentTypes['FulfillmentList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['Fulfillment']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
@@ -3608,7 +3713,7 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type ListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['List'] = ResolversParentTypes['List']> = {
-  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AssetList' | 'CollectionList' | 'DiscountList' | 'FulfillmentLineList' | 'FulfillmentList' | 'OptionList' | 'OrderLineList' | 'OrderList' | 'ProductList' | 'ShopList' | 'TagList' | 'UserList' | 'VariantList', ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -3670,10 +3775,12 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addDeliveryMethodPickupToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodPickupToOrderArgs, 'input' | 'orderId'>>;
   addDeliveryMethodShippingToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodShippingToOrderArgs, 'input' | 'orderId'>>;
   addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
+  addFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddFulfillmentToOrderArgs, 'id'>>;
   addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
   addPaymentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddPaymentToOrderArgs, 'input' | 'orderId'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
   addShippingAddressToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddShippingAddressToOrderArgs, 'input' | 'orderId'>>;
+  cancelFulfillmentInOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCancelFulfillmentInOrderArgs, 'fulfillmentId'>>;
   cancelOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationCancelOrderArgs, 'id' | 'input'>>;
   createCollection?: Resolver<ResolversTypes['Collection'], ParentType, ContextType, RequireFields<MutationCreateCollectionArgs, 'input'>>;
   createCustomFieldDefinition?: Resolver<ResolversTypes['CustomFieldDefinitionResult'], ParentType, ContextType, RequireFields<MutationCreateCustomFieldDefinitionArgs, 'input'>>;
@@ -3693,11 +3800,9 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   createVariant?: Resolver<Array<Maybe<ResolversTypes['Variant']>>, ParentType, ContextType, RequireFields<MutationCreateVariantArgs, 'input' | 'productId'>>;
   createZone?: Resolver<ResolversTypes['Zone'], ParentType, ContextType, RequireFields<MutationCreateZoneArgs, 'input'>>;
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
-  markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
-  markOrderAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsDeliveredArgs, 'id'>>;
+  markFulfillmentAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsDeliveredArgs, 'fulfillmentId'>>;
+  markFulfillmentAsPickedUp?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsPickedUpArgs, 'fulfillmentId'>>;
   markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
-  markOrderAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsReadyForPickupArgs, 'id'>>;
-  markOrderAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsShippedArgs, 'id' | 'input'>>;
   removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;
   removeCustomFieldDefinition?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCustomFieldDefinitionArgs, 'id'>>;
@@ -3739,7 +3844,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
 };
 
 export type NodeResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'DeliveryMethod' | 'Discount' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Asset' | 'Collection' | 'DeliveryMethod' | 'Discount' | 'Fulfillment' | 'FulfillmentLine' | 'InStorePickup' | 'Option' | 'OptionValue' | 'Order' | 'OrderCancellation' | 'OrderLine' | 'PaymentCancellation' | 'PaymentFailure' | 'PaymentRejection' | 'Product' | 'Shop' | 'Tag' | 'User' | 'Variant' | 'Zone', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3839,6 +3944,7 @@ export type OrderResolvers<ContextType = ExecutionContext, ParentType extends Re
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customer?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
   deliveryMethod?: Resolver<Maybe<ResolversTypes['DeliveryMethod']>, ParentType, ContextType>;
+  fulfillments?: Resolver<ResolversTypes['FulfillmentList'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lines?: Resolver<ResolversTypes['OrderLineList'], ParentType, ContextType>;
   payments?: Resolver<Array<ResolversTypes['Payment']>, ParentType, ContextType>;
@@ -4321,6 +4427,10 @@ export type Resolvers<ContextType = ExecutionContext> = {
   DiscountHandler?: DiscountHandlerResolvers<ContextType>;
   DiscountList?: DiscountListResolvers<ContextType>;
   DiscountResult?: DiscountResultResolvers<ContextType>;
+  Fulfillment?: FulfillmentResolvers<ContextType>;
+  FulfillmentLine?: FulfillmentLineResolvers<ContextType>;
+  FulfillmentLineList?: FulfillmentLineListResolvers<ContextType>;
+  FulfillmentList?: FulfillmentListResolvers<ContextType>;
   GenerateCustomerAccessTokenResult?: GenerateCustomerAccessTokenResultResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;

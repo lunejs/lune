@@ -1,0 +1,20 @@
+"""
+A fulfillment line represents a specific order line item included in a fulfillment
+"""
+type FulfillmentLine implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  Quantity of the order line item included in this fulfillment
+  """
+  quantity: Int!
+
+  orderLine: OrderLine!
+}
+
+type FulfillmentLineList implements List {
+  items: [FulfillmentLine!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

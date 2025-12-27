@@ -9,16 +9,26 @@ type Query {
 
 type Mutation {
   markOrderAsProcessing(id: ID!): OrderResult!
-  markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
-  markOrderAsReadyForPickup(id: ID!): OrderResult!
-  markOrderAsDelivered(id: ID!): OrderResult!
-  markOrderAsCompleted(id: ID!): OrderResult!
+
+  addFulfillmentToOrder(id: ID!, input: AddFulfillmentToOrderInput): OrderResult!
+
+  markFulfillmentAsDelivered(fulfillmentId: ID!): OrderResult!
+  markFulfillmentAsPickedUp(fulfillmentId: ID!): OrderResult!
+
+  cancelFulfillmentInOrder(fulfillmentId: ID!): OrderResult!
+
   cancelOrder(id: ID!, input: CancelOrderInput!): OrderResult!
 }
 
-input MarkOrderAsShippedInput {
-  carrier: String!
-  trackingCode: String!
+input AddFulfillmentToOrderInput {
+  orderLines: [AddFulfillmentToOrderInputOrderLine!]!
+  trackingCode: String
+  carrier: String
+}
+
+input AddFulfillmentToOrderInputOrderLine {
+  id: ID!
+  quantity: Int!
 }
 
 input CancelOrderInput {
