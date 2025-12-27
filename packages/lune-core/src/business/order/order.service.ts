@@ -55,6 +55,7 @@ import type { VariantRepository } from '@/persistence/repositories/variant-repos
 import { isValidEmail } from '@/utils/validators';
 
 import { OrderDiscountApplication } from './discount-application/order-discount-application';
+import { fulfillmentStateMachine } from './state-machines/fulfillment-state-machine';
 import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
   DiscountCodeNotApplicable,
@@ -887,7 +888,7 @@ export class OrderService {
       return new ForbiddenFulfillmentActionError(fulfillment.type);
     }
 
-    if (fulfillment.state !== FulfillmentState.Pending) {
+    if (!fulfillmentStateMachine.canTransition(fulfillment.state, FulfillmentState.Shipped)) {
       return new InvalidFulfillmentStateTransitionError(
         fulfillment.state,
         FulfillmentState.Shipped
