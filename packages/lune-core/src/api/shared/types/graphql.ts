@@ -1797,6 +1797,10 @@ export type OrderFilters = {
   code?: InputMaybe<StringFilter>;
   /** Filter by customer first name, last name, or email. When combined with code, uses OR logic. */
   customer?: InputMaybe<StringFilter>;
+  /** Filter by customer id */
+  customerId?: InputMaybe<Scalars['ID']['input']>;
+  /** Filter by fulfillment state */
+  fulfillmentStates?: InputMaybe<Array<FulfillmentState>>;
   /** Filter by order state */
   states?: InputMaybe<Array<OrderState>>;
 };

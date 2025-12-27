@@ -45,8 +45,8 @@ describe('orders - Query', () => {
 
     const { orders } = res.body.data;
 
-    expect(orders.items).toHaveLength(5);
     expect(orders.items.every(o => o.state !== 'MODIFYING' && o.state !== 'CANCELED')).toBe(true);
+    expect(orders.items).toHaveLength(5);
     expect(orders.count).toBe(5);
   });
 
@@ -171,7 +171,7 @@ describe('orders - Query', () => {
         variables: {
           input: {
             filters: {
-              code: { equals: OrderConstants.ShippedOrderCode }
+              code: { equals: OrderConstants.FulfilledOrderCode }
             }
           }
         }
@@ -180,7 +180,7 @@ describe('orders - Query', () => {
     const { orders } = res.body.data;
 
     expect(orders.items).toHaveLength(1);
-    expect(orders.items[0].code).toBe(OrderConstants.ShippedOrderCode);
+    expect(orders.items[0].code).toBe(OrderConstants.FulfilledOrderCode);
   });
 
   test('returns orders filtered by customer firstName (contains)', async () => {
@@ -295,9 +295,9 @@ describe('orders - Query', () => {
 
     const { orders } = res.body.data;
 
-    // Should return John's 3 orders + Jane's shipped order (#3001)
+    // Should return John's 3 orders + Jane's fulfilled order (#3001)
     // John's orders: #1001 (PLACED), #2001 (PROCESSING), #4001 (COMPLETED)
-    // Jane's order matching code: #3001 (SHIPPED)
+    // Jane's order matching code: #3001 (FULFILLED)
     expect(orders.items).toHaveLength(4);
   });
 
@@ -514,6 +514,52 @@ describe('orders - Query', () => {
     expect(orders.items).toHaveLength(0);
     expect(orders.count).toBe(0);
     expect(orders.pageInfo.total).toBe(0);
+  });
+
+  test('returns orders filtered by customerId excluding modifying', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_ORDERS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              customerId: CustomerConstants.JohnID
+            }
+          }
+        }
+      });
+
+    const { orders } = res.body.data;
+
+    // John has 3 orders (excluding MODIFYING)
+    expect(orders.items).toHaveLength(3);
+    expect(orders.items.every(o => o.customer.id === CustomerConstants.JohnID)).toBe(true);
+  });
+
+  test('returns orders filtered by customerId excluding canceled', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: GET_ORDERS_QUERY,
+        variables: {
+          input: {
+            filters: {
+              customerId: CustomerConstants.JaneID
+            }
+          }
+        }
+      });
+
+    const { orders } = res.body.data;
+
+    // Jane has 2 orders (excluding CANCELED)
+    expect(orders.items).toHaveLength(2);
+    expect(orders.items.every(o => o.customer.id === CustomerConstants.JaneID)).toBe(true);
   });
 
   test('returns Authorization error when no token is provided', async () => {

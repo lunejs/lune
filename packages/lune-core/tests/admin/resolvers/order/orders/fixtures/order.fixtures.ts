@@ -19,9 +19,9 @@ export const OrderConstants = {
   ProcessingOrderID: TestUtils.generateUUID(),
   ProcessingOrderCode: '#2001',
 
-  // Shipped order
-  ShippedOrderID: TestUtils.generateUUID(),
-  ShippedOrderCode: '#3001',
+  // Fulfilled order
+  FulfilledOrderID: TestUtils.generateUUID(),
+  FulfilledOrderCode: '#3001',
 
   // Completed order
   CompletedOrderID: TestUtils.generateUUID(),
@@ -73,9 +73,9 @@ export class OrderFixtures implements Fixture<OrderTable> {
       },
       {
         shop_id: ShopConstants.ID,
-        id: OrderConstants.ShippedOrderID,
-        code: OrderConstants.ShippedOrderCode,
-        state: OrderState.Shipped,
+        id: OrderConstants.FulfilledOrderID,
+        code: OrderConstants.FulfilledOrderCode,
+        state: OrderState.Fulfilled,
         customer_id: CustomerConstants.JaneID
       },
 

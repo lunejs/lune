@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 
 import type { OrderFilters } from '@/api/shared/types/graphql';
 
-import type { OrderTable } from '../entities/order';
+import { OrderState, type OrderTable } from '../entities/order';
 import { Tables } from '../tables';
 
 import { BaseFilter } from './base.filter';
@@ -22,12 +22,15 @@ export class OrderFilter extends BaseFilter<OrderTable> {
   }
 
   applyFilters(filters: OrderFilters) {
-    const { states, code, customer } = filters;
+    const { states, code, customer, customerId } = filters;
 
     if (states?.length) {
       this.query.whereIn(`${this.tableAlias}.state`, states);
     } else {
-      this.query.whereNotIn(`${this.tableAlias}.state`, ['MODIFYING', 'CANCELED']);
+      this.query.whereNotIn(`${this.tableAlias}.state`, [
+        OrderState.Modifying,
+        OrderState.Canceled
+      ]);
     }
 
     if (customer) {
@@ -68,6 +71,10 @@ export class OrderFilter extends BaseFilter<OrderTable> {
       } else if (code.equals) {
         this.query.where(`${this.tableAlias}.code`, code.equals);
       }
+    }
+
+    if (customerId) {
+      this.query.where(`${this.tableAlias}.customer_id`, customerId);
     }
 
     return this;

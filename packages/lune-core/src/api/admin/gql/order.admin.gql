@@ -72,4 +72,8 @@ extend input OrderFilters {
   Filter by customer first name, last name, or email. When combined with code, uses OR logic.
   """
   customer: StringFilter
+  """
+  Filter by customer id
+  """
+  customerId: ID
 }
