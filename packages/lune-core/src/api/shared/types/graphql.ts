@@ -2,7 +2,7 @@
 import { CustomFieldAppliesTo as CustomFieldAppliesToEntity } from '../../../persistence/entities/custom-field-definition';
 import { CustomFieldType } from '../../../persistence/entities/custom-field-definition';
 import { OrderState } from '../../../persistence/entities/order';
-import { FulfillmentState } from '../../../persistence/entities/Fulfillment';
+import { FulfillmentState } from '../../../persistence/entities/fulfillment';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ExecutionContext } from '../context/types';
 export type Maybe<T> = T | null;
