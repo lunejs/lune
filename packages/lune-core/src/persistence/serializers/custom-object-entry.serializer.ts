@@ -1,7 +1,4 @@
-import type {
-  CustomObjectEntry,
-  CustomObjectEntryTable
-} from '../entities/custom-object-entry';
+import type { CustomObjectEntry, CustomObjectEntryTable } from '../entities/custom-object-entry';
 
 import { Serializer } from './serializer';
 

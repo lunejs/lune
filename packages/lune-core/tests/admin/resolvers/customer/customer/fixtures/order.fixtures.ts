@@ -1,5 +1,5 @@
-import { OrderState } from '@/persistence/entities/order';
 import type { OrderTable } from '@/persistence/entities/order';
+import { OrderState } from '@/persistence/entities/order';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';

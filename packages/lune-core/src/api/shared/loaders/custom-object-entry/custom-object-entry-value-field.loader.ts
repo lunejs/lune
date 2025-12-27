@@ -15,9 +15,7 @@ export function createCustomObjectEntryValueFieldLoader(trx: Transaction) {
       .select('*');
 
     const serializer = new CustomFieldDefinitionSerializer();
-    const map = new Map(
-      rows.map(r => [r.id, serializer.deserialize(r) as CustomFieldDefinition])
-    );
+    const map = new Map(rows.map(r => [r.id, serializer.deserialize(r) as CustomFieldDefinition]));
 
     return fieldIds.map(id => map.get(id) ?? null);
   });

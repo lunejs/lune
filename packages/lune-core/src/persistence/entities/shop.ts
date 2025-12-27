@@ -1,4 +1,4 @@
-import type { ID, LuneEntity, LuneTable } from './entity';
+import type { LuneEntity, LuneTable } from './entity';
 
 /**
  * A lune shop

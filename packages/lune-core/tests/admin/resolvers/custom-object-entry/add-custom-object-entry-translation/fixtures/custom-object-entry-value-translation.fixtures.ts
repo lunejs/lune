@@ -11,9 +11,7 @@ export const CustomObjectEntryValueTranslationConstants = {
   AlreadyTranslatedContentValue: 'Already Translated Content'
 };
 
-export class CustomObjectEntryValueTranslationFixtures
-  implements Fixture<CustomObjectEntryValueTranslationTable>
-{
+export class CustomObjectEntryValueTranslationFixtures implements Fixture<CustomObjectEntryValueTranslationTable> {
   table = Tables.CustomObjectEntryValueTranslation;
 
   async build(): Promise<Partial<CustomObjectEntryValueTranslationTable>[]> {

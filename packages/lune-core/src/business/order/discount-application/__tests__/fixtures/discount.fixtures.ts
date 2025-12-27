@@ -25,7 +25,8 @@ export const DiscountConstants = {
   DeliveryMethodAutomaticDiscountCode: 'DELIVERY_METHOD_AUTOMATIC_DISCOUNT',
 
   DeliveryMethodForOrderWithoutDeliveryMethodID: TestUtils.generateUUID(),
-  DeliveryMethodForOrderWithoutDeliveryMethodCode: 'DELIVERY_METHOD_FOR_ORDER_WITHOUT_DELIVERY_METHOD',
+  DeliveryMethodForOrderWithoutDeliveryMethodCode:
+    'DELIVERY_METHOD_FOR_ORDER_WITHOUT_DELIVERY_METHOD',
 
   DisabledDiscountID: TestUtils.generateUUID(),
   DisabledDiscountCode: 'DISABLED_DISCOUNT',

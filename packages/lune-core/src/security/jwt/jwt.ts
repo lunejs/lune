@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-import { getConfig } from '@/config/config';
 import { LuneLogger } from '@lune/common';
+
+import { getConfig } from '@/config/config';
 
 const generate = <TPayload extends object>(payload: TPayload) => {
   const { jwtExpiresIn, jwtSecret } = getConfig().auth;

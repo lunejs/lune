@@ -185,7 +185,7 @@ describe('createDiscount - Mutation', () => {
           input: {
             code: 'FREE_SHIP',
             applicationMode: DiscountApplicationMode.Code,
-            applicationLevel: DiscountApplicationLevel.Fulfillment,
+            applicationLevel: DiscountApplicationLevel.DeliveryMethod,
             startsAt: startsAt,
             handler: {
               code: 'free-shipping-discount',

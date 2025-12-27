@@ -1,5 +1,5 @@
-import { Locale } from '@/persistence/entities/locale';
 import type { CollectionCustomFieldTranslationTable } from '@/persistence/entities/collection-custom-field-translation';
+import { Locale } from '@/persistence/entities/locale';
 import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -12,9 +12,7 @@ export const CollectionCustomFieldTranslationConstants = {
   AlreadyTranslatedBannerTextValue: 'Colección de Invierno'
 };
 
-export class CollectionCustomFieldTranslationFixtures
-  implements Fixture<CollectionCustomFieldTranslationTable>
-{
+export class CollectionCustomFieldTranslationFixtures implements Fixture<CollectionCustomFieldTranslationTable> {
   table: Tables = Tables.CollectionCustomFieldTranslation;
 
   async build(): Promise<Partial<CollectionCustomFieldTranslationTable>[]> {

@@ -17,11 +17,12 @@ import { DefaultCustomObjectEntryValueTranslationFixture } from './custom-object
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture';
 import { DefaultDeliveryMethodFixture } from './delivery-method.fixture';
+import { DefaultDeliveryMethodPickupFixture } from './delivery-method-pickup.fixture';
+import { DefaultDeliveryMethodShippingFixture } from './delivery-method-shipping.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
 import { DefaultFulfillmentLineFixture } from './fulfillment-line.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
-import { DefaultInStorePickupFulfillmentFixture } from './in-store-pickup-fulfillment.fixture';
 import { DefaultLocationFixture } from './location.fixture';
 import { DefaultOptionFixture } from './option.fixture';
 import { DefaultOptionPresetFixture } from './option-preset.fixture';
@@ -44,7 +45,6 @@ import { DefaultProductCustomFieldFixture } from './product-custom-field.fixture
 import { DefaultProductCustomFieldTranslationFixture } from './product-custom-field-translation.fixture';
 import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
-import { DefaultShippingFulfillmentFixture } from './shipping-fulfillment.fixture';
 import { DefaultShippingMethodFixture } from './shipping-method.fixture';
 import { DefaultShopFixture } from './shop.fixture';
 import { DefaultStateFixture } from './state.fixture';
@@ -96,8 +96,8 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.DeliveryMethod]: DefaultDeliveryMethodFixture,
   [Tables.Location]: DefaultLocationFixture,
   [Tables.InStorePickup]: DefaultInStorePickupFixture,
-  [Tables.DeliveryMethodShipping]: DefaultShippingFulfillmentFixture,
-  [Tables.DeliveryMethodPickup]: DefaultInStorePickupFulfillmentFixture,
+  [Tables.DeliveryMethodShipping]: DefaultDeliveryMethodShippingFixture,
+  [Tables.DeliveryMethodPickup]: DefaultDeliveryMethodPickupFixture,
   [Tables.Zone]: DefaultZoneFixture,
   [Tables.ZoneState]: DefaultZoneStateFixture,
   [Tables.ShippingMethod]: DefaultShippingMethodFixture,

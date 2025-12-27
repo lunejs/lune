@@ -6,9 +6,9 @@ import type { Args, InferArgs } from '../common/args.config';
 
 /**
  * @description
- * Creates fulfillment-level discounts
+ * Creates delivery method level discounts
  */
-export class FulfillmentDiscountHandler<TArgs extends Args = Args> {
+export class DeliveryMethodDiscountHandler<TArgs extends Args = Args> {
   name: string;
   description: string;
   code: string;

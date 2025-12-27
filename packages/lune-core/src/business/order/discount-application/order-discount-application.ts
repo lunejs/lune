@@ -2,7 +2,7 @@ import { isTruthy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import { getConfig } from '@/config/config';
-import type { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
+import type { DeliveryMethodDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 import type { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
 import type { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 import type { AppliedDiscount, Discount } from '@/persistence/entities/discount';
@@ -110,7 +110,7 @@ export class OrderDiscountApplication {
       }
 
       if (discount.applicationLevel === ApplicationLevel.DeliveryMethod) {
-        const discountHandler = handler as FulfillmentDiscountHandler;
+        const discountHandler = handler as DeliveryMethodDiscountHandler;
 
         const fulfillment = await this.fulfillmentRepository.findOne({
           where: { orderId: order.id }
@@ -171,7 +171,7 @@ export class OrderDiscountApplication {
     discount: Discount,
     handler:
       | OrderDiscountHandler<Record<string, any>>
-      | FulfillmentDiscountHandler<Record<string, any>>
+      | DeliveryMethodDiscountHandler<Record<string, any>>
       | OrderLineDiscountHandler<Record<string, any>>
   ) {
     if (discount.applicationLevel === ApplicationLevel.Order) {
@@ -265,7 +265,7 @@ export class OrderDiscountApplication {
     }
 
     if (discount.applicationLevel === ApplicationLevel.DeliveryMethod) {
-      const discountHandler = handler as FulfillmentDiscountHandler;
+      const discountHandler = handler as DeliveryMethodDiscountHandler;
 
       const fulfillment = await this.fulfillmentRepository.findOne({
         where: { orderId: order.id }

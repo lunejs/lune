@@ -1,6 +1,6 @@
 import {
-  type CustomFieldDefinitionTable,
   CustomFieldAppliesTo,
+  type CustomFieldDefinitionTable,
   CustomFieldType
 } from '@/persistence/entities/custom-field-definition';
 import { Tables } from '@/persistence/tables';

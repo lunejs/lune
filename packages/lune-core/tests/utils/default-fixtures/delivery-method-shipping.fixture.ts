@@ -1,6 +1,6 @@
 import type { DeliveryMethodShippingTable } from '@/persistence/entities/delivery-method-shipping';
 
-export const DefaultShippingFulfillmentFixture = (): DeliveryMethodShippingTable => ({
+export const DefaultDeliveryMethodShippingFixture = (): DeliveryMethodShippingTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),

@@ -1,6 +1,6 @@
-import { FulfillmentDiscountHandler } from '../fulfillment-discount-handler';
+import { DeliveryMethodDiscountHandler } from '../fulfillment-discount-handler';
 
-export const FreeShippingDiscountHandler = new FulfillmentDiscountHandler({
+export const FreeShippingDiscountHandler = new DeliveryMethodDiscountHandler({
   name: 'Free Shipping',
   description: 'Offer free shipping on an order',
   code: 'free-shipping',

@@ -1,6 +1,6 @@
 import type { DeliveryMethodPickupTable } from '@/persistence/entities/delivery-method-pickup';
 
-export const DefaultInStorePickupFulfillmentFixture = (): DeliveryMethodPickupTable => ({
+export const DefaultDeliveryMethodPickupFixture = (): DeliveryMethodPickupTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),

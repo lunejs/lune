@@ -12,9 +12,7 @@ export const ProductCustomFieldTranslationConstants = {
   AnotherTranslationID: TestUtils.generateUUID()
 };
 
-export class ProductCustomFieldTranslationFixtures
-  implements Fixture<ProductCustomFieldTranslationTable>
-{
+export class ProductCustomFieldTranslationFixtures implements Fixture<ProductCustomFieldTranslationTable> {
   table: Tables = Tables.ProductCustomFieldTranslation;
 
   async build(): Promise<Partial<ProductCustomFieldTranslationTable>[]> {

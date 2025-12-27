@@ -1,8 +1,8 @@
 import { LunePrice } from '@lune/common';
 
-import { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
+import { DeliveryMethodDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 
-export const TestFulfillmentDiscountHandler = new FulfillmentDiscountHandler({
+export const TestFulfillmentDiscountHandler = new DeliveryMethodDiscountHandler({
   name: '',
   description: '',
   code: 'fulfillment-discount',

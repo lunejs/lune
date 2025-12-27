@@ -2,7 +2,7 @@ import type { LuneLoggerLevel } from '@lune/common';
 
 import type { LunePlugin } from '@/plugin/lune.plugin';
 
-import type { FulfillmentDiscountHandler } from './discounts/fulfillment-discount-handler';
+import type { DeliveryMethodDiscountHandler } from './discounts/fulfillment-discount-handler';
 import type { OrderDiscountHandler } from './discounts/order-discount-handler';
 import type { OrderLineDiscountHandler } from './discounts/order-line-discount-handler';
 import type { ImageProcessor } from './image-processor/image-processor';
@@ -39,7 +39,7 @@ export interface LuneConfig {
     handlers: (
       | OrderDiscountHandler<any>
       | OrderLineDiscountHandler<any>
-      | FulfillmentDiscountHandler<any>
+      | DeliveryMethodDiscountHandler<any>
     )[];
   };
   plugins: LunePlugin[];

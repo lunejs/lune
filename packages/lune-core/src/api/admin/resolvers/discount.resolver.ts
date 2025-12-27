@@ -14,7 +14,7 @@ import {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { DiscountService } from '@/business/discount/discount.service';
-import { FulfillmentDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
+import { DeliveryMethodDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 import { OrderDiscountHandler } from '@/config/discounts/order-discount-handler';
 import { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 import { isErrorResult } from '@/utils/error-result';
@@ -79,7 +79,8 @@ export const DiscountResolver: GraphqlApiResolver = {
     applicationLevel: async (parent: DiscountHandler) => {
       if (parent instanceof OrderDiscountHandler) return DiscountApplicationLevel.Order;
       if (parent instanceof OrderLineDiscountHandler) return DiscountApplicationLevel.OrderLine;
-      if (parent instanceof FulfillmentDiscountHandler) return DiscountApplicationLevel.Fulfillment;
+      if (parent instanceof DeliveryMethodDiscountHandler)
+        return DiscountApplicationLevel.DeliveryMethod;
     }
   }
 };

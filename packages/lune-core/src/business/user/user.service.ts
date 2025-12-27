@@ -1,9 +1,9 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateUserInput, GenerateUserAccessTokenInput } from '@/api/shared/types/graphql';
-import { JwtService } from '@/security/jwt/jwt';
 import type { ID } from '@/persistence/entities/entity';
 import type { UserRepository } from '@/persistence/repositories/user-repository';
 import { PasswordHasher } from '@/security/hash';
+import { JwtService } from '@/security/jwt/jwt';
 import { isValidEmail, isValidPassword } from '@/utils/validators';
 
 import {
