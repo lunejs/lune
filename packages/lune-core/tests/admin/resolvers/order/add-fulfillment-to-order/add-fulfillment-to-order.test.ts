@@ -73,6 +73,7 @@ describe('addFulfillmentToOrder - Mutation', () => {
 
     const fulfillment = order.fulfillments.items[0];
     expect(fulfillment.state).toBe('SHIPPED');
+    expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBe('FedEx');
     expect(fulfillment.metadata.trackingCode).toBe('TRACK123456');
     expect(fulfillment.metadata.shippedAt).not.toBeNull();
@@ -111,6 +112,7 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order.fulfillments.count).toBe(1);
     const fulfillment = order.fulfillments.items[0];
     expect(fulfillment.state).toBe('SHIPPED');
+    expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBe('UPS');
     expect(fulfillment.metadata.trackingCode).toBe('UPS123');
 
@@ -153,6 +155,7 @@ describe('addFulfillmentToOrder - Mutation', () => {
       (f: { state: string }) => f.state === 'PENDING'
     );
     expect(newFulfillment).toBeDefined();
+    expect(newFulfillment.type).toBe('PICKUP');
     expect(newFulfillment.lines.count).toBe(2);
 
     // Validate fulfillment lines include both order lines
@@ -188,6 +191,7 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order.fulfillments.count).toBe(1);
     const fulfillment = order.fulfillments.items[0];
     expect(fulfillment.state).toBe('PENDING');
+    expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBeNull();
     expect(fulfillment.metadata.trackingCode).toBeNull();
     expect(fulfillment.metadata.shippedAt).toBeNull();
@@ -384,6 +388,7 @@ const ADD_FULFILLMENT_MUTATION = /* GraphQL */ `
           items {
             id
             state
+            type
             metadata
             lines {
               count

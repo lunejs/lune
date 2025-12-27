@@ -8,8 +8,9 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).defaultTo(knex.fn.now());
 
+    table.string('type', 50).notNullable();
     table.string('state', 50).notNullable();
-    table.jsonb('metadata').nullable();
+    table.jsonb('metadata').notNullable();
 
     table.uuid('order_id').notNullable().references('id').inTable('orders');
 

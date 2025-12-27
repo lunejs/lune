@@ -1,5 +1,10 @@
 import type { ID, LuneEntity, LuneTable } from './entity';
 
+export const enum FulfillmentType {
+  Shipping = 'shipping',
+  Pickup = 'pickup'
+}
+
 export const enum FulfillmentState {
   /**
    * The default state a fulfillment is created, indicates the fulfillment has been created
@@ -36,9 +41,13 @@ export interface Fulfillment extends LuneEntity {
    */
   state: FulfillmentState;
   /**
+   * Fulfillment type (synchronized with delivery method)
+   */
+  type: FulfillmentType;
+  /**
    * Additional metadata for the fulfillment (tracking info, carrier details, etc.)
    */
-  metadata?: ShippingFulfillmentMetadata | PickupFulfillmentMetadata | null;
+  metadata: ShippingFulfillmentMetadata | PickupFulfillmentMetadata;
   /**
    * Order this fulfillment belongs to
    */
@@ -59,6 +68,7 @@ export type PickupFulfillmentMetadata = {
 
 export interface FulfillmentTable extends LuneTable {
   state: FulfillmentState;
+  type: FulfillmentType;
   metadata?: Record<string, unknown> | null;
   order_id: ID;
   shop_id: string;

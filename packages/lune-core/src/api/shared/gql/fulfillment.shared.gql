@@ -1,3 +1,8 @@
+enum FulfillmentType {
+  SHIPPING
+  PICKUP
+}
+
 """
 Fulfillment state enum
 """
@@ -39,6 +44,10 @@ type Fulfillment implements Node {
   Current state of the fulfillment
   """
   state: FulfillmentState!
+  """
+  Fulfillment type (synchronized with delivery method)
+  """
+  type: FulfillmentType!
   """
   Additional metadata for the fulfillment (tracking info, carrier details, etc.)
   """

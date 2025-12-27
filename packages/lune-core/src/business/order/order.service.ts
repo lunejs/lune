@@ -28,7 +28,7 @@ import type {
   PickupFulfillmentMetadata,
   ShippingFulfillmentMetadata
 } from '@/persistence/entities/fulfillment';
-import { FulfillmentState } from '@/persistence/entities/fulfillment';
+import { FulfillmentState, FulfillmentType } from '@/persistence/entities/fulfillment';
 import { OrderState } from '@/persistence/entities/order';
 import { PaymentState } from '@/persistence/entities/payment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
@@ -844,6 +844,7 @@ export class OrderService {
     const fulfillment = await this.fulfillmentRepository.create({
       orderId: order.id,
       state: isShipped ? FulfillmentState.Shipped : FulfillmentState.Pending,
+      type: isShippingDelivery ? FulfillmentType.Shipping : FulfillmentType.Pickup,
       metadata
     });
 

@@ -1,4 +1,4 @@
-import { FulfillmentState } from '@/persistence/entities/fulfillment';
+import { FulfillmentState, FulfillmentType } from '@/persistence/entities/fulfillment';
 import { OrderState } from '@/persistence/entities/order';
 
 import type { GraphqlApiResolver } from '../../graphql-api';
@@ -20,5 +20,9 @@ export const OrderEnumsResolver: GraphqlApiResolver = {
     DELIVERED: FulfillmentState.Delivered,
     PICKED_UP: FulfillmentState.PickedUp,
     CANCELED: FulfillmentState.Canceled
+  },
+  FulfillmentType: {
+    SHIPPING: FulfillmentType.Shipping,
+    PICKUP: FulfillmentType.Pickup
   }
 };

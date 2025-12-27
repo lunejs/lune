@@ -10,6 +10,7 @@ export class FulfillmentSerializer extends Serializer<Fulfillment, FulfillmentTa
       ['updated_at', 'updatedAt'],
       ['state', 'state'],
       ['metadata', 'metadata'],
+      ['type', 'type'],
       ['order_id', 'orderId']
     ]);
   }
