@@ -20,6 +20,7 @@ import { eventBus } from '@/event-bus';
 import { buildEventContext } from '@/event-bus/events/lune.event';
 import {
   OrderCanceledEvent,
+  OrderCompletedEvent,
   OrderPlacedEvent,
   OrderProcessedEvent
 } from '@/event-bus/events/order.event';
@@ -1006,7 +1007,23 @@ export class OrderService {
   }
 
   async markAsCompleted(id: ID) {
-    return await this.repository.findOneOrThrow({ where: { id } });
+    const order = await this.repository.findOneOrThrow({ where: { id } });
+
+    if (!this.validator.canMarkAsCompleted(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const orderUpdated = await this.repository.update({
+      where: { id: order.id },
+      data: {
+        state: OrderState.Completed,
+        completedAt: new Date()
+      }
+    });
+
+    eventBus.emit(new OrderCompletedEvent(buildEventContext(this.ctx.shopId), orderUpdated.id));
+
+    return orderUpdated;
   }
 
   async cancel(id: ID, input: CancelOrderInput) {

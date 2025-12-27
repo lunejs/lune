@@ -1,6 +1,5 @@
 import request from 'supertest';
 
-import { OrderState } from '@/persistence/entities/order';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
@@ -58,7 +57,7 @@ describe('cancelOrder - Mutation', () => {
 
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.PlacedID);
-    expect(order.state).toBe(OrderState.Canceled);
+    expect(order.state).toBe('CANCELED');
     expect(order.cancellation).toBeDefined();
     expect(order.cancellation.reason).toBe('Customer requested cancellation');
   });
@@ -82,7 +81,7 @@ describe('cancelOrder - Mutation', () => {
 
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.ProcessingID);
-    expect(order.state).toBe(OrderState.Canceled);
+    expect(order.state).toBe('CANCELED');
     expect(order.cancellation).toBeDefined();
     expect(order.cancellation.reason).toBe('Out of stock');
   });
@@ -113,7 +112,7 @@ describe('cancelOrder - Mutation', () => {
     const { order, apiErrors } = res.body.data.cancelOrder;
 
     expect(apiErrors).toHaveLength(0);
-    expect(order.state).toBe(OrderState.Canceled);
+    expect(order.state).toBe('CANCELED');
 
     // Verify stock was restored (initial - 1 + 1 quantity from order line = initial)
     const variant = await db(Tables.Variant).where('id', VariantConstants.ID).first();
@@ -144,7 +143,7 @@ describe('cancelOrder - Mutation', () => {
     const { order, apiErrors } = res.body.data.cancelOrder;
 
     expect(apiErrors).toHaveLength(0);
-    expect(order.state).toBe(OrderState.Canceled);
+    expect(order.state).toBe('CANCELED');
 
     // Verify stock was NOT restored
     const variant = await db(Tables.Variant).where('id', VariantConstants.ID).first();

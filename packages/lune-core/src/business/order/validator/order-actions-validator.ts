@@ -74,6 +74,10 @@ export class OrderActionsValidator {
     );
   }
 
+  canMarkAsCompleted(state: OrderState) {
+    return state === OrderState.Fulfilled;
+  }
+
   canCancel(state: OrderState) {
     return [OrderState.Placed, OrderState.Processing].includes(state);
   }

@@ -1,6 +1,5 @@
 import request from 'supertest';
 
-import { OrderState } from '@/persistence/entities/order';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -44,7 +43,7 @@ describe('markOrderAsCompleted - Mutation', () => {
 
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.DeliveredID);
-    expect(order.state).toBe(OrderState.Completed);
+    expect(order.state).toBe('COMPLETED');
     expect(order.completedAt).toBeDefined();
   });
 

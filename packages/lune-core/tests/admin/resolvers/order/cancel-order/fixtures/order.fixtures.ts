@@ -45,7 +45,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.ShippedID,
-        state: OrderState.Shipped,
+        state: OrderState.Fulfilled,
         code: '#003',
         total: LunePrice.toCent(1500),
         subtotal: LunePrice.toCent(1500),
@@ -55,7 +55,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.DeliveredID,
-        state: OrderState.Delivered,
+        state: OrderState.Fulfilled,
         code: '#004',
         total: LunePrice.toCent(800),
         subtotal: LunePrice.toCent(800),
