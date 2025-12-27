@@ -19,7 +19,8 @@ const config: CodegenConfig = {
           CustomFieldAppliesToEntity:
             '../../../persistence/entities/custom-field-definition#CustomFieldAppliesTo',
           CustomFieldType: '../../../persistence/entities/custom-field-definition#CustomFieldType',
-          OrderState: '../../../persistence/entities/order#OrderState'
+          OrderState: '../../../persistence/entities/order#OrderState',
+          FulfillmentState: '../../../persistence/entities/Fulfillment#FulfillmentState'
         }
       }
     }

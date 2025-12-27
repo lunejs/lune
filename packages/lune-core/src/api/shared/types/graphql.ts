@@ -2,6 +2,7 @@
 import { CustomFieldAppliesTo as CustomFieldAppliesToEntity } from '../../../persistence/entities/custom-field-definition';
 import { CustomFieldType } from '../../../persistence/entities/custom-field-definition';
 import { OrderState } from '../../../persistence/entities/order';
+import { FulfillmentState } from '../../../persistence/entities/Fulfillment';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ExecutionContext } from '../context/types';
 export type Maybe<T> = T | null;
@@ -907,21 +908,7 @@ export type FulfillmentList = List & {
   pageInfo: PageInfo;
 };
 
-/** Fulfillment state enum */
-export enum FulfillmentState {
-  /** Fulfillment has been canceled */
-  Canceled = 'CANCELED',
-  /** Items has been delivered to the customer */
-  Delivered = 'DELIVERED',
-  /** The default state a fulfillment is created, indicates the fulfillment has been created */
-  Pending = 'PENDING',
-  /** Items has been recollected by the customer from the store */
-  PickedUp = 'PICKED_UP',
-  /** Items are ready for being picked up */
-  ReadyForPickup = 'READY_FOR_PICKUP',
-  /** The fulfillment has been shipped via the carrier */
-  Shipped = 'SHIPPED'
-}
+export { FulfillmentState };
 
 export type GenerateCustomerAccessTokenResult = {
   __typename?: 'GenerateCustomerAccessTokenResult';
@@ -3716,6 +3703,8 @@ export type FulfillmentListResolvers<ContextType = ExecutionContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type FulfillmentStateResolvers = EnumResolverSignature<{ CANCELED?: any, DELIVERED?: any, PENDING?: any, PICKED_UP?: any, READY_FOR_PICKUP?: any, SHIPPED?: any }, ResolversTypes['FulfillmentState']>;
+
 export type GenerateCustomerAccessTokenResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['GenerateCustomerAccessTokenResult'] = ResolversParentTypes['GenerateCustomerAccessTokenResult']> = {
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   apiErrors?: Resolver<Array<ResolversTypes['CustomerErrorResult']>, ParentType, ContextType>;
@@ -4463,6 +4452,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   FulfillmentLine?: FulfillmentLineResolvers<ContextType>;
   FulfillmentLineList?: FulfillmentLineListResolvers<ContextType>;
   FulfillmentList?: FulfillmentListResolvers<ContextType>;
+  FulfillmentState?: FulfillmentStateResolvers;
   GenerateCustomerAccessTokenResult?: GenerateCustomerAccessTokenResultResolvers<ContextType>;
   HandlerConfig?: HandlerConfigResolvers<ContextType>;
   InStorePickup?: InStorePickupResolvers<ContextType>;

@@ -3,6 +3,10 @@ import { clean } from '@lune/common';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import {
+  CommonFulfillmentFieldResolver,
+  CommonFulfillmentLineFieldResolver
+} from '@/api/shared/resolvers/fulfillment-field.resolver';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type {
   MutationAddFulfillmentToOrderArgs,
@@ -14,6 +18,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { OrderService } from '@/business/order/order.service';
+import { FulfillmentState } from '@/persistence/entities/fulfillment';
 import { type Order, OrderState } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
@@ -155,10 +160,24 @@ export const OrderResolver: GraphqlApiResolver = {
     COMPLETED: OrderState.Completed,
     CANCELED: OrderState.Canceled
   },
+  FulfillmentState: {
+    PENDING: FulfillmentState.Pending,
+    SHIPPED: FulfillmentState.Shipped,
+    READY_FOR_PICKUP: FulfillmentState.ReadyForPickup,
+    DELIVERED: FulfillmentState.Delivered,
+    PICKED_UP: FulfillmentState.PickedUp,
+    CANCELED: FulfillmentState.Canceled
+  },
   Order: {
     ...CommonOrderFieldResolver,
     cancellation: async (parent: Order, _: unknown, ctx: ExecutionContext) => {
       return ctx.loaders.order.cancellation.load(parent.id);
     }
+  },
+  Fulfillment: {
+    ...CommonFulfillmentFieldResolver
+  },
+  FulfillmentLine: {
+    ...CommonFulfillmentLineFieldResolver
   }
 };

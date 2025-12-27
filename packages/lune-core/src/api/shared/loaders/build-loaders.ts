@@ -26,6 +26,8 @@ import { createCustomerTotalSpentLoader } from './customer/customer-total-spent.
 import { createDeliveryMethodDetailsLoader } from './delivery-method/delivery-method-details.loader';
 import { createDeliveryMethodLocationLoader } from './delivery-method/delivery-method-location.loader';
 import { createDeliveryMethodShippingMethodLoader } from './delivery-method/delivery-method-shipping-method.loader';
+import { createFulfillmentLinesLoader } from './fulfillment/fulfillment-lines.loader';
+import { createFulfillmentLineOrderLineLoader } from './fulfillment-line/fulfillment-line-order-line.loader';
 import { createLocationCountryLoader } from './location/location-country.loader';
 import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
 import { createLocationStateLoader } from './location/location-state.loader';
@@ -37,6 +39,7 @@ import { createOptionValuesTranslationsLoader } from './option-value/option-valu
 import { createOrderCancellationLoader } from './order/order-cancellation.loader';
 import { createOrderCustomersLoader } from './order/order-customers.loader';
 import { createOrderDeliveryMethodsLoader } from './order/order-delivery-methods.loader';
+import { createOrderFulfillmentsLoader } from './order/order-fulfillments.loader';
 import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderPaymentsLoader } from './order/order-payments.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
@@ -95,7 +98,14 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       customers: createOrderCustomersLoader(trx),
       deliveryMethod: createOrderDeliveryMethodsLoader(trx),
       payments: createOrderPaymentsLoader(trx),
-      cancellation: createOrderCancellationLoader(trx)
+      cancellation: createOrderCancellationLoader(trx),
+      fulfillments: createOrderFulfillmentsLoader(trx)
+    },
+    fulfillment: {
+      lines: createFulfillmentLinesLoader(trx)
+    },
+    fulfillmentLine: {
+      orderLine: createFulfillmentLineOrderLineLoader(trx)
     },
     orderLine: {
       variant: createOrderLineVariantsLoader(trx)

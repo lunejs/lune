@@ -66,6 +66,21 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order).not.toBeNull();
     expect(order.id).toBe(OrderConstants.ProcessingOrderID);
     expect(order.state).toBe('PARTIALLY_FULFILLED');
+
+    // Validate fulfillments
+    expect(order.fulfillments.count).toBe(1);
+    expect(order.fulfillments.items).toHaveLength(1);
+
+    const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.state).toBe('SHIPPED');
+    expect(fulfillment.metadata.carrier).toBe('FedEx');
+    expect(fulfillment.metadata.trackingCode).toBe('TRACK123456');
+    expect(fulfillment.metadata.shippedAt).not.toBeNull();
+
+    // Validate fulfillment lines
+    expect(fulfillment.lines.count).toBe(1);
+    expect(fulfillment.lines.items[0].quantity).toBe(1);
+    expect(fulfillment.lines.items[0].orderLine.id).toBe(OrderLineConstants.ProcessingOrderLine1ID);
   });
 
   test('adds fulfillment to order in placed state', async () => {
@@ -91,6 +106,18 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order).not.toBeNull();
     expect(order.id).toBe(OrderConstants.PlacedOrderID);
     expect(order.state).toBe('FULFILLED');
+
+    // Validate fulfillments
+    expect(order.fulfillments.count).toBe(1);
+    const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.state).toBe('SHIPPED');
+    expect(fulfillment.metadata.carrier).toBe('UPS');
+    expect(fulfillment.metadata.trackingCode).toBe('UPS123');
+
+    // Validate fulfillment lines
+    expect(fulfillment.lines.count).toBe(1);
+    expect(fulfillment.lines.items[0].quantity).toBe(1);
+    expect(fulfillment.lines.items[0].orderLine.id).toBe(OrderLineConstants.PlacedOrderLineID);
   });
 
   test('fulfills all order lines to mark order as fulfilled', async () => {
@@ -117,6 +144,23 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order).not.toBeNull();
     expect(order.id).toBe(OrderConstants.PartiallyFulfilledOrderID);
     expect(order.state).toBe('FULFILLED');
+
+    // Should have 2 fulfillments: 1 existing from fixtures + 1 new
+    expect(order.fulfillments.count).toBe(2);
+
+    // Find the new fulfillment (the one in PENDING state since no tracking info was provided)
+    const newFulfillment = order.fulfillments.items.find(
+      (f: { state: string }) => f.state === 'PENDING'
+    );
+    expect(newFulfillment).toBeDefined();
+    expect(newFulfillment.lines.count).toBe(2);
+
+    // Validate fulfillment lines include both order lines
+    const lineOrderLineIds = newFulfillment.lines.items.map(
+      (l: { orderLine: { id: string } }) => l.orderLine.id
+    );
+    expect(lineOrderLineIds).toContain(OrderLineConstants.PartiallyFulfilledOrderLine1ID);
+    expect(lineOrderLineIds).toContain(OrderLineConstants.PartiallyFulfilledOrderLine2ID);
   });
 
   test('creates fulfillment in pending state when no tracking info is provided for shipping', async () => {
@@ -139,6 +183,18 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(apiErrors).toHaveLength(0);
     expect(order).not.toBeNull();
     expect(order.state).toBe('PARTIALLY_FULFILLED');
+
+    // Validate fulfillment is in PENDING state
+    expect(order.fulfillments.count).toBe(1);
+    const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.state).toBe('PENDING');
+    expect(fulfillment.metadata.carrier).toBeNull();
+    expect(fulfillment.metadata.trackingCode).toBeNull();
+    expect(fulfillment.metadata.shippedAt).toBeNull();
+
+    // Validate fulfillment lines
+    expect(fulfillment.lines.count).toBe(1);
+    expect(fulfillment.lines.items[0].quantity).toBe(1);
   });
 
   test('returns FORBIDDEN_ORDER_ACTION error when order is in modifying state', async () => {
@@ -323,6 +379,24 @@ const ADD_FULFILLMENT_MUTATION = /* GraphQL */ `
       order {
         id
         state
+        fulfillments {
+          count
+          items {
+            id
+            state
+            metadata
+            lines {
+              count
+              items {
+                id
+                quantity
+                orderLine {
+                  id
+                }
+              }
+            }
+          }
+        }
       }
       apiErrors {
         code

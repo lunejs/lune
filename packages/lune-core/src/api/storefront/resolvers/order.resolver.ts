@@ -2,6 +2,11 @@ import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import {
+  CommonFulfillmentFieldResolver,
+  CommonFulfillmentLineFieldResolver
+} from '@/api/shared/resolvers/fulfillment-field.resolver';
+import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type {
   MutationAddCustomerToOrderArgs,
   MutationAddDeliveryMethodPickupToOrderArgs,
@@ -177,5 +182,14 @@ export const OrderResolver: GraphqlApiResolver = {
     addDeliveryMethodPickupToOrder,
     addDiscountCodeToOrder,
     addPaymentToOrder
+  },
+  Order: {
+    ...CommonOrderFieldResolver
+  },
+  Fulfillment: {
+    ...CommonFulfillmentFieldResolver
+  },
+  FulfillmentLine: {
+    ...CommonFulfillmentLineFieldResolver
   }
 };
