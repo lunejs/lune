@@ -52,5 +52,6 @@ export const enum Tables {
   CustomObjectEntry = 'custom_object_entry',
   CustomObjectEntryValue = 'custom_object_entry_value',
   CustomObjectEntryValueTranslation = 'custom_object_entry_value_translation',
-  Fulfillment = 'fulfillment'
+  Fulfillment = 'fulfillment',
+  FulfillmentLine = 'fulfillment_line'
 }

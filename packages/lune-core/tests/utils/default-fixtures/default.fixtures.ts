@@ -19,6 +19,7 @@ import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture
 import { DefaultDeliveryMethodFixture } from './delivery-method.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
+import { DefaultFulfillmentLineFixture } from './fulfillment-line.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
 import { DefaultInStorePickupFulfillmentFixture } from './in-store-pickup-fulfillment.fixture';
 import { DefaultLocationFixture } from './location.fixture';
@@ -109,5 +110,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CustomObjectEntryValueTranslation]: DefaultCustomObjectEntryValueTranslationFixture,
   [Tables.ProductCustomField]: DefaultProductCustomFieldFixture,
   [Tables.ProductCustomFieldTranslation]: DefaultProductCustomFieldTranslationFixture,
-  [Tables.Fulfillment]: DefaultFulfillmentFixture
+  [Tables.Fulfillment]: DefaultFulfillmentFixture,
+  [Tables.FulfillmentLine]: DefaultFulfillmentLineFixture
 };

@@ -18,6 +18,7 @@ import { DeliveryMethodPickupRepository } from './delivery-method-pickup-reposit
 import { DeliveryMethodRepository } from './delivery-method-repository';
 import { DeliveryMethodShippingRepository } from './delivery-method-shipping-repository';
 import { DiscountRepository } from './discount-repository';
+import { FulfillmentLineRepository } from './fulfillment-line-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
 import { LocationRepository } from './location-repository';
@@ -94,7 +95,8 @@ export function buildRepositories(trx: Transaction) {
     customObjectEntryValueTranslation: new CustomObjectEntryValueTranslationRepository(trx),
     productCustomField: new ProductCustomFieldRepository(trx),
     productCustomFieldTranslation: new ProductCustomFieldTranslationRepository(trx),
-    fulfillment: new FulfillmentRepository(trx)
+    fulfillment: new FulfillmentRepository(trx),
+    fulfillmentLine: new FulfillmentLineRepository(trx)
   };
 }
 
