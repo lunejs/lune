@@ -943,12 +943,36 @@ export class OrderService {
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
   }
 
-  async markAsReadyForPickup(id: ID) {
-    return await this.repository.findOneOrThrow({ where: { id } });
-  }
+  async markFulfillmentAsReadyForPickup(fulfillmentId: ID) {
+    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
+      where: { id: fulfillmentId }
+    });
 
-  async markAsDelivered(id: ID) {
-    return await this.repository.findOneOrThrow({ where: { id } });
+    if (!this.fulfillmentValidator.canMarkAsReadyForPickup(fulfillment.type)) {
+      return new ForbiddenFulfillmentActionError(fulfillment.type);
+    }
+
+    if (
+      !fulfillmentStateMachine.canTransition(fulfillment.state, FulfillmentState.ReadyForPickup)
+    ) {
+      return new InvalidFulfillmentStateTransitionError(
+        fulfillment.state,
+        FulfillmentState.ReadyForPickup
+      );
+    }
+
+    await this.fulfillmentRepository.update({
+      where: { id: fulfillment.id },
+      data: {
+        state: FulfillmentState.ReadyForPickup,
+        metadata: {
+          ...fulfillment.metadata,
+          readyAt: new Date()
+        } satisfies Partial<PickupFulfillmentMetadata>
+      }
+    });
+
+    return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
   }
 
   async markAsCompleted(id: ID) {

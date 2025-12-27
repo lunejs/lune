@@ -8,4 +8,8 @@ export class FulfillmentActionsValidator {
   canMarkAsDelivered(type: FulfillmentType) {
     return type === FulfillmentType.Shipping;
   }
+
+  canMarkAsReadyForPickup(type: FulfillmentType) {
+    return type === FulfillmentType.Pickup;
+  }
 }
