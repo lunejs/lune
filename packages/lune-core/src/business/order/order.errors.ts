@@ -101,3 +101,39 @@ export class PaymentFailedError extends OrderErrorResult {
     super(OrderErrorCode.PaymentFailed, message);
   }
 }
+
+/**
+ * Error thrown when trying to add a fulfillment for a shipping delivery method and tracking code or carrier are not present
+ */
+export class MissingFulfillmentShippingDetailsError extends OrderErrorResult {
+  constructor() {
+    super(
+      OrderErrorCode.MissingShippingDetails,
+      'Tracking code and carrier should not be empty when they are together'
+    );
+  }
+}
+
+/**
+ * Error thrown when trying to add an order line with a quantity that exceeds the available remaining to fulfill
+ */
+export class ExceedsFulfillmentLineQuantityError extends OrderErrorResult {
+  constructor(requested: number, available: number) {
+    super(
+      OrderErrorCode.ExceedsFulfillmentLineQuantityError,
+      `Requested quantity (${requested}) exceeds available quantity (${available}) to fulfill`
+    );
+  }
+}
+
+/**
+ * Error thrown when provided quantity is not a positive integer
+ */
+export class InvalidFulfillmentLineQuantityError extends OrderErrorResult {
+  constructor(orderLineId: ID, quantity: number) {
+    super(
+      OrderErrorCode.InvalidFulfillmentLineQuantity,
+      `Order line with id ${orderLineId} should have a valid quantity and "${quantity}" is not`
+    );
+  }
+}

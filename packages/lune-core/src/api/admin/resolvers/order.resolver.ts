@@ -5,12 +5,10 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
 import type {
+  MutationAddFulfillmentToOrderArgs,
   MutationCancelOrderArgs,
   MutationMarkOrderAsCompletedArgs,
-  MutationMarkOrderAsDeliveredArgs,
   MutationMarkOrderAsProcessingArgs,
-  MutationMarkOrderAsReadyForPickupArgs,
-  MutationMarkOrderAsShippedArgs,
   QueryOrderArgs,
   QueryOrdersArgs
 } from '@/api/shared/types/graphql';
@@ -19,7 +17,7 @@ import { OrderService } from '@/business/order/order.service';
 import { type Order, OrderState } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
-async function orders(_, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
+async function orders(_: unknown, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
   const [orders, total] = await Promise.all([
@@ -30,14 +28,14 @@ async function orders(_, { input }: QueryOrdersArgs, ctx: ExecutionContext) {
   return new ListResponse(orders, orders.length, { total });
 }
 
-async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
+async function order(_: unknown, input: QueryOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
   return orderService.findUnique(clean(input));
 }
 
 async function markOrderAsProcessing(
-  _,
+  _: unknown,
   input: MutationMarkOrderAsProcessingArgs,
   ctx: ExecutionContext
 ) {
@@ -50,42 +48,56 @@ async function markOrderAsProcessing(
     : { apiErrors: [], order: result };
 }
 
-async function markOrderAsShipped(
-  _,
-  { id, input }: MutationMarkOrderAsShippedArgs,
+// async function markOrderAsShipped(
+//   _,
+//   { id, input }: MutationMarkOrderAsShippedArgs,
+//   ctx: ExecutionContext
+// ) {
+//   const orderService = new OrderService(ctx);
+
+//   const result = await orderService.markAsShipped(id, input);
+
+//   return isErrorResult(result)
+//     ? { apiErrors: [result], order: null }
+//     : { apiErrors: [], order: result };
+// }
+
+// async function markOrderAsReadyForPickup(
+//   _,
+//   { id }: MutationMarkOrderAsReadyForPickupArgs,
+//   ctx: ExecutionContext
+// ) {
+//   const orderService = new OrderService(ctx);
+
+//   const result = await orderService.markAsReadyForPickup(id);
+
+//   return isErrorResult(result)
+//     ? { apiErrors: [result], order: null }
+//     : { apiErrors: [], order: result };
+// }
+
+// async function markOrderAsDelivered(
+//   _,
+//   { id }: MutationMarkOrderAsDeliveredArgs,
+//   ctx: ExecutionContext
+// ) {
+//   const orderService = new OrderService(ctx);
+
+//   const result = await orderService.markAsDelivered(id);
+
+//   return isErrorResult(result)
+//     ? { apiErrors: [result], order: null }
+//     : { apiErrors: [], order: result };
+// }
+
+async function addFulfillmentToOrder(
+  _: unknown,
+  { id, input }: MutationAddFulfillmentToOrderArgs,
   ctx: ExecutionContext
 ) {
   const orderService = new OrderService(ctx);
 
-  const result = await orderService.markAsShipped(id, input);
-
-  return isErrorResult(result)
-    ? { apiErrors: [result], order: null }
-    : { apiErrors: [], order: result };
-}
-
-async function markOrderAsReadyForPickup(
-  _,
-  { id }: MutationMarkOrderAsReadyForPickupArgs,
-  ctx: ExecutionContext
-) {
-  const orderService = new OrderService(ctx);
-
-  const result = await orderService.markAsReadyForPickup(id);
-
-  return isErrorResult(result)
-    ? { apiErrors: [result], order: null }
-    : { apiErrors: [], order: result };
-}
-
-async function markOrderAsDelivered(
-  _,
-  { id }: MutationMarkOrderAsDeliveredArgs,
-  ctx: ExecutionContext
-) {
-  const orderService = new OrderService(ctx);
-
-  const result = await orderService.markAsDelivered(id);
+  const result = await orderService.addFulfillment(id, input);
 
   return isErrorResult(result)
     ? { apiErrors: [result], order: null }
@@ -93,7 +105,7 @@ async function markOrderAsDelivered(
 }
 
 async function markOrderAsCompleted(
-  _,
+  _: unknown,
   { id }: MutationMarkOrderAsCompletedArgs,
   ctx: ExecutionContext
 ) {
@@ -106,7 +118,11 @@ async function markOrderAsCompleted(
     : { apiErrors: [], order: result };
 }
 
-async function cancelOrder(_, { id, input }: MutationCancelOrderArgs, ctx: ExecutionContext) {
+async function cancelOrder(
+  _: unknown,
+  { id, input }: MutationCancelOrderArgs,
+  ctx: ExecutionContext
+) {
   const orderService = new OrderService(ctx);
 
   const result = await orderService.cancel(id, input);
@@ -123,9 +139,10 @@ export const OrderResolver: GraphqlApiResolver = {
   },
   Mutation: {
     markOrderAsProcessing: UseUserGuard(markOrderAsProcessing),
-    markOrderAsShipped: UseUserGuard(markOrderAsShipped),
-    markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
-    markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
+    addFulfillmentToOrder: UseUserGuard(addFulfillmentToOrder),
+    // markOrderAsShipped: UseUserGuard(markOrderAsShipped),
+    // markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
+    // markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
     markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),
     cancelOrder: UseUserGuard(cancelOrder)
   },
@@ -140,7 +157,7 @@ export const OrderResolver: GraphqlApiResolver = {
   },
   Order: {
     ...CommonOrderFieldResolver,
-    cancellation: async (parent: Order, _, ctx: ExecutionContext) => {
+    cancellation: async (parent: Order, _: unknown, ctx: ExecutionContext) => {
       return ctx.loaders.order.cancellation.load(parent.id);
     }
   }

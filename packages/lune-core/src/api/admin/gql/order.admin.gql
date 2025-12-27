@@ -10,13 +10,16 @@ type Query {
 type Mutation {
   markOrderAsProcessing(id: ID!): OrderResult!
 
-  addFulfillmentToOrder(id: ID!, input: AddFulfillmentToOrderInput): OrderResult!
+  addFulfillmentToOrder(id: ID!, input: AddFulfillmentToOrderInput!): OrderResult!
 
+  markFulfillmentAsShipped(fulfillmentId: ID!, input: MarkFulfillmentAsShippedInput!): OrderResult!
+  markFulfillmentAsReadyForPickup(fulfillmentId: ID!): OrderResult!
   markFulfillmentAsDelivered(fulfillmentId: ID!): OrderResult!
   markFulfillmentAsPickedUp(fulfillmentId: ID!): OrderResult!
 
   cancelFulfillmentInOrder(fulfillmentId: ID!): OrderResult!
 
+  markOrderAsCompleted(id: ID!): OrderResult!
   cancelOrder(id: ID!, input: CancelOrderInput!): OrderResult!
 }
 
@@ -24,6 +27,11 @@ input AddFulfillmentToOrderInput {
   orderLines: [AddFulfillmentToOrderInputOrderLine!]!
   trackingCode: String
   carrier: String
+}
+
+input MarkFulfillmentAsShippedInput {
+  trackingCode: String!
+  carrier: String!
 }
 
 input AddFulfillmentToOrderInputOrderLine {
@@ -48,6 +56,9 @@ type OrderErrorResult {
 
 enum OrderErrorCode {
   FORBIDDEN_ORDER_ACTION
+  MISSING_SHIPPING_DETAILS
+  EXCEEDS_FULFILLMENT_LINE_QUANTITY_ERROR
+  INVALID_FULFILLMENT_LINE_QUANTITY
 }
 
 extend input OrderFilters {

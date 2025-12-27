@@ -38,12 +38,24 @@ export interface Fulfillment extends LuneEntity {
   /**
    * Additional metadata for the fulfillment (tracking info, carrier details, etc.)
    */
-  metadata?: Record<string, unknown> | null;
+  metadata?: ShippingFulfillmentMetadata | PickupFulfillmentMetadata | null;
   /**
    * Order this fulfillment belongs to
    */
   orderId: ID;
 }
+
+export type ShippingFulfillmentMetadata = {
+  trackingCode: string | null;
+  carrier: string | null;
+  shippedAt: Date | null;
+  deliveredAt: Date | null;
+};
+
+export type PickupFulfillmentMetadata = {
+  readyAt: Date | null;
+  pickedUpAt: Date | null;
+};
 
 export interface FulfillmentTable extends LuneTable {
   state: FulfillmentState;

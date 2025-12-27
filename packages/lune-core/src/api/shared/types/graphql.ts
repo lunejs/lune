@@ -1033,6 +1033,11 @@ export type LocationResult = {
   location?: Maybe<Location>;
 };
 
+export type MarkFulfillmentAsShippedInput = {
+  carrier: Scalars['String']['input'];
+  trackingCode: Scalars['String']['input'];
+};
+
 export type Metric = {
   __typename?: 'Metric';
   key: Scalars['String']['output'];
@@ -1091,6 +1096,9 @@ export type Mutation = {
   generateUserAccessToken: UserAccessTokenResult;
   markFulfillmentAsDelivered: OrderResult;
   markFulfillmentAsPickedUp: OrderResult;
+  markFulfillmentAsReadyForPickup: OrderResult;
+  markFulfillmentAsShipped: OrderResult;
+  markOrderAsCompleted: OrderResult;
   markOrderAsProcessing: OrderResult;
   removeAssets: Scalars['Boolean']['output'];
   removeCollections: Scalars['Boolean']['output'];
@@ -1179,7 +1187,7 @@ export type MutationAddDiscountCodeToOrderArgs = {
 
 export type MutationAddFulfillmentToOrderArgs = {
   id: Scalars['ID']['input'];
-  input?: InputMaybe<AddFulfillmentToOrderInput>;
+  input: AddFulfillmentToOrderInput;
 };
 
 
@@ -1318,6 +1326,22 @@ export type MutationMarkFulfillmentAsDeliveredArgs = {
 
 export type MutationMarkFulfillmentAsPickedUpArgs = {
   fulfillmentId: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkFulfillmentAsReadyForPickupArgs = {
+  fulfillmentId: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkFulfillmentAsShippedArgs = {
+  fulfillmentId: Scalars['ID']['input'];
+  input: MarkFulfillmentAsShippedInput;
+};
+
+
+export type MutationMarkOrderAsCompletedArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1741,11 +1765,14 @@ export type OrderCancellation = Node & {
 export enum OrderErrorCode {
   DiscountCodeNotApplicable = 'DISCOUNT_CODE_NOT_APPLICABLE',
   DiscountHandlerNotFound = 'DISCOUNT_HANDLER_NOT_FOUND',
+  ExceedsFulfillmentLineQuantityError = 'EXCEEDS_FULFILLMENT_LINE_QUANTITY_ERROR',
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
   InvalidCustomerEmail = 'INVALID_CUSTOMER_EMAIL',
+  InvalidFulfillmentLineQuantity = 'INVALID_FULFILLMENT_LINE_QUANTITY',
   InvalidQuantity = 'INVALID_QUANTITY',
   InvalidShippingMethod = 'INVALID_SHIPPING_METHOD',
   MissingShippingAddress = 'MISSING_SHIPPING_ADDRESS',
+  MissingShippingDetails = 'MISSING_SHIPPING_DETAILS',
   NotEnoughStock = 'NOT_ENOUGH_STOCK',
   PaymentFailed = 'PAYMENT_FAILED',
   PaymentHandlerNotFound = 'PAYMENT_HANDLER_NOT_FOUND'
@@ -2971,6 +2998,7 @@ export type ResolversTypes = {
   LocationErrorResult: ResolverTypeWrapper<LocationErrorResult>;
   LocationList: ResolverTypeWrapper<LocationList>;
   LocationResult: ResolverTypeWrapper<LocationResult>;
+  MarkFulfillmentAsShippedInput: MarkFulfillmentAsShippedInput;
   Metric: ResolverTypeWrapper<Metric>;
   MetricInput: MetricInput;
   MetricResult: ResolverTypeWrapper<MetricResult>;
@@ -3189,6 +3217,7 @@ export type ResolversParentTypes = {
   LocationErrorResult: LocationErrorResult;
   LocationList: LocationList;
   LocationResult: LocationResult;
+  MarkFulfillmentAsShippedInput: MarkFulfillmentAsShippedInput;
   Metric: Metric;
   MetricInput: MetricInput;
   MetricResult: MetricResult;
@@ -3775,7 +3804,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   addDeliveryMethodPickupToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodPickupToOrderArgs, 'input' | 'orderId'>>;
   addDeliveryMethodShippingToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDeliveryMethodShippingToOrderArgs, 'input' | 'orderId'>>;
   addDiscountCodeToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddDiscountCodeToOrderArgs, 'code' | 'orderId'>>;
-  addFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddFulfillmentToOrderArgs, 'id'>>;
+  addFulfillmentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddFulfillmentToOrderArgs, 'id' | 'input'>>;
   addLineToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddLineToOrderArgs, 'input' | 'orderId'>>;
   addPaymentToOrder?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationAddPaymentToOrderArgs, 'input' | 'orderId'>>;
   addProductTranslation?: Resolver<ResolversTypes['ProductTranslation'], ParentType, ContextType, RequireFields<MutationAddProductTranslationArgs, 'id' | 'input'>>;
@@ -3802,6 +3831,9 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   generateUserAccessToken?: Resolver<ResolversTypes['UserAccessTokenResult'], ParentType, ContextType, RequireFields<MutationGenerateUserAccessTokenArgs, 'input'>>;
   markFulfillmentAsDelivered?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsDeliveredArgs, 'fulfillmentId'>>;
   markFulfillmentAsPickedUp?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsPickedUpArgs, 'fulfillmentId'>>;
+  markFulfillmentAsReadyForPickup?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsReadyForPickupArgs, 'fulfillmentId'>>;
+  markFulfillmentAsShipped?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkFulfillmentAsShippedArgs, 'fulfillmentId' | 'input'>>;
+  markOrderAsCompleted?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsCompletedArgs, 'id'>>;
   markOrderAsProcessing?: Resolver<ResolversTypes['OrderResult'], ParentType, ContextType, RequireFields<MutationMarkOrderAsProcessingArgs, 'id'>>;
   removeAssets?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveAssetsArgs, 'ids'>>;
   removeCollections?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveCollectionsArgs, 'ids'>>;

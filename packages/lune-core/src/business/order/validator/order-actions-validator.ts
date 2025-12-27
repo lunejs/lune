@@ -48,6 +48,12 @@ export class OrderActionsValidator {
     return state === OrderState.Placed;
   }
 
+  canAddFulfillment(state: OrderState) {
+    return [OrderState.Placed, OrderState.Processing, OrderState.PartiallyFulfilled].includes(
+      state
+    );
+  }
+
   canMarkAsShipped(
     state: OrderState,
     fulfillment: DeliveryMethod | undefined

@@ -5,12 +5,12 @@ import type {
   AddCustomerToOrderInput,
   AddDeliveryMethodPickupInput,
   AddDeliveryMethodShippingInput,
+  AddFulfillmentToOrderInput,
   AddPaymentToOrderInput,
   CancelOrderInput,
   CreateOrderAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
-  MarkOrderAsShippedInput,
   OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
@@ -24,6 +24,11 @@ import {
 } from '@/event-bus/events/order.event';
 import { DeliveryMethodType } from '@/persistence/entities/delivery-method';
 import type { ID } from '@/persistence/entities/entity';
+import type {
+  PickupFulfillmentMetadata,
+  ShippingFulfillmentMetadata
+} from '@/persistence/entities/fulfillment';
+import { FulfillmentState } from '@/persistence/entities/fulfillment';
 import { OrderState } from '@/persistence/entities/order';
 import { PaymentState } from '@/persistence/entities/payment';
 import type { CountryRepository } from '@/persistence/repositories/country-repository';
@@ -32,6 +37,8 @@ import type { DeliveryMethodPickupRepository } from '@/persistence/repositories/
 import type { DeliveryMethodRepository } from '@/persistence/repositories/delivery-method-repository';
 import type { DeliveryMethodShippingRepository } from '@/persistence/repositories/delivery-method-shipping-repository';
 import type { DiscountRepository } from '@/persistence/repositories/discount-repository';
+import type { FulfillmentLineRepository } from '@/persistence/repositories/fulfillment-line-repository';
+import type { FulfillmentRepository } from '@/persistence/repositories/fulfillment-repository';
 import type { LocationRepository } from '@/persistence/repositories/location-repository';
 import type { OrderCancellationRepository } from '@/persistence/repositories/order-cancellation-repository';
 import type { OrderDiscountRepository } from '@/persistence/repositories/order-discount-repository';
@@ -51,10 +58,13 @@ import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
   DiscountCodeNotApplicable,
   DiscountHandlerNotFound,
+  ExceedsFulfillmentLineQuantityError,
   ForbiddenOrderActionError,
   InvalidCustomerEmailError,
+  InvalidFulfillmentLineQuantityError,
   InvalidQuantityError,
   InvalidShippingMethodError,
+  MissingFulfillmentShippingDetailsError,
   MissingShippingAddress,
   NotEnoughStockError,
   PaymentFailedError,
@@ -71,7 +81,7 @@ export class OrderService {
   private readonly countryRepository: CountryRepository;
   private readonly stateRepository: StateRepository;
   private readonly shippingMethodRepository: ShippingMethodRepository;
-  private readonly fulfillmentRepository: DeliveryMethodRepository;
+  private readonly deliveryMethodRepository: DeliveryMethodRepository;
   private readonly shippingFulfillmentRepository: DeliveryMethodShippingRepository;
   private readonly inStorePickupFulfillmentRepository: DeliveryMethodPickupRepository;
   private readonly discountRepository: DiscountRepository;
@@ -81,6 +91,8 @@ export class OrderService {
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMethodRepository: PaymentMethodRepository;
   private readonly paymentFailureRepository: PaymentFailureRepository;
+  private readonly fulfillmentRepository: FulfillmentRepository;
+  private readonly fulfillmentLineRepository: FulfillmentLineRepository;
   private readonly discounts: OrderDiscountApplication;
 
   constructor(private readonly ctx: ExecutionContext) {
@@ -94,7 +106,7 @@ export class OrderService {
     this.countryRepository = ctx.repositories.country;
     this.stateRepository = ctx.repositories.state;
     this.shippingMethodRepository = ctx.repositories.shippingMethod;
-    this.fulfillmentRepository = ctx.repositories.deliveryMethod;
+    this.deliveryMethodRepository = ctx.repositories.deliveryMethod;
     this.shippingFulfillmentRepository = ctx.repositories.deliveryMethodShipping;
     this.inStorePickupFulfillmentRepository = ctx.repositories.deliveryMethodPickup;
     this.discountRepository = ctx.repositories.discount;
@@ -104,6 +116,8 @@ export class OrderService {
     this.paymentRepository = ctx.repositories.payment;
     this.paymentMethodRepository = ctx.repositories.paymentMethod;
     this.paymentFailureRepository = ctx.repositories.paymentFailure;
+    this.fulfillmentRepository = ctx.repositories.fulfillment;
+    this.fulfillmentLineRepository = ctx.repositories.fulfillmentLine;
   }
 
   async find(input?: OrderListInput) {
@@ -461,7 +475,7 @@ export class OrderService {
       this.ctx
     );
 
-    const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+    const orderFulfillment = await this.deliveryMethodRepository.findOne({ where: { orderId } });
 
     if (orderFulfillment) {
       if (orderFulfillment.type === DeliveryMethodType.Pickup) {
@@ -471,7 +485,7 @@ export class OrderService {
       }
     }
 
-    const fulfillment = await this.fulfillmentRepository.upsert({
+    const fulfillment = await this.deliveryMethodRepository.upsert({
       where: { id: orderFulfillment?.id },
       create: {
         orderId,
@@ -525,7 +539,7 @@ export class OrderService {
       this.stateRepository.findOneOrThrow({ where: { id: location.stateId } })
     ]);
 
-    const orderFulfillment = await this.fulfillmentRepository.findOne({ where: { orderId } });
+    const orderFulfillment = await this.deliveryMethodRepository.findOne({ where: { orderId } });
 
     if (orderFulfillment) {
       if (orderFulfillment.type === DeliveryMethodType.Shipping) {
@@ -535,7 +549,7 @@ export class OrderService {
       }
     }
 
-    const fulfillment = await this.fulfillmentRepository.upsert({
+    const fulfillment = await this.deliveryMethodRepository.upsert({
       where: { id: orderFulfillment?.id },
       create: {
         orderId,
@@ -626,7 +640,7 @@ export class OrderService {
 
     const order = await this.discounts.applyAvailable(currentOrder);
 
-    const fulfillment = await this.fulfillmentRepository.findOne({
+    const fulfillment = await this.deliveryMethodRepository.findOne({
       where: { orderId: order.id },
       fields: ['id']
     });
@@ -774,8 +788,90 @@ export class OrderService {
     return orderUpdated;
   }
 
-  async markAsShipped(id: ID, _input: MarkOrderAsShippedInput) {
-    return await this.repository.findOneOrThrow({ where: { id } });
+  async addFulfillment(id: ID, input: AddFulfillmentToOrderInput) {
+    const order = await this.repository.findOneOrThrow({ where: { id } });
+    const deliveryMethod = await this.deliveryMethodRepository.findOneOrThrow({
+      where: { orderId: id }
+    });
+
+    if (!this.validator.canAddFulfillment(order.state)) {
+      return new ForbiddenOrderActionError(order.state);
+    }
+
+    const isShippingDelivery = deliveryMethod.type === DeliveryMethodType.Shipping;
+
+    if (isShippingDelivery && !input.carrier !== !input.trackingCode) {
+      return new MissingFulfillmentShippingDetailsError();
+    }
+
+    for (const { id: lineId, quantity: lineQuantity } of input.orderLines) {
+      if (lineQuantity <= 0) {
+        return new InvalidFulfillmentLineQuantityError(lineId, lineQuantity);
+      }
+
+      const line = await this.lineRepository.findOneOrThrow({
+        where: { id: lineId, orderId: order.id }
+      });
+      const fulfillmentsWithTheLine =
+        await this.fulfillmentLineRepository.findActiveByOrderLineId(lineId);
+
+      const totalLinesQuantityInFulfillments = fulfillmentsWithTheLine.reduce(
+        (prev, curr) => prev + curr.quantity,
+        0
+      );
+
+      const remainQuantity = line.quantity - totalLinesQuantityInFulfillments;
+
+      if (!remainQuantity || lineQuantity > remainQuantity) {
+        return new ExceedsFulfillmentLineQuantityError(lineQuantity, remainQuantity);
+      }
+    }
+
+    const metadata = isShippingDelivery
+      ? ({
+          carrier: input.carrier ?? null,
+          trackingCode: input.trackingCode ?? null,
+          shippedAt: input.carrier && input.trackingCode ? new Date() : null,
+          deliveredAt: null
+        } satisfies ShippingFulfillmentMetadata)
+      : ({
+          readyAt: null,
+          pickedUpAt: null
+        } satisfies PickupFulfillmentMetadata);
+
+    const isShipped = isShippingDelivery && !!input.carrier && !!input.trackingCode;
+
+    const fulfillment = await this.fulfillmentRepository.create({
+      orderId: order.id,
+      state: isShipped ? FulfillmentState.Shipped : FulfillmentState.Pending,
+      metadata
+    });
+
+    await this.fulfillmentLineRepository.createMany(
+      input.orderLines.map(orderLine => ({
+        fulfillmentId: fulfillment.id,
+        orderLineId: orderLine.id,
+        quantity: orderLine.quantity
+      }))
+    );
+
+    const orderLines = await this.lineRepository.findMany({ where: { orderId: order.id } });
+    const fulfillmentLines = await this.fulfillmentLineRepository.findActiveByOrderId(order.id);
+
+    const totalOrderLinesQuantity = orderLines.reduce((prev, curr) => prev + curr.quantity, 0);
+    const totalFulfillmentLinesQuantity = fulfillmentLines.reduce(
+      (prev, curr) => prev + curr.quantity,
+      0
+    );
+
+    const isAllOrderLinesFulfilled = totalOrderLinesQuantity === totalFulfillmentLinesQuantity;
+
+    return await this.repository.update({
+      where: { id: order.id },
+      data: {
+        state: isAllOrderLinesFulfilled ? OrderState.Fulfilled : OrderState.PartiallyFulfilled
+      }
+    });
   }
 
   async markAsReadyForPickup(id: ID) {
