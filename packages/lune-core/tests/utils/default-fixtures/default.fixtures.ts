@@ -16,6 +16,7 @@ import { DefaultCustomObjectEntryValueFixture } from './custom-object-entry-valu
 import { DefaultCustomObjectEntryValueTranslationFixture } from './custom-object-entry-value-translation.fixture';
 import { DefaultCustomerFixture } from './customer.fixture';
 import { DefaultCustomerAuthMethodFixture } from './customer-auth-method.fixture';
+import { DefaultDeliveryMethodFixture } from './delivery-method.fixture';
 import { DefaultDiscountFixture } from './discount.fixture';
 import { DefaultFulfillmentFixture } from './fulfillment.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
@@ -91,7 +92,7 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.PaymentCancellation]: DefaultPaymentCancellationFixture,
   [Tables.OrderCancellation]: DefaultOrderCancellationFixture,
   [Tables.OrderLine]: DefaultOrderLineFixture,
-  [Tables.DeliveryMethod]: DefaultFulfillmentFixture,
+  [Tables.DeliveryMethod]: DefaultDeliveryMethodFixture,
   [Tables.Location]: DefaultLocationFixture,
   [Tables.InStorePickup]: DefaultInStorePickupFixture,
   [Tables.DeliveryMethodShipping]: DefaultShippingFulfillmentFixture,
@@ -107,5 +108,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.CustomObjectEntryValue]: DefaultCustomObjectEntryValueFixture,
   [Tables.CustomObjectEntryValueTranslation]: DefaultCustomObjectEntryValueTranslationFixture,
   [Tables.ProductCustomField]: DefaultProductCustomFieldFixture,
-  [Tables.ProductCustomFieldTranslation]: DefaultProductCustomFieldTranslationFixture
+  [Tables.ProductCustomFieldTranslation]: DefaultProductCustomFieldTranslationFixture,
+  [Tables.Fulfillment]: DefaultFulfillmentFixture
 };
