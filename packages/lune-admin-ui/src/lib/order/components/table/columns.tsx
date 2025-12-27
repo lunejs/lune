@@ -81,11 +81,15 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
   },
   {
     accessorKey: 'fulfillment',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Fulfillment" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Delivery" />,
     cell: ({ row }) => (
       <div className="flex items-center gap-1">
-        {row.original.fulfillment === 'Pickup' ? <StoreIcon size={16} /> : <TruckIcon size={16} />}
-        <P>{row.original.fulfillment ?? '-'}</P>
+        {row.original.deliveryMethod === 'Pickup' ? (
+          <StoreIcon size={16} />
+        ) : (
+          <TruckIcon size={16} />
+        )}
+        <P>{row.original.deliveryMethod ?? '-'}</P>
       </div>
     ),
     enableSorting: false

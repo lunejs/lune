@@ -73,17 +73,15 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       state
       stateCode
     }
-    fulfillment {
+    deliveryMethod {
       id
       createdAt
       type
       amount
       total
       details {
-        ... on InStorePickupFulfillment {
+        ... on DeliveryMethodPickup {
           id
-          pickedUpAt
-          readyAt
           address {
             streetLine1
             streetLine2
@@ -101,16 +99,30 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
             name
           }
         }
-        ... on ShippingFulfillment {
+        ... on DeliveryMethodShipping {
           id
           method
-          carrier
-          trackingCode
-          shippedAt
-          deliveredAt
           shippingMethod {
             id
             name
+          }
+        }
+      }
+    }
+    fulfillments {
+      items {
+        id
+        state
+        type
+        metadata
+        lines {
+          count
+          items {
+            id
+            quantity
+            orderLine {
+              id
+            }
           }
         }
       }
@@ -149,7 +161,7 @@ export const COMMON_LIST_ORDER_FRAGMENT = graphql(`
     lines {
       count
     }
-    fulfillment {
+    deliveryMethod {
       type
     }
   }
@@ -185,48 +197,6 @@ export const COUNT_ORDERS_QUERY = graphql(`
   }
 `);
 
-export const MARK_ORDER_AS_SHIPPED_MUTATION = graphql(`
-  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {
-    markOrderAsShipped(id: $orderId, input: $input) {
-      apiErrors {
-        code
-        message
-      }
-      order {
-        id
-      }
-    }
-  }
-`);
-
-export const MARK_ORDER_AS_READY_FOR_PICKUP_MUTATION = graphql(`
-  mutation MarkAsReadyForPickup($orderId: ID!) {
-    markOrderAsReadyForPickup(id: $orderId) {
-      apiErrors {
-        code
-        message
-      }
-      order {
-        id
-      }
-    }
-  }
-`);
-
-export const MARK_ORDER_AS_DELIVERED_MUTATION = graphql(`
-  mutation MarkAsDelivered($orderId: ID!) {
-    markOrderAsDelivered(id: $orderId) {
-      apiErrors {
-        code
-        message
-      }
-      order {
-        id
-      }
-    }
-  }
-`);
-
 export const MARK_ORDER_AS_COMPLETED_MUTATION = graphql(`
   mutation MarkAsCompleted($orderId: ID!) {
     markOrderAsCompleted(id: $orderId) {
@@ -244,6 +214,76 @@ export const MARK_ORDER_AS_COMPLETED_MUTATION = graphql(`
 export const CANCEL_ORDER_MUTATION = graphql(`
   mutation CancelOrder($orderId: ID!, $input: CancelOrderInput!) {
     cancelOrder(id: $orderId, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const ADD_FULFILLMENT_TO_ORDER_MUTATION = graphql(`
+  mutation AddFulfillmentToOrder($id: ID!, $input: AddFulfillmentToOrderInput!) {
+    addFulfillmentToOrder(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_FULFILLMENT_AS_SHIPPED_MUTATION = graphql(`
+  mutation MarkFulfillmentAsShipped($fulfillmentId: ID!, $input: MarkFulfillmentAsShippedInput!) {
+    markFulfillmentAsShipped(fulfillmentId: $fulfillmentId, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_FULFILLMENT_AS_READY_FOR_PICKUP_MUTATION = graphql(`
+  mutation MarkFulfillmentAsReadyForPickup($fulfillmentId: ID!) {
+    markFulfillmentAsReadyForPickup(fulfillmentId: $fulfillmentId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_FULFILLMENT_AS_DELIVERED_MUTATION = graphql(`
+  mutation MarkFulfillmentAsDelivered($fulfillmentId: ID!) {
+    markFulfillmentAsDelivered(fulfillmentId: $fulfillmentId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        id
+      }
+    }
+  }
+`);
+
+export const MARK_FULFILLMENT_AS_PICKED_UP_MUTATION = graphql(`
+  mutation MarkFulfillmentAsPickedUp($fulfillmentId: ID!) {
+    markFulfillmentAsPickedUp(fulfillmentId: $fulfillmentId) {
       apiErrors {
         code
         message

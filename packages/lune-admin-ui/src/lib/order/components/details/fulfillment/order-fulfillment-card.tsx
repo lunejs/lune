@@ -1,38 +1,48 @@
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@lune/ui';
+import { StoreIcon, TruckIcon } from 'lucide-react';
 
-import { type CommonOrderFragment, FulfillmentType, OrderState } from '@/lib/api/types';
+import { Card, CardAction, CardContent, CardHeader, CardTitle, Small } from '@lune/ui';
 
+import { type CommonOrderFragment, DeliveryMethodType, FulfillmentType } from '@/lib/api/types';
+
+import { AddFulfillmentButton } from './add/add-fulfillment-button';
 import { OrderInStorePickupFulfillmentDetails } from './details/order-in-store-pickup-fulfillment-details';
 import { OrderShippingFulfillmentDetails } from './details/order-shipping-fulfillment-details';
-import { MarkAsDeliveredButton } from './mark-as-delivered/mark-as-delivered-button';
-import { MarkAsReadyForPickupAlert } from './mark-as-ready-for-pickup/mark-as-ready-for-pickup-alert';
-import { MarkAsShippedButton } from './mark-as-shipped/mark-as-shipped-button';
 
 export const OrderFulfillmentCard = ({ order }: Props) => {
-  const { fulfillment } = order;
+  const { fulfillments, deliveryMethod } = order;
 
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center border-b">
         <CardTitle className="flex items-center gap-2">Fulfillment</CardTitle>
         <CardAction>
-          {fulfillment?.type === FulfillmentType.Shipping && order.state === OrderState.Placed && (
-            <MarkAsShippedButton order={order} />
-          )}
-          {(order.state === OrderState.Shipped || order.state === OrderState.ReadyForPickup) && (
-            <MarkAsDeliveredButton order={order} />
-          )}
-
-          {fulfillment?.type === FulfillmentType.InStorePickup &&
-            order.state === OrderState.Placed && <MarkAsReadyForPickupAlert order={order} />}
+          <AddFulfillmentButton order={order} />
         </CardAction>
       </CardHeader>
       <CardContent>
-        {fulfillment?.type === FulfillmentType.Shipping ? (
-          <OrderShippingFulfillmentDetails fulfillment={fulfillment} />
-        ) : (
-          <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
+        {!fulfillments.items.length && (
+          <div className="flex items-center gap-2">
+            {deliveryMethod?.type === DeliveryMethodType.Shipping ? (
+              <TruckIcon size={16} />
+            ) : (
+              <StoreIcon size={16} />
+            )}
+            <Small>
+              {deliveryMethod?.type === DeliveryMethodType.Shipping
+                ? 'Shipping'
+                : 'In store pickup'}
+            </Small>
+          </div>
         )}
+        {fulfillments.items.map(fulfillment => (
+          <>
+            {fulfillment?.type === FulfillmentType.Shipping ? (
+              <OrderShippingFulfillmentDetails fulfillment={fulfillment} />
+            ) : (
+              <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
+            )}
+          </>
+        ))}
       </CardContent>
     </Card>
   );

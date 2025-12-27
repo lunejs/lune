@@ -22,10 +22,10 @@ import {
 
 import {
   type CommonOrderFragment,
-  DiscountApplicationLevel,
-  FulfillmentType,
-  type InStorePickupFulfillment,
-  type ShippingFulfillment
+  type DeliveryMethodPickup,
+  type DeliveryMethodShipping,
+  DeliveryMethodType,
+  DiscountApplicationLevel
 } from '@/lib/api/types';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
@@ -33,10 +33,10 @@ import { OrderStateBadge } from '../../status/order-state-badge';
 
 export const OrderItemsTable = ({ order }: Props) => {
   const lines = order.lines.items;
-  const { fulfillment, appliedDiscounts } = order;
+  const { deliveryMethod, appliedDiscounts } = order;
   const subtotalBeforeDiscounts = lines.reduce((acc, line) => acc + line.lineTotal, 0);
-  const fulfillmentDiscounts = order.appliedDiscounts.filter(
-    d => d.applicationLevel === DiscountApplicationLevel.Fulfillment
+  const deliveryMethodDiscounts = order.appliedDiscounts.filter(
+    d => d.applicationLevel === DiscountApplicationLevel.DeliveryMethod
   );
 
   return (
@@ -144,29 +144,29 @@ export const OrderItemsTable = ({ order }: Props) => {
             <TableRow className="border-transparent">
               <TableCell>Fulfillment</TableCell>
               <TableCell>
-                {fulfillment?.type === FulfillmentType.InStorePickup ? (
+                {deliveryMethod?.type === DeliveryMethodType.Pickup ? (
                   <div className="flex items-center gap-1">
                     <StoreIcon size={16} />
-                    {(fulfillment.details as InStorePickupFulfillment).location.name}
+                    {(deliveryMethod.details as DeliveryMethodPickup).location.name}
                   </div>
                 ) : (
                   <div className="flex items-center gap-1">
                     <TruckIcon size={16} />
-                    {(fulfillment?.details as ShippingFulfillment).method}
+                    {(deliveryMethod?.details as DeliveryMethodShipping).method}
                   </div>
                 )}
               </TableCell>
               <TableCell></TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
-                  <span>{LunePrice.format(fulfillment?.total ?? 0)}</span>
-                  {!!fulfillmentDiscounts.length && (
+                  <span>{LunePrice.format(deliveryMethod?.total ?? 0)}</span>
+                  {!!deliveryMethodDiscounts.length && (
                     <Tooltip>
                       <TooltipTrigger>
                         <TagIcon size={16} className="text-muted-foreground" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        {fulfillmentDiscounts
+                        {deliveryMethodDiscounts
                           .map(d => `${d.code} (-$${LunePrice.format(d.discountedAmount)})`)
                           .join(', ')}
                       </TooltipContent>

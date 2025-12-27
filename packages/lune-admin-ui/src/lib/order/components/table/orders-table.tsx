@@ -26,8 +26,8 @@ export const OrdersTable = ({ isRefetching, orders, totalRows, dataTable }: Prop
           options: [
             { label: 'Placed', value: OrderState.Placed },
             { label: 'Processing', value: OrderState.Processing },
-            { label: 'Sent', value: OrderState.Shipped },
-            { label: 'Delivered', value: OrderState.Delivered },
+            { label: 'Partially fulfilled', value: OrderState.PartiallyFulfilled },
+            { label: 'Fulfilled', value: OrderState.Fulfilled },
             { label: 'Completed', value: OrderState.Completed },
             { label: 'Canceled', value: OrderState.Canceled }
           ],
@@ -45,7 +45,7 @@ export type OrdersTableRow = {
   total: number;
   items: number;
   state: OrderState;
-  fulfillment: 'Shipping' | 'Pickup' | null;
+  deliveryMethod: 'Shipping' | 'Pickup' | null;
   placedAt: string | null;
 };
 

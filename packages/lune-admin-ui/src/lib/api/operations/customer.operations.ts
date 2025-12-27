@@ -26,7 +26,7 @@ export const COMMON_CUSTOMER_FRAGMENT = graphql(`
         payments {
           state
         }
-        fulfillment {
+        deliveryMethod {
           type
         }
       }

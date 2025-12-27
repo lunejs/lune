@@ -5,18 +5,22 @@ import { LuneLogger } from '@lune/common';
 import { GENERIC_ERROR } from '@/lib/api/errors/common.errors';
 import { getOrderError } from '@/lib/api/errors/order.errors';
 import { useGqlMutation } from '@/lib/api/fetchers/use-gql-mutation-v2';
+import { MARK_FULFILLMENT_AS_PICKED_UP_MUTATION } from '@/lib/api/operations/order.operations';
 import type { OrderErrorCode } from '@/lib/api/types';
 import type { ActionResult } from '@/shared/utils/result.utils';
 
 import { OrderCacheKeys } from '../constants/cache-keys';
 
-export const useMarkOrderAsDelivered = () => {
+export const useMarkFulfillmentAsPickedUp = () => {
   const queryClient = useQueryClient();
-  const { isPending, mutateAsync } = useGqlMutation('MARK_ORDER_AS_DELIVERED_MUTATION');
+  const { isPending, mutateAsync } = useGqlMutation(MARK_FULFILLMENT_AS_PICKED_UP_MUTATION);
 
-  const markAsDelivered = async (orderId: string): Promise<ActionResult<OrderErrorCode>> => {
+  const markAsPickedUp = async (
+    orderId: string,
+    fulfillmentId: string
+  ): Promise<ActionResult<OrderErrorCode>> => {
     try {
-      const { apiErrors } = await mutateAsync({ orderId });
+      const { apiErrors } = await mutateAsync({ fulfillmentId });
 
       if (apiErrors.length) {
         const { error, errorCode } = getOrderError(apiErrors);
@@ -37,7 +41,7 @@ export const useMarkOrderAsDelivered = () => {
   };
 
   return {
-    markAsDelivered,
+    markAsPickedUp,
     isLoading: isPending
   };
 };
