@@ -878,6 +878,8 @@ export type Fulfillment = Node & {
   metadata?: Maybe<Scalars['JSON']['output']>;
   /** Current state of the fulfillment */
   state: FulfillmentState;
+  /** Fulfillment type (synchronized with delivery method) */
+  type: FulfillmentType;
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -920,6 +922,11 @@ export enum FulfillmentState {
   ReadyForPickup = 'READY_FOR_PICKUP',
   /** The fulfillment has been shipped via the carrier */
   Shipped = 'SHIPPED'
+}
+
+export enum FulfillmentType {
+  Pickup = 'PICKUP',
+  Shipping = 'SHIPPING'
 }
 
 export type GenerateCustomerAccessTokenResult = {
@@ -1765,9 +1772,11 @@ export enum OrderErrorCode {
   DiscountCodeNotApplicable = 'DISCOUNT_CODE_NOT_APPLICABLE',
   DiscountHandlerNotFound = 'DISCOUNT_HANDLER_NOT_FOUND',
   ExceedsFulfillmentLineQuantityError = 'EXCEEDS_FULFILLMENT_LINE_QUANTITY_ERROR',
+  ForbiddenFulfillmentAction = 'FORBIDDEN_FULFILLMENT_ACTION',
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
   InvalidCustomerEmail = 'INVALID_CUSTOMER_EMAIL',
   InvalidFulfillmentLineQuantity = 'INVALID_FULFILLMENT_LINE_QUANTITY',
+  InvalidFulfillmentStateTransition = 'INVALID_FULFILLMENT_STATE_TRANSITION',
   InvalidQuantity = 'INVALID_QUANTITY',
   InvalidShippingMethod = 'INVALID_SHIPPING_METHOD',
   MissingShippingAddress = 'MISSING_SHIPPING_ADDRESS',
@@ -2997,6 +3006,7 @@ export type ResolversTypes = {
   FulfillmentLineList: ResolverTypeWrapper<Omit<FulfillmentLineList, 'items'> & { items: Array<ResolversTypes['FulfillmentLine']> }>;
   FulfillmentList: ResolverTypeWrapper<Omit<FulfillmentList, 'items'> & { items: Array<ResolversTypes['Fulfillment']> }>;
   FulfillmentState: FulfillmentState;
+  FulfillmentType: FulfillmentType;
   GenerateCustomerAccessTokenResult: ResolverTypeWrapper<GenerateCustomerAccessTokenResult>;
   GenerateUserAccessTokenInput: GenerateUserAccessTokenInput;
   HandlerConfig: ResolverTypeWrapper<HandlerConfig>;
@@ -3704,6 +3714,7 @@ export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType exte
   lines?: Resolver<ResolversTypes['FulfillmentLineList'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   state?: Resolver<ResolversTypes['FulfillmentState'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['FulfillmentType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

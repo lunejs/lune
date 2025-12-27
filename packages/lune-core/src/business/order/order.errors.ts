@@ -1,5 +1,6 @@
 import { OrderErrorCode } from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
+import type { FulfillmentState, FulfillmentType } from '@/persistence/entities/fulfillment';
 import type { OrderState } from '@/persistence/entities/order';
 import { ErrorResult } from '@/utils/error-result';
 
@@ -134,6 +135,30 @@ export class InvalidFulfillmentLineQuantityError extends OrderErrorResult {
     super(
       OrderErrorCode.InvalidFulfillmentLineQuantity,
       `Order line with id ${orderLineId} should have a valid quantity and "${quantity}" is not`
+    );
+  }
+}
+
+/**
+ * Error thrown when trying to execute an action on a fulfillment with invalid type
+ */
+export class ForbiddenFulfillmentActionError extends OrderErrorResult {
+  constructor(type: FulfillmentType) {
+    super(
+      OrderErrorCode.ForbiddenFulfillmentAction,
+      `Forbidden action on fulfillment with type ${type}`
+    );
+  }
+}
+
+/**
+ * Error thrown when the transition state in a fulfillment is invalid
+ */
+export class InvalidFulfillmentStateTransitionError extends OrderErrorResult {
+  constructor(fromState: FulfillmentState, toState: FulfillmentState) {
+    super(
+      OrderErrorCode.InvalidFulfillmentStateTransition,
+      `Cannot transition to state ${toState} from state ${fromState}`
     );
   }
 }

@@ -11,6 +11,7 @@ import type {
   CreateOrderAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
+  MarkFulfillmentAsShippedInput,
   OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared/types/graphql';
@@ -59,9 +60,11 @@ import {
   DiscountCodeNotApplicable,
   DiscountHandlerNotFound,
   ExceedsFulfillmentLineQuantityError,
+  ForbiddenFulfillmentActionError,
   ForbiddenOrderActionError,
   InvalidCustomerEmailError,
   InvalidFulfillmentLineQuantityError,
+  InvalidFulfillmentStateTransitionError,
   InvalidQuantityError,
   InvalidShippingMethodError,
   MissingFulfillmentShippingDetailsError,
@@ -873,6 +876,37 @@ export class OrderService {
         state: isAllOrderLinesFulfilled ? OrderState.Fulfilled : OrderState.PartiallyFulfilled
       }
     });
+  }
+
+  async markFulfillmentAsShipped(fulfillmentId: ID, input: MarkFulfillmentAsShippedInput) {
+    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
+      where: { id: fulfillmentId }
+    });
+
+    if (fulfillment.type !== FulfillmentType.Shipping) {
+      return new ForbiddenFulfillmentActionError(fulfillment.type);
+    }
+
+    if (fulfillment.state !== FulfillmentState.Pending) {
+      return new InvalidFulfillmentStateTransitionError(
+        fulfillment.state,
+        FulfillmentState.Shipped
+      );
+    }
+
+    await this.fulfillmentRepository.update({
+      where: { id: fulfillment.id },
+      data: {
+        state: FulfillmentState.Shipped,
+        metadata: {
+          ...fulfillment.metadata,
+          ...input,
+          shippedAt: new Date()
+        } satisfies Partial<ShippingFulfillmentMetadata>
+      }
+    });
+
+    return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
   }
 
   async markAsReadyForPickup(id: ID) {
