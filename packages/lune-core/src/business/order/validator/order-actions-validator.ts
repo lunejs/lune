@@ -1,7 +1,7 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { ID } from '@/persistence/entities/entity';
 import type { DeliveryMethod } from '@/persistence/entities/delivery-method';
 import { DeliveryMethodType } from '@/persistence/entities/delivery-method';
+import type { ID } from '@/persistence/entities/entity';
 import type { Order } from '@/persistence/entities/order';
 import { OrderState } from '@/persistence/entities/order';
 
@@ -66,14 +66,6 @@ export class OrderActionsValidator {
       fulfillment?.type === DeliveryMethodType.Pickup &&
       [OrderState.Placed, OrderState.Processing].includes(state)
     );
-  }
-
-  canMarkAsDelivered(state: OrderState) {
-    return [OrderState.Shipped, OrderState.ReadyForPickup].includes(state);
-  }
-
-  canMarkAsCompleted(state: OrderState) {
-    return state === OrderState.Delivered;
   }
 
   canCancel(state: OrderState) {

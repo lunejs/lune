@@ -1,39 +1,35 @@
 import type { AppliedDiscount } from './discount';
 import type { LuneEntity, LuneTable } from './entity';
 
-export enum OrderState {
+export const enum OrderState {
   /**
    * The order is being modified by the customer
    */
-  Modifying = 'MODIFYING',
+  Modifying = 'modifying',
   /**
    * A payment has been added to the order and cannot be modified anymore
    */
-  Placed = 'PLACED',
+  Placed = 'placed',
   /**
    * Order is being processed for shipment
    */
-  Processing = 'PROCESSING',
+  Processing = 'processing',
   /**
-   * Order has been shipped via the carrier
+   * There are some order lines without a fulfillment yet
    */
-  Shipped = 'SHIPPED',
+  PartiallyFulfilled = 'partially_fulfilled',
   /**
-   * Order has been delivered to the customer
+   * All order lines has been fulfilled
    */
-  Delivered = 'DELIVERED',
-  /**
-   * Order is ready for pick up at the location chosen by the customer
-   */
-  ReadyForPickup = 'READY_FOR_PICKUP',
+  Fulfilled = 'fulfilled',
   /**
    * Order is completed (delivered and fully paid)
    */
-  Completed = 'COMPLETED',
+  Completed = 'completed',
   /**
    * Order has been cancelled
    */
-  Canceled = 'CANCELED'
+  Canceled = 'canceled'
 }
 
 /**

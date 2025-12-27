@@ -18,7 +18,8 @@ const config: CodegenConfig = {
         enumValues: {
           CustomFieldAppliesToEntity:
             '../../../persistence/entities/custom-field-definition#CustomFieldAppliesTo',
-          CustomFieldType: '../../../persistence/entities/custom-field-definition#CustomFieldType'
+          CustomFieldType: '../../../persistence/entities/custom-field-definition#CustomFieldType',
+          OrderState: '../../../persistence/entities/order#OrderState'
         }
       }
     }

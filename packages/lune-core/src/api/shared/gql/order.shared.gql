@@ -15,17 +15,13 @@ enum OrderState {
   """
   PROCESSING
   """
-  Order has been shipped via the carrier
+  There are some order lines without a fulfillment yet
   """
-  SHIPPED
+  PARTIALLY_FULFILLED
   """
-  Order has been delivered to the customer
+  All order lines has been fulfilled
   """
-  DELIVERED
-  """
-  Order is ready for pick up at the location chosen by the customer
-  """
-  READY_FOR_PICKUP
+  FULFILLED
   """
   Order is completed (delivered and fully paid)
   """

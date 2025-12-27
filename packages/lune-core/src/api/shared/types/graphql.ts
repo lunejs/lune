@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { CustomFieldAppliesTo as CustomFieldAppliesToEntity } from '../../../persistence/entities/custom-field-definition';
 import { CustomFieldType } from '../../../persistence/entities/custom-field-definition';
+import { OrderState } from '../../../persistence/entities/order';
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ExecutionContext } from '../context/types';
 export type Maybe<T> = T | null;
@@ -803,7 +804,7 @@ export type Discount = Node & {
 };
 
 export enum DiscountApplicationLevel {
-  Fulfillment = 'FULFILLMENT',
+  DeliveryMethod = 'DELIVERY_METHOD',
   Order = 'ORDER',
   OrderLine = 'ORDER_LINE'
 }
@@ -1757,25 +1758,7 @@ export type OrderResult = {
   order?: Maybe<Order>;
 };
 
-/** Order state enum */
-export enum OrderState {
-  /** Order has been cancelled */
-  Canceled = 'CANCELED',
-  /** Order is completed (delivered and fully paid) */
-  Completed = 'COMPLETED',
-  /** Order has been delivered to the customer */
-  Delivered = 'DELIVERED',
-  /** The order is being modified by the customer */
-  Modifying = 'MODIFYING',
-  /** A payment has been added to the order and cannot be modified anymore */
-  Placed = 'PLACED',
-  /** Order is being processed for shipment */
-  Processing = 'PROCESSING',
-  /** Order is ready for pick up at the location chosen by the customer */
-  ReadyForPickup = 'READY_FOR_PICKUP',
-  /** Order has been shipped via the carrier */
-  Shipped = 'SHIPPED'
-}
+export { OrderState };
 
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -3932,6 +3915,8 @@ export type OrderResultResolvers<ContextType = ExecutionContext, ParentType exte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type OrderStateResolvers = EnumResolverSignature<{ CANCELED?: any, COMPLETED?: any, FULFILLED?: any, MODIFYING?: any, PARTIALLY_FULFILLED?: any, PLACED?: any, PROCESSING?: any }, ResolversTypes['OrderState']>;
+
 export type PageInfoResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -4367,6 +4352,7 @@ export type Resolvers<ContextType = ExecutionContext> = {
   OrderLineList?: OrderLineListResolvers<ContextType>;
   OrderList?: OrderListResolvers<ContextType>;
   OrderResult?: OrderResultResolvers<ContextType>;
+  OrderState?: OrderStateResolvers;
   PageInfo?: PageInfoResolvers<ContextType>;
   Payment?: PaymentResolvers<ContextType>;
   PaymentCancellation?: PaymentCancellationResolvers<ContextType>;

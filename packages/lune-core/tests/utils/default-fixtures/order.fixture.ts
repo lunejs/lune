@@ -1,11 +1,11 @@
-import type { OrderTable } from '@/persistence/entities/order';
+import { OrderState, type OrderTable } from '@/persistence/entities/order';
 
 export const DefaultOrderFixture = (): OrderTable => ({
   id: crypto.randomUUID(),
   created_at: new Date(),
   updated_at: new Date(),
   code: null,
-  state: 'MODIFYING' as any,
+  state: OrderState.Modifying,
   total: 0,
   subtotal: 0,
   total_quantity: 0,

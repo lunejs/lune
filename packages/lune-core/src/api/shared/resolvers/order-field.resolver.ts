@@ -1,4 +1,4 @@
-import type { Order } from '@/persistence/entities/order';
+import { type Order } from '@/persistence/entities/order';
 
 import type { ExecutionContext } from '../context/types';
 import { ListResponse } from '../utils/list-response';

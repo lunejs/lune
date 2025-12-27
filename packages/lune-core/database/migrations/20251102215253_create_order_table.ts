@@ -9,19 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now());
 
     table.string('code').nullable();
-    table
-      .enu('state', [
-        'MODIFYING',
-        'PLACED',
-        'PROCESSING',
-        'SHIPPED',
-        'DELIVERED',
-        'READY_FOR_PICKUP',
-        'CANCELED',
-        'COMPLETED'
-      ])
-      .notNullable()
-      .defaultTo('MODIFYING');
+    table.string('state').notNullable();
     table.integer('total').notNullable().defaultTo(0);
     table.integer('subtotal').notNullable().defaultTo(0);
     table.integer('total_quantity').notNullable().defaultTo(0);
