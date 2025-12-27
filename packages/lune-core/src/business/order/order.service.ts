@@ -56,6 +56,7 @@ import { isValidEmail } from '@/utils/validators';
 
 import { OrderDiscountApplication } from './discount-application/order-discount-application';
 import { fulfillmentStateMachine } from './state-machines/fulfillment-state-machine';
+import { FulfillmentActionsValidator } from './validator/fulfillment-actions-validator';
 import { OrderActionsValidator } from './validator/order-actions-validator';
 import {
   DiscountCodeNotApplicable,
@@ -98,10 +99,12 @@ export class OrderService {
   private readonly fulfillmentRepository: FulfillmentRepository;
   private readonly fulfillmentLineRepository: FulfillmentLineRepository;
   private readonly discounts: OrderDiscountApplication;
+  private readonly fulfillmentValidator: FulfillmentActionsValidator;
 
   constructor(private readonly ctx: ExecutionContext) {
     this.validator = new OrderActionsValidator(ctx);
     this.discounts = new OrderDiscountApplication(ctx);
+    this.fulfillmentValidator = new FulfillmentActionsValidator();
 
     this.repository = ctx.repositories.order;
     this.lineRepository = ctx.repositories.orderLine;
@@ -884,7 +887,7 @@ export class OrderService {
       where: { id: fulfillmentId }
     });
 
-    if (fulfillment.type !== FulfillmentType.Shipping) {
+    if (this.fulfillmentValidator.canMarkAsShipped(fulfillment.type)) {
       return new ForbiddenFulfillmentActionError(fulfillment.type);
     }
 
