@@ -12,6 +12,7 @@ import type {
   MutationAddFulfillmentToOrderArgs,
   MutationCancelOrderArgs,
   MutationMarkFulfillmentAsDeliveredArgs,
+  MutationMarkFulfillmentAsPickedUpArgs,
   MutationMarkFulfillmentAsReadyForPickupArgs,
   MutationMarkFulfillmentAsShippedArgs,
   MutationMarkOrderAsCompletedArgs,
@@ -153,6 +154,20 @@ async function markFulfillmentAsReadyForPickup(
     : { apiErrors: [], order: result };
 }
 
+async function markFulfillmentAsPickedUp(
+  _: unknown,
+  { fulfillmentId }: MutationMarkFulfillmentAsPickedUpArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.markFulfillmentAsPickedUp(fulfillmentId);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result], order: null }
+    : { apiErrors: [], order: result };
+}
+
 async function markOrderAsCompleted(
   _: unknown,
   { id }: MutationMarkOrderAsCompletedArgs,
@@ -192,6 +207,7 @@ export const OrderResolver: GraphqlApiResolver = {
     markFulfillmentAsShipped: UseUserGuard(markFulfillmentAsShipped),
     markFulfillmentAsDelivered: UseUserGuard(markFulfillmentAsDelivered),
     markFulfillmentAsReadyForPickup: UseUserGuard(markFulfillmentAsReadyForPickup),
+    markFulfillmentAsPickedUp: UseUserGuard(markFulfillmentAsPickedUp),
     // markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
     // markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
     markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),

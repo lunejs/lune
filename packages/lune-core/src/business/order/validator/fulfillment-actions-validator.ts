@@ -12,4 +12,8 @@ export class FulfillmentActionsValidator {
   canMarkAsReadyForPickup(type: FulfillmentType) {
     return type === FulfillmentType.Pickup;
   }
+
+  canMarkAsPickedUp(type: FulfillmentType) {
+    return type === FulfillmentType.Pickup;
+  }
 }

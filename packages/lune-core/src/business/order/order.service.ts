@@ -975,6 +975,36 @@ export class OrderService {
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
   }
 
+  async markFulfillmentAsPickedUp(fulfillmentId: ID) {
+    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
+      where: { id: fulfillmentId }
+    });
+
+    if (!this.fulfillmentValidator.canMarkAsPickedUp(fulfillment.type)) {
+      return new ForbiddenFulfillmentActionError(fulfillment.type);
+    }
+
+    if (!fulfillmentStateMachine.canTransition(fulfillment.state, FulfillmentState.PickedUp)) {
+      return new InvalidFulfillmentStateTransitionError(
+        fulfillment.state,
+        FulfillmentState.PickedUp
+      );
+    }
+
+    await this.fulfillmentRepository.update({
+      where: { id: fulfillment.id },
+      data: {
+        state: FulfillmentState.PickedUp,
+        metadata: {
+          ...fulfillment.metadata,
+          pickedUpAt: new Date()
+        } satisfies Partial<PickupFulfillmentMetadata>
+      }
+    });
+
+    return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
+  }
+
   async markAsCompleted(id: ID) {
     return await this.repository.findOneOrThrow({ where: { id } });
   }
