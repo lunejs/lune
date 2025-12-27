@@ -11,6 +11,7 @@ import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.res
 import type {
   MutationAddFulfillmentToOrderArgs,
   MutationCancelOrderArgs,
+  MutationMarkFulfillmentAsDeliveredArgs,
   MutationMarkFulfillmentAsShippedArgs,
   MutationMarkOrderAsCompletedArgs,
   MutationMarkOrderAsProcessingArgs,
@@ -123,6 +124,20 @@ async function markFulfillmentAsShipped(
     : { apiErrors: [], order: result };
 }
 
+async function markFulfillmentAsDelivered(
+  _: unknown,
+  { fulfillmentId }: MutationMarkFulfillmentAsDeliveredArgs,
+  ctx: ExecutionContext
+) {
+  const orderService = new OrderService(ctx);
+
+  const result = await orderService.markFulfillmentAsDelivered(fulfillmentId);
+
+  return isErrorResult(result)
+    ? { apiErrors: [result], order: null }
+    : { apiErrors: [], order: result };
+}
+
 async function markOrderAsCompleted(
   _: unknown,
   { id }: MutationMarkOrderAsCompletedArgs,
@@ -160,6 +175,7 @@ export const OrderResolver: GraphqlApiResolver = {
     markOrderAsProcessing: UseUserGuard(markOrderAsProcessing),
     addFulfillmentToOrder: UseUserGuard(addFulfillmentToOrder),
     markFulfillmentAsShipped: UseUserGuard(markFulfillmentAsShipped),
+    markFulfillmentAsDelivered: UseUserGuard(markFulfillmentAsDelivered),
     // markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
     // markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
     markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),

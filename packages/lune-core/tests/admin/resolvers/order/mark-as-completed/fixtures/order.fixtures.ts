@@ -22,7 +22,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.DeliveredID,
-        state: OrderState.Delivered,
+        state: OrderState.Fulfilled,
         code: '#001',
         total: 1000,
         subtotal: 1000,
@@ -52,7 +52,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
       {
         shop_id: ShopConstants.ID,
         id: OrderConstants.ShippedID,
-        state: OrderState.Shipped,
+        state: OrderState.Fulfilled,
         code: '#004',
         total: 2000,
         subtotal: 2000,

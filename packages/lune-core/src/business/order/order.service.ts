@@ -887,7 +887,7 @@ export class OrderService {
       where: { id: fulfillmentId }
     });
 
-    if (this.fulfillmentValidator.canMarkAsShipped(fulfillment.type)) {
+    if (!this.fulfillmentValidator.canMarkAsShipped(fulfillment.type)) {
       return new ForbiddenFulfillmentActionError(fulfillment.type);
     }
 
@@ -906,6 +906,36 @@ export class OrderService {
           ...fulfillment.metadata,
           ...input,
           shippedAt: new Date()
+        } satisfies Partial<ShippingFulfillmentMetadata>
+      }
+    });
+
+    return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
+  }
+
+  async markFulfillmentAsDelivered(fulfillmentId: ID) {
+    const fulfillment = await this.fulfillmentRepository.findOneOrThrow({
+      where: { id: fulfillmentId }
+    });
+
+    if (!this.fulfillmentValidator.canMarkAsDelivered(fulfillment.type)) {
+      return new ForbiddenFulfillmentActionError(fulfillment.type);
+    }
+
+    if (!fulfillmentStateMachine.canTransition(fulfillment.state, FulfillmentState.Delivered)) {
+      return new InvalidFulfillmentStateTransitionError(
+        fulfillment.state,
+        FulfillmentState.Delivered
+      );
+    }
+
+    await this.fulfillmentRepository.update({
+      where: { id: fulfillment.id },
+      data: {
+        state: FulfillmentState.Delivered,
+        metadata: {
+          ...fulfillment.metadata,
+          deliveredAt: new Date()
         } satisfies Partial<ShippingFulfillmentMetadata>
       }
     });
