@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { BookmarkIcon, PackageCheckIcon, StoreIcon, TruckIcon } from 'lucide-react';
+import { BookmarkIcon, PackageCheckIcon, SquareSplitVerticalIcon } from 'lucide-react';
 
 import { Badge } from '@lune/ui';
 
@@ -18,26 +18,18 @@ export const OrderStateBadge: FC<Props> = ({ state }) => {
     );
   }
 
-  if (state === OrderState.ReadyForPickup) {
+  if (state === OrderState.PartiallyFulfilled) {
     return (
       <Badge className="flex items-center gap-1 bg-warning/15 border-warning text-warning w-fit">
-        <StoreIcon size={16} /> Ready for pickup
+        <SquareSplitVerticalIcon size={16} /> Partially fulfilled
       </Badge>
     );
   }
 
-  if (state === OrderState.Shipped) {
+  if (state === OrderState.Fulfilled) {
     return (
-      <Badge className="flex gap-1 bg-warning/15 border-warning text-warning w-fit">
-        <TruckIcon size={16} /> Sent
-      </Badge>
-    );
-  }
-
-  if (state === OrderState.Delivered) {
-    return (
-      <Badge className="flex gap-1 bg-warning/15 border-warning text-warning w-fit">
-        <PackageCheckIcon size={16} /> Delivered
+      <Badge className="flex items-center gap-1 bg-warning/15 border-warning text-warning w-fit">
+        <SquareSplitVerticalIcon size={16} /> Fulfilled
       </Badge>
     );
   }

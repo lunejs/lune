@@ -66,7 +66,7 @@ export const OrderItemsTable = ({ order }: Props) => {
               const itemImage = variantImage ?? productImage;
 
               const lineDiscountsMsg = line.appliedDiscounts
-                .map(d => `${d.code} (-$${LunePrice.format(d.discountedAmount)})`)
+                .map(d => `${d.code} (-${LunePrice.format(d.discountedAmount)})`)
                 .join(', ');
 
               return (
@@ -142,7 +142,7 @@ export const OrderItemsTable = ({ order }: Props) => {
             ))}
 
             <TableRow className="border-transparent">
-              <TableCell>Fulfillment</TableCell>
+              <TableCell>Delivery</TableCell>
               <TableCell>
                 {deliveryMethod?.type === DeliveryMethodType.Pickup ? (
                   <div className="flex items-center gap-1">

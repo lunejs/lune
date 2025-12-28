@@ -5,8 +5,8 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle, Small } from '@lu
 import { type CommonOrderFragment, DeliveryMethodType, FulfillmentType } from '@/lib/api/types';
 
 import { AddFulfillmentButton } from './add/add-fulfillment-button';
-import { OrderInStorePickupFulfillmentDetails } from './details/order-in-store-pickup-fulfillment-details';
-import { OrderShippingFulfillmentDetails } from './details/order-shipping-fulfillment-details';
+import { OrderInStorePickupFulfillmentDetails } from './line/order-in-store-pickup-fulfillment-details';
+import { OrderShippingFulfillmentLine } from './line/shipping/order-shipping-fulfillment-line';
 
 export const OrderFulfillmentCard = ({ order }: Props) => {
   const { fulfillments, deliveryMethod } = order;
@@ -34,10 +34,13 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
             </Small>
           </div>
         )}
-        {fulfillments.items.map(fulfillment => (
+        {fulfillments.items.map((fulfillment, i) => (
           <>
             {fulfillment?.type === FulfillmentType.Shipping ? (
-              <OrderShippingFulfillmentDetails fulfillment={fulfillment} />
+              <OrderShippingFulfillmentLine
+                code={`${order.code}-F${i + 1}`}
+                fulfillment={fulfillment}
+              />
             ) : (
               <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
             )}

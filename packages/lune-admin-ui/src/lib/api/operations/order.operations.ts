@@ -112,6 +112,7 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
     fulfillments {
       items {
         id
+        createdAt
         state
         type
         metadata
@@ -122,6 +123,37 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
             quantity
             orderLine {
               id
+              lineTotal
+              appliedDiscounts {
+                code
+                applicationMode
+                discountedAmount
+              }
+              variant {
+                id
+                sku
+                optionValues {
+                  id
+                  name
+                }
+                assets(input: { take: 1 }) {
+                  items {
+                    id
+                    source
+                  }
+                }
+                product {
+                  id
+                  name
+                  slug
+                  assets(input: { take: 1 }) {
+                    items {
+                      id
+                      source
+                    }
+                  }
+                }
+              }
             }
           }
         }

@@ -38,7 +38,7 @@ export const ProductDiscountHandler = new OrderLineDiscountHandler({
 
     const isPercentage = discountValue.type === 'percentage';
     const discountedAmount = isPercentage
-      ? Math.round((line.lineSubtotal * discountValue.value) / 100)
+      ? line.lineSubtotal * discountValue.value
       : discountValue.value;
 
     return discountedAmount;

@@ -94,3 +94,15 @@ export type EnhancedArg =
       type: EnhancedArgType.Custom;
       component: ArgComponent.DiscountValue | ArgComponent.DiscountOrderRequirements;
     };
+
+export type ShippingFulfillmentMetadata = {
+  trackingCode: string | null;
+  carrier: string | null;
+  shippedAt: Date | null;
+  deliveredAt: Date | null;
+};
+
+export type PickupFulfillmentMetadata = {
+  readyAt: Date | null;
+  pickedUpAt: Date | null;
+};
