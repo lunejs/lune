@@ -1,6 +1,5 @@
 import request from 'supertest';
 
-import { OrderState } from '@/persistence/entities/order';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
@@ -44,7 +43,7 @@ describe('markOrderAsProcessing - Mutation', () => {
 
     expect(apiErrors).toHaveLength(0);
     expect(order.id).toBe(OrderConstants.PlacedOrderID);
-    expect(order.state).toBe(OrderState.Processing);
+    expect(order.state).toBe('PROCESSING');
   });
 
   test('returns FORBIDDEN_ORDER_ACTION error when order is in modifying state', async () => {

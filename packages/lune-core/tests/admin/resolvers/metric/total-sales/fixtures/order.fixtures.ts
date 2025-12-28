@@ -82,7 +82,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: OrderConstants.Order3ID,
         code: '#1003',
-        state: OrderState.Shipped,
+        state: OrderState.Fulfilled,
         total: OrderConstants.Order3Total,
         placed_at: new Date('2024-12-16T09:00:00Z')
       },

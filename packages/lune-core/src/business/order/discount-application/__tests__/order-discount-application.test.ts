@@ -72,7 +72,7 @@ describe('DiscountApplication', () => {
       expect(result).toMatchObject({
         id: OrderConstants.ID,
         code: null,
-        state: 'MODIFYING',
+        state: 'modifying',
         total: LunePrice.toCent(1_800),
         subtotal: LunePrice.toCent(1_600),
         totalQuantity: 2,

@@ -46,7 +46,7 @@ export class OrderFixtures implements Fixture<OrderTable> {
         shop_id: ShopConstants.ID,
         id: TestUtils.generateUUID(),
         code: '#1003',
-        state: OrderState.Shipped,
+        state: OrderState.Fulfilled,
         total: 25000,
         placed_at: new Date('2024-12-16T09:00:00Z')
       },

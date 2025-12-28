@@ -205,7 +205,7 @@ describe('createDiscount - Mutation', () => {
     expect(discount).toMatchObject({
       code: 'FREE_SHIP',
       applicationMode: 'CODE',
-      applicationLevel: 'FULFILLMENT',
+      applicationLevel: 'DELIVERY_METHOD',
       enabled: true,
       startsAt: startsAt.toISOString(),
       handler: {
