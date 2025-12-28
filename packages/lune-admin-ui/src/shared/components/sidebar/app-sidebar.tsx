@@ -170,7 +170,8 @@ const SIDEBAR = {
     {
       title: 'Assets',
       url: '/assets',
-      icon: ImagesIcon
+      icon: ImagesIcon,
+      isActive: (pathname: string) => pathname.includes('assets')
     }
   ],
   sales: [

@@ -52,26 +52,23 @@ export const AppBreadcrumb = () => {
 
 const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
-  '/products': [{ href: '/products', label: 'Products' }, { label: 'All products' }],
+  '/products': [{ label: 'Products' }],
   '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Add product' }],
-  '/collections': [{ href: '/collections', label: 'Collections' }, { label: 'All collections' }],
-  '/collections/': [
-    { href: '/collections', label: 'Collections' },
-    { label: 'Collection details' }
-  ],
+  '/collections': [{ label: 'Collections' }],
   '/collections/new': [
     { href: '/collections', label: 'Collections' },
     { label: 'Create collection' }
   ],
-  '/assets': [{ href: '/assets', label: 'Assets' }, { label: 'All assets' }],
-  '/orders': [{ href: '/orders', label: 'Orders' }, { label: 'All orders' }],
+  '/assets': [{ label: 'Assets' }],
+  '/orders': [{ label: 'Orders' }],
   '/orders/': [{ href: '/orders', label: 'Orders' }, { label: 'Order details' }],
-  '/customers': [{ href: '/customers', label: 'Customers' }, { label: 'All customers' }],
-  '/customers/': [{ href: '/customers', label: 'Customers' }, { label: 'Customer details' }],
-  '/discounts': [{ href: '/discounts', label: 'Discounts' }, { label: 'All discounts' }],
-  '/discounts/': [{ href: '/discounts', label: 'Discounts' }, { label: 'Discount details' }],
+  '/discounts': [{ label: 'Discounts' }],
   '/discounts/new': [{ href: '/discounts', label: 'Discounts' }, { label: 'Create discount' }],
+  '/customers': [{ href: '/customers', label: 'Customers' }],
+  '/customers/': [{ href: '/customers', label: 'Customers' }, { label: 'Customer details' }],
   '/custom-objects': [{ label: 'Custom objects' }],
+
+  '/settings/shop': [{ label: 'Shop settings' }],
 
   '/settings/shipments': [{ label: 'Shipments' }],
   '/settings/shipments/new': [
