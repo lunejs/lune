@@ -18,7 +18,7 @@ export const useRemoveCustomObjectDefinitionAlert = () => {
     }
 
     success('Custom object definition removed');
-    navigate('/discounts');
+    navigate('/settings/custom-objects');
   };
 
   return {
