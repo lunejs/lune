@@ -41,6 +41,14 @@ type Fulfillment implements Node {
   createdAt: Date!
   updatedAt: Date!
   """
+  Unique code for the fulfillment
+  """
+  code: String!
+  """
+  Total quantity of items in the fulfillment
+  """
+  totalQuantity: Int!
+  """
   Current state of the fulfillment
   """
   state: FulfillmentState!

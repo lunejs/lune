@@ -72,6 +72,8 @@ describe('addFulfillmentToOrder - Mutation', () => {
     expect(order.fulfillments.items).toHaveLength(1);
 
     const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.code).toBeDefined();
+    expect(fulfillment.totalQuantity).toBe(1);
     expect(fulfillment.state).toBe('SHIPPED');
     expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBe('FedEx');
@@ -111,6 +113,8 @@ describe('addFulfillmentToOrder - Mutation', () => {
     // Validate fulfillments
     expect(order.fulfillments.count).toBe(1);
     const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.code).toBeDefined();
+    expect(fulfillment.totalQuantity).toBe(1);
     expect(fulfillment.state).toBe('SHIPPED');
     expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBe('UPS');
@@ -155,6 +159,8 @@ describe('addFulfillmentToOrder - Mutation', () => {
       (f: { state: string }) => f.state === 'PENDING'
     );
     expect(newFulfillment).toBeDefined();
+    expect(newFulfillment.code).toBeDefined();
+    expect(newFulfillment.totalQuantity).toBe(2);
     expect(newFulfillment.type).toBe('PICKUP');
     expect(newFulfillment.lines.count).toBe(2);
 
@@ -190,6 +196,8 @@ describe('addFulfillmentToOrder - Mutation', () => {
     // Validate fulfillment is in PENDING state
     expect(order.fulfillments.count).toBe(1);
     const fulfillment = order.fulfillments.items[0];
+    expect(fulfillment.code).toBeDefined();
+    expect(fulfillment.totalQuantity).toBe(1);
     expect(fulfillment.state).toBe('PENDING');
     expect(fulfillment.type).toBe('SHIPPING');
     expect(fulfillment.metadata.carrier).toBeNull();
@@ -387,6 +395,8 @@ const ADD_FULFILLMENT_MUTATION = /* GraphQL */ `
           count
           items {
             id
+            code
+            totalQuantity
             state
             type
             metadata

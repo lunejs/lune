@@ -8,6 +8,8 @@ export class FulfillmentSerializer extends Serializer<Fulfillment, FulfillmentTa
       ['id', 'id'],
       ['created_at', 'createdAt'],
       ['updated_at', 'updatedAt'],
+      ['code', 'code'],
+      ['total_quantity', 'totalQuantity'],
       ['state', 'state'],
       ['metadata', 'metadata'],
       ['type', 'type'],

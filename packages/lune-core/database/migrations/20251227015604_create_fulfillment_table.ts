@@ -8,6 +8,8 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('created_at', { useTz: true }).defaultTo(knex.fn.now());
     table.timestamp('updated_at', { useTz: true }).defaultTo(knex.fn.now());
 
+    table.string('code').notNullable();
+    table.integer('total_quantity').notNullable();
     table.string('type', 50).notNullable();
     table.string('state', 50).notNullable();
     table.jsonb('metadata').notNullable();
@@ -20,6 +22,8 @@ export async function up(knex: Knex): Promise<void> {
       .defaultTo(knex.raw(`(current_setting('app.current_shop_id'::text))::uuid`))
       .references('id')
       .inTable('shop');
+
+    table.unique(['shop_id', 'code']);
   });
 }
 

@@ -22,6 +22,8 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         shop_id: ShopConstants.ID,
         id: FulfillmentConstants.PendingShippingFulfillmentID,
         order_id: OrderConstants.ShippingOrderID,
+        code: '#F001',
+        total_quantity: 1,
         state: FulfillmentState.Pending,
         type: FulfillmentType.Shipping,
         metadata: {
@@ -35,6 +37,8 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         shop_id: ShopConstants.ID,
         id: FulfillmentConstants.PickupFulfillmentID,
         order_id: OrderConstants.PickupOrderID,
+        code: '#F002',
+        total_quantity: 1,
         state: FulfillmentState.Pending,
         type: FulfillmentType.Pickup,
         metadata: {
@@ -46,6 +50,8 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         shop_id: ShopConstants.ID,
         id: FulfillmentConstants.AlreadyShippedFulfillmentID,
         order_id: OrderConstants.AlreadyShippedOrderID,
+        code: '#F003',
+        total_quantity: 2,
         state: FulfillmentState.Shipped,
         type: FulfillmentType.Shipping,
         metadata: {

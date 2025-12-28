@@ -20,6 +20,8 @@ export class FulfillmentFixtures implements Fixture<FulfillmentTable> {
         shop_id: ShopConstants.ID,
         id: FulfillmentConstants.PartiallyFulfilledOrderFulfillmentID,
         order_id: OrderConstants.PartiallyFulfilledOrderID,
+        code: '#F001',
+        total_quantity: 1,
         state: FulfillmentState.Shipped,
         metadata: {
           carrier: 'DHL',

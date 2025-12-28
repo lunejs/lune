@@ -851,6 +851,8 @@ export class OrderService {
 
     const fulfillment = await this.fulfillmentRepository.create({
       orderId: order.id,
+      totalQuantity: input.orderLines.reduce((acc, curr) => acc + curr.quantity, 0),
+      code: `${order.code}-F-${Math.random()}`,
       state: isShipped ? FulfillmentState.Shipped : FulfillmentState.Pending,
       type: isShippingDelivery ? FulfillmentType.Shipping : FulfillmentType.Pickup,
       metadata

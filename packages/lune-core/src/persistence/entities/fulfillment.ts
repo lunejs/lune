@@ -37,6 +37,14 @@ export const enum FulfillmentState {
  */
 export interface Fulfillment extends LuneEntity {
   /**
+   * Unique code for the fulfillment
+   */
+  code: string;
+  /**
+   * Total quantity of items in the fulfillment
+   */
+  totalQuantity: number;
+  /**
    * Current state of the fulfillment
    */
   state: FulfillmentState;
@@ -67,6 +75,8 @@ export type PickupFulfillmentMetadata = {
 };
 
 export interface FulfillmentTable extends LuneTable {
+  code: string;
+  total_quantity: number;
   state: FulfillmentState;
   type: FulfillmentType;
   metadata?: Record<string, unknown> | null;
