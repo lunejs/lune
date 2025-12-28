@@ -28,7 +28,7 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
       </CardHeader>
       <CardContent className="p-0">
         {!fulfillments.items.length && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-6 py-4">
             {deliveryMethod?.type === DeliveryMethodType.Shipping ? (
               <TruckIcon size={16} />
             ) : (
@@ -51,7 +51,11 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
                   fulfillment={fulfillment}
                 />
               ) : (
-                <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
+                <OrderInStorePickupFulfillmentDetails
+                  code={`${order.code}-F${i + 1}`}
+                  order={order}
+                  fulfillment={fulfillment}
+                />
               )}
             </div>
           ))}

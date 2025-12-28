@@ -12,7 +12,7 @@ export const CustomObjectDefinitionsTableEmptyState = () => {
       subtitle="Create custom object definitions to store your custom data."
       icon={<DatabaseIcon />}
       actions={
-        <Link to="/custom-objects/new">
+        <Link to="/settings/custom-objects/new">
           <Button>Add definition</Button>
         </Link>
       }

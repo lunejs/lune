@@ -79,6 +79,6 @@ export class OrderActionsValidator {
   }
 
   canCancel(state: OrderState) {
-    return [OrderState.Placed, OrderState.Processing].includes(state);
+    return state !== OrderState.Completed;
   }
 }

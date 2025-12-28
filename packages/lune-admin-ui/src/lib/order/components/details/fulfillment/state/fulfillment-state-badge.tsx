@@ -6,6 +6,10 @@ import { Badge } from '@lune/ui';
 import { FulfillmentState } from '@/lib/api/types';
 
 export const FulfillmentStateBadge: FC<Props> = ({ state }) => {
+  if (state === FulfillmentState.Pending) {
+    return <Badge variant={'outline'}>Pending</Badge>;
+  }
+
   if (state === FulfillmentState.Shipped) {
     return (
       <Badge className="flex items-center gap-1 bg-warning/15 border-warning text-warning w-fit">

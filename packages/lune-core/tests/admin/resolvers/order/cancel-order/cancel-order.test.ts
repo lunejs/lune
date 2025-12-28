@@ -150,7 +150,7 @@ describe('cancelOrder - Mutation', () => {
     expect(variant.stock).toBe(currentStock);
   });
 
-  test('returns FORBIDDEN_ORDER_ACTION error when order is shipped', async () => {
+  test('cancels a fulfilled order', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -159,6 +159,29 @@ describe('cancelOrder - Mutation', () => {
         query: CANCEL_ORDER_MUTATION,
         variables: {
           id: OrderConstants.ShippedID,
+          input: {
+            reason: 'Customer requested refund'
+          }
+        }
+      });
+
+    const { order, apiErrors } = res.body.data.cancelOrder;
+
+    expect(apiErrors).toHaveLength(0);
+    expect(order.id).toBe(OrderConstants.ShippedID);
+    expect(order.state).toBe('CANCELED');
+    expect(order.cancellation.reason).toBe('Customer requested refund');
+  });
+
+  test('returns FORBIDDEN_ORDER_ACTION error when order is completed', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .send({
+        query: CANCEL_ORDER_MUTATION,
+        variables: {
+          id: OrderConstants.CompletedID,
           input: {
             reason: 'Test',
             shouldRestock: false

@@ -4,7 +4,7 @@ import z from 'zod';
 
 import { notification, useDialogContext } from '@lune/ui';
 
-import type { CommonOrderFragment } from '@/lib/api/types';
+import { type CommonOrderFragment, DeliveryMethodType } from '@/lib/api/types';
 import { useAddFulfillmentToOrder } from '@/lib/order/hooks/use-add-fulfillment-to-order';
 import { FormMessages } from '@/shared/forms/form-messages';
 
@@ -33,6 +33,16 @@ export const useAddFulfillmentForm = (order: CommonOrderFragment) => {
       form.setError('root', { message: 'Selected lines should have a valid quantity' });
     }
 
+    const isShipping = order.deliveryMethod?.type === DeliveryMethodType.Shipping;
+
+    if (isShipping) {
+      const isAnyEmpty = !values.carrier || !values.trackingCode;
+
+      if (!values.carrier) form.setError('carrier', { message: FormMessages.required });
+      if (!values.trackingCode) form.setError('trackingCode', { message: FormMessages.required });
+      if (isAnyEmpty) return;
+    }
+
     const result = await addFulfillmentToOrder(order.id, values);
 
     if (!result.isSuccess) {
@@ -54,8 +64,8 @@ export const useAddFulfillmentForm = (order: CommonOrderFragment) => {
 
 const schema = z.object({
   orderLines: z.array(z.object({ id: z.uuid(), quantity: z.int() })),
-  trackingCode: z.string().min(1, FormMessages.required),
-  carrier: z.string().min(1, FormMessages.required)
+  trackingCode: z.string().optional(),
+  carrier: z.string().optional()
 });
 
 type FormValues = z.infer<typeof schema>;

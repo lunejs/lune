@@ -13,13 +13,23 @@ import {
   Small
 } from '@lune/ui';
 
-import type { CommonOrderFragment, ShippingFulfillmentMetadata } from '@/lib/api/types';
+import {
+  type CommonOrderFragment,
+  FulfillmentState,
+  FulfillmentType,
+  type PickupFulfillmentMetadata,
+  type ShippingFulfillmentMetadata
+} from '@/lib/api/types';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 
 import { FulfillmentStateBadge } from '../../state/fulfillment-state-badge';
 
 export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }: Props) => {
-  const details = fulfillment.metadata as ShippingFulfillmentMetadata;
+  const shippingDetails = fulfillment.metadata as ShippingFulfillmentMetadata;
+  const pickupDetails = fulfillment.metadata as PickupFulfillmentMetadata;
+
+  const isShipping = fulfillment.type === FulfillmentType.Shipping;
+  const isPending = fulfillment.state === FulfillmentState.Pending;
 
   return (
     <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -31,31 +41,53 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
           <DialogDescription>{formatDate(new Date(fulfillment.createdAt))}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3 border rounded-md bg-card p-3">
-            {details.shippedAt && (
-              <div className="flex items-center gap-2">
-                <PackageIcon size={16} />
-                <Small className="font-normal">
-                  Shipped at: {formatDate(new Date(details.shippedAt))}
-                </Small>
-              </div>
-            )}
+          {!isPending && (
+            <div className="flex flex-col gap-3 border rounded-md bg-card p-3">
+              {pickupDetails.readyAt && (
+                <div className="flex items-center gap-2">
+                  <PackageIcon size={16} />
+                  <Small className="font-normal">
+                    Ready at: {formatDate(new Date(pickupDetails.readyAt))}
+                  </Small>
+                </div>
+              )}
 
-            {details.deliveredAt && (
-              <div className="flex items-center gap-2">
-                <PackageCheckIcon size={16} />
-                <Small className="font-normal">
-                  Delivered at: {formatDate(new Date(details.deliveredAt))}
-                </Small>
-              </div>
-            )}
-            <div className="flex items-center gap-2">
-              <TruckIcon size={16} />
-              <Small className="font-normal">
-                {details.carrier}: {details.trackingCode}
-              </Small>
+              {pickupDetails.pickedUpAt && (
+                <div className="flex items-center gap-2">
+                  <PackageIcon size={16} />
+                  <Small className="font-normal">
+                    Picked up at: {formatDate(new Date(pickupDetails.pickedUpAt))}
+                  </Small>
+                </div>
+              )}
+
+              {shippingDetails.shippedAt && (
+                <div className="flex items-center gap-2">
+                  <PackageIcon size={16} />
+                  <Small className="font-normal">
+                    Shipped at: {formatDate(new Date(shippingDetails.shippedAt))}
+                  </Small>
+                </div>
+              )}
+
+              {shippingDetails.deliveredAt && (
+                <div className="flex items-center gap-2">
+                  <PackageCheckIcon size={16} />
+                  <Small className="font-normal">
+                    Delivered at: {formatDate(new Date(shippingDetails.deliveredAt))}
+                  </Small>
+                </div>
+              )}
+              {isShipping && (
+                <div className="flex items-center gap-2">
+                  <TruckIcon size={16} />
+                  <Small className="font-normal">
+                    {shippingDetails.carrier}: {shippingDetails.trackingCode}
+                  </Small>
+                </div>
+              )}
             </div>
-          </div>
+          )}
           <div className="flex flex-col border rounded-md divide-y bg-card">
             {fulfillment.lines.items.map(line => {
               const orderLine = line.orderLine;

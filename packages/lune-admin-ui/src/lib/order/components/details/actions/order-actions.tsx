@@ -17,7 +17,7 @@ import { CompleteOrderAlert } from './complete/complete-order-alert';
 export const OrderActions = ({ order }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<OrderDialog | null>(null);
 
-  if (order.state === OrderState.Completed) return null;
+  if ([OrderState.Completed, OrderState.Canceled].includes(order.state)) return null;
 
   return (
     <>
