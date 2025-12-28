@@ -1,4 +1,12 @@
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lune/ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@lune/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 
@@ -15,7 +23,9 @@ export const AddFulfillmentButton = ({ order }: Props) => {
       <DialogContent className="p-0 py-6">
         <DialogHeader className="px-6">
           <DialogTitle>Add fulfillment</DialogTitle>
+          <DialogDescription>Select lines you want to fulfill</DialogDescription>
         </DialogHeader>
+
         <AddFulfillmentForm order={order} />
       </DialogContent>
     </Dialog>

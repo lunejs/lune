@@ -17,6 +17,8 @@ import { CompleteOrderAlert } from './complete/complete-order-alert';
 export const OrderActions = ({ order }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<OrderDialog | null>(null);
 
+  if (order.state === OrderState.Completed) return null;
+
   return (
     <>
       <DropdownMenu>
@@ -31,12 +33,9 @@ export const OrderActions = ({ order }: Props) => {
               <CheckCircle2Icon /> Complete
             </DropdownMenuItem>
           )}
-          {order.state !== OrderState.Completed && (
-            <DropdownMenuItem onClick={() => setDialogOpen(OrderDialog.Cancel)}>
-              <XIcon className="text-destructive" />{' '}
-              <span className="text-destructive">Cancel</span>
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem onClick={() => setDialogOpen(OrderDialog.Cancel)}>
+            <XIcon className="text-destructive" /> <span className="text-destructive">Cancel</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <CompleteOrderAlert

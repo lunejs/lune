@@ -7,7 +7,7 @@ import { useAddFulfillmentFormContext } from '../../use-form';
 
 import { FulfillmentLineQuantitySelector } from './fulfillment-line-quantity-selector';
 
-export const FulfillmentLineSelectorItem = ({ line, isSelected }: Props) => {
+export const FulfillmentLineSelectorItem = ({ line, isSelected, remainingQuantity }: Props) => {
   const form = useAddFulfillmentFormContext();
 
   const image =
@@ -28,7 +28,7 @@ export const FulfillmentLineSelectorItem = ({ line, isSelected }: Props) => {
               if (value) {
                 form.setValue('orderLines', [
                   ...form.getValues('orderLines'),
-                  { id: line.id, quantity: line.quantity }
+                  { id: line.id, quantity: remainingQuantity }
                 ]);
                 return;
               }
@@ -51,9 +51,9 @@ export const FulfillmentLineSelectorItem = ({ line, isSelected }: Props) => {
         </div>
       </div>
       <div>
-        {isSelected ? (
+        {isSelected && remainingQuantity !== 1 ? (
           <FulfillmentLineQuantitySelector
-            line={line}
+            remainingQuantity={remainingQuantity}
             onChange={quantity => {
               form.setValue(
                 'orderLines',
@@ -69,7 +69,7 @@ export const FulfillmentLineSelectorItem = ({ line, isSelected }: Props) => {
           <>
             x
             <Badge className="ml-2" variant={'secondary'}>
-              {line.quantity}
+              {remainingQuantity}
             </Badge>
           </>
         )}
@@ -81,4 +81,5 @@ export const FulfillmentLineSelectorItem = ({ line, isSelected }: Props) => {
 type Props = {
   isSelected: boolean;
   line: CommonOrderFragment['lines']['items'][0];
+  remainingQuantity: number;
 };

@@ -3,10 +3,8 @@ import { MinusIcon, PlusIcon } from 'lucide-react';
 
 import { Button, ButtonGroup, InputGroup, InputGroupAddon, InputGroupInput } from '@lune/ui';
 
-import type { CommonOrderFragment } from '@/lib/api/types';
-
-export const FulfillmentLineQuantitySelector = ({ line, onChange }: Props) => {
-  const [quantity, setQuantity] = useState(line.quantity);
+export const FulfillmentLineQuantitySelector = ({ remainingQuantity, onChange }: Props) => {
+  const [quantity, setQuantity] = useState(remainingQuantity);
 
   useEffect(() => {
     onChange(quantity);
@@ -25,18 +23,17 @@ export const FulfillmentLineQuantitySelector = ({ line, onChange }: Props) => {
           maxLength={2}
           value={quantity}
           onChange={e => {
-            console.log(e.target.value);
             if (e.target.value === '') setQuantity(0);
 
             const value = parseInt(e.target.value, 10);
 
             if (!isNaN(value) && value >= 1 && value <= 99) {
-              if (value > line.quantity) return;
+              if (value > remainingQuantity) return;
               setQuantity(value);
             }
           }}
         />
-        <InputGroupAddon align={'inline-end'}>of {line.quantity}</InputGroupAddon>
+        <InputGroupAddon align={'inline-end'}>of {remainingQuantity}</InputGroupAddon>
       </InputGroup>
       <Button
         variant="outline"
@@ -56,7 +53,7 @@ export const FulfillmentLineQuantitySelector = ({ line, onChange }: Props) => {
         type="button"
         aria-label="Increment"
         className="size-8"
-        disabled={quantity >= line.quantity}
+        disabled={quantity >= remainingQuantity}
         onClick={() => {
           setQuantity(prev => prev + 1);
         }}
@@ -68,6 +65,6 @@ export const FulfillmentLineQuantitySelector = ({ line, onChange }: Props) => {
 };
 
 type Props = {
-  line: CommonOrderFragment['lines']['items'][0];
+  remainingQuantity: number;
   onChange: (quantity: number) => void;
 };

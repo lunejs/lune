@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import z from 'zod';
 
-import { useDialogContext } from '@lune/ui';
+import { notification, useDialogContext } from '@lune/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 import { useAddFulfillmentToOrder } from '@/lib/order/hooks/use-add-fulfillment-to-order';
@@ -40,6 +40,7 @@ export const useAddFulfillmentForm = (order: CommonOrderFragment) => {
       return;
     }
 
+    notification.success('Fulfillment created');
     dialogContext.setIsOpen(false);
   };
 

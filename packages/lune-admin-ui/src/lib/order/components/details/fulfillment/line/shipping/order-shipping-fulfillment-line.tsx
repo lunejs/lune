@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InfoIcon, MoreVerticalIcon, PackageCheckIcon, TruckIcon, XIcon } from 'lucide-react';
+import { InfoIcon, MoreVerticalIcon, PackageCheckIcon, TruckIcon } from 'lucide-react';
 
 import {
   Button,
@@ -81,11 +81,6 @@ export const OrderShippingFulfillmentLine = ({ code, order, fulfillment }: Props
                 <PackageCheckIcon /> Mark as Delivered
               </DropdownMenuItem>
             )}
-
-            <DropdownMenuItem onClick={() => setDialogOpen(FulfillmentDialog.Cancel)}>
-              <XIcon className="text-destructive" />{' '}
-              <span className="text-destructive">Cancel</span>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

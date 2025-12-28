@@ -2,7 +2,12 @@ import { StoreIcon, TruckIcon } from 'lucide-react';
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle, Small } from '@lune/ui';
 
-import { type CommonOrderFragment, DeliveryMethodType, FulfillmentType } from '@/lib/api/types';
+import {
+  type CommonOrderFragment,
+  DeliveryMethodType,
+  FulfillmentType,
+  OrderState
+} from '@/lib/api/types';
 
 import { AddFulfillmentButton } from './add/add-fulfillment-button';
 import { OrderInStorePickupFulfillmentDetails } from './line/order-in-store-pickup-fulfillment-details';
@@ -12,14 +17,16 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
   const { fulfillments, deliveryMethod } = order;
 
   return (
-    <Card>
-      <CardHeader className="flex justify-between flex-row items-center border-b">
+    <Card className="p-0 gap-0">
+      <CardHeader className="flex justify-between flex-row items-center border-b pt-6">
         <CardTitle className="flex items-center gap-2">Fulfillment</CardTitle>
         <CardAction>
-          <AddFulfillmentButton order={order} />
+          {[OrderState.Placed, OrderState.PartiallyFulfilled].includes(order.state) && (
+            <AddFulfillmentButton order={order} />
+          )}
         </CardAction>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         {!fulfillments.items.length && (
           <div className="flex items-center gap-2">
             {deliveryMethod?.type === DeliveryMethodType.Shipping ? (
@@ -34,19 +41,21 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
             </Small>
           </div>
         )}
-        {fulfillments.items.map((fulfillment, i) => (
-          <>
-            {fulfillment?.type === FulfillmentType.Shipping ? (
-              <OrderShippingFulfillmentLine
-                code={`${order.code}-F${i + 1}`}
-                order={order}
-                fulfillment={fulfillment}
-              />
-            ) : (
-              <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
-            )}
-          </>
-        ))}
+        <div className="divide-y">
+          {fulfillments.items.map((fulfillment, i) => (
+            <div key={fulfillment.id} className="px-6 py-4">
+              {fulfillment?.type === FulfillmentType.Shipping ? (
+                <OrderShippingFulfillmentLine
+                  code={`${order.code}-F${i + 1}`}
+                  order={order}
+                  fulfillment={fulfillment}
+                />
+              ) : (
+                <OrderInStorePickupFulfillmentDetails fulfillment={fulfillment} />
+              )}
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

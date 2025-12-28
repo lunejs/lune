@@ -16,6 +16,7 @@ export const AddFulfillmentForm = ({ order }: Props) => {
             <FormMessage>{form.rootError}</FormMessage>
           </div>
         )}
+
         <FulfillmentLineSelector />
 
         <div className="flex items-start gap-4 px-4">
@@ -30,7 +31,7 @@ export const AddFulfillmentForm = ({ order }: Props) => {
             </Button>
           </DialogClose>
           <Button variant={'default'} isLoading={form.formState.isSubmitting}>
-            Saves
+            Save
           </Button>
         </div>
       </form>

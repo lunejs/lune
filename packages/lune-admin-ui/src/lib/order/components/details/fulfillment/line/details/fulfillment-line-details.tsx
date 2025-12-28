@@ -1,4 +1,4 @@
-import { PackageIcon, TruckIcon } from 'lucide-react';
+import { PackageCheckIcon, PackageIcon, TruckIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { formatDate } from '@lune/common';
@@ -34,7 +34,7 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
           <div className="flex flex-col gap-3 border rounded-md bg-card p-3">
             {details.shippedAt && (
               <div className="flex items-center gap-2">
-                <TruckIcon size={16} />
+                <PackageIcon size={16} />
                 <Small className="font-normal">
                   Shipped at: {formatDate(new Date(details.shippedAt))}
                 </Small>
@@ -43,14 +43,14 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
 
             {details.deliveredAt && (
               <div className="flex items-center gap-2">
-                <TruckIcon size={16} />
+                <PackageCheckIcon size={16} />
                 <Small className="font-normal">
                   Delivered at: {formatDate(new Date(details.deliveredAt))}
                 </Small>
               </div>
             )}
             <div className="flex items-center gap-2">
-              <PackageIcon size={16} />
+              <TruckIcon size={16} />
               <Small className="font-normal">
                 {details.carrier}: {details.trackingCode}
               </Small>
@@ -64,7 +64,7 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
                 orderLine.variant.product.assets.items[0]?.source;
 
               return (
-                <div className="flex items-center justify-between p-3">
+                <div key={line.id} className="flex items-center justify-between p-3">
                   <div className="flex items-center gap-2">
                     {image ? (
                       <img className="size-12 object-cover rounded-sm" src={image} />
