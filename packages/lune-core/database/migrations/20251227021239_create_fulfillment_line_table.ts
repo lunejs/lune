@@ -30,9 +30,6 @@ export async function up(knex: Knex): Promise<void> {
       .defaultTo(knex.raw(`(current_setting('app.current_shop_id'::text))::uuid`))
       .references('id')
       .inTable('shop');
-
-    table.index(['shop_id', 'fulfillment_id']);
-    table.index(['shop_id', 'order_line_id']);
   });
 }
 
