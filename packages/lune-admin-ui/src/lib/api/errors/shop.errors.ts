@@ -6,7 +6,7 @@ export const getShopError = (error?: ShopErrorResult) => {
   if (!error) return '';
 
   if (error.code === ShopErrorCode.EmailAlreadyExists) {
-    return 'Email already exists for a shop';
+    return 'Email already exists for this shop';
   }
 
   return GENERIC_ERROR;

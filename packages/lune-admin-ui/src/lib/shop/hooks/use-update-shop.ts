@@ -11,10 +11,10 @@ export const useUpdateShop = () => {
   const { isPending, mutateAsync } = useGqlMutationDEPRECATED(UPDATE_SHOP_MUTATION, getShopError);
 
   const updateShop = async (
-    shopSlug: string,
+    id: string,
     input: UpdateShopInput
   ): Promise<ActionResult<ShopErrorCode>> => {
-    const { shop, error, errorCode } = await mutateAsync({ shopSlug, input });
+    const { shop, error, errorCode } = await mutateAsync({ id, input });
 
     if (error) return { isSuccess: false, error, errorCode };
 

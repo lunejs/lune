@@ -59,8 +59,8 @@ export const CREATE_SHOP_MUTATION = graphql(`
 `);
 
 export const UPDATE_SHOP_MUTATION = graphql(`
-  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {
-    updateShop(shopSlug: $shopSlug, input: $input) {
+  mutation UpdateShop($id: ID!, $input: UpdateShopInput!) {
+    updateShop(id: $id, input: $input) {
       apiErrors {
         message
         code

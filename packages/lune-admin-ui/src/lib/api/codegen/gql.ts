@@ -135,7 +135,7 @@ type Documents = {
     "\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n": typeof types.GetShopsDocument,
     "\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n": typeof types.ShopDocument,
     "\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": typeof types.CreateShopDocument,
-    "\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": typeof types.UpdateShopDocument,
+    "\n  mutation UpdateShop($id: ID!, $input: UpdateShopInput!) {\n    updateShop(id: $id, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": typeof types.UpdateShopDocument,
     "\n  fragment CommonUser on User {\n    id\n    email\n  }\n": typeof types.CommonUserFragmentDoc,
     "\n  query Whoami {\n    whoami {\n      ...CommonUser\n    }\n  }\n": typeof types.WhoamiDocument,
     "\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n": typeof types.GenerateAccessTokenDocument,
@@ -272,7 +272,7 @@ const documents: Documents = {
     "\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n": types.GetShopsDocument,
     "\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n": types.ShopDocument,
     "\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": types.CreateShopDocument,
-    "\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": types.UpdateShopDocument,
+    "\n  mutation UpdateShop($id: ID!, $input: UpdateShopInput!) {\n    updateShop(id: $id, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": types.UpdateShopDocument,
     "\n  fragment CommonUser on User {\n    id\n    email\n  }\n": types.CommonUserFragmentDoc,
     "\n  query Whoami {\n    whoami {\n      ...CommonUser\n    }\n  }\n": types.WhoamiDocument,
     "\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n": types.GenerateAccessTokenDocument,
@@ -789,7 +789,7 @@ export function graphql(source: "\n  mutation CreateShop($input: CreateShopInput
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation UpdateShop($id: ID!, $input: UpdateShopInput!) {\n    updateShop(id: $id, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateShop($id: ID!, $input: UpdateShopInput!) {\n    updateShop(id: $id, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

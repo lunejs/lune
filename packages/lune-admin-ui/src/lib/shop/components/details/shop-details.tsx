@@ -1,8 +1,11 @@
-import { CodeIcon, EarthIcon, HashIcon, PencilIcon, StoreIcon } from 'lucide-react';
+import { CodeIcon, DotIcon, EarthIcon, HashIcon, PencilIcon, StoreIcon } from 'lucide-react';
 
+import { formatPhoneNumber } from '@lune/common';
 import { Button, Card, CardContent, CardHeader, CardTitle, Muted, Small } from '@lune/ui';
 
 import type { CommonShopFragment } from '@/lib/api/types';
+
+import { ShopGeneralInfo } from './general-info/shop-general-info';
 
 export const ShopDetails = ({ shop }: Props) => {
   return (
@@ -18,15 +21,20 @@ export const ShopDetails = ({ shop }: Props) => {
 
               <div>
                 <Small>{shop.name}</Small>
-                <Muted>{shop.email}</Muted>
+                <Muted className="flex items-center">
+                  {shop.email} <DotIcon size={20} />
+                  {formatPhoneNumber({ phoneNumber: shop.phoneNumber })}
+                </Muted>
               </div>
             </div>
-            <Button size={'icon'} variant={'ghost'}>
-              <PencilIcon
-                className="opacity-0 text-muted-foreground group-hover:opacity-100 transition-opacity"
-                size={16}
-              />
-            </Button>
+            <ShopGeneralInfo shop={shop}>
+              <Button size={'icon'} variant={'ghost'}>
+                <PencilIcon
+                  className="opacity-0 text-muted-foreground group-hover:opacity-100 transition-opacity"
+                  size={16}
+                />
+              </Button>
+            </ShopGeneralInfo>
           </div>
 
           <div className="group p-4 border-t flex items-center justify-between gap-4 transition-colors">
@@ -35,7 +43,9 @@ export const ShopDetails = ({ shop }: Props) => {
 
               <div>
                 <Small>Socials</Small>
-                <Muted>Facebook - Instagram - Twitter</Muted>
+                <Muted className="flex items-center">
+                  Facebook <DotIcon size={20} /> Instagram <DotIcon size={20} /> Twitter
+                </Muted>
               </div>
             </div>
             <Button size={'icon'} variant={'ghost'}>
