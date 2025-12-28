@@ -24,7 +24,7 @@ import { FulfillmentStateBadge } from '../state/fulfillment-state-badge';
 
 import { FulfillmentLineDetails } from './details/fulfillment-line-details';
 
-export const OrderInStorePickupFulfillmentDetails = ({ fulfillment, order, code }: Props) => {
+export const OrderInStorePickupFulfillmentDetails = ({ fulfillment, order }: Props) => {
   const { loading, failure, success } = useLoadingNotification();
   const [dialogOpen, setDialogOpen] = useState<FulfillmentDialog | null>(null);
 
@@ -40,7 +40,7 @@ export const OrderInStorePickupFulfillmentDetails = ({ fulfillment, order, code 
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-1">
           <TruckIcon size={16} />
-          <Small>{code}</Small>
+          <Small>{fulfillment.code}</Small>
           <div className="ml-2">
             <FulfillmentStateBadge state={fulfillment.state} />
           </div>
@@ -102,7 +102,6 @@ export const OrderInStorePickupFulfillmentDetails = ({ fulfillment, order, code 
         </DropdownMenu>
 
         <FulfillmentLineDetails
-          code={code}
           fulfillment={fulfillment}
           isOpen={dialogOpen === FulfillmentDialog.Details}
           setIsOpen={value =>
@@ -121,7 +120,6 @@ const enum FulfillmentDialog {
 }
 
 type Props = {
-  code: string;
   order: CommonOrderFragment;
   fulfillment: CommonOrderFragment['fulfillments']['items'][0];
 };

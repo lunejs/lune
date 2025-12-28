@@ -7,6 +7,7 @@ import { AdminUiServerPlugin } from './plugins/admin-ui-server-plugin';
 import { AssetServerPlugin } from './plugins/asset-server-plugin';
 import { FlatShippingHandler } from './shipping-handler/flat-shipping-handler';
 import { LocalStorageProvider } from './storage/local-storage-provider';
+import { DefaultFulfillmentCodeStrategy } from './strategies/fulfillment-code/default-fulfillment-code-strategy';
 import { DefaultOrderCodeStrategy } from './strategies/order-code/default-order-code-strategy';
 import type { LuneConfig } from './lune.config';
 
@@ -22,7 +23,8 @@ export const DEFAULT_LUNE_CONFIG: LuneConfig = {
     url: 'postgres://app_user:womteC_ruqri0_punqah@localhost:5432/lune'
   },
   orders: {
-    codeStrategy: new DefaultOrderCodeStrategy({ prefix: '#' })
+    codeStrategy: new DefaultOrderCodeStrategy({ prefix: '#' }),
+    fulfillmentCodeStrategy: new DefaultFulfillmentCodeStrategy()
   },
   assets: {
     storageProvider: new LocalStorageProvider('http://localhost:4000'),

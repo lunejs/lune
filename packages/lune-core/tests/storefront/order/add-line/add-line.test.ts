@@ -115,7 +115,7 @@ describe('addLineToOrder - Mutation', () => {
     expect(addedLine.lineTotal).toBe(LunePrice.toCent(1_600));
   });
 
-  test('returns INVALID_QUERY when input quantity is a negative number', async () => {
+  test('returns INVALID_QUANTITY when input quantity is a negative number', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)

@@ -24,7 +24,7 @@ import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeho
 
 import { FulfillmentStateBadge } from '../../state/fulfillment-state-badge';
 
-export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }: Props) => {
+export const FulfillmentLineDetails = ({ isOpen, setIsOpen, fulfillment }: Props) => {
   const shippingDetails = fulfillment.metadata as ShippingFulfillmentMetadata;
   const pickupDetails = fulfillment.metadata as PickupFulfillmentMetadata;
 
@@ -36,7 +36,7 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {code} <FulfillmentStateBadge state={fulfillment.state} />{' '}
+            {fulfillment.code} <FulfillmentStateBadge state={fulfillment.state} />{' '}
           </DialogTitle>
           <DialogDescription>{formatDate(new Date(fulfillment.createdAt))}</DialogDescription>
         </DialogHeader>
@@ -129,6 +129,5 @@ export const FulfillmentLineDetails = ({ isOpen, setIsOpen, code, fulfillment }:
 type Props = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  code: string;
   fulfillment: CommonOrderFragment['fulfillments']['items'][0];
 };

@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { DeliveryMethodType, type OrderState } from '@/lib/api/types';
+import { DeliveryMethodType, OrderState } from '@/lib/api/types';
 import { useDataTable } from '@/shared/components/data-table/use-data-table';
 import { getSkip } from '@/shared/utils/pagination.utils';
 
@@ -31,7 +31,18 @@ export const useOrdersTable = () => {
 
   const { filters, pagination } = dataTable;
 
-  const { isLoading: isLoadingCount, count } = useCountOrders();
+  const { isLoading: isLoadingCount, count } = useCountOrders({
+    filters: {
+      states: [
+        OrderState.Canceled,
+        OrderState.Completed,
+        OrderState.Fulfilled,
+        OrderState.PartiallyFulfilled,
+        OrderState.Placed,
+        OrderState.Processing
+      ]
+    }
+  });
 
   const {
     isLoading,

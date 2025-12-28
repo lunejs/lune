@@ -42,20 +42,12 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
           </div>
         )}
         <div className="divide-y">
-          {fulfillments.items.map((fulfillment, i) => (
+          {fulfillments.items.map(fulfillment => (
             <div key={fulfillment.id} className="px-6 py-4">
               {fulfillment?.type === FulfillmentType.Shipping ? (
-                <OrderShippingFulfillmentLine
-                  code={`${order.code}-F${i + 1}`}
-                  order={order}
-                  fulfillment={fulfillment}
-                />
+                <OrderShippingFulfillmentLine order={order} fulfillment={fulfillment} />
               ) : (
-                <OrderInStorePickupFulfillmentDetails
-                  code={`${order.code}-F${i + 1}`}
-                  order={order}
-                  fulfillment={fulfillment}
-                />
+                <OrderInStorePickupFulfillmentDetails order={order} fulfillment={fulfillment} />
               )}
             </div>
           ))}

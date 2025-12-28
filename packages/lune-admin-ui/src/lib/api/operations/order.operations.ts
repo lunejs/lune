@@ -113,6 +113,8 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       items {
         id
         createdAt
+        code
+        totalQuantity
         state
         type
         metadata

@@ -9,6 +9,7 @@ import type { ImageProcessor } from './image-processor/image-processor';
 import type { PaymentHandler } from './payment-handler/payment-handler';
 import type { ShippingHandler } from './shipping-handler/shipping-handler';
 import type { StorageProvider } from './storage/storage';
+import type { FulfillmentCodeStrategy } from './strategies/fulfillment-code/fulfillment-code.strategy';
 import type { OrderCodeStrategy } from './strategies/order-code/order-code.strategy';
 
 export interface LuneConfig {
@@ -24,6 +25,7 @@ export interface LuneConfig {
   };
   orders: {
     codeStrategy: OrderCodeStrategy;
+    fulfillmentCodeStrategy: FulfillmentCodeStrategy;
   };
   assets: {
     storageProvider: StorageProvider;

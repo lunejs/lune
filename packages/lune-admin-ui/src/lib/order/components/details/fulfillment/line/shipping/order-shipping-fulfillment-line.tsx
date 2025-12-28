@@ -14,6 +14,7 @@ import {
 import {
   type CommonOrderFragment,
   FulfillmentState,
+  OrderState,
   type ShippingFulfillmentMetadata
 } from '@/lib/api/types';
 import { useMarkFulfillmentAsDelivered } from '@/lib/order/hooks/use-mark-fulfillment-as-delivered';
@@ -22,7 +23,7 @@ import { useLoadingNotification } from '@/shared/hooks/use-loading-notification'
 import { FulfillmentStateBadge } from '../../state/fulfillment-state-badge';
 import { FulfillmentLineDetails } from '../details/fulfillment-line-details';
 
-export const OrderShippingFulfillmentLine = ({ code, order, fulfillment }: Props) => {
+export const OrderShippingFulfillmentLine = ({ order, fulfillment }: Props) => {
   const { loading, failure, success } = useLoadingNotification();
   const [dialogOpen, setDialogOpen] = useState<FulfillmentDialog | null>(null);
   const { isLoading, markAsDelivered } = useMarkFulfillmentAsDelivered();
@@ -35,7 +36,7 @@ export const OrderShippingFulfillmentLine = ({ code, order, fulfillment }: Props
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-1">
           <TruckIcon size={16} />
-          <Small>{code}</Small>
+          <Small>{fulfillment.code}</Small>
           <div className="ml-2">
             <FulfillmentStateBadge state={fulfillment.state} />
           </div>
@@ -63,29 +64,29 @@ export const OrderShippingFulfillmentLine = ({ code, order, fulfillment }: Props
             <DropdownMenuItem onClick={() => setDialogOpen(FulfillmentDialog.Details)}>
               <InfoIcon /> View details
             </DropdownMenuItem>
-            {fulfillment.state === FulfillmentState.Shipped && (
-              <DropdownMenuItem
-                onClick={async () => {
-                  loading('Updating...');
+            {fulfillment.state === FulfillmentState.Shipped &&
+              order.state !== OrderState.Canceled && (
+                <DropdownMenuItem
+                  onClick={async () => {
+                    loading('Updating...');
 
-                  const result = await markAsDelivered(order.id, fulfillment.id);
+                    const result = await markAsDelivered(order.id, fulfillment.id);
 
-                  if (!result.isSuccess) {
-                    failure(result.error);
-                    return;
-                  }
+                    if (!result.isSuccess) {
+                      failure(result.error);
+                      return;
+                    }
 
-                  success('Fulfillment marked as delivered');
-                }}
-              >
-                <PackageCheckIcon /> Mark as Delivered
-              </DropdownMenuItem>
-            )}
+                    success('Fulfillment marked as delivered');
+                  }}
+                >
+                  <PackageCheckIcon /> Mark as Delivered
+                </DropdownMenuItem>
+              )}
           </DropdownMenuContent>
         </DropdownMenu>
 
         <FulfillmentLineDetails
-          code={code}
           fulfillment={fulfillment}
           isOpen={dialogOpen === FulfillmentDialog.Details}
           setIsOpen={value =>
@@ -104,7 +105,6 @@ const enum FulfillmentDialog {
 }
 
 type Props = {
-  code: string;
   order: CommonOrderFragment;
   fulfillment: CommonOrderFragment['fulfillments']['items'][0];
 };

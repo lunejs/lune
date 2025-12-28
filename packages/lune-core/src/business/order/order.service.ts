@@ -848,11 +848,13 @@ export class OrderService {
         } satisfies PickupFulfillmentMetadata);
 
     const isShipped = isShippingDelivery && !!input.carrier && !!input.trackingCode;
+    const fulfillmentCodeStrategy = getConfig().orders.fulfillmentCodeStrategy;
+    const fulfillmentCode = await fulfillmentCodeStrategy.generate(order, this.ctx);
 
     const fulfillment = await this.fulfillmentRepository.create({
       orderId: order.id,
       totalQuantity: input.orderLines.reduce((acc, curr) => acc + curr.quantity, 0),
-      code: `${order.code}-F-${Math.random()}`,
+      code: fulfillmentCode,
       state: isShipped ? FulfillmentState.Shipped : FulfillmentState.Pending,
       type: isShippingDelivery ? FulfillmentType.Shipping : FulfillmentType.Pickup,
       metadata
