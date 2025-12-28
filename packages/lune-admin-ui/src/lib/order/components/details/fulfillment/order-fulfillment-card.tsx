@@ -39,6 +39,7 @@ export const OrderFulfillmentCard = ({ order }: Props) => {
             {fulfillment?.type === FulfillmentType.Shipping ? (
               <OrderShippingFulfillmentLine
                 code={`${order.code}-F${i + 1}`}
+                order={order}
                 fulfillment={fulfillment}
               />
             ) : (
