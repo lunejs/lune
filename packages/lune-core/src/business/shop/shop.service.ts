@@ -2,6 +2,7 @@ import { clean, getSlugBy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
+import type { ID } from '@/persistence/entities/entity';
 import { SortKey } from '@/persistence/repositories/repository';
 import type { ShopRepository } from '@/persistence/repositories/shop-repository';
 import { ApiKey } from '@/security/api-key/api-key';
@@ -15,8 +16,11 @@ export class ShopService {
     this.repository = ctx.repositories.shop;
   }
 
-  async findBySlug(slug: string) {
-    return this.repository.findOne({ where: { slug } });
+  async findUnique(id?: ID, slug?: string) {
+    if (id) return this.repository.findOne({ where: { id } });
+    if (slug) return this.repository.findOne({ where: { slug } });
+
+    return null;
   }
 
   async findAll(input?: ListInput) {

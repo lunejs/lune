@@ -1,3 +1,5 @@
+import { clean } from '@lune/common';
+
 import type { ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
@@ -17,10 +19,11 @@ async function createShop(_, { input }: MutationCreateShopArgs, ctx: ExecutionCo
   return isErrorResult(result) ? { apiErrors: [result] } : { shop: result, apiErrors: [] };
 }
 
-async function shop(_, { slug }: QueryShopArgs, ctx: ExecutionContext) {
+async function shop(_, input: QueryShopArgs, ctx: ExecutionContext) {
   const shopService = new ShopService(ctx);
 
-  return shopService.findBySlug(slug);
+  const { id, slug } = clean(input);
+  return shopService.findUnique(id, slug);
 }
 
 async function shops(_, { input }: QueryShopsArgs, ctx: ExecutionContext) {

@@ -26,12 +26,29 @@ describe('shop - Query', () => {
     await luneServer.teardown();
   });
 
+  test('returns shop by id', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .send({
+        query: GET_SHOP_QUERY,
+        variables: {
+          id: ShopConstants.ExistingID
+        }
+      });
+
+    const { shop } = res.body.data;
+
+    expect(shop.id).toBe(ShopConstants.ExistingID);
+    expect(shop.slug).toBe(ShopConstants.ExistingSlug);
+  });
+
   test('returns shop by slug', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
       .send({
-        query: GET_SHOP_BY_SLUG_QUERY,
+        query: GET_SHOP_QUERY,
         variables: {
           slug: ShopConstants.ExistingSlug
         }
@@ -39,7 +56,24 @@ describe('shop - Query', () => {
 
     const { shop } = res.body.data;
 
-    expect(shop.slug).toBe('lune-store');
+    expect(shop.id).toBe(ShopConstants.ExistingID);
+    expect(shop.slug).toBe(ShopConstants.ExistingSlug);
+  });
+
+  test('returns null for non-existing shop id', async () => {
+    const res = await request(app)
+      .post('/admin-api')
+      .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
+      .send({
+        query: GET_SHOP_QUERY,
+        variables: {
+          id: TestUtils.generateUUID()
+        }
+      });
+
+    const { shop } = res.body.data;
+
+    expect(shop).toBeNull();
   });
 
   test('returns null for non-existing shop slug', async () => {
@@ -47,7 +81,7 @@ describe('shop - Query', () => {
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
       .send({
-        query: GET_SHOP_BY_SLUG_QUERY,
+        query: GET_SHOP_QUERY,
         variables: {
           slug: 'non-existing-slug'
         }
@@ -62,7 +96,7 @@ describe('shop - Query', () => {
     const res = await request(app)
       .post('/admin-api')
       .send({
-        query: GET_SHOP_BY_SLUG_QUERY,
+        query: GET_SHOP_QUERY,
         variables: {
           slug: ShopConstants.ExistingSlug
         }
@@ -72,9 +106,9 @@ describe('shop - Query', () => {
   });
 });
 
-const GET_SHOP_BY_SLUG_QUERY = /* GraphQL */ `
-  query Shop($slug: String!) {
-    shop(slug: $slug) {
+const GET_SHOP_QUERY = /* GraphQL */ `
+  query Shop($id: ID, $slug: String) {
+    shop(id: $id, slug: $slug) {
       id
       name
       slug

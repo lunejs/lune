@@ -871,6 +871,8 @@ export type DiscountResult = {
 /** A fulfillment represents the process of preparing and delivering an order to a customer */
 export type Fulfillment = Node & {
   __typename?: 'Fulfillment';
+  /** Unique code for the fulfillment */
+  code: Scalars['String']['output'];
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   lines: FulfillmentLineList;
@@ -878,6 +880,8 @@ export type Fulfillment = Node & {
   metadata?: Maybe<Scalars['JSON']['output']>;
   /** Current state of the fulfillment */
   state: FulfillmentState;
+  /** Total quantity of items in the fulfillment */
+  totalQuantity: Scalars['Int']['output'];
   /** Fulfillment type (synchronized with delivery method) */
   type: FulfillmentType;
   updatedAt: Scalars['Date']['output'];
@@ -1799,8 +1803,6 @@ export type OrderFilters = {
   customer?: InputMaybe<StringFilter>;
   /** Filter by customer id */
   customerId?: InputMaybe<Scalars['ID']['input']>;
-  /** Filter by fulfillment state */
-  fulfillmentStates?: InputMaybe<Array<FulfillmentState>>;
   /** Filter by order state */
   states?: InputMaybe<Array<OrderState>>;
 };
@@ -2174,7 +2176,7 @@ export type Query = {
   productsByVariantIds: ProductList;
   shippingHandlers: Array<ShippingHandler>;
   shippingMethods: Array<ShippingMethod>;
-  /** Get shop by slug */
+  /** Get shop by id or slug */
   shop?: Maybe<Shop>;
   /** Get a list of shops */
   shops: ShopList;
@@ -2315,7 +2317,8 @@ export type QueryProductsByVariantIdsArgs = {
 
 
 export type QueryShopArgs = {
-  slug: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -3713,11 +3716,13 @@ export type DiscountResultResolvers<ContextType = ExecutionContext, ParentType e
 };
 
 export type FulfillmentResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['Fulfillment'] = ResolversParentTypes['Fulfillment']> = {
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lines?: Resolver<ResolversTypes['FulfillmentLineList'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   state?: Resolver<ResolversTypes['FulfillmentState'], ParentType, ContextType>;
+  totalQuantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['FulfillmentType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -4250,7 +4255,7 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   productsByVariantIds?: Resolver<ResolversTypes['ProductList'], ParentType, ContextType, RequireFields<QueryProductsByVariantIdsArgs, 'ids'>>;
   shippingHandlers?: Resolver<Array<ResolversTypes['ShippingHandler']>, ParentType, ContextType>;
   shippingMethods?: Resolver<Array<ResolversTypes['ShippingMethod']>, ParentType, ContextType>;
-  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, RequireFields<QueryShopArgs, 'slug'>>;
+  shop?: Resolver<Maybe<ResolversTypes['Shop']>, ParentType, ContextType, Partial<QueryShopArgs>>;
   shops?: Resolver<ResolversTypes['ShopList'], ParentType, ContextType, Partial<QueryShopsArgs>>;
   tagList?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   tags?: Resolver<ResolversTypes['TagList'], ParentType, ContextType, Partial<QueryTagsArgs>>;

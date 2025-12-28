@@ -1,3 +1,4 @@
-export const enum ShopQueryKeys {
-  Shops = 'shops'
-}
+export const ShopQueryKeys = {
+  Shops: 'shops',
+  Shop: (id: string) => `shop-${id}`
+};

@@ -133,7 +133,7 @@ type Documents = {
     "\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    email\n    logo\n    socials {\n      facebook\n      twitter\n      instagram\n    }\n    phoneNumber\n    storefrontApiKey\n  }\n": typeof types.CommonShopFragmentDoc,
     "\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n": typeof types.CommonListShopFragmentDoc,
     "\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n": typeof types.GetShopsDocument,
-    "\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n": typeof types.ShopDocument,
+    "\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n": typeof types.ShopDocument,
     "\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": typeof types.CreateShopDocument,
     "\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": typeof types.UpdateShopDocument,
     "\n  fragment CommonUser on User {\n    id\n    email\n  }\n": typeof types.CommonUserFragmentDoc,
@@ -270,7 +270,7 @@ const documents: Documents = {
     "\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    email\n    logo\n    socials {\n      facebook\n      twitter\n      instagram\n    }\n    phoneNumber\n    storefrontApiKey\n  }\n": types.CommonShopFragmentDoc,
     "\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n": types.CommonListShopFragmentDoc,
     "\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n": types.GetShopsDocument,
-    "\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n": types.ShopDocument,
+    "\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n": types.ShopDocument,
     "\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": types.CreateShopDocument,
     "\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      apiErrors {\n        message\n        code\n      }\n      shop {\n        id\n        slug\n      }\n    }\n  }\n": types.UpdateShopDocument,
     "\n  fragment CommonUser on User {\n    id\n    email\n  }\n": types.CommonUserFragmentDoc,
@@ -781,7 +781,7 @@ export function graphql(source: "\n  query getShops {\n    shops {\n      items 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n"): (typeof documents)["\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n"];
+export function graphql(source: "\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n"): (typeof documents)["\n  query Shop($id: ID!) {\n    shop(id: $id) {\n      ...CommonShop\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

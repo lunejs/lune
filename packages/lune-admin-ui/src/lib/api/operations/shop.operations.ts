@@ -35,9 +35,9 @@ export const GET_SHOPS_QUERY = graphql(`
   }
 `);
 
-export const GET_SHOP_BY_SLUG_QUERY = graphql(`
-  query Shop($slug: String!) {
-    shop(slug: $slug) {
+export const GET_SHOP_BY_ID_QUERY = graphql(`
+  query Shop($id: ID!) {
+    shop(id: $id) {
       ...CommonShop
     }
   }

@@ -45,7 +45,7 @@ import { NewZonePage } from '@/lib/shipments/pages/new-zone-page';
 import { ShipmentsPage } from '@/lib/shipments/pages/shipments-page';
 import { ZoneDetailsPage } from '@/lib/shipments/pages/zone-details-page';
 import { CreateShopPage } from '@/lib/shop/pages/create-shop-page';
-import { ShopDetails } from '@/lib/shop/pages/shop-details';
+import { ShopDetailsPage } from '@/lib/shop/pages/shop-details-page';
 import { ShopsPage } from '@/lib/shop/pages/shops-page';
 import { TranslateCollectionsPage } from '@/lib/translate/pages/translate-collections-page';
 import { TranslateCustomObjectsPage } from '@/lib/translate/pages/translate-custom-objects-page';
@@ -132,7 +132,7 @@ export const App = ({ config }: Props) => {
                   </Route>
 
                   <Route element={<SettingsLayout />}>
-                    <Route path="/settings/shop" element={<ShopDetails />} />
+                    <Route path="/settings/shop" element={<ShopDetailsPage />} />
                     <Route path="/settings/shipments" element={<ShipmentsPage />} />
                     <Route path="/settings/shipments/new" element={<NewZonePage />} />
                     <Route path="/settings/shipments/:id" element={<ZoneDetailsPage />} />

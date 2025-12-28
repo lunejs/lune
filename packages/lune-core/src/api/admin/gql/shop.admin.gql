@@ -45,9 +45,9 @@ type Shop implements Node {
 
 type Query {
   """
-  Get shop by slug
+  Get shop by id or slug
   """
-  shop(slug: String!): Shop
+  shop(id: ID, slug: String): Shop
   """
   Get a list of shops
   """
