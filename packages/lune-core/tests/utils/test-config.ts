@@ -1,5 +1,6 @@
 import type { LuneConfig } from '@/config/lune.config';
 import { FlatShippingHandler } from '@/config/shipping-handler/flat-shipping-handler';
+import { DefaultFulfillmentCodeStrategy } from '@/config/strategies/fulfillment-code/default-fulfillment-code-strategy';
 import { DefaultOrderCodeStrategy } from '@/config/strategies/order-code/default-order-code-strategy';
 
 import { TestImageProcessor } from './config/test-image-processor';
@@ -21,7 +22,8 @@ export const TEST_LUNE_CONFIG: LuneConfig = {
     url: 'postgresql://app_user:womteC_ruqri0_punqah@localhost:6500/lune_test?schema=public'
   },
   orders: {
-    codeStrategy: new DefaultOrderCodeStrategy()
+    codeStrategy: new DefaultOrderCodeStrategy(),
+    fulfillmentCodeStrategy: new DefaultFulfillmentCodeStrategy()
   },
   assets: {
     storageProvider: new TestStorageProvider(),

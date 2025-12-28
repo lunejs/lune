@@ -17,6 +17,14 @@ import { OptionPresetFixtures } from './fixtures/option-preset.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { OptionValuePresetFixtures } from './fixtures/option-value-preset.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
+import {
+  OrderFulfillmentConstants,
+  OrderFulfillmentFixtures
+} from './fixtures/order-fulfillment.fixtures';
+import {
+  OrderFulfillmentLineConstants,
+  OrderFulfillmentLineFixtures
+} from './fixtures/order-fulfillment-line.fixtures';
 import { OrderLineFixtures } from './fixtures/order-line.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ProductAssetFixtures } from './fixtures/product-asset.fixtures';
@@ -66,7 +74,9 @@ describe('OrderRepository.findOneWithDetails', () => {
       new OrderLineFixtures(),
       new FulfillmentFixtures(),
       new ShippingFulfillmentFixtures(),
-      new InStorePickupFulfillmentFixtures()
+      new InStorePickupFulfillmentFixtures(),
+      new OrderFulfillmentFixtures(),
+      new OrderFulfillmentLineFixtures()
     ]);
   });
 
@@ -78,16 +88,25 @@ describe('OrderRepository.findOneWithDetails', () => {
     await testUtils.destroyDatabase();
   });
 
-  describe.skip('findOneWithDetails', () => {
-    test('returns order with shipping fulfillment', async () => {
+  describe('findOneWithDetails', () => {
+    test('returns order with shipping delivery method', async () => {
       const order = await repository.findOneWithDetails(OrderConstants.ID);
 
       expect(order?.id).toBe(OrderConstants.ID);
 
       expect(order?.customer.id).toBe(CustomerConstants.ID);
-      expect(order?.fulfillment.id).toBe(FulfillmentConstants.ID);
+      expect(order?.deliveryMethod.id).toBe(FulfillmentConstants.ID);
 
-      expect(order?.fulfillmentDetails.id).toBe(ShippingFulfillmentConstants.ID);
+      expect(order?.deliveryMethodDetails.id).toBe(ShippingFulfillmentConstants.ID);
+
+      // Fulfillments
+      expect(order?.fulfillments).toHaveLength(1);
+      expect(order?.fulfillments[0].id).toBe(OrderFulfillmentConstants.ID);
+      expect(order?.fulfillments[0].code).toBe(OrderFulfillmentConstants.Code);
+      expect(order?.fulfillments[0].totalQuantity).toBe(2);
+      expect(order?.fulfillments[0].lines).toHaveLength(2);
+      expect(order?.fulfillments[0].lines[0].id).toBe(OrderFulfillmentLineConstants.ID);
+      expect(order?.fulfillments[0].lines[1].id).toBe(OrderFulfillmentLineConstants.ID2);
 
       expect(order?.lines).toHaveLength(2);
 
@@ -110,15 +129,28 @@ describe('OrderRepository.findOneWithDetails', () => {
       expect(order?.lines[1].variant.optionValues[0].preset).not.toBeNull();
     });
 
-    test('returns order with in store pickup fulfillment', async () => {
+    test('returns order with in store pickup delivery method', async () => {
       const order = await repository.findOneWithDetails(OrderConstants.InStorePickupID);
 
       expect(order?.id).toBe(OrderConstants.InStorePickupID);
 
       expect(order?.customer.id).toBe(CustomerConstants.ID);
-      expect(order?.fulfillment.id).toBe(FulfillmentConstants.InStorePickupID);
+      expect(order?.deliveryMethod.id).toBe(FulfillmentConstants.InStorePickupID);
 
-      expect(order?.fulfillmentDetails.id).toBe(InStorePickupFulfillmentConstants.ID);
+      expect(order?.deliveryMethodDetails.id).toBe(InStorePickupFulfillmentConstants.ID);
+
+      // Fulfillments
+      expect(order?.fulfillments).toHaveLength(1);
+      expect(order?.fulfillments[0].id).toBe(OrderFulfillmentConstants.InStorePickupID);
+      expect(order?.fulfillments[0].code).toBe(OrderFulfillmentConstants.InStorePickupCode);
+      expect(order?.fulfillments[0].totalQuantity).toBe(2);
+      expect(order?.fulfillments[0].lines).toHaveLength(2);
+      expect(order?.fulfillments[0].lines[0].id).toBe(
+        OrderFulfillmentLineConstants.InStorePickupID
+      );
+      expect(order?.fulfillments[0].lines[1].id).toBe(
+        OrderFulfillmentLineConstants.InStorePickupID2
+      );
 
       expect(order?.lines).toHaveLength(2);
 

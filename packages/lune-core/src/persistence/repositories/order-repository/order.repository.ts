@@ -6,6 +6,8 @@ import type { DeliveryMethod, DeliveryMethodType } from '@/persistence/entities/
 import type { DeliveryMethodPickup } from '@/persistence/entities/delivery-method-pickup';
 import type { DeliveryMethodShipping } from '@/persistence/entities/delivery-method-shipping';
 import type { ID } from '@/persistence/entities/entity';
+import { type Fulfillment } from '@/persistence/entities/fulfillment';
+import { type FulfillmentLine } from '@/persistence/entities/fulfillment-line';
 import type { OptionValue } from '@/persistence/entities/option_value';
 import type { OptionValuePreset } from '@/persistence/entities/option-value-preset';
 import { type Order, OrderState, type OrderTable } from '@/persistence/entities/order';
@@ -18,6 +20,8 @@ import { CustomerSerializer } from '@/persistence/serializers/customer.serialize
 import { DeliveryMethodSerializer } from '@/persistence/serializers/delivery-method.serializer';
 import { DeliveryMethodPickupSerializer } from '@/persistence/serializers/delivery-method-pickup.serializer';
 import { DeliveryMethodShippingSerializer } from '@/persistence/serializers/delivery-method-shipping.serializer';
+import { FulfillmentSerializer } from '@/persistence/serializers/fulfillment.serializer';
+import { FulfillmentLineSerializer } from '@/persistence/serializers/fulfillment-line.serializer';
 import { OptionValueSerializer } from '@/persistence/serializers/option-value.serializer';
 import { OptionValuePresetSerializer } from '@/persistence/serializers/option-value-preset.serializer';
 import { OrderSerializer } from '@/persistence/serializers/order.serializer';
@@ -63,12 +67,11 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     return Number(count);
   }
 
-  // TODO (URGENT): Fix after migration for new fulfillments
   async findOneWithDetails(orderId: ID): Promise<OrderWithDetails | null> {
     // Serializers
     const orderSerializer = new OrderSerializer();
     const customerSerializer = new CustomerSerializer();
-    const fulfillmentSerializer = new DeliveryMethodSerializer();
+    const deliveryMethodSerializer = new DeliveryMethodSerializer();
     const shippingFulfillmentSerializer = new DeliveryMethodShippingSerializer();
     const inStorePickupFulfillmentSerializer = new DeliveryMethodPickupSerializer();
     const orderLineSerializer = new OrderLineSerializer();
@@ -77,14 +80,16 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     const assetSerializer = new AssetSerializer();
     const optionValueSerializer = new OptionValueSerializer();
     const optionValuePresetSerializer = new OptionValuePresetSerializer();
+    const fulfillmentSerializer = new FulfillmentSerializer();
+    const fulfillmentLineSerializer = new FulfillmentLineSerializer();
 
-    // ============ QUERY 1: Order + Customer + Fulfillment + Details ============
+    // ============ QUERY 1: Order + Customer + DeliveryMethod + Details ============
     const orderRow = await this.trx
       .from({ o: Tables.Order })
       .leftJoin({ c: Tables.Customer }, 'c.id', 'o.customer_id')
       .leftJoin({ f: Tables.DeliveryMethod }, 'f.order_id', 'o.id')
-      .leftJoin({ sf: Tables.DeliveryMethodShipping }, 'sf.fulfillment_id', 'f.id')
-      .leftJoin({ pf: Tables.DeliveryMethodPickup }, 'pf.fulfillment_id', 'f.id')
+      .leftJoin({ sf: Tables.DeliveryMethodShipping }, 'sf.delivery_method_id', 'f.id')
+      .leftJoin({ pf: Tables.DeliveryMethodPickup }, 'pf.delivery_method_id', 'f.id')
       .select(
         // Order
         'o.id as o_id',
@@ -109,7 +114,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         'c.last_name as c_last_name',
         'c.phone_number as c_phone_number',
         'c.enabled as c_enabled',
-        // Fulfillment
+        // DeliveryMethod
         'f.id as f_id',
         'f.created_at as f_created_at',
         'f.updated_at as f_updated_at',
@@ -117,25 +122,19 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         'f.amount as f_amount',
         'f.total as f_total',
         'f.order_id as f_order_id',
-        // ShippingFulfillment
+        // DeliveryMethodShipping
         'sf.id as sf_id',
         'sf.created_at as sf_created_at',
         'sf.updated_at as sf_updated_at',
         'sf.method as sf_method',
-        'sf.tracking_code as sf_tracking_code',
-        'sf.carrier as sf_carrier',
-        'sf.shipped_at as sf_shipped_at',
-        'sf.delivered_at as sf_delivered_at',
-        'sf.fulfillment_id as sf_fulfillment_id',
+        'sf.delivery_method_id as sf_delivery_method_id',
         'sf.shipping_method_id as sf_shipping_method_id',
-        // InStorePickupFulfillment
+        // DeliveryMethodPickup
         'pf.id as pf_id',
         'pf.created_at as pf_created_at',
         'pf.updated_at as pf_updated_at',
         'pf.address as pf_address',
-        'pf.ready_at as pf_ready_at',
-        'pf.picked_up_at as pf_picked_up_at',
-        'pf.fulfillment_id as pf_fulfillment_id',
+        'pf.delivery_method_id as pf_delivery_method_id',
         'pf.location_id as pf_location_id'
       )
       .where('o.id', orderId)
@@ -277,6 +276,39 @@ export class OrderRepository extends Repository<Order, OrderTable> {
             .whereIn('vov.variant_id', variantIds)
         : [];
 
+    // ============ QUERY 5: Fulfillments + FulfillmentLines ============
+    const fulfillmentRows = await this.trx
+      .from({ ff: Tables.Fulfillment })
+      .select(
+        'ff.id as ff_id',
+        'ff.created_at as ff_created_at',
+        'ff.updated_at as ff_updated_at',
+        'ff.code as ff_code',
+        'ff.total_quantity as ff_total_quantity',
+        'ff.state as ff_state',
+        'ff.type as ff_type',
+        'ff.metadata as ff_metadata',
+        'ff.order_id as ff_order_id'
+      )
+      .where('ff.order_id', orderId);
+
+    const fulfillmentIds = fulfillmentRows.map(r => r.ff_id);
+
+    const fulfillmentLineRows =
+      fulfillmentIds.length > 0
+        ? await this.trx
+            .from({ fl: Tables.FulfillmentLine })
+            .select(
+              'fl.id as fl_id',
+              'fl.created_at as fl_created_at',
+              'fl.updated_at as fl_updated_at',
+              'fl.quantity as fl_quantity',
+              'fl.fulfillment_id as fl_fulfillment_id',
+              'fl.order_line_id as fl_order_line_id'
+            )
+            .whereIn('fl.fulfillment_id', fulfillmentIds)
+        : [];
+
     // ============ DESERIALIZE ============
 
     // Order
@@ -310,9 +342,9 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         }) as Customer)
       : null;
 
-    // Fulfillment
-    const fulfillment = orderRow.f_id
-      ? (fulfillmentSerializer.deserialize({
+    // DeliveryMethod
+    const deliveryMethod = orderRow.f_id
+      ? (deliveryMethodSerializer.deserialize({
           id: orderRow.f_id,
           created_at: orderRow.f_created_at,
           updated_at: orderRow.f_updated_at,
@@ -323,24 +355,24 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         }) as DeliveryMethod)
       : null;
 
-    const shippingFulfillment = orderRow.sf_id
+    const deliveryMethodShipping = orderRow.sf_id
       ? (shippingFulfillmentSerializer.deserialize({
           id: orderRow.sf_id,
           created_at: orderRow.sf_created_at,
           updated_at: orderRow.sf_updated_at,
           method: orderRow.sf_method,
-          delivery_method_id: orderRow.sf_fulfillment_id,
+          delivery_method_id: orderRow.sf_delivery_method_id,
           shipping_method_id: orderRow.sf_shipping_method_id
         }) as DeliveryMethodShipping)
       : null;
 
-    const inStorePickupFulfillment = orderRow.pf_id
+    const deliveryMethodPickup = orderRow.pf_id
       ? (inStorePickupFulfillmentSerializer.deserialize({
           id: orderRow.pf_id,
           created_at: orderRow.pf_created_at,
           updated_at: orderRow.pf_updated_at,
           address: orderRow.pf_address,
-          delivery_method_id: orderRow.pf_fulfillment_id,
+          delivery_method_id: orderRow.pf_delivery_method_id,
           location_id: orderRow.pf_location_id
         }) as DeliveryMethodPickup)
       : null;
@@ -444,14 +476,49 @@ export class OrderRepository extends Repository<Order, OrderTable> {
       };
     });
 
+    // Fulfillments with lines
+    const fulfillments = fulfillmentRows.map(row => {
+      const fulfillment = fulfillmentSerializer.deserialize({
+        id: row.ff_id,
+        created_at: row.ff_created_at,
+        updated_at: row.ff_updated_at,
+        code: row.ff_code,
+        total_quantity: row.ff_total_quantity,
+        state: row.ff_state,
+        type: row.ff_type,
+        metadata: row.ff_metadata,
+        order_id: row.ff_order_id
+      }) as Fulfillment;
+
+      const fulfillmentLines = fulfillmentLineRows
+        .filter(fl => fl.fl_fulfillment_id === row.ff_id)
+        .map(
+          fl =>
+            fulfillmentLineSerializer.deserialize({
+              id: fl.fl_id,
+              created_at: fl.fl_created_at,
+              updated_at: fl.fl_updated_at,
+              quantity: fl.fl_quantity,
+              fulfillment_id: fl.fl_fulfillment_id,
+              order_line_id: fl.fl_order_line_id
+            }) as FulfillmentLine
+        );
+
+      return {
+        ...fulfillment,
+        lines: fulfillmentLines
+      };
+    });
+
     return {
       ...order,
+      fulfillments,
       customer: customer as Customer,
-      fulfillment: fulfillment as DeliveryMethod,
-      fulfillmentDetails:
-        (fulfillment?.type as DeliveryMethodType) === 'SHIPPING'
-          ? (shippingFulfillment as DeliveryMethodShipping)
-          : (inStorePickupFulfillment as DeliveryMethodPickup),
+      deliveryMethod: deliveryMethod as DeliveryMethod,
+      deliveryMethodDetails:
+        (deliveryMethod?.type as DeliveryMethodType) === 'SHIPPING'
+          ? (deliveryMethodShipping as DeliveryMethodShipping)
+          : (deliveryMethodPickup as DeliveryMethodPickup),
       lines
     };
   }
@@ -459,8 +526,11 @@ export class OrderRepository extends Repository<Order, OrderTable> {
 
 type OrderWithDetails = Order & {
   customer: Customer;
-  fulfillment: DeliveryMethod;
-  fulfillmentDetails: DeliveryMethodShipping | DeliveryMethodPickup;
+  deliveryMethod: DeliveryMethod;
+  deliveryMethodDetails: DeliveryMethodShipping | DeliveryMethodPickup;
+  fulfillments: (Fulfillment & {
+    lines: FulfillmentLine[];
+  })[];
   lines: (OrderLine & {
     variant: Variant & {
       assets: Asset[];
