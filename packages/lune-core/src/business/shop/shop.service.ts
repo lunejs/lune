@@ -1,7 +1,7 @@
 import { clean, getSlugBy } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
-import type { CreateShopInput, ListInput } from '@/api/shared/types/graphql';
+import type { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/graphql';
 import type { ID } from '@/persistence/entities/entity';
 import { SortKey } from '@/persistence/repositories/repository';
 import type { ShopRepository } from '@/persistence/repositories/shop-repository';
@@ -47,6 +47,27 @@ export class ShopService {
       ...clean(input),
       slug,
       storefrontApiKey
+    });
+  }
+
+  async update(id: ID, input: UpdateShopInput) {
+    if (input.email) {
+      const emailExists = await this.ctx.runWithoutRLS(() =>
+        this.repository.findOne({ where: { email: input.email as string } })
+      );
+
+      if (emailExists && emailExists.id !== id) {
+        return new ShopEmailAlreadyExistsError();
+      }
+    }
+
+    return this.repository.update({
+      where: { id },
+      data: {
+        ...clean(input),
+        logo: input.logo,
+        storefrontUrl: input.storefrontUrl
+      }
     });
   }
 

@@ -62,7 +62,7 @@ type Mutation {
   """
   Update an existing shop details
   """
-  updateShop(shopSlug: String!, input: UpdateShopInput!): ShopResult!
+  updateShop(id: ID!, input: UpdateShopInput!): ShopResult!
 }
 
 type ShopSocials {

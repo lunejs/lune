@@ -4,6 +4,7 @@ import type { ExecutionContext } from '@/api/shared/context/types';
 import { UseUserGuard } from '@/api/shared/guards/user.guard';
 import type {
   MutationCreateShopArgs,
+  MutationUpdateShopArgs,
   QueryShopArgs,
   QueryShopsArgs
 } from '@/api/shared/types/graphql';
@@ -15,6 +16,14 @@ async function createShop(_, { input }: MutationCreateShopArgs, ctx: ExecutionCo
   const shopService = new ShopService(ctx);
 
   const result = await shopService.create(input);
+
+  return isErrorResult(result) ? { apiErrors: [result] } : { shop: result, apiErrors: [] };
+}
+
+async function updateShop(_, { id, input }: MutationUpdateShopArgs, ctx: ExecutionContext) {
+  const shopService = new ShopService(ctx);
+
+  const result = await shopService.update(id, input);
 
   return isErrorResult(result) ? { apiErrors: [result] } : { shop: result, apiErrors: [] };
 }
@@ -39,7 +48,8 @@ async function shops(_, { input }: QueryShopsArgs, ctx: ExecutionContext) {
 
 export const ShopResolver = {
   Mutation: {
-    createShop: UseUserGuard(createShop)
+    createShop: UseUserGuard(createShop),
+    updateShop: UseUserGuard(updateShop)
   },
   Query: {
     shop: UseUserGuard(shop),

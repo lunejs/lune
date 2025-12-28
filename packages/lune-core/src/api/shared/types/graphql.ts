@@ -1540,8 +1540,8 @@ export type MutationUpdateShippingMethodArgs = {
 
 
 export type MutationUpdateShopArgs = {
+  id: Scalars['ID']['input'];
   input: UpdateShopInput;
-  shopSlug: Scalars['String']['input'];
 };
 
 
@@ -3903,7 +3903,7 @@ export type MutationResolvers<ContextType = ExecutionContext, ParentType extends
   updatePaymentMethod?: Resolver<ResolversTypes['PaymentMethod'], ParentType, ContextType, RequireFields<MutationUpdatePaymentMethodArgs, 'id' | 'input'>>;
   updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   updateShippingMethod?: Resolver<ResolversTypes['ShippingMethod'], ParentType, ContextType, RequireFields<MutationUpdateShippingMethodArgs, 'id' | 'input'>>;
-  updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'input' | 'shopSlug'>>;
+  updateShop?: Resolver<ResolversTypes['ShopResult'], ParentType, ContextType, RequireFields<MutationUpdateShopArgs, 'id' | 'input'>>;
   updateTag?: Resolver<ResolversTypes['TagResult'], ParentType, ContextType, RequireFields<MutationUpdateTagArgs, 'id' | 'input'>>;
   updateUser?: Resolver<ResolversTypes['UserResult'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id' | 'input'>>;
   updateVariant?: Resolver<ResolversTypes['Variant'], ParentType, ContextType, RequireFields<MutationUpdateVariantArgs, 'id' | 'input'>>;
