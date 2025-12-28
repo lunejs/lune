@@ -41,6 +41,7 @@ import { ProductCustomFieldTranslationRepository } from './product-custom-field-
 import { ProductRepository } from './product-repository';
 import { ProductTranslationRepository } from './product-translation-repository';
 import { ShippingMethodRepository } from './shipping-method-repository';
+import { ShopMemberRepository } from './shop-member-repository';
 import { ShopRepository } from './shop-repository';
 import { StateRepository } from './state-repository';
 import { UserRepository } from './user-repository';
@@ -96,7 +97,8 @@ export function buildRepositories(trx: Transaction) {
     productCustomField: new ProductCustomFieldRepository(trx),
     productCustomFieldTranslation: new ProductCustomFieldTranslationRepository(trx),
     fulfillment: new FulfillmentRepository(trx),
-    fulfillmentLine: new FulfillmentLineRepository(trx)
+    fulfillmentLine: new FulfillmentLineRepository(trx),
+    shopMember: new ShopMemberRepository(trx)
   };
 }
 

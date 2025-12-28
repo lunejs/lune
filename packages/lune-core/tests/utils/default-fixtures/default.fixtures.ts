@@ -47,6 +47,7 @@ import { DefaultProductTagFixture } from './product-tag.fixture';
 import { DefaultProductTranslationFixture } from './product-translation.fixture';
 import { DefaultShippingMethodFixture } from './shipping-method.fixture';
 import { DefaultShopFixture } from './shop.fixture';
+import { DefaultShopMemberFixture } from './shop-member.fixture';
 import { DefaultStateFixture } from './state.fixture';
 import { DefaultTagFixture } from './tag.fixture';
 import { DefaultUserFixture } from './user.fixture';
@@ -111,5 +112,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.ProductCustomField]: DefaultProductCustomFieldFixture,
   [Tables.ProductCustomFieldTranslation]: DefaultProductCustomFieldTranslationFixture,
   [Tables.Fulfillment]: DefaultFulfillmentFixture,
-  [Tables.FulfillmentLine]: DefaultFulfillmentLineFixture
+  [Tables.FulfillmentLine]: DefaultFulfillmentLineFixture,
+  [Tables.ShopMember]: DefaultShopMemberFixture
 };
