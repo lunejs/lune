@@ -25,12 +25,14 @@ export const useAddFulfillmentForm = (order: CommonOrderFragment) => {
   const onSubmit = async (values: FormValues) => {
     if (!values.orderLines.length) {
       form.setError('root', { message: 'Should select at least one item' });
+      return;
     }
 
     const allLinesHaveValidQuantity = values.orderLines.every(l => l.quantity > 0);
 
     if (!allLinesHaveValidQuantity) {
       form.setError('root', { message: 'Selected lines should have a valid quantity' });
+      return;
     }
 
     const isShipping = order.deliveryMethod?.type === DeliveryMethodType.Shipping;

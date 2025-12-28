@@ -16,7 +16,7 @@ export const OrderPaymentCard = ({ payments }: Props) => {
         {payments.map(payment => (
           <div
             key={payment.id}
-            className="flex items-center justify-between hover:bg-muted/50 transition-colors p-6 flex-wrap gap-4"
+            className="flex items-center justify-between hover:bg-muted/50 transition-colors p-6 py-4 flex-wrap gap-4"
           >
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
