@@ -1,11 +1,21 @@
 import { CodeIcon, DotIcon, EarthIcon, HashIcon, PencilIcon, StoreIcon } from 'lucide-react';
 
 import { formatPhoneNumber } from '@lune/common';
-import { Button, Card, CardContent, CardHeader, CardTitle, Muted, Small } from '@lune/ui';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Muted,
+  Small
+} from '@lune/ui';
 
 import type { CommonShopFragment } from '@/lib/api/types';
 
 import { ShopGeneralInfo } from './general-info/shop-general-info';
+import { ShopSecretField } from './secret-field/shop-secret-field';
 import { ShopSocials } from './socials/shop-socials';
 
 export const ShopDetails = ({ shop }: Props) => {
@@ -62,31 +72,18 @@ export const ShopDetails = ({ shop }: Props) => {
       </Card>
 
       <Card className="p-0">
-        <CardHeader className="flex pt-6">
+        <CardHeader className="pt-6">
           <CardTitle>Api Keys</CardTitle>
+          <CardDescription>Use these keys to connect your storefront with Lune</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="group p-4 border-t flex items-center justify-between gap-4 transition-colors">
-            <div className="flex items-center gap-3">
-              <HashIcon size={20} />
+          <ShopSecretField icon={HashIcon} label="Shop ID" value={shop.id} />
 
-              <div>
-                <Small>Shop ID</Small>
-                <Muted>{shop.id}</Muted>
-              </div>
-            </div>
-          </div>
-
-          <div className="group p-4 border-t flex items-center justify-between gap-4 transition-colors">
-            <div className="flex items-center gap-3">
-              <CodeIcon size={20} />
-
-              <div>
-                <Small>Storefront Api Key</Small>
-                <Muted>{shop.storefrontApiKey}</Muted>
-              </div>
-            </div>
-          </div>
+          <ShopSecretField
+            icon={CodeIcon}
+            label="Storefront Api Key"
+            value={shop.storefrontApiKey}
+          />
         </CardContent>
       </Card>
     </div>
