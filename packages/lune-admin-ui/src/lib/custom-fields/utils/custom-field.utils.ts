@@ -2,6 +2,7 @@ import {
   BoxesIcon,
   CalendarIcon,
   DollarSignIcon,
+  EarthIcon,
   GroupIcon,
   HashIcon,
   ImageIcon,
@@ -31,6 +32,7 @@ const DATA: Record<string, CustomFieldTypeData> = {
   // Text
   [CustomFieldType.SingleLineText]: new CustomFieldTypeData('Single line text', TypeIcon),
   [CustomFieldType.MultiLineText]: new CustomFieldTypeData('Multi line text', TextIcon),
+  [CustomFieldType.Url]: new CustomFieldTypeData('URL', EarthIcon),
 
   // Number
   [CustomFieldType.Integer]: new CustomFieldTypeData('Integer', HashIcon),
@@ -80,6 +82,11 @@ export const CUSTOM_FIELD_TYPE_GROUPS = [
         label: 'Multi line text',
         value: CustomFieldType.MultiLineText,
         icon: getCustomFieldTypeData(CustomFieldType.MultiLineText).icon
+      },
+      {
+        label: getCustomFieldTypeData(CustomFieldType.Url).title,
+        value: CustomFieldType.Url,
+        icon: getCustomFieldTypeData(CustomFieldType.Url).icon
       }
     ]
   },

@@ -12,6 +12,7 @@ enum CustomFieldAppliesToEntity {
 enum CustomFieldType {
   SINGLE_LINE_TEXT
   MULTI_LINE_TEXT
+  URL
   INTEGER
   DECIMAL
   MONEY

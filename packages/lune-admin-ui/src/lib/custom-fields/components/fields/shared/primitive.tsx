@@ -26,6 +26,7 @@ import { useList } from '@/shared/hooks/use-list';
 export const PrimitiveCustomField = ({
   onChange,
   definition,
+  placeholder,
   defaultValues,
   inputProps,
   mapOnSave,
@@ -95,11 +96,15 @@ export const PrimitiveCustomField = ({
             return (
               <div key={item.id} className="flex items-center gap-2">
                 {textarea ? (
-                  <Textarea value={item.value} onChange={e => update(item.id, e.target.value)} />
+                  <Textarea
+                    placeholder={placeholder}
+                    value={item.value}
+                    onChange={e => update(item.id, e.target.value)}
+                  />
                 ) : bool ? (
                   <Select value={item.value} onValueChange={value => update(item.id, value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a value" />
+                      <SelectValue placeholder={placeholder || 'Select a value'} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value={'true'}>True</SelectItem>
@@ -116,7 +121,11 @@ export const PrimitiveCustomField = ({
                           !item.value && 'text-muted-foreground'
                         )}
                       >
-                        {item.value ? formatDate(new Date(item.value), 'PPP') : <span>{''}</span>}
+                        {item.value ? (
+                          formatDate(new Date(item.value), 'PPP')
+                        ) : (
+                          <span>{placeholder}</span>
+                        )}
                         <CalendarIcon size={16} className="opacity-50" />
                       </Button>
                     </PopoverTrigger>
@@ -134,6 +143,7 @@ export const PrimitiveCustomField = ({
                   <Input
                     {...inputProps}
                     value={item.value}
+                    placeholder={placeholder}
                     onChange={e => update(item.id, e.target.value)}
                   />
                 )}
@@ -164,6 +174,7 @@ export const PrimitiveCustomField = ({
 type Props = {
   definition: CommonCustomFieldDefinitionFragment;
   onChange: (items: { id: string; value: string }[]) => void;
+  placeholder?: string;
   inputProps?: ComponentProps<'input'>;
   defaultValues?: string[];
   textarea?: boolean;

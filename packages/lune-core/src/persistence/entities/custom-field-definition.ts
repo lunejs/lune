@@ -3,6 +3,7 @@ import type { ID, LuneEntity, LuneTable } from './entity';
 export const CustomFieldType = {
   SingleLineText: 'single_line_text',
   MultiLineText: 'multi_line_text',
+  Url: 'link',
   Integer: 'integer',
   Decimal: 'decimal',
   Money: 'money',
@@ -49,6 +50,11 @@ type SingleLineTextCustomField = BaseCustomFieldDefinition & {
 
 type MultiLineTextCustomField = BaseCustomFieldDefinition & {
   type: typeof CustomFieldType.MultiLineText;
+  metadata: null;
+};
+
+type URLCustomField = BaseCustomFieldDefinition & {
+  type: typeof CustomFieldType.Url;
   metadata: null;
 };
 
@@ -104,6 +110,7 @@ type CustomObjectReferenceCustomField = BaseCustomFieldDefinition & {
 export type CustomFieldDefinition =
   | SingleLineTextCustomField
   | MultiLineTextCustomField
+  | URLCustomField
   | IntegerCustomField
   | DecimalCustomField
   | MoneyCustomField

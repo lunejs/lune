@@ -9,6 +9,7 @@ import { IntegerCustomField } from './integer';
 import { MultiLineTextCustomField } from './multi-line-text';
 import { ProductReferenceCustomField } from './product-reference';
 import { SingleLineTextCustomField } from './single-line-text';
+import { UrlCustomField } from './url';
 
 export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.SingleLineText) {
@@ -25,6 +26,16 @@ export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
     return (
       <MultiLineTextCustomField
         defaultValue={defaultValues?.[0]}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
+  }
+
+  if (definition.type === CustomFieldType.Url) {
+    return (
+      <UrlCustomField
+        defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}
       />

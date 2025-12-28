@@ -458,7 +458,8 @@ export enum CustomFieldType {
   Money = 'MONEY',
   MultiLineText = 'MULTI_LINE_TEXT',
   ProductReference = 'PRODUCT_REFERENCE',
-  SingleLineText = 'SINGLE_LINE_TEXT'
+  SingleLineText = 'SINGLE_LINE_TEXT',
+  Url = 'URL'
 }
 
 export type CustomFieldValue = {

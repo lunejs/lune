@@ -15,7 +15,7 @@ export const CustomFieldName = () => {
         name="name"
         label="Name"
         placeholder="Custom field"
-        description={definition ? definition.key : name && `key: ${getSlugBy(name)}`}
+        description={definition ? definition.key : name && getSlugBy(name, { replacement: '_' })}
       />
     </div>
   );
