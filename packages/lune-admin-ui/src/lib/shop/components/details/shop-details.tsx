@@ -6,6 +6,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Muted, Small } from '
 import type { CommonShopFragment } from '@/lib/api/types';
 
 import { ShopGeneralInfo } from './general-info/shop-general-info';
+import { ShopSocials } from './socials/shop-socials';
 
 export const ShopDetails = ({ shop }: Props) => {
   return (
@@ -48,12 +49,14 @@ export const ShopDetails = ({ shop }: Props) => {
                 </Muted>
               </div>
             </div>
-            <Button size={'icon'} variant={'ghost'}>
-              <PencilIcon
-                className="opacity-0 text-muted-foreground group-hover:opacity-100 transition-opacity"
-                size={16}
-              />
-            </Button>
+            <ShopSocials shop={shop}>
+              <Button size={'icon'} variant={'ghost'}>
+                <PencilIcon
+                  className="opacity-0 text-muted-foreground group-hover:opacity-100 transition-opacity"
+                  size={16}
+                />
+              </Button>
+            </ShopSocials>
           </div>
         </CardContent>
       </Card>

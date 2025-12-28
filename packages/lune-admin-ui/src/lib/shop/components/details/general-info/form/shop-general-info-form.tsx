@@ -15,7 +15,11 @@ export const ShopGeneralInfoForm = ({ shop }: Props) => {
         <FormInput control={form.control} name="name" label="Shop name" />
         <FormInput control={form.control} name="email" label="Contact email" />
         <FormPhoneInput control={form.control} name="phoneNumber" label="Phone number" />
-        <Button className="w-fit self-end" isLoading={form.formState.isSubmitting}>
+        <Button
+          className="w-fit self-end"
+          disabled={!form.formState.isDirty}
+          isLoading={form.formState.isSubmitting}
+        >
           Save
         </Button>
       </form>
