@@ -29,6 +29,13 @@ const generateVariantsWithDefaults = (
     values: v.values,
     price: v.price,
     stock: v.stock,
+    comparisonPrice: v.comparisonPrice,
+    sku: v.sku,
+    requiresShipping: v.requiresShipping,
+    weight: v.weight,
+    height: v.height,
+    width: v.width,
+    length: v.length,
     selected: v.selected
   }));
 
@@ -41,7 +48,14 @@ const generateVariantsWithDefaults = (
       return {
         ...v,
         price: formValues?.salePrice ?? '',
-        stock: Number(formValues?.stock ?? 0)
+        comparisonPrice: formValues?.comparisonPrice ?? '',
+        stock: Number(formValues?.stock ?? 0),
+        sku: formValues?.sku ?? '',
+        requiresShipping: formValues?.requiresShipping ?? false,
+        weight: Number(formValues?.weight ?? 0),
+        height: Number(formValues?.height ?? 0),
+        width: Number(formValues?.width ?? 0),
+        length: Number(formValues?.length ?? 0)
       };
     }
     return v;

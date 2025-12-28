@@ -63,6 +63,11 @@ export const useCreateProduct = () => {
       input: input.variants.map(variant => ({
         salePrice: variant.salePrice,
         stock: variant.stock,
+        comparisonPrice: variant.comparisonPrice,
+        sku: variant.sku,
+        requiresShipping: variant.requiresShipping,
+        weight: variant.weight,
+        dimensions: { height: variant.height, width: variant.width, length: variant.length },
         // Map variant option values from names to real DB IDs
         optionValues: variant.optionValues
           ?.map(v => optionValueIdMap.get(v.name) ?? v.id)

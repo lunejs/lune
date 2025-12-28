@@ -17,7 +17,14 @@ type Variant = {
   id: string;
   values: OptionValue[];
   price: string;
+  comparisonPrice: string;
   stock: number;
+  sku: string;
+  requiresShipping: boolean;
+  weight: number;
+  height: number;
+  width: number;
+  length: number;
   selected: boolean;
 };
 
@@ -90,7 +97,14 @@ export function genVariants(options: Option[], existingVariants: Variant[]): Var
         action: 'create',
         values: combo,
         price: '',
+        comparisonPrice: '',
         stock: 0,
+        sku: '',
+        requiresShipping: false,
+        weight: 0,
+        height: 0,
+        width: 0,
+        length: 0,
         selected: false
       };
     }

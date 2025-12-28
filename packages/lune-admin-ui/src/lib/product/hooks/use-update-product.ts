@@ -121,6 +121,11 @@ export const useUpdateProduct = () => {
         input: variantsToCreate.map(variant => ({
           salePrice: variant.salePrice,
           stock: variant.stock,
+          comparisonPrice: variant.comparisonPrice,
+          sku: variant.sku,
+          requiresShipping: variant.requiresShipping,
+          weight: variant.weight,
+          dimensions: { height: variant.height, width: variant.width, length: variant.length },
           optionValues: variant.optionValues?.map(value => value.id)
         }))
       });

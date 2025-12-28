@@ -23,6 +23,13 @@ export type VariantContext = {
     values: { name: string; id: string }[];
     price: string;
     stock: number;
+    comparisonPrice: string;
+    sku: string;
+    requiresShipping: boolean;
+    weight: number;
+    height: number;
+    width: number;
+    length: number;
     selected: boolean;
     action: 'create' | 'update' | 'none'; // ← SOLO ESTE CAMPO
   }[];
@@ -89,7 +96,14 @@ export const VariantContextProvider = ({
           name: v.name
         })),
         price: v.salePrice ? formatPrice(v.salePrice) : '',
+        comparisonPrice: v.comparisonPrice ? formatPrice(v.comparisonPrice) : '',
         stock: v.stock,
+        sku: v.sku ?? '',
+        requiresShipping: v.requiresShipping ?? false,
+        weight: v.weight ?? 0,
+        height: v.dimensions?.height ?? 0,
+        width: v.dimensions?.width ?? 0,
+        length: v.dimensions?.length ?? 0,
         selected: false,
         action: 'none' as const
       }))
@@ -137,6 +151,13 @@ export const VariantContextProvider = ({
           stock: v.stock,
           salePrice: v.price,
           optionValues: v.values,
+          comparisonPrice: v.comparisonPrice,
+          sku: v.sku,
+          requiresShipping: v.requiresShipping,
+          weight: v.weight,
+          height: v.height,
+          width: v.width,
+          length: v.length,
           action: v.action
         }))
       );
