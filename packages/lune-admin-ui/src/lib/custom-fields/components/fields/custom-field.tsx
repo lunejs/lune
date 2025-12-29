@@ -1,6 +1,7 @@
 import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
 
 import { BooleanCustomField } from './boolean';
+import { ColorCustomField } from './color';
 import { CustomObjectReferenceCustomField } from './custom-object';
 import { DateCustomField } from './date';
 import { DecimalCustomField } from './decimal';
@@ -35,6 +36,16 @@ export const CustomField = ({ defaultValues, definition, onChange }: Props) => {
   if (definition.type === CustomFieldType.Url) {
     return (
       <UrlCustomField
+        defaultValues={defaultValues}
+        onChange={value => onChange(definition, value)}
+        definition={definition}
+      />
+    );
+  }
+
+  if (definition.type === CustomFieldType.Color) {
+    return (
+      <ColorCustomField
         defaultValues={defaultValues}
         onChange={value => onChange(definition, value)}
         definition={definition}

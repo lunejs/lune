@@ -85,6 +85,7 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
     SINGLE_LINE_TEXT: CustomFieldType.SingleLineText,
     MULTI_LINE_TEXT: CustomFieldType.MultiLineText,
     URL: CustomFieldType.Url,
+    COLOR: CustomFieldType.Color,
     INTEGER: CustomFieldType.Integer,
     DECIMAL: CustomFieldType.Decimal,
     MONEY: CustomFieldType.Money,

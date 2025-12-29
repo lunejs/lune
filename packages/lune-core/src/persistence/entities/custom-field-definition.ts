@@ -4,6 +4,7 @@ export const CustomFieldType = {
   SingleLineText: 'single_line_text',
   MultiLineText: 'multi_line_text',
   Url: 'link',
+  Color: 'color',
   Integer: 'integer',
   Decimal: 'decimal',
   Money: 'money',
@@ -55,6 +56,11 @@ type MultiLineTextCustomField = BaseCustomFieldDefinition & {
 
 type URLCustomField = BaseCustomFieldDefinition & {
   type: typeof CustomFieldType.Url;
+  metadata: null;
+};
+
+type ColorCustomField = BaseCustomFieldDefinition & {
+  type: typeof CustomFieldType.Color;
   metadata: null;
 };
 
@@ -111,6 +117,7 @@ export type CustomFieldDefinition =
   | SingleLineTextCustomField
   | MultiLineTextCustomField
   | URLCustomField
+  | ColorCustomField
   | IntegerCustomField
   | DecimalCustomField
   | MoneyCustomField

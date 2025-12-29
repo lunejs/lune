@@ -188,3 +188,6 @@
 .quick-fade-in {
   animation: 0.1s fadeIn;
 }
+.w-color-interactive:not(.w-color-colorful) > div:first-child {
+  margin-top: 3px;
+}

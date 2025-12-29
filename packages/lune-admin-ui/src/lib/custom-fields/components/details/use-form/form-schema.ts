@@ -18,7 +18,8 @@ export const CustomFieldDetailsSchema = z.object({
       CustomFieldType.CollectionReference,
       CustomFieldType.SingleLineText,
       CustomFieldType.CustomObjectReference,
-      CustomFieldType.Url
+      CustomFieldType.Url,
+      CustomFieldType.Color
     ],
     'Invalid type'
   ),

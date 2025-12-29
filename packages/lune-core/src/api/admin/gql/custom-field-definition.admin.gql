@@ -13,6 +13,7 @@ enum CustomFieldType {
   SINGLE_LINE_TEXT
   MULTI_LINE_TEXT
   URL
+  COLOR
   INTEGER
   DECIMAL
   MONEY

@@ -450,6 +450,7 @@ export type CustomFieldDefinitionResult = {
 export enum CustomFieldType {
   Boolean = 'BOOLEAN',
   CollectionReference = 'COLLECTION_REFERENCE',
+  Color = 'COLOR',
   CustomObjectReference = 'CUSTOM_OBJECT_REFERENCE',
   Date = 'DATE',
   Decimal = 'DECIMAL',

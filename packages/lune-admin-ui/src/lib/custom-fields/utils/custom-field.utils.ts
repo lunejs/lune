@@ -8,6 +8,7 @@ import {
   ImageIcon,
   type LucideIcon,
   PackageIcon,
+  PipetteIcon,
   ShoppingCartIcon,
   TextIcon,
   ToggleLeftIcon,
@@ -45,6 +46,7 @@ const DATA: Record<string, CustomFieldTypeData> = {
   // Other
   [CustomFieldType.Boolean]: new CustomFieldTypeData('Boolean', ToggleLeftIcon),
   [CustomFieldType.Date]: new CustomFieldTypeData('Date', CalendarIcon),
+  [CustomFieldType.Color]: new CustomFieldTypeData('Color', PipetteIcon),
 
   // Reference
   [CustomFieldType.ProductReference]: new CustomFieldTypeData('Product', PackageIcon),
@@ -152,6 +154,11 @@ export const CUSTOM_FIELD_TYPE_GROUPS = [
         label: 'Date',
         value: CustomFieldType.Date,
         icon: getCustomFieldTypeData(CustomFieldType.Date).icon
+      },
+      {
+        label: getCustomFieldTypeData(CustomFieldType.Color).title,
+        value: CustomFieldType.Color,
+        icon: getCustomFieldTypeData(CustomFieldType.Color).icon
       }
     ]
   }
