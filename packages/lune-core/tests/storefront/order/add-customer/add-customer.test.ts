@@ -283,6 +283,41 @@ describe('addCustomerToOrder - Mutation', () => {
     expect(order).toBeNull();
     expect(error.code).toBe('FORBIDDEN_ORDER_ACTION');
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: ADD_CUSTOMER_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: {
+            email: 'test@example.com'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_CUSTOMER_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: {
+            email: 'test@example.com'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const ADD_CUSTOMER_TO_ORDER_MUTATION = /* GraphQL */ `

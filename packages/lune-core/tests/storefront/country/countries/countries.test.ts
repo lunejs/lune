@@ -68,7 +68,7 @@ describe('countries - Query', () => {
     expect(countries[1].name).toBe('United States');
   });
 
-  test('returns Authorization error when no storefront api key is provided', async () => {
+  test('returns UNAUTHORIZED error when no storefront api key is provided', async () => {
     const response = await request(app).post('/storefront-api').send({
       query: COUNTRIES_QUERY
     });

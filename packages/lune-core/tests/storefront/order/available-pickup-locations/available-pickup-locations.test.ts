@@ -53,6 +53,29 @@ describe('availablePickupLocations - Query', () => {
       id: LocationConstants.AvailableID
     });
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: AVAILABLE_PICKUP_LOCATIONS_QUERY
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: AVAILABLE_PICKUP_LOCATIONS_QUERY
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const AVAILABLE_PICKUP_LOCATIONS_QUERY = /* GraphQL */ `

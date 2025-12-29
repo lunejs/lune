@@ -166,6 +166,35 @@ describe('createOrder - Mutation', () => {
     expect(apiErrors[0].code).toBe('NOT_ENOUGH_STOCK');
     expect(order).toBeNull();
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: CREATE_ORDER_MUTATION,
+        variables: {
+          input: {}
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: CREATE_ORDER_MUTATION,
+        variables: {
+          input: {}
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const CREATE_ORDER_MUTATION = /* GraphQL */ `

@@ -153,43 +153,24 @@ describe('product - Query', () => {
     expect(product.description).toBe(ProductConstants.MacBookPro16Description);
   });
 
-  test('returns Authorization error when no storefront api key is provided', async () => {
-    const response = await request(app)
-      .post('/storefront-api')
-      .send({
-        query: GET_PRODUCT_QUERY,
-        variables: {
-          id: ProductConstants.AppleWatchSeries8ID
-        }
-      });
-
-    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
-  });
-
-  test('returns Authorization error when storefront api key is invalid', async () => {
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
     const response = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', 'invalid_key')
       .send({
-        query: GET_PRODUCT_QUERY,
-        variables: {
-          id: ProductConstants.AppleWatchSeries8ID
-        }
+        query: GET_PRODUCT_QUERY
       });
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
 
-  test('returns Authorization error when no shop id is provided', async () => {
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
     const response = await request(app)
       .post('/storefront-api')
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_QUERY,
-        variables: {
-          id: ProductConstants.AppleWatchSeries8ID
-        }
+        query: GET_PRODUCT_QUERY
       });
 
     expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');

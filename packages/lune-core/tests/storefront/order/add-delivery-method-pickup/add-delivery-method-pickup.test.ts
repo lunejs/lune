@@ -252,6 +252,41 @@ describe('addDeliveryMethodPickupToOrder - Mutation', () => {
     expect(error.code).toBe('FORBIDDEN_ORDER_ACTION');
     expect(order).toBeNull();
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: ADD_DELIVERY_METHOD_PICKUP_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: {
+            locationId: LocationConstants.ID
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_DELIVERY_METHOD_PICKUP_TO_ORDER_MUTATION,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: {
+            locationId: LocationConstants.ID
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const ADD_DELIVERY_METHOD_PICKUP_TO_ORDER_MUTATION = /* GraphQL */ `

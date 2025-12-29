@@ -32,6 +32,8 @@ import { OrderService } from '@/business/order/order.service';
 import { OrderState } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
+import { UseStorefrontApiKeyGuard } from '../guards/storefront-api-key.guard';
+
 async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
   const orderService = new OrderService(ctx);
 
@@ -174,22 +176,22 @@ async function addPaymentToOrder(
 
 export const OrderResolver: GraphqlApiResolver = {
   Query: {
-    order,
-    availablePickupLocations,
-    availablePaymentMethods,
-    availableShippingMethods
+    order: UseStorefrontApiKeyGuard(order),
+    availablePickupLocations: UseStorefrontApiKeyGuard(availablePickupLocations),
+    availablePaymentMethods: UseStorefrontApiKeyGuard(availablePaymentMethods),
+    availableShippingMethods: UseStorefrontApiKeyGuard(availableShippingMethods)
   },
   Mutation: {
-    createOrder,
-    addLineToOrder,
-    updateOrderLine,
-    removeOrderLine,
-    addCustomerToOrder,
-    addShippingAddressToOrder,
-    addDeliveryMethodShippingToOrder,
-    addDeliveryMethodPickupToOrder,
-    addDiscountCodeToOrder,
-    addPaymentToOrder
+    createOrder: UseStorefrontApiKeyGuard(createOrder),
+    addLineToOrder: UseStorefrontApiKeyGuard(addLineToOrder),
+    updateOrderLine: UseStorefrontApiKeyGuard(updateOrderLine),
+    removeOrderLine: UseStorefrontApiKeyGuard(removeOrderLine),
+    addCustomerToOrder: UseStorefrontApiKeyGuard(addCustomerToOrder),
+    addShippingAddressToOrder: UseStorefrontApiKeyGuard(addShippingAddressToOrder),
+    addDeliveryMethodShippingToOrder: UseStorefrontApiKeyGuard(addDeliveryMethodShippingToOrder),
+    addDeliveryMethodPickupToOrder: UseStorefrontApiKeyGuard(addDeliveryMethodPickupToOrder),
+    addDiscountCodeToOrder: UseStorefrontApiKeyGuard(addDiscountCodeToOrder),
+    addPaymentToOrder: UseStorefrontApiKeyGuard(addPaymentToOrder)
   },
   OrderState: {
     MODIFYING: OrderState.Modifying,

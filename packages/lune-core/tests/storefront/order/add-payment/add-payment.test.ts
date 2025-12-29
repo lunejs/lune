@@ -419,6 +419,37 @@ describe('addPaymentToOrder - Mutation', () => {
 
     expect(paymentFailure.reason).toBe('Payment provider failed');
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: ADD_PAYMENT_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: { methodId: PaymentMethodConstants.CapturedID }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: ADD_PAYMENT_TO_ORDER,
+        variables: {
+          orderId: OrderConstants.ID,
+          input: { methodId: PaymentMethodConstants.CapturedID }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const ADD_PAYMENT_TO_ORDER = /* GraphQL */ `
