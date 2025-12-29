@@ -6,6 +6,7 @@ import { LuneEvent } from './lune.event';
 export const enum FulfillmentEvent {
   Shipped = 'fulfillment.shipped',
   ReadyForPickup = 'fulfillment.ready_for_pickup',
+  PickedUp = 'fulfillment.picked_up',
   Delivered = 'fulfillment.delivered'
 }
 
@@ -51,5 +52,18 @@ export class FulfillmentDeliveredEvent extends LuneEvent {
     public readonly orderId: ID
   ) {
     super(FulfillmentEvent.Delivered, ctx);
+  }
+}
+
+/**
+ * @description
+ * Event emitted when a fulfillment has been picked up by customer.
+ */
+export class FulfillmentPickedUpEvent extends LuneEvent {
+  constructor(
+    public readonly ctx: LuneEventContext,
+    public readonly orderId: ID
+  ) {
+    super(FulfillmentEvent.PickedUp, ctx);
   }
 }
