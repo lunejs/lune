@@ -1,5 +1,4 @@
-import type { ShippingFulfillment } from '@lune/core';
-import { ApplicationLevel, ApplicationMode, FulfillmentType, OrderState } from '@lune/core';
+import { ApplicationLevel, ApplicationMode, DeliveryMethodType, OrderState } from '@lune/core';
 
 export const SHIPPING_ORDER = {
   id: 'order-1',
@@ -40,23 +39,23 @@ export const SHIPPING_ORDER = {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  fulfillment: {
-    id: 'fulfillment-1',
-    type: FulfillmentType.SHIPPING,
+  deliveryMethod: {
+    id: 'delivery-method-1',
+    type: DeliveryMethodType.Shipping,
     amount: 1000,
     total: 1000,
     orderId: 'order-1',
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  fulfillmentDetails: {
-    id: 'shipping-details-1',
-    fulfillmentId: 'fulfillment-1',
+  deliveryMethodShipping: {
+    id: 'delivery-method-shipping-1',
+    deliveryMethodId: 'delivery-method-1',
     method: 'Shipping method',
     shippingMethodId: '',
     createdAt: new Date(),
     updatedAt: new Date()
-  } satisfies ShippingFulfillment,
+  },
   lines: [
     {
       id: 'line-1',

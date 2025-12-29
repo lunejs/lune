@@ -47,9 +47,7 @@ export class PayPalService {
                 currency_code: 'USD'
               },
               category: 'PHYSICAL_GOODS',
-              description: line.variant.optionValues
-                ?.map(opv => opv.preset?.name ?? opv.name ?? '')
-                .join(', ')
+              description: line.variant.optionValues?.map(opv => opv.name ?? '').join(', ')
             })),
             amount: {
               value: String(LunePrice.toDollar(order.total)),
@@ -65,7 +63,7 @@ export class PayPalService {
                 },
                 shipping: {
                   currency_code: 'USD',
-                  value: String(LunePrice.toDollar(order.fulfillment?.total ?? 0))
+                  value: String(LunePrice.toDollar(order.deliveryMethod?.total ?? 0))
                 },
                 item_total: {
                   value: String(LunePrice.toDollar(order.subtotal)),

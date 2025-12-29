@@ -609,7 +609,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
 
               return {
                 ...optionValue,
-                name: displayName,
+                name: displayName as string,
                 metadata: Object.keys(metadata).length > 0 ? metadata : undefined
               };
             }

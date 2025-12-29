@@ -16,6 +16,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "resolveJsonModule": true,
+    "preserveConstEnums": true,
     "paths": {
       "@/*": ["./src/*"],
       "@/tests/*": ["./tests/*"]
