@@ -3,6 +3,8 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { CommonCountryFieldResolver } from '@/api/shared/resolvers/country-field.resolver';
 import { CountryService } from '@/business/country/country.service';
 
+import { UseStorefrontApiKeyGuard } from '../guards/storefront-api-key.guard';
+
 async function countries(_, __, ctx: ExecutionContext) {
   const countryService = new CountryService(ctx);
 
@@ -11,7 +13,7 @@ async function countries(_, __, ctx: ExecutionContext) {
 
 export const CountryResolver: GraphqlApiResolver = {
   Query: {
-    countries
+    countries: UseStorefrontApiKeyGuard(countries)
   },
   Country: {
     ...CommonCountryFieldResolver
