@@ -2,11 +2,18 @@ import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import { DeliveryMethodDetailsUnionResolver } from '@/api/shared/resolvers/delivery-method-details.resolver';
+import { CommonDeliveryMethodFieldResolver } from '@/api/shared/resolvers/delivery-method-field.resolver';
+import { CommonDeliveryMethodPickupFieldResolver } from '@/api/shared/resolvers/delivery-method-pickup-field.resolver';
+import { CommonDeliveryMethodShippingFieldResolver } from '@/api/shared/resolvers/delivery-method-shipping-field.resolver';
 import {
   CommonFulfillmentFieldResolver,
   CommonFulfillmentLineFieldResolver
 } from '@/api/shared/resolvers/fulfillment-field.resolver';
+import { CommonLocationFieldResolver } from '@/api/shared/resolvers/location-field.resolver';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
+import { CommonOrderLineFieldResolver } from '@/api/shared/resolvers/order-line-field.resolver';
+import { CommonShippingMethodFieldResolver } from '@/api/shared/resolvers/shipping-method-field.resolver';
 import type {
   MutationAddCustomerToOrderArgs,
   MutationAddDeliveryMethodPickupToOrderArgs,
@@ -22,6 +29,7 @@ import type {
   QueryOrderArgs
 } from '@/api/shared/types/graphql';
 import { OrderService } from '@/business/order/order.service';
+import { OrderState } from '@/persistence/entities/order';
 import { isErrorResult } from '@/utils/error-result';
 
 async function order(_, input: QueryOrderArgs, ctx: ExecutionContext) {
@@ -183,13 +191,41 @@ export const OrderResolver: GraphqlApiResolver = {
     addDiscountCodeToOrder,
     addPaymentToOrder
   },
+  OrderState: {
+    MODIFYING: OrderState.Modifying,
+    PLACED: OrderState.Placed,
+    PROCESSING: OrderState.Processing,
+    PARTIALLY_FULFILLED: OrderState.PartiallyFulfilled,
+    FULFILLED: OrderState.Fulfilled,
+    COMPLETED: OrderState.Completed,
+    CANCELED: OrderState.Canceled
+  },
   Order: {
     ...CommonOrderFieldResolver
+  },
+  OrderLine: {
+    ...CommonOrderLineFieldResolver
   },
   Fulfillment: {
     ...CommonFulfillmentFieldResolver
   },
   FulfillmentLine: {
     ...CommonFulfillmentLineFieldResolver
+  },
+  DeliveryMethodDetails: DeliveryMethodDetailsUnionResolver,
+  DeliveryMethod: {
+    ...CommonDeliveryMethodFieldResolver
+  },
+  DeliveryMethodShipping: {
+    ...CommonDeliveryMethodShippingFieldResolver
+  },
+  DeliveryMethodPickup: {
+    ...CommonDeliveryMethodPickupFieldResolver
+  },
+  Location: {
+    ...CommonLocationFieldResolver
+  },
+  ShippingMethod: {
+    ...CommonShippingMethodFieldResolver
   }
 };

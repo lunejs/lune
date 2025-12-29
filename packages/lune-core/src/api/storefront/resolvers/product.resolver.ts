@@ -2,9 +2,14 @@ import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import { CommonOptionValueFieldResolver } from '@/api/shared/resolvers/option-value-field.resolver';
+import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
+import { CommonVariantFieldResolver } from '@/api/shared/resolvers/variant-field.resolver';
 import type { QueryProductArgs, QueryProductsArgs } from '@/api/shared/types/graphql';
+import { getProductLocalizedField } from '@/api/shared/utils/get-localized-field';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { ProductService } from '@/business/product/product.service';
+import type { Product } from '@/persistence/entities/product';
 
 import { UseStorefrontApiKeyGuard } from '../guards/storefront-api-key.guard';
 
@@ -38,5 +43,34 @@ export const ProductResolver: GraphqlApiResolver = {
   Query: {
     product: UseStorefrontApiKeyGuard(product),
     products: UseStorefrontApiKeyGuard(products)
+  },
+  Product: {
+    ...CommonProductFieldResolver,
+    name: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'name');
+    },
+    slug: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'slug');
+    },
+    description: async (parent: Product, _, ctx: ExecutionContext) => {
+      return getProductLocalizedField(ctx, parent, 'description');
+    },
+    customFields: async (parent: Product, _: unknown, ctx: ExecutionContext) => {
+      const fields = await ctx.loaders.product.customFields.load(parent.id);
+
+      return fields.reduce(
+        (acc, field) => {
+          acc[field.definition.key] = field.value;
+          return acc;
+        },
+        {} as Record<string, unknown>
+      );
+    }
+  },
+  Variant: {
+    ...CommonVariantFieldResolver
+  },
+  OptionValue: {
+    ...CommonOptionValueFieldResolver
   }
 };

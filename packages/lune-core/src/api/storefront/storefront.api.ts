@@ -17,14 +17,6 @@ import { useTransaction } from '../shared/plugins/use-transaction';
 import { OrderEnumsResolver } from '../shared/resolvers/enums/order-enums.resolver';
 import type { CustomerJWT } from '../shared/types/api.types';
 
-import { DeliveryMethodFieldResolver } from './field-resolvers/delivery-method-field.resolver';
-import { LocationFieldResolver } from './field-resolvers/location-field.resolver';
-import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
-import { OrderFieldResolver } from './field-resolvers/order-field.resolver';
-import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
-import { ProductFieldResolver } from './field-resolvers/product-field.resolver';
-import { ShippingMethodFieldResolver } from './field-resolvers/shipping-method-field.resolver';
-import { VariantFieldResolver } from './field-resolvers/variant-field.resolver';
 import { AddressResolver } from './resolvers/address.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
@@ -51,16 +43,8 @@ export class StorefrontApi extends GraphqlApi {
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH, ...pluginsTypePaths],
       resolvers: [
         ProductResolver,
-        ProductFieldResolver,
         OrderResolver,
-        OrderFieldResolver,
-        OrderLineFieldResolver,
-        DeliveryMethodFieldResolver,
         CountryResolver,
-        ShippingMethodFieldResolver,
-        VariantFieldResolver,
-        OptionValueFieldResolver,
-        LocationFieldResolver,
         CustomerResolver,
         AddressResolver,
         OrderEnumsResolver,
