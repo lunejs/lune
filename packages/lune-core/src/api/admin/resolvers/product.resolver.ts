@@ -1,8 +1,8 @@
 import { clean } from '@lune/common';
 
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ProductCustomFieldWithDefinition } from '@/api/shared/loaders/product/product-custom-fields.loader';
 import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
 import type {

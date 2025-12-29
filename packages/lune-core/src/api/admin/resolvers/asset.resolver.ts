@@ -1,6 +1,6 @@
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { MutationRemoveAssetsArgs, QueryAssetsArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { AssetService } from '@/business/asset/asset.service';

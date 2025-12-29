@@ -3,15 +3,15 @@ export * from './server';
 /**
  * Api
  */
+export * from './api/admin/guards/user.guard';
 export * from './api/shared/constants/headers.constants';
 export * from './api/shared/context/types';
 export * from './api/shared/graphql-api';
-export * from './api/storefront/guards/customer.guard';
-export * from './api/admin/guards/user.guard';
 export * from './api/shared/middlewares/user.middleware';
 export * from './api/shared/utils/get-localized-field';
 export * from './api/shared/utils/list-response';
 export * from './api/shared/utils/pagination';
+export * from './api/storefront/guards/customer.guard';
 
 /**
  * Business Logic

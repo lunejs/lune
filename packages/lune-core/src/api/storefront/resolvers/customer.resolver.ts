@@ -1,12 +1,12 @@
 import type { CurrentCustomer, ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseCustomerGuard } from '@/api/storefront/guards/customer.guard';
 import { CommonCustomerFieldResolver } from '@/api/shared/resolvers/customer-field.resolver';
 import type {
   MutationSignInCustomerWithCredentialsArgs,
   MutationSignUpCustomerWithCredentialsArgs,
   MutationUpdateCustomerArgs
 } from '@/api/shared/types/graphql';
+import { UseCustomerGuard } from '@/api/storefront/guards/customer.guard';
 import { CustomerService } from '@/business/customer/customer.service';
 import { isErrorResult } from '@/utils/error-result';
 
