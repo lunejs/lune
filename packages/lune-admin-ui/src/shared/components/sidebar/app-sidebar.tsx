@@ -9,8 +9,7 @@ import {
   SettingsIcon,
   ShoppingCartIcon,
   TagIcon,
-  UserIcon,
-  UsersIcon
+  UserIcon
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
@@ -194,13 +193,13 @@ const SIDEBAR = {
       url: '/customers',
       icon: UserIcon,
       isActive: (pathname: string) => pathname.includes('customers')
-    },
-    {
-      title: 'Segments',
-      url: '#',
-      icon: UsersIcon,
-      isActive: (pathname: string) => pathname.includes('random')
     }
+    // {
+    //   title: 'Segments',
+    //   url: '#',
+    //   icon: UsersIcon,
+    //   isActive: (pathname: string) => pathname.includes('random')
+    // }
   ],
   content: [
     {

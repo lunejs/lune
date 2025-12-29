@@ -6,11 +6,9 @@ import {
   GroupIcon,
   LogOutIcon,
   MapPinIcon,
-  SquircleDashedIcon,
   StoreIcon,
   TruckIcon,
-  UngroupIcon,
-  UsersIcon
+  UngroupIcon
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
@@ -138,12 +136,12 @@ const SIDEBAR = {
       url: '/shop',
       icon: StoreIcon,
       isActive: (pathname: string) => pathname.includes('shop')
-    },
-    {
-      title: 'Users and permissions',
-      url: '/users',
-      icon: UsersIcon
     }
+    // {
+    //   title: 'Users and permissions',
+    //   url: '/users',
+    //   icon: UsersIcon
+    // }
   ],
   fulfillment: [
     {
@@ -166,12 +164,12 @@ const SIDEBAR = {
     }
   ],
   customization: [
-    {
-      title: 'Presets',
-      url: '/presets',
-      icon: SquircleDashedIcon,
-      isActive: (pathname: string) => pathname.includes('presets')
-    },
+    // {
+    //   title: 'Presets',
+    //   url: '/presets',
+    //   icon: SquircleDashedIcon,
+    //   isActive: (pathname: string) => pathname.includes('presets')
+    // },
     {
       title: 'Custom fields',
       url: '/custom-fields',
