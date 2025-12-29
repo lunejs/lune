@@ -19,9 +19,9 @@ export interface OptionValue extends LuneEntity {
    */
   optionId: ID;
   /**
-   * The option value preset this value has
+   * The custom object entry this value references
    */
-  presetId?: ID | null;
+  customObjectEntryId?: ID | null;
 }
 
 export interface OptionValueTable extends LuneTable {
@@ -31,4 +31,5 @@ export interface OptionValueTable extends LuneTable {
   option_id: string;
   shop_id: string;
   option_value_preset_id?: ID | null;
+  custom_object_entry_id?: ID | null;
 }

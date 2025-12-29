@@ -22,7 +22,6 @@ import { FulfillmentLineRepository } from './fulfillment-line-repository';
 import { FulfillmentRepository } from './fulfillment-repository';
 import { InStorePickupRepository } from './in-store-pickup-repository';
 import { LocationRepository } from './location-repository';
-import { OptionPresetRepository } from './option-preset-repository';
 import { OptionRepository } from './option-repository';
 import { OptionTranslationRepository } from './option-translation-repository';
 import { OptionValueRepository } from './option-value-repository';
@@ -88,7 +87,6 @@ export function buildRepositories(trx: Transaction) {
     shippingMethod: new ShippingMethodRepository(trx),
     discount: new DiscountRepository(trx),
     orderDiscount: new OrderDiscountRepository(trx),
-    optionPreset: new OptionPresetRepository(trx),
     customFieldDefinition: new CustomFieldDefinitionRepository(trx),
     customObjectDefinition: new CustomObjectDefinitionRepository(trx),
     customObjectEntry: new CustomObjectEntryRepository(trx),

@@ -31,7 +31,6 @@ import { DiscountResolver } from './resolvers/discount.resolver';
 import { LocationResolver } from './resolvers/location.resolver';
 import { MetricResolver } from './resolvers/metric.resolver';
 import { OptionResolver } from './resolvers/option.resolver';
-import { OptionPresetsResolver } from './resolvers/option-preset.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { PaymentMethodResolver } from './resolvers/payment-method.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
@@ -72,7 +71,6 @@ export class AdminApi extends GraphqlApi {
         CountryResolver,
         LocationResolver,
         PaymentMethodResolver,
-        OptionPresetsResolver,
         AssetResolver,
         DiscountResolver,
         CustomerResolver,

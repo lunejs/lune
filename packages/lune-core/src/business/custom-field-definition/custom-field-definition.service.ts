@@ -39,7 +39,9 @@ export class CustomFieldDefinitionService {
   async create(input: CreateCustomFieldInput) {
     const key = this.generateKey(input.name);
 
-    const keyAlreadyExists = await this.repository.count({ where: { key } });
+    const keyAlreadyExists = await this.repository.count({
+      where: { key, appliesToEntity: input.appliesToEntity }
+    });
     if (keyAlreadyExists) return new KeyAlreadyExistsError(key);
 
     return await this.repository.create({

@@ -14,14 +14,11 @@ import {
   PopoverTrigger
 } from '@lune/ui';
 
-import { useGetOptionPresets } from '@/lib/option-preset/hooks/use-get-option-presets';
-
 import { useVariantContext } from '../variants.context';
 
 export const OptionPresetSelector = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { optionPresets } = useGetOptionPresets();
-  const { appendOption } = useVariantContext();
+  const { customObjects, appendOption } = useVariantContext();
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -32,16 +29,16 @@ export const OptionPresetSelector = ({ children }: Props) => {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {optionPresets?.map(preset => (
+              {customObjects?.map(customObject => (
                 <CommandItem
-                  key={preset.id}
-                  value={preset.id}
+                  key={customObject.id}
+                  value={customObject.id}
                   onSelect={() => {
-                    appendOption(preset.id);
+                    appendOption(customObject.id);
                     setIsOpen(false);
                   }}
                 >
-                  {preset.name}
+                  {customObject.name}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -123,7 +123,7 @@ export const CustomObjectFields = () => {
                           )}
                         </div>
 
-                        <div className="flex flex-col items-start gap-4 md:flex-row">
+                        <div className="flex flex-1 flex-col items-start gap-4 md:flex-row">
                           <FormSelect
                             disabled={!!persistedField}
                             control={form.control}
@@ -132,7 +132,7 @@ export const CustomObjectFields = () => {
                               { label: 'One value', value: 'single', icon: CircleIcon },
                               { label: 'List of values', value: 'multiple', icon: ListIcon }
                             ]}
-                            className="w-full md:w-40"
+                            className="w-full md:min-w-40"
                           />
 
                           <FormSelect
@@ -140,7 +140,7 @@ export const CustomObjectFields = () => {
                             control={form.control}
                             name={`fields.${i}.type`}
                             placeholder="Select a type"
-                            className="w-full md:w-44 shrink-0"
+                            className="w-full md:min-w-44"
                             groups={CUSTOM_FIELD_TYPE_GROUPS}
                           />
                         </div>

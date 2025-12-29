@@ -14,12 +14,6 @@ type OptionValueTranslation {
   locale: Locale!
 }
 
-type OptionValuePreset {
-  id: ID!
-  name: String!
-  metadata: JSON
-}
-
 extend type Option {
   order: Int!
 
@@ -30,7 +24,7 @@ extend type OptionValue {
   order: Int!
 
   translations: [OptionValueTranslation!]!
-  preset: OptionValuePreset
+  customObjectEntry: CustomObjectEntry
 }
 
 type Mutation {
@@ -49,7 +43,7 @@ input CreateOptionInput {
 input CreateOptionValueInput {
   order: Int!
   name: String
-  presetId: ID
+  customObjectEntryId: ID
 }
 
 input UpdateOptionInput {
@@ -65,7 +59,7 @@ input UpdateOptionValueInput {
   """
   id: ID
   name: String
-  presetId: ID # is it necessary?
+  customObjectEntryId: ID
   order: Int
 }
 

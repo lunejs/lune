@@ -1,5 +1,75 @@
 import { graphql } from '../codegen';
 
+export const COMMON_CUSTOM_FIELD_DEFINITION_FOR_OPTION_VALUES_FRAGMENT = graphql(`
+  fragment CommonCustomFieldDefinitionForOptionValues on CustomFieldDefinition {
+    id
+    createdAt
+    updatedAt
+    name
+    key
+    isList
+    appliesToEntity
+    type
+    metadata
+    order
+    referenceTarget {
+      id
+      createdAt
+      updatedAt
+      name
+      key
+      entries {
+        items {
+          id
+          createdAt
+          updatedAt
+          slug
+          values {
+            id
+            value
+            translations {
+              id
+              value
+              locale
+            }
+            field {
+              id
+              name
+              key
+              type
+              isList
+            }
+          }
+        }
+      }
+      displayField {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+        order
+      }
+      fields {
+        id
+        createdAt
+        updatedAt
+        name
+        key
+        isList
+        appliesToEntity
+        type
+        metadata
+        order
+      }
+    }
+  }
+`);
+
 export const COMMON_CUSTOM_FIELD_DEFINITION_FRAGMENT = graphql(`
   fragment CommonCustomFieldDefinition on CustomFieldDefinition {
     id
@@ -63,6 +133,20 @@ export const GET_CUSTOM_FIELD_DEFINITIONS_QUERY = graphql(`
       }
       items {
         ...CommonCustomFieldDefinition
+      }
+    }
+  }
+`);
+
+export const GET_CUSTOM_FIELD_DEFINITIONS_FOR_OPTION_VALUES_QUERY = graphql(`
+  query GetCustomFieldDefinitionsForOptionValues($input: CustomFieldDefinitionListInput) {
+    customFieldDefinitions(input: $input) {
+      count
+      pageInfo {
+        total
+      }
+      items {
+        ...CommonCustomFieldDefinitionForOptionValues
       }
     }
   }

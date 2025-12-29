@@ -23,7 +23,10 @@ export const CustomObjectEntriesPage = () => {
           definition={definitionRes.customObjectDefinition as CommonCustomObjectDefinitionFragment}
         />
       ) : (
-        <CustomObjectEntriesTable definitionId={id} {...result} />
+        <CustomObjectEntriesTable
+          definition={definitionRes.customObjectDefinition as CommonCustomObjectDefinitionFragment}
+          {...result}
+        />
       )}
     </PageLayout>
   );

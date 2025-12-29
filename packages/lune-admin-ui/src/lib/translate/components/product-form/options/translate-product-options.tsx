@@ -19,7 +19,7 @@ export const TranslateOptions = ({ product }: Props) => {
   const values = useWatch({ defaultValue: form.formState.defaultValues });
 
   return product.options.map((option, optionIdx) => {
-    const optionValuesToRender = option.values.filter(v => !v.preset?.id);
+    const optionValuesToRender = option.values.filter(v => !v.customObjectEntry?.id);
 
     return (
       <Fragment key={option.id}>

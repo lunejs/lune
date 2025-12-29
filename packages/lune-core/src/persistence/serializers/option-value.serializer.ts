@@ -12,7 +12,7 @@ export class OptionValueSerializer extends Serializer<OptionValue, OptionValueTa
       ['name', 'name'],
       ['order', 'order'],
       ['option_id', 'optionId'],
-      ['option_value_preset_id', 'presetId']
+      ['custom_object_entry_id', 'customObjectEntryId']
     ]);
   }
 }

@@ -365,8 +365,10 @@ export type CreateOptionInput = {
 };
 
 export type CreateOptionValueInput = {
+  customObjectEntryId?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order: Scalars['Int']['input'];
+  /** @deprecated Use customObjectEntryId instead */
   presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -1633,11 +1635,13 @@ export type OptionTranslationInput = {
 export type OptionValue = Node & {
   __typename?: 'OptionValue';
   createdAt: Scalars['Date']['output'];
+  customObjectEntry?: Maybe<CustomObjectEntry>;
   id: Scalars['ID']['output'];
   metadata?: Maybe<OptionValueMetadata>;
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
+  /** @deprecated Use customObjectEntry instead */
   preset?: Maybe<OptionValuePreset>;
   translations: Array<OptionValueTranslation>;
   updatedAt: Scalars['Date']['output'];
@@ -2636,6 +2640,7 @@ export type UpdateOptionInput = {
 };
 
 export type UpdateOptionValueInput = {
+  customObjectEntryId?: InputMaybe<Scalars['ID']['input']>;
   /**
    * If present, the value will be updated.
    * If not, the value will be created and add it to the option
@@ -2643,6 +2648,7 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+  /** @deprecated Use customObjectEntryId instead */
   presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -3474,7 +3480,7 @@ export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, CUSTOM_OBJECT?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
+export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, CUSTOM_OBJECT?: any, OPTION_VALUE?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
 
 export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinition'] = ResolversParentTypes['CustomFieldDefinition']> = {
   appliesToEntity?: Resolver<ResolversTypes['CustomFieldAppliesToEntity'], ParentType, ContextType>;
@@ -3510,7 +3516,7 @@ export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext,
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, COLLECTION_REFERENCE?: any, CUSTOM_OBJECT_REFERENCE?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, PRODUCT_REFERENCE?: any, SINGLE_LINE_TEXT?: any }, ResolversTypes['CustomFieldType']>;
+export type CustomFieldTypeResolvers = EnumResolverSignature<{ BOOLEAN?: any, COLLECTION_REFERENCE?: any, COLOR?: any, CUSTOM_OBJECT_REFERENCE?: any, DATE?: any, DECIMAL?: any, IMAGE?: any, INTEGER?: any, MONEY?: any, MULTI_LINE_TEXT?: any, PRODUCT_REFERENCE?: any, SINGLE_LINE_TEXT?: any, URL?: any }, ResolversTypes['CustomFieldType']>;
 
 export type CustomObjectDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomObjectDefinition'] = ResolversParentTypes['CustomObjectDefinition']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -3962,6 +3968,7 @@ export type OptionTranslationResolvers<ContextType = ExecutionContext, ParentTyp
 
 export type OptionValueResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValue'] = ResolversParentTypes['OptionValue']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  customObjectEntry?: Resolver<Maybe<ResolversTypes['CustomObjectEntry']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['OptionValueMetadata']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

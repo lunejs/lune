@@ -7,6 +7,7 @@ enum CustomFieldAppliesToEntity {
   PRODUCT
   COLLECTION
   CUSTOM_OBJECT
+  OPTION_VALUE
 }
 
 enum CustomFieldType {

@@ -4,6 +4,7 @@ import { Trash2Icon } from 'lucide-react';
 import { isFirst, isLast, isTruthy } from '@lune/common';
 import { Button, Input, Label } from '@lune/ui';
 
+import { getEntryColorValue, getEntryDisplayValue } from '@/lib/product/utils/option-values.utils';
 import { MultiSelect } from '@/shared/components/multi-select/multi-select';
 
 import { useVariantContext, type VariantContext } from '../../variants/variants.context';
@@ -13,7 +14,7 @@ import { useOptionDetailsForm } from './use-option-details-form';
 export const OptionDetailsForm: FC<Props> = ({ option }) => {
   const id = useId();
 
-  const { presets } = useVariantContext();
+  const { customObjects } = useVariantContext();
 
   const {
     name,
@@ -28,7 +29,8 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
     onCancel
   } = useOptionDetailsForm(option);
 
-  const optionPreset = presets.find(preset => preset.id === option.presetId);
+  const customObject = customObjects.find(co => co.id === option.customObjectId);
+  const customObjectEntries = customObject?.entries.items ?? [];
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -44,34 +46,36 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
           <p className="text-sm text-red-500">Already exists an option called &quot;{name}&quot;</p>
         )}
       </div>
-      {optionPreset ? (
+      {customObject && customObjectEntries.length > 0 ? (
         <MultiSelect
-          items={optionPreset.values.items.map(valuePreset => ({
-            value: valuePreset.id,
-            label: valuePreset.name,
-            leading: valuePreset.metadata?.hex && (
-              <div
-                className="h-3 w-3 rounded-xs"
-                style={{ backgroundColor: `${valuePreset.metadata.hex}` }}
-              />
-            )
-          }))}
+          items={customObjectEntries.map(entry => {
+            const displayValue = getEntryDisplayValue(entry, customObject.displayField?.id);
+            const colorValue = getEntryColorValue(entry);
+
+            return {
+              value: entry.id,
+              label: displayValue,
+              leading: colorValue ? (
+                <div className="h-3 w-3 rounded-xs" style={{ backgroundColor: colorValue }} />
+              ) : undefined
+            };
+          })}
           defaultSelected={values
             .filter(v => v.name)
             .map(v => {
-              const valuePreset = optionPreset.values.items.find(p => p.id === v.presetId);
+              const entry = customObjectEntries.find(e => e.id === v.customObjectEntryId);
 
-              if (!valuePreset) return;
+              if (!entry) return;
+
+              const displayValue = getEntryDisplayValue(entry, customObject.displayField?.id);
+              const colorValue = getEntryColorValue(entry);
 
               return {
-                label: valuePreset.name,
-                value: valuePreset.id,
-                leading: valuePreset.metadata?.hex && (
-                  <div
-                    className="h-3 w-3 rounded-xs"
-                    style={{ backgroundColor: `${valuePreset.metadata.hex}` }}
-                  />
-                )
+                label: displayValue,
+                value: entry.id,
+                leading: colorValue ? (
+                  <div className="h-3 w-3 rounded-xs" style={{ backgroundColor: colorValue }} />
+                ) : undefined
               };
             })
             .filter(isTruthy)}
@@ -85,11 +89,11 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
                     }
                   ]
                 : items.map(i => {
-                    const existing = values.find(v => v.presetId === i.value);
+                    const existing = values.find(v => v.customObjectEntryId === i.value);
                     return {
                       id: existing?.id ?? Math.random().toString(),
                       name: i.label,
-                      presetId: i.value
+                      customObjectEntryId: i.value
                     };
                   })
             );

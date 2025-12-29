@@ -1,4 +1,4 @@
-import { BoxesIcon, PackageIcon } from 'lucide-react';
+import { BoxesIcon, PackageIcon, SquircleDashedIcon } from 'lucide-react';
 
 import { Card, CardContent, cn } from '@lune/ui';
 
@@ -16,6 +16,9 @@ export const CustomFieldsList = ({ customFields }: Props) => {
   const collectionCount = customFields.filter(
     cf => cf.appliesToEntity === CustomFieldAppliesToEntity.Collection
   ).length;
+  const optionValueCount = customFields.filter(
+    cf => cf.appliesToEntity === CustomFieldAppliesToEntity.OptionValue
+  ).length;
 
   return (
     <Card className={cn('overflow-hidden p-0')}>
@@ -29,6 +32,11 @@ export const CustomFieldsList = ({ customFields }: Props) => {
           quantity={collectionCount}
           entity={CustomFieldAppliesToEntity.Collection}
           icon={BoxesIcon}
+        />
+        <CustomFieldsListItem
+          quantity={optionValueCount}
+          entity={CustomFieldAppliesToEntity.OptionValue}
+          icon={SquircleDashedIcon}
         />
       </CardContent>
     </Card>

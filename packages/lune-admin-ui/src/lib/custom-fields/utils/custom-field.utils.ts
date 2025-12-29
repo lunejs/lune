@@ -60,7 +60,8 @@ export const getEntityName = (entity: CustomFieldAppliesToEntity) => {
   const NAMES: Record<CustomFieldAppliesToEntity, string> = {
     [CustomFieldAppliesToEntity.Product]: 'Product',
     [CustomFieldAppliesToEntity.Collection]: 'Collection',
-    [CustomFieldAppliesToEntity.CustomObject]: 'Custom object'
+    [CustomFieldAppliesToEntity.CustomObject]: 'Custom object',
+    [CustomFieldAppliesToEntity.OptionValue]: 'Option value'
   };
 
   return NAMES[entity];

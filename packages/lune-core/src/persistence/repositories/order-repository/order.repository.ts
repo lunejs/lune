@@ -9,7 +9,6 @@ import type { ID } from '@/persistence/entities/entity';
 import { type Fulfillment } from '@/persistence/entities/fulfillment';
 import { type FulfillmentLine } from '@/persistence/entities/fulfillment-line';
 import type { OptionValue } from '@/persistence/entities/option_value';
-import type { OptionValuePreset } from '@/persistence/entities/option-value-preset';
 import { type Order, OrderState, type OrderTable } from '@/persistence/entities/order';
 import type { OrderLine } from '@/persistence/entities/order-line';
 import type { Product } from '@/persistence/entities/product';
@@ -23,7 +22,6 @@ import { DeliveryMethodShippingSerializer } from '@/persistence/serializers/deli
 import { FulfillmentSerializer } from '@/persistence/serializers/fulfillment.serializer';
 import { FulfillmentLineSerializer } from '@/persistence/serializers/fulfillment-line.serializer';
 import { OptionValueSerializer } from '@/persistence/serializers/option-value.serializer';
-import { OptionValuePresetSerializer } from '@/persistence/serializers/option-value-preset.serializer';
 import { OrderSerializer } from '@/persistence/serializers/order.serializer';
 import { OrderLineSerializer } from '@/persistence/serializers/order_line.serializer';
 import { ProductSerializer } from '@/persistence/serializers/product.serializer';
@@ -79,7 +77,6 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     const productSerializer = new ProductSerializer();
     const assetSerializer = new AssetSerializer();
     const optionValueSerializer = new OptionValueSerializer();
-    const optionValuePresetSerializer = new OptionValuePresetSerializer();
     const fulfillmentSerializer = new FulfillmentSerializer();
     const fulfillmentLineSerializer = new FulfillmentLineSerializer();
 
@@ -253,7 +250,6 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         ? await this.trx
             .from({ vov: Tables.VariantOptionValue })
             .innerJoin({ ov: Tables.OptionValue }, 'ov.id', 'vov.option_value_id')
-            .leftJoin({ ovp: Tables.OptionValuePreset }, 'ovp.id', 'ov.option_value_preset_id')
             .select(
               'vov.variant_id',
               // OptionValue
@@ -263,15 +259,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
               'ov.deleted_at as ov_deleted_at',
               'ov.name as ov_name',
               'ov.order as ov_order',
-              'ov.option_id as ov_option_id',
-              'ov.option_value_preset_id as ov_preset_id',
-              // Preset
-              'ovp.id as ovp_id',
-              'ovp.created_at as ovp_created_at',
-              'ovp.updated_at as ovp_updated_at',
-              'ovp.name as ovp_name',
-              'ovp.metadata as ovp_metadata',
-              'ovp.option_preset_id as ovp_option_preset_id'
+              'ov.option_id as ov_option_id'
             )
             .whereIn('vov.variant_id', variantIds)
         : [];
@@ -441,24 +429,11 @@ export class OrderRepository extends Repository<Order, OrderTable> {
             deleted_at: ov.ov_deleted_at,
             name: ov.ov_name,
             order: ov.ov_order,
-            option_id: ov.ov_option_id,
-            option_value_preset_id: ov.ov_preset_id
+            option_id: ov.ov_option_id
           }) as OptionValue;
 
-          const preset = ov.ovp_id
-            ? (optionValuePresetSerializer.deserialize({
-                id: ov.ovp_id,
-                created_at: ov.ovp_created_at,
-                updated_at: ov.ovp_updated_at,
-                name: ov.ovp_name,
-                metadata: ov.ovp_metadata,
-                option_preset_id: ov.ovp_option_preset_id
-              }) as OptionValuePreset)
-            : null;
-
           return {
-            ...optionValue,
-            preset
+            ...optionValue
           };
         });
 
@@ -537,7 +512,7 @@ type OrderWithDetails = Order & {
       product: Product & {
         assets: Asset[];
       };
-      optionValues: (OptionValue & { preset: OptionValuePreset | null })[];
+      optionValues: OptionValue[];
     };
   })[];
 };

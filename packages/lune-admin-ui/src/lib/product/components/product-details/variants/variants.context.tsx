@@ -4,9 +4,13 @@ import { createContext, type ReactNode, useContext, useEffect, useMemo, useState
 
 import { formatPrice, isTruthy } from '@lune/common';
 
-import type { CommonOptionPresetFragment, CommonProductFragment } from '@/lib/api/types';
-import { useGetOptionPresets } from '@/lib/option-preset/hooks/use-get-option-presets';
+import type { CommonProductFragment } from '@/lib/api/types';
+import { useGetOptionValueCustomObjects } from '@/lib/custom-fields/hooks/use-get-option-value-custom-objects';
 import { getUnusedOptionValues } from '@/lib/product/utils/variant.utils';
+
+type CustomObjectDefinition = ReturnType<
+  typeof useGetOptionValueCustomObjects
+>['customObjects'][number];
 
 import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
 
@@ -14,9 +18,9 @@ export type VariantContext = {
   options: {
     id: string;
     isEditing: boolean;
-    presetId?: string;
+    customObjectId?: string;
     name: string;
-    values: { name: string; id: string; presetId?: string }[];
+    values: { name: string; id: string; customObjectEntryId?: string }[];
   }[];
   variants: {
     id: string;
@@ -31,13 +35,13 @@ export type VariantContext = {
     width: number;
     length: number;
     selected: boolean;
-    action: 'create' | 'update' | 'none'; // ← SOLO ESTE CAMPO
+    action: 'create' | 'update' | 'none';
   }[];
   product?: CommonProductFragment;
-  presets: CommonOptionPresetFragment[];
+  customObjects: CustomObjectDefinition[];
   updateVariants: (variants: VariantContext['variants']) => void;
   removeVariants: (ids: string[]) => void;
-  appendOption: (presetId?: string) => void;
+  appendOption: (customObjectId?: string) => void;
   updateOption: (id: string, input: VariantContext['options'][0]) => void;
   removeOption: (id: string) => void;
 };
@@ -46,7 +50,7 @@ const Context = createContext<VariantContext>({
   options: [],
   variants: [],
   product: undefined,
-  presets: [],
+  customObjects: [],
   updateVariants: () => {},
   removeVariants: () => {},
   appendOption: () => {},
@@ -61,31 +65,32 @@ export const VariantContextProvider = ({
   children: ReactNode;
   product: CommonProductFragment | undefined;
 }) => {
-  const { optionPresets } = useGetOptionPresets();
+  const { customObjects } = useGetOptionValueCustomObjects();
   const { setValue } = useProductDetailsFormContext();
   const baseOptions: VariantContext['options'] = useMemo(() => {
     return (
       product?.options.map(o => {
-        const presetValueIds = o.values.map(ov => ov.preset?.id).filter(isTruthy);
+        // Find which custom object this option uses by checking the entry's definition
+        const customObjectIdsInThisOption = o.values
+          .map(ov => ov.customObjectEntry?.definition?.id)
+          .filter(isTruthy);
 
-        const preset = optionPresets.find(preset =>
-          preset.values.items.map(pv => pv.id).some(pvId => presetValueIds.includes(pvId))
-        );
+        const customObject = customObjects.find(co => customObjectIdsInThisOption.includes(co.id));
 
         return {
           id: o.id,
           isEditing: false,
           name: o.name,
-          presetId: preset?.id,
+          customObjectId: customObject?.id,
           values: o.values.map(v => ({
             id: v.id,
             name: v.name,
-            presetId: v.preset?.id
+            customObjectEntryId: v.customObjectEntry?.id
           }))
         };
       }) ?? []
     );
-  }, [product?.options, optionPresets]);
+  }, [product?.options, customObjects]);
 
   const baseVariants: VariantContext['variants'] =
     product?.variants.items
@@ -184,25 +189,21 @@ export const VariantContextProvider = ({
     setOptions(newOptions);
   };
 
-  const appendOption = (presetId?: string) => {
+  const appendOption = (customObjectId?: string) => {
     if (options.length === MAX_OPTIONS_ALLOWED) return;
 
-    const preset = optionPresets.find(p => p.id === presetId);
+    const customObject = customObjects.find(co => co.id === customObjectId);
 
     setOptions([
       ...options,
       {
         id: Math.random().toString(),
         isEditing: true,
-        presetId,
-        name: preset?.name ?? '',
+        customObjectId,
+        name: customObject?.name ?? '',
         values: [{ id: Math.random().toString(), name: '' }]
       }
     ]);
-
-    return;
-
-    // setOptions([...options, option]);
   };
 
   const updateOption = (id: string, input: VariantContext['options'][0]) => {
@@ -221,7 +222,7 @@ export const VariantContextProvider = ({
     <Context.Provider
       value={{
         options,
-        presets: optionPresets,
+        customObjects,
         appendOption,
         updateOption,
         removeOption,

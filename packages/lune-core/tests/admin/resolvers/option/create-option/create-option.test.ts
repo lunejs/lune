@@ -1,18 +1,27 @@
 import request from 'supertest';
 
 import type { OptionTable } from '@/persistence/entities/option';
+import type { OptionValueTable } from '@/persistence/entities/option_value';
 import { Tables } from '@/persistence/tables';
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
-import { OptionFixtures } from './fixtures/option.fixtures';
-import { OptionPresetFixtures } from './fixtures/option-preset.fixtures';
-import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import {
-  OptionValuePresetConstants,
-  OptionValuePresetFixtures
-} from './fixtures/option-value-preset.fixtures';
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
+import {
+  CustomObjectDefinitionConstants,
+  CustomObjectDefinitionFixtures
+} from './fixtures/custom-object-definition.fixtures';
+import {
+  CustomObjectEntryConstants,
+  CustomObjectEntryFixtures
+} from './fixtures/custom-object-entry.fixtures';
+import { CustomObjectEntryValueFixtures } from './fixtures/custom-object-entry-value.fixtures';
+import { OptionFixtures } from './fixtures/option.fixtures';
+import { OptionValueFixtures } from './fixtures/option-value.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserConstants, UserFixtures } from './fixtures/user.fixtures';
@@ -30,9 +39,17 @@ describe('createOption - Mutation', () => {
       new ProductFixtures(),
       new OptionFixtures(),
       new OptionValueFixtures(),
-      new OptionPresetFixtures(),
-      new OptionValuePresetFixtures()
+      new CustomObjectDefinitionFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new CustomObjectEntryFixtures(),
+      new CustomObjectEntryValueFixtures()
     ]);
+
+    // Update display_field_id after both tables are populated (circular reference)
+    const q = testHelper.getQueryBuilder();
+    await q(Tables.CustomObjectDefinition)
+      .where({ id: CustomObjectDefinitionConstants.ColorDefinitionID })
+      .update({ display_field_id: CustomFieldDefinitionConstants.ColorNameFieldID });
   });
 
   afterEach(async () => {
@@ -119,7 +136,7 @@ describe('createOption - Mutation', () => {
     expect(productOptions).toHaveLength(2);
   });
 
-  test('creates option with preset values', async () => {
+  test('creates option with custom object entry values', async () => {
     const res = await request(app)
       .post('/admin-api')
       .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
@@ -133,8 +150,8 @@ describe('createOption - Mutation', () => {
               order: 0,
               name: 'Color',
               values: [
-                { order: 0, presetId: OptionValuePresetConstants.RedPresetID },
-                { order: 1, presetId: OptionValuePresetConstants.BluePresetID }
+                { order: 0, customObjectEntryId: CustomObjectEntryConstants.RedEntryID },
+                { order: 1, customObjectEntryId: CustomObjectEntryConstants.BlueEntryID }
               ]
             }
           ]
@@ -147,68 +164,27 @@ describe('createOption - Mutation', () => {
     expect(createOption[0].values).toHaveLength(2);
 
     expect(createOption[0].values[0]).toMatchObject({
-      name: 'Red',
-      preset: {
-        id: OptionValuePresetConstants.RedPresetID,
-        name: 'Red',
-        metadata: { hex: '#FF0000' }
+      customObjectEntry: {
+        id: CustomObjectEntryConstants.RedEntryID,
+        slug: 'red'
       }
     });
 
-    // expect(createOption[0]).toMatchObject({
-    //   name: 'Color',
-    //   values: [
-    //     { presetId: OptionValuePresetConstants.RedPresetID },
-    //     { presetId: OptionValuePresetConstants.BluePresetID }
-    //   ]
-    // });
+    expect(createOption[0].values[1]).toMatchObject({
+      customObjectEntry: {
+        id: CustomObjectEntryConstants.BlueEntryID,
+        slug: 'blue'
+      }
+    });
 
-    // const productOptions = await testHelper
-    //   .getQueryBuilder()<OptionTable>(Tables.Option)
-    //   .where({ product_id: ProductConstants.WithNoOptions });
+    // Verify in database
+    const optionValues = await testHelper
+      .getQueryBuilder()<OptionValueTable>(Tables.OptionValue)
+      .where({ custom_object_entry_id: CustomObjectEntryConstants.RedEntryID });
 
-    // expect(productOptions).toHaveLength(1);
+    expect(optionValues).toHaveLength(1);
+    expect(optionValues[0].custom_object_entry_id).toBe(CustomObjectEntryConstants.RedEntryID);
   });
-
-  // test('creates option mixing custom and preset values', async () => {
-  //   const res = await request(app)
-  //     .post('/admin-api')
-  //     .set('Authorization', `Bearer ${UserConstants.AccessToken}`)
-  //     .set('x_lune_shop_id', ShopConstants.ID)
-  //     .send({
-  //       query: CREATE_OPTION_MUTATION,
-  //       variables: {
-  //         productId: ProductConstants.WithNoOptions,
-  //         input: [
-  //           {
-  //             order: 0,
-  //             name: 'Color',
-  //             values: [
-  //               { order: 0, presetId: OptionValuePresetConstants.RedPresetID },
-  //               { order: 1, name: 'Custom Yellow' },
-  //               { order: 2, presetId: OptionValuePresetConstants.BluePresetID }
-  //             ]
-  //           }
-  //         ]
-  //       }
-  //     });
-
-  //   const { createOption } = res.body.data;
-
-  //   expect(createOption[0]).toMatchObject({
-  //     name: 'Color'
-  //   });
-
-  //   expect(createOption[0].values[0]).toMatchObject({
-  //     presetId: OptionValuePresetConstants.RedPresetID
-  //   });
-  //   expect(createOption[0].values[1]).toMatchObject({
-  //     name: 'Custom Yellow'
-  //   });
-  //   expect(createOption[0].values[2]).toMatchObject({
-  //     presetId: OptionValuePresetConstants.BluePresetID
-  //   });
-  // });
 
   test('returns Authorization error when no token is provided', async () => {
     const res = await request(app)
@@ -240,10 +216,9 @@ const CREATE_OPTION_MUTATION = /* GraphQL */ `
       values {
         id
         name
-        preset {
+        customObjectEntry {
           id
-          name
-          metadata
+          slug
         }
       }
     }

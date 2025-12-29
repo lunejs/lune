@@ -75,7 +75,7 @@ export class OptionService {
       optionValues.map(v => ({
         name: v.name,
         order: v.order ?? 0,
-        presetId: v.presetId,
+        customObjectEntryId: v.customObjectEntryId,
         optionId
       }))
     );

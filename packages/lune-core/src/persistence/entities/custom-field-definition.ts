@@ -20,7 +20,8 @@ export type CustomFieldType = (typeof CustomFieldType)[keyof typeof CustomFieldT
 
 export const CustomFieldAppliesTo = {
   Product: 'product',
-  Collection: 'collection'
+  Collection: 'collection',
+  OptionValue: 'option_value'
 } as const;
 
 export type CustomFieldAppliesTo = (typeof CustomFieldAppliesTo)[keyof typeof CustomFieldAppliesTo];

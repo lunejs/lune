@@ -23,10 +23,11 @@ export const ColorCustomField = ({ onChange, definition, defaultValues }: Props)
       onOpenChange={isOpen => {
         if (!isOpen) {
           const newValues = items.filter(i => isTruthy(i.value));
-
           setPersistedValue(newValues);
-          onChange(newValues.map(v => v.value));
           reset(newValues);
+
+          if (definition.isList) onChange(newValues.length ? newValues.map(v => v.value) : null);
+          else onChange(newValues.map(v => v.value)[0] ?? null);
 
           // avoid having empty options
           if (!newValues.length) append('');
@@ -38,7 +39,7 @@ export const ColorCustomField = ({ onChange, definition, defaultValues }: Props)
           {definition.name}
         </Label>
         <PopoverTrigger asChild>
-          <CustomFieldPreviewContainer>
+          <CustomFieldPreviewContainer className="px-2">
             {persistedValue.map(v => {
               return (
                 <div className="w-5 h-5 rounded shrink-0" style={{ backgroundColor: v.value }} />

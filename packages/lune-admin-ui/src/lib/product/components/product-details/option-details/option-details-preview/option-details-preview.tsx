@@ -1,14 +1,18 @@
 import { type FC } from 'react';
 import { WorkflowIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { Badge, Label, Tooltip, TooltipContent, TooltipTrigger } from '@lune/ui';
+
+import { getEntryColorValue } from '@/lib/product/utils/option-values.utils';
 
 import { useVariantContext, type VariantContext } from '../../variants/variants.context';
 
 export const OptionDetailsPreview: FC<Props> = ({ option }) => {
-  const { updateOption, presets } = useVariantContext();
+  const { updateOption, customObjects } = useVariantContext();
 
-  const optionPreset = presets.find(p => p.id === option.presetId);
+  const customObject = customObjects.find(co => co.id === option.customObjectId);
+  const customObjectEntries = customObject?.entries.items ?? [];
 
   return (
     <button
@@ -24,28 +28,33 @@ export const OptionDetailsPreview: FC<Props> = ({ option }) => {
     >
       <div className="flex items-center justify-between relative">
         <Label className="text-left">{option.name}</Label>
-        {optionPreset && (
+        {customObject && (
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="p-1 bg-distinct/20 rounded-sm absolute right-0">
                 <WorkflowIcon className="text-distinct" size={14} />
               </div>
             </TooltipTrigger>
-            <TooltipContent>
-              Connected to <span className="font-semibold">{optionPreset.name}</span>
+            <TooltipContent onClick={e => e.stopPropagation()}>
+              Connected to{' '}
+              <Link
+                to={`/custom-objects/${customObject.id}`}
+                className="font-semibold hover:underline"
+              >
+                {customObject.name}
+              </Link>
             </TooltipContent>
           </Tooltip>
         )}
       </div>
       <div className="flex items-center gap-2 flex-wrap">
         {option.values.map(value => {
-          const presetValue = optionPreset?.values.items.find(p => p.id === value.presetId);
+          const entry = customObjectEntries.find(e => e.id === value.customObjectEntryId);
+          const colorValue = entry ? getEntryColorValue(entry) : null;
 
           return (
             <Badge key={value.id} variant="secondary" className="items-center">
-              {presetValue?.metadata?.hex && (
-                <div className="h-3 w-3 rounded" style={{ background: presetValue.metadata.hex }} />
-              )}
+              {colorValue && <div className="h-3 w-3 rounded" style={{ background: colorValue }} />}
               {value.name}
             </Badge>
           );

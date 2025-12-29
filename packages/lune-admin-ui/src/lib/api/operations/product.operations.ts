@@ -19,7 +19,7 @@ export const COMMON_PRODUCT_FOR_TRANSLATION_FRAGMENT = graphql(`
       values {
         id
         name
-        preset {
+        customObjectEntry {
           id
         }
         translations {
@@ -108,10 +108,25 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
       values {
         id
         name
-        preset {
+        customObjectEntry {
           id
-          name
-          metadata
+          slug
+          values {
+            id
+            value
+            field {
+              id
+              key
+              type
+            }
+          }
+          definition {
+            id
+            name
+            displayField {
+              id
+            }
+          }
         }
       }
     }

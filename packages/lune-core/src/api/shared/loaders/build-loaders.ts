@@ -32,8 +32,7 @@ import { createLocationCountryLoader } from './location/location-country.loader'
 import { createLocationInStorePickupLoader } from './location/location-in-store-pickup.loader';
 import { createLocationStateLoader } from './location/location-state.loader';
 import { createOptionTranslationsLoader } from './option/option-translations.loader';
-import { createOptionValuePresetsLoader } from './option-preset/option-value-preset.loader';
-import { createOptionValuePresetLoader } from './option-value/option-value-preset.loader';
+import { createOptionValueCustomObjectEntryLoader } from './option-value/option-value-custom-object-entry.loader';
 import { createOptionValuesLoader } from './option-value/option-values.loader';
 import { createOptionValuesTranslationsLoader } from './option-value/option-values-translations.loader';
 import { createOrderCancellationLoader } from './order/order-cancellation.loader';
@@ -83,7 +82,7 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     optionValues: {
       localization: createOptionValueLocalizationLoader(trx, locale),
       translations: createOptionValuesTranslationsLoader(trx),
-      preset: createOptionValuePresetLoader(trx)
+      customObjectEntry: createOptionValueCustomObjectEntryLoader(trx)
     },
     collections: {
       assets: createCollectionAssetsLoader(trx),
@@ -129,9 +128,6 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       country: createLocationCountryLoader(trx),
       state: createLocationStateLoader(trx),
       inStorePickup: createLocationInStorePickupLoader(trx)
-    },
-    optionPreset: {
-      optionValues: createOptionValuePresetsLoader(trx)
     },
     address: {
       country: createAddressCountryLoader(trx),

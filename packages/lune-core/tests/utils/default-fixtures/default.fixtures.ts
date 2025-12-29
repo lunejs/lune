@@ -25,10 +25,8 @@ import { DefaultFulfillmentLineFixture } from './fulfillment-line.fixture';
 import { DefaultInStorePickupFixture } from './in-store-pickup.fixture';
 import { DefaultLocationFixture } from './location.fixture';
 import { DefaultOptionFixture } from './option.fixture';
-import { DefaultOptionPresetFixture } from './option-preset.fixture';
 import { DefaultOptionTranslationFixture } from './option-translation.fixture';
 import { DefaultOptionValueFixture } from './option-value.fixture';
-import { DefaultOptionValuePresetFixture } from './option-value-preset.fixture';
 import { DefaultOptionValueTranslationFixture } from './option-value-translation.fixture';
 import { DefaultOrderFixture } from './order.fixture';
 import { DefaultOrderCancellationFixture } from './order-cancellation.fixture';
@@ -66,8 +64,6 @@ export const FixtureDefaults: Record<Tables, () => unknown> = {
   [Tables.Variant]: DefaultVariantFixture,
   [Tables.Option]: DefaultOptionFixture,
   [Tables.OptionValue]: DefaultOptionValueFixture,
-  [Tables.OptionPreset]: DefaultOptionPresetFixture,
-  [Tables.OptionValuePreset]: DefaultOptionValuePresetFixture,
   [Tables.VariantOptionValue]: DefaultVariantOptionValueFixture,
   [Tables.Asset]: DefaultAssetFixture,
   [Tables.ProductAsset]: DefaultProductAssetFixture,

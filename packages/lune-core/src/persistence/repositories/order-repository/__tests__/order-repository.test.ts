@@ -13,9 +13,7 @@ import {
 } from './fixtures/in-store-pickup-fulfillment.fixtures';
 import { LocationFixtures } from './fixtures/location.fixtures';
 import { OptionFixtures } from './fixtures/option.fixtures';
-import { OptionPresetFixtures } from './fixtures/option-preset.fixtures';
 import { OptionValueFixtures } from './fixtures/option-value.fixtures';
-import { OptionValuePresetFixtures } from './fixtures/option-value-preset.fixtures';
 import { OrderConstants, OrderFixtures } from './fixtures/order.fixtures';
 import {
   OrderFulfillmentConstants,
@@ -60,8 +58,6 @@ describe('OrderRepository.findOneWithDetails', () => {
       new StateFixtures(),
       new LocationFixtures(),
       new CustomerFixtures(),
-      new OptionPresetFixtures(),
-      new OptionValuePresetFixtures(),
       new AssetFixtures(),
       new ProductFixtures(),
       new ProductAssetFixtures(),
@@ -124,9 +120,6 @@ describe('OrderRepository.findOneWithDetails', () => {
 
       expect(order?.lines[0].variant.product.assets).toHaveLength(2);
       expect(order?.lines[1].variant.product.assets).toHaveLength(2);
-
-      expect(order?.lines[0].variant.optionValues[0].preset).not.toBeNull();
-      expect(order?.lines[1].variant.optionValues[0].preset).not.toBeNull();
     });
 
     test('returns order with in store pickup delivery method', async () => {
@@ -168,9 +161,6 @@ describe('OrderRepository.findOneWithDetails', () => {
 
       expect(order?.lines[0].variant.product.assets).toHaveLength(2);
       expect(order?.lines[1].variant.product.assets).toHaveLength(2);
-
-      expect(order?.lines[0].variant.optionValues[0].preset).not.toBeNull();
-      expect(order?.lines[1].variant.optionValues[0].preset).not.toBeNull();
     });
   });
 });

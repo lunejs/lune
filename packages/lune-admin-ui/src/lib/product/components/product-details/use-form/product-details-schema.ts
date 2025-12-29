@@ -32,7 +32,7 @@ export const ProductDetailsSchema = z.object({
         z.object({
           id: z.string(),
           name: z.string(),
-          presetId: z.string().optional()
+          customObjectEntryId: z.string().optional()
         })
       )
     })

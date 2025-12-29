@@ -79,7 +79,8 @@ async function removeCustomFieldDefinition(
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   CustomFieldAppliesToEntity: {
     PRODUCT: CustomFieldAppliesTo.Product,
-    COLLECTION: CustomFieldAppliesTo.Collection
+    COLLECTION: CustomFieldAppliesTo.Collection,
+    OPTION_VALUE: CustomFieldAppliesTo.OptionValue
   },
   CustomFieldType: {
     SINGLE_LINE_TEXT: CustomFieldType.SingleLineText,

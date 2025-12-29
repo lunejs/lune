@@ -3,13 +3,14 @@ import { Link } from 'react-router';
 
 import { Button, H4 } from '@lune/ui';
 
+import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';
 
 import { CustomObjectEntriesTableColumns } from './columns';
 
 export const CustomObjectEntriesTable = ({
-  definitionId,
+  definition,
   isRefetching,
   customObjectEntries,
   totalRows,
@@ -20,7 +21,7 @@ export const CustomObjectEntriesTable = ({
   return (
     <div className="relative">
       <div className="absolute h-8 flex items-center">
-        <H4 className="">Banner</H4>
+        <H4 className="">{definition.name}</H4>
       </div>
       <DataTable
         isLoading={isRefetching}
@@ -31,7 +32,7 @@ export const CustomObjectEntriesTable = ({
         totalRows={totalRows}
         defaultPagination={{ page: pagination.page, pageSize: pagination.size }}
         actions={
-          <Link to={`/custom-objects/${definitionId}/new`}>
+          <Link to={`/custom-objects/${definition.id}/new`}>
             <Button size="sm">
               <PlusIcon className="lg:hidden" />
               <span className="hidden lg:inline">Add Entry</span>
@@ -58,7 +59,7 @@ export type CustomObjectEntriesTableFilters = {
 };
 
 type Props = {
-  definitionId: string;
+  definition: CommonCustomObjectDefinitionFragment;
   isRefetching: boolean;
   customObjectEntries: CustomObjectEntriesTableRow[];
   totalRows: number;

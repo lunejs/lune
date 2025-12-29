@@ -43,8 +43,8 @@ export const useCreateProduct = () => {
         order: i,
         name: option.name,
         values: option.values.map((value, i) => ({
-          name: value.presetId ? null : value.name,
-          presetId: value.presetId,
+          name: value.customObjectEntryId ? null : value.name,
+          customObjectEntryId: value.customObjectEntryId,
           order: i
         }))
       }))
@@ -92,7 +92,7 @@ type CreateProductInput = {
   options: {
     id: string;
     name: string;
-    values: { id: string; name: string; presetId?: string }[];
+    values: { id: string; name: string; customObjectEntryId?: string }[];
   }[];
   variants: {
     salePrice: number;

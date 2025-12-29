@@ -4,7 +4,6 @@ import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OptionConstants } from './option.fixtures';
-import { OptionValuePresetConstants } from './option-value-preset.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const OptionValueConstants = {
@@ -22,14 +21,12 @@ export class OptionValueFixtures implements Fixture<OptionValueTable> {
         id: OptionValueConstants.CottonOptionValueID,
         name: 'Cotton',
         option_id: OptionConstants.MaterialOptionID,
-        shop_id: ShopConstants.ID,
-        option_value_preset_id: OptionValuePresetConstants.BluePresetID
+        shop_id: ShopConstants.ID
       },
       {
         id: OptionValueConstants.PolyesterOptionValueID,
         name: 'Polyester',
         option_id: OptionConstants.MaterialOptionID,
-        option_value_preset_id: OptionValuePresetConstants.GreenPresetID,
         shop_id: ShopConstants.ID
       },
       {

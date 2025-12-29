@@ -21,7 +21,9 @@ export const CustomObjectFormSchema = z.object({
           CustomFieldType.MultiLineText,
           CustomFieldType.ProductReference,
           CustomFieldType.CollectionReference,
-          CustomFieldType.SingleLineText
+          CustomFieldType.SingleLineText,
+          CustomFieldType.Url,
+          CustomFieldType.Color
         ],
         { error: FormMessages.required }
       ),

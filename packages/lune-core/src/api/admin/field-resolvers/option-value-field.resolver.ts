@@ -8,9 +8,9 @@ export const OptionValueFieldResolver = {
     translations: async (parent: OptionValue, _, ctx: ExecutionContext) => {
       return ctx.loaders.optionValues.translations.load(parent.id);
     },
-    preset: async (parent: OptionValue, _, ctx: ExecutionContext) => {
-      if (!parent.presetId) return null;
-      return ctx.loaders.optionValues.preset.load(parent.presetId);
+    customObjectEntry: async (parent: OptionValue, _, ctx: ExecutionContext) => {
+      if (!parent.customObjectEntryId) return null;
+      return ctx.loaders.optionValues.customObjectEntry.load(parent.customObjectEntryId);
     }
   }
 };
