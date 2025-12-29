@@ -1,7 +1,8 @@
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import { CommonCountryFieldResolver } from '@/api/shared/resolvers/country-field.resolver';
+import { CommonStateFieldResolver } from '@/api/shared/resolvers/state-field.resolver';
 import { CountryService } from '@/business/country/country.service';
 
 async function countries(_, __, ctx: ExecutionContext) {
@@ -16,5 +17,8 @@ export const CountryResolver: GraphqlApiResolver = {
   },
   Country: {
     ...CommonCountryFieldResolver
+  },
+  State: {
+    ...CommonStateFieldResolver
   }
 };

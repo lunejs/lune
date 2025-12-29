@@ -1,13 +1,18 @@
 import { clean } from '@lune/common';
 
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/admin/guards/user.guard';
+import { DeliveryMethodDetailsUnionResolver } from '@/api/shared/resolvers/delivery-method-details.resolver';
+import { CommonDeliveryMethodFieldResolver } from '@/api/shared/resolvers/delivery-method-field.resolver';
+import { CommonDeliveryMethodPickupFieldResolver } from '@/api/shared/resolvers/delivery-method-pickup-field.resolver';
+import { CommonDeliveryMethodShippingFieldResolver } from '@/api/shared/resolvers/delivery-method-shipping-field.resolver';
 import {
   CommonFulfillmentFieldResolver,
   CommonFulfillmentLineFieldResolver
 } from '@/api/shared/resolvers/fulfillment-field.resolver';
 import { CommonOrderFieldResolver } from '@/api/shared/resolvers/order-field.resolver';
+import { CommonOrderLineFieldResolver } from '@/api/shared/resolvers/order-line-field.resolver';
 import type {
   MutationAddFulfillmentToOrderArgs,
   MutationCancelOrderArgs,
@@ -55,48 +60,6 @@ async function markOrderAsProcessing(
     ? { apiErrors: [result], order: null }
     : { apiErrors: [], order: result };
 }
-
-// async function markOrderAsShipped(
-//   _,
-//   { id, input }: MutationMarkOrderAsShippedArgs,
-//   ctx: ExecutionContext
-// ) {
-//   const orderService = new OrderService(ctx);
-
-//   const result = await orderService.markAsShipped(id, input);
-
-//   return isErrorResult(result)
-//     ? { apiErrors: [result], order: null }
-//     : { apiErrors: [], order: result };
-// }
-
-// async function markOrderAsReadyForPickup(
-//   _,
-//   { id }: MutationMarkOrderAsReadyForPickupArgs,
-//   ctx: ExecutionContext
-// ) {
-//   const orderService = new OrderService(ctx);
-
-//   const result = await orderService.markAsReadyForPickup(id);
-
-//   return isErrorResult(result)
-//     ? { apiErrors: [result], order: null }
-//     : { apiErrors: [], order: result };
-// }
-
-// async function markOrderAsDelivered(
-//   _,
-//   { id }: MutationMarkOrderAsDeliveredArgs,
-//   ctx: ExecutionContext
-// ) {
-//   const orderService = new OrderService(ctx);
-
-//   const result = await orderService.markAsDelivered(id);
-
-//   return isErrorResult(result)
-//     ? { apiErrors: [result], order: null }
-//     : { apiErrors: [], order: result };
-// }
 
 async function addFulfillmentToOrder(
   _: unknown,
@@ -208,8 +171,6 @@ export const OrderResolver: GraphqlApiResolver = {
     markFulfillmentAsDelivered: UseUserGuard(markFulfillmentAsDelivered),
     markFulfillmentAsReadyForPickup: UseUserGuard(markFulfillmentAsReadyForPickup),
     markFulfillmentAsPickedUp: UseUserGuard(markFulfillmentAsPickedUp),
-    // markOrderAsReadyForPickup: UseUserGuard(markOrderAsReadyForPickup),
-    // markOrderAsDelivered: UseUserGuard(markOrderAsDelivered),
     markOrderAsCompleted: UseUserGuard(markOrderAsCompleted),
     cancelOrder: UseUserGuard(cancelOrder)
   },
@@ -219,10 +180,23 @@ export const OrderResolver: GraphqlApiResolver = {
       return ctx.loaders.order.cancellation.load(parent.id);
     }
   },
+  OrderLine: {
+    ...CommonOrderLineFieldResolver
+  },
   Fulfillment: {
     ...CommonFulfillmentFieldResolver
   },
   FulfillmentLine: {
     ...CommonFulfillmentLineFieldResolver
+  },
+  DeliveryMethodDetails: DeliveryMethodDetailsUnionResolver,
+  DeliveryMethod: {
+    ...CommonDeliveryMethodFieldResolver
+  },
+  DeliveryMethodShipping: {
+    ...CommonDeliveryMethodShippingFieldResolver
+  },
+  DeliveryMethodPickup: {
+    ...CommonDeliveryMethodPickupFieldResolver
   }
 };

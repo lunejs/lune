@@ -16,10 +16,6 @@ import { useTransaction } from '../shared/plugins/use-transaction';
 import { OrderEnumsResolver } from '../shared/resolvers/enums/order-enums.resolver';
 import type { UserJWT } from '../shared/types/api.types';
 
-import { DeliveryMethodFieldResolver } from './field-resolvers/delivery-method-field.resolver';
-import { OptionValueFieldResolver } from './field-resolvers/option-value-field.resolver';
-import { OrderLineFieldResolver } from './field-resolvers/order-line-field.resolver';
-import { StateFieldResolver } from './field-resolvers/state-field.resolver';
 import { AssetResolver } from './resolvers/asset.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
@@ -60,13 +56,9 @@ export class AdminApi extends GraphqlApi {
         ProductResolver,
         VariantResolver,
         OptionResolver,
-        OptionValueFieldResolver,
         CollectionResolver,
         OrderResolver,
-        OrderLineFieldResolver,
-        DeliveryMethodFieldResolver,
         ZoneResolver,
-        StateFieldResolver,
         ShippingMethodResolver,
         CountryResolver,
         LocationResolver,

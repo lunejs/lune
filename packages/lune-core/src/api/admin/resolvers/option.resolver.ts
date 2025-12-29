@@ -1,7 +1,8 @@
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import { CommonOptionFieldResolver } from '@/api/shared/resolvers/option-field.resolver';
+import { CommonOptionValueFieldResolver } from '@/api/shared/resolvers/option-value-field.resolver';
 import type {
   MutationCreateOptionArgs,
   MutationSoftRemoveOptionArgs,
@@ -10,6 +11,7 @@ import type {
 } from '@/api/shared/types/graphql';
 import { OptionService } from '@/business/option/option.service';
 import type { Option } from '@/persistence/entities/option';
+import type { OptionValue } from '@/persistence/entities/option_value';
 
 function createOption(_, { productId, input }: MutationCreateOptionArgs, ctx: ExecutionContext) {
   const optionService = new OptionService(ctx);
@@ -50,6 +52,16 @@ export const OptionResolver: GraphqlApiResolver = {
     ...CommonOptionFieldResolver,
     translations: async (parent: Option, _, ctx: ExecutionContext) => {
       return ctx.loaders.option.translations.load(parent.id);
+    }
+  },
+  OptionValue: {
+    ...CommonOptionValueFieldResolver,
+    translations: async (parent: OptionValue, _, ctx: ExecutionContext) => {
+      return ctx.loaders.optionValues.translations.load(parent.id);
+    },
+    customObjectEntry: async (parent: OptionValue, _, ctx: ExecutionContext) => {
+      if (!parent.customObjectEntryId) return null;
+      return ctx.loaders.optionValues.customObjectEntry.load(parent.customObjectEntryId);
     }
   }
 };
