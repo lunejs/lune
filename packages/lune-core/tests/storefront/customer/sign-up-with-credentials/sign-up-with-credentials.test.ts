@@ -252,6 +252,41 @@ describe('signUpCustomerWithCredentials - Mutation', () => {
 
     expect(Number(authMethodsAfter[0].count)).toBe(Number(authMethodsBefore[0].count));
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: SIGN_UP_MUTATION,
+        variables: {
+          input: {
+            email: 'test@example.com',
+            password: 'password123'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: SIGN_UP_MUTATION,
+        variables: {
+          input: {
+            email: 'test@example.com',
+            password: 'password123'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const SIGN_UP_MUTATION = /* GraphQL */ `

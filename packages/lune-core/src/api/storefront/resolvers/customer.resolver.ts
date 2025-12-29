@@ -10,6 +10,8 @@ import type {
 import { CustomerService } from '@/business/customer/customer.service';
 import { isErrorResult } from '@/utils/error-result';
 
+import { UseStorefrontApiKeyGuard } from '../guards/storefront-api-key.guard';
+
 async function signUpCustomerWithCredentials(
   _,
   { input }: MutationSignUpCustomerWithCredentialsArgs,
@@ -46,9 +48,9 @@ async function updateCustomer(_, { input }: MutationUpdateCustomerArgs, ctx: Exe
 
 export const CustomerResolver: GraphqlApiResolver = {
   Mutation: {
-    signUpCustomerWithCredentials: signUpCustomerWithCredentials,
-    signInCustomerWithCredentials: signInCustomerWithCredentials,
-    updateCustomer: UseCustomerGuard(updateCustomer)
+    signUpCustomerWithCredentials: UseStorefrontApiKeyGuard(signUpCustomerWithCredentials),
+    signInCustomerWithCredentials: UseStorefrontApiKeyGuard(signInCustomerWithCredentials),
+    updateCustomer: UseStorefrontApiKeyGuard(UseCustomerGuard(updateCustomer))
   },
   Customer: {
     ...CommonCustomerFieldResolver

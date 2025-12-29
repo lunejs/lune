@@ -135,7 +135,7 @@ describe('updateCustomer - Mutation', () => {
     expect(error.code).toBe('EMAIL_ALREADY_EXISTS');
   });
 
-  test('returns Authorization error when no token is provided', async () => {
+  test('returns UNAUTHORIZED error when no token is provided', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -171,7 +171,7 @@ describe('updateCustomer - Mutation', () => {
     expect(res.body.errors[0].message).toBe('Invalid access token');
   });
 
-  test('throws error when customer is disabled', async () => {
+  test('returns UNAUTHORIZED when customer is disabled', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
@@ -187,6 +187,39 @@ describe('updateCustomer - Mutation', () => {
       });
 
     expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: UPDATE_CUSTOMER_MUTATION,
+        variables: {
+          input: {
+            firstName: 'Test'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: UPDATE_CUSTOMER_MUTATION,
+        variables: {
+          input: {
+            firstName: 'Test'
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
 });
 

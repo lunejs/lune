@@ -145,6 +145,37 @@ describe('signInCustomerWithCredentials - Mutation', () => {
     expect(accessToken).toBeNull();
     expect(error.code).toBe('INVALID_CREDENTIALS');
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: SIGN_IN_MUTATION,
+        variables: {
+          email: 'test@example.com',
+          password: 'password123'
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: SIGN_IN_MUTATION,
+        variables: {
+          email: 'test@example.com',
+          password: 'password123'
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const SIGN_IN_MUTATION = /* GraphQL */ `

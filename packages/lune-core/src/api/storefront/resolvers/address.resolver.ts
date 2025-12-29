@@ -9,6 +9,8 @@ import type {
 } from '@/api/shared/types/graphql';
 import { AddressService } from '@/business/address/address.service';
 
+import { UseStorefrontApiKeyGuard } from '../guards/storefront-api-key.guard';
+
 async function createCustomerAddress(
   _,
   { input }: MutationCreateCustomerAddressArgs,
@@ -43,9 +45,9 @@ async function removeCustomerAddress(
 
 export const AddressResolver: GraphqlApiResolver = {
   Mutation: {
-    createCustomerAddress: UseCustomerGuard(createCustomerAddress),
-    updateCustomerAddress: UseCustomerGuard(updateCustomerAddress),
-    removeCustomerAddress: UseCustomerGuard(removeCustomerAddress)
+    createCustomerAddress: UseStorefrontApiKeyGuard(UseCustomerGuard(createCustomerAddress)),
+    updateCustomerAddress: UseStorefrontApiKeyGuard(UseCustomerGuard(updateCustomerAddress)),
+    removeCustomerAddress: UseStorefrontApiKeyGuard(UseCustomerGuard(removeCustomerAddress))
   },
   Address: {
     ...CommonAddressFieldResolver

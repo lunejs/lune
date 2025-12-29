@@ -206,6 +206,51 @@ describe('createCustomerAddress - Mutation', () => {
 
     expect(res.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
   });
+
+  test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', 'invalid_key')
+      .send({
+        query: CREATE_CUSTOMER_ADDRESS_MUTATION,
+        variables: {
+          input: {
+            fullName: 'Test',
+            streetLine1: '123 Main St',
+            city: 'Guadalajara',
+            postalCode: '44100',
+            phoneNumber: '+521234567890',
+            countryId: CountryConstants.MxID,
+            stateId: StateConstants.MxJaliscoID
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
+
+  test('returns UNAUTHORIZED error when no shop id is provided', async () => {
+    const response = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: CREATE_CUSTOMER_ADDRESS_MUTATION,
+        variables: {
+          input: {
+            fullName: 'Test',
+            streetLine1: '123 Main St',
+            city: 'Guadalajara',
+            postalCode: '44100',
+            phoneNumber: '+521234567890',
+            countryId: CountryConstants.MxID,
+            stateId: StateConstants.MxJaliscoID
+          }
+        }
+      });
+
+    expect(response.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+  });
 });
 
 const CREATE_CUSTOMER_ADDRESS_MUTATION = /* GraphQL */ `
