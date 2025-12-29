@@ -2,7 +2,7 @@ import { clean } from '@lune/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import {
   CommonFulfillmentFieldResolver,
   CommonFulfillmentLineFieldResolver

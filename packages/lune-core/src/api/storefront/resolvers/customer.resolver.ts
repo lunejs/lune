@@ -1,6 +1,6 @@
 import type { CurrentCustomer, ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
-import { UseCustomerGuard } from '@/api/shared/guards/customer.guard';
+import { UseCustomerGuard } from '@/api/storefront/guards/customer.guard';
 import { CommonCustomerFieldResolver } from '@/api/shared/resolvers/customer-field.resolver';
 import type {
   MutationSignInCustomerWithCredentialsArgs,

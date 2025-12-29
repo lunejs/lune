@@ -10,8 +10,9 @@ import { getConfig } from '@/config/config';
 import type { Asset } from '@/persistence/entities/asset';
 
 import type { ExecutionContext } from '../shared/context/types';
-import { userMiddleware } from '../shared/middlewares/user.middleware';
 import type { RestApiEndpoint, RestApiHandler } from '../shared/rest-api';
+
+import { userMiddleware } from './middlewares/user.middleware';
 
 const TMP_DIR = 'tmp';
 const multerMiddleware = multer({ dest: TMP_DIR, limits: {} });

@@ -1,6 +1,6 @@
-import type { ExecutionContext } from '../context/types';
-import { UnauthorizedError } from '../errors/api.errors';
-import type { GraphQLFieldResolver } from '../graphql-api';
+import type { ExecutionContext } from '@/api/shared/context/types';
+import { UnauthorizedError } from '@/api/shared/errors/api.errors';
+import type { GraphQLFieldResolver } from '@/api/shared/graphql-api';
 
 export const UseCustomerGuard =
   (resolver: GraphQLFieldResolver) =>

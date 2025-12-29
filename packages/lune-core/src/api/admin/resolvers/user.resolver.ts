@@ -1,5 +1,5 @@
 import type { CurrentUser, ExecutionContext } from '@/api/shared/context/types';
-import { UseUserGuard } from '@/api/shared/guards/user.guard';
+import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type {
   MutationCreateUserArgs,
   MutationGenerateUserAccessTokenArgs
