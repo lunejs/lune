@@ -1,10 +1,24 @@
 import type { Transaction } from '@/persistence/connection/types';
+import { Tables } from '@/persistence/tables';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { OrderRepository } from '../order.repository';
 
 import { AssetFixtures } from './fixtures/asset.fixtures';
 import { CountryFixtures } from './fixtures/country.fixtures';
+import {
+  CustomFieldDefinitionConstants,
+  CustomFieldDefinitionFixtures
+} from './fixtures/custom-field-definition.fixtures';
+import {
+  CustomObjectDefinitionConstants,
+  CustomObjectDefinitionFixtures
+} from './fixtures/custom-object-definition.fixtures';
+import { CustomObjectEntryFixtures } from './fixtures/custom-object-entry.fixtures';
+import {
+  CustomObjectEntryValueConstants,
+  CustomObjectEntryValueFixtures
+} from './fixtures/custom-object-entry-value.fixtures';
 import { CustomerConstants, CustomerFixtures } from './fixtures/customer.fixtures';
 import { FulfillmentConstants, FulfillmentFixtures } from './fixtures/fulfillment.fixtures';
 import {
@@ -31,7 +45,7 @@ import {
   ShippingFulfillmentFixtures
 } from './fixtures/shipping-fulfillment.fixtures';
 import { ShippingMethodFixtures } from './fixtures/shipping-method.fixtures';
-import { ShopFixtures } from './fixtures/shop.fixtures';
+import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { StateFixtures } from './fixtures/state.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 import { VariantConstants, VariantFixtures } from './fixtures/variant.fixtures';
@@ -61,6 +75,10 @@ describe('OrderRepository.findOneWithDetails', () => {
       new AssetFixtures(),
       new ProductFixtures(),
       new ProductAssetFixtures(),
+      new CustomObjectDefinitionFixtures(),
+      new CustomFieldDefinitionFixtures(),
+      new CustomObjectEntryFixtures(),
+      new CustomObjectEntryValueFixtures(),
       new OptionFixtures(),
       new OptionValueFixtures(),
       new VariantFixtures(),
@@ -74,6 +92,11 @@ describe('OrderRepository.findOneWithDetails', () => {
       new OrderFulfillmentFixtures(),
       new OrderFulfillmentLineFixtures()
     ]);
+
+    // Set display_field_id for Color custom object definition
+    await trx(Tables.CustomObjectDefinition)
+      .where({ id: CustomObjectDefinitionConstants.ColorID, shop_id: ShopConstants.ID })
+      .update({ display_field_id: CustomFieldDefinitionConstants.ColorNameFieldID });
   });
 
   afterEach(async () => {
@@ -115,6 +138,18 @@ describe('OrderRepository.findOneWithDetails', () => {
       expect(order?.lines[0].variant.optionValues).toHaveLength(1);
       expect(order?.lines[1].variant.optionValues).toHaveLength(1);
 
+      // Option value without custom object entry (Polyester)
+      expect(order?.lines[0].variant.optionValues[0].name).toBe('Polyester');
+      expect(order?.lines[0].variant.optionValues[0].metadata).toBeUndefined();
+
+      // Option value with custom object entry (Cotton -> Red color)
+      expect(order?.lines[1].variant.optionValues[0].name).toBe(
+        CustomObjectEntryValueConstants.RedNameValue
+      );
+      expect(order?.lines[1].variant.optionValues[0].metadata).toEqual({
+        hex: CustomObjectEntryValueConstants.RedHexValue
+      });
+
       expect(order?.lines[0].variant.product.id).toBe(ProductConstants.ShirtID);
       expect(order?.lines[1].variant.product.id).toBe(ProductConstants.ShirtID);
 
@@ -155,6 +190,18 @@ describe('OrderRepository.findOneWithDetails', () => {
 
       expect(order?.lines[0].variant.optionValues).toHaveLength(1);
       expect(order?.lines[1].variant.optionValues).toHaveLength(1);
+
+      // Option value without custom object entry (Polyester)
+      expect(order?.lines[0].variant.optionValues[0].name).toBe('Polyester');
+      expect(order?.lines[0].variant.optionValues[0].metadata).toBeUndefined();
+
+      // Option value with custom object entry (Cotton -> Red color)
+      expect(order?.lines[1].variant.optionValues[0].name).toBe(
+        CustomObjectEntryValueConstants.RedNameValue
+      );
+      expect(order?.lines[1].variant.optionValues[0].metadata).toEqual({
+        hex: CustomObjectEntryValueConstants.RedHexValue
+      });
 
       expect(order?.lines[0].variant.product.id).toBe(ProductConstants.ShirtID);
       expect(order?.lines[1].variant.product.id).toBe(ProductConstants.ShirtID);

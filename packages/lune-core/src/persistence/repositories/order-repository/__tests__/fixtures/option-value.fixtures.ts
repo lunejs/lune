@@ -3,6 +3,7 @@ import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
 
+import { CustomObjectEntryConstants } from './custom-object-entry.fixtures';
 import { OptionConstants } from './option.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
@@ -21,6 +22,7 @@ export class OptionValueFixtures implements Fixture<OptionValueTable> {
         id: OptionValueConstants.CottonOptionValueID,
         name: 'Cotton',
         option_id: OptionConstants.MaterialOptionID,
+        custom_object_entry_id: CustomObjectEntryConstants.RedColorEntryID,
         shop_id: ShopConstants.ID
       },
       {

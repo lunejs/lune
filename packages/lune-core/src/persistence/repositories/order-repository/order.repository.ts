@@ -1,6 +1,10 @@
 import type { OrderListInput } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection/connection';
 import type { Asset } from '@/persistence/entities/asset';
+import type { CustomFieldDefinition } from '@/persistence/entities/custom-field-definition';
+import type { CustomObjectDefinition } from '@/persistence/entities/custom-object-definition';
+import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
+import type { CustomObjectEntryValue } from '@/persistence/entities/custom-object-entry-value';
 import type { Customer } from '@/persistence/entities/customer';
 import type { DeliveryMethod, DeliveryMethodType } from '@/persistence/entities/delivery-method';
 import type { DeliveryMethodPickup } from '@/persistence/entities/delivery-method-pickup';
@@ -15,6 +19,10 @@ import type { Product } from '@/persistence/entities/product';
 import type { Variant } from '@/persistence/entities/variant';
 import { OrderFilter } from '@/persistence/filters/order.filter';
 import { AssetSerializer } from '@/persistence/serializers/asset.serializer';
+import { CustomFieldDefinitionSerializer } from '@/persistence/serializers/custom-field-definition.serializer';
+import { CustomObjectDefinitionSerializer } from '@/persistence/serializers/custom-object-definition.serializer';
+import { CustomObjectEntrySerializer } from '@/persistence/serializers/custom-object-entry.serializer';
+import { CustomObjectEntryValueSerializer } from '@/persistence/serializers/custom-object-entry-value.serializer';
 import { CustomerSerializer } from '@/persistence/serializers/customer.serializer';
 import { DeliveryMethodSerializer } from '@/persistence/serializers/delivery-method.serializer';
 import { DeliveryMethodPickupSerializer } from '@/persistence/serializers/delivery-method-pickup.serializer';
@@ -79,6 +87,10 @@ export class OrderRepository extends Repository<Order, OrderTable> {
     const optionValueSerializer = new OptionValueSerializer();
     const fulfillmentSerializer = new FulfillmentSerializer();
     const fulfillmentLineSerializer = new FulfillmentLineSerializer();
+    const customObjectEntrySerializer = new CustomObjectEntrySerializer();
+    const customObjectDefinitionSerializer = new CustomObjectDefinitionSerializer();
+    const customObjectEntryValueSerializer = new CustomObjectEntryValueSerializer();
+    const customFieldDefinitionSerializer = new CustomFieldDefinitionSerializer();
 
     // ============ QUERY 1: Order + Customer + DeliveryMethod + Details ============
     const orderRow = await this.trx
@@ -244,7 +256,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         : []
     ]);
 
-    // ============ QUERY 4: OptionValues + Presets ============
+    // ============ QUERY 4: OptionValues ============
     const optionValueRows =
       variantIds.length > 0
         ? await this.trx
@@ -259,10 +271,149 @@ export class OrderRepository extends Repository<Order, OrderTable> {
               'ov.deleted_at as ov_deleted_at',
               'ov.name as ov_name',
               'ov.order as ov_order',
-              'ov.option_id as ov_option_id'
+              'ov.option_id as ov_option_id',
+              'ov.custom_object_entry_id as ov_custom_object_entry_id'
             )
             .whereIn('vov.variant_id', variantIds)
         : [];
+
+    // ============ QUERY 4.1: CustomObjectEntries for OptionValues ============
+    const customObjectEntryIds = [
+      ...new Set(
+        optionValueRows
+          .map(ov => ov.ov_custom_object_entry_id)
+          .filter((id): id is string => id !== null)
+      )
+    ];
+
+    const customObjectEntryRows =
+      customObjectEntryIds.length > 0
+        ? await this.trx
+            .from({ coe: Tables.CustomObjectEntry })
+            .select(
+              'coe.id as coe_id',
+              'coe.created_at as coe_created_at',
+              'coe.updated_at as coe_updated_at',
+              'coe.slug as coe_slug',
+              'coe.definition_id as coe_definition_id'
+            )
+            .whereIn('coe.id', customObjectEntryIds)
+        : [];
+
+    // ============ QUERY 4.2: CustomObjectDefinitions ============
+    const definitionIds = [...new Set(customObjectEntryRows.map(row => row.coe_definition_id))];
+
+    const customObjectDefinitionRows =
+      definitionIds.length > 0
+        ? await this.trx
+            .from({ cod: Tables.CustomObjectDefinition })
+            .select(
+              'cod.id as cod_id',
+              'cod.created_at as cod_created_at',
+              'cod.updated_at as cod_updated_at',
+              'cod.name as cod_name',
+              'cod.key as cod_key',
+              'cod.display_field_id as cod_display_field_id'
+            )
+            .whereIn('cod.id', definitionIds)
+        : [];
+
+    // ============ QUERY 4.3: CustomObjectEntryValues ============
+    const customObjectEntryValueRows =
+      customObjectEntryIds.length > 0
+        ? await this.trx
+            .from({ coev: Tables.CustomObjectEntryValue })
+            .select(
+              'coev.id as coev_id',
+              'coev.created_at as coev_created_at',
+              'coev.updated_at as coev_updated_at',
+              'coev.value as coev_value',
+              'coev.entry_id as coev_entry_id',
+              'coev.field_id as coev_field_id'
+            )
+            .whereIn('coev.entry_id', customObjectEntryIds)
+        : [];
+
+    // ============ QUERY 4.4: CustomFieldDefinitions (for field keys) ============
+    const fieldIds = [...new Set(customObjectEntryValueRows.map(row => row.coev_field_id))];
+
+    const customFieldDefinitionRows =
+      fieldIds.length > 0
+        ? await this.trx
+            .from({ cfd: Tables.CustomFieldDefinition })
+            .select(
+              'cfd.id as cfd_id',
+              'cfd.created_at as cfd_created_at',
+              'cfd.updated_at as cfd_updated_at',
+              'cfd.name as cfd_name',
+              'cfd.key as cfd_key',
+              'cfd.type as cfd_type'
+            )
+            .whereIn('cfd.id', fieldIds)
+        : [];
+
+    // Build maps for quick lookup
+    const entriesMap = new Map<string, CustomObjectEntry>();
+    for (const row of customObjectEntryRows) {
+      entriesMap.set(
+        row.coe_id,
+        customObjectEntrySerializer.deserialize({
+          id: row.coe_id,
+          created_at: row.coe_created_at,
+          updated_at: row.coe_updated_at,
+          slug: row.coe_slug,
+          definition_id: row.coe_definition_id
+        }) as CustomObjectEntry
+      );
+    }
+
+    const definitionsMap = new Map<string, CustomObjectDefinition>();
+    for (const row of customObjectDefinitionRows) {
+      definitionsMap.set(
+        row.cod_id,
+        customObjectDefinitionSerializer.deserialize({
+          id: row.cod_id,
+          created_at: row.cod_created_at,
+          updated_at: row.cod_updated_at,
+          name: row.cod_name,
+          key: row.cod_key,
+          display_field_id: row.cod_display_field_id
+        }) as CustomObjectDefinition
+      );
+    }
+
+    const entryValuesMap = new Map<string, CustomObjectEntryValue[]>();
+    for (const row of customObjectEntryValueRows) {
+      const entryId = row.coev_entry_id;
+      if (!entryValuesMap.has(entryId)) {
+        entryValuesMap.set(entryId, []);
+      }
+      entryValuesMap.get(entryId)?.push(
+        customObjectEntryValueSerializer.deserialize({
+          id: row.coev_id,
+          created_at: row.coev_created_at,
+          updated_at: row.coev_updated_at,
+          value: row.coev_value,
+          entry_id: row.coev_entry_id,
+          field_id: row.coev_field_id
+        }) as CustomObjectEntryValue
+      );
+    }
+
+    const fieldsMap = new Map<string, CustomFieldDefinition>();
+    for (const row of customFieldDefinitionRows) {
+      fieldsMap.set(
+        row.cfd_id,
+        customFieldDefinitionSerializer.deserialize({
+          id: row.cfd_id,
+          created_at: row.cfd_created_at,
+          updated_at: row.cfd_updated_at,
+          name: row.cfd_name,
+          key: row.cfd_key,
+          type: row.cfd_type
+        }) as CustomFieldDefinition
+      );
+    }
 
     // ============ QUERY 5: Fulfillments + FulfillmentLines ============
     const fulfillmentRows = await this.trx
@@ -418,7 +569,7 @@ export class OrderRepository extends Repository<Order, OrderTable> {
         .filter(a => a.product_id === row.p_id)
         .map(a => assetSerializer.deserialize(a) as Asset);
 
-      // OptionValues with presets
+      // OptionValues with custom object entry data
       const optionValues = optionValueRows
         .filter(ov => ov.variant_id === row.v_id)
         .map(ov => {
@@ -429,8 +580,40 @@ export class OrderRepository extends Repository<Order, OrderTable> {
             deleted_at: ov.ov_deleted_at,
             name: ov.ov_name,
             order: ov.ov_order,
-            option_id: ov.ov_option_id
+            option_id: ov.ov_option_id,
+            custom_object_entry_id: ov.ov_custom_object_entry_id
           }) as OptionValue;
+
+          // If has custom object entry, get name from display field and build metadata
+          if (ov.ov_custom_object_entry_id) {
+            const entry = entriesMap.get(ov.ov_custom_object_entry_id);
+            if (entry) {
+              const definition = definitionsMap.get(entry.definitionId);
+              const entryValues = entryValuesMap.get(entry.id) ?? [];
+
+              let displayName = optionValue.name;
+              const metadata: Record<string, unknown> = {};
+
+              for (const val of entryValues) {
+                const field = fieldsMap.get(val.fieldId);
+                if (!field) continue;
+
+                if (definition?.displayFieldId === val.fieldId) {
+                  // This is the display field - use as name
+                  displayName = val.value as string;
+                } else {
+                  // Other fields go to metadata
+                  metadata[field.key] = val.value;
+                }
+              }
+
+              return {
+                ...optionValue,
+                name: displayName,
+                metadata: Object.keys(metadata).length > 0 ? metadata : undefined
+              };
+            }
+          }
 
           return {
             ...optionValue
@@ -512,7 +695,7 @@ type OrderWithDetails = Order & {
       product: Product & {
         assets: Asset[];
       };
-      optionValues: OptionValue[];
+      optionValues: (OptionValue & { metadata?: any })[];
     };
   })[];
 };
