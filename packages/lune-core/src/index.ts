@@ -53,6 +53,8 @@ export * from './config/shipping-handler/flat-shipping-handler';
 export * from './config/shipping-handler/shipping-handler';
 export * from './config/storage/local-storage-provider';
 export * from './config/storage/storage';
+export * from './config/strategies/fulfillment-code/default-fulfillment-code-strategy';
+export * from './config/strategies/fulfillment-code/fulfillment-code.strategy';
 export * from './config/strategies/order-code/default-order-code-strategy';
 export * from './config/strategies/order-code/order-code.strategy';
 
