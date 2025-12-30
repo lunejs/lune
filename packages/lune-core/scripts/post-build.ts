@@ -1,4 +1,8 @@
+import { exec } from 'child_process';
 import { dest, parallel, src } from 'gulp';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 /**
  * Copy gql schema files to dist folder
@@ -12,10 +16,13 @@ export const copySchemaToDistFolder = () => {
   return stream.pipe(dest('../dist/src'));
 };
 
-export const copyDatabaseMigrationsToDistFolder = () => {
-  const stream = src('../database/**/*.ts');
-
-  return stream.pipe(dest('../dist/database'));
+/**
+ * Compile database migrations from TypeScript to JavaScript
+ */
+export const compileDatabaseMigrations = async () => {
+  await execAsync(
+    'tsc ../database/migrations/*.ts ../database/knexfile.ts --outDir ../dist/database --module commonjs --moduleResolution node'
+  );
 };
 
-export const postBuild = parallel(copySchemaToDistFolder, copyDatabaseMigrationsToDistFolder);
+export const postBuild = parallel(copySchemaToDistFolder, compileDatabaseMigrations);

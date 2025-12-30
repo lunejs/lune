@@ -18,7 +18,7 @@ export class LuneMigration {
 
     await database.migrate.latest({
       directory: dir,
-      extension: 'ts'
+      extension: 'js'
     });
 
     console.log(green('✔'), 'Migrations applied');
