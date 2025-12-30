@@ -1,5 +1,11 @@
 # @lunejs/core
 
+## 0.1.2
+
+### Patch Changes
+
+- cbaa0dd: compile migration files before bundle
+
 ## 0.1.1
 
 ### Patch Changes
