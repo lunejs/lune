@@ -88,7 +88,7 @@ export const useOrdersTable = () => {
 
   return {
     dataTable,
-    isLoading: isLoading,
+    isLoading: isLoading || isLoadingCount,
     isRefetching,
     shouldRenderEmptyState,
     orders,
