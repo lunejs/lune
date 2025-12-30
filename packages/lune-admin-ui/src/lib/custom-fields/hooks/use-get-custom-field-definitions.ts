@@ -11,7 +11,7 @@ import { CustomFieldDefinitionsCacheKeys } from '../constants/cache-keys';
 export const useGetCustomFieldDefinitions = (input?: CustomFieldDefinitionListInput) => {
   const { data, ...rest } = useGqlQuery(GET_CUSTOM_FIELD_DEFINITIONS_QUERY, {
     variables: { input },
-    key: [CustomFieldDefinitionsCacheKeys.All]
+    key: [CustomFieldDefinitionsCacheKeys.All, JSON.stringify(input)]
   });
 
   const customFieldDefinitions =
