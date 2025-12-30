@@ -1,0 +1,37 @@
+{
+  "name": "@lunejs/s3",
+  "version": "0.0.1",
+  "description": "Ready-to-use s3 storage provider developed by Lune",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunejs/lune",
+    "directory": "packages/lune-s3"
+  },
+  "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "build": "rimraf dist && tsc -p ./tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@lunejs/common": "*",
+    "@lunejs/core": "*",
+    "@lunejs/eslint-config": "*",
+    "eslint": "^9.39.2",
+    "prettier": "^3.7.4",
+    "rimraf": "^6.1.2",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@lunejs/common": "*",
+    "@lunejs/core": "*"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.958.0"
+  }
+}
