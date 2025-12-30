@@ -1,4 +1,5 @@
 import { type FC } from 'react';
+import { isUUID } from '@lunejs/common';
 import { Checkbox, cn, Input } from '@lunejs/ui';
 import { Link } from 'react-router';
 
@@ -28,24 +29,16 @@ export const VariantItem: FC<Props> = ({ variant, groupName, className }) => {
             )
           }
         />
-        {/* <VariantAssetUploader
-          isLoading={isLoading || removeLoading}
-          size={inGroup ? 'sm' : 'md'}
-          disabled={!isPersistedVariant} // can upload images only when the variant is saved
-          image={variantImage}
-          onRemove={() => {
-            removeVariantImage([variant.id]);
-          }}
-          onUpload={file => {
-            addVariantImage([variant.id], file);
-          }}
-        /> */}
-        <Link
-          to={`/products/${product?.id}/variants/${variant.id}`}
-          className="hover:underline w-full cursor-pointer"
-        >
-          {variantName}
-        </Link>
+        {isUUID(variant.id) ? (
+          <Link
+            to={`/products/${product?.id}/variants/${variant.id}`}
+            className="hover:underline w-full cursor-pointer"
+          >
+            {variantName}
+          </Link>
+        ) : (
+          <span className="w-full">{variantName}</span>
+        )}
       </div>
       <div className="flex items-center gap-2 w-full">
         <Input
