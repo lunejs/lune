@@ -1,5 +1,12 @@
 # @lunejs/core
 
+## 0.1.3
+
+### Patch Changes
+
+- 5681c3b: change url custom field type to url instead of link
+- fc537f5: fix lint
+
 ## 0.1.2
 
 ### Patch Changes
