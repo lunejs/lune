@@ -1,8 +1,7 @@
-import { UploadIcon } from 'lucide-react';
-import { Fragment } from 'react/jsx-runtime';
-
 import { isLast } from '@lunejs/common';
 import { Button, Label } from '@lunejs/ui';
+import { UploadIcon } from 'lucide-react';
+import { Fragment } from 'react/jsx-runtime';
 
 import { AssetSelector } from '../asset-selector/asset-selector';
 

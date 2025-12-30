@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-
 import { cn } from '@lunejs/ui';
 
 export const ImagePlaceholder: FC<Props> = ({ initial, className }) => {

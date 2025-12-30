@@ -1,7 +1,4 @@
 import { type ReactElement, useState } from 'react';
-import { ListFilterIcon } from 'lucide-react';
-import { useDebouncedCallback } from 'use-debounce';
-
 import {
   Button,
   cn,
@@ -13,6 +10,8 @@ import {
   InputGroupAddon,
   InputGroupInput
 } from '@lunejs/ui';
+import { ListFilterIcon } from 'lucide-react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';

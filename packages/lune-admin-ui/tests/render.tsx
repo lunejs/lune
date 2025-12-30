@@ -1,8 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render as TestingLibraryRender } from '@testing-library/react';
-
 import { LuneLogger } from '@lunejs/common';
 import { Toaster } from '@lunejs/ui';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render as TestingLibraryRender } from '@testing-library/react';
 
 export function render(ui: React.ReactElement) {
   LuneLogger.setLevels([]);

@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isTruthy } from '@lunejs/common';
+import { notification } from '@lunejs/ui';
 import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import type z from 'zod';
-
-import { isTruthy } from '@lunejs/common';
-import { notification } from '@lunejs/ui';
 
 import type { CustomFieldType } from '@/lib/api/types';
 import { CustomObjectDefinitionErrorCode } from '@/lib/api/types';

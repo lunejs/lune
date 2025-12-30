@@ -1,6 +1,5 @@
-import request from 'supertest';
-
 import { LunePrice } from '@lunejs/common';
+import request from 'supertest';
 
 import { DeliveryMethodType } from '@/api/shared/types/graphql';
 import type { DeliveryMethodTable } from '@/persistence/entities/delivery-method';

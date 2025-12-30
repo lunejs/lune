@@ -1,5 +1,3 @@
-import { MapPinIcon } from 'lucide-react';
-
 import {
   Button,
   Item,
@@ -10,6 +8,7 @@ import {
   ItemTitle,
   useDialogContext
 } from '@lunejs/ui';
+import { MapPinIcon } from 'lucide-react';
 
 import { useLocationDetailsFormContext } from '../../use-form/use-form';
 

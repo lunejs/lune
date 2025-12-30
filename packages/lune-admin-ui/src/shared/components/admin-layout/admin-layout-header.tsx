@@ -1,6 +1,5 @@
-import { BellIcon } from 'lucide-react';
-
 import { Button, Separator } from '@lunejs/ui';
+import { BellIcon } from 'lucide-react';
 
 import { AppBreadcrumb } from '../app-breadcrumb';
 import { SidebarTrigger } from '../sidebar/sidebar';

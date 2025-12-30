@@ -1,8 +1,7 @@
+import { Badge, Checkbox, P } from '@lunejs/ui';
 import type { ColumnDef } from '@tanstack/react-table';
 import { PackageIcon, ShoppingCartIcon, TruckIcon } from 'lucide-react';
 import { Link } from 'react-router';
-
-import { Badge, Checkbox, P } from '@lunejs/ui';
 
 import { DiscountApplicationLevel, DiscountApplicationMode } from '@/lib/api/types';
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';

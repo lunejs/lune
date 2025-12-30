@@ -1,6 +1,3 @@
-import { PackageCheckIcon, PackageIcon, TruckIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import { formatDate } from '@lunejs/common';
 import {
   Badge,
@@ -12,6 +9,8 @@ import {
   Muted,
   Small
 } from '@lunejs/ui';
+import { PackageCheckIcon, PackageIcon, TruckIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import {
   type CommonOrderFragment,

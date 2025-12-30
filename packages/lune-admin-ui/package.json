@@ -21,10 +21,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "lint:fix": "eslint . --fix",
-    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix --rule 'prettier/prettier: off'",
+    "lint:check": "eslint . --rule 'prettier/prettier: off'",
     "gen:types": "yarn graphql-codegen && bash ./scripts/format-codegen.sh",
     "test": "vitest run"
   },

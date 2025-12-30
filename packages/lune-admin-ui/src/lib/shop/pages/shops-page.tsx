@@ -1,6 +1,3 @@
-import { PlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Button,
   Card,
@@ -10,6 +7,8 @@ import {
   CardHeader,
   CardTitle
 } from '@lunejs/ui';
+import { PlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 

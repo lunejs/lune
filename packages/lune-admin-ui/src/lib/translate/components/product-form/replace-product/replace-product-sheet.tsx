@@ -1,6 +1,5 @@
-import { ReplaceIcon } from 'lucide-react';
-
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@lunejs/ui';
+import { ReplaceIcon } from 'lucide-react';
 
 import { ProductTranslateList } from '../list/product-translate-list';
 

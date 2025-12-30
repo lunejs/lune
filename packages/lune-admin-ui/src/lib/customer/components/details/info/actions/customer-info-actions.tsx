@@ -1,5 +1,3 @@
-import { EllipsisIcon, LucideClipboardEdit, LucideMapPinHouse } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -7,6 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { EllipsisIcon, LucideClipboardEdit, LucideMapPinHouse } from 'lucide-react';
 
 export const CustomerInfoActions = () => {
   return (

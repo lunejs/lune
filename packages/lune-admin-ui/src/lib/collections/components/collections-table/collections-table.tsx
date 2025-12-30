@@ -1,7 +1,6 @@
+import { Button } from '@lunejs/ui';
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
-
-import { Button } from '@lunejs/ui';
 
 import type { CollectionContentType } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';

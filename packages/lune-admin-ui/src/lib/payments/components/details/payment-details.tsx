@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-
 import { formatDate, LunePrice } from '@lunejs/common';
 import {
   Input,
@@ -31,7 +30,6 @@ export const PaymentDetails = ({ method: defaultMethod, handlers }: Props) => {
 
   useEffect(() => {
     setValue({ key: 'handlerId', value: handler.code });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handler]);
 
   return (

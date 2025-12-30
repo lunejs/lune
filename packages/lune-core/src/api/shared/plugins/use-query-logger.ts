@@ -1,6 +1,5 @@
-import { isAsyncIterable, type Plugin } from 'graphql-yoga';
-
 import { LuneLogger } from '@lunejs/common';
+import { isAsyncIterable, type Plugin } from 'graphql-yoga';
 
 export function useQueryLogger(): Plugin {
   return {

@@ -1,7 +1,6 @@
+import { Checkbox } from '@lunejs/ui';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router';
-
-import { Checkbox } from '@lunejs/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 

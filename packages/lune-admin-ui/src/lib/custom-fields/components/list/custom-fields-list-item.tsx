@@ -1,7 +1,6 @@
+import { cn, Small } from '@lunejs/ui';
 import { ChevronRightIcon, type LucideIcon } from 'lucide-react';
 import { Link } from 'react-router';
-
-import { cn, Small } from '@lunejs/ui';
 
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
 

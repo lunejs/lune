@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken';
-
 import { LuneLogger } from '@lunejs/common';
+import jwt from 'jsonwebtoken';
 
 import { getConfig } from '@/config/config';
 

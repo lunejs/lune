@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react';
-
 import { cn } from '@lunejs/ui';
+import type { ReactNode } from 'react';
 
 import { PageLoader } from '../loader/page-loader';
 

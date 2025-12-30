@@ -1,7 +1,6 @@
-import type { ColumnDef } from '@tanstack/react-table';
-
 import { filesize, formatDate } from '@lunejs/common';
 import { Checkbox, P, Small } from '@lunejs/ui';
+import type { ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';

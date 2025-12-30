@@ -1,5 +1,4 @@
 import { type ComponentProps, useId } from 'react';
-
 import { cn, TableCell } from '@lunejs/ui';
 
 export const TranslateTextarea = ({ className, label, ...rest }: Props) => {

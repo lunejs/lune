@@ -1,7 +1,6 @@
-import { type DeepPartial, useWatch } from 'react-hook-form';
-
 import { equals, LunePrice } from '@lunejs/common';
 import { Button } from '@lunejs/ui';
+import { type DeepPartial, useWatch } from 'react-hook-form';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 

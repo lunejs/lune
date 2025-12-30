@@ -1,6 +1,5 @@
-import { PlusIcon } from 'lucide-react';
-
 import { Button } from '@lunejs/ui';
+import { PlusIcon } from 'lucide-react';
 
 import type { DiscountApplicationLevel, DiscountApplicationMode } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';

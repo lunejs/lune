@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -9,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { ArchiveIcon, ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useBack } from '@/shared/hooks/use-back';

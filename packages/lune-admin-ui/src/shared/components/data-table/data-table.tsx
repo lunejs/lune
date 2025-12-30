@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@lunejs/ui';
 import {
   type ColumnDef,
   flexRender,
@@ -9,8 +10,6 @@ import {
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table';
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@lunejs/ui';
 
 import { TableContextProvider } from './data-table-context';
 import { DataTablePagination } from './data-table-pagination';

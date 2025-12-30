@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { ReplaceIcon } from 'lucide-react';
-
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@lunejs/ui';
+import { ReplaceIcon } from 'lucide-react';
 
 import type { CommonVariantFragment } from '@/lib/api/types';
 

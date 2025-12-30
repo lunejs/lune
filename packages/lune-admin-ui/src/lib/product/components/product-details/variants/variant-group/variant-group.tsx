@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-
 import { isLast } from '@lunejs/common';
 import {
   Accordion,

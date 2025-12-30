@@ -1,6 +1,5 @@
-import type { PropsWithChildren } from 'react';
-
 import { cn, TableCell } from '@lunejs/ui';
+import type { PropsWithChildren } from 'react';
 
 export const TranslateFormCell = ({ children, isDisabled, className }: Props) => {
   return (

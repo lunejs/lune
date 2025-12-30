@@ -1,8 +1,7 @@
 import { type FC, useId } from 'react';
-import { Trash2Icon } from 'lucide-react';
-
 import { isFirst, isLast, isTruthy } from '@lunejs/common';
 import { Button, Input, Label } from '@lunejs/ui';
+import { Trash2Icon } from 'lucide-react';
 
 import { getEntryColorValue, getEntryDisplayValue } from '@/lib/product/utils/option-values.utils';
 import { MultiSelect } from '@/shared/components/multi-select/multi-select';

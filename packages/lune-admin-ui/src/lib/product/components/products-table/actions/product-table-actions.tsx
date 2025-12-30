@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { ChevronDownIcon, PencilRulerIcon } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -9,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { ChevronDownIcon, PencilRulerIcon } from 'lucide-react';
 
 import type { TableProduct } from '../products-table';
 

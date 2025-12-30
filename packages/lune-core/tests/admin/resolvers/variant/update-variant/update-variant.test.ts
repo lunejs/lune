@@ -1,6 +1,5 @@
-import request from 'supertest';
-
 import { convertToCent } from '@lunejs/common';
+import request from 'supertest';
 
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';

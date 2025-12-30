@@ -1,8 +1,7 @@
 'use client';
 
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
-
 import { LunePrice } from '@lunejs/common';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import type { MetricResult } from '@/lib/api/types';
 import {

@@ -1,7 +1,6 @@
 import { useId, useState } from 'react';
-import { ImageIcon, UploadCloudIcon } from 'lucide-react';
-
 import { Button, Label, Muted, Small } from '@lunejs/ui';
+import { ImageIcon, UploadCloudIcon } from 'lucide-react';
 
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 

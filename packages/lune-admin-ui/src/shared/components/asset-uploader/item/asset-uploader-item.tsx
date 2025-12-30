@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Checkbox, cn } from '@lunejs/ui';
 
 export const AssetUploaderItem = ({ preview, onCheckedChange }: Props) => {

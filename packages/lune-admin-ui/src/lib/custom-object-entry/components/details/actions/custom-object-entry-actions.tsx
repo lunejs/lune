@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -9,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { ChevronDownIcon, LanguagesIcon, Trash2Icon } from 'lucide-react';
 
 import type {
   CommonCustomObjectDefinitionFragment,

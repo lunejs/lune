@@ -10,7 +10,8 @@ export default [
   reactRefresh.configs.vite,
   {
     rules: {
-      'react-refresh/only-export-components': 'off'
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/exhaustive-deps': 'off'
     },
     files: ['**/*.{ts,tsx}'],
     languageOptions: {

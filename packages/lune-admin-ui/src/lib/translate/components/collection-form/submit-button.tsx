@@ -1,7 +1,6 @@
-import { type DeepPartial, useWatch } from 'react-hook-form';
-
 import { equals } from '@lunejs/common';
 import { Button } from '@lunejs/ui';
+import { type DeepPartial, useWatch } from 'react-hook-form';
 
 import { type CommonCollectionForTranslationFragment, Locale } from '@/lib/api/types';
 import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';

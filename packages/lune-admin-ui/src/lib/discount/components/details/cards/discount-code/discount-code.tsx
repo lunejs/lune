@@ -1,6 +1,5 @@
-import { customAlphabet } from 'nanoid';
-
 import { Button, FormInput } from '@lunejs/ui';
+import { customAlphabet } from 'nanoid';
 
 import { DiscountApplicationMode } from '@/lib/api/types';
 

@@ -1,8 +1,7 @@
 import { type FC } from 'react';
+import { Badge, Label, Tooltip, TooltipContent, TooltipTrigger } from '@lunejs/ui';
 import { WorkflowIcon } from 'lucide-react';
 import { Link } from 'react-router';
-
-import { Badge, Label, Tooltip, TooltipContent, TooltipTrigger } from '@lunejs/ui';
 
 import { getEntryColorValue } from '@/lib/product/utils/option-values.utils';
 

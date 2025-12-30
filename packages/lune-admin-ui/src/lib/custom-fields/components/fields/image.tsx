@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { EyeIcon, ImageIcon } from 'lucide-react';
-
 import {
   Dialog,
   DialogContent,
@@ -11,6 +9,7 @@ import {
   Muted,
   Small
 } from '@lunejs/ui';
+import { EyeIcon, ImageIcon } from 'lucide-react';
 
 import type { CommonAssetFragment, CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useGetAssets } from '@/lib/asset/hooks/use-get-assets';

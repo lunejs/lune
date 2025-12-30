@@ -1,6 +1,5 @@
-import type { Knex } from 'knex';
-
 import { LunePrice } from '@lunejs/common';
+import type { Knex } from 'knex';
 
 import type { ProductFilters, ProductSort } from '@/api/shared/types/graphql';
 import type { ProductTable } from '@/persistence/entities/product';

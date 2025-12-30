@@ -1,6 +1,5 @@
-import { customAlphabet } from 'nanoid';
-
 import { clean, getSlugBy } from '@lunejs/common';
+import { customAlphabet } from 'nanoid';
 
 const generateRandomSuffix = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
 

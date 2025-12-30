@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-
 import { notification } from '@lunejs/ui';
 
 import { CollectionContentType, type CommonListCollectionFragment } from '@/lib/api/types';

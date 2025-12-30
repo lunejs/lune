@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-
 import { LunePrice } from '@lunejs/common';
 import {
   Button,
@@ -29,7 +28,6 @@ export const ShippingMethodForm = ({ methodToUpdate }: Props) => {
 
   useEffect(() => {
     setValue({ key: 'handlerId', value: handler.code });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handler]);
 
   return (

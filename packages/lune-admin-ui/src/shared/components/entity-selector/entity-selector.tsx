@@ -1,6 +1,4 @@
 import { type ReactElement, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-
 import {
   Button,
   cn,
@@ -15,6 +13,7 @@ import {
   Input,
   P
 } from '@lunejs/ui';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 

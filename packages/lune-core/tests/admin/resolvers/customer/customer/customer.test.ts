@@ -1,6 +1,5 @@
-import request from 'supertest';
-
 import { LunePrice } from '@lunejs/common';
+import request from 'supertest';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';

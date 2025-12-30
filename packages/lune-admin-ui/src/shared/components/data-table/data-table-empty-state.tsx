@@ -1,6 +1,5 @@
-import type { FC, ReactElement } from 'react';
-
 import { Button, H4, Small } from '@lunejs/ui';
+import type { FC, ReactElement } from 'react';
 
 export const DataTableEmptyState: FC<Props> = ({ title, subtitle, icon, actions }) => {
   return (

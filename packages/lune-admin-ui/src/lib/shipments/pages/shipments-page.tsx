@@ -1,6 +1,3 @@
-import { ChevronRight, StoreIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Button,
   Item,
@@ -10,6 +7,8 @@ import {
   ItemMedia,
   ItemTitle
 } from '@lunejs/ui';
+import { ChevronRight, StoreIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 

@@ -1,9 +1,8 @@
+import { LuneLogger } from '@lunejs/common';
+import { ThemeProvider, Toaster } from '@lunejs/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GraphQLClient } from 'graphql-request';
 import { BrowserRouter, Route, Routes } from 'react-router';
-
-import { LuneLogger } from '@lunejs/common';
-import { ThemeProvider, Toaster } from '@lunejs/ui';
 
 import { AssetsPage } from '@/lib/asset/pages/assets-page';
 import { CollectionDetailsPage } from '@/lib/collections/pages/collection-details-page';

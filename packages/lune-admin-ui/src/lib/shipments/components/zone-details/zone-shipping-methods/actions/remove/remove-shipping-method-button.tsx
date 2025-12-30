@@ -1,5 +1,3 @@
-import { XIcon } from 'lucide-react';
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,6 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@lunejs/ui';
+import { XIcon } from 'lucide-react';
 
 import type { CommonZoneFragment } from '@/lib/api/types';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';

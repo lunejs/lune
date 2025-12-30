@@ -1,7 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { EyeIcon, GroupIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Dialog,
   DialogContent,
@@ -11,6 +8,8 @@ import {
   Label,
   Small
 } from '@lunejs/ui';
+import { EyeIcon, GroupIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import type {
   CommonCustomFieldDefinitionFragment,

@@ -1,6 +1,3 @@
-import { ChevronDownIcon, LogOutIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Button,
   DropdownMenu,
@@ -10,6 +7,8 @@ import {
   H4,
   Small
 } from '@lunejs/ui';
+import { ChevronDownIcon, LogOutIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { useBack } from '@/shared/hooks/use-back';
 

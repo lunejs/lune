@@ -1,6 +1,3 @@
-import { CircleFadingPlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Badge,
   Button,
@@ -17,6 +14,8 @@ import {
   TableHeader,
   TableRow
 } from '@lunejs/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import type { CommonPaymentMethodFragment } from '@/lib/api/types';
 

@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Checkbox } from '@lunejs/ui';
 
 /**

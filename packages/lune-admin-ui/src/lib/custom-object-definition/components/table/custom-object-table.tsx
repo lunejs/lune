@@ -1,6 +1,3 @@
-import { CircleFadingPlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Button,
   Card,
@@ -15,6 +12,8 @@ import {
   TableHeader,
   TableRow
 } from '@lunejs/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 

@@ -1,5 +1,4 @@
 import { useId } from 'react';
-
 import { Checkbox } from '@lunejs/ui';
 
 import { ImagePlaceholder } from '../../placeholders/image-placeholder';

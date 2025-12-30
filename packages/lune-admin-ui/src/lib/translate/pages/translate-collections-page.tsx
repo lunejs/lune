@@ -1,6 +1,5 @@
-import { useParams } from 'react-router';
-
 import { P } from '@lunejs/ui';
+import { useParams } from 'react-router';
 
 import { useGetCollectionForTranslation } from '@/lib/collections/hooks/use-get-product-for-translation';
 

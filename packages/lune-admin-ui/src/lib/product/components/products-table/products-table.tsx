@@ -1,8 +1,7 @@
-import { PlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import { isArray } from '@lunejs/common';
 import { Button } from '@lunejs/ui';
+import { PlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';

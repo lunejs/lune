@@ -1,7 +1,6 @@
+import { Button } from '@lunejs/ui';
 import { FileTextIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router';
-
-import { Button } from '@lunejs/ui';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { DataTableEmptyState } from '@/shared/components/data-table/data-table-empty-state';

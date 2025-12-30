@@ -1,6 +1,3 @@
-import { CircleFadingPlusIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Button,
   Card,
@@ -16,6 +13,8 @@ import {
   TableHeader,
   TableRow
 } from '@lunejs/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 

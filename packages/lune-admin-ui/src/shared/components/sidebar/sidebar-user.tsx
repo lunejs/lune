@@ -1,8 +1,5 @@
 'use client';
 
-import { EllipsisVerticalIcon, LogOutIcon } from 'lucide-react';
-import { Link } from 'react-router';
-
 import {
   Avatar,
   AvatarFallback,
@@ -15,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { EllipsisVerticalIcon, LogOutIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { useWhoami } from '@/lib/user/hooks/use-whoami';
 

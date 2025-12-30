@@ -1,8 +1,7 @@
+import { Label } from '@lunejs/ui';
 import { ChevronRightIcon, Loader2Icon } from 'lucide-react';
 
 import type { CommonListShopFragment } from '@/lib/api/types';
-
-import { Label } from '@lunejs/ui';
 
 import { ShopsListEmptyState } from './empty-state';
 import { useSelectShop } from './use-select-shop';

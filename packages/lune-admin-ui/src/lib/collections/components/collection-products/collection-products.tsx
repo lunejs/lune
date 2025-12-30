@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-
 import { notification, Small } from '@lunejs/ui';
+import { useDebouncedCallback } from 'use-debounce';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { ItemsTable } from '@/shared/components/items-table/items-table';

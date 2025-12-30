@@ -1,7 +1,6 @@
+import { LunePrice } from '@lunejs/common';
 import type { Application } from 'express';
 import request from 'supertest';
-
-import { LunePrice } from '@lunejs/common';
 
 import { LuneServer } from '@/server';
 import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';

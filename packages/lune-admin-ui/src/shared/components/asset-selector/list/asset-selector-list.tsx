@@ -1,7 +1,4 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import { UploadCloudIcon } from 'lucide-react';
-import { useDebouncedCallback } from 'use-debounce';
-
 import {
   Button,
   Checkbox,
@@ -13,6 +10,8 @@ import {
   P,
   useTheme
 } from '@lunejs/ui';
+import { UploadCloudIcon } from 'lucide-react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import type { CommonAssetFragment } from '@/lib/api/types';
 import { useGetAssets } from '@/lib/asset/hooks/use-get-assets';

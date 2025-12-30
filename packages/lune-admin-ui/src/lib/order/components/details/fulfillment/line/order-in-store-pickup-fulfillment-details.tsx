@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { InfoIcon, MoreVerticalIcon, PackageCheckIcon, PackageIcon, TruckIcon } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -10,6 +8,7 @@ import {
   Muted,
   Small
 } from '@lunejs/ui';
+import { InfoIcon, MoreVerticalIcon, PackageCheckIcon, PackageIcon, TruckIcon } from 'lucide-react';
 
 import {
   type CommonOrderFragment,

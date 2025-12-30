@@ -1,5 +1,3 @@
-import { MapPinIcon } from 'lucide-react';
-
 import {
   Button,
   Card,
@@ -11,6 +9,7 @@ import {
   FormSwitch,
   FormTextarea
 } from '@lunejs/ui';
+import { MapPinIcon } from 'lucide-react';
 
 import type { CommonLocationFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';

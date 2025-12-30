@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-
 import { notification } from '@lunejs/ui';
 
 export const useLoadingNotification = () => {

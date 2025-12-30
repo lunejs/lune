@@ -1,5 +1,3 @@
-import type { ReactElement } from 'react';
-
 import {
   Dialog,
   DialogContent,
@@ -8,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@lunejs/ui';
+import type { ReactElement } from 'react';
 
 import type { CommonShopFragment } from '@/lib/api/types';
 

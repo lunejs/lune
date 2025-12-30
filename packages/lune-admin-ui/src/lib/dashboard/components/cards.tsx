@@ -1,5 +1,3 @@
-import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
-
 import {
   Badge,
   Card,
@@ -9,6 +7,7 @@ import {
   CardHeader,
   CardTitle
 } from '@lunejs/ui';
+import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
 
 export function SectionCards() {
   return (

@@ -1,7 +1,6 @@
 import { type FC } from 'react';
-import { Link } from 'react-router';
-
 import { Checkbox, cn, Input } from '@lunejs/ui';
+import { Link } from 'react-router';
 
 import { useVariantContext, type VariantContext } from '../variants.context';
 

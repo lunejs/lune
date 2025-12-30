@@ -1,5 +1,3 @@
-import { ChevronDownIcon, LanguagesIcon } from 'lucide-react';
-
 import {
   Button,
   DropdownMenu,
@@ -7,6 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@lunejs/ui';
+import { ChevronDownIcon, LanguagesIcon } from 'lucide-react';
 
 export const LocaleSelector = () => {
   return (

@@ -1,7 +1,6 @@
+import { Button } from '@lunejs/ui';
 import { DatabaseIcon } from 'lucide-react';
 import { Link } from 'react-router';
-
-import { Button } from '@lunejs/ui';
 
 import { DataTableEmptyState } from '@/shared/components/data-table/data-table-empty-state';
 

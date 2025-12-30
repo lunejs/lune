@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import type { Table } from '@tanstack/react-table';
-import { CheckIcon, PlusCircleIcon } from 'lucide-react';
-
 import {
   Badge,
   Button,
@@ -18,6 +15,8 @@ import {
   PopoverTrigger,
   Separator
 } from '@lunejs/ui';
+import type { Table } from '@tanstack/react-table';
+import { CheckIcon, PlusCircleIcon } from 'lucide-react';
 
 import type { DataTableFilter as DataTableFilterType } from './data-table';
 

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { useParams } from 'react-router';
-
 import { Card, CardContent, CardTitle } from '@lunejs/ui';
+import { useParams } from 'react-router';
 
 import { PageLayout } from '@/shared/components/layout/page-layout';
 import { NotFound } from '@/shared/components/not-found/not-found';

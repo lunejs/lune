@@ -1,6 +1,4 @@
 import { type ReactNode, useState } from 'react';
-import { CircleFadingPlusIcon } from 'lucide-react';
-
 import {
   Command,
   CommandEmpty,
@@ -13,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@lunejs/ui';
+import { CircleFadingPlusIcon } from 'lucide-react';
 
 import { useVariantContext } from '../variants.context';
 

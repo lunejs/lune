@@ -1,14 +1,4 @@
 import { useState } from 'react';
-import {
-  CircleFadingPlusIcon,
-  CircleIcon,
-  GripVerticalIcon,
-  ListIcon,
-  MoreVerticalIcon,
-  XIcon
-} from 'lucide-react';
-import { useFieldArray } from 'react-hook-form';
-
 import { isLast } from '@lunejs/common';
 import {
   Button,
@@ -26,6 +16,15 @@ import {
   FormInput,
   FormSelect
 } from '@lunejs/ui';
+import {
+  CircleFadingPlusIcon,
+  CircleIcon,
+  GripVerticalIcon,
+  ListIcon,
+  MoreVerticalIcon,
+  XIcon
+} from 'lucide-react';
+import { useFieldArray } from 'react-hook-form';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { CUSTOM_FIELD_TYPE_GROUPS } from '@/lib/custom-fields/utils/custom-field.utils';

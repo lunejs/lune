@@ -1,6 +1,5 @@
-import request from 'supertest';
-
 import { LunePrice } from '@lunejs/common';
+import request from 'supertest';
 
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
 import { Tables } from '@/persistence/tables';

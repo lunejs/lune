@@ -1,6 +1,5 @@
-import { Link } from 'react-router';
-
 import { Button } from '@lunejs/ui';
+import { Link } from 'react-router';
 
 export const ShopsListEmptyState = () => {
   return (

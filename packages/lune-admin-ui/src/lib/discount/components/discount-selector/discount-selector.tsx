@@ -1,7 +1,3 @@
-import { ChevronRightIcon, PackageIcon, ShoppingCartIcon, TruckIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { Link } from 'react-router';
-
 import {
   Dialog,
   DialogContent,
@@ -10,6 +6,9 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@lunejs/ui';
+import { ChevronRightIcon, PackageIcon, ShoppingCartIcon, TruckIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { Link } from 'react-router';
 
 import { DiscountApplicationLevel } from '@/lib/api/types';
 

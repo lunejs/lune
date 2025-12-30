@@ -1,8 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ListFilterIcon } from 'lucide-react';
-import { useParams } from 'react-router';
-import { useDebouncedCallback } from 'use-debounce';
-
 import {
   Button,
   cn,
@@ -14,6 +10,9 @@ import {
   InputGroupAddon,
   InputGroupInput
 } from '@lunejs/ui';
+import { ListFilterIcon } from 'lucide-react';
+import { useParams } from 'react-router';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
