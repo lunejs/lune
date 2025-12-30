@@ -23,4 +23,4 @@ Lune is an open-source foundation for building commerce management systems. It f
 
 ## Getting Started
 
-Ready to build with Lune? Check out our [Installation & Setup Guide](./docs/LUNE_SETUP_GUIDE.md) to get your project running in minutes.
+Ready to build with Lune? Check out our [Installation & Setup Guide](./docs/getting-started.md) to get your project running in minutes.
