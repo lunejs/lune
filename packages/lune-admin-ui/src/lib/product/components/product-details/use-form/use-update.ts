@@ -26,6 +26,13 @@ export const useProductDetailsUpdate = () => {
             action: v.action as any,
             salePrice: v.salePrice ? LunePrice.parse(v.salePrice) : 0,
             stock: v.stock || 0,
+            comparisonPrice: v.comparisonPrice ? LunePrice.parse(v.comparisonPrice) : 0,
+            sku: v.sku,
+            requiresShipping: v.requiresShipping,
+            weight: v.weight as number,
+            height: v.height as number,
+            width: v.width as number,
+            length: v.length as number,
             optionValues: v.optionValues
           }))
         : [

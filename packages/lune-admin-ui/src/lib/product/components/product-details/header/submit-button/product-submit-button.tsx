@@ -26,6 +26,7 @@ export const ProductSubmitButton = () => {
           generalInfoHasChanged ||
           variantsHasChanged ||
           optionsHasChanged ||
+          form.formState.isDirty ||
           customFieldsHasChanged
         ) ||
         form.formState.isSubmitting ||
