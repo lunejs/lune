@@ -13,11 +13,14 @@ import { clean, getFullName } from '@lune/common';
 import type {
   ApplicationLevel,
   ApplicationMode,
+  DeliveryMethodShipping,
+  DeliveryMethodType,
+  FulfillmentState,
   OrderState,
-  ShippingFulfillment,
+  ShippingFulfillmentMetadata,
   Shop
 } from '@lune/core';
-import { type FulfillmentType } from '@lune/core';
+import type { FulfillmentType } from '@lune/core';
 
 import { EmailFooter } from './shared/Footer';
 import {
@@ -31,8 +34,9 @@ import {
 import { OrderSummary } from './shared/order-summary';
 import type { CommonEmailOrder } from './shared/template.types';
 
-const Component = ({ shop, order }: Props) => {
-  const shippingDetails = order.fulfillmentDetails as ShippingFulfillment;
+const Component = ({ shop, order, fulfillmentId }: Props) => {
+  const fulfillment = order.fulfillments.find(f => f.id === fulfillmentId);
+  const details = fulfillment?.metadata as ShippingFulfillmentMetadata;
 
   return (
     <Html>
@@ -52,12 +56,12 @@ const Component = ({ shop, order }: Props) => {
                 {getFullName(clean(order.customer))}, your order is on the way
               </EmailHeaderTitle>
               <EmailHeaderSubtitle>
-                {shippingDetails.carrier}: {shippingDetails.trackingCode}
+                {details.carrier}: {details.trackingCode}
               </EmailHeaderSubtitle>
               <EmailHeaderButton>View order</EmailHeaderButton>
             </EmailHeader>
 
-            <OrderSummary order={order} />
+            <OrderSummary order={order} fulfillment={fulfillment} />
 
             <EmailFooter>
               {shop.name} ・88 Colin P Kelly Jr Street ・San Francisco, CA 94107
@@ -71,10 +75,12 @@ const Component = ({ shop, order }: Props) => {
 
 export type Props = {
   shop: Shop;
+  fulfillmentId: string;
   order: CommonEmailOrder;
 };
 
 Component.PreviewProps = {
+  fulfillmentId: 'fulfillment-1',
   shop: {
     id: 'shop-1',
     name: 'Acme Store',
@@ -125,25 +131,59 @@ Component.PreviewProps = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillment: {
+    deliveryMethod: {
       id: 'fulfillment-1',
-      type: 'SHIPPING' as FulfillmentType,
+      type: 'SHIPPING' as DeliveryMethodType,
       amount: 1000,
       total: 1000,
       orderId: 'order-1',
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillmentDetails: {
+    deliveryMethodDetails: {
       id: 'shipping-details-1',
-      fulfillmentId: 'fulfillment-1',
       method: 'Shipping method',
       shippingMethodId: '',
-      carrier: 'FedEx',
-      trackingCode: '264783481',
+      deliveryMethodId: '',
       createdAt: new Date(),
       updatedAt: new Date()
-    } satisfies ShippingFulfillment,
+    } satisfies DeliveryMethodShipping,
+    fulfillments: [
+      {
+        id: 'fulfillment-1',
+        code: 'FUL-2024-001',
+        state: 'delivered' as FulfillmentState,
+        type: 'shipping' as FulfillmentType,
+        totalQuantity: 2,
+        createdAt: new Date(),
+        orderId: '',
+        metadata: {
+          carrier: 'FedEx',
+          trackingCode: '13743894789',
+          deliveredAt: null,
+          shippedAt: new Date()
+        } satisfies ShippingFulfillmentMetadata,
+        updatedAt: new Date(),
+        lines: [
+          {
+            id: 'fulfillment-line-1',
+            fulfillmentId: 'fulfillment-1',
+            orderLineId: 'line-1',
+            quantity: 1,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          {
+            id: 'fulfillment-line-2',
+            fulfillmentId: 'fulfillment-1',
+            orderLineId: 'line-2',
+            quantity: 1,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        ]
+      }
+    ],
     lines: [
       {
         id: 'line-1',
@@ -205,7 +245,6 @@ Component.PreviewProps = {
               id: 'ov-1',
               name: 'Black',
               optionId: 'opt-1',
-              preset: null,
               order: 0,
               createdAt: new Date(),
               updatedAt: new Date()
@@ -215,7 +254,6 @@ Component.PreviewProps = {
               name: 'Large',
               optionId: 'opt-2',
               order: 1,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }
@@ -276,7 +314,6 @@ Component.PreviewProps = {
               name: 'White',
               optionId: 'opt-1',
               order: 0,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }

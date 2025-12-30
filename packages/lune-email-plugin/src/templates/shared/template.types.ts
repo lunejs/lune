@@ -1,28 +1,32 @@
 import type {
   Asset,
   Customer,
+  DeliveryMethod,
+  DeliveryMethodPickup,
+  DeliveryMethodShipping,
   Fulfillment,
-  InStorePickupFulfillment,
+  FulfillmentLine,
   OptionValue,
-  OptionValuePreset,
   Order,
   OrderLine,
   Product,
-  ShippingFulfillment,
   Variant
 } from '@lune/core';
 
 export type CommonEmailOrder = Order & {
   customer: Customer;
-  fulfillment: Fulfillment;
-  fulfillmentDetails: ShippingFulfillment | InStorePickupFulfillment;
+  deliveryMethod: DeliveryMethod;
+  deliveryMethodDetails: DeliveryMethodShipping | DeliveryMethodPickup;
+  fulfillments: (Fulfillment & {
+    lines: FulfillmentLine[];
+  })[];
   lines: (OrderLine & {
     variant: Variant & {
       assets: Asset[];
       product: Product & {
         assets: Asset[];
       };
-      optionValues: (OptionValue & { preset: OptionValuePreset | null })[];
+      optionValues: (OptionValue & { metadata?: any })[];
     };
   })[];
 };

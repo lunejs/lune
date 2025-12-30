@@ -62,10 +62,11 @@ export * from './config/strategies/order-code/order-code.strategy';
 export * from './errors/lune.error';
 
 /**
- * Errors
+ * Events
  */
 export * from './event-bus';
 export * from './event-bus/events/customer.event';
+export * from './event-bus/events/fulfillment.event';
 export * from './event-bus/events/lune.event';
 export * from './event-bus/events/order.event';
 
@@ -89,9 +90,13 @@ export * from './persistence/entities/customer';
 export * from './persistence/entities/customer-auth-method';
 export * from './persistence/entities/delivery-method';
 export * from './persistence/entities/delivery-method-pickup';
+export * from './persistence/entities/delivery-method-pickup';
+export * from './persistence/entities/delivery-method-shipping';
 export * from './persistence/entities/delivery-method-shipping';
 export * from './persistence/entities/discount';
 export * from './persistence/entities/entity';
+export * from './persistence/entities/fulfillment';
+export * from './persistence/entities/fulfillment-line';
 export * from './persistence/entities/in-store-pickup';
 export * from './persistence/entities/locale';
 export * from './persistence/entities/location';

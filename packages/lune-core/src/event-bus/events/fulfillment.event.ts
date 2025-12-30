@@ -21,6 +21,7 @@ export class FulfillmentShippedEvent extends LuneEvent {
   constructor(
     public readonly ctx: LuneEventContext,
     public readonly orderId: ID,
+    public readonly fulfillmentId: ID,
     input: OrderShippedEventInput
   ) {
     super(FulfillmentEvent.Shipped, ctx);
@@ -36,7 +37,8 @@ type OrderShippedEventInput = { trackingCode: string; carrier: string };
 export class FulfillmentReadyForPickupEvent extends LuneEvent {
   constructor(
     public readonly ctx: LuneEventContext,
-    public readonly orderId: ID
+    public readonly orderId: ID,
+    public readonly fulfillmentId: ID
   ) {
     super(FulfillmentEvent.ReadyForPickup, ctx);
   }
@@ -49,7 +51,8 @@ export class FulfillmentReadyForPickupEvent extends LuneEvent {
 export class FulfillmentDeliveredEvent extends LuneEvent {
   constructor(
     public readonly ctx: LuneEventContext,
-    public readonly orderId: ID
+    public readonly orderId: ID,
+    public readonly fulfillmentId: ID
   ) {
     super(FulfillmentEvent.Delivered, ctx);
   }
@@ -62,7 +65,8 @@ export class FulfillmentDeliveredEvent extends LuneEvent {
 export class FulfillmentPickedUpEvent extends LuneEvent {
   constructor(
     public readonly ctx: LuneEventContext,
-    public readonly orderId: ID
+    public readonly orderId: ID,
+    public readonly fulfillmentId: ID
   ) {
     super(FulfillmentEvent.PickedUp, ctx);
   }

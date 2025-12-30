@@ -13,9 +13,9 @@ import { clean, getFullName } from '@lune/common';
 import type {
   ApplicationLevel,
   ApplicationMode,
-  FulfillmentType,
+  DeliveryMethodShipping,
+  DeliveryMethodType,
   OrderState,
-  ShippingFulfillment,
   Shop
 } from '@lune/core';
 
@@ -32,9 +32,9 @@ import { OrderSummary } from './shared/order-summary';
 import type { CommonEmailOrder } from './shared/template.types';
 
 const Component = ({ shop, order }: Props) => {
-  const { fulfillment, customer } = order;
+  const { deliveryMethod, customer } = order;
 
-  const isShipping = fulfillment.type === 'SHIPPING';
+  const isShipping = deliveryMethod.type === 'SHIPPING';
 
   return (
     <Html>
@@ -129,23 +129,24 @@ Component.PreviewProps = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillment: {
-      id: 'fulfillment-1',
-      type: 'SHIPPING' as FulfillmentType,
+    deliveryMethod: {
+      id: 'delivery-method-1',
+      type: 'SHIPPING' as DeliveryMethodType,
       amount: 1000,
       total: 1000,
       orderId: 'order-1',
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillmentDetails: {
+    deliveryMethodDetails: {
       id: 'shipping-details-1',
-      fulfillmentId: 'fulfillment-1',
+      deliveryMethodId: 'delivery-method-1',
       method: 'Shipping method',
       shippingMethodId: '',
       createdAt: new Date(),
       updatedAt: new Date()
-    } satisfies ShippingFulfillment,
+    } satisfies DeliveryMethodShipping,
+    fulfillments: [],
     lines: [
       {
         id: 'line-1',
@@ -207,7 +208,6 @@ Component.PreviewProps = {
               id: 'ov-1',
               name: 'Black',
               optionId: 'opt-1',
-              preset: null,
               order: 0,
               createdAt: new Date(),
               updatedAt: new Date()
@@ -217,7 +217,6 @@ Component.PreviewProps = {
               name: 'Large',
               optionId: 'opt-2',
               order: 1,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }
@@ -278,7 +277,6 @@ Component.PreviewProps = {
               name: 'White',
               optionId: 'opt-1',
               order: 0,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }

@@ -868,7 +868,7 @@ export class OrderService {
 
     if (isShipped) {
       eventBus.emit(
-        new FulfillmentShippedEvent(buildEventContext(this.ctx.shopId), order.id, {
+        new FulfillmentShippedEvent(buildEventContext(this.ctx.shopId), order.id, fulfillment.id, {
           carrier: input.carrier as string,
           trackingCode: input.trackingCode as string
         })
@@ -931,10 +931,15 @@ export class OrderService {
     });
 
     eventBus.emit(
-      new FulfillmentShippedEvent(buildEventContext(this.ctx.shopId), fulfillment.orderId, {
-        carrier: input.carrier as string,
-        trackingCode: input.trackingCode as string
-      })
+      new FulfillmentShippedEvent(
+        buildEventContext(this.ctx.shopId),
+        fulfillment.orderId,
+        fulfillment.id,
+        {
+          carrier: input.carrier as string,
+          trackingCode: input.trackingCode as string
+        }
+      )
     );
 
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
@@ -968,7 +973,11 @@ export class OrderService {
     });
 
     eventBus.emit(
-      new FulfillmentDeliveredEvent(buildEventContext(this.ctx.shopId), fulfillment.orderId)
+      new FulfillmentDeliveredEvent(
+        buildEventContext(this.ctx.shopId),
+        fulfillment.orderId,
+        fulfillment.id
+      )
     );
 
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
@@ -1004,7 +1013,11 @@ export class OrderService {
     });
 
     eventBus.emit(
-      new FulfillmentReadyForPickupEvent(buildEventContext(this.ctx.shopId), fulfillment.orderId)
+      new FulfillmentReadyForPickupEvent(
+        buildEventContext(this.ctx.shopId),
+        fulfillment.orderId,
+        fulfillment.id
+      )
     );
 
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });
@@ -1038,7 +1051,11 @@ export class OrderService {
     });
 
     eventBus.emit(
-      new FulfillmentPickedUpEvent(buildEventContext(this.ctx.shopId), fulfillment.orderId)
+      new FulfillmentPickedUpEvent(
+        buildEventContext(this.ctx.shopId),
+        fulfillment.orderId,
+        fulfillment.id
+      )
     );
 
     return await this.repository.findOneOrThrow({ where: { id: fulfillment.orderId } });

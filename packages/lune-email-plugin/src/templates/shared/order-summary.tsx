@@ -1,16 +1,19 @@
 import { Column, Hr, Img, Row, Section, Text } from '@react-email/components';
 
 import { isFirst, LunePrice } from '@lune/common';
-import type { InStorePickupFulfillment } from '@lune/core';
+import type { DeliveryMethodPickup, Fulfillment, FulfillmentLine } from '@lune/core';
 
 import type { CommonEmailOrder } from './template.types';
 
-export const OrderSummary = ({ order }: Props) => {
-  const { fulfillment, fulfillmentDetails, lines } = order;
+export const OrderSummary = ({ order, fulfillment }: Props) => {
+  const { deliveryMethod, deliveryMethodDetails } = order;
 
-  const isShipping = fulfillment.type === 'SHIPPING';
+  const isShipping = deliveryMethod.type === 'SHIPPING';
+  const pickupDetails = deliveryMethodDetails as DeliveryMethodPickup;
 
-  const pickupDetails = fulfillmentDetails as InStorePickupFulfillment;
+  const lines = fulfillment
+    ? order.lines.filter(ol => fulfillment.lines.map(fl => fl.orderLineId).includes(ol.id))
+    : order.lines;
 
   return (
     <Section className="mt-[32px]">
@@ -87,7 +90,7 @@ export const OrderSummary = ({ order }: Props) => {
           </Column>
           <Column>
             <Text className="m-0 text-right text-[#737373]">
-              {LunePrice.format(fulfillment.total)}
+              {LunePrice.format(deliveryMethod.total)}
             </Text>
           </Column>
         </Row>
@@ -122,4 +125,5 @@ export const OrderSummary = ({ order }: Props) => {
 
 export type Props = {
   order: CommonEmailOrder;
+  fulfillment?: Fulfillment & { lines: FulfillmentLine[] };
 };

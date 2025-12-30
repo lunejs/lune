@@ -13,11 +13,14 @@ import { clean, getFullName } from '@lune/common';
 import type {
   ApplicationLevel,
   ApplicationMode,
-  InStorePickupFulfillment,
+  DeliveryMethodPickup,
+  DeliveryMethodType,
+  FulfillmentState,
+  FulfillmentType,
   OrderState,
+  PickupFulfillmentMetadata,
   Shop
 } from '@lune/core';
-import { type FulfillmentType } from '@lune/core';
 
 import { EmailFooter } from './shared/Footer';
 import {
@@ -31,7 +34,9 @@ import {
 import { OrderSummary } from './shared/order-summary';
 import type { CommonEmailOrder } from './shared/template.types';
 
-const Component = ({ shop, order, instructions }: Props) => {
+const Component = ({ shop, order, fulfillmentId, instructions }: Props) => {
+  const fulfillment = order.fulfillments.find(f => f.id === fulfillmentId);
+
   return (
     <Html>
       <Head />
@@ -53,7 +58,7 @@ const Component = ({ shop, order, instructions }: Props) => {
               <EmailHeaderButton>View order</EmailHeaderButton>
             </EmailHeader>
 
-            <OrderSummary order={order} />
+            <OrderSummary order={order} fulfillment={fulfillment} />
 
             <EmailFooter>
               {shop.name} ・88 Colin P Kelly Jr Street ・San Francisco, CA 94107
@@ -67,11 +72,13 @@ const Component = ({ shop, order, instructions }: Props) => {
 
 export type Props = {
   shop: Shop;
+  fulfillmentId: string;
   order: CommonEmailOrder;
   instructions: string;
 };
 
 Component.PreviewProps = {
+  fulfillmentId: 'fulfillment-1',
   instructions: 'Bring your identification and your ticket',
   shop: {
     id: 'shop-1',
@@ -112,18 +119,18 @@ Component.PreviewProps = {
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillment: {
-      id: 'fulfillment-1',
-      type: 'IN_STORE_PICKUP' as FulfillmentType,
-      amount: 1000,
-      total: 1000,
+    deliveryMethod: {
+      id: 'delivery-method-1',
+      type: 'IN_STORE_PICKUP' as DeliveryMethodType,
+      amount: 0,
+      total: 0,
       orderId: 'order-1',
       createdAt: new Date(),
       updatedAt: new Date()
     },
-    fulfillmentDetails: {
-      id: 'shipping-details-1',
-      fulfillmentId: 'fulfillment-1',
+    deliveryMethodDetails: {
+      id: 'pickup-details-1',
+      deliveryMethodId: 'delivery-method-1',
       locationId: '',
       address: {
         name: 'Acme Store - Downtown',
@@ -139,7 +146,41 @@ Component.PreviewProps = {
       },
       createdAt: new Date(),
       updatedAt: new Date()
-    } satisfies InStorePickupFulfillment,
+    } satisfies DeliveryMethodPickup,
+    fulfillments: [
+      {
+        id: 'fulfillment-1',
+        code: 'FUL-2024-001',
+        state: 'ready_for_pickup' as FulfillmentState,
+        type: 'in_store_pickup' as FulfillmentType,
+        totalQuantity: 2,
+        orderId: 'order-1',
+        metadata: {
+          readyAt: new Date(),
+          pickedUpAt: null
+        } satisfies PickupFulfillmentMetadata,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lines: [
+          {
+            id: 'fulfillment-line-1',
+            fulfillmentId: 'fulfillment-1',
+            orderLineId: 'line-1',
+            quantity: 1,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          {
+            id: 'fulfillment-line-2',
+            fulfillmentId: 'fulfillment-1',
+            orderLineId: 'line-2',
+            quantity: 1,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        ]
+      }
+    ],
     lines: [
       {
         id: 'line-1',
@@ -201,7 +242,6 @@ Component.PreviewProps = {
               id: 'ov-1',
               name: 'Black',
               optionId: 'opt-1',
-              preset: null,
               order: 0,
               createdAt: new Date(),
               updatedAt: new Date()
@@ -211,7 +251,6 @@ Component.PreviewProps = {
               name: 'Large',
               optionId: 'opt-2',
               order: 1,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }
@@ -272,7 +311,6 @@ Component.PreviewProps = {
               name: 'White',
               optionId: 'opt-1',
               order: 0,
-              preset: null,
               createdAt: new Date(),
               updatedAt: new Date()
             }
