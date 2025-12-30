@@ -1,5 +1,15 @@
 # @lunejs/admin-ui
 
+## 0.1.3
+
+### Patch Changes
+
+- 5742712: add loading state for variants page
+- dd30946: add input as a ache key for custom field definitions
+- da2ffec: add loading count to orders table loading state
+- df838b6: save extra data for variant in product form
+- c1d7a40: avoid render variant link when id is not uuid
+
 ## 0.1.2
 
 ### Patch Changes

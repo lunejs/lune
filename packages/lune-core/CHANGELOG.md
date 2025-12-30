@@ -1,5 +1,11 @@
 # @lunejs/core
 
+## 0.1.4
+
+### Patch Changes
+
+- 82dae2f: remove asset form dependencies before itself
+
 ## 0.1.3
 
 ### Patch Changes
