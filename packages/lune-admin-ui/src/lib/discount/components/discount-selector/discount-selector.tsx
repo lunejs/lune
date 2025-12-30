@@ -41,7 +41,7 @@ export const DiscountSelector = ({ children }: Props) => {
                       <ShoppingCartIcon size={18} />
                     ) : handler.applicationLevel === DiscountApplicationLevel.OrderLine ? (
                       <PackageIcon size={18} />
-                    ) : handler.applicationLevel === DiscountApplicationLevel.Fulfillment ? (
+                    ) : handler.applicationLevel === DiscountApplicationLevel.DeliveryMethod ? (
                       <TruckIcon size={18} />
                     ) : null}
                   </div>

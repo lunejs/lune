@@ -17,7 +17,7 @@ import {
 } from '@lune/ui';
 
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
-import { type CommonCustomFieldDefinitionFragment, CustomFieldType } from '@/lib/api/types';
+import { type CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 
 import { getCustomFieldTypeData } from '../../utils/custom-field.utils';
 
@@ -57,10 +57,7 @@ export const CustomFieldsTable = ({ entity, customFields }: Props) => {
               </TableRow>
             )}
             {customFields.map(cf => {
-              const type =
-                cf.type === CustomFieldType.Reference
-                  ? getCustomFieldTypeData(`${cf.type}:${cf.metadata.targetEntity}`)
-                  : getCustomFieldTypeData(cf.type);
+              const type = getCustomFieldTypeData(cf.type);
 
               return (
                 <TableRow key={cf.id}>

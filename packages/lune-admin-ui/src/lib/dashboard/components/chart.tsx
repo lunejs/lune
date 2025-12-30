@@ -3,18 +3,6 @@
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import { LunePrice } from '@lune/common';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@lune/ui';
 
 import type { MetricResult } from '@/lib/api/types';
 import {

@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 
 import { cn, Small } from '@lune/ui';
 
-import { CustomFieldAppliesToEntity } from '@/lib/api/types';
+import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
+import { getEntityName } from '@/lib/custom-fields/utils/custom-field.utils';
 
 export const CustomFieldsListItem = ({ quantity, entity, icon: Icon, className }: Props) => {
   return (
@@ -25,15 +26,6 @@ export const CustomFieldsListItem = ({ quantity, entity, icon: Icon, className }
       </div>
     </Link>
   );
-};
-
-const getEntityName = (entity: CustomFieldAppliesToEntity) => {
-  const NAMES = {
-    [CustomFieldAppliesToEntity.Product]: 'Product',
-    [CustomFieldAppliesToEntity.Collection]: 'Collection'
-  };
-
-  return NAMES[entity];
 };
 
 type Props = {
