@@ -3,6 +3,7 @@ import { Card, CardContent, CardTitle } from '@lunejs/ui';
 import { useParams } from 'react-router';
 
 import { PageLayout } from '@/shared/components/layout/page-layout';
+import { PageLoader } from '@/shared/components/loader/page-loader';
 import { NotFound } from '@/shared/components/not-found/not-found';
 
 import { VariantDetails } from '../components/variant-details/variant-details';
@@ -18,7 +19,8 @@ export const VariantsPage = () => {
     [product, variantId]
   );
 
-  // TODO: add not found
+  if (isLoading) return <PageLoader />;
+
   if (!product.id) return <NotFound />;
 
   return (
