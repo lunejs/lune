@@ -25,6 +25,9 @@ export class AssetService {
   }
 
   async remove(ids: ID[]) {
+    await this.repository.removeAllFromCollection(ids);
+    await this.repository.removeAllFromProduct(ids);
+    await this.repository.removeAllFromVariant(ids);
     await this.repository.removeMany({ whereIn: 'id', values: ids });
 
     return true;
