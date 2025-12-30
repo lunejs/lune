@@ -56,6 +56,6 @@ describe('Create Shop Form Component', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /Create shop/i }));
 
-    expect(screen.getByText(/Email already exists for a shop/i)).toBeInTheDocument();
+    expect(screen.getByText(/Email already exists for this shop/i)).toBeInTheDocument();
   });
 });

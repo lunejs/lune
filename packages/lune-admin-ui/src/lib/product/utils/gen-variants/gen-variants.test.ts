@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { genVariants } from './gen-variants';
 
 describe('gen-variants', () => {
@@ -333,18 +331,28 @@ describe('gen-variants', () => {
           id: 'existing-1',
           values: [{ id: 's', name: 'S' }],
           price: '19.99',
+          comparisonPrice: '',
           stock: 50,
           sku: 'SKU-S',
           requiresShipping: true,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'existing-2',
           values: [{ id: 'm', name: 'M' }],
           price: '24.99',
+          comparisonPrice: '',
           stock: 30,
           sku: 'SKU-M',
           requiresShipping: true,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -391,9 +399,14 @@ describe('gen-variants', () => {
           id: 'existing-1',
           values: [{ id: 's', name: 'S' }],
           price: '19.99',
+          comparisonPrice: '',
           stock: 50,
           sku: 'SKU-S',
           requiresShipping: true,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -501,7 +514,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -511,7 +531,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -521,7 +548,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -531,7 +565,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 25,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -561,21 +602,42 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-l',
           values: [{ id: 'l', name: 'L' }],
           price: '14.00',
+          comparisonPrice: '',
           stock: 30,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -608,7 +670,14 @@ describe('gen-variants', () => {
           id: 'v1',
           values: [{ id: 'size-1', name: 'S' }], // Nombre viejo
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -650,14 +719,28 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '19.99',
+          comparisonPrice: '',
           stock: 50,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '24.99',
+          comparisonPrice: '',
           stock: 30,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -710,14 +793,28 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 100,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '12.00',
+          comparisonPrice: '',
           stock: 50,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -787,7 +884,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -797,7 +901,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 12,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -807,7 +918,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -817,7 +935,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -862,7 +987,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -872,7 +1004,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 12,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -882,7 +1021,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -892,7 +1038,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -951,28 +1104,56 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-l',
           values: [{ id: 'l', name: 'L' }],
           price: '14.00',
+          comparisonPrice: '',
           stock: 30,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-xl',
           values: [{ id: 'xl', name: 'XL' }],
           price: '16.00',
+          comparisonPrice: '',
           stock: 40,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1026,7 +1207,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1036,7 +1224,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1046,7 +1241,14 @@ describe('gen-variants', () => {
             { id: 'l', name: 'L' }
           ],
           price: '14.00',
+          comparisonPrice: '',
           stock: 30,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1056,7 +1258,14 @@ describe('gen-variants', () => {
             { id: 's', name: 'S' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1066,7 +1275,14 @@ describe('gen-variants', () => {
             { id: 'm', name: 'M' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 25,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1076,7 +1292,14 @@ describe('gen-variants', () => {
             { id: 'l', name: 'L' }
           ],
           price: '15.00',
+          comparisonPrice: '',
           stock: 35,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1112,21 +1335,42 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-l',
           values: [{ id: 'l', name: 'L' }],
           price: '14.00',
+          comparisonPrice: '',
           stock: 30,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1163,7 +1407,14 @@ describe('gen-variants', () => {
             { id: 'red', name: 'Red' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1173,7 +1424,14 @@ describe('gen-variants', () => {
             { id: 'blue', name: 'Blue' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1183,7 +1441,14 @@ describe('gen-variants', () => {
             { id: 'red', name: 'Red' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1193,7 +1458,14 @@ describe('gen-variants', () => {
             { id: 'blue', name: 'Blue' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 25,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1242,7 +1514,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1253,7 +1532,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 11,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1264,7 +1550,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 12,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1275,7 +1568,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 13,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1286,7 +1586,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '14.00',
+          comparisonPrice: '',
           stock: 14,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1297,7 +1604,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '15.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1308,7 +1622,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '16.00',
+          comparisonPrice: '',
           stock: 16,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1319,7 +1640,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '17.00',
+          comparisonPrice: '',
           stock: 17,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1374,7 +1702,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1385,7 +1720,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '11.00',
+          comparisonPrice: '',
           stock: 11,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1396,7 +1738,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '12.00',
+          comparisonPrice: '',
           stock: 12,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1407,7 +1756,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '13.00',
+          comparisonPrice: '',
           stock: 13,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1418,7 +1774,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '14.00',
+          comparisonPrice: '',
           stock: 14,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1429,7 +1792,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '15.00',
+          comparisonPrice: '',
           stock: 15,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1440,7 +1810,14 @@ describe('gen-variants', () => {
             { id: 'cotton', name: 'Cotton' }
           ],
           price: '16.00',
+          comparisonPrice: '',
           stock: 16,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
@@ -1451,7 +1828,14 @@ describe('gen-variants', () => {
             { id: 'poly', name: 'Polyester' }
           ],
           price: '17.00',
+          comparisonPrice: '',
           stock: 17,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1474,7 +1858,14 @@ describe('gen-variants', () => {
           id: 'v1',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1498,7 +1889,14 @@ describe('gen-variants', () => {
           id: 'v1',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
@@ -1560,14 +1958,28 @@ describe('gen-variants', () => {
           id: 'v-s',
           values: [{ id: 's', name: 'S' }],
           price: '10.00',
+          comparisonPrice: '',
           stock: 10,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         },
         {
           id: 'v-m',
           values: [{ id: 'm', name: 'M' }],
           price: '12.00',
+          comparisonPrice: '',
           stock: 20,
+          sku: '',
+          requiresShipping: false,
+          weight: 0,
+          height: 0,
+          width: 0,
+          length: 0,
           selected: false
         }
       ];
