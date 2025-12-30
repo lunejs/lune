@@ -131,6 +131,13 @@ const getBreadcrumbItems = (pathname: string, params: Record<string, unknown>, i
   if (pathname === `/custom-objects/${params.id}`) {
     return [{ href: '/custom-objects', label: 'Custom objects' }, { label: 'Entries' }];
   }
+  if (pathname === `/custom-objects/${params.id}/new`) {
+    return [
+      { href: '/custom-objects', label: 'Custom objects' },
+      { href: `/custom-objects/${params.id}`, label: 'Entries' },
+      { label: 'Add entry' }
+    ];
+  }
   if (pathname === `/custom-objects/${params.id}/${params.entryId}`) {
     return [
       { href: '/custom-objects', label: 'Custom objects' },
