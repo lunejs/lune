@@ -6,7 +6,7 @@ An open-source solution for commerce management.
 
 Lune is an open-source foundation for building commerce management systems. It focuses on modularity and extensibility, allowing developers to customize how data, assets, and integrations are handled.
 
-<img width="1470" height="918" alt="Screenshot 2025-11-15 at 5 12 31 p m" src="https://github.com/user-attachments/assets/f93b3913-5402-4c9e-8c98-424a048d43cf" />
+<img width="1470" height="917" alt="Screenshot 2025-12-30 at 1 03 02 a m" src="https://github.com/user-attachments/assets/67726b06-e58c-4045-afe5-cca879343bda" />
 
 ## Tech stack
 
@@ -20,3 +20,7 @@ Lune is an open-source foundation for building commerce management systems. It f
 - Components: [shadcn](https://ui.shadcn.com/)
 - Icons: [lucide icons](https://lucide.dev/)
 - Guide style: [TailwindCSS](https://tailwindcss.com/)
+
+## Getting Started
+
+Ready to build with Lune? Check out our [Installation & Setup Guide](./docs/LUNE_SETUP_GUIDE.md) to get your project running in minutes.
