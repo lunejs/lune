@@ -1,7 +1,7 @@
 import { CircleIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Card, CardContent, cn, P } from '@lune/ui';
+import { Card, CardContent, cn, P } from '@lunejs/ui';
 
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 

@@ -1,8 +1,8 @@
 import { Fragment } from 'react/jsx-runtime';
 import { useWatch } from 'react-hook-form';
 
-import { isFirst, isLast } from '@lune/common';
-import { cn } from '@lune/ui';
+import { isFirst, isLast } from '@lunejs/common';
+import { cn } from '@lunejs/ui';
 
 import { type CommonProductForTranslationFragment, Locale } from '@/lib/api/types';
 

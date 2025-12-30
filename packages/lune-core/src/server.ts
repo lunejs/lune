@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import type { Knex } from 'knex';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { AdminApi } from './api/admin/admin.api';
 import { StorefrontApi } from './api/storefront/storefront.api';

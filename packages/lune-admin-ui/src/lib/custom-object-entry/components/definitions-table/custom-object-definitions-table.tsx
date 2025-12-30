@@ -1,7 +1,7 @@
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';

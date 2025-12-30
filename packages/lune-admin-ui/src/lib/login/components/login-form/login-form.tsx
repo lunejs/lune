@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader, Form, FormInput, H3, Muted } from '@lune/ui';
+import { Button, Card, CardContent, CardHeader, Form, FormInput, H3, Muted } from '@lunejs/ui';
 
 import { useLoginForm } from './use-login-form';
 

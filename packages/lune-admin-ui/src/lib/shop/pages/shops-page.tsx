@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 

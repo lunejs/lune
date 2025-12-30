@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-import { Checkbox } from '@lune/ui';
+import { Checkbox } from '@lunejs/ui';
 
 import { ImagePlaceholder } from '../../placeholders/image-placeholder';
 

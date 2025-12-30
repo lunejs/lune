@@ -1,7 +1,7 @@
 import { Column, Hr, Img, Row, Section, Text } from '@react-email/components';
 
-import { isFirst, LunePrice } from '@lune/common';
-import type { DeliveryMethodPickup, Fulfillment, FulfillmentLine } from '@lune/core';
+import { isFirst, LunePrice } from '@lunejs/common';
+import type { DeliveryMethodPickup, Fulfillment, FulfillmentLine } from '@lunejs/core';
 
 import type { CommonEmailOrder } from './template.types';
 

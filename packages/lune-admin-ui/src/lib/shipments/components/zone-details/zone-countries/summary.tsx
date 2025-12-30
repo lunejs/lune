@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { add3dots } from '@lune/common';
-import { CardDescription, CardTitle } from '@lune/ui';
+import { add3dots } from '@lunejs/common';
+import { CardDescription, CardTitle } from '@lunejs/ui';
 
 import { isStateInCountry } from '@/lib/shipments/utils/shipment.utils';
 

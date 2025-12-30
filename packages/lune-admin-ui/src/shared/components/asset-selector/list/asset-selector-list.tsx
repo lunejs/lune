@@ -12,7 +12,7 @@ import {
   Muted,
   P,
   useTheme
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonAssetFragment } from '@/lib/api/types';
 import { useGetAssets } from '@/lib/asset/hooks/use-get-assets';

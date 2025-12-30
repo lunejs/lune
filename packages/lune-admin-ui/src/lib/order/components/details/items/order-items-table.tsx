@@ -1,6 +1,6 @@
 import { StoreIcon, TagIcon, TruckIcon } from 'lucide-react';
 
-import { isFirst, LunePrice } from '@lune/common';
+import { isFirst, LunePrice } from '@lunejs/common';
 import {
   Badge,
   Card,
@@ -18,7 +18,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import {
   type CommonOrderFragment,

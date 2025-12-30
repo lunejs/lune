@@ -9,7 +9,7 @@ import {
   ItemMedia,
   ItemTitle,
   useDialogContext
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useLocationDetailsFormContext } from '../../use-form/use-form';
 

@@ -1,4 +1,4 @@
-import { TableHead, TableHeader, TableRow } from '@lune/ui';
+import { TableHead, TableHeader, TableRow } from '@lunejs/ui';
 
 export const TranslateFormHeader = () => {
   return (

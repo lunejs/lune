@@ -1,5 +1,5 @@
-import { getSlugBy } from '@lune/common';
-import { FormInput } from '@lune/ui';
+import { getSlugBy } from '@lunejs/common';
+import { FormInput } from '@lunejs/ui';
 
 import { useCustomFieldFormContext } from '../use-form/use-form';
 

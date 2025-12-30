@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonAssetFragment } from '@/lib/api/types';
 

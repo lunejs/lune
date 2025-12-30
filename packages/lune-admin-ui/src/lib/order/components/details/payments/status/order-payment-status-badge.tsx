@@ -1,4 +1,4 @@
-import { Badge } from '@lune/ui';
+import { Badge } from '@lunejs/ui';
 
 import { PaymentState } from '@/lib/api/types';
 

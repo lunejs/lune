@@ -1,4 +1,4 @@
-import { Badge, cn, TableCell, TableRow } from '@lune/ui';
+import { Badge, cn, TableCell, TableRow } from '@lunejs/ui';
 
 import type { CommonZoneFragment } from '@/lib/api/types';
 import { formatShippingMethodPreviewPrice } from '@/lib/shipments/utils/shipment.utils';

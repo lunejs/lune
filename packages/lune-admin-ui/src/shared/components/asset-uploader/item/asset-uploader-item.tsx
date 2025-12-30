@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Checkbox, cn } from '@lune/ui';
+import { Checkbox, cn } from '@lunejs/ui';
 
 export const AssetUploaderItem = ({ preview, onCheckedChange }: Props) => {
   const [isChecked, setIsChecked] = useState(false);

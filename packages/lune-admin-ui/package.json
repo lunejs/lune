@@ -1,8 +1,17 @@
 {
-  "name": "@lune/admin-ui",
+  "name": "@lunejs/admin-ui",
+  "description": "Admin UI for Lune",
   "license": "AGPL-3.0",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunejs/lune",
+    "directory": "packages/lune-admin-ui"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -26,8 +35,8 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@fontsource-variable/geist": "^5.2.6",
     "@hookform/resolvers": "^5.2.2",
-    "@lune/common": "*",
-    "@lune/ui": "*",
+    "@lunejs/common": "*",
+    "@lunejs/ui": "*",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-table": "^8.21.3",

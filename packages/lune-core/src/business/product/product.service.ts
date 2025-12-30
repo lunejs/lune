@@ -1,4 +1,4 @@
-import { clean, getSlugBy, isArray, isTruthy } from '@lune/common';
+import { clean, getSlugBy, isArray, isTruthy } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {

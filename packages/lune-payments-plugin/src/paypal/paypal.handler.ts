@@ -1,4 +1,4 @@
-import { PaymentHandler, PaymentState } from '@lune/core';
+import { PaymentHandler, PaymentState } from '@lunejs/core';
 
 import { PayPal } from './adapters/paypal';
 import { PaypalServiceError } from './business/paypal.errors';

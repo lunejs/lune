@@ -1,4 +1,4 @@
-import { isNumber, LunePrice } from '@lune/common';
+import { isNumber, LunePrice } from '@lunejs/common';
 
 import type { CommonVariantFragment } from '@/lib/api/types';
 

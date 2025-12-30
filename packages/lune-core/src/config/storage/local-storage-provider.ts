@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import type { StorageProvider, UploadOptions } from './storage';
 

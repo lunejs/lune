@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { notification } from '@lune/ui';
+import { notification } from '@lunejs/ui';
 
 import { CollectionContentType, type CommonListCollectionFragment } from '@/lib/api/types';
 import { useGetCollections } from '@/lib/collections/hooks/use-get-collections';

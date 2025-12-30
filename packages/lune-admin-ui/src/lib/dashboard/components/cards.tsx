@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 export function SectionCards() {
   return (

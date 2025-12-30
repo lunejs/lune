@@ -1,5 +1,5 @@
-import { LuneLogger } from '@lune/common';
-import { LunePlugin } from '@lune/core';
+import { LuneLogger } from '@lunejs/common';
+import { LunePlugin } from '@lunejs/core';
 
 import { OrderListener } from './listeners/order.listener';
 import type { EmailPluginConfig } from './email-plugin.types';

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { isUUID } from '@lune/common';
+import { isUUID } from '@lunejs/common';
 
 import { genVariants } from '@/lib/product/utils/gen-variants/gen-variants';
 

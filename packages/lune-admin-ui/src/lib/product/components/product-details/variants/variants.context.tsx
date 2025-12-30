@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
-import { formatPrice, isTruthy } from '@lune/common';
+import { formatPrice, isTruthy } from '@lunejs/common';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useGetOptionValueCustomObjects } from '@/lib/custom-fields/hooks/use-get-option-value-custom-objects';

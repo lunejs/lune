@@ -12,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonShippingHandlersFragment, CommonZoneFragment } from '@/lib/api/types';
 

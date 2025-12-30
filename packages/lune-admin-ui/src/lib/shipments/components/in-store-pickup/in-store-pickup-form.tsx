@@ -10,7 +10,7 @@ import {
   Form,
   FormSwitch,
   FormTextarea
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonLocationFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';

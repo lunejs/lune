@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useUpdateProduct } from '@/lib/product/hooks/use-update-product';

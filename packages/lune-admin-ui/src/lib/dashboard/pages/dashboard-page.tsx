@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { type MetricResult, OrderState } from '@/lib/api/types';
 import { OrderParamFiltersKeys } from '@/lib/order/constants/param-filters-keys';

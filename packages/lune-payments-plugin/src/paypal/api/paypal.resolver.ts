@@ -1,4 +1,4 @@
-import type { ExecutionContext, GraphqlApiResolver } from '@lune/core';
+import type { ExecutionContext, GraphqlApiResolver } from '@lunejs/core';
 
 import { PayPal } from '../adapters/paypal';
 import { PaypalServiceError } from '../business/paypal.errors';

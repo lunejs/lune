@@ -1,4 +1,4 @@
-import { Button, DialogClose, Form, FormCheckbox, FormInput, FormMessage } from '@lune/ui';
+import { Button, DialogClose, Form, FormCheckbox, FormInput, FormMessage } from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

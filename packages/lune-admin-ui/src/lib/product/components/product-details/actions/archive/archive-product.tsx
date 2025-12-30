@@ -7,7 +7,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 

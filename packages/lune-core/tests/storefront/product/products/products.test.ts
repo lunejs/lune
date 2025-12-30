@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-import { convertToCent } from '@lune/common';
+import { convertToCent } from '@lunejs/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { ProductTable } from '@/persistence/entities/product';

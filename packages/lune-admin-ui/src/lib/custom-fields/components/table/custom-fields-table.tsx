@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
 import { type CommonCustomFieldDefinitionFragment } from '@/lib/api/types';

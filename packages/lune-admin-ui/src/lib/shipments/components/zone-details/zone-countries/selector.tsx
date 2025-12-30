@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import type { CommonCountryFragment } from '@/lib/api/types';
 import { useUpdateZone } from '@/lib/shipments/hooks/use-update-zone';

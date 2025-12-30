@@ -1,6 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import { DataTableEmptyState } from '@/shared/components/data-table/data-table-empty-state';
 

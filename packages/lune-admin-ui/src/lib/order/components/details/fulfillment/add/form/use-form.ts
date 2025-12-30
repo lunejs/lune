@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import z from 'zod';
 
-import { notification, useDialogContext } from '@lune/ui';
+import { notification, useDialogContext } from '@lunejs/ui';
 
 import { type CommonOrderFragment, DeliveryMethodType } from '@/lib/api/types';
 import { useAddFulfillmentToOrder } from '@/lib/order/hooks/use-add-fulfillment-to-order';

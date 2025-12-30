@@ -1,4 +1,4 @@
-import { Badge, Checkbox, cn, Muted, Small } from '@lune/ui';
+import { Badge, Checkbox, cn, Muted, Small } from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';

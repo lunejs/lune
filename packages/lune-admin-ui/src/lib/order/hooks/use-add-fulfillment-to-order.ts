@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { GENERIC_ERROR } from '@/lib/api/errors/common.errors';
 import { getOrderError } from '@/lib/api/errors/order.errors';

@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
   H4,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useBack } from '@/shared/hooks/use-back';
 

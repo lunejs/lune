@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { CircleIcon, ListIcon } from 'lucide-react';
 
-import { FormSelect } from '@lune/ui';
+import { FormSelect } from '@lunejs/ui';
 
 import { CustomFieldType } from '@/lib/api/types';
 

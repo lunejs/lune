@@ -1,4 +1,4 @@
-import { clean, getSlugBy } from '@lune/common';
+import { clean, getSlugBy } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/graphql';

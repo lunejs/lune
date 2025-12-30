@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { notification } from '@lune/ui';
+import { notification } from '@lunejs/ui';
 
 import { useMarkOrderAsCompleted } from '@/lib/order/hooks/use-mark-order-as-completed';
 

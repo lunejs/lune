@@ -1,4 +1,4 @@
-import { isArray } from '@lune/common';
+import { isArray } from '@lunejs/common';
 
 import { LuneError } from '@/errors/lune.error';
 import type { RepositoryInput } from '@/persistence/repositories/repository';

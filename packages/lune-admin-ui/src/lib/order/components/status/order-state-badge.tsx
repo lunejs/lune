@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { BookmarkIcon, PackageCheckIcon, SquareSplitVerticalIcon } from 'lucide-react';
 
-import { Badge } from '@lune/ui';
+import { Badge } from '@lunejs/ui';
 
 import { OrderState } from '@/lib/api/types';
 

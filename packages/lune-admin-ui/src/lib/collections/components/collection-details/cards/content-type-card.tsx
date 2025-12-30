@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, FormRadioGroup } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormRadioGroup } from '@lunejs/ui';
 
 import { CollectionContentType } from '@/lib/api/types';
 

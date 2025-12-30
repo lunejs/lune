@@ -1,5 +1,5 @@
-import { formatDate } from '@lune/common';
-import { Form, FormInput, Separator } from '@lune/ui';
+import { formatDate } from '@lunejs/common';
+import { Form, FormInput, Separator } from '@lunejs/ui';
 
 import type { CommonCountryFragment, CommonLocationFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';

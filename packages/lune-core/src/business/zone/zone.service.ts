@@ -1,4 +1,4 @@
-import { isArray } from '@lune/common';
+import { isArray } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateZoneInput, UpdateZoneInput } from '@/api/shared/types/graphql';

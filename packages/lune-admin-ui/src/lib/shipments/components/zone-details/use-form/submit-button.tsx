@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import { useZoneFormDetailsContext } from './use-form';
 

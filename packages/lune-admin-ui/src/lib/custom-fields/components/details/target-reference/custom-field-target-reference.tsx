@@ -1,4 +1,4 @@
-import { FormSelect } from '@lune/ui';
+import { FormSelect } from '@lunejs/ui';
 
 import { CustomFieldType } from '@/lib/api/types';
 import { useGetCustomObjectDefinitions } from '@/lib/custom-object-definition/hooks/use-get-custom-object-definitions';

@@ -13,7 +13,7 @@ import {
   cn,
   Input,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { SpinnerLoader } from '../loader/spinner-loader';
 import { ImagePlaceholder } from '../placeholders/image-placeholder';

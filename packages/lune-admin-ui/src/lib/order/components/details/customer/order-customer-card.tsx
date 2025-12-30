@@ -3,8 +3,8 @@
 import { type FC } from 'react';
 import { Link } from 'react-router';
 
-import { clean, formatPhoneNumber, getFullName } from '@lune/common';
-import { Card, CardContent, CardHeader, CardTitle, Label } from '@lune/ui';
+import { clean, formatPhoneNumber, getFullName } from '@lunejs/common';
+import { Card, CardContent, CardHeader, CardTitle, Label } from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

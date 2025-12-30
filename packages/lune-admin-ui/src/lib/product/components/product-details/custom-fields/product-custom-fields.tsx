@@ -1,5 +1,5 @@
-import { isArray } from '@lune/common';
-import { Card, CardContent, CardHeader, CardTitle } from '@lune/ui';
+import { isArray } from '@lunejs/common';
+import { Card, CardContent, CardHeader, CardTitle } from '@lunejs/ui';
 
 import type { CommonCustomFieldDefinitionFragment, CommonProductFragment } from '@/lib/api/types';
 import { CustomField } from '@/lib/custom-fields/components/fields/custom-field';

@@ -7,7 +7,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 

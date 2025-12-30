@@ -1,4 +1,4 @@
-import { getSlugBy } from '@lune/common';
+import { getSlugBy } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {

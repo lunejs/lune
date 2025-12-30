@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-import { Badge, cn } from '@lune/ui';
+import { Badge, cn } from '@lunejs/ui';
 
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';
 

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, FormCheckbox } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormCheckbox } from '@lunejs/ui';
 
 import { useVariantDetailsFormContext } from '../use-form/use-form';
 

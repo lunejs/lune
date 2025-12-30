@@ -1,5 +1,5 @@
-import { clean, formatPhoneNumber } from '@lune/common';
-import { Card, CardAction, CardContent, CardHeader, CardTitle, Label, Small } from '@lune/ui';
+import { clean, formatPhoneNumber } from '@lunejs/common';
+import { Card, CardAction, CardContent, CardHeader, CardTitle, Label, Small } from '@lunejs/ui';
 
 import type { CommonCustomerFragment } from '@/lib/api/types';
 

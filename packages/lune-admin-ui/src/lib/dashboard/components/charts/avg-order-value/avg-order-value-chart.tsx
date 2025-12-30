@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { Metric } from '@/lib/api/types';
 import type { ChartConfig } from '@/shared/components/chart/chart';

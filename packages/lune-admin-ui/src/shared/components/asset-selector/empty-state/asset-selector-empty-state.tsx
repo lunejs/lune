@@ -1,6 +1,6 @@
 import { ImageOffIcon, UploadCloudIcon } from 'lucide-react';
 
-import { Button, Muted, Small } from '@lune/ui';
+import { Button, Muted, Small } from '@lunejs/ui';
 
 import { useUploadAsset } from '@/lib/asset/hooks/use-upload-asset';
 

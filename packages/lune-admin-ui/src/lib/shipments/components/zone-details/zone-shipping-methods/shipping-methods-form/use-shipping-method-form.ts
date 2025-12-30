@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { notification, useDialogContext } from '@lune/ui';
+import { notification, useDialogContext } from '@lunejs/ui';
 
 import type { CommonZoneFragment } from '@/lib/api/types';
 import { useCreateShippingMethod } from '@/lib/shipments/hooks/use-create-shipping-method';

@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { isLast } from '@lune/common';
+import { isLast } from '@lunejs/common';
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +9,7 @@ import {
   Checkbox,
   cn,
   Input
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { VariantItem } from '../variant-item/variant-item';
 import { useVariantContext, type VariantContext } from '../variants.context';

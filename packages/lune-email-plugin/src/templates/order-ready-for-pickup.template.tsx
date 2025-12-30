@@ -9,7 +9,7 @@ import {
   Tailwind
 } from '@react-email/components';
 
-import { clean, getFullName } from '@lune/common';
+import { clean, getFullName } from '@lunejs/common';
 import type {
   ApplicationLevel,
   ApplicationMode,
@@ -20,7 +20,7 @@ import type {
   OrderState,
   PickupFulfillmentMetadata,
   Shop
-} from '@lune/core';
+} from '@lunejs/core';
 
 import { EmailFooter } from './shared/Footer';
 import {

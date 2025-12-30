@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import { OrderBy } from '@/api/shared/types/graphql';
 import type { Transaction } from '@/persistence/connection/connection';

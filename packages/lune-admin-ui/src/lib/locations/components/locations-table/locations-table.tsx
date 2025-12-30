@@ -16,7 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonListLocationFragment } from '@/lib/api/types';
 

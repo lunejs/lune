@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { LocationSubmitButton } from '../../use-form/submit-button';
 import { LocationAddressForm } from '../form/location-address-form';

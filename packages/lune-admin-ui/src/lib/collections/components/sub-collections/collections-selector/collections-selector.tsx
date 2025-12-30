@@ -1,6 +1,6 @@
 import { CircleFadingPlusIcon } from 'lucide-react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import type { CommonCollectionFragment } from '@/lib/api/types';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';

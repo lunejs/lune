@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { z } from 'zod';
 
-import { notification } from '@lune/ui';
+import { notification } from '@lunejs/ui';
 
 import { useLogin } from '../../hooks/use-login';
 

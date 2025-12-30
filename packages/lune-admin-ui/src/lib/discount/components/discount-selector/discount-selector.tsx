@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { DiscountApplicationLevel } from '@/lib/api/types';
 

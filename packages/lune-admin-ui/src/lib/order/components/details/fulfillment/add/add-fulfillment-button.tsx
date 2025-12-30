@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

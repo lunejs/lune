@@ -1,6 +1,13 @@
 import { CircleFadingPlusIcon } from 'lucide-react';
 
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lune/ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@lunejs/ui';
 
 import { ShippingMethodForm } from '../shipping-methods-form/shipping-method-form';
 

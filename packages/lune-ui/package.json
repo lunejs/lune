@@ -1,10 +1,19 @@
 {
-  "name": "@lune/ui",
+  "name": "@lunejs/ui",
+  "description": "UI component library for Lune",
   "license": "AGPL-3.0",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sam-621/lune.git",
+    "directory": "packages/lune-ui"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -51,7 +60,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
-    "@lune/eslint-config": "*",
+    "@lunejs/eslint-config": "*",
     "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

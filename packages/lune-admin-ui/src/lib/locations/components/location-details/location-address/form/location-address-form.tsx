@@ -1,4 +1,4 @@
-import { FormInput, FormPhoneInput, FormSelect } from '@lune/ui';
+import { FormInput, FormPhoneInput, FormSelect } from '@lunejs/ui';
 
 import { useLocationDetailsFormContext } from '../../use-form/use-form';
 

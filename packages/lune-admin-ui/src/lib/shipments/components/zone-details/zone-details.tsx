@@ -1,5 +1,5 @@
-import { formatDate } from '@lune/common';
-import { Form, FormInput } from '@lune/ui';
+import { formatDate } from '@lunejs/common';
+import { Form, FormInput } from '@lunejs/ui';
 
 import type {
   CommonCountryFragment,

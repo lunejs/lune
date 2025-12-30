@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Checkbox } from '@lune/ui';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Checkbox } from '@lunejs/ui';
 
 /**
  * @description

@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router';
 
-import { formatDate } from '@lune/common';
-import { Checkbox } from '@lune/ui';
+import { formatDate } from '@lunejs/common';
+import { Checkbox } from '@lunejs/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 

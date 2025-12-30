@@ -1,6 +1,6 @@
 import { CircleFadingPlusIcon } from 'lucide-react';
 
-import { Button, Card, CardAction, CardContent, CardHeader, CardTitle, cn } from '@lune/ui';
+import { Button, Card, CardAction, CardContent, CardHeader, CardTitle, cn } from '@lunejs/ui';
 
 import { OptionsListing } from '../option-details/options-listing';
 

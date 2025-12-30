@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@lune/ui';
+import { Card, CardContent } from '@lunejs/ui';
 
 import { VariantAssetUploader } from '../../asset-uploader/variant/variant-asset-uploader';
 import { useVariantDetailsFormContext } from '../use-form/use-form';

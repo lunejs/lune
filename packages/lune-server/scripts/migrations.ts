@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { LuneMigration } from '@lune/core';
+import { LuneMigration } from '@lunejs/core';
 import { config } from 'dotenv';
 
 config({ path: path.resolve(process.cwd(), './scripts/.env.migration') });

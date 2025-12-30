@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { GraphqlApiResolver, LunePlugin } from '@lune/core';
+import { GraphqlApiResolver, LunePlugin } from '@lunejs/core';
 
 export class HelloWorldPlugin extends LunePlugin {
   constructor() {

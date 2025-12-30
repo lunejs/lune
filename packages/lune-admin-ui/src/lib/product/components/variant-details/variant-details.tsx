@@ -1,4 +1,4 @@
-import { Button, Form, H3 } from '@lune/ui';
+import { Button, Form, H3 } from '@lunejs/ui';
 
 import type { CommonVariantFragment } from '@/lib/api/types';
 

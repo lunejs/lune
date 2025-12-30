@@ -1,4 +1,4 @@
-import { Button, Form, FormInput, FormPhoneInput } from '@lune/ui';
+import { Button, Form, FormInput, FormPhoneInput } from '@lunejs/ui';
 
 import { useCreateShopForm } from './use-create-shop-form';
 

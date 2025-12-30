@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import { useCreateProduct } from '@/lib/product/hooks/use-create-product';
 

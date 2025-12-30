@@ -2,7 +2,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 
-import luneConfig from '@lune/eslint-config';
+import luneConfig from '@lunejs/eslint-config';
 
 export default [
   ...luneConfig,

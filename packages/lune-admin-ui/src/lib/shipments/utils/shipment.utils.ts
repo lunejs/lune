@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { CommonCountryFragment } from '@/lib/api/types';
 

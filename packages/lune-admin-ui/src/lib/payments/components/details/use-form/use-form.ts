@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { notification } from '@lune/ui';
+import { notification } from '@lunejs/ui';
 
 import type { CommonPaymentHandlerFragment, CommonPaymentMethodFragment } from '@/lib/api/types';
 import { useCreatePaymentMethod } from '@/lib/payments/hooks/use-create-payment-method';

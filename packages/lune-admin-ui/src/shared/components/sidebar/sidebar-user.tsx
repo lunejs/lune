@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useWhoami } from '@/lib/user/hooks/use-whoami';
 

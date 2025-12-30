@@ -1,4 +1,4 @@
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import type { Database } from '@/persistence/connection/connection';
 import { buildRepositories } from '@/persistence/repositories/build-repositories';

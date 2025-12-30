@@ -9,7 +9,7 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';
 

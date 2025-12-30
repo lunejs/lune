@@ -1,4 +1,4 @@
-import { clean, isArray, isNumber, isTruthy, LunePrice } from '@lune/common';
+import { clean, isArray, isNumber, isTruthy, LunePrice } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';

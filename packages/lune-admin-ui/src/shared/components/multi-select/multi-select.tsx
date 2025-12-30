@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-import { Badge, Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@lune/ui';
+import { Badge, Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@lunejs/ui';
 
 export function MultiSelect({
   items,

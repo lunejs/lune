@@ -1,4 +1,4 @@
-import { ApplicationLevel, ApplicationMode, DeliveryMethodType, OrderState } from '@lune/core';
+import { ApplicationLevel, ApplicationMode, DeliveryMethodType, OrderState } from '@lunejs/core';
 
 export const SHIPPING_ORDER = {
   id: 'order-1',

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { LunePrice } from '@lune/common';
-import { Small } from '@lune/ui';
+import { LunePrice } from '@lunejs/common';
+import { Small } from '@lunejs/ui';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { ItemsTable } from '@/shared/components/items-table/items-table';

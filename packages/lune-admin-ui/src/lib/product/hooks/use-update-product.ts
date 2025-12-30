@@ -1,4 +1,4 @@
-import { isUUID } from '@lune/common';
+import { isUUID } from '@lunejs/common';
 
 import { queryClient } from '@/app/app';
 import { useGqlMutationDEPRECATED } from '@/lib/api/fetchers/use-gql-mutation';

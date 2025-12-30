@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { CommonCustomerFragment } from '@/lib/api/types';
 import { StatsCard } from '@/shared/components/stats/stats-card';

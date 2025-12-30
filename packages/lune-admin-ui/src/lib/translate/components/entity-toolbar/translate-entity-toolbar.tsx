@@ -1,4 +1,4 @@
-import { Button, H4 } from '@lune/ui';
+import { Button, H4 } from '@lunejs/ui';
 
 export const TranslateEntityToolbar = ({ title, image }: Props) => {
   return (

@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
 
-import { equals } from '@lune/common';
-import { Button } from '@lune/ui';
+import { equals } from '@lunejs/common';
+import { Button } from '@lunejs/ui';
 
 import { useDiscountDetailsFormContext } from './use-form';
 

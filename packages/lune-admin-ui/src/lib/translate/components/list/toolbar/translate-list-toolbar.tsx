@@ -1,6 +1,6 @@
 import { ListFilterIcon } from 'lucide-react';
 
-import { Button, Input } from '@lune/ui';
+import { Button, Input } from '@lunejs/ui';
 
 export const TranslateListToolbar = () => {
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 import {
   Button,
   DialogClose,
@@ -11,7 +11,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { Args, CommonZoneFragment } from '@/lib/api/types';
 

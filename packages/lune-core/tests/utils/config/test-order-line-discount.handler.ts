@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import { OrderLineDiscountHandler } from '@/config/discounts/order-line-discount-handler';
 

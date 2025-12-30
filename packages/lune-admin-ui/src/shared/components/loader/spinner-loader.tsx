@@ -1,6 +1,6 @@
 import { Loader2Icon } from 'lucide-react';
 
-import { cn } from '@lune/ui';
+import { cn } from '@lunejs/ui';
 
 export const SpinnerLoader = ({ size = 16, className }: Props) => {
   return (

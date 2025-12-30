@@ -14,7 +14,7 @@ import {
   DialogTrigger,
   Input,
   P
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';
 

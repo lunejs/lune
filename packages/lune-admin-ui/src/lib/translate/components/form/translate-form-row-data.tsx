@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import { cn, TableRow } from '@lune/ui';
+import { cn, TableRow } from '@lunejs/ui';
 
 import { TranslateFormCell } from './translate-form-cell';
 import { TranslateFormRow } from './translate-form-row';

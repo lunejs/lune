@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
 
-import { isFirst, isLast } from '@lune/common';
-import { cn } from '@lune/ui';
+import { isFirst, isLast } from '@lunejs/common';
+import { cn } from '@lunejs/ui';
 
 import { type CommonProductForTranslationFragment, CustomFieldType } from '@/lib/api/types';
 import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';

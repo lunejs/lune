@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lune/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@lunejs/ui';
 
 import { FloatingLayout } from '@/shared/components/layout/floating-layout';
 

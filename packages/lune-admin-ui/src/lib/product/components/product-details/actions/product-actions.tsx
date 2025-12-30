@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonProductFragment } from '@/lib/api/types';
 import { useBack } from '@/shared/hooks/use-back';

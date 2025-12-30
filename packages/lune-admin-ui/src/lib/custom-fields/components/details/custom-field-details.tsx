@@ -1,4 +1,4 @@
-import { Form, FormSelect } from '@lune/ui';
+import { Form, FormSelect } from '@lunejs/ui';
 
 import type {
   CommonCustomFieldDefinitionFragment,

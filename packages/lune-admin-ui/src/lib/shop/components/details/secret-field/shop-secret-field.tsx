@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { EyeClosedIcon, EyeIcon, type LucideIcon } from 'lucide-react';
 
-import { Button, Muted, Small } from '@lune/ui';
+import { Button, Muted, Small } from '@lunejs/ui';
 
 export const ShopSecretField = ({ icon: Icon, label, value }: Props) => {
   const [isHidden, setIsHidden] = useState(true);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MinusIcon, PlusIcon } from 'lucide-react';
 
-import { Button, ButtonGroup, InputGroup, InputGroupAddon, InputGroupInput } from '@lune/ui';
+import { Button, ButtonGroup, InputGroup, InputGroupAddon, InputGroupInput } from '@lunejs/ui';
 
 export const FulfillmentLineQuantitySelector = ({ remainingQuantity, onChange }: Props) => {
   const [quantity, setQuantity] = useState(remainingQuantity);

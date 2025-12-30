@@ -2,7 +2,7 @@ import { type ReactElement, useState } from 'react';
 import { hsvaToHex } from '@uiw/color-convert';
 import Colorful from '@uiw/react-color-colorful';
 
-import { Input, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
+import { Input, Popover, PopoverContent, PopoverTrigger } from '@lunejs/ui';
 
 export const ColorPicker = ({ children, onChange }: Props) => {
   const [hsva, setHsva] = useState({ h: 0, s: 0, v: 68, a: 1 });

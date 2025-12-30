@@ -10,11 +10,11 @@ import {
   FreeShippingDiscountHandler,
   FlatShippingHandler,
   DummyPaymentHandler,
-} from '@lune/core';
+} from '@lunejs/core';
 import { config } from 'dotenv';
 import { HelloWorldPlugin } from './plugins/hello-world/hello-world-plugin';
-import { EmailPlugin, NodemailerSender } from '@lune/email-plugin';
-import { PaypalPlugin } from '@lune/payments-plugin';
+import { EmailPlugin, NodemailerSender } from '@lunejs/email-plugin';
+import { PaypalPlugin } from '@lunejs/payments-plugin';
 
 config();
 

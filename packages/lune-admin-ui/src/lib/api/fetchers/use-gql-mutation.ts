@@ -2,7 +2,7 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import type { GraphQLError } from 'graphql';
 
-import { isArray } from '@lune/common';
+import { isArray } from '@lunejs/common';
 
 import { gqlFetcher } from './gql-fetcher';
 

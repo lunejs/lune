@@ -1,5 +1,5 @@
-import { formatDate } from '@lune/common';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Small } from '@lune/ui';
+import { formatDate } from '@lunejs/common';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Small } from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

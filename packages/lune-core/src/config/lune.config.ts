@@ -1,4 +1,4 @@
-import type { LuneLoggerLevel } from '@lune/common';
+import type { LuneLoggerLevel } from '@lunejs/common';
 
 import type { LunePlugin } from '@/plugin/lune.plugin';
 

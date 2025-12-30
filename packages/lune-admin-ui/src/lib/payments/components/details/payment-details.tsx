@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { formatDate, LunePrice } from '@lune/common';
+import { formatDate, LunePrice } from '@lunejs/common';
 import {
   Input,
   Label,
@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type {
   Args,

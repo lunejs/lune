@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import type { CommonPaymentMethodFragment } from '@/lib/api/types';
 

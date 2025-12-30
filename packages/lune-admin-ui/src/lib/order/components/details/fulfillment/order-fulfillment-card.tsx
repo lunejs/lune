@@ -1,6 +1,6 @@
 import { StoreIcon, TruckIcon } from 'lucide-react';
 
-import { Card, CardAction, CardContent, CardHeader, CardTitle, Small } from '@lune/ui';
+import { Card, CardAction, CardContent, CardHeader, CardTitle, Small } from '@lunejs/ui';
 
 import {
   type CommonOrderFragment,

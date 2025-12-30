@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import type { CommonListProductFragment } from '@/lib/api/types';
 import { EntitySelector } from '@/shared/components/entity-selector/entity-selector';

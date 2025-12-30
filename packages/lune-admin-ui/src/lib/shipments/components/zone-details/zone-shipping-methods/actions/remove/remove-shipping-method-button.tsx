@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonZoneFragment } from '@/lib/api/types';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';

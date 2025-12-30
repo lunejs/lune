@@ -1,4 +1,4 @@
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { queryClient } from '@/app/app';
 import { GENERIC_ERROR } from '@/lib/api/errors/common.errors';

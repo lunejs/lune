@@ -3,7 +3,7 @@ import { ImageIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { cn, Input as LuneInput } from '@lune/ui';
+import { cn, Input as LuneInput } from '@lunejs/ui';
 
 import type { CommonVariantFragment } from '@/lib/api/types';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 import {
   FormMessage,
   InputGroup,
@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 

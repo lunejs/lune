@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonShopFragment } from '@/lib/api/types';
 

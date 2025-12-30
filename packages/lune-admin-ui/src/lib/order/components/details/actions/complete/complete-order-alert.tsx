@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
   Button,
   FormMessage
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

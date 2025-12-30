@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { AssetsTableRow } from '../assets-table';
 

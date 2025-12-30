@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFormContext, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { CommonVariantFragment } from '@/lib/api/types';
 import { useUpdateVariant } from '@/lib/product/hooks/use-update-variant';

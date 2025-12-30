@@ -1,8 +1,8 @@
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { isArray } from '@lune/common';
-import { Button } from '@lune/ui';
+import { isArray } from '@lunejs/common';
+import { Button } from '@lunejs/ui';
 
 import { DataTable } from '@/shared/components/data-table/data-table';
 import type { UseDataTableReturn } from '@/shared/components/data-table/use-data-table';

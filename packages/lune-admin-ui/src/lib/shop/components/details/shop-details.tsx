@@ -1,6 +1,6 @@
 import { CodeIcon, DotIcon, EarthIcon, HashIcon, PencilIcon, StoreIcon } from 'lucide-react';
 
-import { formatPhoneNumber } from '@lune/common';
+import { formatPhoneNumber } from '@lunejs/common';
 import {
   Button,
   Card,
@@ -10,7 +10,7 @@ import {
   CardTitle,
   Muted,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonShopFragment } from '@/lib/api/types';
 

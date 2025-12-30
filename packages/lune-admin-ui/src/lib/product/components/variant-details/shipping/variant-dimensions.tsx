@@ -1,4 +1,4 @@
-import { FormInput } from '@lune/ui';
+import { FormInput } from '@lunejs/ui';
 
 import { useVariantDetailsFormContext } from '../use-form/use-form';
 

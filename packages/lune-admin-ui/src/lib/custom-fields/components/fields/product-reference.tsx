@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { EyeIcon, Package } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   Label,
   Muted,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type {
   CommonCustomFieldDefinitionFragment,

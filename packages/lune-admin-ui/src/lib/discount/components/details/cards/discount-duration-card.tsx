@@ -1,6 +1,6 @@
 import { formatDate, subDays } from 'date-fns';
 
-import { Card, CardContent, CardHeader, CardTitle, FormDatePicker } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormDatePicker } from '@lunejs/ui';
 
 import { useDiscountDetailsFormContext } from '../use-form/use-form';
 

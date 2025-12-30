@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
 
-import { equals } from '@lune/common';
-import { Button } from '@lune/ui';
+import { equals } from '@lunejs/common';
+import { Button } from '@lunejs/ui';
 
 import { type CommonCustomObjectEntryForTranslationFragment, Locale } from '@/lib/api/types';
 import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';

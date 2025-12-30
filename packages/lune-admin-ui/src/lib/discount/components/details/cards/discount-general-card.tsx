@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, FormInput, FormRadioGroup } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormInput, FormRadioGroup } from '@lunejs/ui';
 
 import { ArgComponent, DiscountApplicationMode } from '@/lib/api/types';
 

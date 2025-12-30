@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { OrderLineTable } from '@/persistence/entities/order-line';
 import { Tables } from '@/persistence/tables';

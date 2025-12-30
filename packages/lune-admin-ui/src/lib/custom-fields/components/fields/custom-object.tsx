@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Label,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type {
   CommonCustomFieldDefinitionFragment,

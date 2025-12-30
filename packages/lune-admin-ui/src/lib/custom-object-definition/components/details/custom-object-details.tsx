@@ -1,4 +1,4 @@
-import { Form } from '@lune/ui';
+import { Form } from '@lunejs/ui';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout';

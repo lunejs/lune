@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 

@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 

@@ -1,4 +1,4 @@
 // @ts-check
-import luneConfig from '@lune/eslint-config';
+import luneConfig from '@lunejs/eslint-config';
 
 export default [...luneConfig];

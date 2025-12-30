@@ -1,6 +1,6 @@
 import type { Table } from '@tanstack/react-table';
 
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@lune/ui';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@lunejs/ui';
 
 import { SpinnerLoader } from '../loader/spinner-loader';
 

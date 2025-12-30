@@ -11,7 +11,7 @@ import type {
   OrderLine,
   Product,
   Variant
-} from '@lune/core';
+} from '@lunejs/core';
 
 export type CommonEmailOrder = Order & {
   customer: Customer;

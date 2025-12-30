@@ -1,4 +1,4 @@
-import { H1 } from '@lune/ui';
+import { H1 } from '@lunejs/ui';
 
 import { ProductActions } from '../actions/product-actions';
 import { useProductDetailsFormContext } from '../use-form/use-product-details-form';

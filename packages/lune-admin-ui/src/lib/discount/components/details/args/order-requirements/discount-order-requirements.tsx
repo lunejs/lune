@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
   Label,
   RadioGroup,
   RadioGroupItem
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { FormMessages } from '@/shared/forms/form-messages';
 

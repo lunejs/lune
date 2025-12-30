@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { DeliveryMethodTable } from '@/persistence/entities/delivery-method';
 import { DeliveryMethodType } from '@/persistence/entities/delivery-method';

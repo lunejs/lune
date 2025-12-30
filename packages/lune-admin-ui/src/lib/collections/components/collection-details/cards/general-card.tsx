@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, FormInput, FormTextarea } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormInput, FormTextarea } from '@lunejs/ui';
 
 import { CollectionAssetUploader } from '../../asset-uploader/collection-asset-uploader';
 import { useCollectionDetailsFormContext } from '../use-form/use-form';

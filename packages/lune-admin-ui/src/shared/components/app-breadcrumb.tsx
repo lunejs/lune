@@ -1,7 +1,7 @@
 import { Fragment } from 'react/jsx-runtime';
 import { Link, useLocation, useParams } from 'react-router';
 
-import { isFirst, isLast } from '@lune/common';
+import { isFirst, isLast } from '@lunejs/common';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   cn
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CustomFieldAppliesToEntity } from '@/lib/api/types';
 import { getEntityName } from '@/lib/custom-fields/utils/custom-field.utils';

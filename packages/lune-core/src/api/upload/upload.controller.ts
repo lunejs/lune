@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import multer from 'multer';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { AssetService } from '@/business/asset/asset.service';
 import { getConfig } from '@/config/config';

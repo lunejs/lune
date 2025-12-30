@@ -1,4 +1,4 @@
-import { clean, getFullName } from '@lune/common';
+import { clean, getFullName } from '@lunejs/common';
 
 import type { CommonCustomerFragment } from '@/lib/api/types';
 import { DetailsPageLayout } from '@/shared/components/layout/details-page-layout';

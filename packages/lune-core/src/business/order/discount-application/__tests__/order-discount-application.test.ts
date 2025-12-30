@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';
 import { TestUtils } from '@/tests/utils/test-utils';

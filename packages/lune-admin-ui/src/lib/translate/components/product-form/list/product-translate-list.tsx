@@ -13,7 +13,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useGetProducts } from '@/lib/product/hooks/use-get-products';
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';

@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router';
 
-import { LunePrice } from '@lune/common';
-import { Badge, Checkbox, cn } from '@lune/ui';
+import { LunePrice } from '@lunejs/common';
+import { Badge, Checkbox, cn } from '@lunejs/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 import { ImagePlaceholder } from '@/shared/components/placeholders/image-placeholder';

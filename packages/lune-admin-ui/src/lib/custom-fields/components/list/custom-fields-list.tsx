@@ -1,6 +1,6 @@
 import { BoxesIcon, PackageIcon, SquircleDashedIcon } from 'lucide-react';
 
-import { Card, CardContent, cn } from '@lune/ui';
+import { Card, CardContent, cn } from '@lunejs/ui';
 
 import {
   type CommonCustomFieldDefinitionFragment,

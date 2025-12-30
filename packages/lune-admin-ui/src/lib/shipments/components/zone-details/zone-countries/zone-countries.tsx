@@ -1,4 +1,4 @@
-import { Card, CardHeader } from '@lune/ui';
+import { Card, CardHeader } from '@lunejs/ui';
 
 import { ZoneCountriesSelector } from './selector';
 import { ZoneCountriesSummary } from './summary';

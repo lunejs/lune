@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lune/ui';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@lunejs/ui';
 
 import type { CommonZoneFragment } from '@/lib/api/types';
 

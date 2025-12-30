@@ -1,9 +1,18 @@
 {
-  "name": "@lune/eslint-config",
+  "name": "@lunejs/eslint-config",
+  "description": "Shared ESLint config for Lune packages",
   "license": "AGPL-3.0",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunejs/lune",
+    "directory": "packages/lune-eslint-config"
+  },
   "dependencies": {
     "@eslint/js": "^9.30.0",
     "eslint-config-prettier": "^10.1.8",

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle, cn, Form, H4, Table, TableBody } from '@lune/ui';
+import { Card, CardContent, CardTitle, cn, Form, H4, Table, TableBody } from '@lunejs/ui';
 
 import { type CommonProductForTranslationFragment } from '@/lib/api/types';
 import { isTranslatable } from '@/lib/custom-fields/utils/custom-field.utils';

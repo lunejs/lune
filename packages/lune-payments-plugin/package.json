@@ -1,10 +1,18 @@
 {
-  "name": "@lune/payments-plugin",
-  "version": "0.0.1",
-  "description": "ready-to-use payment integrations developed by lune",
+  "name": "@lunejs/payments-plugin",
+  "version": "0.1.0",
+  "description": "Ready-to-use payment integrations for Lune",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunejs/lune",
+    "directory": "packages/lune-payments-plugin"
+  },
   "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -20,16 +28,16 @@
     "vitest": "4.0.13"
   },
   "devDependencies": {
-    "@lune/common": "*",
-    "@lune/core": "*",
-    "@lune/eslint-config": "*",
+    "@lunejs/common": "*",
+    "@lunejs/core": "*",
+    "@lunejs/eslint-config": "*",
     "eslint": "^9.39.2",
     "prettier": "^3.7.4",
     "rimraf": "^6.1.2",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@lune/common": "*",
-    "@lune/core": "*"
+    "@lunejs/common": "*",
+    "@lunejs/core": "*"
   }
 }

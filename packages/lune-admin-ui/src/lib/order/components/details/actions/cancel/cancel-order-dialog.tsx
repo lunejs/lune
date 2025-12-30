@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@lune/ui';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@lunejs/ui';
 
 import type { CommonOrderFragment } from '@/lib/api/types';
 

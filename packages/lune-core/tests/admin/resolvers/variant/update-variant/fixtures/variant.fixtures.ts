@@ -1,4 +1,4 @@
-import { convertToCent } from '@lune/common';
+import { convertToCent } from '@lunejs/common';
 
 import type { VariantTable } from '@/persistence/entities/variant';
 import { Tables } from '@/persistence/tables';

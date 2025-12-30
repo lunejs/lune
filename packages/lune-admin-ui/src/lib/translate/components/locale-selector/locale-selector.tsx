@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 export const LocaleSelector = () => {
   return (

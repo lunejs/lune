@@ -1,10 +1,19 @@
 {
-  "name": "@lune/core",
+  "name": "@lunejs/core",
+  "description": "An open-source solution for commerce management.",
   "license": "AGPL-3.0",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "commonjs",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunejs/lune",
+    "directory": "packages/lune-core"
+  },
   "scripts": {
     "build": "rimraf dist && tsc -p build.tsconfig.json && tsc-alias && gulp -f ./scripts/post-build.ts postBuild",
     "start": "node -r tsconfig-paths/register -r ts-node/register dist/src/local.js",
@@ -18,7 +27,7 @@
   },
   "dependencies": {
     "@graphql-tools/load-files": "^7.0.1",
-    "@lune/common": "*",
+    "@lunejs/common": "*",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dataloader": "^2.2.3",
@@ -42,7 +51,7 @@
     "@eslint/js": "^9.30.0",
     "@graphql-codegen/cli": "5.0.3",
     "@graphql-codegen/typescript-resolvers": "^4.5.1",
-    "@lune/eslint-config": "*",
+    "@lunejs/eslint-config": "*",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
     "@types/gulp": "^4.0.17",

@@ -1,4 +1,4 @@
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import { DeliveryMethodDiscountHandler } from '@/config/discounts/fulfillment-discount-handler';
 

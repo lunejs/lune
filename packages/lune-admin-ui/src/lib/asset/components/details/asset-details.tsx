@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { filesize } from '@lune/common';
+import { filesize } from '@lunejs/common';
 import {
   Sheet,
   SheetContent,
@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonAssetFragment } from '@/lib/api/types';
 

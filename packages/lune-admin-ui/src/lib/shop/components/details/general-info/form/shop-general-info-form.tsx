@@ -1,4 +1,4 @@
-import { Button, Form, FormInput, FormMessage, FormPhoneInput } from '@lune/ui';
+import { Button, Form, FormInput, FormMessage, FormPhoneInput } from '@lunejs/ui';
 
 import type { CommonShopFragment } from '@/lib/api/types';
 

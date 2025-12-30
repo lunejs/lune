@@ -1,4 +1,4 @@
-import { Checkbox, Small } from '@lune/ui';
+import { Checkbox, Small } from '@lunejs/ui';
 
 import { byAlreadyFullyFulfilled, getRemainingQuantity } from '@/lib/order/utils/fulfillment.utils';
 

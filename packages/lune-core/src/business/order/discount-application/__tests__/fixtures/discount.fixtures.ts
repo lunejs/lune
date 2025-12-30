@@ -1,6 +1,6 @@
 import { addDays, subDays } from 'date-fns';
 
-import { LunePrice } from '@lune/common';
+import { LunePrice } from '@lunejs/common';
 
 import type { DiscountTable } from '@/persistence/entities/discount';
 import { ApplicationLevel, ApplicationMode } from '@/persistence/entities/discount';

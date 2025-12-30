@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import express from 'express';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { LunePlugin } from '@/plugin/lune.plugin';
 

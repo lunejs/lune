@@ -1,6 +1,6 @@
 import { addMonths, formatDate } from 'date-fns';
 
-import { FormDatePicker } from '@lune/ui';
+import { FormDatePicker } from '@lunejs/ui';
 
 import { useDiscountDetailsFormContext } from '../../use-form/use-form';
 

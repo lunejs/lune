@@ -1,4 +1,4 @@
-import { Form } from '@lune/ui';
+import { Form } from '@lunejs/ui';
 
 import {
   ArgComponent,

@@ -1,6 +1,6 @@
 import { SearchXIcon, UploadCloudIcon } from 'lucide-react';
 
-import { Button, Muted, Small } from '@lune/ui';
+import { Button, Muted, Small } from '@lunejs/ui';
 
 import { Dropzone } from '../../dropzone/dropzone';
 

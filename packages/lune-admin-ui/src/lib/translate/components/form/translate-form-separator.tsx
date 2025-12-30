@@ -1,4 +1,4 @@
-import { CardTitle, TableCell } from '@lune/ui';
+import { CardTitle, TableCell } from '@lunejs/ui';
 
 import { TranslateFormRow } from './translate-form-row';
 

@@ -1,4 +1,4 @@
-import { clean, isArray } from '@lune/common';
+import { clean, isArray } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type {

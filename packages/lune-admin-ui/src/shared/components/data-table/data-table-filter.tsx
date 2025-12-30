@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Separator
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { DataTableFilter as DataTableFilterType } from './data-table';
 

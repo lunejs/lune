@@ -1,4 +1,4 @@
-import { clean } from '@lune/common';
+import { clean } from '@lunejs/common';
 
 import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';

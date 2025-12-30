@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle, FormSelect } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormSelect } from '@lunejs/ui';
 
 import { CustomFieldType } from '@/lib/api/types';
 import { getCustomFieldTypeData } from '@/lib/custom-fields/utils/custom-field.utils';

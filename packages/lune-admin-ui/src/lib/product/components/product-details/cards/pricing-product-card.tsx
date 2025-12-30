@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lune/ui';
+import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lunejs/ui';
 
 import { useProductDetailsFormContext } from '../use-form/use-product-details-form';
 

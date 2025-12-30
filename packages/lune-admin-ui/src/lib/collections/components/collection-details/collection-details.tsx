@@ -1,4 +1,4 @@
-import { Form, H1 } from '@lune/ui';
+import { Form, H1 } from '@lunejs/ui';
 
 import {
   CollectionContentType,

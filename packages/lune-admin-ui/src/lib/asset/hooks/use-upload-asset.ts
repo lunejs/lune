@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 
 import { useAdminUiContext } from '@/app/admin-ui.context';
 import { queryClient } from '@/app/app';

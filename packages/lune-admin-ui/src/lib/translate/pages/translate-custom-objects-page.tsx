@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-import { P } from '@lune/ui';
+import { P } from '@lunejs/ui';
 
 import { useGetCustomObjectDefinition } from '@/lib/custom-object-definition/hooks/use-get-custom-object-definition';
 import { useGetCustomObjectEntryForTranslation } from '@/lib/custom-object-entry/hooks/use-get-custom-object-entry-for-translation';

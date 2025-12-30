@@ -1,5 +1,5 @@
-import { getSlugBy } from '@lune/common';
-import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lune/ui';
+import { getSlugBy } from '@lunejs/common';
+import { Card, CardContent, CardHeader, CardTitle, FormInput } from '@lunejs/ui';
 
 import { useCustomObjectFormContext } from '../use-form/use-form';
 

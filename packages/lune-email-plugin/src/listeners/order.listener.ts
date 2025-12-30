@@ -1,12 +1,12 @@
-import { LuneLogger } from '@lune/common';
+import { LuneLogger } from '@lunejs/common';
 import type {
   Database,
   FulfillmentDeliveredEvent,
   FulfillmentReadyForPickupEvent,
   FulfillmentShippedEvent,
   OrderPlacedEvent
-} from '@lune/core';
-import { eventBus, FulfillmentEvent, OrderEvent } from '@lune/core';
+} from '@lunejs/core';
+import { eventBus, FulfillmentEvent, OrderEvent } from '@lunejs/core';
 
 import type { EmailPluginConfig } from '../email-plugin.types';
 

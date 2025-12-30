@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { notification } from '@lune/ui';
+import { notification } from '@lunejs/ui';
 
 export const useLoadingNotification = () => {
   const notificationId = useRef<string | number | null>(null);

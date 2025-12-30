@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { PackageCheckIcon, ShoppingBagIcon, TruckIcon } from 'lucide-react';
 
-import { Badge } from '@lune/ui';
+import { Badge } from '@lunejs/ui';
 
 import { FulfillmentState } from '@/lib/api/types';
 

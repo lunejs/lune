@@ -9,8 +9,8 @@ import {
   Tailwind
 } from '@react-email/components';
 
-import { clean, getFullName } from '@lune/common';
-import type { Customer, Shop } from '@lune/core';
+import { clean, getFullName } from '@lunejs/common';
+import type { Customer, Shop } from '@lunejs/core';
 
 import { EmailFooter } from './shared/Footer';
 import {

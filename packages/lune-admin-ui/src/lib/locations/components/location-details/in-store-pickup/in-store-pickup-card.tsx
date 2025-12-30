@@ -1,7 +1,7 @@
 import { ChevronRightIcon, StoreIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Badge, Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@lune/ui';
+import { Badge, Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@lunejs/ui';
 
 import type { CommonLocationFragment } from '@/lib/api/types';
 

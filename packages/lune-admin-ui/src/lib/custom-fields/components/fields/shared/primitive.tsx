@@ -2,7 +2,7 @@ import { type ComponentProps, useId, useState } from 'react';
 import { formatDate } from 'date-fns';
 import { CalendarIcon, XIcon } from 'lucide-react';
 
-import { isTruthy } from '@lune/common';
+import { isTruthy } from '@lunejs/common';
 import {
   Button,
   Calendar,
@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useList } from '@/shared/hooks/use-list';

@@ -10,7 +10,7 @@ import {
   Label,
   Muted,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonAssetFragment, CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { useGetAssets } from '@/lib/asset/hooks/use-get-assets';

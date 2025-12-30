@@ -2,7 +2,7 @@ import { type FC, type PropsWithChildren, type ReactElement } from 'react';
 import { ChevronLeftIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button, cn } from '@lune/ui';
+import { Button, cn } from '@lunejs/ui';
 
 export const SettingsPageLayout: FC<Props> = ({
   title,

@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { type CommonOrderFragment, OrderState } from '@/lib/api/types';
 

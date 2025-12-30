@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 
-import { isFirst } from '@lune/common';
-import { Card, CardContent, cn, Muted, P } from '@lune/ui';
+import { isFirst } from '@lunejs/common';
+import { Card, CardContent, cn, Muted, P } from '@lunejs/ui';
 
 export const StatsCard: FC<Props> = ({ stats, className }) => {
   return (

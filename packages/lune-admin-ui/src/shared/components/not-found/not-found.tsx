@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-import { cn, Muted } from '@lune/ui';
+import { cn, Muted } from '@lunejs/ui';
 
 export const NotFound = ({ className, ...props }: Props) => {
   return (

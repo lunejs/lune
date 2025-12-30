@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
   Muted,
   Small
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import {
   type CommonOrderFragment,

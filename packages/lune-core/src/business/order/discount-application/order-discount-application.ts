@@ -1,4 +1,4 @@
-import { isTruthy } from '@lune/common';
+import { isTruthy } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import { getConfig } from '@/config/config';

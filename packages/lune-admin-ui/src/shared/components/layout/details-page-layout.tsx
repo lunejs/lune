@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-import { cn, H1 } from '@lune/ui';
+import { cn, H1 } from '@lunejs/ui';
 
 export const Root = ({ className, ...props }: ComponentProps<'div'>) => {
   return <div className={cn('flex flex-col gap-6', className)} {...props} />;

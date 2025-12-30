@@ -2,8 +2,8 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { StoreIcon, TruckIcon, UserIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { formatDate, LunePrice } from '@lune/common';
-import { Checkbox, P } from '@lune/ui';
+import { formatDate, LunePrice } from '@lunejs/common';
+import { Checkbox, P } from '@lunejs/ui';
 
 import { DataTableColumnHeader } from '@/shared/components/data-table/data-table-column-header';
 

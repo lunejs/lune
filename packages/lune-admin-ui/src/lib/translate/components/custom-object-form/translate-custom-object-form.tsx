@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle, Form, H4, Table, TableBody } from '@lune/ui';
+import { Card, CardContent, CardTitle, Form, H4, Table, TableBody } from '@lunejs/ui';
 
 import {
   type CommonCustomObjectDefinitionFragment,

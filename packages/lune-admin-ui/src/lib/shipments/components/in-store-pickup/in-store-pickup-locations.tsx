@@ -1,8 +1,8 @@
 import { ChevronRightIcon, CircleFadingPlusIcon, MapPinIcon, MapPinOffIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { add3dots } from '@lune/common';
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, cn, H4, Small } from '@lune/ui';
+import { add3dots } from '@lunejs/common';
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, cn, H4, Small } from '@lunejs/ui';
 
 import type { CommonListLocationFragment } from '@/lib/api/types';
 

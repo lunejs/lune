@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import type { YogaInitialContext } from 'graphql-yoga';
 
-import { isTruthy } from '@lune/common';
+import { isTruthy } from '@lunejs/common';
 
 import { getConfig } from '@/config/config';
 import type { Database } from '@/persistence/connection/connection';

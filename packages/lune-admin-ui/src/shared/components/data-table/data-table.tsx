@@ -10,7 +10,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@lune/ui';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@lunejs/ui';
 
 import { TableContextProvider } from './data-table-context';
 import { DataTablePagination } from './data-table-pagination';

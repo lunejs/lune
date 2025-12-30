@@ -1,7 +1,7 @@
 import { PlusIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button, H4 } from '@lune/ui';
+import { Button, H4 } from '@lunejs/ui';
 
 import type { CommonCustomObjectDefinitionFragment } from '@/lib/api/types';
 import { DataTable } from '@/shared/components/data-table/data-table';

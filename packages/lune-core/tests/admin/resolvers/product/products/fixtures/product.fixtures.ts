@@ -1,6 +1,6 @@
 import { subMinutes } from 'date-fns';
 
-import { convertToCent } from '@lune/common';
+import { convertToCent } from '@lunejs/common';
 
 import type { ProductTable } from '@/persistence/entities/product';
 import { Tables } from '@/persistence/tables';

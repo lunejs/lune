@@ -1,5 +1,5 @@
-import { isArray } from '@lune/common';
-import { Card, CardContent, CardHeader, CardTitle } from '@lune/ui';
+import { isArray } from '@lunejs/common';
+import { Card, CardContent, CardHeader, CardTitle } from '@lunejs/ui';
 
 import type {
   CommonCollectionFragment,

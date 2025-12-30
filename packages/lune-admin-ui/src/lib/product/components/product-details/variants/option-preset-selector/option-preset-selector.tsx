@@ -12,7 +12,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { useVariantContext } from '../variants.context';
 

@@ -1,4 +1,4 @@
-import { clean } from '@lune/common';
+import { clean } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';

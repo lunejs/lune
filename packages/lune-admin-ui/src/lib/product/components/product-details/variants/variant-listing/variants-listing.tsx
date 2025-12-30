@@ -1,5 +1,5 @@
-import { isLast } from '@lune/common';
-import { Button, Checkbox, cn, Label } from '@lune/ui';
+import { isLast } from '@lunejs/common';
+import { Button, Checkbox, cn, Label } from '@lunejs/ui';
 
 import { getVariantsGroupedByOption } from '@/lib/product/utils/variant.utils';
 

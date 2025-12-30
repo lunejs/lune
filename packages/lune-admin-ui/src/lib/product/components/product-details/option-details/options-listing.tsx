@@ -1,6 +1,6 @@
 import { CircleFadingPlusIcon } from 'lucide-react';
 
-import { Button } from '@lune/ui';
+import { Button } from '@lunejs/ui';
 
 import { OptionPresetSelector } from '../variants/option-preset-selector/option-preset-selector';
 import { MAX_OPTIONS_ALLOWED, useVariantContext } from '../variants/variants.context';

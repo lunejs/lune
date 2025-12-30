@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonCustomObjectEntryFragment } from '@/lib/api/types';
 import { getDisplayFieldValue } from '@/lib/custom-fields/utils/custom-field.utils';

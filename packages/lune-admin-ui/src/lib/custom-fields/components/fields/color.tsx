@@ -1,8 +1,8 @@
 import { useId, useState } from 'react';
 import { PipetteIcon, XIcon } from 'lucide-react';
 
-import { isTruthy } from '@lune/common';
-import { Button, Label, Popover, PopoverContent, PopoverTrigger } from '@lune/ui';
+import { isTruthy } from '@lunejs/common';
+import { Button, Label, Popover, PopoverContent, PopoverTrigger } from '@lunejs/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { ColorPicker } from '@/shared/components/color-picker/color-picker';

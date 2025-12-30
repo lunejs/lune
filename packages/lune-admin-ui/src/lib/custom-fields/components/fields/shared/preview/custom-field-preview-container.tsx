@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 
-import { cn } from '@lune/ui';
+import { cn } from '@lunejs/ui';
 
 export const CustomFieldPreviewContainer = ({ className, ...props }: Props) => {
   return (

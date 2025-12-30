@@ -12,7 +12,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import { SpinnerLoader } from '@/shared/components/loader/spinner-loader';
 import { TYPING_DEBOUNCE_DELAY } from '@/shared/utils/constants.utils';

@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 
-import { isLast } from '@lune/common';
+import { isLast } from '@lunejs/common';
 import {
   Button,
   Card,
@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
   FormInput,
   FormSelect
-} from '@lune/ui';
+} from '@lunejs/ui';
 
 import type { CommonCustomFieldDefinitionFragment } from '@/lib/api/types';
 import { CUSTOM_FIELD_TYPE_GROUPS } from '@/lib/custom-fields/utils/custom-field.utils';
