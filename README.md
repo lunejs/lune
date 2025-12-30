@@ -21,6 +21,7 @@ Lune is an open-source foundation for building commerce management systems. It f
 - Icons: [lucide icons](https://lucide.dev/)
 - Guide style: [TailwindCSS](https://tailwindcss.com/)
 
-## Getting Started
+## Documentation
 
-Ready to build with Lune? Check out our [Installation & Setup Guide](./docs/getting-started.md) to get your project running in minutes.
+[Overview](./docs/overview.md) — Understand Lune's architecture and core concepts  
+[Getting Started](./docs/getting-started.md) — Set up your first Lune project
