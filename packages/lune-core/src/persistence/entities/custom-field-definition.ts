@@ -3,7 +3,7 @@ import type { ID, LuneEntity, LuneTable } from './entity';
 export const CustomFieldType = {
   SingleLineText: 'single_line_text',
   MultiLineText: 'multi_line_text',
-  Url: 'link',
+  Url: 'url',
   Color: 'color',
   Integer: 'integer',
   Decimal: 'decimal',
