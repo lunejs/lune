@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { LuneLogger } from '@lunejs/common';
 import type { StorageProvider, UploadOptions, UploadReturn } from '@lunejs/core';
+import { lookup } from 'mime-types';
 
 /**
  * S3 Storage Provider
@@ -65,7 +66,8 @@ export class S3StorageProvider implements StorageProvider {
       const command = new PutObjectCommand({
         Bucket: this.config.bucketName,
         Key: filename,
-        Body: await readFile(filepath)
+        Body: await readFile(filepath),
+        ContentType: lookup(filename) || 'application/octet-stream'
       });
 
       const response = await this.s3Client.send(command);
