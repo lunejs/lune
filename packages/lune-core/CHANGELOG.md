@@ -1,5 +1,11 @@
 # @lunejs/core
 
+## 0.1.5
+
+### Patch Changes
+
+- b0ae8b3: remove assets in provider once they are remove from lune
+
 ## 0.1.4
 
 ### Patch Changes

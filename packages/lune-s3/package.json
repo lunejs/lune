@@ -1,6 +1,6 @@
 {
   "name": "@lunejs/s3",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ready-to-use s3 storage provider developed by Lune",
   "type": "commonjs",
   "main": "dist/index.js",
