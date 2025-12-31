@@ -23,13 +23,16 @@ export const useAssetsTable = () => {
     assets: allAssets,
     pagination: { pageInfo },
     refetch
-  } = useGetAssets({
-    filters: {
-      ...(filters.search && { filename: { contains: filters.search } })
+  } = useGetAssets(
+    {
+      filters: {
+        ...(filters.search && { filename: { contains: filters.search } })
+      },
+      skip: getSkip(pagination.page, pagination.size),
+      take: pagination.size
     },
-    skip: getSkip(pagination.page, pagination.size),
-    take: pagination.size
-  });
+    'data-table'
+  );
 
   useEffect(() => {
     refetch();

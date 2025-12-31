@@ -6,10 +6,10 @@ import { type AssetListInput, getFragmentData } from '@/lib/api/types';
 
 import { AssetCacheKeys } from '../constants/cache-keys';
 
-export const useGetAssets = (input?: AssetListInput) => {
+export const useGetAssets = (input?: AssetListInput, key = '') => {
   const result = useGqlQuery(GET_ALL_ASSETS_QUERY, {
     variables: { input },
-    key: [AssetCacheKeys.All]
+    key: [AssetCacheKeys.All, key]
   });
 
   const assets = useMemo(

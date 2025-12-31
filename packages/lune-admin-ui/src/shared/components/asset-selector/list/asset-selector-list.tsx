@@ -30,11 +30,14 @@ export const AssetSelectorList = ({ selected, setSelected }: Props) => {
   const [query, setQuery] = useState('');
 
   const { isUploading, uploadAsset } = useUploadAsset();
-  const { isLoading, isRefetching, refetch, assets } = useGetAssets({
-    filters: {
-      ...(query && { filename: { contains: query } })
-    }
-  });
+  const { isLoading, isRefetching, refetch, assets } = useGetAssets(
+    {
+      filters: {
+        ...(query && { filename: { contains: query } })
+      }
+    },
+    'asset-selector'
+  );
 
   const hasActiveFilters = !!query;
   const noAssetsInDb = !isLoading && !assets.length && !hasActiveFilters;
