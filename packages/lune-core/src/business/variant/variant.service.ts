@@ -2,7 +2,6 @@ import { clean, isArray, isNumber, isTruthy, LunePrice } from '@lunejs/common';
 
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/graphql';
-import { getConfig } from '@/config/config';
 import type { ID } from '@/persistence/entities/entity';
 import type { ProductRepository } from '@/persistence/repositories/product-repository';
 import { SortKey } from '@/persistence/repositories/repository';
@@ -115,10 +114,6 @@ export class VariantService {
       variantId,
       assetsToRemove.map(asset => asset.id)
     );
-
-    const { storageProvider } = getConfig().assets;
-
-    await Promise.all(assetsToRemove.map(asset => storageProvider.remove(asset.providerId)));
   }
 
   private async removeMissingOptionValues(

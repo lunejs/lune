@@ -1,5 +1,6 @@
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { AssetFilters, AssetListInput } from '@/api/shared/types/graphql';
+import { getConfig } from '@/config/config';
 import type { Asset } from '@/persistence/entities/asset';
 import type { ID } from '@/persistence/entities/entity';
 import type { AssetRepository } from '@/persistence/repositories/asset-repository';
@@ -25,10 +26,16 @@ export class AssetService {
   }
 
   async remove(ids: ID[]) {
+    const assetsToRemove = await this.repository.findMany({
+      whereIn: { field: 'id', values: ids }
+    });
     await this.repository.removeAllFromCollection(ids);
     await this.repository.removeAllFromProduct(ids);
     await this.repository.removeAllFromVariant(ids);
     await this.repository.removeMany({ whereIn: 'id', values: ids });
+
+    const { storageProvider } = getConfig().assets;
+    await Promise.all(assetsToRemove.map(asset => storageProvider.remove(asset.providerId)));
 
     return true;
   }
