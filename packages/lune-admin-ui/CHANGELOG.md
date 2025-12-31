@@ -1,5 +1,11 @@
 # @lunejs/admin-ui
 
+## 0.1.4
+
+### Patch Changes
+
+- e1d4294: add optional key to use get asset hook
+
 ## 0.1.3
 
 ### Patch Changes

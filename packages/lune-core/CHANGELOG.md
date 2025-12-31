@@ -1,5 +1,11 @@
 # @lunejs/core
 
+## 0.1.6
+
+### Patch Changes
+
+- 5099598: add order by in custom object entries resolver
+
 ## 0.1.5
 
 ### Patch Changes
