@@ -1,6 +1,5 @@
-import * as path from 'path';
-
 import { LunePlugin } from '@lunejs/core';
+import * as path from 'path';
 
 import { PayPal } from './adapters/paypal';
 import { PayPalResolver } from './api/paypal.resolver';

@@ -1,7 +1,7 @@
 {
-  "name": "@lunejs/payments-plugin",
+  "name": "@lunejs/paypal",
   "version": "0.1.0",
-  "description": "Ready-to-use payment integrations for Lune",
+  "description": "Ready-to-use paypal payment integration developed by Lune",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lunejs/lune",
-    "directory": "packages/lune-payments-plugin"
+    "directory": "packages/paypal"
   },
   "author": "Rogelio Samuel Moreno Corrales <samuel.corrales621@gmail.com>",
   "license": "AGPL-3.0",

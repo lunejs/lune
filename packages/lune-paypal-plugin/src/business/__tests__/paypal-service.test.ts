@@ -1,8 +1,7 @@
+import type { ExecutionContext } from '@lunejs/core';
 import type { AxiosResponse } from 'axios';
 import { AxiosError } from 'axios';
 import { vi, vitest } from 'vitest';
-
-import type { ExecutionContext } from '@lunejs/core';
 
 import type { PayPal } from '../../adapters/paypal';
 import type { CreatePaypalOrderResponse } from '../../adapters/paypal.types';
