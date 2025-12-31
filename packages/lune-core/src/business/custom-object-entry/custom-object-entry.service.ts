@@ -17,6 +17,7 @@ import type { CustomObjectDefinitionRepository } from '@/persistence/repositorie
 import type { CustomObjectEntryRepository } from '@/persistence/repositories/custom-object-entry-repository';
 import type { CustomObjectEntryValueRepository } from '@/persistence/repositories/custom-object-entry-value-repository';
 import type { CustomObjectEntryValueTranslationRepository } from '@/persistence/repositories/custom-object-entry-value-translation-repository';
+import { SortKey } from '@/persistence/repositories/repository';
 
 export class CustomObjectEntryService {
   private readonly repository: CustomObjectEntryRepository;
@@ -38,6 +39,7 @@ export class CustomObjectEntryService {
   async findByDefinitionId(definitionId: ID, input?: ListInput) {
     return this.repository.findMany({
       where: { definitionId },
+      orderBy: { createdAt: SortKey.Asc },
       ...clean(input ?? {})
     });
   }
