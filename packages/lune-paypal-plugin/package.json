@@ -1,5 +1,5 @@
 {
-  "name": "@lunejs/paypal",
+  "name": "@lunejs/paypal-plugin",
   "version": "0.1.0",
   "description": "Ready-to-use paypal payment integration developed by Lune",
   "type": "commonjs",
