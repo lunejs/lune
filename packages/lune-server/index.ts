@@ -10,11 +10,11 @@ import {
   FreeShippingDiscountHandler,
   FlatShippingHandler,
   DummyPaymentHandler,
+  DefaultFulfillmentCodeStrategy,
 } from '@lunejs/core';
 import { config } from 'dotenv';
 import { HelloWorldPlugin } from './plugins/hello-world/hello-world-plugin';
 import { EmailPlugin, NodemailerSender } from '@lunejs/email-plugin';
-import { PaypalPlugin } from '@lunejs/payments-plugin';
 
 config();
 
@@ -39,6 +39,7 @@ const luneServer = new LuneServer({
     ],
   },
   orders: {
+    fulfillmentCodeStrategy: new DefaultFulfillmentCodeStrategy(),
     codeStrategy: new DefaultOrderCodeStrategy(),
   },
   shipping: {
@@ -55,7 +56,6 @@ const luneServer = new LuneServer({
     new AdminUiServerPlugin(),
     new HelloWorldPlugin(),
     new EmailPlugin({ devMode: true }),
-    new PaypalPlugin({ clientId: '', secret: '', devMode: true }),
   ],
 });
 
