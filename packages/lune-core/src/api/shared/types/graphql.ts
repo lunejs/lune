@@ -368,8 +368,6 @@ export type CreateOptionValueInput = {
   customObjectEntryId?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order: Scalars['Int']['input'];
-  /** @deprecated Use customObjectEntryId instead */
-  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type CreateOrderAddressInput = {
@@ -457,6 +455,25 @@ export type CreateZoneInput = {
   stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
+export type CustomField = {
+  __typename?: 'CustomField';
+  /** Weather the field is a list of values */
+  isList: Scalars['Boolean']['output'];
+  /** A unique  and readable key to make reference to the definition */
+  key: Scalars['String']['output'];
+  /** A list of reference objects if the metafield's type is a reference type. */
+  references: CustomFieldReferenceList;
+  /** Type of the definition */
+  type: CustomFieldType;
+  /** Custom field value in JSON type */
+  value: Scalars['JSON']['output'];
+};
+
+
+export type CustomFieldReferencesArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
 export { CustomFieldAppliesToEntity };
 
 /** Represents a custom field that cna be attached to an entity */
@@ -519,6 +536,15 @@ export type CustomFieldDefinitionResult = {
   __typename?: 'CustomFieldDefinitionResult';
   apiErrors: Array<CustomFieldDefinitionErrorResult>;
   customFieldDefinition?: Maybe<CustomFieldDefinition>;
+};
+
+export type CustomFieldReference = Collection | Product;
+
+export type CustomFieldReferenceList = {
+  __typename?: 'CustomFieldReferenceList';
+  count: Scalars['Int']['output'];
+  items: Array<CustomFieldReference>;
+  pageInfo: PageInfo;
 };
 
 export { CustomFieldType };
@@ -1595,29 +1621,6 @@ export type OptionList = List & {
   pageInfo: PageInfo;
 };
 
-export type OptionPreset = {
-  __typename?: 'OptionPreset';
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  /** The preset's name */
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['Date']['output'];
-  /** Option values for this preset */
-  values: OptionValuePresetList;
-};
-
-
-export type OptionPresetValuesArgs = {
-  input?: InputMaybe<ListInput>;
-};
-
-export type OptionPresetList = {
-  __typename?: 'OptionPresetList';
-  count: Scalars['Int']['output'];
-  items: Array<OptionPreset>;
-  pageInfo: PageInfo;
-};
-
 export type OptionTranslation = {
   __typename?: 'OptionTranslation';
   createdAt: Scalars['Date']['output'];
@@ -1641,8 +1644,6 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   order: Scalars['Int']['output'];
-  /** @deprecated Use customObjectEntry instead */
-  preset?: Maybe<OptionValuePreset>;
   translations: Array<OptionValueTranslation>;
   updatedAt: Scalars['Date']['output'];
 };
@@ -1659,24 +1660,6 @@ export type OptionValueMetadata = {
 
 export type OptionValueMetadataInput = {
   color?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type OptionValuePreset = {
-  __typename?: 'OptionValuePreset';
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  /** Additional metadata (e.g., hex color for Color option) */
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  /** The preset's name */
-  name: Scalars['String']['output'];
-  updatedAt: Scalars['Date']['output'];
-};
-
-export type OptionValuePresetList = {
-  __typename?: 'OptionValuePresetList';
-  count: Scalars['Int']['output'];
-  items: Array<OptionValuePreset>;
-  pageInfo: PageInfo;
 };
 
 export type OptionValueTranslation = {
@@ -2029,7 +2012,7 @@ export type Product = Node & {
   createdAt: Scalars['Date']['output'];
   customFieldEntries: Array<ProductCustomField>;
   /** Custom fields as key-value pairs */
-  customFields: Scalars['JSON']['output'];
+  customFields: Array<CustomField>;
   /** The product's description */
   description?: Maybe<Scalars['String']['output']>;
   /**
@@ -2064,6 +2047,12 @@ export type Product = Node & {
 /** A product is a good or service that you want to sell. */
 export type ProductAssetsArgs = {
   input?: InputMaybe<ListInput>;
+};
+
+
+/** A product is a good or service that you want to sell. */
+export type ProductCustomFieldsArgs = {
+  keys: Array<Scalars['String']['input']>;
 };
 
 
@@ -2164,7 +2153,6 @@ export type Query = {
   locations: LocationList;
   /** Get authenticated customer */
   me?: Maybe<Customer>;
-  optionPresets: OptionPresetList;
   order?: Maybe<Order>;
   orders: OrderList;
   paymentHandlers: Array<PaymentHandler>;
@@ -2278,11 +2266,6 @@ export type QueryLocationArgs = {
 
 
 export type QueryLocationsArgs = {
-  input?: InputMaybe<ListInput>;
-};
-
-
-export type QueryOptionPresetsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
@@ -2648,8 +2631,6 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
-  /** @deprecated Use customObjectEntryId instead */
-  presetId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdateOrderLineInput = {
@@ -2904,14 +2885,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  CustomFieldReference: ( Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } );
   DeliveryMethodDetails: ( DeliveryMethodPickup ) | ( DeliveryMethodShipping );
   PaymentDetails: ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } );
 };
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  List: ( AssetList ) | ( CollectionList ) | ( DiscountList ) | ( Omit<FulfillmentLineList, 'items'> & { items: Array<_RefType['FulfillmentLine']> } ) | ( Omit<FulfillmentList, 'items'> & { items: Array<_RefType['Fulfillment']> } ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( ProductList ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( VariantList );
-  Node: ( Asset ) | ( Collection ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( Omit<Fulfillment, 'lines'> & { lines: _RefType['FulfillmentLineList'] } ) | ( Omit<FulfillmentLine, 'orderLine'> & { orderLine: _RefType['OrderLine'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, fulfillments: _RefType['FulfillmentList'], lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']> } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Product ) | ( Shop ) | ( Tag ) | ( User ) | ( Variant ) | ( Zone );
+  List: ( AssetList ) | ( Omit<CollectionList, 'items'> & { items: Array<_RefType['Collection']> } ) | ( DiscountList ) | ( Omit<FulfillmentLineList, 'items'> & { items: Array<_RefType['FulfillmentLine']> } ) | ( Omit<FulfillmentList, 'items'> & { items: Array<_RefType['Fulfillment']> } ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( Omit<ProductList, 'items'> & { items: Array<_RefType['Product']> } ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( Omit<VariantList, 'items'> & { items: Array<_RefType['Variant']> } );
+  Node: ( Asset ) | ( Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( Omit<Fulfillment, 'lines'> & { lines: _RefType['FulfillmentLineList'] } ) | ( Omit<FulfillmentLine, 'orderLine'> & { orderLine: _RefType['OrderLine'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, fulfillments: _RefType['FulfillmentList'], lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts' | 'variant'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, variant: _RefType['Variant'] } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } ) | ( Shop ) | ( Tag ) | ( User ) | ( Omit<Variant, 'dimensions' | 'product'> & { dimensions?: Maybe<_RefType['Dimensions']>, product: _RefType['Product'] } ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2935,12 +2917,12 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   BooleanFilter: BooleanFilter;
   CancelOrderInput: CancelOrderInput;
-  Collection: ResolverTypeWrapper<Collection>;
+  Collection: ResolverTypeWrapper<Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<ResolversTypes['Collection']>, products: ResolversTypes['ProductList'], subCollections: ResolversTypes['CollectionList'] }>;
   CollectionContentType: CollectionContentType;
   CollectionCustomField: ResolverTypeWrapper<CollectionCustomField>;
   CollectionCustomFieldTranslation: ResolverTypeWrapper<CollectionCustomFieldTranslation>;
   CollectionFilters: CollectionFilters;
-  CollectionList: ResolverTypeWrapper<CollectionList>;
+  CollectionList: ResolverTypeWrapper<Omit<CollectionList, 'items'> & { items: Array<ResolversTypes['Collection']> }>;
   CollectionListInput: CollectionListInput;
   CollectionTranslation: ResolverTypeWrapper<CollectionTranslation>;
   CollectionTranslationInput: CollectionTranslationInput;
@@ -2966,6 +2948,7 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
+  CustomField: ResolverTypeWrapper<Omit<CustomField, 'references'> & { references: ResolversTypes['CustomFieldReferenceList'] }>;
   CustomFieldAppliesToEntity: CustomFieldAppliesToEntity;
   CustomFieldDefinition: ResolverTypeWrapper<CustomFieldDefinition>;
   CustomFieldDefinitionErrorCode: CustomFieldDefinitionErrorCode;
@@ -2974,6 +2957,8 @@ export type ResolversTypes = {
   CustomFieldDefinitionList: ResolverTypeWrapper<CustomFieldDefinitionList>;
   CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: ResolverTypeWrapper<CustomFieldDefinitionResult>;
+  CustomFieldReference: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['CustomFieldReference']>;
+  CustomFieldReferenceList: ResolverTypeWrapper<Omit<CustomFieldReferenceList, 'items'> & { items: Array<ResolversTypes['CustomFieldReference']> }>;
   CustomFieldType: CustomFieldType;
   CustomFieldValue: CustomFieldValue;
   CustomObjectDefinition: ResolverTypeWrapper<CustomObjectDefinition>;
@@ -3044,16 +3029,12 @@ export type ResolversTypes = {
   Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Option: ResolverTypeWrapper<Option>;
   OptionList: ResolverTypeWrapper<OptionList>;
-  OptionPreset: ResolverTypeWrapper<OptionPreset>;
-  OptionPresetList: ResolverTypeWrapper<OptionPresetList>;
   OptionTranslation: ResolverTypeWrapper<OptionTranslation>;
   OptionTranslationInput: OptionTranslationInput;
   OptionValue: ResolverTypeWrapper<OptionValue>;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: ResolverTypeWrapper<OptionValueMetadata>;
   OptionValueMetadataInput: OptionValueMetadataInput;
-  OptionValuePreset: ResolverTypeWrapper<OptionValuePreset>;
-  OptionValuePresetList: ResolverTypeWrapper<OptionValuePresetList>;
   OptionValueTranslation: ResolverTypeWrapper<OptionValueTranslation>;
   OptionValueTranslationInput: OptionValueTranslationInput;
   Order: ResolverTypeWrapper<Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversTypes['DeliveryMethod']>, fulfillments: ResolversTypes['FulfillmentList'], lines: ResolversTypes['OrderLineList'], payments: Array<ResolversTypes['Payment']> }>;
@@ -3063,7 +3044,7 @@ export type ResolversTypes = {
   OrderErrorCode: OrderErrorCode;
   OrderErrorResult: ResolverTypeWrapper<OrderErrorResult>;
   OrderFilters: OrderFilters;
-  OrderLine: ResolverTypeWrapper<Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']> }>;
+  OrderLine: ResolverTypeWrapper<Omit<OrderLine, 'appliedDiscounts' | 'variant'> & { appliedDiscounts: Array<ResolversTypes['AppliedDiscount']>, variant: ResolversTypes['Variant'] }>;
   OrderLineList: ResolverTypeWrapper<Omit<OrderLineList, 'items'> & { items: Array<ResolversTypes['OrderLine']> }>;
   OrderList: ResolverTypeWrapper<Omit<OrderList, 'items'> & { items: Array<ResolversTypes['Order']> }>;
   OrderListInput: OrderListInput;
@@ -3082,11 +3063,11 @@ export type ResolversTypes = {
   PaymentRejection: ResolverTypeWrapper<Omit<PaymentRejection, 'payment'> & { payment: ResolversTypes['Payment'] }>;
   PaymentState: PaymentState;
   PriceRange: PriceRange;
-  Product: ResolverTypeWrapper<Product>;
+  Product: ResolverTypeWrapper<Omit<Product, 'customFields' | 'variants'> & { customFields: Array<ResolversTypes['CustomField']>, variants: ResolversTypes['VariantList'] }>;
   ProductCustomField: ResolverTypeWrapper<ProductCustomField>;
   ProductCustomFieldTranslation: ResolverTypeWrapper<ProductCustomFieldTranslation>;
   ProductFilters: ProductFilters;
-  ProductList: ResolverTypeWrapper<ProductList>;
+  ProductList: ResolverTypeWrapper<Omit<ProductList, 'items'> & { items: Array<ResolversTypes['Product']> }>;
   ProductListInput: ProductListInput;
   ProductSort: ProductSort;
   ProductTranslation: ResolverTypeWrapper<ProductTranslation>;
@@ -3141,8 +3122,8 @@ export type ResolversTypes = {
   UserErrorResult: ResolverTypeWrapper<UserErrorResult>;
   UserList: ResolverTypeWrapper<UserList>;
   UserResult: ResolverTypeWrapper<UserResult>;
-  Variant: ResolverTypeWrapper<Variant>;
-  VariantList: ResolverTypeWrapper<VariantList>;
+  Variant: ResolverTypeWrapper<Omit<Variant, 'dimensions' | 'product'> & { dimensions?: Maybe<ResolversTypes['Dimensions']>, product: ResolversTypes['Product'] }>;
+  VariantList: ResolverTypeWrapper<Omit<VariantList, 'items'> & { items: Array<ResolversTypes['Variant']> }>;
   Zone: ResolverTypeWrapper<Zone>;
   addCustomObjectEntryTranslationInput: AddCustomObjectEntryTranslationInput;
 };
@@ -3168,11 +3149,11 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   BooleanFilter: BooleanFilter;
   CancelOrderInput: CancelOrderInput;
-  Collection: Collection;
+  Collection: Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<ResolversParentTypes['Collection']>, products: ResolversParentTypes['ProductList'], subCollections: ResolversParentTypes['CollectionList'] };
   CollectionCustomField: CollectionCustomField;
   CollectionCustomFieldTranslation: CollectionCustomFieldTranslation;
   CollectionFilters: CollectionFilters;
-  CollectionList: CollectionList;
+  CollectionList: Omit<CollectionList, 'items'> & { items: Array<ResolversParentTypes['Collection']> };
   CollectionListInput: CollectionListInput;
   CollectionTranslation: CollectionTranslation;
   CollectionTranslationInput: CollectionTranslationInput;
@@ -3198,12 +3179,15 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   CreateVariantInput: CreateVariantInput;
   CreateZoneInput: CreateZoneInput;
+  CustomField: Omit<CustomField, 'references'> & { references: ResolversParentTypes['CustomFieldReferenceList'] };
   CustomFieldDefinition: CustomFieldDefinition;
   CustomFieldDefinitionErrorResult: CustomFieldDefinitionErrorResult;
   CustomFieldDefinitionFilters: CustomFieldDefinitionFilters;
   CustomFieldDefinitionList: CustomFieldDefinitionList;
   CustomFieldDefinitionListInput: CustomFieldDefinitionListInput;
   CustomFieldDefinitionResult: CustomFieldDefinitionResult;
+  CustomFieldReference: ResolversUnionTypes<ResolversParentTypes>['CustomFieldReference'];
+  CustomFieldReferenceList: Omit<CustomFieldReferenceList, 'items'> & { items: Array<ResolversParentTypes['CustomFieldReference']> };
   CustomFieldValue: CustomFieldValue;
   CustomObjectDefinition: CustomObjectDefinition;
   CustomObjectDefinitionErrorResult: CustomObjectDefinitionErrorResult;
@@ -3263,16 +3247,12 @@ export type ResolversParentTypes = {
   Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Option: Option;
   OptionList: OptionList;
-  OptionPreset: OptionPreset;
-  OptionPresetList: OptionPresetList;
   OptionTranslation: OptionTranslation;
   OptionTranslationInput: OptionTranslationInput;
   OptionValue: OptionValue;
   OptionValueFilter: OptionValueFilter;
   OptionValueMetadata: OptionValueMetadata;
   OptionValueMetadataInput: OptionValueMetadataInput;
-  OptionValuePreset: OptionValuePreset;
-  OptionValuePresetList: OptionValuePresetList;
   OptionValueTranslation: OptionValueTranslation;
   OptionValueTranslationInput: OptionValueTranslationInput;
   Order: Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, deliveryMethod?: Maybe<ResolversParentTypes['DeliveryMethod']>, fulfillments: ResolversParentTypes['FulfillmentList'], lines: ResolversParentTypes['OrderLineList'], payments: Array<ResolversParentTypes['Payment']> };
@@ -3280,7 +3260,7 @@ export type ResolversParentTypes = {
   OrderCancellation: Omit<OrderCancellation, 'order'> & { order: ResolversParentTypes['Order'] };
   OrderErrorResult: OrderErrorResult;
   OrderFilters: OrderFilters;
-  OrderLine: Omit<OrderLine, 'appliedDiscounts'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']> };
+  OrderLine: Omit<OrderLine, 'appliedDiscounts' | 'variant'> & { appliedDiscounts: Array<ResolversParentTypes['AppliedDiscount']>, variant: ResolversParentTypes['Variant'] };
   OrderLineList: Omit<OrderLineList, 'items'> & { items: Array<ResolversParentTypes['OrderLine']> };
   OrderList: Omit<OrderList, 'items'> & { items: Array<ResolversParentTypes['Order']> };
   OrderListInput: OrderListInput;
@@ -3296,11 +3276,11 @@ export type ResolversParentTypes = {
   PaymentMethodResult: PaymentMethodResult;
   PaymentRejection: Omit<PaymentRejection, 'payment'> & { payment: ResolversParentTypes['Payment'] };
   PriceRange: PriceRange;
-  Product: Product;
+  Product: Omit<Product, 'customFields' | 'variants'> & { customFields: Array<ResolversParentTypes['CustomField']>, variants: ResolversParentTypes['VariantList'] };
   ProductCustomField: ProductCustomField;
   ProductCustomFieldTranslation: ProductCustomFieldTranslation;
   ProductFilters: ProductFilters;
-  ProductList: ProductList;
+  ProductList: Omit<ProductList, 'items'> & { items: Array<ResolversParentTypes['Product']> };
   ProductListInput: ProductListInput;
   ProductSort: ProductSort;
   ProductTranslation: ProductTranslation;
@@ -3351,8 +3331,8 @@ export type ResolversParentTypes = {
   UserErrorResult: UserErrorResult;
   UserList: UserList;
   UserResult: UserResult;
-  Variant: Variant;
-  VariantList: VariantList;
+  Variant: Omit<Variant, 'dimensions' | 'product'> & { dimensions?: Maybe<ResolversParentTypes['Dimensions']>, product: ResolversParentTypes['Product'] };
+  VariantList: Omit<VariantList, 'items'> & { items: Array<ResolversParentTypes['Variant']> };
   Zone: Zone;
   addCustomObjectEntryTranslationInput: AddCustomObjectEntryTranslationInput;
 };
@@ -3480,6 +3460,15 @@ export type CreateTagsResultResolvers<ContextType = ExecutionContext, ParentType
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CustomFieldResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomField'] = ResolversParentTypes['CustomField']> = {
+  isList?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  references?: Resolver<ResolversTypes['CustomFieldReferenceList'], ParentType, ContextType, Partial<CustomFieldReferencesArgs>>;
+  type?: Resolver<ResolversTypes['CustomFieldType'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CustomFieldAppliesToEntityResolvers = EnumResolverSignature<{ COLLECTION?: any, CUSTOM_OBJECT?: any, OPTION_VALUE?: any, PRODUCT?: any }, ResolversTypes['CustomFieldAppliesToEntity']>;
 
 export type CustomFieldDefinitionResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinition'] = ResolversParentTypes['CustomFieldDefinition']> = {
@@ -3513,6 +3502,17 @@ export type CustomFieldDefinitionListResolvers<ContextType = ExecutionContext, P
 export type CustomFieldDefinitionResultResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldDefinitionResult'] = ResolversParentTypes['CustomFieldDefinitionResult']> = {
   apiErrors?: Resolver<Array<ResolversTypes['CustomFieldDefinitionErrorResult']>, ParentType, ContextType>;
   customFieldDefinition?: Resolver<Maybe<ResolversTypes['CustomFieldDefinition']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomFieldReferenceResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldReference'] = ResolversParentTypes['CustomFieldReference']> = {
+  __resolveType: TypeResolveFn<'Collection' | 'Product', ParentType, ContextType>;
+};
+
+export type CustomFieldReferenceListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['CustomFieldReferenceList'] = ResolversParentTypes['CustomFieldReferenceList']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  items?: Resolver<Array<ResolversTypes['CustomFieldReference']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3941,22 +3941,6 @@ export type OptionListResolvers<ContextType = ExecutionContext, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OptionPresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPreset'] = ResolversParentTypes['OptionPreset']> = {
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  values?: Resolver<ResolversTypes['OptionValuePresetList'], ParentType, ContextType, Partial<OptionPresetValuesArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type OptionPresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionPresetList'] = ResolversParentTypes['OptionPresetList']> = {
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  items?: Resolver<Array<ResolversTypes['OptionPreset']>, ParentType, ContextType>;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type OptionTranslationResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionTranslation'] = ResolversParentTypes['OptionTranslation']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3974,7 +3958,6 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   option?: Resolver<ResolversTypes['Option'], ParentType, ContextType>;
   order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  preset?: Resolver<Maybe<ResolversTypes['OptionValuePreset']>, ParentType, ContextType>;
   translations?: Resolver<Array<ResolversTypes['OptionValueTranslation']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -3982,22 +3965,6 @@ export type OptionValueResolvers<ContextType = ExecutionContext, ParentType exte
 
 export type OptionValueMetadataResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValueMetadata'] = ResolversParentTypes['OptionValueMetadata']> = {
   color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type OptionValuePresetResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePreset'] = ResolversParentTypes['OptionValuePreset']> = {
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  metadata?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type OptionValuePresetListResolvers<ContextType = ExecutionContext, ParentType extends ResolversParentTypes['OptionValuePresetList'] = ResolversParentTypes['OptionValuePresetList']> = {
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  items?: Resolver<Array<ResolversTypes['OptionValuePreset']>, ParentType, ContextType>;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -4178,7 +4145,7 @@ export type ProductResolvers<ContextType = ExecutionContext, ParentType extends 
   assets?: Resolver<ResolversTypes['AssetList'], ParentType, ContextType, Partial<ProductAssetsArgs>>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customFieldEntries?: Resolver<Array<ResolversTypes['ProductCustomField']>, ParentType, ContextType>;
-  customFields?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  customFields?: Resolver<Array<ResolversTypes['CustomField']>, ParentType, ContextType, RequireFields<ProductCustomFieldsArgs, 'keys'>>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -4251,7 +4218,6 @@ export type QueryResolvers<ContextType = ExecutionContext, ParentType extends Re
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryLocationArgs, 'id'>>;
   locations?: Resolver<ResolversTypes['LocationList'], ParentType, ContextType, Partial<QueryLocationsArgs>>;
   me?: Resolver<Maybe<ResolversTypes['Customer']>, ParentType, ContextType>;
-  optionPresets?: Resolver<ResolversTypes['OptionPresetList'], ParentType, ContextType, Partial<QueryOptionPresetsArgs>>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, Partial<QueryOrderArgs>>;
   orders?: Resolver<ResolversTypes['OrderList'], ParentType, ContextType, Partial<QueryOrdersArgs>>;
   paymentHandlers?: Resolver<Array<ResolversTypes['PaymentHandler']>, ParentType, ContextType>;
@@ -4469,11 +4435,14 @@ export type Resolvers<ContextType = ExecutionContext> = {
   CollectionTranslation?: CollectionTranslationResolvers<ContextType>;
   Country?: CountryResolvers<ContextType>;
   CreateTagsResult?: CreateTagsResultResolvers<ContextType>;
+  CustomField?: CustomFieldResolvers<ContextType>;
   CustomFieldAppliesToEntity?: CustomFieldAppliesToEntityResolvers;
   CustomFieldDefinition?: CustomFieldDefinitionResolvers<ContextType>;
   CustomFieldDefinitionErrorResult?: CustomFieldDefinitionErrorResultResolvers<ContextType>;
   CustomFieldDefinitionList?: CustomFieldDefinitionListResolvers<ContextType>;
   CustomFieldDefinitionResult?: CustomFieldDefinitionResultResolvers<ContextType>;
+  CustomFieldReference?: CustomFieldReferenceResolvers<ContextType>;
+  CustomFieldReferenceList?: CustomFieldReferenceListResolvers<ContextType>;
   CustomFieldType?: CustomFieldTypeResolvers;
   CustomObjectDefinition?: CustomObjectDefinitionResolvers<ContextType>;
   CustomObjectDefinitionErrorResult?: CustomObjectDefinitionErrorResultResolvers<ContextType>;
@@ -4518,13 +4487,9 @@ export type Resolvers<ContextType = ExecutionContext> = {
   Node?: NodeResolvers<ContextType>;
   Option?: OptionResolvers<ContextType>;
   OptionList?: OptionListResolvers<ContextType>;
-  OptionPreset?: OptionPresetResolvers<ContextType>;
-  OptionPresetList?: OptionPresetListResolvers<ContextType>;
   OptionTranslation?: OptionTranslationResolvers<ContextType>;
   OptionValue?: OptionValueResolvers<ContextType>;
   OptionValueMetadata?: OptionValueMetadataResolvers<ContextType>;
-  OptionValuePreset?: OptionValuePresetResolvers<ContextType>;
-  OptionValuePresetList?: OptionValuePresetListResolvers<ContextType>;
   OptionValueTranslation?: OptionValueTranslationResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   OrderAddressJson?: OrderAddressJsonResolvers<ContextType>;

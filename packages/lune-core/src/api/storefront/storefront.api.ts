@@ -13,11 +13,13 @@ import { buildContext } from '../shared/context/build-context';
 import { GraphqlApi } from '../shared/graphql-api';
 import { useErrorLogger } from '../shared/plugins/use-error-logger';
 import { useTransaction } from '../shared/plugins/use-transaction';
+import { CustomFieldDefinitionEnumsResolver } from '../shared/resolvers/enums/custom-field-definition.enums.resolver';
 import { OrderEnumsResolver } from '../shared/resolvers/enums/order-enums.resolver';
 import type { CustomerJWT } from '../shared/types/api.types';
 
 import { AddressResolver } from './resolvers/address.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
+import { CustomFieldResolver } from './resolvers/custom-field.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
@@ -46,7 +48,9 @@ export class StorefrontApi extends GraphqlApi {
         CountryResolver,
         CustomerResolver,
         AddressResolver,
+        CustomFieldResolver,
         OrderEnumsResolver,
+        CustomFieldDefinitionEnumsResolver,
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),

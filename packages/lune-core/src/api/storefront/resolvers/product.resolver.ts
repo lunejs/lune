@@ -5,7 +5,12 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { CommonOptionValueFieldResolver } from '@/api/shared/resolvers/option-value-field.resolver';
 import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
 import { CommonVariantFieldResolver } from '@/api/shared/resolvers/variant-field.resolver';
-import type { QueryProductArgs, QueryProductsArgs } from '@/api/shared/types/graphql';
+import type {
+  CustomField,
+  ProductCustomFieldsArgs,
+  QueryProductArgs,
+  QueryProductsArgs
+} from '@/api/shared/types/graphql';
 import { getProductLocalizedField } from '@/api/shared/utils/get-localized-field';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { ProductService } from '@/business/product/product.service';
@@ -55,15 +60,25 @@ export const ProductResolver: GraphqlApiResolver = {
     description: async (parent: Product, _, ctx: ExecutionContext) => {
       return getProductLocalizedField(ctx, parent, 'description');
     },
-    customFields: async (parent: Product, _: unknown, ctx: ExecutionContext) => {
-      const fields = await ctx.loaders.product.customFields.load(parent.id);
+    customFields: async (
+      parent: Product,
+      { keys }: ProductCustomFieldsArgs,
+      ctx: ExecutionContext
+    ) => {
+      const fields = await ctx.loaders.product.customFields.load({
+        productId: parent.id,
+        keys
+      });
 
-      return fields.reduce(
-        (acc, field) => {
-          acc[field.definition.key] = field.value;
-          return acc;
-        },
-        {} as Record<string, unknown>
+      return fields.map(
+        f =>
+          ({
+            id: f.id,
+            key: f.definition.key,
+            isList: f.definition.isList,
+            type: f.definition.type,
+            value: f.value
+          }) satisfies Partial<CustomField> & { id: string }
       );
     }
   },

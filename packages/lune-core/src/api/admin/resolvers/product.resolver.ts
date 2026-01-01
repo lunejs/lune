@@ -93,7 +93,7 @@ export const ProductResolver: GraphqlApiResolver = {
       return ctx.loaders.product.translation.load(parent.id);
     },
     customFieldEntries: async (parent: Product, _: unknown, ctx: ExecutionContext) => {
-      return ctx.loaders.product.customFields.load(parent.id);
+      return ctx.loaders.product.customFields.load({ productId: parent.id });
     }
   },
   ProductCustomField: {

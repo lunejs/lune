@@ -1,6 +1,7 @@
 import { UseUserGuard } from '@/api/admin/guards/user.guard';
 import type { ExecutionContext } from '@/api/shared/context/types';
 import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
+import { CustomFieldDefinitionEnumsResolver } from '@/api/shared/resolvers/enums/custom-field-definition.enums.resolver';
 import type {
   MutationCreateCustomFieldDefinitionArgs,
   MutationRemoveCustomFieldDefinitionArgs,
@@ -11,10 +12,7 @@ import type {
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomFieldDefinitionService } from '@/business/custom-field-definition/custom-field-definition.service';
 import type { CustomFieldDefinition } from '@/persistence/entities/custom-field-definition';
-import {
-  CustomFieldAppliesTo,
-  CustomFieldType
-} from '@/persistence/entities/custom-field-definition';
+import { CustomFieldAppliesTo } from '@/persistence/entities/custom-field-definition';
 import { isErrorResult } from '@/utils/error-result';
 
 async function customFieldDefinitions(
@@ -77,25 +75,11 @@ async function removeCustomFieldDefinition(
 }
 
 export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
+  ...CustomFieldDefinitionEnumsResolver,
   CustomFieldAppliesToEntity: {
     PRODUCT: CustomFieldAppliesTo.Product,
     COLLECTION: CustomFieldAppliesTo.Collection,
     OPTION_VALUE: CustomFieldAppliesTo.OptionValue
-  },
-  CustomFieldType: {
-    SINGLE_LINE_TEXT: CustomFieldType.SingleLineText,
-    MULTI_LINE_TEXT: CustomFieldType.MultiLineText,
-    URL: CustomFieldType.Url,
-    COLOR: CustomFieldType.Color,
-    INTEGER: CustomFieldType.Integer,
-    DECIMAL: CustomFieldType.Decimal,
-    MONEY: CustomFieldType.Money,
-    DATE: CustomFieldType.Date,
-    BOOLEAN: CustomFieldType.Boolean,
-    IMAGE: CustomFieldType.Image,
-    PRODUCT_REFERENCE: CustomFieldType.ProductReference,
-    COLLECTION_REFERENCE: CustomFieldType.CollectionReference,
-    CUSTOM_OBJECT_REFERENCE: CustomFieldType.CustomObjectReference
   },
   CustomFieldDefinition: {
     referenceTarget: (parent: CustomFieldDefinition, _, ctx: ExecutionContext) => {

@@ -10,22 +10,6 @@ enum CustomFieldAppliesToEntity {
   OPTION_VALUE
 }
 
-enum CustomFieldType {
-  SINGLE_LINE_TEXT
-  MULTI_LINE_TEXT
-  URL
-  COLOR
-  INTEGER
-  DECIMAL
-  MONEY
-  DATE
-  BOOLEAN
-  IMAGE
-  PRODUCT_REFERENCE
-  COLLECTION_REFERENCE
-  CUSTOM_OBJECT_REFERENCE
-}
-
 """
 Represents a custom field that cna be attached to an entity
 """

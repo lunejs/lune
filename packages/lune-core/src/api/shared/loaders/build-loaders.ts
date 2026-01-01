@@ -55,6 +55,10 @@ import { createVariantProductLoader } from './variant/variant-product.loader';
 import { createVariantsLoader } from './variant/variants.loader';
 import { createZoneShippingMethodsLoader } from './zone/zone-shipping-methods.loader';
 import { createZoneStatesLoader } from './zone/zone-states.loader';
+import {
+  createCustomFieldCollectionReferencesLoader,
+  createCustomFieldProductReferencesLoader
+} from './custom-field';
 
 // TODO: standardize object keys (all plural or all singular)
 export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined) => {
@@ -150,6 +154,10 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     customFieldDefinition: {
       referenceTarget: createCustomFieldDefinitionReferenceTargetLoader(trx)
+    },
+    customField: {
+      productReferences: createCustomFieldProductReferencesLoader(trx),
+      collectionReferences: createCustomFieldCollectionReferencesLoader(trx)
     }
   };
 };

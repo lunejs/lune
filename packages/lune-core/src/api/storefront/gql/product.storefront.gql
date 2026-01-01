@@ -2,7 +2,7 @@ extend type Product {
   """
   Custom fields as key-value pairs
   """
-  customFields: JSON!
+  customFields(keys: [String!]!): [CustomField!]!
 }
 
 type Query {

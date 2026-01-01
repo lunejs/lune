@@ -1,0 +1,30 @@
+union CustomFieldReference = Product | Collection
+
+type CustomField {
+  """
+  A unique  and readable key to make reference to the definition
+  """
+  key: String!
+  """
+  Custom field value in JSON type
+  """
+  value: JSON!
+  """
+  Type of the definition
+  """
+  type: CustomFieldType!
+  """
+  Weather the field is a list of values
+  """
+  isList: Boolean!
+  """
+  A list of reference objects if the metafield's type is a reference type.
+  """
+  references(input: ListInput): CustomFieldReferenceList!
+}
+
+type CustomFieldReferenceList {
+  count: Int!
+  items: [CustomFieldReference!]!
+  pageInfo: PageInfo!
+}
