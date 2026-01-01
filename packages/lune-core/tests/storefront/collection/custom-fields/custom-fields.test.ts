@@ -15,6 +15,11 @@ import {
 } from './fixtures/collection-custom-field-translation.fixtures';
 import { CustomFieldDefinitionConstants } from './fixtures/custom-field-definition.fixtures';
 import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
+import { CustomObjectDefinitionFixtures } from './fixtures/custom-object-definition.fixtures';
+import {
+  CustomObjectEntryConstants,
+  CustomObjectEntryFixtures
+} from './fixtures/custom-object-entry.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
@@ -34,7 +39,9 @@ const ALL_KEYS = [
   CustomFieldDefinitionConstants.CollectionReferenceKey,
   CustomFieldDefinitionConstants.IntegerListKey,
   CustomFieldDefinitionConstants.ProductReferenceListKey,
-  CustomFieldDefinitionConstants.CollectionReferenceListKey
+  CustomFieldDefinitionConstants.CollectionReferenceListKey,
+  CustomFieldDefinitionConstants.CustomObjectReferenceKey,
+  CustomFieldDefinitionConstants.CustomObjectReferenceListKey
 ];
 
 describe('Collection.customFields - Query', () => {
@@ -49,6 +56,8 @@ describe('Collection.customFields - Query', () => {
       new ShopFixtures(),
       new ProductFixtures(),
       new CollectionFixtures(),
+      new CustomObjectDefinitionFixtures(),
+      new CustomObjectEntryFixtures(),
       new CustomFieldDefinitionFixtures(),
       new CollectionCustomFieldFixtures()
     ]);
@@ -78,7 +87,7 @@ describe('Collection.customFields - Query', () => {
 
     const { collection } = res.body.data;
 
-    expect(collection.customFields).toHaveLength(15);
+    expect(collection.customFields).toHaveLength(17);
   });
 
   test('returns single line text custom field correctly', async () => {
@@ -612,6 +621,71 @@ describe('Collection.customFields - Query', () => {
     expect(collection.customFields[0].references.items).toHaveLength(0);
   });
 
+  test('returns all custom object references in a list field', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
+        variables: {
+          id: CollectionConstants.ID,
+          keys: [CustomFieldDefinitionConstants.CustomObjectReferenceListKey]
+        }
+      });
+
+    const { collection } = res.body.data;
+
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].type).toBe('CUSTOM_OBJECT_REFERENCE');
+    expect(collection.customFields[0].isList).toBe(true);
+    expect(collection.customFields[0].references.count).toBe(3);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(3);
+    expect(collection.customFields[0].references.items[0]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntryID,
+      slug: CustomObjectEntryConstants.ReferencedEntrySlug
+    });
+    expect(collection.customFields[0].references.items[1]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry2ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry2Slug
+    });
+    expect(collection.customFields[0].references.items[2]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry3ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry3Slug
+    });
+  });
+
+  test('paginates custom object references with skip and take', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
+        variables: {
+          id: CollectionConstants.ID,
+          keys: [CustomFieldDefinitionConstants.CustomObjectReferenceListKey],
+          referencesInput: { skip: 1, take: 1 }
+        }
+      });
+
+    const { collection } = res.body.data;
+
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].references.count).toBe(1);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(1);
+    expect(collection.customFields[0].references.items[0]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry2ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry2Slug
+    });
+  });
+
   test('returns translated value when locale is provided', async () => {
     await testHelper.loadFixtures([new CollectionCustomFieldTranslationFixtures()]);
 
@@ -658,6 +732,10 @@ const GET_COLLECTION_WITH_CUSTOM_FIELDS = /* GraphQL */ `
             ... on Collection {
               id
               name
+              slug
+            }
+            ... on CustomObject {
+              id
               slug
             }
           }

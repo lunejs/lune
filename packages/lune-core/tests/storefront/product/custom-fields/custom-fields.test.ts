@@ -7,6 +7,11 @@ import { TestUtils } from '@/tests/utils/test-utils';
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
 import { CustomFieldDefinitionConstants } from './fixtures/custom-field-definition.fixtures';
 import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
+import { CustomObjectDefinitionFixtures } from './fixtures/custom-object-definition.fixtures';
+import {
+  CustomObjectEntryConstants,
+  CustomObjectEntryFixtures
+} from './fixtures/custom-object-entry.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
 import {
   ProductCustomFieldConstants,
@@ -34,7 +39,9 @@ const ALL_KEYS = [
   CustomFieldDefinitionConstants.CollectionReferenceKey,
   CustomFieldDefinitionConstants.IntegerListKey,
   CustomFieldDefinitionConstants.ProductReferenceListKey,
-  CustomFieldDefinitionConstants.CollectionReferenceListKey
+  CustomFieldDefinitionConstants.CollectionReferenceListKey,
+  CustomFieldDefinitionConstants.CustomObjectReferenceKey,
+  CustomFieldDefinitionConstants.CustomObjectReferenceListKey
 ];
 
 describe('Product.customFields - Query', () => {
@@ -49,6 +56,8 @@ describe('Product.customFields - Query', () => {
       new ShopFixtures(),
       new ProductFixtures(),
       new CollectionFixtures(),
+      new CustomObjectDefinitionFixtures(),
+      new CustomObjectEntryFixtures(),
       new CustomFieldDefinitionFixtures(),
       new ProductCustomFieldFixtures()
     ]);
@@ -78,7 +87,7 @@ describe('Product.customFields - Query', () => {
 
     const { product } = res.body.data;
 
-    expect(product.customFields).toHaveLength(15);
+    expect(product.customFields).toHaveLength(17);
   });
 
   test('returns single line text custom field correctly', async () => {
@@ -604,6 +613,71 @@ describe('Product.customFields - Query', () => {
     expect(product.customFields[0].references.items).toHaveLength(0);
   });
 
+  test('returns all custom object references in a list field', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        variables: {
+          id: ProductConstants.ID,
+          keys: [CustomFieldDefinitionConstants.CustomObjectReferenceListKey]
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.customFields).toHaveLength(1);
+    expect(product.customFields[0].type).toBe('CUSTOM_OBJECT_REFERENCE');
+    expect(product.customFields[0].isList).toBe(true);
+    expect(product.customFields[0].references.count).toBe(3);
+    expect(product.customFields[0].references.pageInfo.total).toBe(3);
+    expect(product.customFields[0].references.items).toHaveLength(3);
+    expect(product.customFields[0].references.items[0]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntryID,
+      slug: CustomObjectEntryConstants.ReferencedEntrySlug
+    });
+    expect(product.customFields[0].references.items[1]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry2ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry2Slug
+    });
+    expect(product.customFields[0].references.items[2]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry3ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry3Slug
+    });
+  });
+
+  test('paginates custom object references with skip and take', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .send({
+        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        variables: {
+          id: ProductConstants.ID,
+          keys: [CustomFieldDefinitionConstants.CustomObjectReferenceListKey],
+          referencesInput: { skip: 1, take: 1 }
+        }
+      });
+
+    const { product } = res.body.data;
+
+    expect(product.customFields).toHaveLength(1);
+    expect(product.customFields[0].references.count).toBe(1);
+    expect(product.customFields[0].references.pageInfo.total).toBe(3);
+    expect(product.customFields[0].references.items).toHaveLength(1);
+    expect(product.customFields[0].references.items[0]).toEqual({
+      __typename: 'CustomObject',
+      id: CustomObjectEntryConstants.ReferencedEntry2ID,
+      slug: CustomObjectEntryConstants.ReferencedEntry2Slug
+    });
+  });
+
   test('returns translated value when locale is provided', async () => {
     await testHelper.loadFixtures([new ProductCustomFieldTranslationFixtures()]);
 
@@ -650,6 +724,10 @@ const GET_PRODUCT_WITH_CUSTOM_FIELDS = /* GraphQL */ `
             ... on Collection {
               id
               name
+              slug
+            }
+            ... on CustomObject {
+              id
               slug
             }
           }

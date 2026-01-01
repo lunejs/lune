@@ -1,4 +1,4 @@
-union CustomFieldReference = Product | Collection
+union CustomFieldReference = Product | Collection | CustomObject
 
 type CustomField {
   """

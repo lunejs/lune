@@ -60,6 +60,7 @@ import { createZoneShippingMethodsLoader } from './zone/zone-shipping-methods.lo
 import { createZoneStatesLoader } from './zone/zone-states.loader';
 import {
   createCustomFieldCollectionReferencesLoader,
+  createCustomFieldCustomObjectReferencesLoader,
   createCustomFieldProductReferencesLoader
 } from './custom-field';
 
@@ -163,7 +164,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
     },
     customField: {
       productReferences: createCustomFieldProductReferencesLoader(trx),
-      collectionReferences: createCustomFieldCollectionReferencesLoader(trx)
+      collectionReferences: createCustomFieldCollectionReferencesLoader(trx),
+      customObjectReferences: createCustomFieldCustomObjectReferencesLoader(trx)
     }
   };
 };

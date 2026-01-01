@@ -7,6 +7,7 @@ import { Tables } from '@/persistence/tables';
 import type { Fixture } from '@/tests/utils/fixtures';
 import { TestUtils } from '@/tests/utils/test-utils';
 
+import { CustomObjectDefinitionConstants } from './custom-object-definition.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const CustomFieldDefinitionConstants = {
@@ -54,7 +55,14 @@ export const CustomFieldDefinitionConstants = {
   ProductReferenceListKey: 'product_reference_list_field',
 
   CollectionReferenceListID: TestUtils.generateUUID(),
-  CollectionReferenceListKey: 'collection_reference_list_field'
+  CollectionReferenceListKey: 'collection_reference_list_field',
+
+  // Custom Object References
+  CustomObjectReferenceID: TestUtils.generateUUID(),
+  CustomObjectReferenceKey: 'custom_object_reference_field',
+
+  CustomObjectReferenceListID: TestUtils.generateUUID(),
+  CustomObjectReferenceListKey: 'custom_object_reference_list_field'
 };
 
 export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinitionTable> {
@@ -210,6 +218,28 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         is_list: true,
         applies_to_entity: CustomFieldAppliesTo.Product,
         order: 14,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.CustomObjectReferenceID,
+        name: 'Custom Object Reference',
+        key: CustomFieldDefinitionConstants.CustomObjectReferenceKey,
+        type: CustomFieldType.CustomObjectReference,
+        is_list: false,
+        applies_to_entity: CustomFieldAppliesTo.Product,
+        reference_target_id: CustomObjectDefinitionConstants.ID,
+        order: 15,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.CustomObjectReferenceListID,
+        name: 'Custom Object Reference List',
+        key: CustomFieldDefinitionConstants.CustomObjectReferenceListKey,
+        type: CustomFieldType.CustomObjectReference,
+        is_list: true,
+        applies_to_entity: CustomFieldAppliesTo.Product,
+        reference_target_id: CustomObjectDefinitionConstants.ID,
+        order: 16,
         shop_id: ShopConstants.ID
       }
     ];

@@ -5,6 +5,7 @@ import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionConstants } from './collection.fixtures';
 import { CustomFieldDefinitionConstants } from './custom-field-definition.fixtures';
+import { CustomObjectEntryConstants } from './custom-object-entry.fixtures';
 import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
@@ -44,6 +45,18 @@ export const ProductCustomFieldConstants = {
       CollectionConstants.ReferencedCollectionID,
       CollectionConstants.ReferencedCollection2ID,
       CollectionConstants.ReferencedCollection3ID
+    ];
+  },
+
+  // Custom Object Reference values
+  get CustomObjectReferenceValue() {
+    return CustomObjectEntryConstants.ReferencedEntryID;
+  },
+  get CustomObjectReferenceListValue() {
+    return [
+      CustomObjectEntryConstants.ReferencedEntryID,
+      CustomObjectEntryConstants.ReferencedEntry2ID,
+      CustomObjectEntryConstants.ReferencedEntry3ID
     ];
   }
 };
@@ -156,6 +169,20 @@ export class ProductCustomFieldFixtures implements Fixture<ProductCustomFieldTab
         product_id: ProductConstants.ID,
         definition_id: CustomFieldDefinitionConstants.CollectionReferenceListID,
         value: JSON.stringify(ProductCustomFieldConstants.CollectionReferenceListValue),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: TestUtils.generateUUID(),
+        product_id: ProductConstants.ID,
+        definition_id: CustomFieldDefinitionConstants.CustomObjectReferenceID,
+        value: JSON.stringify(ProductCustomFieldConstants.CustomObjectReferenceValue),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: TestUtils.generateUUID(),
+        product_id: ProductConstants.ID,
+        definition_id: CustomFieldDefinitionConstants.CustomObjectReferenceListID,
+        value: JSON.stringify(ProductCustomFieldConstants.CustomObjectReferenceListValue),
         shop_id: ShopConstants.ID
       }
     ];

@@ -8,6 +8,7 @@ import {
   CustomFieldAppliesTo,
   CustomFieldType
 } from '@/persistence/entities/custom-field-definition';
+import type { CustomObjectEntry } from '@/persistence/entities/custom-object-entry';
 import type { Product } from '@/persistence/entities/product';
 
 type CustomFieldParent = CustomFieldDefinition & {
@@ -15,7 +16,7 @@ type CustomFieldParent = CustomFieldDefinition & {
   value: unknown;
 };
 
-type ReferenceItem = (Product | Collection) & { __typename: string };
+type ReferenceItem = (Product | Collection | CustomObjectEntry) & { __typename: string };
 
 export const CustomFieldResolver: GraphqlApiResolver = {
   CustomField: {
@@ -48,9 +49,11 @@ export const CustomFieldResolver: GraphqlApiResolver = {
       const { id, type, value, isList } = parent;
 
       const isReferenceType =
-        type !== CustomFieldType.ProductReference && type !== CustomFieldType.CollectionReference;
+        type === CustomFieldType.ProductReference ||
+        type === CustomFieldType.CollectionReference ||
+        type === CustomFieldType.CustomObjectReference;
 
-      if (isReferenceType) {
+      if (!isReferenceType) {
         return { items: [], count: 0, pageInfo: { total: 0 } };
       }
 
@@ -83,6 +86,20 @@ export const CustomFieldResolver: GraphqlApiResolver = {
 
         return new ListResponse(
           result.items.map(p => ({ ...p, __typename: 'Collection' })),
+          result.count,
+          result.pageInfo
+        );
+      }
+
+      if (type === CustomFieldType.CustomObjectReference) {
+        const result = await ctx.loaders.customField.customObjectReferences.load({
+          id,
+          referenceIds,
+          input
+        });
+
+        return new ListResponse(
+          result.items.map(p => ({ ...p, __typename: 'CustomObject' })),
           result.count,
           result.pageInfo
         );
