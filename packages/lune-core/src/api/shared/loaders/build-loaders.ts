@@ -8,6 +8,7 @@ import { createAddressCountryLoader } from './address/address-country.loader';
 import { createAddressStateLoader } from './address/address-state.loader';
 import { createCollectionAssetsLoader } from './collection/collection-asset.loader';
 import { createCollectionSubCollectionsLoader } from './collection/collection-asset.loader copy';
+import { createCollectionCustomFieldLocalizationLoader } from './collection/collection-custom-field-localization.loader';
 import { createCollectionCustomFieldTranslationsLoader } from './collection/collection-custom-field-translations.loader';
 import { createCollectionCustomFieldsLoader } from './collection/collection-custom-fields.loader';
 import { createCollectionProductsLoader } from './collection/collection-product.loader';
@@ -43,6 +44,7 @@ import { createOrderLineLoader } from './order/order-lines.loader';
 import { createOrderPaymentsLoader } from './order/order-payments.loader';
 import { createOrderLineVariantsLoader } from './order-line/variants.loader';
 import { createProductAssetsLoader } from './product/product-asset.loader';
+import { createProductCustomFieldLocalizationLoader } from './product/product-custom-field-localization.loader';
 import { createProductCustomFieldTranslationsLoader } from './product/product-custom-field-translations.loader';
 import { createProductCustomFieldsLoader } from './product/product-custom-fields.loader';
 import { createProductOptionsLoader } from './product/product-options.loader';
@@ -71,7 +73,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       variants: createVariantsLoader(trx),
       options: createProductOptionsLoader(trx),
       customFields: createProductCustomFieldsLoader(trx),
-      customFieldTranslations: createProductCustomFieldTranslationsLoader(trx)
+      customFieldTranslations: createProductCustomFieldTranslationsLoader(trx),
+      customFieldLocalization: createProductCustomFieldLocalizationLoader(trx, locale)
     },
     variant: {
       assets: createVariantAssetsLoader(trx),
@@ -94,7 +97,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       subCollections: createCollectionSubCollectionsLoader(trx),
       translations: createCollectionTranslationsLoader(trx),
       customFields: createCollectionCustomFieldsLoader(trx),
-      customFieldTranslations: createCollectionCustomFieldTranslationsLoader(trx)
+      customFieldTranslations: createCollectionCustomFieldTranslationsLoader(trx),
+      customFieldLocalization: createCollectionCustomFieldLocalizationLoader(trx, locale)
     },
     order: {
       lines: createOrderLineLoader(trx),

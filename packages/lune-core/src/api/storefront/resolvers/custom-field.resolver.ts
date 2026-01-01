@@ -3,21 +3,43 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import type { CustomFieldReferencesArgs } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import type { Collection } from '@/persistence/entities/collection';
-import { CustomFieldType } from '@/persistence/entities/custom-field-definition';
+import type { CustomFieldDefinition } from '@/persistence/entities/custom-field-definition';
+import {
+  CustomFieldAppliesTo,
+  CustomFieldType
+} from '@/persistence/entities/custom-field-definition';
 import type { Product } from '@/persistence/entities/product';
 
-interface CustomFieldParent {
+type CustomFieldParent = CustomFieldDefinition & {
   id: string;
-  key: string;
   value: unknown;
-  type: string;
-  isList: boolean;
-}
+};
 
 type ReferenceItem = (Product | Collection) & { __typename: string };
 
 export const CustomFieldResolver: GraphqlApiResolver = {
   CustomField: {
+    value: async (parent: CustomFieldParent, _: unknown, ctx: ExecutionContext) => {
+      const isTranslatable =
+        parent.type === CustomFieldType.SingleLineText ||
+        parent.type === CustomFieldType.MultiLineText;
+
+      if (!ctx.storefront?.locale || !isTranslatable) {
+        return parent.value;
+      }
+
+      if (parent.appliesToEntity === CustomFieldAppliesTo.Product) {
+        const value = await ctx.loaders.product.customFieldLocalization.load(parent.id);
+        return value || parent.value;
+      }
+
+      if (parent.appliesToEntity === CustomFieldAppliesTo.Collection) {
+        const value = await ctx.loaders.collections.customFieldLocalization.load(parent.id);
+        return value || parent.value;
+      }
+
+      return parent.value;
+    },
     references: async (
       parent: CustomFieldParent,
       { input }: CustomFieldReferencesArgs,

@@ -9,6 +9,10 @@ import {
   CollectionCustomFieldConstants,
   CollectionCustomFieldFixtures
 } from './fixtures/collection-custom-field.fixtures';
+import {
+  CollectionCustomFieldTranslationConstants,
+  CollectionCustomFieldTranslationFixtures
+} from './fixtures/collection-custom-field-translation.fixtures';
 import { CustomFieldDefinitionConstants } from './fixtures/custom-field-definition.fixtures';
 import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
@@ -429,7 +433,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceKey]
@@ -457,7 +461,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.CollectionReferenceKey]
@@ -485,7 +489,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.SingleLineTextKey]
@@ -507,7 +511,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey]
@@ -539,7 +543,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey],
@@ -564,7 +568,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.CollectionReferenceListKey],
@@ -592,7 +596,7 @@ describe('Collection.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
           id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey],
@@ -607,24 +611,32 @@ describe('Collection.customFields - Query', () => {
     expect(collection.customFields[0].references.pageInfo.total).toBe(3);
     expect(collection.customFields[0].references.items).toHaveLength(0);
   });
+
+  test('returns translated value when locale is provided', async () => {
+    await testHelper.loadFixtures([new CollectionCustomFieldTranslationFixtures()]);
+
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_locale', CollectionCustomFieldTranslationConstants.Locale)
+      .send({
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
+        variables: {
+          id: CollectionConstants.ID,
+          keys: [CustomFieldDefinitionConstants.SingleLineTextKey]
+        }
+      });
+
+    const { collection } = res.body.data;
+
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].key).toBe(CustomFieldDefinitionConstants.SingleLineTextKey);
+    expect(collection.customFields[0].value).toBe('Translated value');
+  });
 });
 
 const GET_COLLECTION_WITH_CUSTOM_FIELDS = /* GraphQL */ `
-  query Collection($id: ID!, $keys: [String!]!) {
-    collection(id: $id) {
-      id
-      name
-      customFields(keys: $keys) {
-        key
-        value
-        type
-        isList
-      }
-    }
-  }
-`;
-
-const GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES = /* GraphQL */ `
   query Collection($id: ID!, $keys: [String!]!, $referencesInput: ListInput) {
     collection(id: $id) {
       id

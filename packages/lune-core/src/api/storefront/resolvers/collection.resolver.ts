@@ -5,7 +5,6 @@ import type { GraphqlApiResolver } from '@/api/shared/graphql-api';
 import { CommonCollectionFieldResolver } from '@/api/shared/resolvers/collection-field.resolver';
 import type {
   CollectionCustomFieldsArgs,
-  CustomField,
   QueryCollectionArgs,
   QueryCollectionsArgs
 } from '@/api/shared/types/graphql';
@@ -54,16 +53,11 @@ export const CollectionResolver: GraphqlApiResolver = {
           keys
         });
 
-        return fields.map(
-          f =>
-            ({
-              id: f.id,
-              key: f.definition.key,
-              isList: f.definition.isList,
-              type: f.definition.type,
-              value: f.value
-            }) satisfies Partial<CustomField> & { id: string }
-        );
+        return fields.map(f => ({
+          ...f.definition,
+          id: f.id,
+          value: f.value
+        }));
       }
     )
   }

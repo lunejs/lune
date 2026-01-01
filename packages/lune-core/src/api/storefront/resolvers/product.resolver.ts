@@ -6,7 +6,6 @@ import { CommonOptionValueFieldResolver } from '@/api/shared/resolvers/option-va
 import { CommonProductFieldResolver } from '@/api/shared/resolvers/product-field.resolver';
 import { CommonVariantFieldResolver } from '@/api/shared/resolvers/variant-field.resolver';
 import type {
-  CustomField,
   ProductCustomFieldsArgs,
   QueryProductArgs,
   QueryProductsArgs
@@ -70,16 +69,11 @@ export const ProductResolver: GraphqlApiResolver = {
         keys
       });
 
-      return fields.map(
-        f =>
-          ({
-            id: f.id,
-            key: f.definition.key,
-            isList: f.definition.isList,
-            type: f.definition.type,
-            value: f.value
-          }) satisfies Partial<CustomField> & { id: string }
-      );
+      return fields.map(f => ({
+        ...f.definition,
+        id: f.id,
+        value: f.value
+      }));
     }
   },
   Variant: {

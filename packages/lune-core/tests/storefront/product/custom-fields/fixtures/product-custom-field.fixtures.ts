@@ -9,7 +9,9 @@ import { ProductConstants } from './product.fixtures';
 import { ShopConstants } from './shop.fixtures';
 
 export const ProductCustomFieldConstants = {
+  SingleLineTextID: TestUtils.generateUUID(),
   SingleLineTextValue: 'This is a single line text',
+  SingleLineTextTranslatedValue: 'Este es un texto de una línea',
   MultiLineTextValue: 'This is a\nmulti line\ntext',
   UrlValue: 'https://example.com',
   ColorValue: '#FF5733',
@@ -52,7 +54,7 @@ export class ProductCustomFieldFixtures implements Fixture<ProductCustomFieldTab
   async build(): Promise<Partial<ProductCustomFieldTable>[]> {
     return [
       {
-        id: TestUtils.generateUUID(),
+        id: ProductCustomFieldConstants.SingleLineTextID,
         product_id: ProductConstants.ID,
         definition_id: CustomFieldDefinitionConstants.SingleLineTextID,
         value: JSON.stringify(ProductCustomFieldConstants.SingleLineTextValue),
