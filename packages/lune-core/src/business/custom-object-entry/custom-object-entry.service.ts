@@ -32,8 +32,11 @@ export class CustomObjectEntryService {
     this.valueTranslationRepository = ctx.repositories.customObjectEntryValueTranslation;
   }
 
-  async findUnique(id: ID) {
-    return this.repository.findOne({ where: { id } });
+  async findUnique(id?: ID, slug?: string) {
+    if (id) return this.repository.findOne({ where: { id } });
+    if (slug) return this.repository.findOne({ where: { slug } });
+
+    return null;
   }
 
   async findByDefinitionId(definitionId: ID, input?: ListInput) {
@@ -46,6 +49,14 @@ export class CustomObjectEntryService {
 
   async countByDefinitionId(definitionId: ID) {
     return this.repository.count({ where: { definitionId } });
+  }
+
+  async findByDefinitionKey(definitionKey: string, input?: ListInput) {
+    return this.repository.findByDefinitionKey(definitionKey, input);
+  }
+
+  async countByDefinitionKey(definitionKey: string) {
+    return this.repository.countByDefinitionKey(definitionKey);
   }
 
   async create(definitionId: ID, input: CreateCustomObjectEntryInput) {

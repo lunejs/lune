@@ -21,6 +21,7 @@ import { AddressResolver } from './resolvers/address.resolver';
 import { CollectionResolver } from './resolvers/collection.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
 import { CustomFieldResolver } from './resolvers/custom-field.resolver';
+import { CustomObjectResolver } from './resolvers/custom-object.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
 import { OrderResolver } from './resolvers/order.resolver';
 import { ProductResolver } from './resolvers/product.resolver';
@@ -53,6 +54,7 @@ export class StorefrontApi extends GraphqlApi {
         CustomFieldResolver,
         OrderEnumsResolver,
         CustomFieldDefinitionEnumsResolver,
+        CustomObjectResolver,
         ...pluginsResolvers
       ],
       context: initialContext => this.buildAdminApiContext(initialContext),

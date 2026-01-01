@@ -1,0 +1,22 @@
+type CustomObject {
+  id: ID!
+  """
+  A unique and readable identifier for the entry
+  """
+  slug: String!
+  """
+  The fields of this entry
+  """
+  fields(keys: [String!]!): [CustomField!]!
+}
+
+type CustomObjectList {
+  items: [CustomObject!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  customObject(id: ID, slug: String): CustomObject
+  customObjects(definitionKey: String!, input: ListInput): CustomObjectList!
+}
