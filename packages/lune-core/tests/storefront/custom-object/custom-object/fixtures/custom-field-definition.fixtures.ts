@@ -66,6 +66,7 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         key: CustomFieldDefinitionConstants.TranslatableFieldKey,
         type: CustomFieldType.SingleLineText,
         is_list: false,
+        applies_to_entity: 'custom_object',
         custom_object_definition_id: CustomObjectDefinitionConstants.ID,
         order: 3,
         shop_id: ShopConstants.ID

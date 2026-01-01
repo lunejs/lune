@@ -11,8 +11,10 @@ import type {
 } from '@/api/shared/types/graphql';
 import { ListResponse } from '@/api/shared/utils/list-response';
 import { CustomFieldDefinitionService } from '@/business/custom-field-definition/custom-field-definition.service';
-import type { CustomFieldDefinition } from '@/persistence/entities/custom-field-definition';
-import { CustomFieldAppliesTo } from '@/persistence/entities/custom-field-definition';
+import {
+  CustomFieldAppliesTo,
+  type CustomFieldDefinition
+} from '@/persistence/entities/custom-field-definition';
 import { isErrorResult } from '@/utils/error-result';
 
 async function customFieldDefinitions(
@@ -79,7 +81,8 @@ export const CustomFieldDefinitionResolver: GraphqlApiResolver = {
   CustomFieldAppliesToEntity: {
     PRODUCT: CustomFieldAppliesTo.Product,
     COLLECTION: CustomFieldAppliesTo.Collection,
-    OPTION_VALUE: CustomFieldAppliesTo.OptionValue
+    OPTION_VALUE: CustomFieldAppliesTo.OptionValue,
+    CUSTOM_OBJECT: CustomFieldAppliesTo.CustomObject
   },
   CustomFieldDefinition: {
     referenceTarget: (parent: CustomFieldDefinition, _, ctx: ExecutionContext) => {

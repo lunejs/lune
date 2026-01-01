@@ -28,7 +28,8 @@ const CUSTOM_FIELD_TYPE_MAPPING: { apiType: string; dbType: string }[] = [
   { apiType: 'BOOLEAN', dbType: 'boolean' },
   { apiType: 'IMAGE', dbType: 'image' },
   { apiType: 'PRODUCT_REFERENCE', dbType: 'product_reference' },
-  { apiType: 'COLLECTION_REFERENCE', dbType: 'collection_reference' }
+  { apiType: 'COLLECTION_REFERENCE', dbType: 'collection_reference' },
+  { apiType: 'CUSTOM_OBJECT_REFERENCE', dbType: 'custom_object_reference' }
 ];
 
 describe('createCustomFieldDefinition - Mutation', () => {

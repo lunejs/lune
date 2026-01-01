@@ -39,7 +39,7 @@ export const CustomFieldResolver: GraphqlApiResolver = {
         return value || parent.value;
       }
 
-      if (parent.customObjectDefinitionId) {
+      if (parent.appliesToEntity === CustomFieldAppliesTo.CustomObject) {
         const value = await ctx.loaders.customObjectEntry.valueLocalization.load(parent.id);
         return value || parent.value;
       }
