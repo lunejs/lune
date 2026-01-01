@@ -1,5 +1,17 @@
 # @lunejs/core
 
+## 0.1.7
+
+### Patch Changes
+
+- d11788c: add product custom fields to storefront api
+- cc78e5b: add custom objects to storefront api
+- ef23c5a: add CustomObject to CustomFieldReference union type
+- 1f6ebf2: load translation for custom field values
+- 7165548: add collection custom fields to storefront api
+- 037c078: add CustomObject to custom field applies to
+- 93fb771: add translation value for custom object value in storefront api
+
 ## 0.1.6
 
 ### Patch Changes
