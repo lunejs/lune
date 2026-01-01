@@ -1,3 +1,7 @@
+extend type Collection {
+  customFields(keys: [String!]!): [CustomField!]!
+}
+
 type Query {
   collections(input: CollectionListInput): CollectionList!
 }

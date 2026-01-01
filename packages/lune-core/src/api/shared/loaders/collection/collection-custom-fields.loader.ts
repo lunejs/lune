@@ -15,36 +15,63 @@ export interface CollectionCustomFieldWithDefinition {
   definition: CustomFieldDefinition;
 }
 
+export type CollectionCustomFieldsLoaderKey = {
+  collectionId: string;
+  keys?: string[] | null;
+};
+
+function getCacheKey(key: CollectionCustomFieldsLoaderKey): string {
+  return `${key.collectionId}:${JSON.stringify(key.keys ?? [])}`;
+}
+
 export function createCollectionCustomFieldsLoader(trx: Transaction) {
-  return new DataLoader<string, CollectionCustomFieldWithDefinition[]>(async collectionIds => {
-    const rows = await trx
-      .from({ ccf: Tables.CollectionCustomField })
-      .innerJoin({ cfd: Tables.CustomFieldDefinition }, 'cfd.id', 'ccf.definition_id')
-      .select('ccf.collection_id', 'ccf.value', 'ccf.id as collection_custom_field_id', 'cfd.*')
-      .whereIn('ccf.collection_id', collectionIds)
-      .orderBy([
-        { column: 'cfd.order', order: 'asc' },
-        { column: 'cfd.created_at', order: 'asc' }
-      ]);
+  return new DataLoader<
+    CollectionCustomFieldsLoaderKey,
+    CollectionCustomFieldWithDefinition[],
+    string
+  >(
+    async loaderKeys => {
+      const collectionIds = loaderKeys.map(k => k.collectionId);
+      const filterKeys = loaderKeys[0]?.keys;
 
-    type Row = Pick<CollectionCustomFieldTable, 'collection_id' | 'value'> &
-      CustomFieldDefinitionTable & { collection_custom_field_id: string };
+      const query = trx
+        .from({ ccf: Tables.CollectionCustomField })
+        .innerJoin({ cfd: Tables.CustomFieldDefinition }, 'cfd.id', 'ccf.definition_id')
+        .select('ccf.collection_id', 'ccf.value', 'ccf.id as collection_custom_field_id', 'cfd.*')
+        .whereIn('ccf.collection_id', collectionIds)
+        .orderBy([
+          { column: 'cfd.order', order: 'asc' },
+          { column: 'cfd.created_at', order: 'asc' }
+        ]);
 
-    const serializer = new CustomFieldDefinitionSerializer();
-    const byCollectionId = new Map<string, CollectionCustomFieldWithDefinition[]>();
-    for (const id of collectionIds) byCollectionId.set(id, []);
+      if (filterKeys?.length) {
+        query.whereIn('cfd.key', filterKeys);
+      }
 
-    for (const row of rows as Row[]) {
-      const { collection_id, value, collection_custom_field_id, ...definitionCols } = row;
-      const definition = serializer.deserialize(definitionCols as CustomFieldDefinitionTable);
+      type Row = Pick<CollectionCustomFieldTable, 'collection_id' | 'value'> &
+        CustomFieldDefinitionTable & { collection_custom_field_id: string };
 
-      byCollectionId.get(collection_id)?.push({
-        id: collection_custom_field_id,
-        value,
-        definition: definition as CustomFieldDefinition
-      });
-    }
+      const rows = (await query) as Row[];
+      const serializer = new CustomFieldDefinitionSerializer();
 
-    return (collectionIds as string[]).map(id => byCollectionId.get(id) ?? []);
-  });
+      const byCollectionId = new Map<string, CollectionCustomFieldWithDefinition[]>();
+      for (const id of collectionIds) {
+        byCollectionId.set(id, []);
+      }
+
+      for (const row of rows) {
+        const { collection_id, value, collection_custom_field_id, ...definitionCols } = row;
+        const definition = serializer.deserialize(definitionCols as CustomFieldDefinitionTable);
+
+        byCollectionId.get(collection_id)?.push({
+          id: collection_custom_field_id,
+          value,
+          definition: definition as CustomFieldDefinition
+        });
+      }
+
+      return loaderKeys.map(key => byCollectionId.get(key.collectionId) ?? []);
+    },
+    { cacheKeyFn: getCacheKey }
+  );
 }

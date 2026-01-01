@@ -85,7 +85,7 @@ export const CollectionResolver: GraphqlApiResolver = {
       return ctx.loaders.collections.translations.load(parent.id);
     },
     customFieldEntries: async (parent: Collection, _: unknown, ctx: ExecutionContext) => {
-      return ctx.loaders.collections.customFields.load(parent.id);
+      return ctx.loaders.collections.customFields.load({ collectionId: parent.id });
     }
   },
   CollectionCustomField: {

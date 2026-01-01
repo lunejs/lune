@@ -18,6 +18,7 @@ import { OrderEnumsResolver } from '../shared/resolvers/enums/order-enums.resolv
 import type { CustomerJWT } from '../shared/types/api.types';
 
 import { AddressResolver } from './resolvers/address.resolver';
+import { CollectionResolver } from './resolvers/collection.resolver';
 import { CountryResolver } from './resolvers/country.resolver';
 import { CustomFieldResolver } from './resolvers/custom-field.resolver';
 import { CustomerResolver } from './resolvers/customer.resolver';
@@ -44,6 +45,7 @@ export class StorefrontApi extends GraphqlApi {
       typePaths: [SHOP_TYPE_PATH, SHARED_TYPE_PATH, ...pluginsTypePaths],
       resolvers: [
         ProductResolver,
+        CollectionResolver,
         OrderResolver,
         CountryResolver,
         CustomerResolver,

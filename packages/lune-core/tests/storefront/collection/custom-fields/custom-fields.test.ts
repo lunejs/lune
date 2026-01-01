@@ -5,13 +5,13 @@ import { TEST_LUNE_CONFIG } from '@/tests/utils/test-config';
 import { TestUtils } from '@/tests/utils/test-utils';
 
 import { CollectionConstants, CollectionFixtures } from './fixtures/collection.fixtures';
+import {
+  CollectionCustomFieldConstants,
+  CollectionCustomFieldFixtures
+} from './fixtures/collection-custom-field.fixtures';
 import { CustomFieldDefinitionConstants } from './fixtures/custom-field-definition.fixtures';
 import { CustomFieldDefinitionFixtures } from './fixtures/custom-field-definition.fixtures';
 import { ProductConstants, ProductFixtures } from './fixtures/product.fixtures';
-import {
-  ProductCustomFieldConstants,
-  ProductCustomFieldFixtures
-} from './fixtures/product-custom-field.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
@@ -33,7 +33,7 @@ const ALL_KEYS = [
   CustomFieldDefinitionConstants.CollectionReferenceListKey
 ];
 
-describe('Product.customFields - Query', () => {
+describe('Collection.customFields - Query', () => {
   const testHelper = new TestUtils();
 
   const luneServer = new LuneServer(TEST_LUNE_CONFIG);
@@ -46,7 +46,7 @@ describe('Product.customFields - Query', () => {
       new ProductFixtures(),
       new CollectionFixtures(),
       new CustomFieldDefinitionFixtures(),
-      new ProductCustomFieldFixtures()
+      new CollectionCustomFieldFixtures()
     ]);
   });
 
@@ -59,22 +59,22 @@ describe('Product.customFields - Query', () => {
     await luneServer.teardown();
   });
 
-  test('returns all custom fields for a product', async () => {
+  test('returns all custom fields for a collection', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: ALL_KEYS
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(15);
+    expect(collection.customFields).toHaveLength(15);
   });
 
   test('returns single line text custom field correctly', async () => {
@@ -83,20 +83,22 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.SingleLineTextKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].key).toBe(CustomFieldDefinitionConstants.SingleLineTextKey);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.SingleLineTextValue);
-    expect(product.customFields[0].type).toBe('SINGLE_LINE_TEXT');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].key).toBe(CustomFieldDefinitionConstants.SingleLineTextKey);
+    expect(collection.customFields[0].value).toBe(
+      CollectionCustomFieldConstants.SingleLineTextValue
+    );
+    expect(collection.customFields[0].type).toBe('SINGLE_LINE_TEXT');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns multi line text custom field correctly', async () => {
@@ -105,19 +107,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.MultiLineTextKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.MultiLineTextValue);
-    expect(product.customFields[0].type).toBe('MULTI_LINE_TEXT');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(
+      CollectionCustomFieldConstants.MultiLineTextValue
+    );
+    expect(collection.customFields[0].type).toBe('MULTI_LINE_TEXT');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns url custom field correctly', async () => {
@@ -126,19 +130,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.UrlKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.UrlValue);
-    expect(product.customFields[0].type).toBe('URL');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.UrlValue);
+    expect(collection.customFields[0].type).toBe('URL');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns color custom field correctly', async () => {
@@ -147,19 +151,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ColorKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.ColorValue);
-    expect(product.customFields[0].type).toBe('COLOR');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.ColorValue);
+    expect(collection.customFields[0].type).toBe('COLOR');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns integer custom field correctly', async () => {
@@ -168,19 +172,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.IntegerKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.IntegerValue);
-    expect(product.customFields[0].type).toBe('INTEGER');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.IntegerValue);
+    expect(collection.customFields[0].type).toBe('INTEGER');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns decimal custom field correctly', async () => {
@@ -189,19 +193,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.DecimalKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.DecimalValue);
-    expect(product.customFields[0].type).toBe('DECIMAL');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.DecimalValue);
+    expect(collection.customFields[0].type).toBe('DECIMAL');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns money custom field correctly', async () => {
@@ -210,19 +214,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.MoneyKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.MoneyValue);
-    expect(product.customFields[0].type).toBe('MONEY');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.MoneyValue);
+    expect(collection.customFields[0].type).toBe('MONEY');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns date custom field correctly', async () => {
@@ -231,19 +235,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.DateKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.DateValue);
-    expect(product.customFields[0].type).toBe('DATE');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.DateValue);
+    expect(collection.customFields[0].type).toBe('DATE');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns boolean custom field correctly', async () => {
@@ -252,19 +256,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.BooleanKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.BooleanValue);
-    expect(product.customFields[0].type).toBe('BOOLEAN');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.BooleanValue);
+    expect(collection.customFields[0].type).toBe('BOOLEAN');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns image custom field correctly', async () => {
@@ -273,19 +277,19 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ImageKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.ImageValue);
-    expect(product.customFields[0].type).toBe('IMAGE');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(CollectionCustomFieldConstants.ImageValue);
+    expect(collection.customFields[0].type).toBe('IMAGE');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns product reference custom field correctly', async () => {
@@ -294,19 +298,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(ProductCustomFieldConstants.ProductReferenceValue);
-    expect(product.customFields[0].type).toBe('PRODUCT_REFERENCE');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(
+      CollectionCustomFieldConstants.ProductReferenceValue
+    );
+    expect(collection.customFields[0].type).toBe('PRODUCT_REFERENCE');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns collection reference custom field correctly', async () => {
@@ -315,21 +321,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.CollectionReferenceKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toBe(
-      ProductCustomFieldConstants.CollectionReferenceValue
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toBe(
+      CollectionCustomFieldConstants.CollectionReferenceValue
     );
-    expect(product.customFields[0].type).toBe('COLLECTION_REFERENCE');
-    expect(product.customFields[0].isList).toBe(false);
+    expect(collection.customFields[0].type).toBe('COLLECTION_REFERENCE');
+    expect(collection.customFields[0].isList).toBe(false);
   });
 
   test('returns list custom field correctly', async () => {
@@ -338,19 +344,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.IntegerListKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].value).toEqual(ProductCustomFieldConstants.IntegerListValue);
-    expect(product.customFields[0].type).toBe('INTEGER');
-    expect(product.customFields[0].isList).toBe(true);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].value).toEqual(
+      CollectionCustomFieldConstants.IntegerListValue
+    );
+    expect(collection.customFields[0].type).toBe('INTEGER');
+    expect(collection.customFields[0].isList).toBe(true);
   });
 
   test('returns custom fields ordered by definition order', async () => {
@@ -359,35 +367,35 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: ALL_KEYS
         }
       });
 
-    const { product } = res.body.data;
-    const keys = product.customFields.map(f => f.key);
+    const { collection } = res.body.data;
+    const keys = collection.customFields.map(f => f.key);
 
     expect(keys).toEqual(ALL_KEYS);
   });
 
-  test('returns empty array when product has no custom fields', async () => {
+  test('returns empty array when collection has no custom fields', async () => {
     const res = await request(app)
       .post('/storefront-api')
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.WithoutFieldsID,
+          id: CollectionConstants.WithoutFieldsID,
           keys: ALL_KEYS
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toEqual([]);
+    expect(collection.customFields).toEqual([]);
   });
 
   test('returns only requested keys', async () => {
@@ -402,17 +410,17 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: requestedKeys
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(3);
-    expect(product.customFields.map(f => f.key)).toEqual(requestedKeys);
+    expect(collection.customFields).toHaveLength(3);
+    expect(collection.customFields.map(f => f.key)).toEqual(requestedKeys);
   });
 
   test('returns product references correctly', async () => {
@@ -421,21 +429,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].type).toBe('PRODUCT_REFERENCE');
-    expect(product.customFields[0].references.count).toBe(1);
-    expect(product.customFields[0].references.pageInfo.total).toBe(1);
-    expect(product.customFields[0].references.items).toHaveLength(1);
-    expect(product.customFields[0].references.items[0]).toEqual({
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].type).toBe('PRODUCT_REFERENCE');
+    expect(collection.customFields[0].references.count).toBe(1);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(1);
+    expect(collection.customFields[0].references.items).toHaveLength(1);
+    expect(collection.customFields[0].references.items[0]).toEqual({
       __typename: 'Product',
       id: ProductConstants.ReferencedProductID,
       name: ProductConstants.ReferencedProductName,
@@ -449,21 +457,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.CollectionReferenceKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].type).toBe('COLLECTION_REFERENCE');
-    expect(product.customFields[0].references.count).toBe(1);
-    expect(product.customFields[0].references.pageInfo.total).toBe(1);
-    expect(product.customFields[0].references.items).toHaveLength(1);
-    expect(product.customFields[0].references.items[0]).toEqual({
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].type).toBe('COLLECTION_REFERENCE');
+    expect(collection.customFields[0].references.count).toBe(1);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(1);
+    expect(collection.customFields[0].references.items).toHaveLength(1);
+    expect(collection.customFields[0].references.items[0]).toEqual({
       __typename: 'Collection',
       id: CollectionConstants.ReferencedCollectionID,
       name: CollectionConstants.ReferencedCollectionName,
@@ -477,20 +485,20 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.SingleLineTextKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].type).toBe('SINGLE_LINE_TEXT');
-    expect(product.customFields[0].references.count).toBe(0);
-    expect(product.customFields[0].references.items).toEqual([]);
-    expect(product.customFields[0].references.pageInfo.total).toBe(0);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].type).toBe('SINGLE_LINE_TEXT');
+    expect(collection.customFields[0].references.count).toBe(0);
+    expect(collection.customFields[0].references.items).toEqual([]);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(0);
   });
 
   test('returns all product references in a list field', async () => {
@@ -499,28 +507,28 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey]
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].type).toBe('PRODUCT_REFERENCE');
-    expect(product.customFields[0].isList).toBe(true);
-    expect(product.customFields[0].references.count).toBe(3);
-    expect(product.customFields[0].references.pageInfo.total).toBe(3);
-    expect(product.customFields[0].references.items).toHaveLength(3);
-    expect(product.customFields[0].references.items[0].id).toBe(
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].type).toBe('PRODUCT_REFERENCE');
+    expect(collection.customFields[0].isList).toBe(true);
+    expect(collection.customFields[0].references.count).toBe(3);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(3);
+    expect(collection.customFields[0].references.items[0].id).toBe(
       ProductConstants.ReferencedProductID
     );
-    expect(product.customFields[0].references.items[1].id).toBe(
+    expect(collection.customFields[0].references.items[1].id).toBe(
       ProductConstants.ReferencedProduct2ID
     );
-    expect(product.customFields[0].references.items[2].id).toBe(
+    expect(collection.customFields[0].references.items[2].id).toBe(
       ProductConstants.ReferencedProduct3ID
     );
   });
@@ -531,21 +539,21 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey],
           referencesInput: { skip: 1, take: 1 }
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].references.count).toBe(1);
-    expect(product.customFields[0].references.pageInfo.total).toBe(3);
-    expect(product.customFields[0].references.items).toHaveLength(1);
-    expect(product.customFields[0].references.items[0].id).toBe(
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].references.count).toBe(1);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(1);
+    expect(collection.customFields[0].references.items[0].id).toBe(
       ProductConstants.ReferencedProduct2ID
     );
   });
@@ -556,24 +564,24 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.CollectionReferenceListKey],
           referencesInput: { skip: 0, take: 2 }
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].references.count).toBe(2);
-    expect(product.customFields[0].references.pageInfo.total).toBe(3);
-    expect(product.customFields[0].references.items).toHaveLength(2);
-    expect(product.customFields[0].references.items[0].id).toBe(
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].references.count).toBe(2);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(2);
+    expect(collection.customFields[0].references.items[0].id).toBe(
       CollectionConstants.ReferencedCollectionID
     );
-    expect(product.customFields[0].references.items[1].id).toBe(
+    expect(collection.customFields[0].references.items[1].id).toBe(
       CollectionConstants.ReferencedCollection2ID
     );
   });
@@ -584,26 +592,26 @@ describe('Product.customFields - Query', () => {
       .set('x_lune_shop_id', ShopConstants.ID)
       .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
       .send({
-        query: GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES,
+        query: GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES,
         variables: {
-          id: ProductConstants.ID,
+          id: CollectionConstants.ID,
           keys: [CustomFieldDefinitionConstants.ProductReferenceListKey],
           referencesInput: { skip: 10, take: 5 }
         }
       });
 
-    const { product } = res.body.data;
+    const { collection } = res.body.data;
 
-    expect(product.customFields).toHaveLength(1);
-    expect(product.customFields[0].references.count).toBe(0);
-    expect(product.customFields[0].references.pageInfo.total).toBe(3);
-    expect(product.customFields[0].references.items).toHaveLength(0);
+    expect(collection.customFields).toHaveLength(1);
+    expect(collection.customFields[0].references.count).toBe(0);
+    expect(collection.customFields[0].references.pageInfo.total).toBe(3);
+    expect(collection.customFields[0].references.items).toHaveLength(0);
   });
 });
 
-const GET_PRODUCT_WITH_CUSTOM_FIELDS = /* GraphQL */ `
-  query Product($id: ID!, $keys: [String!]!) {
-    product(id: $id) {
+const GET_COLLECTION_WITH_CUSTOM_FIELDS = /* GraphQL */ `
+  query Collection($id: ID!, $keys: [String!]!) {
+    collection(id: $id) {
       id
       name
       customFields(keys: $keys) {
@@ -616,9 +624,9 @@ const GET_PRODUCT_WITH_CUSTOM_FIELDS = /* GraphQL */ `
   }
 `;
 
-const GET_PRODUCT_WITH_CUSTOM_FIELDS_AND_REFERENCES = /* GraphQL */ `
-  query Product($id: ID!, $keys: [String!]!, $referencesInput: ListInput) {
-    product(id: $id) {
+const GET_COLLECTION_WITH_CUSTOM_FIELDS_AND_REFERENCES = /* GraphQL */ `
+  query Collection($id: ID!, $keys: [String!]!, $referencesInput: ListInput) {
+    collection(id: $id) {
       id
       name
       customFields(keys: $keys) {

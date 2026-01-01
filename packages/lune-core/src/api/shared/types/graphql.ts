@@ -11,8 +11,8 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type EnumResolverSignature<T, AllowedValues = any> = { [key in keyof T]?: AllowedValues };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+export type EnumResolverSignature<T, AllowedValues = any> = { [key in keyof T]?: AllowedValues };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -170,6 +170,7 @@ export type Collection = Node & {
   contentType: CollectionContentType;
   createdAt: Scalars['Date']['output'];
   customFieldEntries: Array<CollectionCustomField>;
+  customFields: Array<CustomField>;
   /** The collection's description */
   description?: Maybe<Scalars['String']['output']>;
   /**
@@ -195,6 +196,12 @@ export type Collection = Node & {
 /** A collection is a group of products that are displayed together in the storefront. */
 export type CollectionAssetsArgs = {
   input?: InputMaybe<ListInput>;
+};
+
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionCustomFieldsArgs = {
+  keys: Array<Scalars['String']['input']>;
 };
 
 
@@ -2885,7 +2892,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
-  CustomFieldReference: ( Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } );
+  CustomFieldReference: ( Omit<Collection, 'customFields' | 'parentCollection' | 'products' | 'subCollections'> & { customFields: Array<_RefType['CustomField']>, parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } );
   DeliveryMethodDetails: ( DeliveryMethodPickup ) | ( DeliveryMethodShipping );
   PaymentDetails: ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } );
 };
@@ -2893,7 +2900,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
   List: ( AssetList ) | ( Omit<CollectionList, 'items'> & { items: Array<_RefType['Collection']> } ) | ( DiscountList ) | ( Omit<FulfillmentLineList, 'items'> & { items: Array<_RefType['FulfillmentLine']> } ) | ( Omit<FulfillmentList, 'items'> & { items: Array<_RefType['Fulfillment']> } ) | ( OptionList ) | ( Omit<OrderLineList, 'items'> & { items: Array<_RefType['OrderLine']> } ) | ( Omit<OrderList, 'items'> & { items: Array<_RefType['Order']> } ) | ( Omit<ProductList, 'items'> & { items: Array<_RefType['Product']> } ) | ( ShopList ) | ( TagList ) | ( UserList ) | ( Omit<VariantList, 'items'> & { items: Array<_RefType['Variant']> } );
-  Node: ( Asset ) | ( Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( Omit<Fulfillment, 'lines'> & { lines: _RefType['FulfillmentLineList'] } ) | ( Omit<FulfillmentLine, 'orderLine'> & { orderLine: _RefType['OrderLine'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, fulfillments: _RefType['FulfillmentList'], lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts' | 'variant'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, variant: _RefType['Variant'] } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } ) | ( Shop ) | ( Tag ) | ( User ) | ( Omit<Variant, 'dimensions' | 'product'> & { dimensions?: Maybe<_RefType['Dimensions']>, product: _RefType['Product'] } ) | ( Zone );
+  Node: ( Asset ) | ( Omit<Collection, 'customFields' | 'parentCollection' | 'products' | 'subCollections'> & { customFields: Array<_RefType['CustomField']>, parentCollection?: Maybe<_RefType['Collection']>, products: _RefType['ProductList'], subCollections: _RefType['CollectionList'] } ) | ( Omit<DeliveryMethod, 'details'> & { details: _RefType['DeliveryMethodDetails'] } ) | ( Discount ) | ( Omit<Fulfillment, 'lines'> & { lines: _RefType['FulfillmentLineList'] } ) | ( Omit<FulfillmentLine, 'orderLine'> & { orderLine: _RefType['OrderLine'] } ) | ( InStorePickup ) | ( Option ) | ( OptionValue ) | ( Omit<Order, 'appliedDiscounts' | 'deliveryMethod' | 'fulfillments' | 'lines' | 'payments'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, deliveryMethod?: Maybe<_RefType['DeliveryMethod']>, fulfillments: _RefType['FulfillmentList'], lines: _RefType['OrderLineList'], payments: Array<_RefType['Payment']> } ) | ( Omit<OrderCancellation, 'order'> & { order: _RefType['Order'] } ) | ( Omit<OrderLine, 'appliedDiscounts' | 'variant'> & { appliedDiscounts: Array<_RefType['AppliedDiscount']>, variant: _RefType['Variant'] } ) | ( Omit<PaymentCancellation, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentFailure, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<PaymentRejection, 'payment'> & { payment: _RefType['Payment'] } ) | ( Omit<Product, 'customFields' | 'variants'> & { customFields: Array<_RefType['CustomField']>, variants: _RefType['VariantList'] } ) | ( Shop ) | ( Tag ) | ( User ) | ( Omit<Variant, 'dimensions' | 'product'> & { dimensions?: Maybe<_RefType['Dimensions']>, product: _RefType['Product'] } ) | ( Zone );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -2917,7 +2924,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   BooleanFilter: BooleanFilter;
   CancelOrderInput: CancelOrderInput;
-  Collection: ResolverTypeWrapper<Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<ResolversTypes['Collection']>, products: ResolversTypes['ProductList'], subCollections: ResolversTypes['CollectionList'] }>;
+  Collection: ResolverTypeWrapper<Omit<Collection, 'customFields' | 'parentCollection' | 'products' | 'subCollections'> & { customFields: Array<ResolversTypes['CustomField']>, parentCollection?: Maybe<ResolversTypes['Collection']>, products: ResolversTypes['ProductList'], subCollections: ResolversTypes['CollectionList'] }>;
   CollectionContentType: CollectionContentType;
   CollectionCustomField: ResolverTypeWrapper<CollectionCustomField>;
   CollectionCustomFieldTranslation: ResolverTypeWrapper<CollectionCustomFieldTranslation>;
@@ -3149,7 +3156,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   BooleanFilter: BooleanFilter;
   CancelOrderInput: CancelOrderInput;
-  Collection: Omit<Collection, 'parentCollection' | 'products' | 'subCollections'> & { parentCollection?: Maybe<ResolversParentTypes['Collection']>, products: ResolversParentTypes['ProductList'], subCollections: ResolversParentTypes['CollectionList'] };
+  Collection: Omit<Collection, 'customFields' | 'parentCollection' | 'products' | 'subCollections'> & { customFields: Array<ResolversParentTypes['CustomField']>, parentCollection?: Maybe<ResolversParentTypes['Collection']>, products: ResolversParentTypes['ProductList'], subCollections: ResolversParentTypes['CollectionList'] };
   CollectionCustomField: CollectionCustomField;
   CollectionCustomFieldTranslation: CollectionCustomFieldTranslation;
   CollectionFilters: CollectionFilters;
@@ -3395,6 +3402,7 @@ export type CollectionResolvers<ContextType = ExecutionContext, ParentType exten
   contentType?: Resolver<ResolversTypes['CollectionContentType'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   customFieldEntries?: Resolver<Array<ResolversTypes['CollectionCustomField']>, ParentType, ContextType>;
+  customFields?: Resolver<Array<ResolversTypes['CustomField']>, ParentType, ContextType, RequireFields<CollectionCustomFieldsArgs, 'keys'>>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
