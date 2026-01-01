@@ -17,6 +17,10 @@ import {
   CustomObjectEntryValueConstants,
   CustomObjectEntryValueFixtures
 } from './fixtures/custom-object-entry-value.fixtures';
+import {
+  CustomObjectEntryValueTranslationConstants,
+  CustomObjectEntryValueTranslationFixtures
+} from './fixtures/custom-object-entry-value-translation.fixtures';
 import { ShopConstants, ShopFixtures } from './fixtures/shop.fixtures';
 import { UserFixtures } from './fixtures/user.fixtures';
 
@@ -153,6 +157,53 @@ describe('customObject - Query', () => {
     const { customObject } = res.body.data;
 
     expect(customObject).toBe(null);
+  });
+
+  test('returns translated field value when locale is provided', async () => {
+    await testHelper.loadFixtures([new CustomObjectEntryValueTranslationFixtures()]);
+
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_locale', CustomObjectEntryValueTranslationConstants.Locale)
+      .send({
+        query: GET_CUSTOM_OBJECT_QUERY,
+        variables: {
+          id: CustomObjectEntryConstants.FirstEntryID,
+          keys: [CustomFieldDefinitionConstants.TranslatableFieldKey]
+        }
+      });
+
+    const { customObject } = res.body.data;
+
+    expect(customObject.fields).toHaveLength(1);
+    expect(customObject.fields[0].key).toBe(CustomFieldDefinitionConstants.TranslatableFieldKey);
+    expect(customObject.fields[0].value).toBe(
+      CustomObjectEntryValueTranslationConstants.TranslatedValue
+    );
+  });
+
+  test('returns original field value when no translation exists for locale', async () => {
+    const res = await request(app)
+      .post('/storefront-api')
+      .set('x_lune_shop_id', ShopConstants.ID)
+      .set('x_lune_storefront_api_key', ShopConstants.StorefrontApiKey)
+      .set('x_lune_storefront_locale', 'fr')
+      .send({
+        query: GET_CUSTOM_OBJECT_QUERY,
+        variables: {
+          id: CustomObjectEntryConstants.FirstEntryID,
+          keys: [CustomFieldDefinitionConstants.TranslatableFieldKey]
+        }
+      });
+
+    const { customObject } = res.body.data;
+
+    expect(customObject.fields).toHaveLength(1);
+    expect(customObject.fields[0].value).toBe(
+      CustomObjectEntryValueConstants.FirstEntryTranslatableValue
+    );
   });
 
   test('returns UNAUTHORIZED error when storefront api key is invalid', async () => {

@@ -15,7 +15,11 @@ export const CustomFieldDefinitionConstants = {
   ContentFieldKey: 'content',
 
   AuthorFieldID: TestUtils.generateUUID(),
-  AuthorFieldKey: 'author'
+  AuthorFieldKey: 'author',
+
+  // Field for testing localization (no applies_to_entity)
+  TranslatableFieldID: TestUtils.generateUUID(),
+  TranslatableFieldKey: 'translatable_text'
 };
 
 export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinitionTable> {
@@ -54,6 +58,16 @@ export class CustomFieldDefinitionFixtures implements Fixture<CustomFieldDefinit
         applies_to_entity: 'product',
         custom_object_definition_id: CustomObjectDefinitionConstants.ID,
         order: 2,
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomFieldDefinitionConstants.TranslatableFieldID,
+        name: 'Translatable Text',
+        key: CustomFieldDefinitionConstants.TranslatableFieldKey,
+        type: CustomFieldType.SingleLineText,
+        is_list: false,
+        custom_object_definition_id: CustomObjectDefinitionConstants.ID,
+        order: 3,
         shop_id: ShopConstants.ID
       }
     ];

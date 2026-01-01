@@ -1,3 +1,4 @@
+import { createCustomObjectEntryValueLocalizationLoader } from '@/api/storefront/loaders/custom-object/custom-object-entry-value-localization.loader';
 import { createCustomObjectFieldsLoader } from '@/api/storefront/loaders/custom-object/custom-object-fields.loader';
 import { createOptionLocalizationLoader } from '@/api/storefront/loaders/option-localization.loader';
 import { createOptionValueLocalizationLoader } from '@/api/storefront/loaders/option-value-localization.loader copy';
@@ -157,7 +158,8 @@ export const buildLoaders = (trx: Transaction, locale: Locale | null | undefined
       values: createCustomObjectEntryValuesLoader(trx),
       valueField: createCustomObjectEntryValueFieldLoader(trx),
       valueTranslations: createCustomObjectEntryValueTranslationsLoader(trx),
-      fields: createCustomObjectFieldsLoader(trx)
+      fields: createCustomObjectFieldsLoader(trx),
+      valueLocalization: createCustomObjectEntryValueLocalizationLoader(trx, locale)
     },
     customFieldDefinition: {
       referenceTarget: createCustomFieldDefinitionReferenceTargetLoader(trx)

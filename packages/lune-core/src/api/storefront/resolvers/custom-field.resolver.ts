@@ -39,6 +39,11 @@ export const CustomFieldResolver: GraphqlApiResolver = {
         return value || parent.value;
       }
 
+      if (parent.customObjectDefinitionId) {
+        const value = await ctx.loaders.customObjectEntry.valueLocalization.load(parent.id);
+        return value || parent.value;
+      }
+
       return parent.value;
     },
     references: async (

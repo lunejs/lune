@@ -15,7 +15,10 @@ export const CustomObjectEntryValueConstants = {
   FirstEntryContentValue: 'This is the content of my first blog post',
 
   FirstEntryAuthorValueID: TestUtils.generateUUID(),
-  FirstEntryAuthorValue: 'John Doe'
+  FirstEntryAuthorValue: 'John Doe',
+
+  FirstEntryTranslatableValueID: TestUtils.generateUUID(),
+  FirstEntryTranslatableValue: 'Original text'
 };
 
 export class CustomObjectEntryValueFixtures implements Fixture<CustomObjectEntryValueTable> {
@@ -42,6 +45,13 @@ export class CustomObjectEntryValueFixtures implements Fixture<CustomObjectEntry
         entry_id: CustomObjectEntryConstants.FirstEntryID,
         field_id: CustomFieldDefinitionConstants.AuthorFieldID,
         value: JSON.stringify(CustomObjectEntryValueConstants.FirstEntryAuthorValue),
+        shop_id: ShopConstants.ID
+      },
+      {
+        id: CustomObjectEntryValueConstants.FirstEntryTranslatableValueID,
+        entry_id: CustomObjectEntryConstants.FirstEntryID,
+        field_id: CustomFieldDefinitionConstants.TranslatableFieldID,
+        value: JSON.stringify(CustomObjectEntryValueConstants.FirstEntryTranslatableValue),
         shop_id: ShopConstants.ID
       }
     ];
