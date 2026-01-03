@@ -16,6 +16,7 @@ export class UploadApi extends RestApi {
   }
 
   private async contextMiddleware(req: Request, res: Response, next: NextFunction) {
+    const timezone = req.headers[HeaderKeys.Timezone]?.toString() || 'UTC';
     const shopId = req.headers[HeaderKeys.ShopId]?.toString() ?? null;
     const jwt = req.headers[HeaderKeys.Authorization]?.toString().replace('Bearer ', '');
 
@@ -23,6 +24,7 @@ export class UploadApi extends RestApi {
 
     const ctx = await buildContext({
       database: this.database,
+      timezone,
       shopId,
       userJWT
     });

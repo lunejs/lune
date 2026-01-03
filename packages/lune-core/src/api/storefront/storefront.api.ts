@@ -65,6 +65,7 @@ export class StorefrontApi extends GraphqlApi {
   private async buildAdminApiContext(initialContext: YogaInitialContext) {
     const rawHeader = initialContext.request.headers.get(HeaderKeys.Authorization) ?? '';
 
+    const timezone = initialContext.request.headers.get(HeaderKeys.Timezone) || 'UTC';
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
     const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const storefrontApiKey = initialContext.request.headers.get(HeaderKeys.StorefrontApiKey);
@@ -78,6 +79,7 @@ export class StorefrontApi extends GraphqlApi {
       database: this.database,
       shopId,
       userJWT: null,
+      timezone,
       storefront: {
         apiKey: storefrontApiKey,
         locale: storefrontLocale,

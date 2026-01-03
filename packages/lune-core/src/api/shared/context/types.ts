@@ -8,6 +8,7 @@ export type ExecutionContext = {
   trx: Transaction;
   shopId: string | null;
   ownerId: string | null;
+  timezone: string;
   runWithoutRLS: <T>(fn: () => Promise<T>) => Promise<T>;
   currentUser: CurrentUser | null;
   repositories: Repositories;

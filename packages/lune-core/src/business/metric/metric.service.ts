@@ -16,13 +16,13 @@ export class MetricService {
         COALESCE(SUM(o.total), 0) as value
       FROM generate_series(?::date, ?::date, '1 day'::interval) AS d(date)
       LEFT JOIN "${Tables.Order}" o
-        ON to_char(o.placed_at, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
+        ON to_char(o.placed_at AT TIME ZONE ?, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
         AND o.placed_at IS NOT NULL
         AND o.state NOT IN (?, ?)
       GROUP BY d.date
       ORDER BY d.date ASC
       `,
-      [startsAt, endsAt, OrderState.Modifying, OrderState.Canceled]
+      [startsAt, endsAt, this.ctx.timezone, OrderState.Modifying, OrderState.Canceled]
     );
 
     const metrics: Metric[] = rows.rows.map((row: { key: string; value: string }) => ({
@@ -45,13 +45,13 @@ export class MetricService {
         COUNT(o.id) as value
       FROM generate_series(?::date, ?::date, '1 day'::interval) AS d(date)
       LEFT JOIN "${Tables.Order}" o
-        ON to_char(o.placed_at, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
+        ON to_char(o.placed_at AT TIME ZONE ?, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
         AND o.placed_at IS NOT NULL
         AND o.state NOT IN (?, ?)
       GROUP BY d.date
       ORDER BY d.date ASC
       `,
-      [startsAt, endsAt, OrderState.Modifying, OrderState.Canceled]
+      [startsAt, endsAt, this.ctx.timezone, OrderState.Modifying, OrderState.Canceled]
     );
 
     const metrics: Metric[] = rows.rows.map((row: { key: string; value: string }) => ({
@@ -74,11 +74,11 @@ export class MetricService {
         COUNT(c.id) as value
       FROM generate_series(?::date, ?::date, '1 day'::interval) AS d(date)
       LEFT JOIN "${Tables.Customer}" c
-        ON to_char(c.created_at, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
+        ON to_char(c.created_at AT TIME ZONE ?, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
       GROUP BY d.date
       ORDER BY d.date ASC
       `,
-      [startsAt, endsAt]
+      [startsAt, endsAt, this.ctx.timezone]
     );
 
     const metrics: Metric[] = rows.rows.map((row: { key: string; value: string }) => ({
@@ -101,13 +101,13 @@ export class MetricService {
         COALESCE(AVG(o.total), 0)::integer as value
       FROM generate_series(?::date, ?::date, '1 day'::interval) AS d(date)
       LEFT JOIN "${Tables.Order}" o
-        ON to_char(o.placed_at, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
+        ON to_char(o.placed_at AT TIME ZONE ?, 'YYYY-MM-DD') = to_char(d.date, 'YYYY-MM-DD')
         AND o.placed_at IS NOT NULL
         AND o.state NOT IN (?, ?)
       GROUP BY d.date
       ORDER BY d.date ASC
       `,
-      [startsAt, endsAt, OrderState.Modifying, OrderState.Canceled]
+      [startsAt, endsAt, this.ctx.timezone, OrderState.Modifying, OrderState.Canceled]
     );
 
     const metrics: Metric[] = rows.rows.map((row: { key: string; value: string }) => ({

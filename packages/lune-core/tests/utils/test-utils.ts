@@ -84,6 +84,7 @@ export class TestUtils {
   buildContext(shopId: string, userJWT: UserJWT) {
     return buildContext({
       database: this.db,
+      timezone: 'UTC',
       shopId,
       userJWT
     });

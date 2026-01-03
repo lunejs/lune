@@ -80,6 +80,7 @@ export class AdminApi extends GraphqlApi {
   private async buildAdminApiContext(initialContext: YogaInitialContext) {
     const rawHeader = initialContext.request.headers.get(HeaderKeys.Authorization) ?? '';
 
+    const timezone = initialContext.request.headers.get(HeaderKeys.Timezone) || 'UTC';
     const shopId = initialContext.request.headers.get(HeaderKeys.ShopId);
     const token = rawHeader.startsWith('Bearer ') ? rawHeader.replace('Bearer ', '') : '';
 
@@ -89,6 +90,7 @@ export class AdminApi extends GraphqlApi {
       database: this.database,
       shopId,
       userJWT,
+      timezone,
       variables: initialContext.params.variables
     });
   }

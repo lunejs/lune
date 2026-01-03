@@ -1,4 +1,4 @@
-import { isValidEmail, isValidPassword } from './validators';
+import { isValidEmail, isValidPassword, isValidTimezone } from './validators';
 
 describe('Validators', () => {
   describe('isValidEmail', () => {
@@ -66,6 +66,16 @@ describe('Validators', () => {
 
       expect(isValidPassword(nullPassword)).toBe(false);
       expect(isValidPassword(undefinedPassword)).toBe(false);
+    });
+  });
+
+  describe('isValidTimezone', () => {
+    test('returns true when provided timezone is valid', () => {
+      expect(isValidTimezone('America/Mazatlan')).toBe(true);
+    });
+
+    test('returns false when provided timezone is invalid', () => {
+      expect(isValidTimezone('invalid timezone')).toBe(false);
     });
   });
 });
