@@ -1,5 +1,11 @@
 # @lunejs/core
 
+## 0.1.8
+
+### Patch Changes
+
+- 3a1e6a9: use ctx timezone for metrics requests
+
 ## 0.1.7
 
 ### Patch Changes

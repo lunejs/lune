@@ -1,5 +1,11 @@
 # @lunejs/admin-ui
 
+## 0.1.5
+
+### Patch Changes
+
+- 0a102fa: send timezone to every request
+
 ## 0.1.4
 
 ### Patch Changes
