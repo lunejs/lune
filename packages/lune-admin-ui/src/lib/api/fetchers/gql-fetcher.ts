@@ -15,6 +15,7 @@ export async function gqlFetcher<R, V>(
 
     gqlClient.setHeader('Authorization', userToken ? `Bearer ${userToken}` : '');
     gqlClient.setHeader('x_lune_shop_id', shopId ?? '');
+    gqlClient.setHeader('x_lune_timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     return await gqlClient.request({
       document,
